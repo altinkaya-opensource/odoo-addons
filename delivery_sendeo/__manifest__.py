@@ -10,11 +10,11 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["delivery_package_number", "delivery_state", "l10n_tr_address", "delivery_integration_base"],
-    "external_dependencies": {"python": ["phonenumbers"]},
+    "depends": ["delivery_integration_base"],
+    "external_dependencies": {"python": ["phonenumbers", "openpyxl"]},
     "data": [
         "views/delivery_sendeo_view.xml",
-        "views/address_district_views.xml"
-        # "data/delivery_aras_kargo_data.xml",
+        "views/address_district_views.xml",
+        "data/delivery_sendeo_data.xml",
     ],
 }

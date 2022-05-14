@@ -96,16 +96,19 @@ class SendeoRequest:
         )
         return response
 
-    def _shipping_label(self, tracking_number):
+    def _shipping_label(self, reference_number, barcode_type):
         """Get shipping label for the given ref
-        :param tracking_number: str
+        :param reference_number: str
+        :param barcode_type: str
         :returns: base64 with pdf labels
         """
+        barcode_label_type = "1" if barcode_type == "pdf" else "2"
         vals = {
-            'trackingNumber': tracking_number,
+            'barcodeLabelType': barcode_label_type,
+            'referenceNo': reference_number,
         }
         response = self._process_post_request(
-            url="/api/Cargo/GETBARCODEBYTRACKINGNUMBER",
+            url="/api/Cargo/GETBARCODE",
             vals=vals
         )
         return response

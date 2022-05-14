@@ -4,9 +4,8 @@ import phonenumbers
 import base64
 from dateutil import parser
 from odoo import _, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from .sendeo_request import SendeoRequest
-
 
 # SENDEO_STATUS_CODES = {
 #     101: ("Kargo Sevk Emri Alındı", "İş Emri Alındı"),
@@ -62,20 +61,6 @@ class DeliveryCarrier(models.Model):
     sendeo_username = fields.Char(string="Username", help="Sendeo Username")
     sendeo_password = fields.Char(string="Password", help="Sendeo Password")
 
-    sendeo_incoterm_id = fields.Many2one(
-        comodel_name="account.incoterms",
-        string="Default Incoterm",
-        help="It will be overriden by the sale order one if it's specified.",
-    )
-
-    sendeo_default_packaging_id = fields.Many2one(
-        comodel_name="product.packaging",
-        string="Default Package Type",
-        domain=[("package_carrier_type", "=", "sendeo")],
-        help="If not delivery package or the package doesn't have defined the packaging"
-             "it will default to this type",
-    )
-
     def _get_sendeo_credentials(self):
         """Access key is mandatory for every request while group and user are
         optional"""
@@ -93,7 +78,7 @@ class DeliveryCarrier(models.Model):
 
     def _sendeo_city_id(self, partner):
         """ Sendeo requires city ids without zeros. """
-        return partner.state_id.code.lstrip('0')
+        return int(partner.state_id.code.lstrip('0'))
 
     def _sendeo_phone_number(self, partner, priority='mobile'):
         """
@@ -118,15 +103,21 @@ class DeliveryCarrier(models.Model):
                                     % partner.name))
 
     def _prepare_sendeo_products(self, picking):
+        # TODO: implement stock.quant.package
         vals = {
             'products': [{
-                'count': 3,
-                'productCode': '',
-                'description': '',
-                'price': 1,
+                'count': picking.number_of_packages,
+                'deci': 0  # Doc: required field but there is no description, so we put 1
             }]
         }
         return vals
+
+    def _sendeo_district_code(self, partner):
+        code = partner.district_id.sendeo_code
+        if code:
+            return int(code)
+        else:
+            raise ValidationError(_("%s\nPartner's district code is missing."))
 
     def _prepare_sendeo_shipping(self, picking):
         """Convert picking values for Sendeo Kargo api
@@ -140,28 +131,28 @@ class DeliveryCarrier(models.Model):
         vals = {}
         vals.update(
             {
-                "deliveryType": 1,
+                "deliveryType": 1,  # Lokasyonunuz >> Müşteriniz
                 "referenceNo": picking.name,
                 "senderAuthority": picking.company_id.name,
                 "senderAddress": self._sendeo_address(picking.company_id.partner_id),
                 "senderCityId": self._sendeo_city_id(picking.company_id.partner_id),
-                "senderDistrictId": picking.company_id.partner_id.district_id.sendeo_code,
+                "senderDistrictId": self._sendeo_district_code(picking.company_id.partner_id),
                 "senderPhone": self._sendeo_phone_number(picking.company_id.partner_id, priority='phone'),
                 "senderGSM": self._sendeo_phone_number(picking.company_id.partner_id, priority='mobile'),
                 "senderEmail": picking.company_id.partner_id.email,
-                "receiver": picking.partner_id.parent_id.name,
+                "receiver": picking.partner_id.display_name,
                 "receiverAuthority": picking.partner_id.name,
                 "receiverAddress": self._sendeo_address(picking.partner_id),
                 "receiverCityId": self._sendeo_city_id(picking.partner_id),
-                "receiverDistrictId": picking.partner_id.district_id.sendeo_code,
+                "receiverDistrictId": self._sendeo_district_code(picking.partner_id),
                 "receiverPhone": self._sendeo_phone_number(picking.partner_id, priority='phone'),
                 "receiverGSM": self._sendeo_phone_number(picking.partner_id, priority='mobile'),
                 "receiverEmail": picking.partner_id.email,
-                "paymentType": 1,
+                "paymentType": 1,  # Default is 1, required
                 "collectionType": 0,
                 "collectionPrice": 0,
-                "serviceType": 1,
-                "barcodeLabelType": 2,  # Zebra ZPL
+                "serviceType": 1,  # Default is 1, required
+                "barcodeLabelType": 1 if self.carrier_barcode_type == 'pdf' else 2,
             }
         )
         product_array = self._prepare_sendeo_products(picking)
@@ -193,16 +184,21 @@ class DeliveryCarrier(models.Model):
             vals["exact_price"] = 0
 
             body = _("Sendeo Shipping barcode document")
-            attachment = []
-            barcode = response.get("Barcode")
-            if barcode:
+            barcode_type = self.carrier_barcode_type
+            if barcode_type == "pdf":
+                barcode = response.get("Barcode")
+                data = base64.b64decode(barcode)
+
+            else:
+                data = barcode = response.get("BarcodeZpl")
+            if barcode and self.attach_barcode:
                 attachment = [
                     (
-                        "sendeo_etiket_{}.pdf".format(response.get("TrackingNumber")),
-                        base64.b64decode(barcode),
+                        "sendeo_etiket_{}.{}".format(response.get("TrackingNumber"), barcode_type),
+                        data,
                     )
                 ]
-            picking.message_post(body=body, attachments=attachment)
+                picking.message_post(body=body, attachments=attachment)
             result.append(vals)
         return result
 
@@ -276,22 +272,31 @@ class DeliveryCarrier(models.Model):
         :returns cargo barcode label
         """
         picking.ensure_one()
-        tracking_ref = picking.carrier_tracking_ref
-        if picking.delivery_type != "sendeo" or not tracking_ref:
+        reference = picking.name
+        if picking.delivery_type != "sendeo" or not reference:
             return
-
+        barcode_type = self.carrier_barcode_type
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
-        response = sendeo_request._shipping_label(tracking_ref)
-        barcode = response.get("Barcode")
+        response = sendeo_request._shipping_label(reference, barcode_type)
+
+        if barcode_type == "pdf":
+            barcode = response.get("Barcode")
+            data = base64.b64decode(barcode)
+
+        else:
+            data = barcode = response.get("BarcodeZpl")
+
         if not barcode:
             return False
-        label = base64.b64decode(barcode)
-        label_name = "aras_etiket_{}.pdf".format(tracking_ref)
-        picking.message_post(
-            body=(_("Sendeo etiket: %s") % tracking_ref),
-            attachments=[(label_name, label)],
-        )
-        return label
+
+        if self.attach_barcode:
+            label_name = "sendeo_etiket_{}.{}".format(reference, barcode_type)
+            picking.message_post(
+                body=(_("Sendeo etiket: %s") % reference),
+                attachments=[(label_name, data)],
+            )
+
+        return data
 
     def sendeo_rate_shipment(self, order):
         """There's no public API so another price method should be used."""
@@ -302,3 +307,7 @@ class DeliveryCarrier(models.Model):
                 "override this one in your custom code."
             )
         )
+
+    def sendeo_get_rate(self, order):
+        """Get delivery price for Sendeo"""
+        return self._calculate_deci(order)
