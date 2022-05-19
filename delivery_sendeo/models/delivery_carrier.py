@@ -269,7 +269,7 @@ class DeliveryCarrier(models.Model):
 
     def sendeo_carrier_get_label(self, picking):
         """Generate label for picking
-        :returns cargo barcode label
+        :returns cargo barcode label as base64 encoded pdf or ZPL (txt)
         """
         picking.ensure_one()
         reference = picking.name
@@ -277,7 +277,9 @@ class DeliveryCarrier(models.Model):
             return
         barcode_type = self.carrier_barcode_type
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
-        response = sendeo_request._shipping_label(reference, barcode_type)
+        # response = sendeo_request._shipping_label(reference, barcode_type)
+        response = {
+            'BarcodeZpl': '^XA                            ^FO20,20^GB600,70,2,B,0^FS                            ^FO330,30^A0,20,20^FDETIMESGUT DM^FS                             ^FO330,60^A0,25,25^FDSENDEO DAGITIM HIZMETLERI A.S^FS                            ^FO30,30,^BY2,2,^BC^BC,30,Y,N,N,A^FDsevkS87412^FS                            ^FO20,88^GB600,190,2,B,0^FS                            ^CFC,20^FO30,93^FDALICI^FS                            ^CFC,25^FO30,110^A0,35,35^FDALTINKAYA ELEKTRONIK CIHAZ KUTULARI^FS                            ^CFC,25^FO30,145^A0,25,25^FDALTINKAYA ELEKTRONIK CIHAZ KUTULARI 1469. SK, ^FS                            ^CFC,25^FO30,170^A0,25,25^FD NO:10 ANKARA 06378 TURKIYE^FS                            ^CFC,25^FO30,195^A0,25,25^FD^FS                            ^FO30,220^FD5076347878^FS                            ^CFC,25^FO30,245^A0,30,30^FDYENIMAHALLE/ANKARA^FS                            ^FO630,90^BQ,2,5,H,8^FDQA,1011301130094539978003001^FS                            ^CFC,20^FO20,285^FDTakipNo:94539978 | 07.05.22 12:14:12 | P.O. | 0 DS/KG^FS                            ^CFC,30^FO70,310^A0,35,35^FDSTD | ADRESE TESLIM ^FS                            ^FO570,310^A0,35,35^FD001/003^FS                            ^FO80,350^BY3^BC^BC,100,Y,N,N,A^FD1011301130094539978003001^FS                            ^CFC,45^FO30,490^FDETIMESGUT DM/IC HAT^FS                             ^CFC,60^FO30,550^A0,80,80^FDANKARA TM^FS                            ^CFC,5,^FO680,560^FD9.5^FS                            ^CFC,60^FO630,585^A0,100,100^FDA05^FS                            ^CFC,20^FO690,623^^FS                            ^FO620,550^GB180,130,2,B,0^FS                            ^XZ'}
 
         if barcode_type == "pdf":
             barcode = response.get("Barcode")
@@ -288,13 +290,6 @@ class DeliveryCarrier(models.Model):
 
         if not barcode:
             return False
-
-        if self.attach_barcode:
-            label_name = "sendeo_etiket_{}.{}".format(reference, barcode_type)
-            picking.message_post(
-                body=(_("Sendeo etiket: %s") % reference),
-                attachments=[(label_name, data)],
-            )
 
         return data
 

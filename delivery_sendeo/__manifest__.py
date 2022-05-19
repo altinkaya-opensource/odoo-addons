@@ -16,5 +16,7 @@
         "views/delivery_sendeo_view.xml",
         "views/address_district_views.xml",
         "data/delivery_sendeo_data.xml",
+        'report/sendeo_carrier_label.xml',
+        'report/reports.xml',
     ],
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+		<report id="sendeo_carrier_label"
+            model="delivery.carrier"
+            string="Sendeo Carrier Label"
+            name="delivery_sendeo.sendeo_carrier_label"
+            file="delivery_sendeo.sendeo_carrier_label"
+        />
+
+</data>
+</odoo>

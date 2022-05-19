@@ -69,21 +69,6 @@ class SendeoRequest:
         else:
             raise ValidationError(_("Sendeo API Error.\nError Message: %s" % response['exceptionMessage']))
 
-
-    # def _shipping_type_method(self, method):
-    #     """Map shipping method with API method. Note that currently only land
-    #     is supported. Default to land to ensure a method is provided.
-    #     :params string with shipping method
-    #     :returns string with the mapped key value for the proper method
-    #     """
-    #     method_map = {
-    #         "land": "getBookingRequestLand",
-    #         "air": "getBookingRequestAir",
-    #         "ocean_fcl": "getBookingRequestOceanFCL",
-    #         "ocean_lcl": "getBookingRequestOceanLCL",
-    #     }
-    #     return method_map.get("method", "getBookingRequestLand")
-
     def _set_delivery(self, picking_vals):
         """Create new shipment
         :params vals dict of needed values
