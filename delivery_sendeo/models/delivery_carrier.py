@@ -106,8 +106,8 @@ class DeliveryCarrier(models.Model):
         # TODO: implement stock.quant.package
         vals = {
             'products': [{
-                'count': picking.number_of_packages,
-                'deci': 0  # Doc: required field but there is no description, so we put 1
+                'count': picking.carrier_package_count,
+                'deci': 1  # Doc: required field but there is no description, so we put 1
             }]
         }
         return vals
