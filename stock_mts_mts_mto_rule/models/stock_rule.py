@@ -29,48 +29,98 @@ class StockRule(models.Model):
                     raise ValidationError(msg)
 
     @api.multi
-    def get_mto_qty_to_order2(self, product, product_qty, product_uom, values):
+    def _calculate_qtys_mts_mts_mto(self, product, product_qty, product_uom, values):
         self.ensure_one()
         precision = self.env['decimal.precision']\
             .precision_get('Product Unit of Measure')
-        src_location_id = self.mts2_rule_id.location_src_id.id
-        product_location = product.with_context(location=src_location_id)
-        qty_available = self._get_qty_available_for_mto_qty(
-            product, product_location, product_uom)
+        src_location_id1 = self.mts_rule_id.location_src_id.id
+        src_location_id2 = self.mts2_rule_id.location_src_id.id
 
-        if float_compare(qty_available, 0.0, precision_digits=precision) > 0:
-            if float_compare(qty_available, product_qty,
+        product_location1 = product.with_context(location=src_location_id1)
+        product_location2 = product.with_context(location=src_location_id2)
+
+        qty_available = self._get_qty_available_for_mto_qty(
+            product, product_location1, product_uom)
+
+        if ((qty_available / product_qty) * 100) < (self.do_not_split_percentage or 0.0):
+            qty_available = 0.0
+
+        if float_compare(qty_available, product_qty, precision_digits=precision) < 0:
+            qty_available2 = self._get_qty_available_for_mto_qty(
+                product, product_location2, product_uom)
+
+            if ((qty_available2 / product_qty) * 100) < (self.do_not_split_percentage or 0.0):
+                qty_available2 = 0.0
+
+        else:
+            qty_available2 = 0.0
+
+        total_qty_available = qty_available + qty_available2
+
+        if float_compare(total_qty_available, 0.0, precision_digits=precision) > 0:
+            if float_compare(total_qty_available, product_qty,
                              precision_digits=precision) >= 0:
-                return 0.0
+                return qty_available, qty_available2, 0.0
             else:
-                return product_qty - qty_available
-        return product_qty
+                return qty_available, qty_available2, product_qty - total_qty_available
+        return qty_available, qty_available2, product_qty
 
     def _run_split_procurement2(self, product_id, product_qty, product_uom,
                                location_id, name, origin, values):
         precision = self.env['decimal.precision']\
             .precision_get('Product Unit of Measure')
-        needed_qty = self.get_mto_qty_to_order(product_id, product_qty,
+        mts1_qty, mts2_qty, mto_qty = self._calculate_qtys_mts_mts_mto(product_id, product_qty,
                                                product_uom, values)
 
-        if (((product_qty - needed_qty) / product_qty) * 100) < (self.do_not_split_percentage or 0.0):
-            needed_qty = product_qty
+        """
+            MTS1   MTS2   MTO
+        1)  100      0      0
+        2)  50       50     0
+        3)  50       0      50
+        4)  0        100    0
+        5)  0        50     50
+        6)  0        0      100
+        """
 
-        if float_is_zero(needed_qty, precision_digits=precision):
-            getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
-                product_id, product_qty, product_uom, location_id, name,
-                origin, values)
-        elif float_compare(needed_qty, product_qty,
-                           precision_digits=precision) == 0.0:
-            getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
-                product_id, product_qty, product_uom, location_id, name,
-                origin, values)
+        if float_is_zero(mto_qty, precision_digits=precision):
+            if float_is_zero(mts2_qty, precision_digits=precision):  # 1
+                getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
+                    product_id, product_qty, product_uom, location_id, name,
+                    origin, values)
+            elif float_is_zero(mts1_qty, precision_digits=precision):  # 4
+                getattr(self.mts2_rule_id, '_run_%s' % self.mts2_rule_id.action)(
+                    product_id, product_qty, product_uom, location_id, name,
+                    origin, values)
+
+            else:  # 2
+                getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
+                    product_id, mts1_qty, product_uom, location_id, name,
+                    origin, values)
+                if not float_is_zero(mts2_qty, precision_digits=precision):
+                    getattr(self.mts2_rule_id, '_run_%s' % self.mts2_rule_id.action)(
+                        product_id, mts2_qty, product_uom, location_id, name,
+                        origin, values)
+
         else:
-            mts_qty = product_qty - needed_qty
-            getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
-                product_id, mts_qty, product_uom, location_id, name, origin,
-                values)
-            getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
-                product_id, needed_qty, product_uom, location_id, name,
-                origin, values)
+            if float_is_zero(mts1_qty+mts2_qty, precision_digits=precision):  # 6
+                getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
+                    product_id, mto_qty, product_uom, location_id, name,
+                    origin, values)
+
+            elif float_is_zero(mts2_qty, precision_digits=precision):  # 3
+                getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
+                    product_id, (product_qty - mto_qty), product_uom, location_id, name, origin,
+                    values)
+                getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
+                    product_id, mto_qty, product_uom, location_id, name,
+                    origin, values)
+
+            else:  # 5
+                getattr(self.mts2_rule_id, '_run_%s' % self.mts2_rule_id.action)(
+                    product_id, (product_qty - mto_qty), product_uom, location_id, name, origin,
+                    values)
+                getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
+                    product_id, mto_qty, product_uom, location_id, name,
+                    origin, values)
+
         return True
