@@ -8,7 +8,7 @@
     'development_status': 'Mature',
     'category': 'Warehouse',
     'website': 'https://github.com/OCA/stock-logistics-warehouse',
-    'author': 'Akretion,Odoo Community Association (OCA)',
+    'author': 'Yiğit Budak',
     'license': 'AGPL-3',
     'application': False,
     'installable': True,
