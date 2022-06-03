@@ -1,7 +1,7 @@
+# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import api, models
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_is_zero
 
 
 class MrpProduction(models.Model):
@@ -39,6 +39,16 @@ class MrpProduction(models.Model):
                     move.product_id, product_qty, uom, values=None
                 )
 
+                """
+                    MTS1   MTS2   MTO
+                1)  100      0      0
+                2)  50       50     0
+                3)  50       0      50
+                4)  0        100    0
+                5)  0        50     50
+                6)  0        0      100
+                """
+
                 if float_is_zero(mto_qty, precision_digits=precision):
                     if float_is_zero(mts2_qty, precision_digits=precision):  # 1
                         move.procure_method = split_rule.mts_rule_id.procure_method
@@ -48,11 +58,21 @@ class MrpProduction(models.Model):
                         move.rule_id = split_rule.mts2_rule_id
 
                     else:  # 2
-                        move.procure_method = split_rule.mts_rule_id.procure_method
-                        move.rule_id = split_rule.mts_rule_id
+                        move.update(
+                            {
+                                "procure_method": split_rule.mts_rule_id.procure_method,
+                                "product_uom_qty": mts1_qty,
+                                "rule_id": split_rule.mts_rule_id.id
+                            }
+                        )
                         if not float_is_zero(mts2_qty, precision_digits=precision):
-                            move.procure_method = split_rule.mts2_rule_id.procure_method
-                            move.rule_id = split_rule.mts2_rule_id
+                            move.copy(
+                                default={
+                                    "procure_method": split_rule.mts2_rule_id.procure_method,
+                                    "product_uom_qty": mts2_qty,
+                                    "rule_id": split_rule.mts2_rule_id.id
+                                }
+                            )
 
                 else:
                     if float_is_zero(mts1_qty+mts2_qty, precision_digits=precision):  # 6
