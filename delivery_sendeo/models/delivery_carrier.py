@@ -7,57 +7,58 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError, UserError
 from .sendeo_request import SendeoRequest
 
-# SENDEO_STATUS_CODES = {
-#     101: ("Kargo Sevk Emri Alındı", "İş Emri Alındı"),
-#     102: ("Belge Düzenlendi", "Gönderi Oluşturuldu"),
-#     103: ("Şube TM Yükleme", "Çıkış Şubesinden Hareket Etti"),
-#     104: ("TM Şube İndirme", "Teslimat Noktasında"),
-#     105: ("TM Hat Yükleme", "Hat Aracına Yüklendi"),
-#     106: ("TM Hat İndirme", "Hat Aracından İndi"),
-#     107: ("TM Şube Yükleme", "Transfer Merkezinden Şubeye Yüklendi"),
-#     108: ("Şube TM İndirme", "Transfer Merkezine İndi"),
-#     109: ("Şube Dağıtım Yükleme", "Dağıtıma Çıkarıldı"),
-#     110: ("Şube Dağıtım İndirme", "Şube Dağıtım İndirme"),
-#     111: ("Teslim Edildi", "Teslim Edildi"),
-#     112: ("Alıcı Telefonu Yanlış", "Alıcı Telefonu Yanlış"),
-#     113: ("İade Talebi", "İade Talebi"),
-#     114: ("Alıcı Adresinde Yok", "Alıcı Adresinde Yok"),
-#     115: ("Alıcı Adresi Yanlış", "Alıcı Adresi Yanlış"),
-#     117: ("Hasarlı Gönderi", "Hasarlı Gönderi"),
-#     118: ("Kayıp Kargo", "Kayıp Kargo"),
-#     119: ("Devir", "Devir"),
-#     120: ("Eksik Teslim Edildi", "Eksik Teslim Edildi"),
-#     121: ("Dağıtım Alanı Dışında", "Dağıtım Alanı Dışında"),
-#     122: ("Ödeme Tipi Kabul Edilmedi", "Ödeme Tipi Kabul Edilmedi"),
-#     123: ("Randevulu Teslimat", "Randevulu Teslimat"),
-#     124: ("Mobil Dağıtım Bölgesi", "Mobil Dağıtım Bölgesi"),
-#     125: ("Eksik Kargo", "Eksik Kargo"),
-#     126: ("Yönlendirme", "Yönlendirme"),
-#     127: ("Hat Aracı Gecikmesi", "Hat Aracı Gecikmesi"),
-#     128: ("Olumsuz Hava Koşulları", "Olumsuz Hava Koşulları"),
-#     129: ("Taşıma Fiyatı Yüksek Bulundu", "Taşıma Fiyatı Yüksek Bulundu"),
-#     130: ("Teslim Edilemedi", "Teslim edilemedi"),
-#     131: ("İade Gönderi", "İade Edilen Gönderi"),
-#     132: ("Ölçüm Tartım", "Ölçüm Tartım yapıldı"),
-#     133: ("İptal Gönderi", "İptal Gönderi"),
-#     134: ("İade Onay", "İade Talebine Onay Verildi"),
-#     135: ("İş Emri İadesi", "İş Emri ile İade Edilen Gönderi"),
-#     136: ("İade Red", "Müşteri tarafından red edildi"),
-#     137: ("Randevulu Alım", "Müşteri Randevu Verdi"),
-#     138: ("Gönderi Alındı", "Gönderi Alındı"),
-#     139: ("İptal İş Emri", "İptal İş Emri"),
-#     140: ("Kurye Teslimatta", "Kurye Teslimatta"),
-#     141: ("Kurye Zimmete Aldı", "Kurye zimmete alma"),
-#     142: ("Kurye Zimmetten Çıkardı", "Kurye zimmetten çıkarma"),
-#     143: ("Kayıp Kargo", "Kayıp Kargo İş Emri"),
-#     151: ("İade Olarak Teslim", "İade Olarak Teslim"),
-# }
+SENDEO_STATUS_CODES = {
+    101: ("Kargo Sevk Emri Alındı", "İş Emri Alındı"),
+    102: ("Belge Düzenlendi", "Gönderi Oluşturuldu"),
+    103: ("Şube TM Yükleme", "Çıkış Şubesinden Hareket Etti"),
+    104: ("TM Şube İndirme", "Teslimat Noktasında"),
+    105: ("TM Hat Yükleme", "Hat Aracına Yüklendi"),
+    106: ("TM Hat İndirme", "Hat Aracından İndi"),
+    107: ("TM Şube Yükleme", "Transfer Merkezinden Şubeye Yüklendi"),
+    108: ("Şube TM İndirme", "Transfer Merkezine İndi"),
+    109: ("Şube Dağıtım Yükleme", "Dağıtıma Çıkarıldı"),
+    110: ("Şube Dağıtım İndirme", "Şube Dağıtım İndirme"),
+    111: ("Teslim Edildi", "Teslim Edildi"),
+    112: ("Alıcı Telefonu Yanlış", "Alıcı Telefonu Yanlış"),
+    113: ("İade Talebi", "İade Talebi"),
+    114: ("Alıcı Adresinde Yok", "Alıcı Adresinde Yok"),
+    115: ("Alıcı Adresi Yanlış", "Alıcı Adresi Yanlış"),
+    117: ("Hasarlı Gönderi", "Hasarlı Gönderi"),
+    118: ("Kayıp Kargo", "Kayıp Kargo"),
+    119: ("Devir", "Devir"),
+    120: ("Eksik Teslim Edildi", "Eksik Teslim Edildi"),
+    121: ("Dağıtım Alanı Dışında", "Dağıtım Alanı Dışında"),
+    122: ("Ödeme Tipi Kabul Edilmedi", "Ödeme Tipi Kabul Edilmedi"),
+    123: ("Randevulu Teslimat", "Randevulu Teslimat"),
+    124: ("Mobil Dağıtım Bölgesi", "Mobil Dağıtım Bölgesi"),
+    125: ("Eksik Kargo", "Eksik Kargo"),
+    126: ("Yönlendirme", "Yönlendirme"),
+    127: ("Hat Aracı Gecikmesi", "Hat Aracı Gecikmesi"),
+    128: ("Olumsuz Hava Koşulları", "Olumsuz Hava Koşulları"),
+    129: ("Taşıma Fiyatı Yüksek Bulundu", "Taşıma Fiyatı Yüksek Bulundu"),
+    130: ("Teslim Edilemedi", "Teslim edilemedi"),
+    131: ("İade Gönderi", "İade Edilen Gönderi"),
+    132: ("Ölçüm Tartım", "Ölçüm Tartım yapıldı"),
+    133: ("İptal Gönderi", "İptal Gönderi"),
+    134: ("İade Onay", "İade Talebine Onay Verildi"),
+    135: ("İş Emri İadesi", "İş Emri ile İade Edilen Gönderi"),
+    136: ("İade Red", "Müşteri tarafından red edildi"),
+    137: ("Randevulu Alım", "Müşteri Randevu Verdi"),
+    138: ("Gönderi Alındı", "Gönderi Alındı"),
+    139: ("İptal İş Emri", "İptal İş Emri"),
+    140: ("Kurye Teslimatta", "Kurye Teslimatta"),
+    141: ("Kurye Zimmete Aldı", "Kurye zimmete alma"),
+    142: ("Kurye Zimmetten Çıkardı", "Kurye zimmetten çıkarma"),
+    143: ("Kayıp Kargo", "Kayıp Kargo İş Emri"),
+    151: ("İade Olarak Teslim", "İade Olarak Teslim"),
+}
 
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
     delivery_type = fields.Selection(selection_add=[("sendeo", "Sendeo")])
 
+    sendeo_cc_code = fields.Char('CC Code', help="Sendeo CC Code")
     sendeo_username = fields.Char(string="Username", help="Sendeo Username")
     sendeo_password = fields.Char(string="Password", help="Sendeo Password")
 
@@ -134,12 +135,14 @@ class DeliveryCarrier(models.Model):
                 "deliveryType": 1,  # Lokasyonunuz >> Müşteriniz
                 "referenceNo": picking.name,
                 "senderAuthority": picking.company_id.name,
-                "senderAddress": self._sendeo_address(picking.company_id.partner_id),
-                "senderCityId": self._sendeo_city_id(picking.company_id.partner_id),
-                "senderDistrictId": self._sendeo_district_code(picking.company_id.partner_id),
-                "senderPhone": self._sendeo_phone_number(picking.company_id.partner_id, priority='phone'),
-                "senderGSM": self._sendeo_phone_number(picking.company_id.partner_id, priority='mobile'),
-                "senderEmail": picking.company_id.partner_id.email,
+                "senderAddress": self._sendeo_address(picking.picking_type_id.warehouse_id.partner_id),
+                "senderCityId": self._sendeo_city_id(picking.picking_type_id.warehouse_id.partner_id),
+                "senderDistrictId": self._sendeo_district_code(picking.picking_type_id.warehouse_id.partner_id),
+                "senderPhone": self._sendeo_phone_number(picking.picking_type_id.warehouse_id.partner_id,
+                                                         priority='phone'),
+                "senderGSM": self._sendeo_phone_number(picking.picking_type_id.warehouse_id.partner_id,
+                                                       priority='mobile'),
+                "senderEmail": picking.picking_type_id.warehouse_id.partner_id.email,
                 "receiver": picking.partner_id.display_name,
                 "receiverAuthority": picking.partner_id.name,
                 "receiverAddress": self._sendeo_address(picking.partner_id),
@@ -180,7 +183,7 @@ class DeliveryCarrier(models.Model):
             if not response:
                 result.append(vals)
                 continue
-            vals["tracking_number"] = response.get("TrackingNumber")
+            vals["tracking_number"] = picking.name
             vals["exact_price"] = 0
 
             body = _("Sendeo Shipping barcode document")
@@ -209,18 +212,22 @@ class DeliveryCarrier(models.Model):
         """
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
         for picking in pickings.filtered("carrier_tracking_ref"):
-            sendeo_request._cancel_shipment(picking.name, picking.carrier_tracking_ref)
-            # picking.write({"carrier_tracking_ref": False,
-            #                "tracking_state": False,
-            #                "tracking_state_history": _('Cancelled')})
+            if hasattr(self, '%s_tracking_state_update' % self.delivery_type):  # check state before cancel
+                getattr(self, '%s_tracking_state_update' % self.delivery_type)(picking)
+
+            if picking.delivery_state not in ['shipping_recorded_in_carrier', 'canceled_shipment']:
+                raise ValidationError(_("You can't cancel a shipment that already has been sent to Sendeo"))
+            sendeo_request._cancel_shipment(reference=picking.name)
+            picking.write({
+                'shipping_number': False
+            })
         return True
 
     def sendeo_get_tracking_link(self, picking):
         """Provide tracking link for the customer"""
-        return (
-                "https://sube.sendeo.com.tr/takip?ccode=%s&musref=%s"
-                % (picking.carrier_tracking_ref, picking.name)
-        )
+        return "https://sube.sendeo.com.tr/takip?ccode=%s&musref=%s" % (self.sendeo_cc_code,
+                                                                        picking.carrier_tracking_ref)
+
 
     def _sendeo_status_codes(self, status_code):
         """
@@ -246,7 +253,7 @@ class DeliveryCarrier(models.Model):
         if not picking.carrier_tracking_ref:
             return
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
-        response = sendeo_request._get_tracking_states(picking.name, picking.carrier_tracking_ref)
+        response = sendeo_request._get_tracking_states(reference=picking.name)
         status_event_list = response.get("StatusHistories")
         picking.write(
             {
@@ -263,6 +270,7 @@ class DeliveryCarrier(models.Model):
                 ),
                 "tracking_state": response['StateText'],
                 "delivery_state": self._sendeo_status_codes(response['State']),
+                "shipping_number": response['TrackingNo'],
             }
         )
         return True

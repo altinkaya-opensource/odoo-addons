@@ -16,6 +16,7 @@
                                 name="sendeo_username"
                                 attrs="{'required': [('delivery_type', '=', 'sendeo')]}"/>
                             <field name="sendeo_password" />
+                            <field name="sendeo_cc_code" />
                         </group>
                         <group string="Logistics">
                             <field name="price_rule_ids"/>

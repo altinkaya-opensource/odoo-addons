@@ -98,14 +98,13 @@ class SendeoRequest:
         )
         return response
 
-    def _cancel_shipment(self, reference=False, tracking_number=False):
+    def _cancel_shipment(self, reference=False):
         """Cancel the expedition for the given ref
         :param str reference -- reference (picking name)
         :param str tracking_number -- tracking number
         :returns: bool True if success
         """
         vals = {
-            'trackingNo': tracking_number,
             'referenceNo': reference,
         }
         response = self._process_post_request(
@@ -115,14 +114,13 @@ class SendeoRequest:
         )
         return bool(response)
 
-    def _get_tracking_states(self, reference=False, tracking_number=False):
+    def _get_tracking_states(self, reference=False):
         """Get tracking status of the given ref
         :param str reference -- reference (picking name)
         :param str tracking_number -- tracking number
         :returns: bool True if success
         """
         vals = {
-            'trackingNo': tracking_number,
             'referenceNo': reference,
         }
         response = self._process_get_request(
