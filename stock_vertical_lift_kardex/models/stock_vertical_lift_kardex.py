@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import models, fields, api, _
 import requests
+import math
 
 
 class StockVerticalLiftKardex(models.Model):
@@ -35,4 +36,26 @@ class StockVerticalLiftKardex(models.Model):
                ",DB904.DBD530,x=0&PDP," \
                ",DB904.DBW2,x=3" % ('8' + hex(posy)[2:].zfill(7))
         self.with_delay()._send_request(path)
+        self._lighten_box_led(location)
         return True
+
+    def _lighten_box_led(self, location_id):
+        posy = location_id.posy
+        posx = location_id.posx
+        posz = location_id.posz
+        path = f"/cgi-bin/setValues.exe?PDP," \
+               f",DB904.DBW100,x=8002&PDP," \
+               f",DB904.DBB154,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
+               f",DB904.DBB176,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
+               f",DB904.DBB198,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
+               f",DB904.DBB220,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
+               f",DB904.DBB324,n={posy}&PDP," \
+               f",DB904.DBB352,n={posx}&PDP," \
+               f",DB904.DBB380,n={posz}&PDP," \
+               f",DB904.DBB408,n=0&PDP," \
+               f",DB904.DBW130,x={'8' + str(math.ceil(posx / 2)).zfill(3)}&PDP," \
+               f",DB904.DBW132,x={'8' + str(math.ceil(posx / 2)).zfill(3)}&PDP," \
+               f",DB904.DBW134,x={'8' + str(posz).zfill(3)}&PDP," \
+               f",DB904.DBW136,x={'8' + str(posz).zfill(3)}&PDP," \
+               f",DB904.DBW2,x=16"
+        return self.with_delay()._send_request(path)
