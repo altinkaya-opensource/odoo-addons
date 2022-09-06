@@ -12,7 +12,8 @@
                     <field name="product_at_kardex" invisible="1"/>
                     <button name="call_product_kardex" type="object" string="Call Kardex"
                             confirm="Are you sure you want to get the product?" class="oe_highlight"
-                            attrs="{'invisible':[('product_at_kardex', '!=', True)]}"/>
+                            attrs="{'invisible':[('product_at_kardex', '!=', True)]}"
+                            groups="stock_vertical_lift_kardex.group_kardex_controller_user"/>
 
                 </xpath>
             </field>

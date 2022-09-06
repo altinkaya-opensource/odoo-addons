@@ -20,5 +20,6 @@
         'views/stock_location_view.xml',
         'views/stock_picking_view.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
     ],
 }

@@ -25,3 +25,4 @@ class StockMove(models.Model):
             kardex_id._get_product(self.location_id)
         else:
             raise ValidationError(_('No Kardex Vertical Lift Controller is defined for this location.'))
+        return True

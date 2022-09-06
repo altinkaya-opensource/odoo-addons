@@ -34,4 +34,5 @@ class StockVerticalLiftKardex(models.Model):
                ",DB904.DBD522,x=0&PDP," \
                ",DB904.DBD530,x=0&PDP," \
                ",DB904.DBW2,x=3" % ('8' + hex(posy)[2:].zfill(7))
-        self._send_request(path)
+        self.with_delay()._send_request(path)
+        return True
