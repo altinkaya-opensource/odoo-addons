@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_vertical_lift_kardex_location_form" model="ir.ui.view">
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form" />
+        <field name="arch" type="xml">
+            <field name="posx" position="before">
+                <field name="vertical_lift_kardex_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

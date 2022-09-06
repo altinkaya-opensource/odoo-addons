@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+        <record id="view_picking_form_vertical_lift_kardex" model="ir.ui.view">
+            <field name="name">stock.picking.form.vertical.lift.kardex</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
+                       position="after">
+                    <field name="product_at_kardex" invisible="1"/>
+                    <button name="call_product_kardex" type="object" string="Call Kardex"
+                            confirm="Are you sure you want to get the product?" class="oe_highlight"
+                            attrs="{'invisible':[('product_at_kardex', '!=', True)]}"/>
+
+                </xpath>
+            </field>
+        </record>
+</odoo>
+
+
