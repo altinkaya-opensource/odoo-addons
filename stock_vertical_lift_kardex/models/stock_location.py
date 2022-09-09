@@ -12,7 +12,7 @@ class StockLocation(models.Model):
     @api.one
     def get_kardex_rack(self):
         if self.vertical_lift_kardex_id:
-            self.vertical_lift_kardex_id._get_product(self)
+            self.vertical_lift_kardex_id.with_delay()._get_product(self)
         else:
             raise ValidationError(_('No Kardex Vertical Lift Controller is defined for this location.'))
         return True

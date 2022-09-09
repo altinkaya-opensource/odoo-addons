@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 import requests
 import math
+import time
 
 RESET_PATH = '/cgi-bin/setValues.exe?PDP,' \
              ',DB904.DBW100,x=8002&PDP,' \
@@ -28,23 +29,27 @@ class StockVerticalLiftKardex(models.Model):
     def _get_product(self, location):
         posy = location.posy
         posx = location.posx
-        path = "/cgi-bin/setValues.exe?PDP," \
-               ",DB904.DBW100,x=8002&PDP," \
-               ",DB904.DBW130,x=8001&PDP," \
-               ",DB904.DBW132,x=8001&PDP," \
-               ",DB904.DBW134,x=8002&PDP," \
-               ",DB904.DBW136,x=8002&PDP," \
-               ",DB904.DBD126,x=%s&PDP," \
-               ",DB904.DBD518,x=80000000&PDP," \
-               ",DB904.DBD526,x=80000000&PDP," \
-               ",DB904.DBD122,x=80000000&PDP," \
-               ",DB904.DBD522,x=0&PDP," \
-               ",DB904.DBD530,x=0&PDP," \
-               ",DB904.DBW2,x=3" % ('8' + hex(posy)[2:].zfill(7))
-        self._send_request(RESET_PATH)
+        posz = location.posz
+        reset_count = 0
+        path = f"/cgi-bin/setValues.exe?PDP," \
+               f",DB904.DBW100,x=8002&PDP," \
+               f",DB904.DBW130,x={'8' + str(math.ceil(posx / 2)).zfill(3)}&PDP," \
+               f",DB904.DBW132,x={'8' + str(math.ceil(posx / 2)).zfill(3)}&PDP," \
+               f",DB904.DBW134,x={'8' + str(posz).zfill(3)}&PDP," \
+               f",DB904.DBW136,x={'8' + str(posz).zfill(3)}&PDP," \
+               f",DB904.DBD126,x={'8' + hex(posy)[2:].zfill(7)}&PDP," \
+               f",DB904.DBD518,x=80000000&PDP," \
+               f",DB904.DBD526,x=80000000&PDP," \
+               f",DB904.DBD122,x=80000000&PDP," \
+               f",DB904.DBD522,x=0&PDP," \
+               f",DB904.DBD530,x=0&PDP," \
+               f",DB904.DBW2,x=3"
         self._send_request(path)
-        self._send_request(RESET_PATH)
         self._lighten_box_led(location)
+        while reset_count < 20:
+            time.sleep(0.5)
+            self._send_request(RESET_PATH)
+            reset_count += 1
         return True
 
     def _lighten_box_led(self, location_id):
@@ -66,6 +71,4 @@ class StockVerticalLiftKardex(models.Model):
                f",DB904.DBW134,x={'8' + str(posz).zfill(3)}&PDP," \
                f",DB904.DBW136,x={'8' + str(posz).zfill(3)}&PDP," \
                f",DB904.DBW2,x=16"
-        self._send_request(RESET_PATH)
         self._send_request(path)
-        return self._send_request(RESET_PATH)
