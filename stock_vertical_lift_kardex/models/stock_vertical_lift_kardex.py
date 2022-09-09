@@ -4,6 +4,7 @@ from odoo import models, fields, api, _
 import requests
 import math
 import time
+import urllib.parse
 
 RESET_PATH = '/cgi-bin/setValues.exe?PDP,' \
              ',DB904.DBW100,x=8002&PDP,' \
@@ -23,14 +24,14 @@ class StockVerticalLiftKardex(models.Model):
                                    inverse_name='vertical_lift_kardex_id', readonly=True)
 
     def _send_request(self, path):
-        return requests.get('http://{}:{}/{}'.format(self.ip_address, self.port, path))
+        return requests.get('http://{}:{}{}'.format(self.ip_address, self.port, path))
 
     @api.one
-    def _get_product(self, location):
+    def _get_product(self, location, product=None):
         posy = location.posy
         posx = location.posx
         posz = location.posz
-        reset_count = 0
+        product = product or self.env['product.product']
         path = f"/cgi-bin/setValues.exe?PDP," \
                f",DB904.DBW100,x=8002&PDP," \
                f",DB904.DBW130,x={'8' + str(math.ceil(posx / 2)).zfill(3)}&PDP," \
@@ -45,20 +46,33 @@ class StockVerticalLiftKardex(models.Model):
                f",DB904.DBD530,x=0&PDP," \
                f",DB904.DBW2,x=3"
         self._send_request(path)
-        self._lighten_box_led(location)
+        self._lighten_box_led(location, product)
+        self.with_delay()._reset_rack()
+        return True
+
+    def _reset_rack(self):
+        time.sleep(3)
+        reset_count = 0
         while reset_count < 20:
             time.sleep(0.5)
             self._send_request(RESET_PATH)
             reset_count += 1
         return True
 
-    def _lighten_box_led(self, location_id):
+    def _lighten_box_led(self, location_id, product):
         posy = location_id.posy
         posx = location_id.posx
         posz = location_id.posz
+
+        if product:
+            product_name = product.name[:20] if len(product.name) > 20 else\
+                product.name + ' ' * (20 - len(product.name))
+        else:
+            product_name = ' ' * 20
+
         path = f"/cgi-bin/setValues.exe?PDP," \
                f",DB904.DBW100,x=8002&PDP," \
-               f",DB904.DBB154,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
+               f",DB904.DBB154,n={urllib.parse.quote(product_name)}&PDP," \
                f",DB904.DBB176,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
                f",DB904.DBB198,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \
                f",DB904.DBB220,n=%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&PDP," \

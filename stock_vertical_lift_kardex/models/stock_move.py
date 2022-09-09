@@ -22,7 +22,7 @@ class StockMove(models.Model):
     def call_product_kardex(self):
         kardex_id = self.location_id.vertical_lift_kardex_id
         if kardex_id:
-            kardex_id.with_delay()._get_product(self.location_id)
+            kardex_id._get_product(self.location_id, self.product_id)
         else:
             raise ValidationError(_('No Kardex Vertical Lift Controller is defined for this location.'))
         return True
