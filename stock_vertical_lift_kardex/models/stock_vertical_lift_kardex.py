@@ -4,6 +4,12 @@ from odoo import models, fields, api, _
 import requests
 import math
 
+RESET_PATH = '/cgi-bin/setValues.exe?PDP,' \
+             ',DB904.DBW100,x=8002&PDP,' \
+             ',DB904.DBD122,x=80000000&PDP,' \
+             ',DB904.DBD522,x=8000000c&PDP,' \
+             ',DB904.DBW2,x=2'
+
 
 class StockVerticalLiftKardex(models.Model):
     _name = 'stock.vertical.lift.kardex'
@@ -35,7 +41,9 @@ class StockVerticalLiftKardex(models.Model):
                ",DB904.DBD522,x=0&PDP," \
                ",DB904.DBD530,x=0&PDP," \
                ",DB904.DBW2,x=3" % ('8' + hex(posy)[2:].zfill(7))
-        self.with_delay()._send_request(path)
+        self._send_request(RESET_PATH)
+        self._send_request(path)
+        self._send_request(RESET_PATH)
         self._lighten_box_led(location)
         return True
 
@@ -58,4 +66,6 @@ class StockVerticalLiftKardex(models.Model):
                f",DB904.DBW134,x={'8' + str(posz).zfill(3)}&PDP," \
                f",DB904.DBW136,x={'8' + str(posz).zfill(3)}&PDP," \
                f",DB904.DBW2,x=16"
-        return self.with_delay()._send_request(path)
+        self._send_request(RESET_PATH)
+        self._send_request(path)
+        return self._send_request(RESET_PATH)
