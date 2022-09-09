@@ -8,6 +8,13 @@
         <field name="arch" type="xml">
             <field name="posx" position="before">
                 <field name="vertical_lift_kardex_id" />
+                <button name="get_kardex_rack"
+                        type="object"
+                        string="Get Kardex Rack"
+                        confirm="Are you sure you want to get the product?"
+                        class="oe_highlight"
+                        attrs="{'invisible':[('vertical_lift_kardex_id', '=', False)]}"
+                        groups="stock_vertical_lift_kardex.group_kardex_controller_user"/>
             </field>
         </field>
     </record>
