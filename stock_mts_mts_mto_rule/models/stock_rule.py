@@ -38,6 +38,7 @@ class StockRule(models.Model):
         4)  0        100    0
         5)  0        50     50
         6)  0        0      100
+        7)  33       33     34
         """
 
         self.ensure_one()
@@ -89,6 +90,7 @@ class StockRule(models.Model):
         4)  0        100    0
         5)  0        50     50
         6)  0        0      100
+        7)  33       33     34
         """
 
         if float_is_zero(mto_qty, precision_digits=precision):
@@ -124,9 +126,20 @@ class StockRule(models.Model):
                     product_id, mto_qty, product_uom, location_id, name,
                     origin, values)
 
-            else:  # 5
+            elif float_is_zero(mts1_qty, precision_digits=precision):  # 5
                 getattr(self.mts2_rule_id, '_run_%s' % self.mts2_rule_id.action)(
                     product_id, (product_qty - mto_qty), product_uom, location_id, name, origin,
+                    values)
+                getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
+                    product_id, mto_qty, product_uom, location_id, name,
+                    origin, values)
+
+            else:  # 7
+                getattr(self.mts_rule_id, '_run_%s' % self.mts_rule_id.action)(
+                    product_id, mts1_qty, product_uom, location_id, name, origin,
+                    values)
+                getattr(self.mts2_rule_id, '_run_%s' % self.mts2_rule_id.action)(
+                    product_id, mts2_qty, product_uom, location_id, name, origin,
                     values)
                 getattr(self.mto_rule_id, '_run_%s' % self.mto_rule_id.action)(
                     product_id, mto_qty, product_uom, location_id, name,

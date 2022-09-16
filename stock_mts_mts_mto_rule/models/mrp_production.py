@@ -18,9 +18,9 @@ class MrpProduction(models.Model):
         for move in self.move_raw_ids:
             product = move.product_id
             routes = (
-                product.route_ids +
-                product.route_from_categ_ids +
-                move.warehouse_id.route_ids
+                    product.route_ids +
+                    product.route_from_categ_ids +
+                    move.warehouse_id.route_ids
             )
             # find if we have a "split_procurement" rule in the routes
             split_rule = self.env["stock.rule"].search(
@@ -44,9 +44,11 @@ class MrpProduction(models.Model):
                 1)  100      0      0
                 2)  50       50     0
                 3)  50       0      50
+                
                 4)  0        100    0
                 5)  0        50     50
                 6)  0        0      100
+                7)  33.33    33.33  33.33
                 """
 
                 if float_is_zero(mto_qty, precision_digits=precision):
@@ -75,7 +77,7 @@ class MrpProduction(models.Model):
                             )
 
                 else:
-                    if float_is_zero(mts1_qty+mts2_qty, precision_digits=precision):  # 6
+                    if float_is_zero(mts1_qty + mts2_qty, precision_digits=precision):  # 6
                         move.procure_method = split_rule.mto_rule_id.procure_method
                         move.rule_id = split_rule.mto_rule_id
 
@@ -99,7 +101,7 @@ class MrpProduction(models.Model):
                             }
                         )
 
-                    else:  # 5
+                    elif float_is_zero(mts1_qty, precision_digits=precision):  # 5
                         mts_qty = product_qty - mto_qty
                         mts2_rule = split_rule.mts2_rule_id
                         mto_rule = split_rule.mto_rule_id
@@ -110,6 +112,40 @@ class MrpProduction(models.Model):
                                 "rule_id": mts2_rule.id
                             }
                         )
+                        # create the MTO move, attached to same MO
+                        move.copy(
+                            default={
+                                "procure_method": mto_rule.procure_method,
+                                "product_uom_qty": mto_qty,
+                                "rule_id": mto_rule.id
+                            }
+                        )
+                    else:  # 7
+                        mts1_rule = split_rule.mts_rule_id
+                        mts2_rule = split_rule.mts2_rule_id
+                        mto_rule = split_rule.mto_rule_id
+                        move.update(
+                            {
+                                "procure_method": mts1_rule.procure_method,
+                                "product_uom_qty": mts1_qty,
+                                "rule_id": mts1_rule.id
+                            }
+                        )
+
+                        # create the MTS2 move, attached to same MO
+                        if (mts2_rule.procure_method == 'make_to_stock' and
+                                self.location_src_id.id == mts2_rule.location_src_id.id):
+                            mts2_procure_method = 'make_to_stock'
+                        else:
+                            mts2_procure_method = 'make_to_order'
+                        move.copy(
+                            default={
+                                "procure_method": mts2_procure_method,
+                                "product_uom_qty": mts2_qty,
+                                "rule_id": mts2_rule.id,
+                            }
+                        )
+
                         # create the MTO move, attached to same MO
                         move.copy(
                             default={
