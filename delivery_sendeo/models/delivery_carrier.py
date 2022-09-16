@@ -253,26 +253,30 @@ class DeliveryCarrier(models.Model):
         if not picking.carrier_tracking_ref:
             return
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
-        response = sendeo_request._get_tracking_states(reference=picking.name)
+        try:
+            response = sendeo_request._get_tracking_states(reference=picking.name)
+        except ValidationError:
+            return
         status_event_list = response.get("StatusHistories")
-        picking.write(
-            {
-                "tracking_state_history": (
-                    "\n".join(
-                        "{} - [{}] {}".format(
-                            parser.parse(t['StatusDate']).strftime("%d/%m/%Y %H:%M:%S"),
-                            t['Status'],
-                            t['Description'],
-                        )
-                        for t in status_event_list
+        if status_event_list:
+            picking.write(
+                {
+                    "tracking_state_history": (
+                        "\n".join(
+                            "{} - [{}] {}".format(
+                                parser.parse(t['StatusDate']).strftime("%d/%m/%Y %H:%M:%S"),
+                                t['Status'],
+                                t['Description'],
+                            )
+                            for t in status_event_list
 
-                    )
-                ),
-                "tracking_state": response['StateText'],
-                "delivery_state": self._sendeo_status_codes(response['State']),
-                "shipping_number": response['TrackingNo'],
-            }
-        )
+                        )
+                    ),
+                    "tracking_state": response['StateText'],
+                    "delivery_state": self._sendeo_status_codes(response['State']),
+                    "shipping_number": response['TrackingNo'],
+                }
+            )
         return True
 
     def sendeo_carrier_get_label(self, picking):
