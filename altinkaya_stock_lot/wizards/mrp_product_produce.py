@@ -10,15 +10,18 @@ class MrpProductProduce(models.TransientModel):
     @api.multi
     def do_produce(self):
         """Override do_produce method on MRP to generate lot_id automatically"""
+        if any(
+            [
+                x.product_id.tracking != "none" and not x.lot_id
+                for x in self.produce_line_ids
+            ]
+        ):
+            raise UserError(_("Some products are tracked by lots but no lot is set."))
+
         if self.product_tracking != "none" and not self.lot_id:
-
-            if not self.product_id:
-                raise UserError(_("You have to select a product."))
-
             vals = {
                 "product_id": self.product_id.id,
                 "ref": self.production_id.origin or "",
             }
             self.lot_id = self.lot_id.create(vals)
-
         return super(MrpProductProduce, self).do_produce()

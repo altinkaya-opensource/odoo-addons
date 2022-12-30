@@ -23,5 +23,6 @@ class StockProductionLot(models.Model):
         "Lot/Serial Number",
         default=_compute_lot_name,
         required=True,
+        readonly=True,
         help="Unique Lot/Serial Number",
     )
