@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import models, api, _
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero
 
 
 class MrpProductProduce(models.TransientModel):
@@ -12,7 +13,11 @@ class MrpProductProduce(models.TransientModel):
         """Override do_produce method on MRP to generate lot_id automatically"""
         if any(
             [
-                x.product_id.tracking != "none" and not x.lot_id
+                x.product_id.tracking != "none"
+                and not x.lot_id
+                and not float_is_zero(
+                    x.qty_done, precision_rounding=x.product_uom_id.rounding
+                )
                 for x in self.produce_line_ids
             ]
         ):
