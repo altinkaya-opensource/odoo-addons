@@ -4,19 +4,15 @@ from odoo import models, api
 
 
 class StockMoveLine(models.Model):
-
     _inherit = "stock.move.line"
 
     @api.multi
     def _create_missing_lot(self):
         """EXPERIMENTAL: Create a lot for the move line if it is missing."""
         for rec in self:
-            if not rec.lot_id:
+            if rec.product_id.tracking != "none" and not rec.lot_id:
                 lot_id = self.env["stock.production.lot"].create(
-                    {
-                        "product_id": rec.product_id.id,
-                        "ref": rec.move_id.name or ""
-                    }
+                    {"product_id": rec.product_id.id, "ref": rec.move_id.name or ""}
                 )
                 rec.lot_id = lot_id.id
         return True
