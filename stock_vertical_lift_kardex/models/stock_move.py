@@ -5,10 +5,11 @@ from odoo.exceptions import ValidationError
 
 
 class StockMove(models.Model):
-    _inherit = 'stock.move'
+    _inherit = "stock.move"
 
-    product_at_kardex = fields.Boolean(string='Product at Kardex',
-                                       compute='_check_product_at_kardex')
+    product_at_kardex = fields.Boolean(
+        string="Product at Kardex", compute="_check_product_at_kardex"
+    )
 
     @api.multi
     def _check_product_at_kardex(self):
@@ -24,5 +25,7 @@ class StockMove(models.Model):
         if kardex_id:
             kardex_id._get_product(self.location_id, self.product_id)
         else:
-            raise ValidationError(_('No Kardex Vertical Lift Controller is defined for this location.'))
+            raise ValidationError(
+                _("No Kardex Vertical Lift Controller is defined for this location.")
+            )
         return True
