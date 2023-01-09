@@ -37,3 +37,18 @@ class MrpProductProduce(models.TransientModel):
         if self.lot_id == self.production_id.lot_id_to_create:
             self.production_id.lot_id_to_create = False  # consume lot_id_to_create
         return res
+
+    @api.onchange("product_qty")
+    def _onchange_product_qty(self):
+        """Override _onchange_product_qty method on MRP to remove duplicate
+        rows caused by split procurement rules"""
+        res = super(MrpProductProduce, self)._onchange_product_qty()
+        for line in self.produce_line_ids.filtered(lambda p: not p.lot_id):
+            real_line = self.produce_line_ids.filtered(
+                lambda x: x.qty_to_consume == line.qty_to_consume
+                and x.product_id == line.product_id
+                and x.lot_id
+            )
+            if real_line:
+                self.produce_line_ids -= line
+        return res
