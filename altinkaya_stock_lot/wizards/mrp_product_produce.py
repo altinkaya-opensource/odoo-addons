@@ -33,4 +33,7 @@ class MrpProductProduce(models.TransientModel):
                     "ref": self.production_id.origin or "",
                 }
                 self.lot_id = self.lot_id.create(vals)
-        return super(MrpProductProduce, self).do_produce()
+        res = super(MrpProductProduce, self).do_produce()
+        if self.lot_id == self.production_id.lot_id_to_create:
+            self.production_id.lot_id_to_create = False  # consume lot_id_to_create
+        return res
