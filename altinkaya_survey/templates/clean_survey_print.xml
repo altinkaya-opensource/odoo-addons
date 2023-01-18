@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SURVEY FORM PRINT -->
+        <template id="survey_form_print_clean" inherit_id="survey.survey_print">
+            <xpath expr="//div[@t-field='question.description']" position="replace" />
+            <xpath expr="//div[@class='jumbotron mt32']" position="replace" />
+        </template>
+
+    </data>
+</odoo>

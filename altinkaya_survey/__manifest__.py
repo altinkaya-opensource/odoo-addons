@@ -21,6 +21,9 @@
     "data": [
         "templates/disable_odoo_branding.xml",
         "templates/star_rating.xml",
+        "templates/clean_survey_fill.xml",
+        "templates/clean_survey_print.xml",
+        "templates/question_seperator.xml",
         "views/survey_survey_views.xml",
         "views/survey_question_views.xml",
         "views/survey_user_input_views.xml",

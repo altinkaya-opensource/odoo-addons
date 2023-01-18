@@ -2,8 +2,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from collections import OrderedDict
-from itertools import product
 
 
 class SurveySurvey(models.Model):
@@ -48,7 +46,7 @@ class SurveySurvey(models.Model):
 
         # Calculate and return statistics for choice
         if question.type == "star_rating":
-            answers = [{"text": "%s Star" % (star+1), "count": 0, "answer_id": 0} for star in range(question.star_count)]
+            answers = [{"text": _("%s Star" % (star+1)), "count": 0, "answer_id": 0} for star in range(question.star_count)]
             for input_line in question.user_input_line_ids.filtered(
                 lambda line: line.value_number
             ):

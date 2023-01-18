@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SURVEY FORM -->
+        <template id="survey_form_clean" inherit_id="survey.page">
+            <xpath expr="//div[@t-field='question.description']" position="replace"/>
+        </template>
+    </data>
+</odoo>

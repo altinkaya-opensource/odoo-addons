@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- STAR RATING ASSETS -->
+        <template id="survey_assets_star_rating" inherit_id="survey.survey_assets" name="Survey Results assets">
+            <xpath expr="//link[@href='/survey/static/src/css/survey_result.css']" position="after">
+                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet" type="text/css"/>
+                <script type="text/javascript" src="/altinkaya_survey/static/src/star.js"/>
+            </xpath>
+        </template>
+
         <!-- STAR RATING RESULT TEMPLATE -->
         <template id="result_star" name="Star Rating Result">
             <div>
@@ -45,7 +53,7 @@
                                 <tr t-foreach="prepare_result['answers']"
                                     t-as="user_input">
                                     <td>
-                                        <p t-esc="'%s Star' % user_input['text']"></p>
+                                        <p t-esc="user_input['text']"></p>
                                     </td>
                                     <td class="survey_answer">
                                         <span t-esc="round(user_input['count']*100.0/(input_summary['answered'] or 1),2)"></span>
@@ -70,8 +78,6 @@
         <!-- STAR FORM TEMPLATE -->
         <template id="star_rating" name="Star Rating">
             <div class="form-group">
-                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet"
-                      type="text/css"></link>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="star-rating">
@@ -85,7 +91,6 @@
                         </div>
                     </div>
                 </div>
-                <script src="/altinkaya_survey/static/src/star.js"></script>
             </div>
         </template>
 
@@ -96,9 +101,6 @@
                     <t t-call="altinkaya_survey.star_rating"/>
                 </t>
             </xpath>
-            <xpath expr="//div[@t-field='question.description']" position="replace">
-
-            </xpath>
         </template>
 
         <!-- SURVEY FORM PRINT -->
@@ -108,11 +110,9 @@
                     <t t-call="altinkaya_survey.star_rating"/>
                 </t>
             </xpath>
-            <xpath expr="//div[@t-field='question.description']" position="replace">
-
-            </xpath>
         </template>
 
+        <!-- SURVEY RESULT -->
         <template id="survey_star_rating_results" inherit_id="survey.result">
             <xpath expr="//t[@t-if='question.description']" position="after">
                 <t t-if="question.type == 'star_rating'">

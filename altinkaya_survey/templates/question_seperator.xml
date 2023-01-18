@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SURVEY FORM PRINT -->
+        <template id="survey_form_print_seperator" inherit_id="survey.survey_print">
+            <!-- Add seperator between question blocks -->
+            <xpath expr="//div[@class='js_errzone alert alert-danger']" position="after">
+                <t t-if="page.question_ids[-1] != question">
+                    <div class="question-seperator d-block mt-4 mb-4 col-12"></div>
+                </t>
+            </xpath>
+        </template>
+
+        <!-- SURVEY FORM -->
+        <template id="survey_form_seperator" inherit_id="survey.page">
+            <!-- Add seperator between question blocks -->
+            <xpath expr="//div[@class='js_errzone alert alert-danger']" position="after">
+                <t t-if="page.question_ids[-1] != question">
+                    <div class="question-seperator d-block mt-4 mb-4 col-12"></div>
+                </t>
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

@@ -2,9 +2,7 @@
 <odoo>
     <template id="survey_debranding" inherit_id="survey.layout"
               name="Survey Layout">
-        <xpath expr="//div[@class='container mt16 mb8']/div[@class='float-right']"
-               position="replace">
-        </xpath>
+        <xpath expr="//div[@class='container mt16 mb8']/div[@class='float-right']" position="replace"/>
 
         <xpath expr="//div[@class='container mt16 mb8']/div[@class='float-left text-muted']"
                position="attributes">
