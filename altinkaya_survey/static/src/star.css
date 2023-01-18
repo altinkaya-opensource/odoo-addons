@@ -1,0 +1,8 @@
+.star-rating {
+    line-height: 32px;
+    font-size: 2.5em;
+}
+
+.star-rating .fa-star {
+    color: #FFD119;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="star_rating" name="Star Rating">
+            <div class="form-group">
+                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet" type="text/css"></link>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="star-rating">
+                          <t t-foreach="range(question.star_count)" t-as="star_number">
+                          <span class="fa fa-star-o" t-att-data-rating="(star_number+1)"></span>
+                          </t>
+                        <input type="hidden" t-att-name="prefix" class="rating-value" t-att-value="0"/>
+                      </div>
+                    </div>
+                  </div>
+            <script src="/altinkaya_survey/static/src/star.js"></script>
+            </div>
+        </template>
+
+        <!-- SURVEY FORM -->
+        <template id="survey_form_star_rating" inherit_id="survey.page">
+            <xpath expr="//div[@t-field='question.description']" position="after">
+                <t t-if="question.type == 'star_rating'">
+                    <t t-call="altinkaya_survey.star_rating"/>
+                </t>
+            </xpath>
+            <xpath expr="//div[@t-field='question.description']" position="replace">
+
+            </xpath>
+        </template>
+
+        <!-- SURVEY FORM PRINT -->
+        <template id="survey_form_star_rating_print" inherit_id="survey.survey_print">
+            <xpath expr="//h2" position="after">
+                <t t-if="question.type == 'star_rating'">
+                    <t t-call="altinkaya_survey.star_rating"/>
+                </t>
+            </xpath>
+            <xpath expr="//div[@t-field='question.description']" position="replace">
+
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
