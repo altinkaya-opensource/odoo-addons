@@ -1,20 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- STAR RATING RESULT TEMPLATE -->
+        <template id="result_star" name="Star Rating Result">
+            <div>
+                <!-- Tabs -->
+                <ul class="nav nav-tabs d-print-none" role="tablist">
+
+                    <li class="nav-item">
+                        <a t-att-href="'#graph_question_%d' % question.id"
+                           t-att-aria-controls="'graph_question_%d' % question.id"
+                           class="nav-link active" data-toggle="tab" role="tab">
+                            <i class="fa fa-bar-chart-o"></i>
+                            Pie Chart
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a t-att-href="'#data_question_%d' % question.id"
+                           t-att-aria-controls="'data_question_%d' % question.id"
+                           class="nav-link" data-toggle="tab" role="tab">
+                            <i class="fa fa-list-alt"></i>
+                            Data
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane survey_graph active"
+                         t-att-id="'graph_question_%d' % question.id"
+                         t-att-data-question_id="question.id" data-graph_type="pie"
+                         t-att-graph-data="graph_data">
+                        <!-- svg element for drawing pie chart -->
+                        <svg style="height:20em"></svg>
+                    </div>
+                    <div role="tabpanel" class="tab-pane"
+                         t-att-id="'data_question_%d' % question.id">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Answer Choices</th>
+                                    <th>User Responses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="prepare_result['answers']"
+                                    t-as="user_input">
+                                    <td>
+                                        <p t-esc="'%s Star' % user_input['text']"></p>
+                                    </td>
+                                    <td class="survey_answer">
+                                        <span t-esc="round(user_input['count']*100.0/(input_summary['answered'] or 1),2)"></span>
+                                        %
+                                        <span t-esc="user_input['count']"
+                                              class="badge badge-primary">Vote
+                                        </span>
+                                        <i class="fa fa-filter text-primary invisible survey_filter"
+                                           t-att-data-question_id="question.id"
+                                           role="img" aria-label="Filter question"
+                                           title="Filter question"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- STAR FORM TEMPLATE -->
         <template id="star_rating" name="Star Rating">
             <div class="form-group">
-                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet" type="text/css"></link>
-                  <div class="row">
+                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet"
+                      type="text/css"></link>
+                <div class="row">
                     <div class="col-lg-12">
-                      <div class="star-rating">
-                          <t t-foreach="range(question.star_count)" t-as="star_number">
-                          <span class="fa fa-star-o" t-att-data-rating="(star_number+1)"></span>
-                          </t>
-                        <input type="hidden" t-att-name="prefix" class="rating-value" t-att-value="0"/>
-                      </div>
+                        <div class="star-rating">
+                            <t t-foreach="range(question.star_count)"
+                               t-as="star_number">
+                                <span class="fa fa-star-o"
+                                      t-att-data-rating="(star_number+1)"></span>
+                            </t>
+                            <input type="hidden" t-att-name="prefix"
+                                   class="rating-value" t-att-value="0"/>
+                        </div>
                     </div>
-                  </div>
-            <script src="/altinkaya_survey/static/src/star.js"></script>
+                </div>
+                <script src="/altinkaya_survey/static/src/star.js"></script>
             </div>
         </template>
 
@@ -39,6 +110,14 @@
             </xpath>
             <xpath expr="//div[@t-field='question.description']" position="replace">
 
+            </xpath>
+        </template>
+
+        <template id="survey_star_rating_results" inherit_id="survey.result">
+            <xpath expr="//t[@t-if='question.description']" position="after">
+                <t t-if="question.type == 'star_rating'">
+                    <t t-call="altinkaya_survey.result_star"></t>
+                </t>
             </xpath>
         </template>
 

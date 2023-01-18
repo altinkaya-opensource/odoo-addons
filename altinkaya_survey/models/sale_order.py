@@ -47,6 +47,7 @@ class SaleOrder(models.Model):
                 "survey_id": default_survey_id.id,
                 "partner_id": record.partner_id.id,
                 "sale_id": record.id,
+                "type": "link",
             }
             survey_user_input = self.env["survey.user_input"].create(vals)
             survey_url = base_url + "/survey/fill/%s/%s" % (
