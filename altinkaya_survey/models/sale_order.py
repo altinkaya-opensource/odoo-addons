@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
                 ("default_sale_survey", "=", True),
             ]
         )
-        base_url = self.env["ir.config_parameter"].get_param("web.base.url")
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         if not default_survey_id:
             raise UserError(_("There is no default survey for sale orders."))
         for record in self:
