@@ -4,6 +4,7 @@
         <!-- SURVEY FORM -->
         <template id="survey_form_clean" inherit_id="survey.page">
             <xpath expr="//div[@t-field='question.description']" position="replace"/>
+            <xpath expr="//div[@class='o_page_header']/p[@class='float-right']" position="replace"/>
         </template>
     </data>
 </odoo>

@@ -15,6 +15,14 @@ class SurveySurvey(models.Model):
         string="Default Partner Survey",
         help="If checked, this survey will be used as default survey for partner.",
     )
+    default_lang_id = fields.Many2one(
+        comodel_name="res.lang",
+        string="Default Language",
+        help="Default language for survey",
+        required=True,
+        domain=[("active", "=", True)],
+    )
+
     url_shortener_id = fields.Many2one(
         "short.url.yourls",
         string="URL Shortener",
