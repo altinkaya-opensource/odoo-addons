@@ -1,4 +1,4 @@
-# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -11,25 +11,30 @@ class SurveySurvey(models.Model):
         string="Default Sale Survey",
         help="If checked, this survey will be used as default survey for sale orders.",
     )
+    default_partner_survey = fields.Boolean(
+        string="Default Partner Survey",
+        help="If checked, this survey will be used as default survey for partner.",
+    )
     url_shortener_id = fields.Many2one(
         "short.url.yourls",
         string="URL Shortener",
         help="If set, survey url will be shortened using this shortener.",
     )
 
-    @api.constrains("default_sale_survey")
+    @api.constrains("default_sale_survey", "default_partner_survey")
     def _check_default_sale_survey(self):
         """
-        Check if there is only one survey with default_sale_survey checked.
+        Check if there is only one survey with default surveys checked.
         :return: None
         """
+        domain = [("id", "!=", self.id)]
         if self.default_sale_survey:
-            exist_default = self.search(
-                [
-                    ("default_sale_survey", "=", True),
-                    ("id", "!=", self.id),
-                ]
-            )
+            domain += [("default_sale_survey", "=", True)]
+        elif self.default_partner_survey:
+            domain += [("default_partner_survey", "=", True)]
+
+        if self.default_sale_survey or self.default_partner_survey:
+            exist_default = self.search(domain)
             if exist_default:
                 raise UserError(
                     _(
@@ -46,7 +51,10 @@ class SurveySurvey(models.Model):
 
         # Calculate and return statistics for choice
         if question.type == "star_rating":
-            answers = [{"text": _("%s Star" % (star+1)), "count": 0, "answer_id": 0} for star in range(question.star_count)]
+            answers = [
+                {"text": _("%s Star" % (star + 1)), "count": 0, "answer_id": 0}
+                for star in range(question.star_count)
+            ]
             for input_line in question.user_input_line_ids.filtered(
                 lambda line: line.value_number
             ):
