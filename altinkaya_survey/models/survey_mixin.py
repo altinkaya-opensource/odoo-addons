@@ -3,6 +3,7 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 from odoo.addons.http_routing.models.ir_http import slug
+import base64
 
 model_field_mapping = {
     "sale.order": "sale_id",
@@ -31,6 +32,11 @@ class SurveyMapping(models.AbstractModel):
     survey_url = fields.Char(
         compute="_compute_survey_url",
         string="Survey URL",
+    )
+
+    survey_url_qr = fields.Char(
+        "Survey URL QR",
+        compute="_compute_survey_url_qr",
     )
 
     @api.depends("survey_ids")
@@ -81,7 +87,7 @@ class SurveyMapping(models.AbstractModel):
         base_url = self._get_base_url()
         survey_user_input = self.env["survey.user_input"].create(vals)
         survey_url = base_url + "/%s/survey/fill/%s/%s" % (
-            survey.default_lang_id.code or 'tr_TR',
+            survey.default_lang_id.code or "tr_TR",
             slug(survey),
             survey_user_input.token,
         )
@@ -90,6 +96,18 @@ class SurveyMapping(models.AbstractModel):
         else:
             survey_url = survey_url
         return survey_url
+
+    @api.multi
+    def _compute_survey_url_qr(self):
+        """Compute survey url qr code for active record"""
+        for rec in self:
+            barcode = self.env["ir.actions.report"].barcode(
+                "QR",
+                value=rec.survey_url,
+                width=300,
+                height=300,
+            )
+            rec.survey_url_qr = base64.b64encode(barcode)
 
 
 class SurveyResPartnerMixin(models.Model):
