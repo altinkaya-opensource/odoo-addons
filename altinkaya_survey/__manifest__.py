@@ -17,7 +17,7 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["survey", "sale", "crm"],
+    "depends": ["survey", "sale", "crm", "account"],
     "data": [
         "templates/disable_odoo_branding.xml",
         "templates/star_rating.xml",

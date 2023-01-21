@@ -8,12 +8,16 @@ class SurveySurvey(models.Model):
     _inherit = "survey.survey"
 
     default_sale_survey = fields.Boolean(
-        string="Default Sale Survey",
+        string="Sale Survey",
         help="If checked, this survey will be used as default survey for sale orders.",
     )
     default_partner_survey = fields.Boolean(
-        string="Default Partner Survey",
+        string="Partner Survey",
         help="If checked, this survey will be used as default survey for partner.",
+    )
+    default_invoice_survey = fields.Boolean(
+        string="Invoice Survey",
+        help="If checked, this survey will be used as default survey for invoices.",
     )
     default_lang_id = fields.Many2one(
         comodel_name="res.lang",

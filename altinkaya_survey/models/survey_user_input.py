@@ -10,3 +10,14 @@ class SurveyUserInput(models.Model):
         comodel_name="sale.order",
         string="Sale Order",
     )
+
+    invoice_id = fields.Many2one(
+        comodel_name="account.invoice",
+        string="Invoice",
+    )
+
+    type = fields.Selection(
+        selection_add=[
+            ("qrcode", "QR Code"),
+        ]
+    )

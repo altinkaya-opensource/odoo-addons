@@ -140,3 +140,19 @@ class SurveySaleOrderMixin(models.Model):
                 "type": "link",
             }
             record.survey_url = self._create_survey_url(vals, default_survey_id)
+
+
+class SurveyAccountInvoiceMixin(models.Model):
+    _name = "account.invoice"
+    _inherit = ["account.invoice", "survey.mapping"]
+
+    def _compute_survey_url(self):
+        default_survey_id = self._get_default_survey("default_invoice_survey")
+        for record in self:
+            vals = {
+                "survey_id": default_survey_id.id,
+                "partner_id": record.partner_id.id,
+                "invoice_id": record.id,
+                "type": "qrcode",
+            }
+            record.survey_url = self._create_survey_url(vals, default_survey_id)
