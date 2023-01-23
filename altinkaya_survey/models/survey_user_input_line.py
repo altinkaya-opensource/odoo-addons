@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class SurveyUserInputLine(models.Model):
@@ -18,8 +18,13 @@ class SurveyUserInputLine(models.Model):
             if record.question_id.type == "simple_choice":
                 record.general_answer = record.value_suggested.value
 
+            elif record.question_id.type == "star_rating":
+                record.general_answer = _("%s Star" % int(record.value_number))
+
             else:
-                answer_field = record.value_free_text or record.value_number
+                answer_field = (
+                    record.value_free_text or record.value_text or record.value_number
+                )
                 record.general_answer = str(answer_field)
         return True
 
