@@ -117,7 +117,7 @@ class SurveyResPartnerMixin(models.Model):
     reconciliation_replied = fields.Boolean(
         "Reconciliation Replied",
         compute="_compute_reconciliation_replied",
-        search='_search_reconciliation_replied',
+        search="_search_reconciliation_replied",
     )
 
     @api.multi
@@ -145,7 +145,7 @@ class SurveyResPartnerMixin(models.Model):
             ]
         )
         partner_ids = user_inputs.mapped("partner_id").ids
-        return [('id', operator, partner_ids)]
+        return [("id", operator, partner_ids)]
 
     @api.multi
     def _compute_survey_url(self):
