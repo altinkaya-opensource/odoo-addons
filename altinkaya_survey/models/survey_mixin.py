@@ -114,6 +114,39 @@ class SurveyResPartnerMixin(models.Model):
     _name = "res.partner"
     _inherit = ["res.partner", "survey.mapping"]
 
+    reconciliation_replied = fields.Boolean(
+        "Reconciliation Replied",
+        compute="_compute_reconciliation_replied",
+        search='_search_reconciliation_replied',
+    )
+
+    @api.multi
+    def _compute_reconciliation_replied(self):
+        default_survey_id = self._get_default_survey("default_partner_survey")
+        for partner in self:
+            user_inputs = self.env["survey.user_input"].search(
+                [
+                    ("partner_id", "=", partner.id),
+                    ("survey_id", "=", default_survey_id.id),
+                ]
+            )
+            if user_inputs and user_inputs.filtered(lambda u: u.state == "done"):
+                partner.reconciliation_replied = True
+            else:
+                partner.reconciliation_replied = False
+        return True
+
+    def _search_reconciliation_replied(self, operator, value):
+        default_survey_id = self._get_default_survey("default_partner_survey")
+        user_inputs = self.env["survey.user_input"].search(
+            [
+                ("survey_id", "=", default_survey_id.id),
+                ("state", "=", "done"),
+            ]
+        )
+        partner_ids = user_inputs.mapped("partner_id").ids
+        return [('id', operator, partner_ids)]
+
     @api.multi
     def _compute_survey_url(self):
         default_survey_id = self._get_default_survey("default_partner_survey")
