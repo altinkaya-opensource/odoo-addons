@@ -115,9 +115,10 @@ class SurveyResPartnerMixin(models.Model):
     _inherit = ["res.partner", "survey.mapping"]
 
     reconciliation_replied = fields.Boolean(
-        "Reconciliation Replied",
+        string="Reconciliation Replied",
         compute="_compute_reconciliation_replied",
         search="_search_reconciliation_replied",
+        translate=True,
     )
 
     @api.multi
