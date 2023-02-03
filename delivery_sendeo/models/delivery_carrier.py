@@ -305,13 +305,7 @@ class DeliveryCarrier(models.Model):
 
     def sendeo_rate_shipment(self, order):
         """There's no public API so another price method should be used."""
-        raise NotImplementedError(
-            _(
-                "Sendeo API doesn't provide methods to compute delivery "
-                "rates, so you should relay on another price method instead or "
-                "override this one in your custom code."
-            )
-        )
+        return self.base_on_rule_rate_shipment(order)
 
     def sendeo_get_rate(self, order):
         """Get delivery price for Sendeo"""
