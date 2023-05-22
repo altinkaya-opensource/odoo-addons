@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data>
+		<record id="group_productmerge" model="res.groups">
+			<field name="name">Merge Product Variants</field>
+		</record>
+		<record id="group_productvariant_change" model="res.groups">
+			<field name="name">Alter Product Variant Attributes</field>
+		</record>
+
+
+	</data>	
+</openerp>

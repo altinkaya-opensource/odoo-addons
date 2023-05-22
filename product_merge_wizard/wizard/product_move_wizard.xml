@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_product_move_wizard_form" model="ir.ui.view">
+            <field name="name">product.move.wizard.form</field>
+            <field name="model">product.move.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Move Product">
+                    <sheet>
+                        <group>
+                        	<field name="product_id" invisible="0"/>
+                        	<field name="product_tmpl_id" />
+                        	<field name="value_ids" widget="many2many_tags" options="{'no_create_edit':True'}">
+                        	
+                        	</field>
+                        	
+                        	
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_move" type="object" string="Move" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Move to Other Template" res_model="product.move.wizard"
+            src_model="product.product" view_mode="form" target="new" groups="product_merge_wizard.group_productvariant_change"
+            multi="False" key2="client_action_relate" id="product_move_wizard_action" />
+
+    </data>
+
+    
+</openerp>

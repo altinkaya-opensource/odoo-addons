@@ -1,0 +1,2 @@
+"id","group_id:id","name","model_id","perm_create","perm_unlink","perm_write","perm_read"
+"productmerge_all","group_productmerge","Merge product variants","product.merge.wizard",1,1,1,1
