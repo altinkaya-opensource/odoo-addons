@@ -1,0 +1,112 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* altinkaya_credit_control
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-12 14:49+0000\n"
+"PO-Revision-Date: 2023-06-12 14:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
+msgid "Are you sure to send an email with all the lines?"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Açık Tutar"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Açıklama"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__communication_channel
+msgid "Channel"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__credit_control_lines_html
+msgid "Credit Control Lines"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_communication
+msgid "Credit control communication process"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_policy
+msgid "Define a reminder policy"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:75
+#, python-format
+msgid "Error while sending email: %s"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_emailer
+msgid "Mass credit line emailer"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_marker
+msgid "Mass marker"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_printer
+msgid "Mass printer"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Ref"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
+msgid "Send Email"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Tarih"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:31
+#, python-format
+msgid "There is no draft lines to send."
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/wizards/credit_control_emailer.py:13
+#: code:addons/altinkaya_credit_control/wizards/credit_control_marker.py:13
+#: code:addons/altinkaya_credit_control/wizards/credit_control_printer.py:13
+#, python-format
+msgid "This method is restricted by Altinkaya Credit Control."
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Tutar"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Vadesi"
+msgstr ""
+

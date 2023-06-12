@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_communication_form_altinkaya" model="ir.ui.view">
+        <field name="name">credit.control.communication.altinkaya.inherit</field>
+        <field name="model">credit.control.communication</field>
+        <field name="inherit_id" ref="account_credit_control.credit_control_communication_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='policy_level_id']" position="after">
+                <field name="communication_channel" />
+            </xpath>
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button type="object"
+                            class="oe_highlight"
+                            name="action_send_email"
+                            string="Send Email"
+                            confirm="Are you sure to send an email with all the lines?"
+                            attrs="{'invisible': [('communication_channel', '!=', 'email')]}"
+                    />
+                </header>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

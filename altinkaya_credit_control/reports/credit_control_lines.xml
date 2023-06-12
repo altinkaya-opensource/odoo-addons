@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_credit_control_lines">
+        <t t-set="doc"
+           t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+        <style>
+            .table-bordered thead th {
+            border: 1px solid black !important;
+            }
+            .table-bordered th, .table-bordered td {
+            border: 1px solid black !important;
+            }
+
+            .table-bordered tr th {
+            background-color: #c2c2c2;
+            text-align: center;
+            font-size: 14px;
+            }
+            .table th, .table td {
+            padding:0;
+            }
+            tr {
+            font-size:14px;}
+
+        </style>
+        <table class="table table-bordered" style="table-layout:auto;">
+            <tbody>
+                <tr>
+                    <th style="min-width:15px;">Tarih</th>
+                    <th>Açıklama</th>
+                    <th>Ref</th>
+                    <th>Vadesi</th>
+                    <th>Tutar</th>
+                    <th>Açık Tutar</th>
+                </tr>
+                <t t-foreach="doc.credit_control_line_ids.filtered(lambda c: c.state != 'sent')" t-as="line">
+                    <t t-set="inv" t-value="line.invoice_id"/>
+                    <tr>
+                        <td class="text-center">
+                            <span t-esc="line.move_line_id.date.strftime('%d.%m.%Y')"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.move_line_id.journal_id.name"/>
+                        </td>
+                        <td>
+                            <span t-esc="inv.name if inv else line.move_line_id.move_id.name"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.date_due.strftime('%d.%m.%Y')"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="line.amount_due"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="line.balance_due"/>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+</odoo>
