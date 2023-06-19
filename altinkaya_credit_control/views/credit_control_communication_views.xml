@@ -20,6 +20,12 @@
                             confirm="Are you sure to send an email with all the lines?"
                             attrs="{'invisible': [('communication_channel', '!=', 'email')]}"
                     />
+                    <button type="object"
+                            name="action_set_done"
+                            string="Set to Done"
+                            attrs="{'invisible': [('state', '=', 'done')]}"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,done" />
                 </header>
             </xpath>
 

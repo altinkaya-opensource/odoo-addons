@@ -11,17 +11,35 @@ class CreditControlCommunication(models.Model):
     communication_channel = fields.Selection(
         related="policy_level_id.channel", readonly=True
     )
+
     credit_control_lines_html = fields.Html(
         "Credit Control Lines",
         compute="_compute_credit_control_lines_html",
         store=False,
     )
 
+    state = fields.Selection(
+        [("draft", "Draft"), ("sent", "Sent"), ("done", "Done")],
+        string="Status",
+        readonly=True,
+        copy=False,
+        index=True,
+        default="draft",
+        track_visibility="onchange",
+    )
+
     @api.one
     def action_send_email(self):
+        """
+        Send account follow-up email to the customer.
+        :return:
+        """
         self.ensure_one()
         if self.communication_channel != "email":
             return False  # Maybe we should raise an error here.
+
+        if self.state in ("sent", "done"):
+            raise ValidationError(_("This communication is already sent."))
 
         lines_2be_processed = self.credit_control_line_ids.filtered(
             lambda line: line.state != "sent"
@@ -42,6 +60,7 @@ class CreditControlCommunication(models.Model):
                 "subject": "%s Fatura Bilgilendirme" % (self.company_id.name or ""),
                 "email_to": self.get_emailing_contact().email,
                 "auto_delete": True,
+                "recipient_ids": [(4, self.get_emailing_contact().id)],
             }
 
             mail_id = self.env["mail.mail"].create(email_values)
@@ -69,7 +88,8 @@ class CreditControlCommunication(models.Model):
             mail_id.send()
 
             # Set the state of the credit control lines to "queued"
-            # lines_2be_processed.write({"state": "sent"})
+            lines_2be_processed.write({"state": "sent"})
+            self.state = "sent"
 
         except Exception as e:
             raise ValidationError(_("Error while sending email: %s") % e)
@@ -97,3 +117,13 @@ class CreditControlCommunication(models.Model):
         """
         statement_report = self.env.ref("altinkaya_reports.partner_statement_altinkaya")
         return statement_report.render_qweb_pdf(self.partner_id.id)[0]
+
+    def action_set_done(self):
+        """
+        Set the state of the communication to "done"
+        :return: bool
+        """
+        self.ensure_one()
+        self.write({"state": "done"})
+        self.credit_control_line_ids.write({"state": "done"})
+        return True
