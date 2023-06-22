@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 14:49+0000\n"
-"PO-Revision-Date: 2023-06-12 14:49+0000\n"
+"POT-Creation-Date: 2023-06-19 13:57+0000\n"
+"PO-Revision-Date: 2023-06-19 13:57+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,19 +16,36 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
-msgid "Are you sure to send an email with all the lines?"
-msgstr "Taslak durumundaki bütün satırları içeren bir email göndermeyi onaylıyor musunuz?"
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:62
+#, python-format
+msgid "%s Invoice Notifying"
+msgstr "%s Fatura Bildirimi"
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_run.py:38
+#, python-format
+msgid "Account Follow-up Phone Call"
+msgstr "Hesap Takibi Telefon Görüşmesi"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__activity_deadline
+msgid "Activity Deadline"
+msgstr "Etkinlik Son Tarihi"
 
 #. module: altinkaya_credit_control
 #: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Açık Tutar"
+msgid "Amount"
+msgstr "Tutar"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Amount Residual"
 msgstr "Açık Tutar"
 
 #. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Açıklama"
-msgstr "Açıklama"
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
+msgid "Are you sure to send an email with all the lines?"
+msgstr "Taslak durumundaki bütün satırları içeren bir email göndermeyi onaylıyor musunuz?"
 
 #. module: altinkaya_credit_control
 #: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__communication_channel
@@ -46,12 +63,42 @@ msgid "Credit control communication process"
 msgstr "Kredi kontrol iletişim süreci"
 
 #. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_run
+msgid "Credit control line generator"
+msgstr "Kredi kontrol hattı oluşturucu"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Date"
+msgstr "Tarih"
+
+#. module: altinkaya_credit_control
 #: model:ir.model,name:altinkaya_credit_control.model_credit_control_policy
 msgid "Define a reminder policy"
 msgstr "Bir hatırlatma politikası tanımlayın"
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:75
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Description"
+msgstr "Açıklama"
+
+#. module: altinkaya_credit_control
+#: selection:credit.control.communication,state:0
+msgid "Done"
+msgstr "Tamamlandı"
+
+#. module: altinkaya_credit_control
+#: selection:credit.control.communication,state:0
+msgid "Draft"
+msgstr "Taslak"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Due Date"
+msgstr "Vade T."
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:97
 #, python-format
 msgid "Error while sending email: %s"
 msgstr "Mail gönderirken bir hata oluştu: %s"
@@ -72,6 +119,18 @@ msgid "Mass printer"
 msgstr "Toplu yazıcı"
 
 #. module: altinkaya_credit_control
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_run__activity_deadline
+msgid "Number of days to set as deadline for the activity"
+msgstr "Etkinlik için son tarih olarak ayarlanacak gün sayısı"
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:78
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:81
+#, python-format
+msgid "Partner Statement"
+msgstr "Müşteri Ekstresi"
+
+#. module: altinkaya_credit_control
 #: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
 msgid "Ref"
 msgstr "REF"
@@ -82,15 +141,31 @@ msgid "Send Email"
 msgstr "Email Gönder"
 
 #. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Tarih"
-msgstr "Tarih"
+#: selection:credit.control.communication,state:0
+msgid "Sent"
+msgstr "Gönderildi"
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:31
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
+msgid "Set to Done"
+msgstr "Bitti olarak ayarla"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__state
+msgid "Status"
+msgstr "Durum"
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:49
 #, python-format
 msgid "There is no draft lines to send."
 msgstr "Mail göndermek için taslak satır mevcut değil."
+
+#. module: altinkaya_credit_control
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:42
+#, python-format
+msgid "This communication is already sent."
+msgstr "Bu iletişim zaten gönderildi."
 
 #. module: altinkaya_credit_control
 #: code:addons/altinkaya_credit_control/wizards/credit_control_emailer.py:13
@@ -101,12 +176,8 @@ msgid "This method is restricted by Altinkaya Credit Control."
 msgstr "Bu yöntemin kullanımı Altınkaya Kredi Kontrolü tarafından kısıtlanmıştır."
 
 #. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Tutar"
-msgstr "Tutar"
-
-#. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Vadesi"
-msgstr "Vadesi"
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:80
+#, python-format
+msgid "altinkaya_partner_statement.pdf"
+msgstr "altinkaya_cari_ekstresi.pdf"
 

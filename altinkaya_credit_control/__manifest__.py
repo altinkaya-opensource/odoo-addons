@@ -16,6 +16,5 @@
         "views/credit_control_communication_views.xml",
         "views/credit_control_run_views.xml",
         "reports/credit_control_lines.xml",
-        # "wizards/mrp_product_produce_view.xml",
     ],
 }

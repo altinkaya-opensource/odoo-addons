@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="report_credit_control_lines">
-        <t t-set="doc"
-           t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
         <style>
             .table-bordered thead th {
             border: 1px solid black !important;
@@ -25,22 +24,35 @@
         </style>
         <table class="table table-bordered" style="table-layout:auto;">
             <tbody>
-                <tr>
-                    <th style="min-width:15px;">Tarih</th>
-                    <th>Açıklama</th>
-                    <th>Ref</th>
-                    <th>Vadesi</th>
-                    <th>Tutar</th>
-                    <th>Açık Tutar</th>
-                </tr>
+                <t t-if="doc.partner_id.lang == 'tr_TR'">
+                    <tr>
+                        <th style="min-width:15px;">Tarih</th>
+                        <th>Açıklama</th>
+                        <th>Ref</th>
+                        <th>Vadesi</th>
+                        <th>Miktar</th>
+                        <th>Kalan Miktar</th>
+                    </tr>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <th style="min-width:15px;">Date</th>
+                        <th>Description</th>
+                        <th>Ref</th>
+                        <th>Due Date</th>
+                        <th>Amount</th>
+                        <th>Amount Residual</th>
+                    </tr>
+                </t>
                 <t t-foreach="doc.credit_control_line_ids.filtered(lambda c: c.state != 'sent')" t-as="line">
                     <t t-set="inv" t-value="line.invoice_id"/>
+                    <t t-set="currency" t-value="line.move_line_id.currency_id"/>
                     <tr>
                         <td class="text-center">
                             <span t-esc="line.move_line_id.date.strftime('%d.%m.%Y')"/>
                         </td>
                         <td>
-                            <span t-esc="line.move_line_id.journal_id.name"/>
+                            <span t-esc="line.move_line_id.journal_id.name or ''"/>
                         </td>
                         <td>
                             <span t-esc="inv.name if inv else line.move_line_id.move_id.name"/>
@@ -49,10 +61,12 @@
                             <span t-esc="line.date_due.strftime('%d.%m.%Y')"/>
                         </td>
                         <td class="text-right">
-                            <span t-esc="line.amount_due"/>
+                            <span t-esc="line.amount_due"
+                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
                         </td>
                         <td class="text-right">
-                            <span t-esc="line.balance_due"/>
+                            <span t-esc="line.balance_due"
+                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
                         </td>
                     </tr>
                 </t>

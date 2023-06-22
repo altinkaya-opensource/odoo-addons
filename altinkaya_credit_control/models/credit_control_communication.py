@@ -48,6 +48,8 @@ class CreditControlCommunication(models.Model):
         if not lines_2be_processed:
             raise ValidationError(_("There is no draft lines to send."))
 
+        self = self.with_context(lang=self.partner_id.lang)
+
         try:
             mail_body = (
                 f"{self.policy_level_id.custom_text}\n"
@@ -57,10 +59,11 @@ class CreditControlCommunication(models.Model):
             statement_report = self._get_partner_statement_report()
             email_values = {
                 "body_html": mail_body,
-                "subject": "%s Fatura Bilgilendirme" % (self.company_id.name or ""),
+                "subject": _("%s Invoice Notifying") % (self.company_id.name or ""),
                 "email_to": self.get_emailing_contact().email,
                 "auto_delete": True,
                 "recipient_ids": [(4, self.get_emailing_contact().id)],
+                "notification": True,
             }
 
             mail_id = self.env["mail.mail"].create(email_values)
@@ -73,10 +76,10 @@ class CreditControlCommunication(models.Model):
                             0,
                             False,
                             {
-                                "name": "Cari Hesap Ekstresi",
+                                "name": _("Partner Statement"),
                                 "datas": b64encode(statement_report).decode("utf-8"),
-                                "datas_fname": "altinkaya_hesap_ekstresi.pdf",
-                                "description": "Cari Hesap Ekstresi",
+                                "datas_fname": _("altinkaya_partner_statement.pdf"),
+                                "description": _("Partner Statement"),
                                 "res_model": "mail.message",
                                 "res_id": mail_id.mail_message_id.id,
                             },
@@ -115,7 +118,11 @@ class CreditControlCommunication(models.Model):
         Render the partner statement report and return the result as PDF.
         :return:
         """
-        statement_report = self.env.ref("altinkaya_reports.partner_statement_altinkaya")
+        if self._context.get("lang") == "tr_TR":
+            report_name = "altinkaya_reports.partner_statement_altinkaya"
+        else:
+            report_name = "altinkaya_reports.partner_statement_altinkaya_en"
+        statement_report = self.env.ref(report_name)
         return statement_report.render_qweb_pdf(self.partner_id.id)[0]
 
     def action_set_done(self):
