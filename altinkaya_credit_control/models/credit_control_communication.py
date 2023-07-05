@@ -58,12 +58,13 @@ class CreditControlCommunication(models.Model):
             )
             statement_report = self._get_partner_statement_report()
             email_values = {
+                "body": mail_body,
                 "body_html": mail_body,
                 "subject": _("%s Invoice Notifying") % (self.company_id.name or ""),
                 "email_to": self.get_emailing_contact().email,
-                "auto_delete": True,
                 "recipient_ids": [(4, self.get_emailing_contact().id)],
-                "notification": True,
+                "model": "res.partner",
+                "res_id": self.partner_id.id,
             }
 
             mail_id = self.env["mail.mail"].create(email_values)
