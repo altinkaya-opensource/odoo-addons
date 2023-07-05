@@ -83,19 +83,37 @@ class SurveyMapping(models.AbstractModel):
         return self.env["ir.config_parameter"].sudo().get_param("web.base.url")
 
     def _create_survey_url(self, vals, survey):
-        """Create survey url for active record"""
+        """This method is for creating survey url for active record.
+        Also it checks the existing survey url so that it does not create
+        duplicate survey url for same record."""
         base_url = self._get_base_url()
-        survey_user_input = self.env["survey.user_input"].create(vals)
+        UserInput = self.env["survey.user_input"]
+
+        # Read or create survey user input, convert write vals to search domain
+        survey_user_input = UserInput.search(
+            [(key, "=", value) for key, value in vals.items()],
+            limit=1,
+            order="id desc",
+        )
+        if not survey_user_input:
+            survey_user_input = self.env["survey.user_input"].create(vals)
+
         survey_url = base_url + "/%s/survey/fill/%s/%s" % (
             survey.default_lang_id.code or "tr_TR",
             slug(survey),
             survey_user_input.token,
         )
-        if survey.url_shortener_id:
-            survey_url = survey.url_shortener_id.shorten_url(survey_url)
-        else:
-            survey_url = survey_url
-        return survey_url
+
+        # Read or create shortened url for user_input
+        if survey.url_shortener_id and not survey_user_input.shortened_url:
+            survey_user_input.write(
+                {
+                    "shortened_url": survey.url_shortener_id.shorten_url(survey_url),
+                }
+            )
+            self.env.cr.commit()
+
+        return survey_user_input.shortened_url or survey_url
 
     @api.multi
     def _compute_survey_url_qr(self):
@@ -157,7 +175,7 @@ class SurveyResPartnerMixin(models.Model):
                 "partner_id": record.id,
                 "type": "link",
             }
-            record.survey_url = self._create_survey_url(vals, default_survey_id)
+            record.survey_url = record._create_survey_url(vals, default_survey_id)
 
 
 class SurveySaleOrderMixin(models.Model):

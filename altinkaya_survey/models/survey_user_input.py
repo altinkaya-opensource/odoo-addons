@@ -21,3 +21,9 @@ class SurveyUserInput(models.Model):
             ("qrcode", "QR Code"),
         ]
     )
+
+    shortened_url = fields.Text(
+        string="Shortened URL",
+        help="Shortened URL for survey",
+        default="",
+    )
