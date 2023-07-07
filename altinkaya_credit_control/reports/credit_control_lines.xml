@@ -2,69 +2,49 @@
 <odoo>
     <template id="report_credit_control_lines">
         <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
-        <style>
-            .table-bordered thead th {
-            border: 1px solid black !important;
-            }
-            .table-bordered th, .table-bordered td {
-            border: 1px solid black !important;
-            }
-
-            .table-bordered tr th {
-            background-color: #c2c2c2;
-            text-align: center;
-            font-size: 14px;
-            }
-            .table th, .table td {
-            padding:0;
-            }
-            tr {
-            font-size:14px;}
-
-        </style>
-        <table class="table table-bordered" style="table-layout:auto;">
+        <table style="table-layout:auto;">
             <tbody>
                 <t t-if="doc.partner_id.lang == 'tr_TR'">
-                    <tr>
-                        <th style="min-width:15px;">Tarih</th>
-                        <th>Açıklama</th>
-                        <th>Ref</th>
-                        <th>Vadesi</th>
-                        <th>Miktar</th>
-                        <th>Kalan Miktar</th>
+                    <tr style="font-size:14px;">
+                        <th style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Tarih</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Açıklama</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Ref</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Vadesi</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Miktar</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Kalan Miktar</th>
                     </tr>
                 </t>
                 <t t-else="">
-                    <tr>
-                        <th style="min-width:15px;">Date</th>
-                        <th>Description</th>
-                        <th>Ref</th>
-                        <th>Due Date</th>
-                        <th>Amount</th>
-                        <th>Amount Residual</th>
+                    <tr style="font-size:14px;">
+                        <th style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Date</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Descriptipon</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Ref</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Due Date</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Amount</th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">Residual Amount</th>
                     </tr>
                 </t>
                 <t t-foreach="doc.credit_control_line_ids.filtered(lambda c: c.state != 'sent')" t-as="line">
                     <t t-set="inv" t-value="line.invoice_id"/>
                     <t t-set="currency" t-value="line.move_line_id.currency_id"/>
                     <tr>
-                        <td class="text-center">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="line.move_line_id.date.strftime('%d.%m.%Y')"/>
                         </td>
-                        <td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="line.move_line_id.journal_id.name or ''"/>
                         </td>
-                        <td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="inv.name if inv else line.move_line_id.move_id.name"/>
                         </td>
-                        <td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="line.date_due.strftime('%d.%m.%Y')"/>
                         </td>
-                        <td class="text-right">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="line.amount_due"
                                   t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
                         </td>
-                        <td class="text-right">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
                             <span t-esc="line.balance_due"
                                   t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
                         </td>
@@ -72,5 +52,8 @@
                 </t>
             </tbody>
         </table>
+
+        <t t-call="altinkaya_credit_control.credit_control_bank_account_template"/>
+
     </template>
 </odoo>

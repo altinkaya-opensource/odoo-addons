@@ -16,5 +16,6 @@
         "views/credit_control_communication_views.xml",
         "views/credit_control_run_views.xml",
         "reports/credit_control_lines.xml",
+        "reports/bank_accounts.xml",
     ],
 }
