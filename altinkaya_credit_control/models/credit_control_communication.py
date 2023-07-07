@@ -50,53 +50,17 @@ class CreditControlCommunication(models.Model):
 
         self = self.with_context(lang=self.partner_id.lang)
 
-        try:
-            mail_body = (
-                f"{self.policy_level_id.custom_text}\n"
-                f"{self.credit_control_lines_html}\n"
-                f"{self.policy_level_id.custom_text_after_details}"
-            )
-            statement_report = self._get_partner_statement_report()
-            email_values = {
-                "body": mail_body,
-                "body_html": mail_body,
-                "subject": _("%s Invoice Notifying") % (self.company_id.name or ""),
-                "email_to": self.get_emailing_contact().email,
-                "recipient_ids": [(4, self.get_emailing_contact().id)],
-                "model": "res.partner",
-                "res_id": self.partner_id.id,
-            }
-
-            mail_id = self.env["mail.mail"].create(email_values)
-
-            # Add the statement report as attachment
-            mail_id.write(
-                {
-                    "attachment_ids": [
-                        (
-                            0,
-                            False,
-                            {
-                                "name": _("Partner Statement"),
-                                "datas": b64encode(statement_report).decode("utf-8"),
-                                "datas_fname": _("altinkaya_partner_statement.pdf"),
-                                "description": _("Partner Statement"),
-                                "res_model": "mail.message",
-                                "res_id": mail_id.mail_message_id.id,
-                            },
-                        )
-                    ]
-                }
-            )
-            # Send the email
-            mail_id.send()
-
-            # Set the state of the credit control lines to "queued"
-            lines_2be_processed.write({"state": "sent"})
-            self.state = "sent"
-
-        except Exception as e:
-            raise ValidationError(_("Error while sending email: %s") % e)
+        partner = self.partner_id
+        mail_template = self.policy_level_id.email_template_id
+        # Send the email
+        partner.with_context(credit_control_mail=True).message_post_with_template(
+            template_id=mail_template.id,
+            model=self._name,
+            res_id=self.id,
+        )
+        # Set the state of the credit control lines to "queued"
+        lines_2be_processed.write({"state": "sent"})
+        self.state = "sent"
 
     def _compute_credit_control_lines_html(self):
         """
