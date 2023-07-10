@@ -46,7 +46,14 @@ class ResPartner(models.Model):
             "reply_to": reply_to[self.id],
             "email_from": self.env.user.email,
         }
-        template = self.env.ref("altinkaya_reports.email_template_edi_send_statement")
+        if contact.lang == "tr_TR":
+            template = self.env.ref(
+                "altinkaya_reports.email_template_edi_send_statement"
+            )
+        else:
+            template = self.env.ref(
+                "altinkaya_reports.email_template_edi_send_statement_en"
+            )
         try:
             template.send_mail(self.id, force_send=True, email_values=email_values)
             self.env.cr.commit()  # commit after each mail sent
