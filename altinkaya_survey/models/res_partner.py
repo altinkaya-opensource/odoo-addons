@@ -55,7 +55,9 @@ class ResPartner(models.Model):
                 "altinkaya_reports.email_template_edi_send_statement_en"
             )
         try:
-            template.send_mail(self.id, force_send=True, email_values=email_values)
+            contact.message_post_with_template(
+                template_id=template.id,
+            )
             self.env.cr.commit()  # commit after each mail sent
         except Exception as e:
             raise Warning(_("Partner %s could not be sent: %s" % (self.name, e)))
