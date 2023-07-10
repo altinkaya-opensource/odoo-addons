@@ -90,12 +90,11 @@ class SurveyMapping(models.AbstractModel):
         UserInput = self.env["survey.user_input"]
 
         # Read or create survey user input, convert write vals to search domain
-        # survey_user_input = UserInput.search(
-        #     [(key, "=", value) for key, value in vals.items()],
-        #     limit=1,
-        #     order="id desc",
-        # )
-        survey_user_input = None
+        survey_user_input = UserInput.search(
+            [(key, "=", value) for key, value in vals.items()],
+            limit=1,
+            order="id desc",
+        )
         if not survey_user_input:
             survey_user_input = self.env["survey.user_input"].create(vals)
 
