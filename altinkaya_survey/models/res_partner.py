@@ -18,7 +18,9 @@ class ResPartner(models.Model):
             partners, msg="Mutabakat mailleri gonderiliyor..."
         ):
             try:
-                partner.send_reconciliation_mail(reply_to)
+                partner.with_context(lang=partner.lang).send_reconciliation_mail(
+                    reply_to
+                )
             except Exception as e:
                 unsent_partners.append("%s: %s" % (partner.name, e))
 

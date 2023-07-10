@@ -19,13 +19,13 @@ class SurveySurvey(models.Model):
         string="Invoice Survey",
         help="If checked, this survey will be used as default survey for invoices.",
     )
-    default_lang_id = fields.Many2one(
-        comodel_name="res.lang",
-        string="Default Language",
-        help="Default language for survey",
-        required=True,
-        domain=[("active", "=", True)],
-    )
+    # default_lang_id = fields.Many2one(
+    #     comodel_name="res.lang",
+    #     string="Default Language",
+    #     help="Default language for survey",
+    #     required=True,
+    #     domain=[("active", "=", True)],
+    # )
 
     url_shortener_id = fields.Many2one(
         "short.url.yourls",
@@ -44,8 +44,14 @@ class SurveySurvey(models.Model):
             domain += [("default_sale_survey", "=", True)]
         elif self.default_partner_survey:
             domain += [("default_partner_survey", "=", True)]
+        elif self.default_invoice_survey:
+            domain += [("default_invoice_survey", "=", True)]
 
-        if self.default_sale_survey or self.default_partner_survey:
+        if (
+            self.default_sale_survey
+            or self.default_partner_survey
+            or self.default_invoice_survey
+        ):
             exist_default = self.search(domain)
             if exist_default:
                 raise UserError(
@@ -58,7 +64,8 @@ class SurveySurvey(models.Model):
 
     @api.model
     def prepare_result(self, question, current_filters=None):
-        """Compute statistical data for questions by counting number of vote per choice on basis of filter"""
+        """Compute statistical data for questions by counting
+         number of vote per choice on basis of filter"""
         res = super(SurveySurvey, self).prepare_result(question, current_filters)
 
         # Calculate and return statistics for choice

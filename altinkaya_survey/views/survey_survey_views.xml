@@ -11,7 +11,7 @@
                     <field name="default_partner_survey"/>
                     <field name="default_invoice_survey"/>
                     <field name="url_shortener_id"/>
-                    <field name="default_lang_id"/>
+<!--                    <field name="default_lang_id"/>-->
                 </group>
             </xpath>
         </field>
