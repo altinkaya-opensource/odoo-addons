@@ -109,7 +109,8 @@ class SurveyMapping(models.AbstractModel):
         if survey.url_shortener_id and not survey_user_input.shortened_url:
             survey_user_input.write(
                 {
-                    "shortened_url": survey.url_shortener_id.shorten_url(survey_url),
+                    "shortened_url": survey.url_shortener_id.shorten_url(survey_url)
+                    or survey_url,
                 }
             )
             self.env.cr.commit()
