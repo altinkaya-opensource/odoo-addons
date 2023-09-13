@@ -9,7 +9,7 @@
     "author": "Samet Altuntaş",
     # "sequence": 350,
     "summary": "",
-    "depends": ["mail"],
+    "depends": ["mail", "sale"],
     # "external_dependencies": {"python": ["lxml", "bs4"]},
     "data": [],
 }

@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 import psycopg2
 import json
 
+
 class PostmarkController(http.Controller):
     _webhook_url = "/mail/postmark/webhook"
 
