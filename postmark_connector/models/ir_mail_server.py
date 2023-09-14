@@ -1,13 +1,9 @@
-# Copyright 2022 Samet Altuntaş (https://github.com/samettal)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 import re
 import threading
 
 from odoo import api, models, _
 from odoo.tools import ustr
-from email import message_from_string
-from email.policy import default
 from odoo.exceptions import except_orm, UserError
 from odoo.addons.postmark_connector.utils.pmmail import PMMail
 from email.header import decode_header
@@ -77,8 +73,8 @@ class IrMailServer(models.Model):
             mail_server = self.sudo().browse(mail_server_id)
         elif not host:
             mail_server = self.sudo().search([], order="sequence", limit=1)
-        if "postmark" in mail_server.smtp_host:
-            return mail_server
+            if "postmark" in mail_server.smtp_host:
+                return mail_server
         else:
             return super(IrMailServer, self).connect(
                 host=None,
@@ -160,19 +156,18 @@ class IrMailServer(models.Model):
                 if content_disposition and "attachment" in content_disposition:
                     attachments.append(part)
 
-        # We should decode the Subject
+        # We should decode some parts of message
         decoded_header = decode_header(message["Subject"])
         decoded_subject = decoded_header[0][0].decode(
             decoded_header[0][1] if decoded_header[0][1] else "utf8"
         )
-
         decoded_email_to = decode_email_header(message["To"])
+        decoded_email_from = decode_email_header(message['From'])
 
-        # And should decode
         try:
             postmark_mail = PMMail(
                 api_key=self.smtp_pass,
-                sender=message["From"],
+                sender=decoded_email_from,
                 to=decoded_email_to,
                 cc=message["Cc"],
                 bcc=message["Bcc"],

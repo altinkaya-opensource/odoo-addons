@@ -1,5 +1,3 @@
-# Copyright 2022 Samet Altuntaş (https://github.com/samettal)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import base64
 import logging
 import psycopg2
@@ -10,7 +8,6 @@ from odoo import _, api, models
 from odoo import tools
 from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 from odoo.tools.safe_eval import safe_eval
-from odoo.addons.postmark_connector.utils.pmmail import PMMail
 
 _logger = logging.getLogger(__name__)
 
@@ -21,9 +18,13 @@ class MailMail(models.Model):
     def send(self, auto_commit=False, raise_exception=False):
         for server_id, batch_ids in self._split_by_server():
             res = self.env["ir.mail_server"].connect(mail_server_id=server_id)
-            if "postmark" in res.smtp_host:  # TODO SAMET if type(res) == 'str' ekle
+            if (
+                isinstance(res, type(self.env["ir.mail_server"]))
+                and "postmark" in res.smtp_host
+            ):
+                self.sudo().write({"mail_server_id": res.id})
                 self.browse(batch_ids)._send(
-                    auto_commit=auto_commit, raise_exception=raise_exception, server=res
+                    auto_commit=auto_commit, raise_exception=raise_exception
                 )
                 _logger.info(
                     "Sent batch %s emails via mail server ID #%s",
@@ -34,8 +35,8 @@ class MailMail(models.Model):
                 return super(MailMail, self).send()
 
     @api.multi
-    def _send(self, auto_commit=False, raise_exception=False, server=None):
-        if "postmark" in server.smtp_host:
+    def _send(self, auto_commit=False, raise_exception=False):
+        if self.mail_server_id and "postmark" in self.mail_server_id.smtp_host:
             IrMailServer = self.env["ir.mail_server"]
             IrAttachment = self.env["ir.attachment"]
             for mail_id in self.ids:
@@ -158,7 +159,7 @@ class MailMail(models.Model):
 
                         processing_pid = email.pop("partner_id", None)
                         try:
-                            res = server.send_email_to_postmark(
+                            res = self.mail_server_id.send_email_to_postmark(
                                 msg,
                                 mail_server_id=mail.mail_server_id.id,
                             )

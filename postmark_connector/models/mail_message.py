@@ -1,5 +1,3 @@
-# Copyright 2022 Samet Altuntaş (https://github.com/samettal)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo import models, fields
 
 
