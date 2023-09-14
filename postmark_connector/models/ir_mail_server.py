@@ -162,11 +162,11 @@ class IrMailServer(models.Model):
             decoded_header[0][1] if decoded_header[0][1] else "utf8"
         )
         decoded_email_to = decode_email_header(message["To"])
-        decoded_email_from = decode_email_header(message['From'])
+        decoded_email_from = decode_email_header(message["From"])
 
         try:
             postmark_mail = PMMail(
-                api_key=self.smtp_pass,
+                api_key=self.smtp_pass,  # Here we use server's pass for postmark api key
                 sender=decoded_email_from,
                 to=decoded_email_to,
                 cc=message["Cc"],
@@ -175,7 +175,7 @@ class IrMailServer(models.Model):
                 html_body=html_body,
                 text_body=text_body,
                 attachments=attachments,
-                track_opens=False,
+                track_opens=True,
                 reply_to=message["Reply-To"],
             )
             postmark_message_id = postmark_mail.send()
