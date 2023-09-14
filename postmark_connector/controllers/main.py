@@ -1,6 +1,6 @@
 from odoo import http, registry, api, SUPERUSER_ID, _
 from odoo.http import request
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import psycopg2
 import json
 
@@ -12,9 +12,9 @@ class PostmarkController(http.Controller):
         route=_webhook_url, type="json", auth="public", methods=["POST"], csrf=False
     )
     def postmark_webhook(self, **kwargs):
-        # When an email opened there will be posting here from postmark api.
         db_name = request._cr.dbname
-
+        if not request.jsonrequest:
+            raise ValidationError(_("Postmark: Bad Request"))
         # Use a new cursor to avoid rollback that could be caused by an upper method
         try:
             db_registry = registry(db_name)
@@ -36,15 +36,25 @@ class PostmarkController(http.Controller):
         except psycopg2.Error:
             pass
         return True
-        # message_id = request.jsonrequest.get("MessageID")
-        # mail_message = (
-        #     request.env["mail.message"]
-        #     .sudo()
-        #     .search([("message_id", "=", message_id)], limit=1)
-        # )
-        #
-        # if mail_message:
-        #     mail_message.update({"state": "opened"})
-        #     return "OK"
-        # else:
-        #     raise UserError(_("Postmark: An error occured."))
+
+        postmark_api_message_id = request.jsonrequest.get("MessageID")
+        postmark_api_record_type = request.jsonrequest.get("RecordType")
+        if not (postmark_api_message_id and postmark_api_record_type):
+            raise ValidationError(_("Postmark: MessageId or RecordType is null"))
+
+        mail_message = (
+            request.env["mail.message"]
+            .sudo()
+            .search([("postmark_message_id", "=", postmark_api_message_id)], limit=1)
+        )
+
+        if not mail_message:
+            raise ValidationError(_("Postmark: No mail found"))
+
+        mail_message.write(
+            {
+                "postmark_api_state": postmark_api_record_type.lower(),
+            }
+        )
+
+        return True
