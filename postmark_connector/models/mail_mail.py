@@ -189,7 +189,7 @@ class MailMail(models.Model):
                                 "state": "sent",
                                 "message_id": mail.message_id,
                                 "failure_reason": False,
-                                "postmark_api_state": "sent"
+                                "postmark_api_state": "sent",
                             }
                         )
                         mail.mail_message_id.write({"postmark_message_id": res})

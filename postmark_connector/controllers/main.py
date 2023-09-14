@@ -35,7 +35,6 @@ class PostmarkController(http.Controller):
                 )
         except psycopg2.Error:
             pass
-        return True
 
         postmark_api_message_id = request.jsonrequest.get("MessageID")
         postmark_api_record_type = request.jsonrequest.get("RecordType")

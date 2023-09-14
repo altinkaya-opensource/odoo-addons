@@ -11,10 +11,7 @@
     "summary": "",
     "depends": ["mail", "sale"],
     # "external_dependencies": {"python": ["lxml", "bs4"]},
-    "data": [
-        "views/assets.xml",
-        "views/ir_mail_server_view.xml"
-    ],
+    "data": ["views/assets.xml", "views/ir_mail_server_view.xml"],
     "qweb": [
         "static/src/xml/postmark_mail_state.xml",
     ],
