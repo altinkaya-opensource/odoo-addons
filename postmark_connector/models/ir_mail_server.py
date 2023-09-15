@@ -12,6 +12,8 @@ from odoo.addons.base.models.ir_mail_server import (
     _test_logger,
 )
 from email.header import decode_header
+from email.utils import parseaddr
+
 
 
 _logger = logging.getLogger(__name__)
@@ -143,7 +145,10 @@ class IrMailServer(models.Model):
         )
         decoded_email_to = decode_email_header(message["To"])
         decoded_email_from = decode_email_header(message["From"])
-        if "@altinkaya.com.tr" not in decoded_email_from:
+
+        name, email = parseaddr(self.default_sender_signature)
+        signature_domain = email.split('@')[1]
+        if signature_domain not in decoded_email_from:
             decoded_email_from = self.default_sender_signature
         try:
             postmark_mail = PMMail(
