@@ -148,13 +148,13 @@ class IrMailServer(models.Model):
         try:
             postmark_mail = PMMail(
                 api_key=self.smtp_pass,  # Here we use server's pass for postmark api key
-                sender=decoded_email_from,
-                to=decoded_email_to,
+                sender="decoded_email_from",
+                to="decoded_email_to",
                 cc=message["Cc"],
                 bcc=message["Bcc"],
                 subject=decoded_subject,
-                html_body=html_body,
-                text_body=text_body,
+                html_body=None,
+                text_body=None,
                 attachments=attachments,
                 track_opens=True,
                 reply_to=message["Reply-To"],
@@ -163,7 +163,7 @@ class IrMailServer(models.Model):
 
         except Exception as e:
             mail_message.write({"postmark_api_state": "error"})
-            msg = _("Mail delivery failed via Postmark API: "+str(e))
+            msg = _("Mail delivery failed via Postmark API: " + str(e))
             _logger.info(msg)
             raise MailDeliveryException(_("Mail Delivery Failed"), msg)
         return postmark_message_id

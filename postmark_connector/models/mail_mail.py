@@ -22,19 +22,15 @@ class MailMail(models.Model):
             msg = mail.mail_message_id
             if msg.model != "sale.order":
                 continue
-            sale_order = self.env["sale.order"].search(
-                [
-                    ("id", "=", msg.res_id),
-                    ("order_state", "in", ("01_draft", "02_sent")),
-                ]
-            )
-            # TODO SAMET: add "if sale_order:"
-            new_state = (
-                "02_sent"
-                if mail.mail_message_id.postmark_api_state == "sent"
-                else "011_email_error"
-            )
-            sale_order.write({"order_state": new_state})
+            if msg.postmark_api_state == "error":
+                sale_order = self.env["sale.order"].search(
+                    [("id", "=", msg.res_id)], limit=1
+                )
+                sale_order.message_post(
+                    body=mail.failure_reason, message_type="notification"
+                )
+                if sale_order.order_state in ("01_draft", "02_sent"):
+                    sale_order.write({"order_state": "011_email_error"})
 
         return super()._postprocess_sent_message(
             success_pids=success_pids,
