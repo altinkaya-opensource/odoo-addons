@@ -159,8 +159,113 @@ class PMMail(object):
                 self.message_id = json.loads(jsontxt).get("MessageID", None)
                 return self.message_id
             else:
-                raise f"Postmark: While sending email, an error occured. Error code: {result.code}"
+                raise PMMailSendException(
+                    "Return code %d: %s" % (result.code, result.msg)
+                )
+
         except HTTPError as err:
-            raise f"Postmark: Http error occured. Error code: {err.code}"
+            if err.code == 401:
+                raise PMMailUnauthorizedException(
+                    "Sending Unauthorized - incorrect API key.", err
+                )
+            elif err.code == 422:
+                try:
+                    jsontxt = err.read().decode("utf8")
+                    jsonobj = json.loads(jsontxt)
+                    desc = jsonobj["Message"]
+                    error_code = jsonobj["ErrorCode"]
+                except KeyError:
+                    raise PMMailUnprocessableEntityException(
+                        "Unprocessable Entity: Description not given"
+                    )
+
+                if error_code == 406:
+                    raise PMMailInactiveRecipientException(
+                        "You tried to send email to a recipient that has been marked as inactive."
+                    )
+
+                raise PMMailUnprocessableEntityException(
+                    "Unprocessable Entity: %s" % desc
+                )
+            elif err.code == 500:
+                raise PMMailServerErrorException(
+                    "Internal server error at Postmark. Admins have been alerted.", err
+                )
         except URLError as err:
-            raise f'Postmark: URLError: Failed to reach the server: %s (See "inner_exception" for details)' % err.reason
+            if hasattr(err, "reason"):
+                raise PMMailURLException(
+                    'URLError: Failed to reach the server: %s (See "inner_exception" for details)'
+                    % err.reason,
+                    err,
+                )
+            elif hasattr(err, "code"):
+                raise PMMailURLException(
+                    'URLError: %d: The server couldn\'t fufill the request. (See "inner_exception" for details)'
+                    % err.code,
+                    err,
+                )
+            else:
+                raise PMMailURLException(
+                    'URLError: The server couldn\'t fufill the request. (See "inner_exception" for details)',
+                    err,
+                )
+
+
+class PMMailSendException(Exception):
+    """
+    Base Postmark send exception
+    """
+
+    def __init__(self, value, inner_exception=None):
+        self.parameter = value
+        self.inner_exception = inner_exception
+
+    def __str__(self):
+        return repr(self.parameter)
+
+
+class PMMailUnauthorizedException(PMMailSendException):
+    """
+    401: Unathorized sending due to bad API key
+    """
+
+    pass
+
+
+class PMMailUnprocessableEntityException(PMMailSendException):
+    """
+    422: Unprocessable Entity - usually an exception with either the sender
+    not having a matching Sender Signature in Postmark.  Read the message
+    details for further information
+    """
+
+    pass
+
+
+class PMMailInactiveRecipientException(PMMailSendException):
+    """
+    406: You tried to send a message to a recipient that has been marked as
+    inactive. If this was a batch operation, the rest of the messages were
+    still sent.
+    """
+
+    pass
+
+
+class PMMailServerErrorException(PMMailSendException):
+    """
+    500: Internal error - this is on the Postmark server side.  Errors are
+    logged and recorded at Postmark.
+    """
+
+    pass
+
+
+class PMMailURLException(PMMailSendException):
+    """
+    A URLError was caught - usually has to do with connectivity
+    and the ability to reach the server.  The inner_exception will
+    have the base URLError object.
+    """
+
+    pass

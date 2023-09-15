@@ -17,8 +17,11 @@ class MailMessage(models.Model):
             ("sent", "Sent"),
             ("open", "Open"),
             ("delivery", "Delivery"),
-            ("bounce", "Bounce"),
-            ("spamcomplaint", "Spam Complaint"),
+            ("bounce", "Bounce"),  # E posta hatalı
+            (
+                "spamcomplaint",
+                "Spam Complaint",
+            ),  # Müşteri, gönderdiğimiz maili spam olarak etiketledi
             ("click", "Link Click"),
             ("subscriptionchange", "Subscription Change"),
         ],

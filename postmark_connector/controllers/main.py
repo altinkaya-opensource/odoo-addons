@@ -55,5 +55,19 @@ class PostmarkController(http.Controller):
                 "postmark_api_state": postmark_api_record_type.lower(),
             }
         )
+        self._postprocess_webhook_resp(mail_message)
+        return True
 
+    def _postprocess_webhook_resp(self, mail_message):
+        if mail_message.model != "sale.order":
+            return True
+        sale_order = self.env["sale.order"].search(
+            [
+                ("id", "=", mail_message.res_id),
+                ("order_state", "in", ("01_draft", "02_sent")),
+            ]
+        )
+        if sale_order:
+            if mail_message.postmark_api_state == "error":
+                sale_order.write({"order_state": "011_error"})
         return True

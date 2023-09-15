@@ -15,7 +15,6 @@ from email.header import decode_header
 from email.utils import parseaddr
 
 
-
 _logger = logging.getLogger(__name__)
 
 
@@ -69,11 +68,7 @@ class IrMailServer(models.Model):
             )
 
     @api.model
-    def send_email_to_postmark(
-        self,
-        message,
-        mail_server_id=None,
-    ):
+    def send_email_to_postmark(self, message, mail_server_id=None, mail_message=None):
         # Use the default bounce address **only if** no Return-Path was
         # provided by caller.  Caller may be using Variable Envelope Return
         # Path (VERP) to detect no-longer valid email addresses.
@@ -147,7 +142,7 @@ class IrMailServer(models.Model):
         decoded_email_from = decode_email_header(message["From"])
 
         name, email = parseaddr(self.default_sender_signature)
-        signature_domain = email.split('@')[1]
+        signature_domain = email.split("@")[1]
         if signature_domain not in decoded_email_from:
             decoded_email_from = self.default_sender_signature
         try:
@@ -158,8 +153,8 @@ class IrMailServer(models.Model):
                 cc=message["Cc"],
                 bcc=message["Bcc"],
                 subject=decoded_subject,
-                html_body=html_body,
-                text_body=text_body,
+                html_body=None,
+                text_body=None,
                 attachments=attachments,
                 track_opens=True,
                 reply_to=message["Reply-To"],
@@ -167,5 +162,8 @@ class IrMailServer(models.Model):
             postmark_message_id = postmark_mail.send()
 
         except Exception as e:
-            raise MailDeliveryException(_("Postmark: Mail Delivery Failed"), message)
+            mail_message.write({"postmark_api_state": "error"})
+            msg = _("Mail delivery failed via Postmark API: "+str(e))
+            _logger.info(msg)
+            raise MailDeliveryException(_("Mail Delivery Failed"), msg)
         return postmark_message_id

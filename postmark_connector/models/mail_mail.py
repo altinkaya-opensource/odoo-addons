@@ -15,20 +15,32 @@ _logger = logging.getLogger(__name__)
 class MailMail(models.Model):
     _inherit = "mail.mail"
 
-    def _postprocess_sent_message(self, success_pids, failure_reason=False,
-                                  failure_type=None):
+    def _postprocess_sent_message(
+        self, success_pids, failure_reason=False, failure_type=None
+    ):
         for mail in self:
             msg = mail.mail_message_id
             if msg.model != "sale.order":
                 continue
-            sale_order = self.env["sale.order"].search([("id", "=", msg.res_id), ("order_state", "=", "01_draft")])
-            new_state = "02_sent" if mail.state == "sent" else "011_email_error"
+            sale_order = self.env["sale.order"].search(
+                [
+                    ("id", "=", msg.res_id),
+                    ("order_state", "in", ("01_draft", "02_sent")),
+                ]
+            )
+            # TODO SAMET: add "if sale_order:"
+            new_state = (
+                "02_sent"
+                if mail.mail_message_id.postmark_api_state == "sent"
+                else "011_email_error"
+            )
             sale_order.write({"order_state": new_state})
 
-        return super()._postprocess_sent_message(success_pids=success_pids,
-                                                 failure_reason=failure_reason,
-                                                 failure_type=failure_type)
-
+        return super()._postprocess_sent_message(
+            success_pids=success_pids,
+            failure_reason=failure_reason,
+            failure_type=failure_type,
+        )
 
     def send(self, auto_commit=False, raise_exception=False):
         for server_id, batch_ids in self._split_by_server():
@@ -177,12 +189,12 @@ class MailMail(models.Model):
                             res = self.mail_server_id.send_email_to_postmark(
                                 msg,
                                 mail_server_id=mail.mail_server_id.id,
+                                mail_message=mail.mail_message_id,
                             )
                             if processing_pid:
                                 success_pids.append(processing_pid)
                                 processing_pid = None
                         except AssertionError as error:
-                            mail.mail_message_id.write({"postmark_api_state": "error"})
                             if str(error) == IrMailServer.NO_VALID_RECIPIENT:
                                 failure_type = "RECIPIENT"
                                 # No valid recipient found for this particular
