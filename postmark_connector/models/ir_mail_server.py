@@ -1,46 +1,21 @@
-# Copyright 2022 Samet Altuntaş (https://github.com/samettal)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
-import re
 import threading
 
-from odoo import api, models, _
-from odoo.tools import ustr
-from email import message_from_string
-from email.policy import default
-from odoo.exceptions import except_orm, UserError
+from odoo import api, models, fields, _
 from odoo.addons.postmark_connector.utils.pmmail import PMMail
+from odoo.addons.base.models.ir_mail_server import (
+    extract_rfc2822_addresses,
+    is_ascii,
+    MailDeliveryException,
+    SMTP_TIMEOUT,
+    address_pattern,
+    _test_logger,
+)
 from email.header import decode_header
+from email.utils import parseaddr
 
 
 _logger = logging.getLogger(__name__)
-_test_logger = logging.getLogger("odoo.tests")
-
-SMTP_TIMEOUT = 60
-
-address_pattern = re.compile(r"([^ ,<@]+@[^> ,]+)")
-
-
-class MailDeliveryException(except_orm):
-    """Specific exception subclass for mail delivery errors"""
-
-    def __init__(self, name, value):
-        super(MailDeliveryException, self).__init__(name, value)
-
-
-def is_ascii(s):
-    return all(ord(cp) < 128 for cp in s)
-
-
-def extract_rfc2822_addresses(text):
-    """Returns a list of valid RFC2822 addresses
-    that can be found in ``source``, ignoring
-    malformed ones and non-ASCII ones.
-    """
-    if not text:
-        return []
-    candidates = address_pattern.findall(ustr(text))
-    return [c for c in candidates if is_ascii(c)]
 
 
 def decode_email_header(header_value):
@@ -58,6 +33,8 @@ def decode_email_header(header_value):
 
 class IrMailServer(models.Model):
     _inherit = "ir.mail_server"
+
+    default_sender_signature = fields.Char(string="Default Sender Signature")
 
     def connect(
         self,
@@ -77,8 +54,8 @@ class IrMailServer(models.Model):
             mail_server = self.sudo().browse(mail_server_id)
         elif not host:
             mail_server = self.sudo().search([], order="sequence", limit=1)
-        if "postmark" in mail_server.smtp_host:
-            return mail_server
+            if "postmark" in mail_server.smtp_host:
+                return mail_server
         else:
             return super(IrMailServer, self).connect(
                 host=None,
@@ -91,11 +68,7 @@ class IrMailServer(models.Model):
             )
 
     @api.model
-    def send_email_to_postmark(
-        self,
-        message,
-        mail_server_id=None,
-    ):
+    def send_email_to_postmark(self, message, mail_server_id=None, mail_message=None):
         # Use the default bounce address **only if** no Return-Path was
         # provided by caller.  Caller may be using Variable Envelope Return
         # Path (VERP) to detect no-longer valid email addresses.
@@ -160,31 +133,37 @@ class IrMailServer(models.Model):
                 if content_disposition and "attachment" in content_disposition:
                     attachments.append(part)
 
-        # We should decode the Subject
+        # We should decode some parts of message
         decoded_header = decode_header(message["Subject"])
         decoded_subject = decoded_header[0][0].decode(
             decoded_header[0][1] if decoded_header[0][1] else "utf8"
         )
-
         decoded_email_to = decode_email_header(message["To"])
+        decoded_email_from = decode_email_header(message["From"])
 
-        # And should decode
+        name, email = parseaddr(self.default_sender_signature)
+        signature_domain = email.split("@")[1]
+        if signature_domain not in decoded_email_from:
+            decoded_email_from = self.default_sender_signature
         try:
             postmark_mail = PMMail(
-                api_key=self.smtp_pass,
-                sender=message["From"],
-                to=decoded_email_to,
+                api_key=self.smtp_pass,  # Here we use server's pass for postmark api key
+                sender="decoded_email_from",
+                to="decoded_email_to",
                 cc=message["Cc"],
                 bcc=message["Bcc"],
                 subject=decoded_subject,
-                html_body=html_body,
-                text_body=text_body,
+                html_body=None,
+                text_body=None,
                 attachments=attachments,
-                track_opens=False,
+                track_opens=True,
                 reply_to=message["Reply-To"],
             )
             postmark_message_id = postmark_mail.send()
 
         except Exception as e:
-            raise MailDeliveryException(_("Postmark: Mail Delivery Failed"), message)
+            mail_message.write({"postmark_api_state": "error"})
+            msg = _("Mail delivery failed via Postmark API: " + str(e))
+            _logger.info(msg)
+            raise MailDeliveryException(_("Mail Delivery Failed"), msg)
         return postmark_message_id
