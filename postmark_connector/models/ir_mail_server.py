@@ -148,8 +148,8 @@ class IrMailServer(models.Model):
         try:
             postmark_mail = PMMail(
                 api_key=self.smtp_pass,  # Here we use server's pass for postmark api key
-                sender="decoded_email_from",
-                to="decoded_email_to",
+                sender=decoded_email_from,
+                to=decoded_email_to,
                 cc=message["Cc"],
                 bcc=message["Bcc"],
                 subject=decoded_subject,
