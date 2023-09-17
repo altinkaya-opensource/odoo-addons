@@ -23,7 +23,6 @@ import json
 _logger = logging.getLogger(__name__)
 
 
-
 class IrMailServer(models.Model):
     _inherit = "ir.mail_server"
 
@@ -39,7 +38,7 @@ class IrMailServer(models.Model):
         elif not host:
             mail_server = self.sudo().search([('active', '=', True)], order='sequence', limit=1)
         if "postmark" in mail_server.smtp_host:
-            return "postmark"
+            return None
 
         return super(IrMailServer, self).connect(host=None, port=None, user=None, password=None, encryption=None,
                                                  smtp_debug=False, mail_server_id=None, )
@@ -105,26 +104,11 @@ class IrMailServer(models.Model):
             message['From'] = encode_rfc2822_address_header(mail_server.default_sender_signature)
 
         try:
-            message_id = message['Message-Id']
             postmark = PostmarkClient(server_token=mail_server.smtp_pass)
             result = postmark.emails.send(message=message)
-            message_id = result['MessageID']
-            ErrorCode = result['ErrorCode']
-            SentTo = result['To']
-            SubmitDate = result['SubmittedAt']
 
         except Exception as e:
             msg = _("Mail delivery failed via Postmark API: " + str(e))
             _logger.info(msg)
             raise MailDeliveryException(_("Mail Delivery Failed"), msg)
-        return message_id
-
-
-        # # except Exception as e:
-        # #     params = (ustr(smtp_server), e.__class__.__name__, ustr(e))
-        # #     msg = _("Mail delivery failed via SMTP server '%s'.\n%s: %s") % params
-        # #     _logger.info(msg)
-        # #     raise MailDeliveryException(_("Mail Delivery Failed"), msg)
-        #
-        #
-        # return message_id
+        return result['MessageID']

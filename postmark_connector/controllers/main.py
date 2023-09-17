@@ -42,7 +42,7 @@ class PostmarkController(http.Controller):
             raise ValidationError(_("Postmark: MessageId or RecordType is null"))
 
         mail_message = (
-            request.env["mail.message"].sudo().search([("postmark_message_id", "=", postmark_api_message_id)], limit=1)
+            request.env["mail.message"].sudo().search([("message_id", "=", postmark_api_message_id)], limit=1)
         )
 
         if not mail_message:
