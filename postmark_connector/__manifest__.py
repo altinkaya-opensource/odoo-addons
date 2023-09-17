@@ -1,4 +1,3 @@
-# Copyright 2022 Samet Altuntaş (https://github.com/samettal)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Postmark Connector",
@@ -10,7 +9,7 @@
     # "sequence": 350,
     "summary": "",
     "depends": ["mail", "sale"],
-    # "external_dependencies": {"python": ["lxml", "bs4"]},
+    "external_dependencies": {"python": ["postmarker"]},
     "data": ["views/assets.xml", "views/ir_mail_server_view.xml"],
     "qweb": [
         "static/src/xml/postmark_mail_state.xml",

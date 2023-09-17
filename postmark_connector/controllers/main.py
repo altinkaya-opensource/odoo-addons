@@ -1,6 +1,6 @@
 from odoo import http, registry, api, SUPERUSER_ID, _
 from odoo.http import request
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 import psycopg2
 import json
 
@@ -42,19 +42,13 @@ class PostmarkController(http.Controller):
             raise ValidationError(_("Postmark: MessageId or RecordType is null"))
 
         mail_message = (
-            request.env["mail.message"]
-            .sudo()
-            .search([("postmark_message_id", "=", postmark_api_message_id)], limit=1)
+            request.env["mail.message"].sudo().search([("postmark_message_id", "=", postmark_api_message_id)], limit=1)
         )
 
         if not mail_message:
             raise ValidationError(_("Postmark: No mail found"))
 
-        mail_message.write(
-            {
-                "postmark_api_state": postmark_api_record_type.lower(),
-            }
-        )
+        mail_message.write({"postmark_api_state": postmark_api_record_type.lower()})
         self._postprocess_webhook_resp(postmark_api_record_type, mail_message)
 
         return True
