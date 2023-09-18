@@ -5,23 +5,14 @@ class MailMessage(models.Model):
     _inherit = "mail.message"
     _description = "Adds 'opened' state to mail.message through postmark integration"
 
-    postmark_message_id = fields.Char(
-        string="Postmark Message ID",
-        help="This field shows Postmark's message_id",
-        readonly=True,
-    )
-
     postmark_api_state = fields.Selection(
         selection=[
             ("error", "Error"),
             ("sent", "Sent"),
             ("open", "Open"),
             ("delivery", "Delivery"),
-            ("bounce", "Bounce"),  # E posta hatalı
-            (
-                "spamcomplaint",
-                "Spam Complaint",
-            ),  # Müşteri, gönderdiğimiz maili spam olarak etiketledi
+            ("bounce", "Bounce"),
+            ("spamcomplaint", "Spam Complaint"),
             ("click", "Link Click"),
             ("subscriptionchange", "Subscription Change"),
         ],
