@@ -42,7 +42,9 @@ class PostmarkController(http.Controller):
             raise ValidationError(_("Postmark: MessageId or RecordType is null"))
 
         mail_message = (
-            request.env["mail.message"].sudo().search([("message_id", "=", postmark_api_message_id)], limit=1)
+            request.env["mail.message"]
+            .sudo()
+            .search([("message_id", "=", postmark_api_message_id)], limit=1)
         )
 
         if not mail_message:
@@ -72,7 +74,10 @@ class PostmarkController(http.Controller):
                 bounced_email = request.jsonrequest.get("Email", "")
                 bounced_at = request.jsonrequest.get("BouncedAt", "")
                 formatted_bounced_at = bounced_at[:10]
-                chatter_msg = _("Email bounced: %s at %s") % (bounced_email, formatted_bounced_at)
+                chatter_msg = _("Email bounced: %s at %s") % (
+                    bounced_email,
+                    formatted_bounced_at,
+                )
             elif postmark_api_record_type == "SpamComplaint":
                 spammed_mail = request.jsonrequest.get("Email", "")
                 chatter_msg = _("%s marked your mail as spam") % spammed_mail
@@ -80,6 +85,9 @@ class PostmarkController(http.Controller):
                 recipient = request.jsonrequest.get("Recipient", "")
                 first_opened = request.jsonrequest.get("ReceivedAt", "")
                 formatted_opened_at = first_opened[:10]
-                chatter_msg = _("%s opened mail for first at %s") % (recipient, formatted_opened_at)
+                chatter_msg = _("%s opened mail for first at %s") % (
+                    recipient,
+                    formatted_opened_at,
+                )
             sale_order.message_post(body=chatter_msg, message_type="notification")
         return
