@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="postmark_chatter_asset" name="Postmark Chatter Asset" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="application/javascript"
+                    src="/postmark_connector/static/src/js/postmark_chatter.js"/>
+        </xpath>
+    </template>
+
+</odoo>
