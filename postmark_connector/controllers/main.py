@@ -83,24 +83,24 @@ class PostmarkController(http.Controller):
                 chatter_msg = _("%s marked your mail as spam") % spammed_mail
             elif postmark_api_record_type == "Open":
                 client = request.jsonrequest.get("Client", "")
-                client_str = client["Company"] + " " + client["Name"]
+                client_str = client.get("Company") + " " + client.get("Name")
                 platform = request.jsonrequest.get("Platform", "")
-                OS = request.jsonrequest.get("OS", "")["Name"]
+                OS = request.jsonrequest.get("OS", "").get("Name")
                 geo = request.jsonrequest.get("Geo", "")
-                Country = geo["Country"]
-                City = geo["City"]
+                Country = geo.get("Country","")
+                City = geo.get("City","")
                 recipient = request.jsonrequest.get("Recipient", "")
                 at_date = request.jsonrequest.get("ReceivedAt", "")
                 date = iso_to_datetime(at_date)
                 chatter_msg = _("%s %s opened messsage. Location: %s,%s Device:%s %s %s") % (recipient,date,City,Country,OS,platform,client_str)
             elif postmark_api_record_type == "Click":
                 client = request.jsonrequest.get("Client", "")
-                client_str = client["Company"] + " " + client["Name"]
+                client_str = client.get("Company") + " " + client.get("Name")
                 platform = request.jsonrequest.get("Platform", "")
                 link = request.jsonrequest.get("OriginalLink", "")
                 geo = request.jsonrequest.get("Geo", "")
-                Country = geo["Country"]
-                City = geo["City"]
+                Country = geo.get("Country")
+                City = geo.get("City")
                 recipient = request.jsonrequest.get("Recipient", "")
                 at_date = request.jsonrequest.get("ReceivedAt", "")
                 date = iso_to_datetime(at_date)
