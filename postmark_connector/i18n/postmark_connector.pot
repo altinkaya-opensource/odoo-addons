@@ -19,19 +19,19 @@ msgstr ""
 #: code:addons/postmark_connector/controllers/main.py:136
 #, python-format
 msgid "%s %s at %s clicked. Location: %s,%s Device:%s %s %s"
-msgstr "%s, %s tarihinde %s linkine tıkladı. Konum: %s,%s Cihaz:%s %s %s"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/controllers/main.py:120
 #, python-format
 msgid "%s %s opened messsage. Location: %s,%s Device:%s %s %s %s"
-msgstr "%s, %s tarihinde mesajı okudu. Konum: %s,%s Cihaz:%s %s %s %s"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/controllers/main.py:115
 #, python-format
 msgid "%s marked your mail as spam"
-msgstr "%s spam olarak işaretledi"
+msgstr ""
 
 #. module: postmark_connector
 #: model:ir.model,name:postmark_connector.model_mail_message
@@ -48,51 +48,51 @@ msgstr ""
 #. module: postmark_connector
 #: model:ir.model.fields,field_description:postmark_connector.field_ir_mail_server__default_sender_signature
 msgid "Default Sender Signature"
-msgstr "Varsayılan Gönderici İmzası"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Delivery"
-msgstr "İletildi"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/controllers/main.py:108
 #, python-format
 msgid "Email bounced: %s at %s"
-msgstr "Email geri döndü: %s %s"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Error"
-msgstr "Hata"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Link Click"
-msgstr "Linke Tıklandı"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/models/ir_mail_server.py:163
 #, python-format
 msgid "Mail Delivery Failed"
-msgstr "Mail Gönderimi Başarısız"
+msgstr ""
 
 #. module: postmark_connector
 #: model:ir.model,name:postmark_connector.model_ir_mail_server
 msgid "Mail Server"
-msgstr "Posta sunucusu"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/models/ir_mail_server.py:161
 #, python-format
 msgid "Mail delivery failed via Postmark API: "
-msgstr "Postmark API ile mail gönderimi başarısız oldu: "
+msgstr ""
 
 #. module: postmark_connector
 #: model:ir.model.fields,field_description:postmark_connector.field_account_invoice_send__postmark_api_state
@@ -101,32 +101,32 @@ msgstr "Postmark API ile mail gönderimi başarısız oldu: "
 #: model:ir.model.fields,field_description:postmark_connector.field_mail_message__postmark_api_state
 #: model:ir.model.fields,field_description:postmark_connector.field_survey_mail_compose_message__postmark_api_state
 msgid "Mail message's state"
-msgstr "E-posta durumu"
+msgstr ""
 
 #. module: postmark_connector
 #: code:addons/postmark_connector/controllers/main.py:102
 #, python-format
 msgid "Message delivered at: %s"
-msgstr "Mail iletildi: %s"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Open"
-msgstr "Okundu"
+msgstr ""
 
 #. module: postmark_connector
 #: model:ir.model,name:postmark_connector.model_mail_mail
 msgid "Outgoing Mails"
-msgstr "Giden Postalar"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Sent"
-msgstr "Gönderildi"
+msgstr ""
 
 #. module: postmark_connector
 #: model:ir.model.fields,help:postmark_connector.field_account_invoice_send__postmark_api_state
@@ -135,18 +135,18 @@ msgstr "Gönderildi"
 #: model:ir.model.fields,help:postmark_connector.field_mail_message__postmark_api_state
 #: model:ir.model.fields,help:postmark_connector.field_survey_mail_compose_message__postmark_api_state
 msgid "Shows the state of mail messages according to postmark api"
-msgstr "Mail durumunu postmark api'ye göre gösterir"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Spam Complaint"
-msgstr "Spam"
+msgstr ""
 
 #. module: postmark_connector
 #: selection:mail.compose.message,postmark_api_state:0
 #: selection:mail.message,postmark_api_state:0
 #: selection:survey.mail.compose.message,postmark_api_state:0
 msgid "Subscription Change"
-msgstr "Adres Değiştirildi"
+msgstr ""
