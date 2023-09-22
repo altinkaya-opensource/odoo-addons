@@ -1,8 +1,9 @@
 from odoo import http, registry, api, SUPERUSER_ID, _
+from odoo.tools import frozendict
 from odoo.http import request
 import psycopg2
 import json
-from datetime import datetime, timezone
+from datetime import datetime
 
 
 def iso_to_datetime(iso_string):
@@ -15,7 +16,11 @@ class PostmarkController(http.Controller):
     _webhook_url = "/mail/postmark/webhook"
 
     @http.route(
-        route=_webhook_url, type="json", auth="public", methods=["POST"], csrf=False
+        route=_webhook_url,
+        type="json",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
     )
     def postmark_webhook(self, **kwargs):
         postmark_api_message_id = request.jsonrequest.get("MessageID")
@@ -83,6 +88,10 @@ class PostmarkController(http.Controller):
             .sudo()
             .search([("id", "=", mail_message.res_id)], limit=1)
         )
+
+        # Update context for translation
+        lang = sale_order.partner_id.lang
+        request.env.context = frozendict(request.env.context, lang=lang)
 
         if sale_order and postmark_api_record_type in following_states_for_sale:
             chatter_msg = ""
