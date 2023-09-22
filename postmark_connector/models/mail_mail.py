@@ -19,8 +19,6 @@ class MailMail(models.Model):
                 sale_order.message_post(
                     body=mail.failure_reason, message_type="notification"
                 )
-                if sale_order.order_state in ("01_draft", "02_sent"):
-                    sale_order.write({"order_state": "011_email_error"})
 
         return super()._postprocess_sent_message(
             success_pids=success_pids,
