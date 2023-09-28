@@ -3,13 +3,18 @@ from odoo.tools import frozendict
 from odoo.http import request
 import psycopg2
 import json
-from datetime import datetime
+from datetime import datetime as dt
+from datetime import timedelta as td
 
 
 def iso_to_datetime(iso_string):
+    # We always show date and time in this same format in any chatter
+    delta = td(hours=3)
     if iso_string.endswith("Z"):
-        iso_string = iso_string[:-1] + "+00:00"
-    return datetime.fromisoformat(iso_string)
+        iso_string = iso_string[:-1]
+    date = dt.fromisoformat(iso_string)
+    date += delta
+    return date.strftime("%d/%m/%Y %H:%M:%S")
 
 
 class PostmarkController(http.Controller):
@@ -74,40 +79,29 @@ class PostmarkController(http.Controller):
         :param mail_message: mail.message
         :return: bool
         """
-        following_states_for_sale = (
+        following_states = (
             "Delivery",
             "Bounce",
             "SpamComplaint",
             "Open",
             "Click",
         )
-        if mail_message.model != "sale.order":
-            return
-        sale_order = (
-            request.env["sale.order"]
-            .sudo()
-            .search([("id", "=", mail_message.res_id)], limit=1)
-        )
+        related_model = mail_message.model
+        related_record = request.env[related_model].sudo().search([("id", "=", mail_message.res_id)], limit=1)
 
-        # Update context for translation
-        lang = sale_order.partner_id.lang
-        request.env.context = frozendict(request.env.context, lang=lang)
-
-        if sale_order and postmark_api_record_type in following_states_for_sale:
+        if related_model and postmark_api_record_type in following_states:
             chatter_msg = ""
 
             if postmark_api_record_type == "Delivery":
-                delivered_at = request.jsonrequest.get("DeliveredAt", "")
-                formatted_delivered_at = delivered_at[0:10]
-                chatter_msg = _("Message delivered at: %s") % formatted_delivered_at
+                delivered_at = iso_to_datetime(request.jsonrequest.get("DeliveredAt", ""))
+                chatter_msg = _("Message delivered at: %s") % delivered_at
 
             elif postmark_api_record_type == "Bounce":
                 bounced_email = request.jsonrequest.get("Email", "")
-                bounced_at = request.jsonrequest.get("BouncedAt", "")
-                formatted_bounced_at = bounced_at[:10]
+                bounced_at = iso_to_datetime(request.jsonrequest.get("BouncedAt", ""))
                 chatter_msg = _("Email bounced: %s at %s") % (
                     bounced_email,
-                    formatted_bounced_at,
+                    bounced_at,
                 )
 
             elif postmark_api_record_type == "SpamComplaint":
@@ -118,7 +112,7 @@ class PostmarkController(http.Controller):
                 client = request.jsonrequest.get("Client", {})
                 geo = request.jsonrequest.get("Geo", {})
                 chatter_msg = _(
-                    "%s %s opened messsage. Location: %s,%s Device:%s %s %s %s"
+                    "%s opened messsage at %s. Location: %s,%s Device:%s %s %s %s"
                 ) % (
                     request.jsonrequest.get("Recipient", ""),
                     iso_to_datetime(request.jsonrequest.get("ReceivedAt", "")),
@@ -146,6 +140,6 @@ class PostmarkController(http.Controller):
                     client.get("Name", ""),
                 )
             if chatter_msg:
-                sale_order.message_post(body=chatter_msg, message_type="notification")
+                related_record.message_post(body=chatter_msg, message_type="notification")
 
         return True

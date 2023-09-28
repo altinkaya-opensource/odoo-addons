@@ -12,13 +12,14 @@ class MailMail(models.Model):
     ):
         for mail in self:
             msg = mail.mail_message_id
-            if mail.state == "exception" and msg.model == "sale.order":
-                sale_order = self.env["sale.order"].search(
+            if mail.state == "exception":
+                related_record = self.env[msg.model].search(
                     [("id", "=", msg.res_id)], limit=1
                 )
-                sale_order.message_post(
-                    body=mail.failure_reason, message_type="notification"
-                )
+                if related_record:
+                    related_record.message_post(
+                        body=mail.failure_reason, message_type="notification"
+                    )
 
         return super()._postprocess_sent_message(
             success_pids=success_pids,
