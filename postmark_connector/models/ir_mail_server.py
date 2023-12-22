@@ -51,13 +51,13 @@ class IrMailServer(models.Model):
             return None
 
         return super(IrMailServer, self).connect(
-            host=None,
-            port=None,
-            user=None,
-            password=None,
-            encryption=None,
-            smtp_debug=False,
-            mail_server_id=None,
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            encryption=encryption,
+            smtp_debug=smtp_debug,
+            mail_server_id=mail_server_id,
         )
 
     @api.model
@@ -92,14 +92,14 @@ class IrMailServer(models.Model):
         if "postmark" not in mail_server.smtp_host:
             return super(IrMailServer, self).send_email(
                 message,
-                mail_server_id=None,
-                smtp_server=None,
-                smtp_port=None,
-                smtp_user=None,
-                smtp_password=None,
-                smtp_encryption=None,
-                smtp_debug=False,
-                smtp_session=None,
+                mail_server_id=mail_server_id,
+                smtp_server=smtp_server,
+                smtp_port=smtp_port,
+                smtp_user=smtp_user,
+                smtp_password=smtp_password,
+                smtp_encryption=smtp_encryption,
+                smtp_debug=smtp_debug,
+                smtp_session=smtp_session,
             )
         # Use the default bounce address **only if** no Return-Path was
         # provided by caller.  Caller may be using Variable Envelope Return
