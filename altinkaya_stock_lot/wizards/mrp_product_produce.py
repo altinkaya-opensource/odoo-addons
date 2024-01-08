@@ -1,6 +1,6 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, _
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
 
@@ -49,3 +49,16 @@ class MrpProductProduce(models.TransientModel):
             if real_line:
                 self.produce_line_ids -= line
         return res
+
+
+class MrpProductProduceLine(models.TransientModel):
+    _inherit = "mrp.product.produce.line"
+
+    # We've added this field to prevent selection of a lot that is not in the
+    # raw materials location of the production order.
+    location_src_id = fields.Many2one(
+        "stock.location",
+        "Raw Materials Location",
+        related="product_produce_id.production_id.location_src_id",
+        readonly=True,
+    )

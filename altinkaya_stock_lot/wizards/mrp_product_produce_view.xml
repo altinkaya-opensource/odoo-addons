@@ -8,6 +8,15 @@
             <field name="lot_id" position="attributes">
                 <attribute name="attrs">{'invisible': True, 'required': False}</attribute>
             </field>
+
+            <xpath expr="//field[@name='produce_line_ids']/tree/field[@name='product_tracking']" position="after">
+                <field name="location_src_id" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='produce_line_ids']/tree/field[@name='lot_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_create_edit':True}</attribute>
+                <attribute name="domain">[('product_id', '=', product_id), ('quant_ids.location_id', '=', location_src_id)]</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
