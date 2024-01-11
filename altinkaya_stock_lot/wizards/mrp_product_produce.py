@@ -21,7 +21,7 @@ class MrpProductProduce(models.TransientModel):
                 for x in self.produce_line_ids
             ]
         ):
-            raise UserError(_("Some products are tracked by lots but no lot is set."))
+                raise UserError(_("Some products are tracked by lots but no lot is set."))
 
         if self.product_tracking != "none" and not self.lot_id:
             #  If lot created within label printing wizard, use it
