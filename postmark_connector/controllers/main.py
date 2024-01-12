@@ -87,6 +87,7 @@ class PostmarkController(http.Controller):
             "Click",
         )
         related_model = mail_message.model
+        # Todo: fix related model False key error on environment
         related_record = request.env[related_model].sudo().search([("id", "=", mail_message.res_id)], limit=1)
 
         if related_model and postmark_api_record_type in following_states:
