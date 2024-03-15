@@ -12,7 +12,7 @@ class MailMail(models.Model):
     ):
         for mail in self:
             msg = mail.mail_message_id
-            if mail.state == "exception":
+            if mail.state == "exception" and msg.model and msg.failure_reason:
                 related_record = self.env[msg.model].search(
                     [("id", "=", msg.res_id)], limit=1
                 )
