@@ -86,6 +86,7 @@ class SurveyMapping(models.AbstractModel):
         """This method is for creating survey url for active record.
         Also it checks the existing survey url so that it does not create
         duplicate survey url for same record."""
+        # Todo: add context so it won't get computed every time
         base_url = self._get_base_url()
         UserInput = self.env["survey.user_input"]
 
