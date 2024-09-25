@@ -5,10 +5,10 @@
             <t t-foreach="docs" t-as="o">
                 <t t-translation="off">
                     <t t-set="name_first_line" t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name" />
-                    <t t-set="name_second_line" t-value="o.name[40:] if name_first_line and len(name_first_line) == 40 else ''" />
+                    <t t-set="name_second_line" t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''" />
 ^XSETCUT,DOUBLECUT,0
-^Q20,3
-^W55
+^Q25,1
+^W60
 ^H10
 ^P1
 ^S4
@@ -23,13 +23,14 @@
 ^L
 Dy2-me-dd
 Th:m:s
-Y23,15,cicek_7052
+Y71,60,cicek_7052
 Dy2-me-dd
 Th:m:s
-BE,143,0,4,10,100,0,1,<t t-esc="o.barcode" />
-AT,32,128,42,42,0,0BE,B,0,[<t t-esc="o.default_code"/>]
-AD,30,180,1,1,0,0E,<t t-esc="name_first_line"/>
-AD,372,130,1,1,0,0E,<t t-esc="o.responsible_employee_id.name"/>
+BE,177,29,5,13,116,0,1,<t t-esc="o.barcode" />
+AE,48,165,1,1,0,0E,[<t t-esc="o.default_code"/>]
+AE,44,212,1,1,0,0E,<t t-esc="name_first_line[:38]"/>
+AE,524,170,1,1,0,0E,<t t-esc="o.responsible_employee_id.name"/>
+<t t-if="name_second_line">AE,43,255,1,1,0,0E,<t t-esc="name_second_line"/></t>
 E
                 </t>
             </t>
