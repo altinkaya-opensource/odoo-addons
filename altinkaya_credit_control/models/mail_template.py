@@ -7,7 +7,7 @@ from base64 import b64encode
 class MailTemplate(models.Model):
     _inherit = "mail.template"
 
-    @api.multi
+    
     def generate_email(self, res_ids, fields=None):
         """
         If the template is for credit control communication, then

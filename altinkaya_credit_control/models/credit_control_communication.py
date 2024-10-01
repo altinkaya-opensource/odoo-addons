@@ -25,10 +25,10 @@ class CreditControlCommunication(models.Model):
         copy=False,
         index=True,
         default="draft",
-        track_visibility="onchange",
+        tracking=True,
     )
 
-    @api.one
+    
     def action_send_email(self):
         """
         Send account follow-up email to the customer.
