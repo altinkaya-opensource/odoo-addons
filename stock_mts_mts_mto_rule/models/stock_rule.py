@@ -28,7 +28,7 @@ class StockRule(models.Model):
                             'rule: %s! It should not be the same.') % (rule.name,)
                     raise ValidationError(msg)
 
-    @api.multi
+    
     def _calculate_qtys_mts_mts_mto(self, product, product_qty, product_uom, values):
         """
             MTS1   MTS2   MTO
