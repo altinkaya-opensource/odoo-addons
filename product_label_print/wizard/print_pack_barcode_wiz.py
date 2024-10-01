@@ -57,7 +57,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         string="User Printer Type", compute="_get_user_printer_type", store=False
     )
 
-    @api.one
+    
     @api.depends("product_label_ids")
     def _compute_single_label(self):
         if self.product_label_ids:
@@ -152,7 +152,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         )
         return res
 
-    @api.multi
+    
     def generate_labels(self):
         last_label = self.product_label_ids[0]
         leap_label = False
@@ -251,7 +251,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         self.label_ids = [(6, 0, Label_Res)]
         return False
 
-    @api.multi
+    
     def show_label(self):
         self.generate_labels()
         datas = {
@@ -271,7 +271,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
             .report_action(docids=self)
         )
 
-    @api.multi
+    
     def print_label(self):
         self.generate_labels()
         printer = self.env.user.context_def_label_printer

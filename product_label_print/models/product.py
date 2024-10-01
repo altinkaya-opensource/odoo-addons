@@ -68,7 +68,7 @@ class LabelTwoinrow(models.TransientModel):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    @api.multi
+    
     def action_print_label(self):
         aw_obj = self.env["ir.actions.act_window"].with_context(
             {"default_restrict_single": True}
@@ -79,7 +79,7 @@ class ProductProduct(models.Model):
         action.update({"context": {"default_restrict_single": True}})
         return action
 
-    @api.multi
+    
     def action_print_molding_label(self):
         molding_label = self.env.ref("product_label_print.label_product_product_kalip")
         printer_id = molding_label.printing_printer_id

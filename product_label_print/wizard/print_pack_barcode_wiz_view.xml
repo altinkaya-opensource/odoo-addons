@@ -42,7 +42,7 @@
             </field>
         </record>
 
-
+<!-- 
         <act_window
            id="action_print_pack_barcode_wiz"
            name="Product Label Print"
@@ -51,7 +51,7 @@
            view_mode="form"
            res_model="print.pack.barcode.wiz"
            src_model="product.product"/>
-           
+            -->
        	
 
     </data>
