@@ -7,7 +7,7 @@ import base64
 
 model_field_mapping = {
     "sale.order": "sale_id",
-    "account.invoice": "invoice_id",
+    "account.move": "invoice_id",
     "res.partner": "partner_id",
 }
 
@@ -61,7 +61,7 @@ class SurveyMapping(models.AbstractModel):
         action["domain"] = [(model_field_mapping[self._name], "=", self.id)]
         return action
 
-    @api.multi
+    
     def _compute_survey_url(self):
         """Base method for computing survey url. This method is overridden in
         models that inherit from this mixin."""
@@ -118,7 +118,7 @@ class SurveyMapping(models.AbstractModel):
 
         return survey_user_input.shortened_url or survey_url
 
-    @api.multi
+    
     def _compute_survey_url_qr(self):
         """Compute survey url qr code for active record"""
         for rec in self:
@@ -142,7 +142,7 @@ class SurveyResPartnerMixin(models.Model):
         translate=True,
     )
 
-    @api.multi
+    
     def _compute_reconciliation_replied(self):
         default_survey_id = self._get_default_survey("default_partner_survey")
         for partner in self:
@@ -169,7 +169,7 @@ class SurveyResPartnerMixin(models.Model):
         partner_ids = user_inputs.mapped("partner_id").ids
         return [("id", operator, partner_ids)]
 
-    @api.multi
+    
     def _compute_survey_url(self):
         default_survey_id = self._get_default_survey("default_partner_survey")
         for record in self:
@@ -198,8 +198,8 @@ class SurveySaleOrderMixin(models.Model):
 
 
 class SurveyAccountInvoiceMixin(models.Model):
-    _name = "account.invoice"
-    _inherit = ["account.invoice", "survey.mapping"]
+    _name = "account.move"
+    _inherit = ["account.move", "survey.mapping"]
 
     def _compute_survey_url(self):
         default_survey_id = self._get_default_survey("default_invoice_survey")

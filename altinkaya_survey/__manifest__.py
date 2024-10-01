@@ -10,7 +10,7 @@
     - Auto compute survey url on sale order
     - Easy access to survey user input from sale order
     """,
-    "version": "12.0.1.0.0",
+    "version": "13.0.1.0.0",
     "category": "Marketing",
     "website": "https://github.com/yibudak",
     "author": "Yiğit Budak",
@@ -19,7 +19,7 @@
     "installable": True,
     "depends": ["survey", "sale", "crm", "account", "altinkaya_reports"],
     "data": [
-        "templates/disable_odoo_branding.xml",
+        # "templates/disable_odoo_branding.xml", # TODO: migration check if this is necessary
         "templates/star_rating.xml",
         "templates/clean_survey_fill.xml",
         "templates/clean_survey_print.xml",

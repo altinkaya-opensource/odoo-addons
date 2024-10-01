@@ -12,7 +12,7 @@
         </template>
 
         <!-- SURVEY FORM -->
-        <template id="survey_form_seperator" inherit_id="survey.page">
+        <template id="survey_form_seperator" inherit_id="survey.question">
             <!-- Add seperator between question blocks -->
             <xpath expr="//div[@class='js_errzone alert alert-danger']" position="after">
                 <t t-if="page.question_ids[-1] != question">

@@ -12,7 +12,7 @@ class SurveyUserInputLine(models.Model):
         compute="_compute_general_answer",
     )
 
-    @api.multi
+    
     def _compute_general_answer(self):
         for record in self:
             if record.question_id.type == "simple_choice":

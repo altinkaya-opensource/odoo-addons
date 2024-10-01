@@ -12,11 +12,11 @@ class SurveyUserInput(models.Model):
     )
 
     invoice_id = fields.Many2one(
-        comodel_name="account.invoice",
+        comodel_name="account.move",
         string="Invoice",
     )
 
-    type = fields.Selection(
+    input_type = fields.Selection(
         selection_add=[
             ("qrcode", "QR Code"),
         ]

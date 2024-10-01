@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    @api.multi
+    
     def action_multi_send_reconciliation_mail(self):
         partners = self
         unsent_partners = []

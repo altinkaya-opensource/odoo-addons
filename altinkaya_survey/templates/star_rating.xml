@@ -95,7 +95,7 @@
         </template>
 
         <!-- SURVEY FORM -->
-        <template id="survey_form_star_rating" inherit_id="survey.page">
+        <template id="survey_form_star_rating" inherit_id="survey.question">
             <xpath expr="//div[@t-field='question.description']" position="after">
                 <t t-if="question.type == 'star_rating'">
                     <t t-call="altinkaya_survey.star_rating"/>

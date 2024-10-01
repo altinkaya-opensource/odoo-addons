@@ -7,7 +7,7 @@ class SurveyQuestion(models.Model):
     _inherit = "survey.question"
     """This inheritance adds Star Rating question type to survey module."""
 
-    type = fields.Selection(
+    question_type = fields.Selection(
         selection_add=[("star_rating", "Star Rating")],
     )
 
@@ -17,7 +17,6 @@ class SurveyQuestion(models.Model):
         help="Number of stars to be displayed in the survey.",
     )
 
-    @api.multi
     def validate_star_rating(self, post, answer_tag):
         self.ensure_one()
         errors = {}

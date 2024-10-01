@@ -7,7 +7,7 @@
         <field name="model">survey.question</field>
         <field name="arch" type="xml">
             <xpath expr="//div[@class='col-lg-6 offset-lg-3 o_preview_questions']">
-                <div attrs="{'invisible': [('type', '!=', 'star_rating')]}">
+                <div attrs="{'invisible': [('question_type', '!=', 'star_rating')]}">
                     <i class="fa fa-star fa-2x" role="img"
                        aria-label="Star Rating" title="Star Rating"/>
                     <i class="fa fa-star fa-2x" role="img"
@@ -23,8 +23,8 @@
 
             <xpath expr="//label[@for='validation_email']" position="after">
                 <separator />
-                <label for="star_count" attrs="{'invisible': [('type', '!=', 'star_rating')]}"/>
-                <field name="star_count" attrs="{'invisible': [('type', '!=', 'star_rating')]}"/>
+                <label for="star_count" attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"/>
+                <field name="star_count" attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"/>
             </xpath>
 
         </field>
