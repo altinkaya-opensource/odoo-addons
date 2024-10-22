@@ -35,9 +35,9 @@
                 <field name="mto_rule_id"
                     groups="stock.group_adv_location"
                     attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
-                <field name="do_not_split_percentage"
+                <!-- <field name="do_not_split_percentage"
                     groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
+                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/> -->
             </field>
         </field>
     </record>
