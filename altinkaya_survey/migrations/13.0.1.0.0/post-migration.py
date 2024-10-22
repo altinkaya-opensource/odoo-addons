@@ -8,12 +8,12 @@ def _fill_survey_user_input(env):
     for u_input in user_inputs:
         env.cr.execute(
             """
-            SELECT * from survey_user_input WHERE id = %s
+            SELECT * from survey_user_input WHERE id = %s and old_invoice_id in (select id from account_move);
             """,
             (u_input.id,),
         )
         data = env.cr.dictfetchall()
-        if data[0].get("old_invoice_id"):
+        if data and data[0].get("old_invoice_id"):
             u_input.invoice_id = data[0].get("old_invoice_id")
 
 
