@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <record id="website_rewrite_view_inherit_form" model="ir.ui.view">
+        <field name="name">website.rewrite.inherit.form</field>
+        <field name="model">website.rewrite</field>
+        <field name="inherit_id" ref="website.view_website_rewrite_form"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="product_tmpl_id"/>
+            </field>
+        </field>
+    </record>
+</data>

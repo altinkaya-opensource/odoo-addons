@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_website_500_errors" model="ir.ui.view">
+        <field name="name">website.500.errors.tree</field>
+        <field name="model">website.500.errors</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="request_method"/>
+                <field name="hit_count"/>
+                <field name="website_id"/>
+                <field name="resolved"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_website_500_errors_form" model="ir.ui.view">
+        <field name="name">website.500.errors.form</field>
+        <field name="model">website.500.errors</field>
+        <field name="arch" type="xml">
+            <form string="Website 500 Error">
+                <header>
+                    <button name="action_create_redirect"
+                            string="Create Redirection"
+                            type="object"
+                            attrs="{'invisible': [('resolved', '=', True)]}"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="True"/>
+                        <field name="request_method" readonly="True"/>
+                        <field name="hit_count" readonly="True"/>
+                        <field name="website_id" readonly="True"/>
+                        <field name="resolved" readonly="True"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_website_500_errors" model="ir.actions.act_window">
+        <field name="name">Website 500 Errors</field>
+        <field name="res_model">website.500.errors</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_website_500_errors" name="500 Errors"
+              parent="website.menu_website_global_configuration"
+              action="action_website_500_errors" sequence="99"/>
+</odoo>

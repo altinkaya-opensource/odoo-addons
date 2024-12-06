@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <record id="website_cache_500_errors_form" model="ir.ui.view">
+        <field name="name">website.catch.500.errors.form.inherit</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <field name="default_lang_id" position="after">
+                <field name="catch_500_errors"/>
+            </field>
+        </field>
+    </record>
+</data>
