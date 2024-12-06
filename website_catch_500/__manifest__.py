@@ -3,10 +3,10 @@
 {
     "name": "Website Catch 500 Errors",
     "summary": "Catch All 500 Errors and Log Them",
-    "description": "This module is developed to handle 500 errors."
-                   " It logs all 500 errors and shows them in the backend."
-                   " When any product or category is renamed,"
-                   " it will automatically adds redirections to the new url.",
+    "description": "This module is designed to handle 500 errors."
+                   " It logs all 500 errors and displays them in the back-end."
+                   " Additionally, when any product or category is renamed,"
+                   " it automatically adds redirections to the new URL.",
     "development_status": "Beta",
     "version": "16.0.1.0.1",
     "author": "Ismail Cagan Yilmaz",
