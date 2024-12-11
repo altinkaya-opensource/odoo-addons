@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_website_500_errors,access_website_500_errors,model_website_500_errors,website.group_website_designer,1,1,1,1
-access_wizard_create_redirect_from_500,access_wizard_create_redirect_from_500,model_wizard_create_redirection_from_500,website.group_website_designer,1,1,1,1

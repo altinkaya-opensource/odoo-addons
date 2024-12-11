@@ -9,7 +9,6 @@
                 <field name="request_method"/>
                 <field name="hit_count"/>
                 <field name="website_id"/>
-                <field name="resolved"/>
             </tree>
         </field>
     </record>
@@ -18,20 +17,12 @@
         <field name="model">website.500.errors</field>
         <field name="arch" type="xml">
             <form string="Website 500 Error">
-                <header>
-                    <button name="action_create_redirect"
-                            string="Create Redirection"
-                            type="object"
-                            attrs="{'invisible': [('resolved', '=', True)]}"
-                            class="oe_highlight"/>
-                </header>
                 <sheet>
                     <group>
                         <field name="name" readonly="True"/>
                         <field name="request_method" readonly="True"/>
                         <field name="hit_count" readonly="True"/>
                         <field name="website_id" readonly="True"/>
-                        <field name="resolved" readonly="True"/>
                     </group>
                 </sheet>
             </form>
