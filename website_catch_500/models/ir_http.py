@@ -9,8 +9,8 @@ class HttpInherit(models.AbstractModel):
 
     @classmethod
     def _get_error_html(cls, env, code, values):
-        if code == 500:
-        # if code == 500 or code == "page_500"
+        if code == 500 or code == "page_500":
+            # if code == 500 or code == "page_500"
             website = request.website
             if website and website.catch_500_errors:
                 website._catch_500_error(request.httprequest)

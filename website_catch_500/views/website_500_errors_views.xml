@@ -5,10 +5,10 @@
         <field name="model">website.500.errors</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
                 <field name="request_method"/>
-                <field name="hit_count"/>
                 <field name="website_id"/>
+                <field name="http_param"/>
+                <field name="hit_count"/>
             </tree>
         </field>
     </record>
@@ -19,10 +19,10 @@
             <form string="Website 500 Error">
                 <sheet>
                     <group>
-                        <field name="name" readonly="True"/>
                         <field name="request_method" readonly="True"/>
-                        <field name="hit_count" readonly="True"/>
                         <field name="website_id" readonly="True"/>
+                        <field name="http_param" readonly="True"/>
+                        <field name="hit_count"/>
                     </group>
                 </sheet>
             </form>

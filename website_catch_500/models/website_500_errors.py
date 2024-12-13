@@ -21,6 +21,7 @@ class Website500Errors(models.Model):
         ],
         string="Request Method",
     )
+    http_param = fields.Char(string="HTTP Request Param")
     hit_count = fields.Integer(string="Hit Count")
     website_id = fields.Many2one(
         comodel_name="website",
