@@ -1,2 +1,9 @@
-"id","group_id:id","name","model_id","perm_create","perm_unlink","perm_write","perm_read"
-"productmerge_all","group_productmerge","Merge product variants","product.merge.wizard",1,1,1,1
+id,group_id:id,name,model_id:id,perm_create,perm_unlink,perm_write,perm_read
+productmerge_all,group_productmerge,Merge product variants,product_merge_wizard.model_product_merge_wizard,1,1,1,1
+productmerge_attribute_lines,group_productmerge,Merge product variants,product_merge_wizard.model_product_merge_wizard_attribute_line,1,1,1,1
+productmerge_product_lines_group,group_productmerge,Merge product variants,product_merge_wizard.model_product_merge_wizard_product_line,1,1,1,1
+productmove_all,group_productmerge,Move product variants,product_merge_wizard.model_product_move_wizard,1,1,1,1
+
+
+
+

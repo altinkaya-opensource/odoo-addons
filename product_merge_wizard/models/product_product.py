@@ -13,5 +13,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from . import wizard
-from . import models
+from odoo import api, models
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    @api.depends("product_template_attribute_value_ids")
+    def _compute_combination_indices(self):
+        if self._context.get("merging_products"):
+            for product in self:
+                product.combination_indices = False
+        else:
+            return super(ProductProduct, self)._compute_combination_indices()

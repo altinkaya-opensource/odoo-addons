@@ -1,13 +1,13 @@
 """
 Created on Nov 27, 2017
+Updated on Dec 28, 2024
 
-@author: dogan
+@authors: dogan, umithan-guldemir
 """
 
 
-from odoo import models, fields, api
+from odoo import api, exceptions, fields, models
 from odoo.tools.translate import _
-from odoo import exceptions
 
 
 class ProductMoveWizard(models.TransientModel):
@@ -15,9 +15,11 @@ class ProductMoveWizard(models.TransientModel):
     _description = "Product Move Wizard"
 
     product_id = fields.Many2one(
-        "product.product", "Product", default=lambda self: self._default_product()
+        "product.product", "Product",
+        default=lambda self: self._default_product()
     )
-    product_tmpl_id = fields.Many2one("product.template", "Product Name", required=True)
+    product_tmpl_id = fields.Many2one("product.template",
+                                      "Product Name", required=True)
     value_ids = fields.Many2many(
         "product.attribute.value", string="Attribute Value IDs"
     )
@@ -59,14 +61,15 @@ class ProductMoveWizard(models.TransientModel):
                     (
                         "id",
                         "in",
-                        self.product_tmpl_id.attribute_line_ids.mapped("value_ids.id"),
+                        self.product_tmpl_id.attribute_line_ids.mapped(
+                            "value_ids.id"),
                     ),
                     ("attribute_id", "not in", existing_attribute_ids),
                 ]
             }
         }
 
-    @api.multi
+    # @api.multi
     def action_move(self):
         self.ensure_one()
         self.product_id.write(
