@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="delivery_send_batch_email" model="ir.ui.view">
             <field name="name">delivery.send.batch.email.form</field>
             <field name="model">delivery.send.batch.email</field>
@@ -15,12 +14,12 @@
                 </form>
             </field>
         </record>
-
-        <act_window id="action_delivery_send_batch_email"
-            multi="True"
-            key2="client_action_multi" name="Send E-mails To Customer"
-            res_model="delivery.send.batch.email" src_model="stock.picking"
-            view_mode="form" target="new" view_type="form" />
-
+        <record id="action_delivery_send_batch_email" model="ir.actions.act_window">
+            <field name="name">Send E-mails To Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.send.batch.email</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
     </data>
 </odoo>

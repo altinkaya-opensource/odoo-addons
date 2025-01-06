@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_delivery_region_tree" model="ir.ui.view">
         <field name="name">view.delivery.region.tree</field>
@@ -41,7 +41,7 @@
             </p>
         </field>
     </record>
-<!--    <menuitem id="delivery_region_menu" action="delivery_integration_base.action_delivery_region"-->
-<!--              parent="stock.menu_delivery" sequence="1"/>-->
+   <!-- <menuitem id="delivery_region_menu" action="action_delivery_region" -->
+             <!-- parent="stock.menu_delivery" sequence="1"/> -->
 
 </odoo>

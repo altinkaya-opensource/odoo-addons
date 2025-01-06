@@ -10,10 +10,9 @@
             <field name="carrier_barcode_type" />
             <field name="barcode_text_1" />
             <field name="attach_barcode" />
-            <field name="default_printer_id" />
+            <!-- <field name="default_printer_id" /> -->
             <field name="payment_type" />
             <field name="deci_type" />
-
         </field>
 
         <field name="product_id" position="after">
@@ -27,11 +26,9 @@
             <field name="fuel_surcharge_percentage" />
             <field name="environment_fee_per_kg" />
             <field name="postal_charge_percentage" />
-            <field name="Emergency_fee_per_kg" />
+            <field name="emergency_fee_per_kg" />
             <field name="tracking_url_prefix_no_integration" />
             <field name="delivery_deadline_no_integration" />
-
-
         </field>
 
         </field>

@@ -1,7 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import models, fields, api, _
-from odoo.addons import decimal_precision as dp
 from odoo.tools import float_is_zero
 import logging
 
@@ -13,7 +12,7 @@ class SaleOrderLine(models.Model):
 
     volume = fields.Float(
         string="Volume (in litre)",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_line_weight_volume",
         store=True,
         readonly=True,
@@ -21,7 +20,7 @@ class SaleOrderLine(models.Model):
 
     weight = fields.Float(
         string="Weight (in kg)",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_line_weight_volume",
         store=True,
         readonly=True,
@@ -29,7 +28,7 @@ class SaleOrderLine(models.Model):
 
     deci = fields.Float(
         string="Deci",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_deci",
     )
 

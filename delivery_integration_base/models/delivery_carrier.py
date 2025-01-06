@@ -1,5 +1,9 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo import models, fields, api, _
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError
@@ -33,7 +37,7 @@ class DeliveryCarrier(models.Model):
         default=False,
         help="If checked, barcode will be attached to picking as a file.",
     )
-    currency_id = fields.Many2one("res.currency", string="Currency", required=True)
+    currency_id = fields.Many2one("res.currency", string="Currency")
     ref_sequence_id = fields.Many2one("ir.sequence", string="Reference Sequence")
     send_sms_customer = fields.Boolean(string="Send SMS to Customer", default=False)
     url_shortener_id = fields.Many2one("short.url.yourls", string="URL Shortener")
@@ -136,29 +140,27 @@ class DeliveryCarrier(models.Model):
         Update integrated pickings in a batch
         :return:
         """
-        # Todo: implement this method
-        return True
-        # pickings = self.env["stock.picking"].search(
-        #     [
-        #         (
-        #             "carrier_id.delivery_type",
-        #             "not in",
-        #             [False, "fixed", "base_on_rule"],
-        #         ),
-        #         ("carrier_tracking_ref", "!=", False),
-        #         ("date_done", ">", fields.Date.today() - timedelta(days=5)),
-        #         (
-        #             "delivery_state",
-        #             "in",
-        #             ["shipping_recorded_in_carrier", "in_transit"],
-        #         ),
-        #     ]
-        # )
-        #
-        # for picking in pickings:
-        #     method = "%s_tracking_state_update" % picking.delivery_type
-        #     if hasattr(picking.carrier_id, method):
-        #         getattr(picking.carrier_id, method)(picking)
+        pickings = self.env["stock.picking"].search(
+            [
+                (
+                    "carrier_id.delivery_type",
+                    "not in",
+                    [False, "fixed", "base_on_rule"],
+                ),
+                ("carrier_tracking_ref", "!=", False),
+                ("date_done", ">", fields.Date.today() - timedelta(days=5)),
+                (
+                    "delivery_state",
+                    "in",
+                    ["shipping_recorded_in_carrier", "in_transit"],
+                ),
+            ]
+        )
+        
+        for picking in pickings:
+            method = "%s_tracking_state_update" % picking.delivery_type
+            if hasattr(picking.carrier_id, method):
+                getattr(picking.carrier_id, method)(picking)
 
     def _sms_notificaton_send(self, picking):
         """
