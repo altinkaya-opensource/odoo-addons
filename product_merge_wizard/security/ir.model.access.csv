@@ -3,7 +3,3 @@ productmerge_all,group_productmerge,Merge product variants,product_merge_wizard.
 productmerge_attribute_lines,group_productmerge,Merge product variants,product_merge_wizard.model_product_merge_wizard_attribute_line,1,1,1,1
 productmerge_product_lines_group,group_productmerge,Merge product variants,product_merge_wizard.model_product_merge_wizard_product_line,1,1,1,1
 productmove_all,group_productmerge,Move product variants,product_merge_wizard.model_product_move_wizard,1,1,1,1
-
-
-
-

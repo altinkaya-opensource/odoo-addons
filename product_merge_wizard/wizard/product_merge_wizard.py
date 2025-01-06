@@ -84,7 +84,7 @@ class ProductMergeWizard(models.TransientModel):
             ]
         }
 
-        new_product_tmpl_id.with_context({"create_product_product": False}).write(vals)
+        new_product_tmpl_id.with_context(create_product_product=False).write(vals)
 
         for product_line in self.product_line_ids:
             product_line.product_id.product_template_attribute_value_ids = [
@@ -149,7 +149,8 @@ class ProductMergeWizard(models.TransientModel):
                 continue
 
             query = (
-                "SELECT column_name FROM information_schema.columns WHERE table_name LIKE '{}'".format(table)
+                "SELECT column_name FROM information_schema.columns "
+                f"WHERE table_name LIKE '{table}'"
             )
             self.env.cr.execute(query, ())
             columns = []
@@ -187,7 +188,9 @@ class ProductMergeWizard(models.TransientModel):
             else:
                 with mute_logger("odoo.sql_db"), self.env.cr.savepoint():
                     query = (
-                        'UPDATE "{table}" SET {column} = %s WHERE {column} = %s'.format(**query_dic)
+                        'UPDATE "{table}" SET {column} = %s WHERE {column} = %s'.format(
+                            **query_dic
+                        )
                     )
                     self.env.cr.execute(
                         query,
@@ -211,7 +214,8 @@ class ProductMergeWizard(models.TransientModel):
                     return ids.write({field_id: new_product_tmpl_id.id})
             except psycopg2.Error:
                 # updating fails, most likely due to a violated unique constraint
-                # keeping record with nonexistent partner_id is useless, better delete it
+                # keeping record with nonexistent partner_id is useless, better
+                # delete it
                 return ids.unlink()
 
         update_records("ir.attachment", src=product_tmpl_id, field_model="res_model")
@@ -236,9 +240,7 @@ class ProductMergeWizard(models.TransientModel):
 
             domain = [(record.name, "=", f"product.template,{product_tmpl_id.id}")]
             model_ids = proxy_model.search(domain)
-            values = {
-                record.name: f"product.template,{new_product_tmpl_id.id}"
-            }
+            values = {record.name: f"product.template,{new_product_tmpl_id.id}"}
             model_ids.write(values)
 
     def _update_values(self, product_tmpl_id, new_product_tmpl_id):
@@ -272,7 +274,7 @@ class ProductMergeAttributeLine(models.TransientModel):
 
     wizard_id = fields.Many2one("product.merge.wizard", string="Wizard")
     attribute_id = fields.Many2one("product.attribute", string="Attribute")
-    required = fields.Boolean("Required")
+    required = fields.Boolean()
     value_ids = fields.Many2many(
         "product.attribute.value",
         string="Values",

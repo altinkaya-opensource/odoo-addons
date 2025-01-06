@@ -25,4 +25,4 @@ class ProductProduct(models.Model):
             for product in self:
                 product.combination_indices = False
         else:
-            return super(ProductProduct, self)._compute_combination_indices()
+            return super()._compute_combination_indices()

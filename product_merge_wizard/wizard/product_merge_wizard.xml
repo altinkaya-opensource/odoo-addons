@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <record id="view_product_merge_wizard_form" model="ir.ui.view">
             <field name="name">product.merge.wizard.form</field>
             <field name="model">product.merge.wizard</field>
@@ -8,26 +7,42 @@
                 <form string="Merge Products">
                     <sheet>
                         <h1>
-                            <field name="product_tmpl_id" domain="[('categ_id','not ilike','CNC Kesim')]" placeholder="Select product as merge target"/>
+                            <field
+              name="product_tmpl_id"
+              domain="[('categ_id','not ilike','CNC Kesim')]"
+              placeholder="Select product as merge target"
+            />
                         </h1>
                         <group>
-                            <field name="attribute_value_ids" widget="many2many_tags"/>
+                            <field name="attribute_value_ids" widget="many2many_tags" />
                             <field name="attribute_line_ids">
                                 <tree editable="bottom">
-                                    <field name="attribute_id"/>
-                                    <field name="value_ids" widget="many2many_tags"/>
+                                    <field name="attribute_id" />
+                                    <field name="value_ids" widget="many2many_tags" />
                                 </tree>
                             </field>
                             <field name="product_line_ids">
                                 <tree editable="bottom">
-                                    <field name="product_id" domain="[('categ_id','not ilike','CNC Kesim')]" />
-                                    <field name="value_ids" widget="many2many_tags" domain="[('id','in',parent.attribute_value_ids)]"/>
+                                    <field
+                  name="product_id"
+                  domain="[('categ_id','not ilike','CNC Kesim')]"
+                />
+                                    <field
+                  name="value_ids"
+                  widget="many2many_tags"
+                  domain="[('id','in',parent.attribute_value_ids)]"
+                />
                                 </tree>
                             </field>
                         </group>
                         <footer>
-                            <button name="action_merge" type="object" string="Merge" class="oe_highlight"/>
-                            <button string="Cancel" class="oe_link" special="cancel"/>
+                            <button
+              name="action_merge"
+              type="object"
+              string="Merge"
+              class="oe_highlight"
+            />
+                            <button string="Cancel" class="oe_link" special="cancel" />
                         </footer>
                     </sheet>
                 </form>
@@ -39,15 +54,16 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.merge.wizard</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="view_product_merge_wizard_form"/>
+            <field name="view_id" ref="view_product_merge_wizard_form" />
             <field name="context">{'default_key': 'value'}</field>
             <field name="target">new</field>
         </record>
 
-        <menuitem id="menu_product_merge_wizard"
-            action="product_merge_wizard_action"
-            parent="sale.product_menu_catalog"
-            sequence="30"
-            groups="product_merge_wizard.group_productmerge"/>
-    </data>
+        <menuitem
+    id="menu_product_merge_wizard"
+    action="product_merge_wizard_action"
+    parent="sale.product_menu_catalog"
+    sequence="30"
+    groups="product_merge_wizard.group_productmerge"
+  />
 </odoo>
