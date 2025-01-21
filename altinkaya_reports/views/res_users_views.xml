@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<data>
+		<record model="ir.ui.view" id="view_users_form_simple_modif_context">
+        <field name="name">res.users.form.printing.extra</field>
+        <field name="model">res.users</field>
+        <field
+        name="inherit_id"
+        ref="base_report_to_printer.view_users_form_simple_modif"
+      />
+        <field name="arch" type="xml">
+                    <xpath expr="//field[@name='printing_printer_id']" position="after">
+                    	<field name="context_def_label_printer" />
+                   </xpath>
+        </field>
+    </record>
+
+
+
+</data>
+</odoo>

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <template id="report_picking_altinkaya" inherit_id="stock.report_picking">
+            <xpath expr="//t[@t-call='web.html_container']" position="replace">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.html_container">
+                        <t t-call="web.basic_layout">
+                            <div class="header">
+                                <table
+                  class="table-condensed"
+                  style="border-color: #000000;margin-right: 10px;margin-left: 10px;margin-bottom: 0px;margin-top: 10px;width: 100%;"
+                  border="2"
+                >
+                                    <tbody>
+                                        <tr>
+                                            <td
+                        style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                      >
+                                                <h2
+                          style="margin-top: 2px;margin-bottom: 2px;"
+                        >
+                                                    <span t-field="o.name" />
+                                                </h2>
+                                                <span
+                          style="margin-top: 2px;margin-bottom: 2px;"
+                          t-field="o.picking_type_id"
+                        />
+                                            </td>
+                                            <td
+                        style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                      >
+                                                <svg
+                          xml:space="preserve"
+                          width="12mm"
+                          height="9mm"
+                          version="1.1"
+                          style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                          viewBox="0 0 1200 900"
+                        ><defs>
+  <style type="text/css"><![CDATA[ .fil0 {fill:#E5097F}]]></style></defs><g
+                            id="Katman_x0020_1"
+                          ><metadata id="CorelCorpID_0Corel-Layer" />
+                                                    <path
+                              class="fil0"
+                              d="M688 693c37,18 67,49 86,86 21,-5 107,-30 161,-86 62,-65 71,-131 20,-181 -50,-51 -116,-42 -181,20 -56,54 -80,139 -86,161zm-148 -12l0 0c-11,-19 -55,-96 -53,-174 2,-90 42,-143 114,-143 71,0 112,53 113,143 2,78 -42,156 -53,174 -19,-6 -40,-10 -61,-10 -21,0 -41,4 -60,10zm-114 97l0 0c19,-37 50,-67 87,-86 -6,-21 -30,-106 -86,-161 -65,-62 -131,-71 -181,-20 -51,50 -42,117 20,181 54,56 139,80 160,86zm-344 -772l0 0 1036 0c41,0 74,33 74,74l0 814 -93 0c2,-8 3,-18 3,-27 0,-72 -53,-112 -143,-114 -78,-2 -155,42 -174,53 6,19 10,39 10,60 0,10 -1,19 -2,28l-386 0c-1,-9 -2,-18 -2,-28 0,-21 4,-42 10,-61 -18,-11 -96,-55 -174,-53 -90,1 -143,42 -143,113 0,11 1,20 3,29l-93 0 0 -814c0,-41 33,-74 74,-74z"
+                            /></g>
+                                    </svg>
+                                            </td>
+                                            <td
+                        style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                      >
+                                                <img
+                          t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
+                          style="width:300px;height:50px;"
+                        />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="page">
+                                <div>
+                                    <div style="font-size:10px;">
+                                        <br />
+                                        <div
+                      t-if="o.picking_type_id.code=='incoming' and o.partner_id"
+                    >
+                                            <span>
+                                                <strong>Tedarikçi Adresi:</strong>
+                                                <span style="font-size:14px;">
+                                                    <t
+                            t-esc="o.partner_id.display_name"
+                          />
+                                                </span>
+                                                <t t-esc="o.partner_id.street" />
+                                                <t t-esc="o.partner_id.street2" />
+                                                <t t-esc="o.partner_id.city" />
+                                                <t t-esc="o.partner_id.state_id.name" />
+                                                <t
+                          t-esc="o.partner_id.country_id.name"
+                        />
+                                            </span>
+                                        </div>
+                                        <div
+                      t-if="o.picking_type_id.code=='internal' and o.partner_id"
+                    >
+                                            <span>
+                                                <strong>Depo Adresi:</strong>
+                                                <span style="font-size:14px;">
+                                                    <t
+                            t-esc="o.partner_id.display_name"
+                          />
+                                                </span>
+                                                <t t-esc="o.partner_id.street" />
+                                                <t t-esc="o.partner_id.street2" />
+                                                <t t-esc="o.partner_id.city" />
+                                                <t t-esc="o.partner_id.state_id.name" />
+                                                <t
+                          t-esc="o.partner_id.country_id.name"
+                        />
+                                            </span>
+                                        </div>
+                                        <div
+                      t-if="o.picking_type_id.code=='outgoing' and o.partner_id"
+                    >
+                                            <span>
+                                                <strong>Müşteri Adresi:</strong>
+                                                <span style="font-size:14px;">
+                                                    <t
+                            t-esc="o.partner_id.display_name"
+                          />
+                                                </span>
+                                                <t t-esc="o.partner_id.street" />
+                                                <t t-esc="o.partner_id.street2" />
+                                                <t t-esc="o.partner_id.city" />
+                                                <t t-esc="o.partner_id.state_id.name" />
+                                                <t
+                          t-esc="o.partner_id.country_id.name"
+                        />
+                                            </span>
+
+                                        </div>
+                                        <div
+                      t-if="o.move_lines and o.move_lines[0].partner_id and o.move_lines[0].partner_id.id != o.partner_id.id"
+                    >
+                                            <span>
+                                                <strong>Teslimat Adresi:</strong>
+                                                <span style="font-size:14px;">
+                                                    <t
+                            t-esc="o.move_lines[0].partner_id.display_name"
+                          />
+                                                </span>
+                                                <t
+                          t-esc="o.move_lines[0].partner_id.street"
+                        />
+                                                <t
+                          t-esc="o.move_lines[0].partner_id.street2"
+                        />
+                                                <t
+                          t-esc="o.move_lines[0].partner_id.city"
+                        />
+                                                <t
+                          t-esc="o.move_lines[0].partner_id.state_id.name"
+                        />
+                                                <t
+                          t-esc="o.move_lines[0].partner_id.name"
+                        />
+                                            </span>
+                                        </div>
+                                        <div
+                      t-if="o.picking_type_id.code != 'internal' and (not o.move_lines or not o.move_lines[0].partner_id) and o.picking_type_id.warehouse_id.partner_id"
+                    >
+                                            <span>
+                                                <strong>Depo Adresi:</strong>
+                                                <span style="font-size:14px;">
+                                                    <t
+                            t-esc="o.picking_type_id.warehouse_id.partner_id.display_name"
+                          />
+                                                </span>
+                                                <t
+                          t-esc="o.picking_type_id.warehouse_id.partner_id.street"
+                        />
+                                                <t
+                          t-esc="o.picking_type_id.warehouse_id.partner_id.street2"
+                        />
+                                                <t
+                          t-esc="o.picking_type_id.warehouse_id.partner_id.city"
+                        />
+                                                <t
+                          t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name"
+                        />
+                                                <t
+                          t-esc="o.picking_type_id.warehouse_id.partner_id.country_id.name"
+                        />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div t-if="o.carrier_id">
+                                    <span
+                    style="font-size:14px;"
+                    t-field="o.carrier_id"
+                  />
+                                </div>
+                                <div t-if="o.note" style="font-size:14px;">
+                                    Not:
+                                    <span style="font-size:14px;" t-field="o.note" />
+                                </div>
+                                <div t-if="o.sale_note" style="font-size:14px;">
+                                    Satış Notu:
+                                    <span
+                    style="font-size:14px;"
+                    t-field="o.sale_note"
+                  />
+                                </div>
+                                <table
+                  class="table table-condensed"
+                  style=";margin-bottom: 2px;"
+                >
+                                    <thead>
+                                        <tr style="font-size:10px;">
+                                            <th>
+                                                <strong>Sipariş (kaynak)</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Durumu</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Sorumlusu</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Tarih</strong>
+                                            </th>
+                                            <th>
+                                                <strong
+                        >Satış Temsilcisi <!-- TODO: satış temsilcisi yok?--></strong>
+                                            </th>
+
+                                            <th name="td_sched_date_h">
+                                                <strong>Planlanan Tarih</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="font-size:12px;">
+                                            <td>
+                                                <span t-field="o.origin" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.x_durum" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.hazirlayan" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.date" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.sale_id.create_uid" />
+                                            </td>
+
+                                            <td name="td_sched_date">
+                                                <span t-field="o.scheduled_date" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <strong>Ürün</strong>
+                                            </th>
+                                            <th class="text-right">
+                                                <strong>Miktar</strong>
+                                            </th>
+                                            <t
+                        t-if="o.picking_type_id.code != 'incoming'"
+                      >
+                                                <th>
+                                                    <strong>Kaynak</strong>
+                                                </th>
+                                            </t>
+                                            <t
+                        t-if="o.picking_type_id.code != 'outgoing'"
+                      >
+                                                <th>
+                                                    <strong>Hedef</strong>
+                                                </th>
+                                            </t>
+                                            <th>
+                                                <strong>Barkod</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Rezerve Konum</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.move_lines" t-as="move">
+                                            <t>
+                                                <td>
+                                                    <span style="font-size:13px;">
+                                                        <t
+                              t-esc="move.product_id.display_name"
+                            />
+                                                    </span>
+                                                </td>
+                                                <td
+                          class="text-right"
+                          style="font-size:12px;"
+                        >
+
+                                                    <t>
+                                                        <t
+                              t-if="move.product_uom.category_id.id ==1"
+                            >
+                                                            <t
+                                t-esc="'%.0f'%move.product_uom_qty"
+                              />
+                                                            <span
+                                t-field="move.product_uom"
+                              />
+                                                        </t>
+                                                        <t
+                              t-if="not(move.product_uom.category_id.id ==1)"
+                            >
+                                                            <span
+                                t-field="move.product_uom_qty"
+                              />
+                                                            <span
+                                t-field="move.product_uom"
+                              />
+                                                        </t>
+
+                                                    </t>
+                                                </td>
+                                                <t
+                          t-if="o.picking_type_id.code != 'outgoing'"
+                        >
+                                                    <td>
+                                                        <span
+                              t-field="move.location_dest_id"
+                            />
+                                                    </td>
+                                                </t>
+                                                <t
+                          t-if="o.picking_type_id.code != 'incoming'"
+                        >
+                                                    <td style="line-height: 1;">
+                                                        <span style="font-size:12px;">
+                                                            <span
+                                t-field="move.location_id"
+                              />
+                                                            <br />Stokta:
+                                                            <t
+                                t-esc="'%.0f'%move.product_id.qty_available"
+                              />
+                                                            <span />
+                                                            <span
+                                t-field="move.product_id.uom_id.name"
+                              />
+                                                            <br />
+                                                        </span>
+
+                                                    </td>
+                                                </t>
+                                                <td style="width: 180px;">
+                                                    <span
+                            t-if="move.product_id and move.product_id.barcode"
+                          >
+                                                        <img
+                              t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', move.product_id.barcode, 360, 80)"
+                              style="width:178px;height:40px"
+                            />
+                                                    </span>
+                                                </td>
+
+                                                <t t-if="move.has_move_lines">
+                                                    <td style="line-height: 1;">
+                                                        <ul style="list-style:none;">
+                                                            <li
+                                t-foreach="move.move_line_ids"
+                                t-as="quant"
+                              >
+                                                                <span
+                                  style="font-size:11px;"
+                                >
+                                                                    <t
+                                    t-esc="quant.location_id.name"
+                                  />:
+                                                                    <t
+                                    t-esc="quant.product_uom_qty"
+                                  />
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </t>
+
+                                            </t>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+
+                            <div class="footer">
+
+                                <div
+                  class="text-center"
+                  style="border-top: 1px solid black;"
+                >
+                                    Yazdıran:
+                                    <span t-field="user.name" />
+                                    Tarih:
+                                    <span
+                    t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"
+                  />
+                                </div>
+                            </div>
+
+
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+
+    <data noupdate="1">
+        <template id="report_picking_altinkayaB">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+
+        <template id="report_picking_altinkayaC">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaD">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaE">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaF">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaG">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaH">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+        <template id="report_picking_altinkayaS">
+            <t t-call="altinkaya_reports.report_picking_altinkaya" />
+        </template>
+
+    </data>
+</odoo>

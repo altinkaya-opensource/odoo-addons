@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <report
+      id="label_stock_location"
+      model="stock.location"
+      string="Localation Label (GODEX)"
+      name="altinkaya_reports.location_report_godex"
+      file="altinkaya_reports.location_report_godex"
+      report_type="qweb-text"
+    />
+        <data>
+
+            <report
+        id="stock_pickingaltinkaya"
+        model="stock.picking"
+        string="Depo Fişi Ekrana"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkaya"
+        file="altinkaya_reports.report_picking_altinkaya"
+      />
+
+        </data>
+        <data noupdate="0">
+            <report
+        id="stock_pickingaltinkayaS"
+        model="stock.picking"
+        string="Depo Fişi Sincan"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaS"
+        file="altinkaya_reports.report_picking_altinkayaS"
+      />
+
+
+            <report
+        id="stock_pickingaltinkayaB"
+        model="stock.picking"
+        string="Depo Fişi Bas"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaB"
+        file="altinkaya_reports.report_picking_altinkayaB"
+      />
+
+            <report
+        id="stock_pickingaltinkayaC"
+        model="stock.picking"
+        string="Depo Fişi 2.Kat"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaC"
+        file="altinkaya_reports.report_picking_altinkayaC"
+      />
+            <report
+        id="stock_pickingaltinkayaD"
+        model="stock.picking"
+        string="Depo Fişi Satış"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaD"
+        file="altinkaya_reports.report_picking_altinkayaD"
+      />
+            <report
+        id="stock_pickingaltinkayaE"
+        model="stock.picking"
+        string="Depo Fişi Depo"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaE"
+        file="altinkaya_reports.report_picking_altinkayaE"
+      />
+
+            <report
+        id="stock_pickingaltinkayaF"
+        model="stock.picking"
+        string="Depo Fişi Profil"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaF"
+        file="altinkaya_reports.report_picking_altinkayaF"
+      />
+
+            <report
+        id="stock_pickingaltinkayaG"
+        model="stock.picking"
+        string="Depo Fişi Kesim"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaG"
+        file="altinkaya_reports.report_picking_altinkayaG"
+      />
+
+            <report
+        id="stock_pickingaltinkayaH"
+        model="stock.picking"
+        string="Depo Fişi Enjeksiyon"
+        report_type="qweb-pdf"
+        name="altinkaya_reports.report_picking_altinkayaH"
+        file="altinkaya_reports.report_picking_altinkayaH"
+      />
+            <report
+        id="list_mrp_report"
+        string="Üretim Listesi"
+        model="mrp.production"
+        report_type="qweb-pdf"
+        file="altinkaya_reports.report_list_mrp_report_data"
+        name="altinkaya_reports.report_list_mrp_report_data"
+      />
+            <report
+        id="list_carrier_report"
+        string="Kargo Teslim"
+        model="stock.picking"
+        report_type="qweb-pdf"
+        file="altinkaya_reports.report_delivery_carrier_report_data"
+        name="altinkaya_reports.report_delivery_carrier_report_data"
+      />
+            <report
+        id="list_employee_annual_report"
+        string="Yıllık Değerlendirme Formu"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        file="altinkaya_reports.report_hr_employee_annual_data"
+        name="altinkaya_reports.report_hr_employee_annual_data"
+      />
+            <report
+        id="partner_statement_altinkaya"
+        model="res.partner"
+        string="Partner Statement"
+        file="altinkaya_reports.report_partner_statement"
+        name="altinkaya_reports.report_partner_statement"
+      />
+
+            <report
+        id="partner_statement_altinkaya_en"
+        model="res.partner"
+        string="Partner Statement English"
+        file="altinkaya_reports.report_partner_statement_en"
+        name="altinkaya_reports.report_partner_statement_en"
+      />
+
+            <report
+        id="partner_statement2_altinkaya"
+        model="partner.statement.wizard"
+        string="Partner Statement"
+        file="altinkaya_reports.report_partner_statement_wizard"
+        name="altinkaya_reports.report_partner_statement_wizard"
+      />
+
+            <!-- <report id="action_partner_statement_currency_wizard"
+                     model="partner.statement.wizard"
+                      string="Partner Statement"
+                     file="altinkaya_reports.report_partner_statement_currency_wizard"
+                     name="altinkaya_reports.report_partner_statement_currency_wizard" />     	 -->
+
+            <!-- <report id="action_partner_statement_currency"
+                     model="res.partner"
+                      string="Partner Statement Currency"
+                     file="altinkaya_reports.report_partner_statement_currency"
+                     name="altinkaya_reports.report_partner_statement_currency" />     	 -->
+
+        </data>
+    </data>
+
+</odoo>

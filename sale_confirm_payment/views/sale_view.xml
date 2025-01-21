@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale_exception.view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="payment_status" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_quotation_tree" model="ir.ui.view">
+        <field name="name">sale_exception.view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="payment_status" />
+            </field>
+        </field>
+    </record>
+
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <label for="payment_amount" string="Payment" />
+                <div class="o_row">
+                    <field name="payment_currency_id" invisible="1" />
+                    <field name="payment_amount" />
+                    <field name="provider_id" />
+                </div>
+                <field name="payment_status" />
+                <field
+          name="payment_ids"
+          widget="many2many_tags"
+          options="{'open': True, 'limit': 10}"
+          attrs="{'invisible':[('payment_status','=', 'without')]}"
+        />
+
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+    <record id="confirm_payment_button" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <button name="action_cancel" position="before">
+	            	<button
+          name="action_confirm_payment"
+          type="object"
+          Help="Confirm payment in sale order form"
+          string="Confirm Payment"
+          class="ml-2 btn btn-default"
+          attrs="{'invisible':[('state','in', ['draft', 'cancel'])]}"
+        />
+            </button>
+        </field>
+    </record>
+
+</odoo>

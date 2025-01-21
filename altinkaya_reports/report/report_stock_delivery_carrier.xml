@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_delivery_carrier_report_data">
+            <t t-call="web.html_container">
+                <style>
+                    .table {
+                    border: 1px solid #000000;
+                    }
+                    .table-bordered > thead > tr > th,
+                    .table-bordered > tbody > tr > th,
+                    .table-bordered > tfoot > tr > th,
+                    .table-bordered > thead > tr > td,
+                    .table-bordered > tbody > tr > td,
+                    .table-bordered > tfoot > tr > td {
+                    border: 1px solid #000000;
+                    }
+                </style>
+                <div class="header" style="font-size:12pt;">
+                            <table
+            class="table table-borderless"
+            style="font-size:16pt"
+          >
+                                <tr>
+                                    <td>
+                                        KARGO TESLİMAT TUTANAĞI
+                                    </td>
+                                    <td>
+                                        ALTINKAYA ELEKTRONİK CİHAZ KUTULARI
+                                    </td>
+                                    <td class="text-right">
+                                        Tarih :
+                                    <span
+                  t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                  t-options="{'widget': 'date'}"
+                />
+                                    </td>
+                                </tr>
+                            </table>
+                </div>
+                <div class="footer" style="font-size:12pt;">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-center" style="width:500px">
+                                        <span>Teslim Eden</span>
+                                        <br />
+                                        <span t-field="user.name" />
+                                        <br />
+                                        <br />
+                                        <br />
+                                    </td>
+                                    <td class="text-center" style="width:500px">
+                                        <span
+                    >Yukarıda listelenmiş paketleri teslim aldım.</span>
+                                        <br />
+                                        <span>Adı Soyadı İmza:</span>
+                                        <br />
+                                        <br />
+                                        <br />
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-12">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">Sayfa:</li>
+                                <li class="list-inline-item">
+                                    <span class="page" />
+                                </li>
+                                <li class="list-inline-item">/</li>
+                                <li class="list-inline-item">
+                                    <span class="topage" />
+                                </li>
+                                <li class="list-inline-item">
+                                    Tarih:
+                                    <span
+                    t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                    t-options="{'widget': 'date'}"
+                  />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="page">
+                    <div class="row">
+                        <div class="col-12">
+                            <table
+                class="table table-bordered"
+                style="page-break-inside:avoid;"
+              >
+                                <tr>
+                                    <th
+                    class="text-center"
+                    style="width:170px"
+                  >SEVK NO</th>
+                                    <th
+                    class="text-center"
+                    style="width:400px"
+                  >ALICI</th>
+                                    <th
+                    class="text-center"
+                    style="width:100px"
+                  >REF. NO</th>
+                                    <th
+                    class="text-center"
+                    style="width:200px"
+                  >KARGO ŞEKLİ</th>
+                                    <th
+                    class="text-center"
+                    style="width:120px"
+                  >ŞEHİR</th>
+                                    <th
+                    class="text-center"
+                    style="width:100px"
+                  >DESİ</th>
+                                </tr>
+                                <tr
+                  t-foreach="docs.sorted(lambda x: x.partner_id.display_name)"
+                  t-as="o"
+                >
+                                    <td class="text-center">
+                                        <span t-esc="o.display_name" />
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.partner_id.display_name" />
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.carrier_tracking_ref" />
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.carrier_id.name" />
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.partner_id.district_id.name" />
+                                        <br />
+                                        <span t-field="o.partner_id.state_id.name" />
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.carrier_package_count" />x<span
+                      t-field="o.picking_total_weight"
+                    />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+        </template>
+    </data>
+</odoo>

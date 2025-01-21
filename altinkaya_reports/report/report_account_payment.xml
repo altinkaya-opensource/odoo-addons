@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template
+      id="report_payment_receipt_document_altinkaya"
+      inherit_id="account.report_payment_receipt_document"
+    >
+            <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+                <t t-call="web.basic_layout">
+                    <style>
+                        .table {
+                        border: 1px solid #000000;
+                        }
+                        .table-bordered > thead > tr > th,
+                        .table-bordered > tbody > tr > th,
+                        .table-bordered > tfoot > tr > th,
+                        .table-bordered > thead > tr > td,
+                        .table-bordered > tbody > tr > td,
+                        .table-bordered > tfoot > tr > td {
+                        border: 1px solid #000000;
+                        }
+                    </style>
+                    <div class="header">
+                        <div class="row" style="border:1px solid white">
+                            <div class="col-6 align-middle" style="font-size:36pt">
+                                <img
+                  src="/altinkaya_reports/static/img/altinkaya.svg"
+                  style="min-weight:480px;min-height:70px"
+                />
+                            </div>
+                            <div class="col-6">
+                                <strong
+                  style="font-size:10pt"
+                >ALTINKAYA ELEKTRONİK CİHAZ KUTULARI SAN. TİC. A.Ş.
+                                </strong>
+                                <br />
+                                <div style="line-height:80%">
+                                    <span
+                    style="font-size:9pt"
+                  >Has Emek Sanayi Sitesi 1469. Sokak No:10 İvedik OSB.
+                                        06378
+                                    </span>
+                                    <br />
+                                    <span
+                    style="font-size:9pt"
+                  >Tel:+90(312) 395 2768 Faks: +90(312) 395 2772
+                                        Yenimahalle/ANKARA
+                                    </span>
+                                    <br />
+                                    <span
+                    style="font-size:10pt"
+                  >İvedik V.D. 0610422947 www.altinkaya.com
+                                        satis@altinkaya.com
+                                    </span>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h4>TAHSİLAT MAKBUZU</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <table class="table">
+                                <tr style="border:solid white;">
+                                    <td style="width:200px">
+                                        <strong>Sayın:</strong>
+                                        <br />
+                                        <strong
+                      t-field="o.partner_id.commercial_partner_id.display_name"
+                    />
+                                        <br />
+                                        <strong
+                      t-field="o.partner_id.commercial_partner_id.contact_address"
+                    />
+                                        <br />
+                                        <t
+                      t-if="o.partner_id.commercial_partner_id.phone or o.partner_id.commercial_partner_id.fax"
+                    >
+                                            <t
+                        t-if="o.partner_id.commercial_partner_id.phone"
+                      >
+                                                <span>Tel:
+                                                    <span
+                            t-field="o.partner_id.commercial_partner_id.phone"
+                          />
+                                                </span>
+                                            </t>
+                                            <t
+                        t-if="o.partner_id.commercial_partner_id.fax"
+                      >
+                                                <span>Fax:
+                                                    <span
+                            t-field="o.partner_id.commercial_partner_id.fax"
+                          />
+                                                </span>
+                                            </t>
+                                        </t>
+                                        <br />
+                                        <t
+                      t-if="o.partner_id.commercial_partner_id.tax_office_name or o.partner_id.commercial_partner_id.vat"
+                    >
+                                            <t
+                        t-if="o.partner_id.commercial_partner_id.tax_office_name"
+                      >
+                                                <span
+                          t-field="o.partner_id.commercial_partner_id.tax_office_name"
+                        />
+                                                V.D
+                                            </t>
+                                            <t
+                        t-if="o.partner_id.commercial_partner_id.vat"
+                      >
+                                                <span
+                          t-field="o.partner_id.commercial_partner_id.vat"
+                        />
+                                            </t>
+                                        </t>
+                                    </td>
+                                    <td style="width:60px;text-align:right;">
+                                        <strong>Makbuz No :</strong>
+                                        <br />
+                                        <strong>Tarih :</strong>
+                                    </td>
+                                    <td style="width:60px;text-align:left;">
+                                        <span t-field="o.id" />
+                                        <br />
+                                        <span t-field="o.payment_date" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2
+                  t-field="o.amount"
+                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+
+                                <t
+                  t-if="o.payment_method_code == 'received_third_check' and o.check_id"
+                >
+                                    <span>
+                                        <span t-field="o.check_id.bank_id.name" />
+                                        Bankasına ait
+                                        <span t-field="o.check_id.number" />
+                                        seri numaralı
+                                        <strong t-field="o.check_id.payment_date" />
+                                        vadeli çek alınmıştır.
+                                    </span>
+
+                                </t>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p>YALNIZ:
+                                    <span t-esc="o.account_payment_amount_in_words" />
+                                    <t
+                    t-if="o.journal_id.type=='cash' and o.payment_method_code != 'received_third_check'"
+                  >
+                                        Nakit
+                                    </t>
+                                   <t
+                    t-elif="o.journal_id.code=='CEK' or o.payment_method_code == 'received_third_check'"
+                  >ÇEK</t>
+                                    <t
+                    t-elif="o.journal_id.code=='POSG' or o.journal_id.code=='POSIS'"
+                  >Kredi Kartı
+                                        Ödemesi
+                                    </t>
+                                    <t
+                    t-elif="o.journal_id.code=='POSGB'"
+                  >Sanal Pos Ödemesi</t>
+                                    <t t-else="">Banka Ödemesi</t>
+                                    olarak tahsil edilmiştir.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div
+              t-if="o.payment_method_code == 'received_third_check' and o.check_id and o.partner_id.commercial_partner_id.property_account_receivable_id.code != '120.TRY'"
+              class="row"
+            >
+                            <div class="col-12">
+                                <p
+                >Vade gününde çekiniz tahsil edildiğinde çek tutarı bir önceki gün Merkez Bankası Efektif satış kuru ile hesaplanıp döviz bakiyenizden düşülecektir.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <t t-if="o.communication">
+                                    Notlar:
+                                    <span t-field="o.communication" />
+                                </t>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-8">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="text-center">
+                                            Teslim Alan
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </td>
+                                        <td class="text-center">
+                                            Teslim Eden
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-2" />
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="padding:10px 150px">
+                                <p>P.12.F.03 Yazdıran:
+                                    <span t-esc="user.name" />
+                                    02.01.2013 Rev.No/Tar:00/00
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </t>
+
+            </xpath>
+
+        </template>
+    </data>
+
+
+</odoo>

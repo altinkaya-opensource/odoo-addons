@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+
+        <!--Email template for send partner statement-->
+        <record id="email_template_edi_send_statement" model="mail.template">
+            <field name="name">Cari Mutabakat Maili</field>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="subject">Cari Ekstre Mutabakatı</field>
+            <field name="email_recipients">${object.id}</field>
+            <field name="email_to">${object.email}</field>
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="auto_delete" eval="True" />
+            <field name="report_template" ref="partner_statement_altinkaya" />
+            <field
+        name="body_html"
+      ><![CDATA[
+<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
+   <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
+       Değerli iş ortağımız ${object.name},
+   </p>
+   <p style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-bottom:2rem;">
+       Lütfen ekte bulunan cari ekstrenizin mutakabat onayını yapmak için aşağıdaki butonu kullanınız.
+   </p>
+   <a href="${object.survey_url}" style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;">
+      Mutabakat Bildir
+   </a>
+   <p style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top:2rem;">
+       İyi çalışmalar dileriz.
+   </p>
+</div>
+            ]]></field>
+        </record>
+
+        <!--Email template for send partner statement-->
+        <record id="email_template_edi_send_statement_en" model="mail.template">
+            <field name="name">Partner Statement Mail</field>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="subject">Partner Statement</field>
+            <field name="email_recipients">${object.id}</field>
+            <field name="email_to">${object.email}</field>
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="auto_delete" eval="True" />
+            <field name="report_template" ref="partner_statement_altinkaya_en" />
+            <field
+        name="body_html"
+      ><![CDATA[
+<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
+   <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
+       Our valued business partner ${object.name},
+   </p>
+   <p style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-bottom:2rem;">
+       Please use the button below to make the reconciliation approval of your current statement attached.
+   </p>
+   <a href="${object.survey_url}" style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;">
+      Declare Reconciliation
+   </a>
+   <p style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top:2rem;">
+       We wish you all the best.
+   </p>
+</div>
+            ]]></field>
+        </record>
+
+    </data>
+</openerp>

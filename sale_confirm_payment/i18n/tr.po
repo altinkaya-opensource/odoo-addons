@@ -1,0 +1,193 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_confirm_payment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-18 09:27+0000\n"
+"PO-Revision-Date: 2024-03-18 09:27+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__acquirer_id
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_order__acquirer_id
+msgid "Acquirer"
+msgstr "Ödeme Alıcı"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "Add Payment"
+msgstr "Ödeme Kaydet"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "Add Payment and Confirm Sale"
+msgstr "Ödeme Kaydet ve Siparişi Onayla"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "Add Payment and Print Receipt"
+msgstr "Ödeme Kaydet ve Makbuz Bas"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "Add Payment, Confirm Sale and Print Receipt"
+msgstr "Ödeme Kaydet, Siparişi Onayla ve Makbuz Bas"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__amount
+msgid "Amount"
+msgstr "Tutar"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_order__payment_amount
+msgid "Amount Payment"
+msgstr "Ödeme Tutarı"
+
+#. module: sale_confirm_payment
+#: selection:sale.order,payment_status:0
+msgid "Authorized"
+msgstr "Yetkilendirilmiş"
+
+#. module: sale_confirm_payment
+#: model:ir.actions.act_window,name:sale_confirm_payment.action_confirm_payment_sale
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.confirm_payment_button
+msgid "Confirm Payment"
+msgstr "Ödeme Kaydet"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__currency_id
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_order__payment_currency_id
+msgid "Currency"
+msgstr "Para Birimi"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__display_name
+msgid "Display Name"
+msgstr "Görünüm Adı"
+
+#. module: sale_confirm_payment
+#: selection:sale.order,payment_status:0
+msgid "Done"
+msgstr "Tamamlandı"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__id
+msgid "ID"
+msgstr ""
+
+#. module: sale_confirm_payment
+#: selection:sale.order,payment_status:0
+msgid "Initiated"
+msgstr "Başlatıldı"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment____last_update
+msgid "Last Modified on"
+msgstr "Son Güncelleme"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__order_id
+msgid "Order"
+msgstr "Sipariş"
+
+#. module: sale_confirm_payment
+#: selection:sale.order,payment_status:0
+msgid "Partial"
+msgstr "Kısmi"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_order_form
+msgid "Payment"
+msgstr "Ödeme"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__payment_date
+msgid "Payment Date"
+msgstr "Ödeme Tarihi"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_order__payment_status
+msgid "Payment Status"
+msgstr "Ödeme Durumu"
+
+#. module: sale_confirm_payment
+#: model:ir.model,name:sale_confirm_payment.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Ödeme İşlemi"
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_order__payment_ids
+msgid "Payments"
+msgstr "Ödemeler"
+
+#. module: sale_confirm_payment
+#: code:addons/sale_confirm_payment/wizard/sale_confirm_payment.py:23
+#: code:addons/sale_confirm_payment/wizard/sale_confirm_payment.py:68
+#, python-format
+msgid "Please select a sale order"
+msgstr "Lütfen bir satış siparişi seçiniz."
+
+#. module: sale_confirm_payment
+#: model:ir.model,name:sale_confirm_payment.model_sale_confirm_payment
+msgid "Sale Confirm Payment"
+msgstr "Satış Ödeme Kaydet"
+
+#. module: sale_confirm_payment
+#: model:ir.model,name:sale_confirm_payment.model_sale_order
+msgid "Sale Order"
+msgstr "Satış Siparişi"
+
+#. module: sale_confirm_payment
+#: code:addons/sale_confirm_payment/wizard/sale_confirm_payment.py:39
+#, python-format
+msgid "Then amount must be positive"
+msgstr "Tutar mutlaka pozitif olmalıdır."
+
+#. module: sale_confirm_payment
+#: model:ir.model.fields,field_description:sale_confirm_payment.field_sale_confirm_payment__transaction_id
+msgid "Transaction"
+msgstr "İşlem"
+
+#. module: sale_confirm_payment
+#: selection:sale.order,payment_status:0
+msgid "Without"
+msgstr "Yapılmadı"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "Cancel"
+msgstr "İptal"
+
+#. module: sale_confirm_payment
+#: model_terms:ir.ui.view,arch_db:sale_confirm_payment.view_sale_confirm_payment_form
+msgid "or"
+msgstr "ya da"
+

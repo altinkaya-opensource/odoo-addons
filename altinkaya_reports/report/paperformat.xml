@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="paperformat_sale" model="report.paperformat">
+            <field name="name">Altinkaya Sale</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">34</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_mrp" model="report.paperformat">
+            <field name="name">Altinkaya MRP</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="paperformat_mrp_list" model="report.paperformat">
+            <field name="name">Altinkaya MRP List</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_stock_transfer_carrier_list" model="report.paperformat">
+            <field name="name">Altinkaya Kargo Teslim List</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">40</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="sale.action_report_saleorder" model="ir.actions.report">
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_sale" />
+        </record>
+        <record id="mrp.action_report_production_order" model="ir.actions.report">
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_mrp" />
+        </record>
+        <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_sale" />
+        </record>
+        <record id="stock.action_report_picking" model="ir.actions.report">
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_sale" />
+        </record>
+        <record id="altinkaya_reports.list_mrp_report" model="ir.actions.report">
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_mrp_list" />
+        </record>
+        <record
+      id="altinkaya_reports.list_employee_annual_report"
+      model="ir.actions.report"
+    >
+            <field name="paperformat_id" ref="altinkaya_reports.paperformat_mrp_list" />
+        </record>
+        <record id="altinkaya_reports.list_carrier_report" model="ir.actions.report">
+            <field
+        name="paperformat_id"
+        ref="altinkaya_reports.paperformat_stock_transfer_carrier_list"
+      />
+        </record>
+
+    </data>
+
+</odoo>

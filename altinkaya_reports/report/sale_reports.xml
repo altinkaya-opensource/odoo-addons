@@ -1,0 +1,1535 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_saleorder_document">
+        <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+            <style>
+                .table-bordered thead th {
+                border: 1px solid black !important;
+                }
+                .table-bordered th, .table-bordered td {
+                border: 1px solid black !important;
+                }
+            </style>
+            <!--TURKISH LAYOUT-->
+            <t t-if="doc.partner_id.lang == 'tr_TR'">
+                <div class="header" style="margin:0;padding:0;">
+                    <div class="row" style="margin:0">
+                        <table
+              class="table table-borderless"
+              style="page-break-inside:avoid;margin-bottom:0;"
+            >
+                            <tbody>
+                                <tr>
+                                    <th
+                    class="text-center"
+                    style="font-size: 24pt;vertical-align: middle;width: 40%;"
+                  >
+                                        <t
+                      t-if="not (env.context.get('proforma', False) or is_pro_forma)"
+                    >
+                                            <t t-if="doc.state in ['draft','sent']">
+                                                <span>FİYAT TEKLİFİ</span>
+                                            </t>
+                                            <t
+                        t-if="doc.state not in ['draft','sent','cancel']"
+                      >
+                                                <span>Sipariş Emri</span>
+                                            </t>
+                                        </t>
+                                        <t
+                      t-if="env.context.get('proforma', False) or is_pro_forma"
+                    >
+                                            <span>Pro-Forma Fatura</span>
+                                        </t>
+                                    </th>
+                                    <th style="display:ruby;width: 60%;">
+                                        <img
+                      src="/altinkaya_reports/static/img/altinkayayeni.svg"
+                      style="width: 100%;"
+                    />
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="page" style="font-size:11pt">
+                    <div class="oe_structure" />
+                    <div
+            class="row"
+            style="width:100%;padding-top:31px;"
+          ><!-- style="border:1px solid #dddddd" -->
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td
+                    style="text-align:left;width:60%;font-weight:bold;"
+                  >
+                                        <t
+                      t-if="not (env.context.get('proforma', False) or is_pro_forma)"
+                    >
+                                            <span
+                        t-if="doc.state not in ['draft','sent']"
+                        style="font-size:1.75rem"
+                      >
+                                                Sipariş
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                            <span
+                        t-if="doc.state in ['draft','sent']"
+                        style="font-size:1.75rem"
+                      >
+                                                Teklif
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                        </t>
+                                        <t
+                      t-if="env.context.get('proforma', False) or is_pro_forma"
+                    >
+                                            <span style="font-size:1.75rem">
+                                                Pro-Forma
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                        </t>
+                                        <span
+                      style="font-size:1.75rem;font-style:italic;"
+                      t-field="doc.name"
+                    />
+                                        <br />
+                                        <span style="font-size: 1.25rem;">
+                                            <i>Müşteri Sipariş N<sup>o</sup>:
+                                            </i>
+                                        </span>
+                                        <span
+                      style="font-size:1.25rem"
+                      t-field="doc.client_order_ref"
+                    />
+                                    </td>
+                                    <td style="width: 40%;" class="text-right">
+                                        <strong style="font-size:13pt">
+                                            Tarih:
+                                            <span t-field="doc.date_order" />
+                                        </strong>
+                                        <br />
+                                        <span t-if="doc.state in ['draft','sent']">
+                                            Teklif Geçerlilik Tarihi:
+                                            <span t-field="doc.validity_date" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="padding-left:12px">
+                        <table class="table table-borderless">
+                            <tr>
+                                <!-- t-if="doc.partner_shipping_id == doc.partner_invoice_id and doc.partner_invoice_id
+                                    != doc.partner_id or doc.partner_shipping_id != doc.partner_invoice_id" -->
+                                <td style="padding:0;">
+                                    <!-- <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoicing
+                                        and shipping address:</strong> -->
+
+                                    <strong>TESLİMAT ADRESİ</strong>
+                                    <br />
+                                    <span>
+                                        <strong>
+                                            <span
+                        t-field="doc.partner_shipping_id.name"
+                      />
+                                        </strong>
+                                        <br />
+                                        <span
+                      t-if="doc.partner_shipping_id.neighbour_id"
+                      t-field="doc.partner_shipping_id.neighbour_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.street"
+                      t-field="doc.partner_shipping_id.street"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.street2"
+                      t-field="doc.partner_shipping_id.street2"
+                    >,
+                                        </span>
+                                        <br />
+                                        <span
+                      t-if="doc.partner_shipping_id.region_id"
+                      t-field="doc.partner_shipping_id.region_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.district_id"
+                      t-field="doc.partner_shipping_id.district_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.state_id.name"
+                      t-field="doc.partner_shipping_id.state_id.name"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.zip"
+                      t-field="doc.partner_shipping_id.zip"
+                    />
+                                        <span
+                      t-field="doc.partner_shipping_id.country_id.name"
+                    />
+                                        <t t-if="doc.partner_shipping_id.phone">
+                                            <br />
+                                            <strong>Tel:</strong>
+                                            <span
+                        t-field="doc.partner_shipping_id.phone"
+                      />
+                                        </t>
+                                    </span>
+
+                                </td>
+                                <td
+                  style="border-left:2px solid black;padding:0;padding-left:5px;"
+                >
+                                    <strong>FATURA ADRESİ</strong>
+                                    <br />
+                                    <strong>
+                                        <span t-field="doc.partner_invoice_id.name" />
+                                    </strong>
+                                    <br />
+                                    <span
+                    t-if="doc.partner_invoice_id.neighbour_id"
+                    t-field="doc.partner_invoice_id.neighbour_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.street"
+                    t-field="doc.partner_invoice_id.street"
+                  >
+                                        ,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.street2"
+                    t-field="doc.partner_invoice_id.street2"
+                  >,
+                                    </span>
+                                    <br />
+                                    <span
+                    t-if="doc.partner_invoice_id.region_id"
+                    t-field="doc.partner_invoice_id.region_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.district_id"
+                    t-field="doc.partner_invoice_id.district_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.state_id.name"
+                    t-field="doc.partner_invoice_id.state_id.name"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.zip"
+                    t-field="doc.partner_invoice_id.zip"
+                  />
+                                    <span
+                    t-field="doc.partner_invoice_id.country_id.name"
+                  />
+                                    <t t-if="doc.partner_invoice_id.phone">
+                                        <br />
+                                        <strong>Tel:</strong>
+                                        <span t-field="doc.partner_invoice_id.phone" />
+                                    </t>
+                                    <t t-if="doc.partner_id.fax">
+                                        <strong>Faks:</strong>
+                                        <span t-field="doc.partner_id.fax" />
+                                    </t>
+                                    <t t-if="doc.partner_id.tax_office_name">
+                                        <br />
+                                        <strong>Vergi Dairesi:</strong>
+                                        <span
+                      t-field="doc.partner_id.tax_office_name"
+                    />
+                                    </t>
+                                    <ty t-if="doc.partner_id.vat">
+                                        <br />
+                                        <strong
+                      t-esc="doc.company_id.country_id.vat_label or 'Vergi Numarası:'"
+                    />
+                                        <span t-field="doc.partner_id.vat" />
+                                    </ty>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.carrier_id or doc.payment_term_id">
+                                <td t-if="doc.carrier_id" style="padding:0;">
+                                    <span>
+                                        <strong>
+                                            Teslim Şekli:
+                                            <span t-field="doc.carrier_id.name" />
+                                        </strong>
+                                    </span>
+
+                                </td>
+                                <td
+                  style="border-left:2px solid black;padding:0;padding-left:5px;"
+                  t-if="doc.payment_term_id"
+                >
+                                    <span>
+                                        <strong>
+                                            Ödeme Şekli:
+                                            <span t-field="doc.payment_term_id" />
+                                        </strong>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top:0">
+                        <!-- Is there a discount on at least one line? -->
+                        <t
+              t-set="display_discount"
+              t-value="any([l.discount for l in doc.order_line])"
+            />
+                        <table
+              class="table table-bordered o_main_table"
+              style="page-break-inside:avoid;font-size:10pt;margin-bottom:0;"
+            >
+                            <thead>
+                                <tr>
+                                    <t t-set="colspan" t-value="6" />
+                                    <th
+                    class="text-center"
+                    style="padding:0;width:60%"
+                  >Açıklama</th>
+                                    <th
+                    class="text-center"
+                    style="padding:0;"
+                  >Miktar</th>
+                                    <th
+                    class="text-center"
+                    style="padding:0;"
+                  >B. Fiyatı</th>
+                                    <th
+                    t-if="display_discount"
+                    style="padding:0;"
+                    class="text-center"
+                    groups="sale.group_discount_per_so_line"
+                  >
+                                        <span>İsk.(%)</span>
+                                        <t t-set="colspan" t-value="colspan+1" />
+                                    </th>
+                                    <th
+                    t-if="display_discount"
+                    class="text-center"
+                    style="padding:0;"
+                    groups="sale.group_discount_per_so_line"
+                  >
+                                        <span>İnd. B. Fiyatı</span>
+                                    </th>
+
+                                    <th class="text-center" style="padding:0;">
+                                        <t
+                      groups="account.group_show_line_subtotals_tax_excluded"
+                    >Tutar</t>
+                                        <t
+                      groups="account.group_show_line_subtotals_tax_included"
+                    >Toplam Fiyat</t>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+
+                                <t t-set="current_subtotal" t-value="0" />
+
+                                <t t-foreach="doc.order_line" t-as="line">
+
+                                    <t
+                    t-set="current_subtotal"
+                    t-value="current_subtotal + line.price_subtotal"
+                    groups="account.group_show_line_subtotals_tax_excluded"
+                  />
+                                    <t
+                    t-set="current_subtotal"
+                    t-value="current_subtotal + line.price_total"
+                    groups="account.group_show_line_subtotals_tax_included"
+                  />
+
+                                    <tr
+                    t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''"
+                  >
+                                        <t t-if="not line.display_type">
+                                            <td style="padding:0;width:50%;">
+                                                <span t-field="line.name" />
+                                            </td>
+                                            <td class="text-right" style="padding:0;">
+                                                <span
+                          t-field="line.product_uom_qty"
+                          t-options='{"widget": "float", "precision": 0}'
+                        />
+                                                <span
+                          t-field="line.product_uom"
+                          groups="uom.group_uom"
+                        />
+                                            </td>
+                                            <td class="text-right" style="padding:0;">
+                                                <span t-field="line.price_unit" />
+                                            </td>
+                                            <td
+                        t-if="display_discount"
+                        class="text-right"
+                        style="padding:0;"
+                        groups="sale.group_discount_per_so_line"
+                      >
+                                                <span
+                          t-field="line.discount"
+                          t-options="{'precision': 2}"
+                        />
+                                            </td>
+                                            <td
+                        t-if="display_discount"
+                        class="text-right"
+                        style="padding:0;"
+                      >
+                                                <span t-field="line.unit_discounted" />
+                                            </td>
+                                            <td
+                        class="text-right o_price_total"
+                        style="padding:0;"
+                      >
+                                                <span
+                          t-field="line.price_subtotal"
+                          t-options="{'precision': 2}"
+                          groups="account.group_show_line_subtotals_tax_excluded"
+                        />
+                                                <span
+                          t-field="line.price_total"
+                          t-options="{'precision': 2}"
+                          groups="account.group_show_line_subtotals_tax_included"
+                        />
+                                            </td>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <span t-field="line.name" />
+                                            </td>
+                                            <t t-set="current_section" t-value="line" />
+                                            <t t-set="current_subtotal" t-value="0" />
+                                        </t>
+                                        <t t-if="line.display_type == 'line_note'">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <span t-field="line.name" />
+                                            </td>
+                                        </t>
+                                    </tr>
+
+                                    <t
+                    t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')"
+                  >
+                                        <tr class="is-subtotal text-right">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <strong class="mr16">Subtotal</strong>
+                                                <span
+                          t-esc="current_subtotal"
+                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'
+                        />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <div id="total" class="row" name="total">
+                            <div
+                t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto"
+                style="padding:0;"
+              >
+                                <table class="table table-borderless">
+                                    <tr><!-- class="border-black o_subtotal" -->
+                                        <td class="text-right" style="padding:0;">
+                                            <strong>Toplam</strong>
+                                        </td>
+                                        <td class="text-right" style="padding:0;">
+                                            <span
+                        t-field="doc.amount_untaxed"
+                        t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'
+                      />
+                                        </td>
+                                    </tr>
+                                    <t
+                    t-foreach="doc.amount_by_group"
+                    t-as="amount_by_group"
+                  >
+                                        <tr style="">
+                                            <t
+                        t-if="amount_by_group[3] == 1 and doc.amount_untaxed == amount_by_group[2]"
+                      >
+                                                <td
+                          class="text-right"
+                          style="padding:0;"
+                        >
+                                                    <span t-esc="amount_by_group[0]" />
+                                                    <span>
+                                                        &amp;nbsp;
+                                                        <span>on</span>
+                                                        &amp;nbsp;
+                                                        <t
+                              t-esc="amount_by_group[2]"
+                              t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'
+                            />
+                                                    </span>
+                                                </td>
+                                                <td
+                          class="text-right o_price_total"
+                          style="padding:0;"
+                        >
+                                                    <span
+                            t-esc="amount_by_group[1]"
+                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'
+                          />
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td
+                          class="text-right"
+                          style="padding:0;"
+                        >
+                                                    <strong>
+                                                        <span
+                              t-esc="amount_by_group[0]"
+                            />
+                                                    </strong>
+                                                </td>
+                                                <td
+                          class="text-right o_price_total"
+                          style="padding:0;"
+                        >
+                                                    <span
+                            t-esc="amount_by_group[1]"
+                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'
+                          />
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <tr> <!-- class="border-black o_total" -->
+                                        <td class="text-right" style="padding:0;">
+                                            <strong>Genel Toplam</strong>
+                                        </td>
+                                        <td class="text-right" style="padding:0;">
+                                            <span
+                        t-field="doc.amount_total"
+                        t-options="{'widget': 'monetary', 'precision': 2}"
+                      />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <span>
+                            <strong>YALNIZ:</strong>
+                            <strong
+                style="font-style:italic"
+                t-field="doc.sale_order_amount_in_words"
+              />
+                        </span>
+                    </p>
+                    <p>
+                        <strong>Notlar:</strong>
+                        <span t-field="doc.note" />
+                        <br />
+                        * Özel üretimler ve işçilikli ürünler için adetlerde +-%5 değişiklik olabilir.
+                        <br />
+                        * Lütfen onaylamadan önce ürün modeli,rengi,adedi ve teslimat bilgilerini kontrol ediniz.
+                        <br />
+                        * Havale/EFT açıklamasında <strong
+              t-esc="doc.name"
+            /> sipariş numaranızı belirtirseniz sistemimiz siparişi otomatik onaylar.
+                    </p>
+<!--                    <t t-if="doc.currency_id.name in ['USD','EUR']">-->
+<!--                        <t t-if="doc.currency_id.name == 'USD'">-->
+<!--                            <div class="row" style="padding-left:20%;">-->
+<!--                                <strong style="padding-left:12px">USD HESAP BİLGİLERİMİZ:</strong>-->
+<!--                            </div>-->
+<!--                        </t>-->
+<!--                        <t t-if="doc.currency_id.name == 'EUR'">-->
+<!--                            <div class="row" style="padding-left:20%;">-->
+<!--                                <strong style="padding-left:12px">EUR HESAP BİLGİLERİMİZ:</strong>-->
+<!--                            </div>-->
+<!--                        </t>-->
+<!--                    </t>-->
+                    <div class="row">
+                        <table
+              class="table table-borderless"
+              style="page-break-inside:avoid;"
+            >
+                            <tr>
+                                <th
+                  class="text-left"
+                  rowspan="3"
+                  style="padding: 0;width: 20%;border-right: 2px solid black;"
+                >
+                                    <img
+                    width="75px"
+                    height="75px"
+                    style="margin-left: auto;
+                                                       margin-right: auto;
+                                                       display: block;"
+                    t-attf-src="data:image/png;base64,#{doc.survey_url_qr}"
+                  />
+                                    <p
+                    style="font-weight: normal;
+                                               font-size: 12px;
+                                               margin-bottom: 0;
+                                               text-align: center;"
+                  >
+                                        Bizi değerlendirin
+                                    </p>
+                                </th>
+                                <th
+                  class="text-left"
+                  style="padding: 0;padding-left:12px;"
+                >
+                                    <span>
+                                        Banka Adı
+                                    </span>
+                                </th>
+                                <th class="text-left" style="padding: 0;">
+                                    <span>
+                                        Şb.Kd.
+                                    </span>
+                                </th>
+                                <th class="text-left" style="padding: 0;">
+                                    <span>
+                                        Hs.No.
+                                    </span>
+                                </th>
+                                <th class="text-left" style="padding: 0;">
+                                    <span>
+                                        IBAN
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0;padding-left:12px;">
+                                    İş Bankası
+                                </td>
+                                <td style="padding: 0;">
+                                    4384
+                                </td>
+                                <td style="padding: 0;">
+                                    0012114
+                                </td>
+                                <td style="padding: 0;">
+                                    TR26 0006 4000 0014 3840 0121 14 (TL)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0;padding-left:12px;">
+                                    Garanti Bankası
+                                </td>
+                                <td style="padding: 0;">
+                                    682
+                                </td>
+                                <td style="padding: 0;">
+                                    6294510
+                                </td>
+                                <td style="padding: 0;">
+                                    TR40 0006 2000 6820 0006 2945 10 (TL)
+                                </td>
+                            </tr>
+<!--                            <t t-if="doc.currency_id.name in ['USD','EUR']">-->
+<!--                                <tr>-->
+<!--                                    <th class="text-left" rowspan="2"-->
+<!--                                        style="padding: 0;width: 20%;border-right: 2px solid black;">-->
+<!--                                        <img width="75px" height="75px"-->
+<!--                                                     style="margin-left: auto;-->
+<!--                                                        margin-right: auto;-->
+<!--                                                        display: block;"-->
+<!--                                                     t-attf-src="data:image/png;base64,#{doc.survey_url_qr}"/>-->
+<!--                                        <p style="font-weight: normal;-->
+<!--                                                font-size: 12px;-->
+<!--                                                margin-bottom: 0;-->
+<!--                                                text-align: center;">-->
+<!--                                                    Bizi değerlendirin-->
+<!--                                                </p>-->
+<!--                                    </th>-->
+<!--                                    <th style="padding: 0;padding-left:12px;">-->
+<!--                                        Banka Adı-->
+<!--                                    </th>-->
+<!--                                    <th style="padding: 0;">-->
+<!--                                        Hesap No-->
+<!--                                    </th>-->
+<!--                                    <th style="padding: 0;">-->
+<!--                                        IBAN-->
+<!--                                    </th>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td style="padding: 0;padding-left:12px;">-->
+<!--                                        Garanti Bankası-->
+<!--                                    </td>-->
+<!--                                    <t t-if="doc.currency_id.name == 'USD'">-->
+<!--                                        <td style="padding: 0;">-->
+<!--                                            682-9074502-->
+<!--                                        </td>-->
+<!--                                        <td style="padding: 0;">-->
+<!--                                            <strong>TR20 0006 2000 6820 0009 0745 02</strong>-->
+<!--                                        </td>-->
+<!--                                    </t>-->
+<!--                                    <t t-if="doc.currency_id.name == 'EUR'">-->
+<!--                                        <td style="padding: 0;">-->
+<!--                                            682-9074503-->
+<!--                                        </td>-->
+<!--                                        <td style="padding: 0;">-->
+<!--                                            <strong>TR90 0006 2000 6820 0009 0745 03</strong>-->
+<!--                                        </td>-->
+<!--                                    </t>-->
+<!--                                </tr>-->
+<!--                            </t>-->
+                        </table>
+                    </div>
+                    <div style="page-break-inside:avoid;width:%100">
+                        <div class="row" style="height:125px">
+                            <table class="table table-bordered" style="font-size:11pt">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center" style="padding:0">
+                                            <strong>SATIŞ TEMSİLCİSİ</strong>
+                                        </td>
+                                        <td class="text-center" style="padding:0">
+                                            <strong>ALICI FİRMA ONAYI</strong>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="height:125px;">
+                                        <td
+                      class="text-center"
+                      style="padding:0;width:50%;"
+                    >
+                                            <span t-field="doc.user_id.name" />
+                                            <br />
+                                            <span t-field="doc.user_id.phone" />
+                                        </td>
+                                        <td
+                      class="text-center"
+                      style="padding:0;width:50%;"
+                    >
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div
+            class="row"
+            style="text-align: center;font-size: 8pt;font-family: 'Liberation Serif';"
+          >
+                        <div class="col-4">
+                            P.12.F.01
+                        </div>
+                        <div class="col-4">
+                            06.11.2012
+                        </div>
+                        <div class="col-4">
+                            Rev.No/Tar:02/18.08.2014
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            Sayfa:
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <!--NON TURKISH LAYOUT-->
+            <t t-if="doc.partner_id.lang != 'tr_TR'">
+                <div class="header" style="margin:0;padding:0;">
+                    <div
+            class="row"
+            style="margin:0"
+          ><!-- style="border:1px solid #dddddd" -->
+                        <table
+              class="table table-borderless"
+              style="page-break-inside:avoid;margin-bottom:0;"
+            >
+                            <tbody>
+                                <tr>
+                                    <th
+                    class="text-center"
+                    style="font-size: 24pt;vertical-align: middle;width: 40%;"
+                  >
+                                        <t
+                      t-if="not (env.context.get('proforma', False) or is_pro_forma)"
+                    >
+                                            <t t-if="doc.state in ['draft','sent']">
+                                                <span>QUOTATION</span>
+                                            </t>
+                                            <t
+                        t-if="doc.state not in ['draft','sent','cancel']"
+                      >
+                                                <span>Order</span>
+                                            </t>
+                                        </t>
+                                        <t
+                      t-if="env.context.get('proforma', False) or is_pro_forma"
+                    >
+                                            <span>Pro-Forma Invoice</span>
+                                        </t>
+                                    </th>
+                                    <th style="display:ruby;width: 60%;">
+                                        <img
+                      src="/altinkaya_reports/static/img/newaltinkayaen.svg"
+                      style="width: 100%;max-height:156px;"
+                    />
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="page" style="font-size:11pt">
+                    <div class="oe_structure" />
+                    <div
+            class="row"
+            style="width:100%;padding-top:35px;"
+          ><!-- style="border:1px solid #dddddd" -->
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td
+                    style="text-align:left;width:70%;font-weight:bold;"
+                  >
+                                        <t
+                      t-if="not (env.context.get('proforma', False) or is_pro_forma)"
+                    >
+                                            <span
+                        t-if="doc.state not in ['draft','sent']"
+                        style="font-size:1.75rem"
+                      >
+                                                Order
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                            <span
+                        t-if="doc.state in ['draft','sent']"
+                        style="font-size:1.75rem"
+                      >
+                                                Quotation
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                        </t>
+                                        <t
+                      t-if="env.context.get('proforma', False) or is_pro_forma"
+                    >
+                                            <span style="font-size:1.75rem">
+                                                Pro-Forma
+                                                <i>N<sup>o</sup>:
+                                                </i>
+                                            </span>
+                                        </t>
+                                        <span
+                      style="font-size:1.75rem;font-style:italic;"
+                      t-field="doc.name"
+                    />
+                                        <br />
+                                        <t t-if="doc.client_order_ref">
+                                            <span
+                        style="font-size:1.75rem;font-style:italic;"
+                        t-field="doc.name"
+                      />
+                                            <br />
+                                            <span
+                        style="font-size: 1.25rem;font-style:italic;"
+                      >
+                                                Your reference:
+                                            </span>
+                                            <span
+                        style="font-size:1.25rem"
+                        t-field="doc.client_order_ref"
+                      />
+                                        </t>
+                                    </td>
+                                    <td style="width: 30%;">
+                                        <strong style="font-size:13pt">
+                                            Date:
+                                            <span t-field="doc.date_order" />
+                                        </strong>
+                                        <br />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="padding-left:12px">
+                        <table class="table table-borderless" style="font-size:11pt">
+                            <tr>
+                                <!-- t-if="doc.partner_shipping_id == doc.partner_invoice_id and doc.partner_invoice_id
+                                    != doc.partner_id or doc.partner_shipping_id != doc.partner_invoice_id" -->
+                                <td style="padding:0;">
+                                    <!-- <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoicing
+                                        and shipping address:</strong> -->
+
+                                    <strong
+                    style="font-size;12pt"
+                  >Shipping address</strong>
+                                    <br />
+                                    <span>
+                                        <strong style="font-size:12pt">
+                                            <span
+                        t-field="doc.partner_shipping_id.name"
+                      />
+                                        </strong>
+                                        <br />
+                                        <span
+                      t-if="doc.partner_shipping_id.neighbour_id"
+                      t-field="doc.partner_shipping_id.neighbour_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.street"
+                      t-field="doc.partner_shipping_id.street"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.street2"
+                      t-field="doc.partner_shipping_id.street2"
+                    >,
+                                        </span>
+                                        <br />
+                                        <span
+                      t-if="doc.partner_shipping_id.region_id"
+                      t-field="doc.partner_shipping_id.region_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.district_id"
+                      t-field="doc.partner_shipping_id.district_id"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.state_id.name"
+                      t-field="doc.partner_shipping_id.state_id.name"
+                    >,
+                                        </span>
+                                        <span
+                      t-if="doc.partner_shipping_id.zip"
+                      t-field="doc.partner_shipping_id.zip"
+                    />
+                                        <span
+                      t-field="doc.partner_shipping_id.country_id.name"
+                    />
+                                        <t t-if="doc.partner_shipping_id.phone">
+                                            <br />
+                                            <strong>Phone:</strong>
+                                            <span
+                        t-field="doc.partner_shipping_id.phone"
+                      />
+                                        </t>
+                                    </span>
+
+                                </td>
+                                <td
+                  style="border-left:2px solid black;padding:0;padding-left:5px;"
+                >
+                                    <strong
+                    style="font-size:12pt"
+                  >Invoice address</strong>
+                                    <br />
+                                    <strong style="font-size:12pt">
+                                        <span t-field="doc.partner_invoice_id.name" />
+                                    </strong>
+                                    <br />
+                                    <span
+                    t-if="doc.partner_invoice_id.neighbour_id"
+                    t-field="doc.partner_invoice_id.neighbour_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.street"
+                    t-field="doc.partner_invoice_id.street"
+                  >
+                                        ,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.street2"
+                    t-field="doc.partner_invoice_id.street2"
+                  >,
+                                    </span>
+                                    <br />
+                                    <span
+                    t-if="doc.partner_invoice_id.region_id"
+                    t-field="doc.partner_invoice_id.region_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.district_id"
+                    t-field="doc.partner_invoice_id.district_id"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.state_id.name"
+                    t-field="doc.partner_invoice_id.state_id.name"
+                  >,
+                                    </span>
+                                    <span
+                    t-if="doc.partner_invoice_id.zip"
+                    t-field="doc.partner_invoice_id.zip"
+                  />
+                                    <span
+                    t-field="doc.partner_invoice_id.country_id.name"
+                  />
+                                    <t t-if="doc.partner_invoice_id.phone">
+                                        <br />
+                                        <strong>Phone:</strong>
+                                        <span t-field="doc.partner_invoice_id.phone" />
+                                    </t>
+                                    <t t-if="doc.partner_invoice_id.fax">
+                                        <br />
+                                        <strong>Fax:</strong>
+                                        <span t-field="doc.partner_invoice_id.fax" />
+                                    </t>
+                                    <t t-if="doc.partner_id.tax_office_name">
+                                        <br />
+                                        <strong>Tax Office:</strong>
+                                        <span
+                      t-field="doc.partner_id.tax_office_name"
+                    />
+                                    </t>
+                                    <ty t-if="doc.partner_id.vat">
+                                        <br />
+                                        <strong
+                      t-esc="doc.company_id.country_id.vat_label or 'Tax ID:'"
+                    />
+                                        <span t-field="doc.partner_id.vat" />
+                                    </ty>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.carrier_id or doc.payment_term_id">
+                                <td
+                  t-if="doc.carrier_id"
+                  style="padding:0;font-size:12pt;"
+                >
+                                    <span>
+                                        <strong>
+                                            Delivery:
+                                            <span t-field="doc.carrier_id.name" />
+                                        </strong>
+                                    </span>
+                                </td>
+                                <td
+                  style="border-left:2px solid black;padding:0;padding-left:5px;font-size:12pt;"
+                  t-if="doc.payment_term_id"
+                >
+                                    <span>
+                                        <strong>
+                                            Payment:
+                                            <span t-field="doc.payment_term_id" />
+                                        </strong>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top:0">
+                        <!-- Is there a discount on at least one line? -->
+                        <t
+              t-set="display_discount"
+              t-value="any([l.discount for l in doc.order_line])"
+            />
+                        <table
+              class="table table-bordered o_main_table"
+              style="page-break-inside:avoid;margin-bottom:0;font-size:10pt;"
+            >
+                            <thead>
+                                <tr>
+                                    <t t-set="colspan" t-value="6" />
+                                    <th
+                    class="text-center"
+                    style="padding:0;width:60%"
+                  >Description</th>
+                                    <th
+                    class="text-center"
+                    style="padding:0;"
+                  >Quantity</th>
+                                    <th
+                    class="text-center"
+                    style="padding:0;"
+                  >Unit Price</th>
+                                    <th
+                    t-if="display_discount"
+                    style="padding:0;"
+                    class="text-center"
+                    groups="sale.group_discount_per_so_line"
+                  >
+                                        <span>Disc.(%)</span>
+                                        <t t-set="colspan" t-value="colspan+1" />
+                                    </th>
+                                    <th
+                    t-if="display_discount"
+                    class="text-center"
+                    style="padding:0;"
+                    groups="sale.group_discount_per_so_line"
+                  >
+                                        <span>Disc. Unit Price</span>
+                                    </th>
+
+                                    <th class="text-center" style="padding:0;">
+                                        <t
+                      groups="account.group_show_line_subtotals_tax_excluded"
+                    >Amount</t>
+                                        <t
+                      groups="account.group_show_line_subtotals_tax_included"
+                    >Total Price</t>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+
+                                <t t-set="current_subtotal" t-value="0" />
+
+                                <t t-foreach="doc.order_line" t-as="line">
+
+                                    <t
+                    t-set="current_subtotal"
+                    t-value="current_subtotal + line.price_subtotal"
+                    groups="account.group_show_line_subtotals_tax_excluded"
+                  />
+                                    <t
+                    t-set="current_subtotal"
+                    t-value="current_subtotal + line.price_total"
+                    groups="account.group_show_line_subtotals_tax_included"
+                  />
+
+                                    <tr
+                    t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''"
+                  >
+                                        <t t-if="not line.display_type">
+
+                                            <td style="padding:0;">
+                                                <span t-field="line.name" />
+                                            </td>
+                                            <td class="text-right" style="padding:0;">
+                                                <span
+                          t-field="line.product_uom_qty"
+                          t-options='{"widget": "float", "precision": 0}'
+                        />
+                                                <span
+                          t-field="line.product_uom"
+                          groups="uom.group_uom"
+                        />
+                                            </td>
+                                            <td class="text-right" style="padding:0;">
+                                                <span
+                          t-field="line.price_unit"
+                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                        />
+                                            </td>
+                                            <td
+                        t-if="display_discount"
+                        class="text-right"
+                        style="padding:0;"
+                        groups="sale.group_discount_per_so_line"
+                      >
+                                                <span
+                          t-field="line.discount"
+                          t-options="{'precision': 2}"
+                        />
+                                            </td>
+                                            <td
+                        t-if="display_discount"
+                        class="text-right"
+                        style="padding:0;"
+                      >
+                                                <span
+                          t-field="line.unit_discounted"
+                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                        />
+                                            </td>
+                                            <td
+                        class="text-right o_price_total"
+                        style="padding:0;"
+                      >
+                                                <span
+                          t-field="line.price_subtotal"
+                          t-options="{'precision': 2}"
+                          groups="account.group_show_line_subtotals_tax_excluded"
+                        />
+                                                <span
+                          t-field="line.price_total"
+                          t-options="{'precision': 2}"
+                          groups="account.group_show_line_subtotals_tax_included"
+                        />
+                                            </td>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <span t-field="line.name" />
+                                            </td>
+                                            <t t-set="current_section" t-value="line" />
+                                            <t t-set="current_subtotal" t-value="0" />
+                                        </t>
+                                        <t t-if="line.display_type == 'line_note'">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <span t-field="line.name" />
+                                            </td>
+                                        </t>
+                                    </tr>
+
+                                    <t
+                    t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')"
+                  >
+                                        <tr class="is-subtotal text-right">
+                                            <td
+                        t-att-colspan="colspan"
+                        style="padding:0;"
+                      >
+                                                <strong class="mr16">Subtotal</strong>
+                                                <span
+                          t-esc="current_subtotal"
+                          t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'
+                        />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <div id="total" class="row" name="total">
+                            <div
+                t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto"
+                style="padding:0;"
+              >
+                                <table
+                  class="table table-borderless"
+                  style="font-size:11pt"
+                >
+                                    <tr><!-- class="border-black o_subtotal" -->
+                                        <td class="text-right" style="padding:0;">
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right" style="padding:0;">
+                                            <span
+                        t-field="doc.amount_untaxed"
+                        t-options="{'precision': 2}"
+                      />
+                                        </td>
+                                    </tr>
+                                    <t
+                    t-foreach="doc.amount_by_group"
+                    t-as="amount_by_group"
+                  >
+                                        <tr style="">
+                                            <t
+                        t-if="amount_by_group[3] == 1 and doc.amount_untaxed == amount_by_group[2]"
+                      >
+                                                <td
+                          class="text-right"
+                          style="padding:0;"
+                        >
+                                                    <span t-esc="amount_by_group[0]" />
+                                                    <span>
+                                                        &amp;nbsp;
+                                                        <span>on</span>
+                                                        &amp;nbsp;
+                                                        <t
+                              t-esc="amount_by_group[2]"
+                              t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'
+                            />
+                                                    </span>
+                                                </td>
+                                                <td
+                          class="text-right o_price_total"
+                          style="padding:0;"
+                        >
+                                                    <span
+                            t-esc="amount_by_group[1]"
+                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision": 2}'
+                          />
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td
+                          class="text-right"
+                          style="padding:0;"
+                        >
+                                                    <strong>
+                                                        <span
+                              t-esc="amount_by_group[0]"
+                            />
+                                                    </strong>
+                                                </td>
+                                                <td
+                          class="text-right o_price_total"
+                          style="padding:0;"
+                        >
+                                                    <span
+                            t-esc="amount_by_group[1]"
+                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id, "precision" :2}'
+                          />
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <tr> <!-- class="border-black o_total" -->
+                                        <td class="text-right" style="padding:0;">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right" style="padding:0;">
+                                            <span
+                        t-field="doc.amount_total"
+                        t-options="{'widget': 'monetary', 'precision': 2}"
+                      />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width:80%;">
+                            <span>
+                                <strong>Say in:</strong>
+                                <strong
+                  style="font-style:italic"
+                  t-field="doc.sale_order_amount_in_words"
+                />
+                            </span>
+
+                            <p t-field="doc.note">
+                                <strong style="font-size:12pt">Notes:</strong>
+                                <span style="font-size:12pt" t-field="doc.note" />
+                            </p>
+                        </div>
+                        <div style="padding: 15px 0;width: 20%;">
+                            <img
+                width="75px"
+                height="75px"
+                style="margin-left: auto;margin-right: auto;display: block;"
+                t-attf-src="data:image/png;base64,#{doc.survey_url_qr}"
+              />
+                            <p
+                style="font-weight: normal;font-size: 12px;margin-bottom: 0;text-align: center;"
+              >
+                                Rate us
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <t t-if="doc.currency_id.name == 'TRY'">
+                                <t t-set="currency_name" t-value="'try'" />
+                                <strong>TRY BANK ACCOUNT INFORMATION</strong>
+                            </t>
+                            <t t-if="doc.currency_id.name == 'USD'">
+                                <t t-set="currency_name" t-value="'usd'" />
+                                <strong>USD BANK ACCOUNT INFORMATION</strong>
+                            </t>
+                            <t t-if="doc.currency_id.name=='EUR'">
+                                <t t-set="currency_name" t-value="'eur'" />
+                                <strong>EURO BANK ACCOUNT INFORMATION</strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table
+              class="table table-bordered"
+              style="page-break-inside:avoid;width:%100;font-size:10pt;"
+            >
+                            <tr style="white-space:nowrap;">
+                                <td style="padding:3px;">
+                                    <strong>BENEFICIARY</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].acc_holder_name"
+                  />
+                                </td>
+                                <td style="padding:3px;white-space:nowrap;">
+                                    <strong>BANK NAME</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id.name"
+                  />
+                                </td>
+                            </tr>
+                            <tr style="white-space:nowrap;">
+                                <td style="padding:3px;white-space:nowrap;">
+                                    <strong>BANK ADDRESS</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id._display_address()"
+                  />
+                                </td>
+                                <td style="padding:3px;">
+                                    <strong>SWIFT CODE</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_bic"
+                  />
+                                </td>
+                            </tr>
+                            <tr style="white-space:nowrap;">
+                                <td style="padding:3px;">
+                                    <strong>IBAN NO</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <strong
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].sanitized_acc_number"
+                  />
+                                </td>
+                                <td style="padding:3px;white-space:nowrap;">
+                                    <strong>BANK PHONE</strong>
+                                </td>
+                                <td style="padding:3px;">
+                                    <span
+                    t-esc="doc.partner_id.country_id['default_%s_bank_account_id' % currency_name].bank_id.phone"
+                  />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="page-break-inside:avoid;font-size:11pt;">
+                        <p>
+                            Any bank charges and other expenses shall be borne by the
+                            customer. It is important to order the transfer indicating
+                            <strong>OUR</strong>
+                            as the method of payment in section
+                            <strong>71A:DETAILS OF CHARGES</strong>
+                            in your swift transfer.We must be possession of the amount
+                            specified without any deduction and free of expense.
+                        </p>
+                    </div>
+                    <div style="page-break-inside:avoid;width:%100">
+                        <div class="row" style="height:125px">
+                            <table class="table table-bordered" style="font-size:11pt">
+                                <thead>
+                                    <tr>
+                                        <td
+                      class="text-center"
+                      style="padding:0;font-size:12pt;"
+                    >
+                                            <strong>Seller</strong>
+                                        </td>
+                                        <td
+                      class="text-center"
+                      style="padding:0;font-size:12pt;"
+                    >
+                                            <strong>Buyer Approval</strong>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="height:125px;">
+                                        <td
+                      class="text-center"
+                      style="padding:0;width:50%;"
+                    >
+                                            <span
+                      >ALTINKAYA Enclosures for Electronics</span>
+                                            <br />
+                                            <span t-field="doc.user_id.name" />
+                                            <br />
+                                            <span t-field="doc.user_id.phone" />
+                                        </td>
+                                        <td
+                      class="text-center"
+                      style="padding:0;width:50%;"
+                    >
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div
+            class="row"
+            style="text-align:center;font-size:8pt;font-family:'Liberation Serif';"
+          >
+                        <div class="col-4">
+                            P.12.F.01
+                        </div>
+                        <div class="col-4">
+                            06.11.2012
+                        </div>
+                        <div class="col-4">
+                            Rev.No/Tar:02/18.08.2014
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            Page:
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="sale.report_saleorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t
+          t-call="altinkaya_reports.report_saleorder_document"
+          t-lang="doc.partner_id.lang"
+        />
+            </t>
+        </t>
+    </template>
+    <template id="sale.report_saleorder_pro_forma">
+        <t t-call="web.html_container">
+            <t t-set="is_pro_forma" t-value="True" />
+            <t t-foreach="docs" t-as="doc">
+                <t
+          t-call="altinkaya_reports.report_saleorder_document"
+          t-lang="doc.partner_id.lang"
+        />
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

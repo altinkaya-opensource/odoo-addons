@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+
+        <record id="email_partner_statement_form_inherit" model="ir.ui.view">
+            <field name="name">email.partner.statement.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                       <button
+              name="email_statement"
+              string="Email Statement"
+              type="object"
+              class="oe_highlight"
+            />
+                    </header>
+                </xpath>
+                <xpath
+          expr="//field[@name='property_account_payable_id']"
+          position="after"
+        >
+
+
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

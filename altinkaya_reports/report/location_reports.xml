@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="location_report_godex" name="location report godex">
+<t t-if="user.context_def_label_printer.type=='GODEX'">
+^Q50,3
+^W104
+^H10
+^AT
+^S7
+^R0
+^E15
+~R255
+^XSET,ROTATION,0
+ <t t-foreach="docs" t-as="location">
+<t t-if="((docs.ids.index(location.id)%2)==0)">
+^L
+Dy2-me-dd
+Y5,12,tek_cicek
+Lo,5,64,382,66
+AT,74,0,61,65,0,0,0,0,<t t-esc="location.name[0:12] or ''" />
+AE,5,63,1,1,0,0,<t t-esc="location.display_name[0:20] or ''" />
+AC,5,105,1,1,0,0,Koridor:<t t-esc="location.posx or ''" /> Raf:<t
+            t-esc="location.posy or ''"
+          /> Kat:<t t-esc="location.posz or ''" />
+<t t-if="location.location_id">AC,5,133,1,1,0,0,Ust Konum:<t
+              t-esc="location.location_id.display_name[0:20] or ''"
+            /></t>
+BE,15,171,3,6,75,0,1,<t t-esc="location.barcode or ''" />
+</t>
+<t t-if="((docs.ids.index(location.id)%2)==1)">
+Y420,12,tek_cicek
+Lo,420,64,792,66
+AT,489,0,61,65,0,0,0,0,<t t-esc="location.name[0:12] or ''" />
+AE,420,63,1,1,0,0,<t t-esc="location.display_name[0:20] or ''" />
+AC,420,105,1,1,0,0,Koridor:<t t-esc="location.posx or ''" /> Raf:<t
+            t-esc="location.posy or ''"
+          /> Kat:<t t-esc="location.posz or ''" />
+<t t-if="location.location_id">AC,420,133,1,1,0,0,Ust Konum:<t
+              t-esc="location.location_id.display_name[0:20] or ''"
+            /></t>
+BE,430,171,3,6,75,0,1,<t t-esc="location.barcode or ''" />
+^P1
+E
+</t></t>
+<t t-if="len(docs)%2==1">
+^P1
+E</t>
+</t>
+<t t-if="user.context_def_label_printer.type=='GODEX300'">
+^Q50,3
+^W104
+^H10
+^AT
+^S5
+^R0
+^E15
+~R255
+^XSET,ROTATION,0
+<t t-foreach="docs" t-as="location">
+<t t-if="((docs.ids.index(location.id)%2)==0)">
+^L
+Dy2-me-dd
+Th:m:s
+Y26,16,tek_cicek
+Lo,22,97,576,100
+AT,121,0,104,104,0,0E,0,0,<t t-esc="location.name[0:12] or ''" />
+AT,20,100,58,58,0,0E,0,0,<t t-esc="location.display_name[0:20] or ''" />
+AD,27,164,1,1,0,0E,Koridor:<t t-esc="location.posx or ''" /> Raf:<t
+            t-esc="location.posy or ''"
+          /> Kat:<t t-esc="location.posz or ''" />
+<t t-if="location.location_id">AD,27,198,1,1,0,0E,Üst Konum:<t
+              t-esc="location.location_id.display_name[0:20] or ''"
+            /></t>
+BE,36,245,5,12,129,0,1,<t t-esc="location.barcode or ''" />
+</t><t t-if="((docs.ids.index(location.id)%2)==1)">
+Y652,17,tek_cicek
+Lo,648,98,1202,101
+Dy2-me-dd
+Th:m:s
+AT,747,1,104,104,0,0E,0,0,<t t-esc="location.name[0:12] or ''" />
+AT,646,101,58,58,0,0E,0,0,<t t-esc="location.display_name[0:20] or ''" />
+AD,653,165,1,1,0,0E,Koridor:<t t-esc="location.posx or ''" /> Raf:<t
+            t-esc="location.posy or ''"
+          /> Kat:<t t-esc="location.posz or ''" />
+<t t-if="location.location_id">AD,653,199,1,1,0,0E,Üst Konum:<t
+              t-esc="location.location_id.display_name[0:20] or ''"
+            /></t>
+BE,662,245,5,12,129,0,1,<t t-esc="location.barcode or ''" />
+^P1
+E</t></t>
+<t t-if="len(docs)%2==1">
+^P1
+E</t>
+ </t>
+
+</template>
+</odoo>

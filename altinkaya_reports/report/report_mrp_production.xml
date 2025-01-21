@@ -1,0 +1,458 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <template id="report_mrporder_altinkaya" inherit_id="mrp.report_mrporder">
+            <xpath expr="//t[@t-call='web.internal_layout']" position="replace">
+                <t t-call="web.basic_layout">
+                    <div class="header">
+                        <table
+              class="table-condensed"
+              style="border-color: #000000;margin-right: 0px;margin-left: 0px;margin-bottom: 0px;margin-top: 0px;width: 100%;"
+              border="2"
+            >
+                            <tbody>
+                                <tr>
+                                    <td
+                    style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                  >
+                                        <h2 style="margin-top: 2px;margin-bottom: 2px;">
+                                            <span t-field="o.name" />
+                                        </h2>
+                                        <span
+                      style="margin-top: 2px;margin-bottom: 2px;"
+                      t-field="o.process_id.name"
+                    />
+
+
+                                    </td>
+                                    <td
+                    style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                  >
+                                        <svg
+                      xml:space="preserve"
+                      width="12mm"
+                      height="9mm"
+                      version="1.1"
+                      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                      viewBox="0 0 1200 900"
+                    ><defs>
+  <style type="text/css">
+.fil0 {
+  fill: #e5097f;
+}
+                        </style></defs>
+                                            <g id="Katman_x0020_1"><metadata
+                          id="CorelCorpID_0Corel-Layer"
+                        />
+                                                <path
+                          class="fil0"
+                          d="M688 693c37,18 67,49 86,86 21,-5 107,-30 161,-86 62,-65 71,-131 20,-181 -50,-51 -116,-42 -181,20 -56,54 -80,139 -86,161zm-148 -12l0 0c-11,-19 -55,-96 -53,-174 2,-90 42,-143 114,-143 71,0 112,53 113,143 2,78 -42,156 -53,174 -19,-6 -40,-10 -61,-10 -21,0 -41,4 -60,10zm-114 97l0 0c19,-37 50,-67 87,-86 -6,-21 -30,-106 -86,-161 -65,-62 -131,-71 -181,-20 -51,50 -42,117 20,181 54,56 139,80 160,86zm-344 -772l0 0 1036 0c41,0 74,33 74,74l0 814 -93 0c2,-8 3,-18 3,-27 0,-72 -53,-112 -143,-114 -78,-2 -155,42 -174,53 6,19 10,39 10,60 0,10 -1,19 -2,28l-386 0c-1,-9 -2,-18 -2,-28 0,-21 4,-42 10,-61 -18,-11 -96,-55 -174,-53 -90,1 -143,42 -143,113 0,11 1,20 3,29l-93 0 0 -814c0,-41 33,-74 74,-74z"
+                        /></g>
+                                    </svg>
+                                    </td>
+
+                                    <td
+                    style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                  >
+                                        <t t-if="o.priority == '2'">
+                                            <h2
+                        style="margin-top: 2px;margin-bottom: 2px;"
+                      >
+                                                <span t-field="o.priority" />
+                                            </h2>
+                                        </t>
+                                        <t t-if="o.priority == '3'">
+                                            <h2
+                        style="margin-top: 2px;margin-bottom: 2px;"
+                      >
+                                                <span t-field="o.priority" />
+                                            </h2>
+                                        </t>
+                                        <div>
+                                            <h5>Üretim Emri</h5>
+                                        </div>
+
+                                    </td>
+
+
+                                    <td
+                    style="border-color: #ffffff; text-align: center; vertical-align: center;"
+                  >
+                                        <img
+                      t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
+                      style="width:300px;height:50px;"
+                    />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="page">
+
+                        <table
+              class="table-condensed"
+              style="border-color: #000000;margin-right: 0px;margin-left: 0px;margin-bottom: 0px;margin-top: 0px;width: 100%;border: 1pt solid black;"
+              border="2"
+            >
+                            <tbody>
+                                <tr>
+                                    <td style="font-size:20px;">
+
+
+                                        <t>
+                                            <t
+                        t-esc="int(round(o.product_qty, 2)) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"
+                      />
+                                            <span t-field="o.product_uom_id.name" />
+                                        </t>
+                                        <span t-field="o.product_id.display_name" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table
+              class="table-condensed"
+              style="border-color: #000000;margin-right: 0px;margin-left: 0px;margin-bottom: 0px;margin-top: 2px;width: 100%;border: 1pt solid black;"
+              border="1"
+            >
+                            <tbody>
+                                <tr t-if="o.x_note">
+                                    <td>
+                                        <h6>NOT:
+                                            <span t-field="o.x_note" />
+                                        </h6>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.sale_note">
+                                    <td>
+                                        <h6>Satış Notu:
+                                            <span t-field="o.sale_note" />
+                                        </h6>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h6>Makine Adı:
+                                            <span t-field="o.x_makine" />
+                                        </h6>
+                                    </td>
+                                    <td>
+                                        <h6>Operatör Adı:
+                                            <span t-field="o.x_operator" />
+                                        </h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h6>Başlama Tarih Saat:
+                                            <span t-field="o.date_start2" />
+                                        </h6>
+                                    </td>
+                                    <td>
+                                        <h6>Bitiş Tarih Saat:
+                                            <span t-field="o.date_finished2" />
+                                        </h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h2
+                    >Üretilen Adet: <!-- TODO: product_qty? --> </h2>
+
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span
+                      t-if="o.product_id and o.product_id.barcode"
+                    >
+                                            <img
+                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', o.product_id.barcode, 200, 45)"
+                        style="width:200px;height:45px"
+                      />
+                                            <br />
+                                            <span t-field="o.product_id.barcode" />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        <div t-if="o.sale_id">
+                            <b>Müşteri:</b>
+                            <span t-field="o.sale_id.partner_id.display_name" />
+                        </div>
+
+
+                        <table class="table table-condensed" t-if="o.move_raw_ids">
+                            <t t-if="o.move_raw_ids">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong
+                      >Üretimde Kullanılacak Ürünler</strong>
+                                        </th>
+                                        <th class="text-right">
+                                            <strong>Quantity</strong>
+                                        </th>
+                                        <th class="text-center">
+                                            <strong>Kaynak Konum</strong>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                            </t>
+                            <tbody>
+                                <t t-if="o.move_raw_ids">
+
+                                    <tr t-foreach="o.move_raw_ids" t-as="line">
+                                        <td style="font-size:11px; line-heigh:80%;">
+                                            <span
+                        t-if="line.product_id and line.product_id.barcode"
+                      >
+                                                <img
+                          t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line.product_id.barcode, 200, 15)"
+                          style="width:200px;height:15px"
+                        />
+                                            </span>
+                                            <span
+                        t-field="line.product_id.display_name"
+                      />
+                                        </td>
+
+                                        <td style="font-size:12px;" class="text-right">
+                                            <t>
+                                                <t
+                          t-esc="int(round(line.product_uom_qty, 2)) if round(line.product_uom_qty, 2).is_integer() else '{:.2f}'.format(line.product_uom_qty)"
+                        />
+                                                <span
+                          t-field="line.product_uom.name"
+                          groups="product.group_uom"
+                        />
+
+                                            </t>
+                                        </td>
+
+                                        <td style="font-size:10px;" class="text-center">
+                                            <span
+                        t-field="line.location_id.display_name"
+                      />
+                                        </td>
+
+
+                                    </tr>
+                                </t>
+
+                            </tbody>
+                        </table>
+
+                        <t t-set="routes" t-value="o.get_product_route()" />
+                        <table class="table table-condensed" t-if="routes">
+                            <thead>
+                                <tr>
+                                    <th
+                    colspan="2"
+                    style="border-bottom: 2px solid black;"
+                  >
+                                        <strong>Mamül Ürün Rotası</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr
+                  t-foreach="routes"
+                  t-as="route"
+                  style="border: 2pt solid black;"
+                >
+                                    <t t-if="route[0] == 'picking'">
+
+                                        <td
+                      style="border-color: #ffffff; text-align: left; vertical-align: center;width: 210px;"
+                    >
+                                            <div style="width: 200px;">
+                                                <div
+                          style="align-content: center;text-align:center;"
+                        >
+                                                    <img
+                            t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
+                            style="width:200px;height:30px;"
+                          />
+                                                </div>
+                                                <div
+                          style="align-content: center;text-align:center;"
+                        >
+                                                    <span
+                            style="margin-top: 2px;margin-bottom: 2px;"
+                            t-field="route[1].picking_type_id"
+                          />
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+                                        <td
+                      style="border-color: #ffffff; text-align: left; vertical-align: center;"
+                    >
+                                            <h4
+                        style="margin-top: 2px;margin-bottom: 2px;font-size: 20px;"
+                      >
+                                                <span t-field="route[1].name" />
+                                                :
+                                                <span
+                          t-field="route[1].move_lines[0].location_id"
+                        />
+                                                >>
+                                                <span
+                          t-field="route[1].move_lines[0].location_dest_id"
+                        />
+                                            </h4>
+                                            <h6>
+                                                <span t-field="route[1].partner_id" />
+                                            </h6>
+                                        </td>
+                                    </t>
+                                    <t t-if="route[0] == 'production'">
+
+                                        <td
+                      style="border-color: #ffffff; text-align: left; vertical-align: center;width: 210px;"
+                    >
+                                            <div style="width: 200px;">
+                                                <div
+                          style="align-content: center;text-align:center;"
+                        >
+                                                    <img
+                            t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
+                            style="width:200px;height:30px;"
+                          />
+                                                </div>
+                                                <div
+                          style="align-content: center;text-align:center;"
+                        >
+                                                    <span
+                            style="margin-top: 2px;margin-bottom: 2px;"
+                            t-field="route[1].process_id.name"
+                          />
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+                                        <td
+                      style="border-color: #ffffff; text-align: left; vertical-align: center;"
+                    >
+                                            <h4
+                        style="margin-top: 2px;margin-bottom: 2px;font-size: 20px;"
+                      >
+                                                <span t-field="route[1].name" />
+                                                :
+                                                <span
+                          t-field="route[1].move_dest_ids.location_id"
+                        />
+                                                >>
+                                                <span
+                          t-field="route[1].move_dest_ids.location_dest_id"
+                        />
+                                            </h4>
+                                            <t
+                        t-if="not o.move_dest_ids.raw_material_production_id"
+                      >
+                                                <h6>
+                                                    <span
+                            t-field="route[1].partner_id"
+                          />
+                                                </h6>
+                                            </t>
+                                            <t
+                        t-if="o.move_dest_ids.raw_material_production_id"
+                      >
+                                                <h6>
+                                                    <span
+                            t-field="o.move_dest_ids.raw_material_production_id.product_id.display_name"
+                          />
+                                                </h6>
+                                            </t>
+                                        </td>
+                                    </t>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+
+                    <div class="footer" style="font-size:10pt;">
+                        <div class="text-center" style="border-top: 1px solid black;">
+                            <ul class="list-inline">
+                                <li t-if="o.name" class="list-inline-item">
+                                    <span t-field="o.name" />
+                                </li>
+                                <li
+                  class="list-inline-item"
+                  t-if="o.name"
+                >&amp;bull;</li>
+                                <li class="list-inline-item">
+                                    Yazdıran:
+                                    <span t-esc="user.name" />
+                                </li>
+                                <li class="list-inline-item">&amp;bull;</li>
+                                <li class="list-inline-item">
+                                    Baskı Tarih Saat:
+                                    <span
+                    t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"
+                  />
+                                </li>
+
+                                <li class="list-inline-item">Sayfa:</li>
+                                <li class="list-inline-item">
+                                    <span class="page" />
+                                </li>
+                                <li class="list-inline-item">/</li>
+                                <li class="list-inline-item">
+                                    <span class="topage" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+
+
+    <data noupdate="1">
+        <template id="report_mrporder_altinkayaB">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaC">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaD">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaE">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaF">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaG">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaH">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+        <template id="report_mrporder_altinkayaI">
+            <t t-call="mrp.report_mrporder" />
+        </template>
+    </data>
+
+</odoo>

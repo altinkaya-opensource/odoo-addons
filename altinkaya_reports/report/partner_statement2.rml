@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<document filename="hesap_ekstresi.pdf">
+    <template title="Hesap Ekstresi" author="Altinkaya Cihaz Kutuları (satis@altinkaya.com.tr)" allowSplitting="20">
+            <pageTemplate>
+        <frame id="first" x1="1.3cm" y1="3.0cm" height="21.7cm" width="19.0cm"/>
+         <stylesheet>
+            <!-- Set here the default font to use for all <para> tags -->
+            <paraStyle name='Normal' fontName="DejaVuSans"/>
+            <paraStyle name="main_footer" fontSize="8.0" alignment="CENTER"/>
+            <paraStyle name="main_header" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+      <blockTableStyle id="Table_Partner_Address">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table111">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEBEFORE" thickness="0.5" colorName="#000000" start="0,0" stop="-1,-1"/>
+      <lineStyle kind="LINEAFTER" thickness="0.5" colorName="#000000" start="0,0" stop="-1,-1"/>
+      <lineStyle kind="LINEBELOW" thickness="0.5" colorName="#000000" start="0,0" stop="-1,-1"/>
+      <lineStyle kind="LINEABOVE" thickness="0.5" colorName="#000000" start="0,0" stop="-1,-1"/>
+    </blockTableStyle>
+    <paraStyle name="terp_default_8" fontSize="8.0" leading="7" rightIndent="-5.0" leftIndent="-5.0" alignment="LEFT"/>
+    <paraStyle name="terp_default_8_right_align" rightIndent="-5.0" leftIndent="-5.0" fontSize="8.0" leading="7" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_8_center_align" rightIndent="0.0" leftIndent="0.0" fontSize="8.0" leading="7" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Footer"/>
+    <paraStyle name="Table" fontSize="10.0" leading="13" spaceBefore="6.0" spaceAfter="6.0"/>
+    <images/>
+         </stylesheet>
+        <pageGraphics>
+            <!-- Set here the default font to use for all <drawString> tags -->
+            <setFont name="DejaVuSans" size="8"/>
+            <!-- You Logo - Change X,Y,Width and Height -->
+            <image x="1.3cm" y="27.7cm" height="40.0" >[[ company.logo or removeParentNode('image') ]]</image>
+            <fill color="black"/>
+            <stroke color="black"/>
+
+            <!-- page header -->
+            <drawRightString x="20cm" y="27.8cm">[[ company.rml_header1 ]]</drawRightString>
+            <drawString x="1.3cm" y="27.3cm">[[ company.partner_id.name ]]</drawString>
+            <place x="1.3cm" y="25.3cm" height="1.8cm" width="15.0cm">
+                <para style="main_header">[[ display_address(company.partner_id) or  '' ]]</para>
+            </place>
+            <setFont name="DejaVuSans" size="18"/>
+            <drawRightString x="20.0cm" y="28.0cm">CARİ HESAP EKSTRESİ</drawRightString>
+            <setFont name="DejaVuSans" size="8"/>
+            <drawString x="14.8cm" y="27.2cm">İvedik VD:</drawString>
+            <drawRightString x="20cm" y="27.2cm">0610422947</drawRightString>
+            <drawString x="14.8cm" y="26.8cm">Phone:</drawString>
+            <drawRightString x="20cm" y="26.8cm">+90 312 395 2768</drawRightString>
+            <drawString x="14.8cm" y="26.4cm">Faks:</drawString>
+            <drawRightString x="20cm" y="26.4cm">+90 312 395 2772</drawRightString>
+            <drawString x="14.8cm" y="26.0cm">Mail:</drawString>
+            <drawRightString x="20cm" y="26.0cm">muhasebe@altinkaya.com.tr</drawRightString>
+            <lines>1.3cm 25.8cm 20cm 25.8cm</lines>
+
+
+            <!-- left margin -->
+            <rotate degrees="90"/>
+            <fill color="grey"/>
+            <drawString x="2.65cm" y="-0.4cm">www.altinkaya.com.tr</drawString>
+            <fill color="black"/>
+            <rotate degrees="-90"/>
+
+            <!--page bottom-->
+            <lines>1.2cm 2.65cm 19.9cm 2.65cm</lines>
+            <place x="1.3cm" y="0cm" height="2.55cm" width="19.0cm">
+                <para style="main_footer">[[ company.rml_footer ]]</para>
+                <para style="main_footer">Contact : [[ user.name ]] - Page: <pageNumber/></para>
+            </place>
+        </pageGraphics>
+    </pageTemplate>
+    </template>
+  <story>
+    <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para><para style="terp_default_8">[[ setLang(o.lang) ]]</para>
+    <blockTable colWidths="139mm,25mm,20mm" style="Table_Partner_Address">
+      <tr><td><para style="terp_default_8"><b>Partner :[[ o.display_name ]]</b></para></td>
+        <td><para style="terp_default_8_right_align"><b>Date :</b></para></td>
+        <td><para style="terp_default_8">[[ datetime.now().strftime("%d.%m.%Y") ]]</para></td></tr></blockTable>
+      <blockTable colWidths="139mm,25mm,20mm" style="Table_Partner_Address">
+      <tr><td><para style="terp_default_8">[[ o.street ]], [[ o.street2 ]],[[ o.city ]],[[ o.state_id.name ]]-[[ o.zip ]] [[ o.country_id.name ]]</para></td>
+      <td><para style="terp_default_8_right_align"><b>Vergi Dairesi :</b></para></td>
+     <td><para style="terp_default_8">[[ o.tax  _office_name ]]</para></td></tr>
+    </blockTable>
+    <blockTable colWidths="10mm,59mm,10mm,60mm,25mm,20mm" style="Table_Partner_Address">
+    <tr><td><para style="terp_default_8"><b>Tel :</b></para></td>
+        <td><para style="terp_default_8">[[ format(o.phone, phone=True, phone_format='national') or '' ]]</para></td>
+        <td><para style="terp_default_8"><b>Fax :</b></para></td>
+        <td><para style="terp_default_8">[[ format(o.fax, phone=True, phone_format='national') or '' ]]</para></td>
+        <td><para style="terp_default_8_right_align"><b>Vergi No :</b></para></td>
+        <td><para style="terp_default_8">[[ o.vat ]]</para></td></tr>
+    </blockTable>
+    <!--<blockTable colWidths="20.00,80.00,50.00,50.00,100.00,60.00,60.00,60.00,10.00" style="Table111">-->
+    <blockTable colWidths="7mm,31mm,18mm,18mm,48mm,19mm,19mm,20mm,4mm" style="Table111">
+      <tr>
+        <td><para style="terp_default_8"><b>NO</b></para></td>
+        <td><para style="terp_default_8"><b>Number</b></para></td>
+        <td><para style="terp_default_8"><b>Date</b></para></td>
+        <td><para style="terp_default_8"><b>Due Date</b></para></td>
+        <td><para style="terp_default_8"><b>Description</b></para></td>
+        <td><para style="terp_default_8"><b>Debit</b></para></td>
+        <td><para style="terp_default_8"><b>Credit</b></para></td>
+        <td><para style="terp_default_8"><b>Balance</b></para></td>
+        <td><para style="terp_default_8"></para></td>
+      </tr>
+    </blockTable>
+   <section><para style="terp_default_8_center_align">[[ repeatIn(get_statement_data(o),'partner_stmt') ]]</para><blockTable colWidths="7mm,31mm,18mm,18mm,48mm,19mm,19mm,20mm,4mm" style="Table111">
+      <tr><td><para style="terp_default_8_right_align">[[ partner_stmt['seq'] ]]</para></td>
+        <td><para style="terp_default_8">[[ partner_stmt['number'] ]]</para></td>
+        <td><para style="terp_default_8">[[ partner_stmt['date'] ]]</para></td>
+        <td><para style="terp_default_8">[[ partner_stmt['due_date'] ]]</para></td>
+        <td><para style="terp_default_8">[[ partner_stmt['description'] ]]</para></td>
+        <td><para style="terp_default_8_right_align">[[ formatLang(partner_stmt['debit']) ]]</para></td>
+        <td><para style="terp_default_8_right_align">[[ formatLang(partner_stmt['credit']) ]]</para></td>
+        <td><para style="terp_default_8_right_align">[[ formatLang(partner_stmt['balance']) ]]</para></td>
+        <td><para style="terp_default_8">[[ partner_stmt['dc'] ]]</para></td></tr>
+    </blockTable>
+    </section>
+    <section><para style="terp_default_8_center_align">[[ repeatIn(get_statement_data(o),'partner_stmt1') ]]</para></section>
+<!--    <blockTable colWidths="20.00,80.00,50.00,50.00,100.00,60.00,60.00,60.00,10.00" style="Table_Partner_Address">-->
+    <blockTable colWidths="7mm,31mm,18mm,18mm,48mm,19mm,19mm,20mm,4mm" style="Table_Partner_Address"><tr>
+        <td><para style="terp_default_8_right_align"></para></td>
+        <td><para style="terp_default_8"></para></td>
+        <td><para style="terp_default_8"></para></td>
+        <td><para style="terp_default_8"></para></td>
+        <td><para style="terp_default_8"><b>Total: </b></para></td>
+        <td><para style="terp_default_8_right_align"></para></td>
+        <td><para style="terp_default_8_right_align"><b>Total: </b></para></td>
+        <td><para style="terp_default_8_right_align"><b>[[ formatLang(partner_stmt1['balance']) or '' ]]</b></para></td>
+        <td><para style="terp_default_8"><b>[[ partner_stmt1['dc'] ]]</b></para></td>
+      </tr>
+    </blockTable>
+  </story>
+</document>

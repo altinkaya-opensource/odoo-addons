@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_purchasequotation_document">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+            <style>
+                .table-bordered thead th {
+                border: 1px solid black !important;
+                }
+                .table-bordered th, .table-bordered td {
+                border: 1px solid black !important;
+                }
+            </style>
+            <!--TURKISH LAYOUT-->
+            <t t-if="o.partner_id.lang == 'tr_TR'">
+                <div class="header" style="margin:0;padding:0;">
+                    <div class="row" style="margin:0">
+                        <table
+              class="table table-borderless"
+              style="page-break-inside:avoid;margin-bottom:0;"
+            >
+                            <tbody>
+                                <tr>
+                                    <th
+                    class="text-center"
+                    style="font-size: 24pt;vertical-align: middle;width: 40%;"
+                  >
+                                        <span>Teklif Talebi</span>
+                                    </th>
+                                    <th style="display:ruby;width: 60%;">
+                                        <img
+                      src="/altinkaya_reports/static/img/altinkayayeni.svg"
+                      style="width: 100%;"
+                    />
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="page">
+                    <div class="oe_structure" />
+                    <div class="row" style="width:100%;padding-top:31px;">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">
+                                        Kime:&#160;<strong
+                      t-field="o.partner_id.name"
+                    />&#160;
+                                        <span t-field="o.partner_id.email" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:500px">
+                                        <span
+                      t-field="o.partner_id.commercial_partner_id.display_name"
+                    />
+                                    </td>
+                                    <td>
+                                        <strong>Tarih</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.date_order" t-options="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>
+                                            <span t-field="o.partner_id.neighbour_id" />
+                                            <span t-field="o.partner_id.street" />
+                                            <span t-field="o.partner_id.street2" />
+                                            <br />
+                                            <span t-field="o.partner_id.region_id" />
+                                            <span t-field="o.partner_id.district_id" />
+                                            <span
+                        t-field="o.partner_id.state_id.name"
+                      />
+                                            <span
+                        t-field="o.partner_id.country_id.name"
+                      />
+                                        </span>
+                                        <br />
+                                    </td>
+                                    <td>
+                                        <strong>Referans</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.name" />
+                                    </td>
+
+                                </tr>
+                                <tr t-if="o.partner_id.phone or o.partner_id.fax">
+                                    <td colspan="3">
+                                        <t t-if="o.partner_id.phone">
+                                            Tel:
+                                            <span t-field="o.partner_id.phone" />
+                                        </t>
+                                        <t t-if="o.partner_id.fax">
+                                            Faks:
+                                            <span t-field="o.partner_id.fax" />
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top:0">
+                        <table class="table table-bordered" style="margin-bottom:0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <strong>Ürün Açıklaması</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Miktar</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Birim</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Birim Fiyat</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Tutar</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.order_line" t-as="order_line">
+                                    <td>
+                                        <span
+                      t-field="order_line.product_id.default_code"
+                    />&#160;
+                                        <span t-field="order_line.name" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="order_line.product_qty" />
+                                    </td>
+                                    <td>
+                                        <span
+                      t-field="order_line.product_uom"
+                      groups="uom.group_uom"
+                    />
+                                    </td>
+                                    <td>
+                                        <span t-field="order_line.price_unit" />
+                                    </td>
+                                    <td>
+                                        <span t-field="order_line.price_subtotal" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <div id="total" class="row" name="total">
+                            <div
+                t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto"
+              >
+                                <table class="table table-borderless">
+                                    <tr class="o_subtotal">
+                                        <td>
+                                            <strong>Toplam</strong>
+                                        </td>
+                                        <td style="width:140px" class="text-right">
+                                            <span
+                        t-field="o.amount_untaxed"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Vergiler</strong>
+                                        </td>
+                                        <td style="width:140px" class="text-right">
+                                            <span
+                        t-field="o.amount_tax"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Genel Toplam</strong>
+                                        </td>
+                                        <td
+                      style="width:140px border:solid white;"
+                      class="text-right"
+                    >
+                                            <span
+                        t-field="o.amount_total"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="o.notes">
+                        NOTLAR:
+                        <p t-field="o.notes" />
+                    </t>
+                    <div class="row">
+                        <div class="col">
+                            Sevkiyat Bilgileri
+                            <br />
+                            Lütfen bize yukarıdaki ürünler için teklifinizi gönderiniz.
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table
+              class="table table-bordered"
+              style="page-break-inside:avoid;"
+            >
+                            <tr>
+                                <td width="400px">
+                                    Alıcı
+                                </td>
+                                <td width="400px">
+                                    Satıcı
+                                </td>
+                            </tr>
+                            <tr style="height:150px;">
+                                <td>
+                                    <span t-field="o.user_id.name" />
+                                    <br />
+                                    <span t-field="o.user_id.phone" />
+                                    <br />
+                                </td>
+                                <td>
+                                    <br />
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="row">
+                        <div class="col text-right">
+                            Sayfa:
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <!--NON-TURKISH LAYOUT-->
+            <t t-if="o.partner_id.lang != 'tr_TR'">
+                <div class="header" style="margin:0;padding:0;">
+                    <div class="row" style="margin:0">
+                        <table
+              class="table table-borderless"
+              style="page-break-inside:avoid;margin-bottom:0;"
+            >
+                            <tbody>
+                                <tr>
+                                    <th
+                    class="text-center"
+                    style="font-size: 24pt;vertical-align: middle;width: 40%;"
+                  >
+                                        <span>Request for Quotation</span>
+                                    </th>
+                                    <th style="display:ruby;width: 60%;">
+                                        <img
+                      src="/altinkaya_reports/static/img/newaltinkayaen.svg"
+                      style="width: 100%;"
+                    />
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="page">
+                    <div class="oe_structure" />
+                    <div class="row" style="width:100%;padding-top:31px;">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">
+                                        To:&#160;<strong
+                      t-field="o.partner_id.name"
+                    />&#160;
+                                        <span t-field="o.partner_id.email" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:500px">
+                                        <span
+                      t-field="o.partner_id.commercial_partner_id.display_name"
+                    />
+                                    </td>
+                                    <td>
+                                        <strong>Date</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.date_order" t-options="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>
+                                            <span t-field="o.partner_id.neighbour_id" />
+                                            <span t-field="o.partner_id.street" />
+                                            <span t-field="o.partner_id.street2" />
+                                            <br />
+                                            <span t-field="o.partner_id.region_id" />
+                                            <span t-field="o.partner_id.district_id" />
+                                            <span
+                        t-field="o.partner_id.state_id.name"
+                      />
+                                            <span
+                        t-field="o.partner_id.country_id.name"
+                      />
+                                        </span>
+                                        <br />
+                                    </td>
+                                    <td>
+                                        <strong>Reference</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.name" />
+                                    </td>
+
+                                </tr>
+                                <tr t-if="o.partner_id.phone or o.partner_id.fax">
+                                    <td colspan="3">
+                                        <t t-if="o.partner_id.phone">
+                                            Phone:
+                                            <span t-field="o.partner_id.phone" />
+                                        </t>
+                                        <t t-if="o.partner_id.fax">Fax:
+                                            <span t-field="o.partner_id.fax" />
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+                    <div class="row" style="margin-top:0">
+                        <table class="table table-bordered" style="margin-bottom:0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <strong>Description of Goods</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Quantity</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>UOM</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Unit Price</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Amount</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.order_line" t-as="order_line">
+                                    <td>
+                                        <span
+                      t-field="order_line.product_id.default_code"
+                    />&#160;
+                                        <span t-field="order_line.name" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="order_line.product_qty" />
+                                    </td>
+                                    <td>
+                                        <span
+                      t-field="order_line.product_uom"
+                      groups="uom.group_uom"
+                    />
+                                    </td>
+                                    <td>
+                                        <span t-field="order_line.price_unit" />
+                                    </td>
+                                    <td>
+                                        <span t-field="order_line.price_subtotal" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <div id="total" class="row" name="total">
+                            <div
+                t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto"
+              >
+                                <table class="table table-borderless">
+                                    <tr class="o_subtotal">
+                                        <td>
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td style="width:140px" class="text-right">
+                                            <span
+                        t-field="o.amount_untaxed"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Taxes</strong>
+                                        </td>
+                                        <td style="width:140px" class="text-right">
+                                            <span
+                        t-field="o.amount_tax"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td style="width:140px" class="text-right">
+                                            <span
+                        t-field="o.amount_total"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                      />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="o.notes">
+                        PS:
+                        <p t-field="o.notes" />
+                    </t>
+                    <div class="row">
+                        <div class="col">
+                            INCOTERM FOB
+                            <br />
+                            Please send us your quotation for the items above.
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table
+              class="table table-bordered"
+              style="page-break-inside:avoid;"
+            >
+                            <tr>
+                                <td width="400px">
+                                    BUYER
+                                </td>
+                                <td width="400px">
+                                    Seller
+                                </td>
+                            </tr>
+                            <tr style="height:150px;">
+                                <td>
+                                    <span t-field="o.user_id.name" />
+                                    <br />
+                                    <span t-field="o.user_id.phone" />
+                                    <br />
+                                </td>
+                                <td>
+                                    <br />
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="row">
+                        <div class="col text-right">
+                            Page:
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="purchase.report_purchasequotation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t
+          t-call="altinkaya_reports.report_purchasequotation_document"
+          t-lang="o.partner_id.lang"
+        />
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

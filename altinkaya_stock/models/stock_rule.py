@@ -5,7 +5,7 @@ from odoo import models, fields
 
 class StockRuleInherit(models.Model):
     _name = "stock.rule"
-    _inherit = ["mail.thread", "stock.rule", 'mail.activity.mixin']
+    _inherit = ["mail.thread", "stock.rule"]
 
     # Add tracking to the field
     action = fields.Selection(tracking=True)
