@@ -24,7 +24,7 @@ from odoo import http
 from odoo.http import request
 from odoo.tools.translate import _
 
-from odoo.addons.web.controllers.main import Home
+from odoo.addons.web.controllers.home import Home
 
 SIGN_UP_REQUEST_PARAMS = {
     "db",
@@ -52,8 +52,10 @@ class IPRestriction(Home):
     @http.route()
     def web_login(self, *args, **kwargs):
         request.params["login_success"] = False
+
+        # Use update_env to set SUPERUSER_ID
         if not request.uid:
-            request.uid = odoo.SUPERUSER_ID
+            request.update_env(user=odoo.SUPERUSER_ID)
 
         values = {
             k: v for k, v in request.params.items() if k in SIGN_UP_REQUEST_PARAMS
@@ -80,7 +82,9 @@ class IPRestriction(Home):
                         break
 
                 if not ip_ok:
-                    request.uid = old_uid
+                    # Restore the original environment using update_env
+                    request.update_env(user=old_uid)
+
                     values["error"] = _(
                         "Not allowed to login from this IP (%(ip_addr)s)",
                         ip_addr=ip_address,

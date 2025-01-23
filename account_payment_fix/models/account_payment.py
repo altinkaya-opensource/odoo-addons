@@ -8,14 +8,14 @@ _logger = logging.getLogger(__name__)
 
 class AccountPayment(models.Model):
     _name = "account.payment"
-    _inherit = ["mail.thread", 'mail.activity.mixin', "account.payment"]
+    _inherit = ["mail.thread", "account.payment"]
 
     name = fields.Char(readonly=False)
-    amount = fields.Monetary(, tracking=True)
-    partner_id = fields.Many2one(, tracking=True)
-    journal_id = fields.Many2one(, tracking=True)
-    destination_journal_id = fields.Many2one(, tracking=True)
-    currency_id = fields.Many2one(, tracking=True)
+    amount = fields.Monetary(tracking=True)
+    partner_id = fields.Many2one(tracking=True)
+    journal_id = fields.Many2one(tracking=True)
+    destination_journal_id = fields.Many2one(tracking=True)
+    currency_id = fields.Many2one(tracking=True)
     # campo a ser extendido y mostrar un nombre detemrinado en las lineas de
     # pago de un payment group o donde se desee (por ej. con cheque, retención,
     # etc)

@@ -20,21 +20,18 @@
     "name": "Stock Incoterm Extension",
     "version": "16.0.0.1.0",
     "license": "AGPL-3",
-    "depends": ["stock_account",
-                "sale_stock",
-                "purchase"],
-    "author": "OdooMRP team,"
-              "AvanzOSC,"
-              "Serv. Tecnol. Avanzados - Pedro M. Baeza",
+    "depends": ["stock_account", "sale_stock", "purchase"],
+    "author": "OdooMRP team," "AvanzOSC," "Serv. Tecnol. Avanzados - Pedro M. Baeza" "Ümithan Güldemir",
     "website": "http://www.odoomrp.com",
     "category": "Stock",
-    'data': ["security/ir.model.access.csv",
-             "views/account_incoterm_view.xml",
-             "views/stock_view.xml",
-             "views/account_move_view.xml",
-             "views/sale_order_view.xml",
-            # "views/purchase_order_view.xml"
-             ],
-    'installable': True,
-    'auto_install': False,
+    "data": [
+        "security/ir.model.access.csv",
+        "views/account_incoterm_view.xml",
+        "views/stock_view.xml",
+        "views/account_move_view.xml",
+        "views/sale_order_view.xml",
+        # "views/purchase_order_view.xml"
+    ],
+    "installable": True,
+    "auto_install": False,
 }
