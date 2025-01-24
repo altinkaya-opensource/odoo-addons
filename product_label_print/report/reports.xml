@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-<data>
-		<report id="label_product_product"
-            model="print.pack.barcode.wiz"
-            string="Product Label (GODEX)"
-            name="product_label_print.product_label_report"
-            file="product_label_print.product_label_report"
-        />
 
-    <report id="label_product_product_kalip"
-            model="product.product"
-            string="Molding Label (GODEX)"
-            name="product_label_print.product_molding_label"
-            file="product_label_print.product_molding_label"
-            report_type="qweb-text"
-        />
+    <record id="label_product_product" model="ir.actions.report">
+      <field name="name">Product Label (GODEX)</field>
+      <field name="model">print.pack.barcode.wiz</field>
+      <field name="report_name">product_label_print.product_label_report</field>
+      <field name="report_file">product_label_print.product_label_report</field>
+    </record>
 
-</data>
+    <record id="label_product_product_kalip" model="ir.actions.report">
+      <field name="name">Molding Label (GODEX)</field>
+      <field name="model">product.product</field>
+      <field name="report_name">product_label_print.product_molding_label</field>
+      <field name="report_file">product_label_print.product_molding_label</field>
+      <field name="report_type">qweb-text</field>
+    </record>
+
 </odoo>

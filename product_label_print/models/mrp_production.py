@@ -7,7 +7,7 @@ class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
     lot_id_to_create = fields.Many2one(
-        "stock.production.lot",
+        "stock.lot",
         string="Lot to create",
         help="Store the lot id before move line is created",
     )

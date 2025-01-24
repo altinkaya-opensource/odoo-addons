@@ -4,7 +4,7 @@ from odoo import models
 
 
 class StockProductionLot(models.Model):
-    _inherit = "stock.production.lot"
+    _inherit = "stock.lot"
 
     def action_print_product_label(self):
         self.ensure_one()

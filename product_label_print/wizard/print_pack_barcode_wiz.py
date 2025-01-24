@@ -1,7 +1,5 @@
-# coding: utf-8
-
-from odoo import api, fields, models, _
-from odoo.exceptions import Warning, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class PrintPackBarcodeWizard(models.TransientModel):
@@ -13,7 +11,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
     skip_first = fields.Boolean("Skip First Label")
     restrict_single = fields.Boolean("Restrict to single product", default=False)
     single_label_id = fields.Many2one(
-        "product.product.label", compute="_compute_single_label"
+        "product.product.label", compute="_compute_single_label", search=True
     )
     single_label_name = fields.Char(string="Name", related="single_label_id.name")
     single_label_nameL1 = fields.Char(string="NameL1", related="single_label_id.nameL1")
@@ -54,26 +52,25 @@ class PrintPackBarcodeWizard(models.TransientModel):
         readonly=False,
     )
     printer_type = fields.Char(
-        string="User Printer Type", compute="_get_user_printer_type", store=False
+        string="User Printer Type", compute="_compute_user_printer_type", store=False
     )
 
-    
     @api.depends("product_label_ids")
     def _compute_single_label(self):
         if self.product_label_ids:
             self.single_label_id = self.product_label_ids[0]
 
     @api.depends("label_ids")
-    def _get_user_printer_type(self):
+    def _compute_user_printer_type(self):
         self.printer_type = self.env.user.context_def_label_printer.type
 
     @api.model
-    def default_get(self, fields):
+    def default_get(self, fields_list):
         """
         To get default values for the object.
         """
         product_label_obj = self.env["product.product.label"]
-        res = super(PrintPackBarcodeWizard, self).default_get(fields)
+        res = super().default_get(fields_list)
         product_ids = []
 
         active_model = self.env.context.get("active_model", False)
@@ -87,7 +84,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         model = self.env[active_model].browse(active_id)
         if model._name == "product.product":
             product_id = model
-            lot_ids = self.env["stock.production.lot"]  # empty recordset
+            lot_ids = self.env["stock.lot"]  # empty recordset
         else:
             product_id = model.product_id
             lot_ids = self._get_lot_ids(model)
@@ -97,7 +94,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
 
         if not product_id.default_code:
             raise UserError(
-                msg=_("Product : %s not have default code" % (product_id.display_name))
+                f"Product : {product_id.display_name} not have default code"
             )
         codeparts = product_id.default_code.split("-")
         if len(codeparts) > 4:
@@ -112,10 +109,13 @@ class PrintPackBarcodeWizard(models.TransientModel):
             shortcode = product_id.default_code
         nameline = 1
         nameL = {1: "", 2: "", 3: "", 4: ""}
+        # TODO: Fix variant handling
         variable_attributes = product_id.attribute_line_ids.filtered(
-            lambda l: len(l.value_ids) > 0
+            lambda lam: len(lam.value_ids) > 0
         ).mapped("attribute_id")
-        variant = product_id.attribute_value_ids._variant_name(variable_attributes)
+        variant = product_id.product_template_attribute_value_ids.mapped(
+            variable_attributes
+        )
         if variant:
             fullname = product_id.name + " " + variant
         else:
@@ -141,7 +141,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                 "label_to_print": 1,
                 "barcode": product_id.barcode,
                 "lot_ids": [(6, 0, lot_ids.ids)] if lot_ids else False,
-                "model_ref_id": "%s,%s" % (model._name, model.id),
+                "model_ref_id": f"{model._name},{model.id}",
                 "uom_name": product_id.uom_id.name,
                 "product_id": product_id.id,
             }
@@ -152,7 +152,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         )
         return res
 
-    
+    # @api.multi
     def generate_labels(self):
         last_label = self.product_label_ids[0]
         leap_label = False
@@ -166,7 +166,6 @@ class PrintPackBarcodeWizard(models.TransientModel):
             )
             model = product_label.model_ref_id
             if product_label.product_id.tracking != "none":
-
                 if len(product_label.lot_ids) > 1:
                     raise UserError(
                         _(
@@ -179,7 +178,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                     if model.lot_id_to_create:
                         lot_id = model.lot_id_to_create
                     else:
-                        lot_id = self.env["stock.production.lot"].create(
+                        lot_id = self.env["stock.lot"].create(
                             {
                                 "product_id": model.product_id.id,
                                 "ref": model.origin,
@@ -251,27 +250,27 @@ class PrintPackBarcodeWizard(models.TransientModel):
         self.label_ids = [(6, 0, Label_Res)]
         return False
 
-    
-    def show_label(self):
-        self.generate_labels()
-        datas = {
-            "ids": self.env.context.get("active_ids"),
-            "model": "print.pack.barcode.wiz",
-        }
+    # @api.multi
+    # def show_label(self):
+    #     self.generate_labels()
+    #     datas = {
+    #         "ids": self.env.context.get("active_ids"),
+    #         "model": "print.pack.barcode.wiz",
+    #     }
 
-        res = {
-            "type": "ir.actions.report",
-            "report_name": "label_product_product",
-            "datas": datas,
-        }
+    #     res = {
+    #         "type": "ir.actions.report",
+    #         "report_name": "label_product_product",
+    #         "datas": datas,
+    #     }
 
-        return (
-            self.env.ref("product_label_print.label_product_product")
-            .with_context(active_model="print.pack.barcode.wiz")
-            .report_action(docids=self)
-        )
+    #     return (
+    #         self.env.ref("product_label_print.label_product_product")
+    #         .with_context(active_model="print.pack.barcode.wiz")
+    #         .report_action(docids=self)
+    #     )
 
-    
+    # @api.multi
     def print_label(self):
         self.generate_labels()
         printer = self.env.user.context_def_label_printer
@@ -279,8 +278,8 @@ class PrintPackBarcodeWizard(models.TransientModel):
             raise Warning(_("You need to set a label printer in order to print."))
         printer.print_document(
             "product_label_print.label_product_product",
-            self.env.ref("product_label_print.label_product_product").render_qweb_text(
-                [self.id], data={}
+            self.env.ref("product_label_print.label_product_product")._render_qweb_text(
+                "product_label_print.label_product_product", docids=[self.id], data={}
             )[0],
             doc_form="txt",
         )
@@ -291,8 +290,10 @@ class PrintPackBarcodeWizard(models.TransientModel):
         If model is mrp.production, get the lot_id from the first,
         if not any lot_id, create one and save it.
         """
+        lot_ids = self.env["stock.lot"]  # empty recordset
+
         if model.product_id.tracking == "none":
-            return self.env["stock.production.lot"]  # empty recordset
+            return lot_ids
 
         if model._name == "stock.production.lot":
             return model
@@ -305,7 +306,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                 or model.lot_id_to_create
             )
 
-        if model._name == "stock.move":
+        elif model._name == "stock.move":
             lot_ids = model.mapped("move_line_ids.lot_id").filtered(
                 lambda x: x.product_id == model.product_id
             )

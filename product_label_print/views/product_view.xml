@@ -1,42 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
+
 		<record id="product_product_print_label_single_tree" model="ir.ui.view">
        		<field name="name">product.product.tree.inherit.print_label</field>
           	<field name="model">product.product</field>
-          	<field name="inherit_id" ref="product.product_product_tree_view"/>
+          	<field name="inherit_id" ref="product.product_product_tree_view" />
           	<field name="arch" type="xml">
-            	
+
                 	<xpath expr="//tree" position="inside">
-       						<button name="action_print_label" type="object" string="Print Label" icon="fa-barcode"/>	
+       						<button
+          name="action_print_label"
+          type="object"
+          string="Print Label"
+          icon="fa-barcode"
+        />
                   	</xpath>
           	</field>
        </record>
-       
+
        <record id="product_product_print_label_single_form" model="ir.ui.view">
        		<field name="name">product.product.form.inherit.print_label</field>
           	<field name="model">product.product</field>
-          	<field name="inherit_id" ref="product.product_normal_form_view"/>
+          	<field name="inherit_id" ref="product.product_normal_form_view" />
           	<field name="arch" type="xml">
-            	
+
                 <div name="button_box" position="inside">
-                    <button class="oe_inline oe_stat_button" name="action_print_label" type="object" 
-                         icon="fa-barcode" string="Print Label">
+                    <button
+          class="oe_inline oe_stat_button"
+          name="action_print_label"
+          type="object"
+          icon="fa-barcode"
+          string="Print Label"
+        >
                     </button>
-                    
+
                 </div>
           	</field>
        </record>
 
 		<record id="stock_production_lot_print_label_single_form" model="ir.ui.view">
        		<field name="name">stock.production.lot.form.inherit.print.label</field>
-          	<field name="model">stock.production.lot</field>
-          	<field name="inherit_id" ref="stock.view_production_lot_form"/>
+          	<field name="model">stock.lot</field>
+          	<field name="inherit_id" ref="stock.view_production_lot_form" />
           	<field name="arch" type="xml">
 
                 <div name="button_box" position="inside">
-                    <button class="oe_inline oe_stat_button" name="action_print_product_label" type="object"
-                         icon="fa-barcode" string="Print Label">
+                    <button
+          class="oe_inline oe_stat_button"
+          name="action_print_product_label"
+          type="object"
+          icon="fa-barcode"
+          string="Print Label"
+        >
                     </button>
 
                 </div>
@@ -47,10 +62,18 @@
        <record id="stock_move_tree_print_product_label" model="ir.ui.view">
        		<field name="name">stock.move.tree.inherit.print_product_label</field>
           	<field name="model">stock.picking</field>
-          	<field name="inherit_id" ref="stock.view_picking_form"/>
+          	<field name="inherit_id" ref="stock.view_picking_form" />
           	<field name="arch" type="xml">
-                	<xpath expr="//field[@name='move_ids_without_package']//field[@name='product_uom']" position="after">
-       						<button name="action_print_product_label" type="object" string="Print Product Label" icon="fa-print"/>	
+                	<xpath
+        expr="//field[@name='move_ids_without_package']//field[@name='product_uom']"
+        position="after"
+      >
+       						<button
+          name="action_print_product_label"
+          type="object"
+          string="Print Product Label"
+          icon="fa-print"
+        />
                   	</xpath>
           	</field>
        </record>
@@ -58,13 +81,12 @@
 	<record id="action_print_molding_label_multi" model="ir.actions.server">
         <field name="name">Print Molding Label Multi Action</field>
         <field name="type">ir.actions.server</field>
-        <field name="model_id" ref="product.model_product_product"/>
-        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="model_id" ref="product.model_product_product" />
+        <field name="binding_model_id" ref="product.model_product_product" />
         <field name="state">code</field>
         <field name="code">
             records.action_print_molding_label()
         </field>
     </record>
 
-    </data>
 </odoo>
