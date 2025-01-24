@@ -1,0 +1,38 @@
+I8,E,001
+ZN
+q822
+O
+JF
+ZT
+Q400,25
+N
+
+{% for label in o.label_ids %}
+{% if not label.first_label_empty %}
+GG730,340,"cicek"
+A730,390,2,n,1,1,N,"${label.label1.short_code[0:12]}"
+LO423,333,384,2
+A805,335,2,o,1,1,N,"[${label.label1.default_code}]"
+A805,295,2,p,1,1,N,"${label.label1.nameL1[0:30] or ''}"
+A805,263,2,p,1,1,N,"${label.label1.nameL2[0:30] or ''}"
+A805,231,2,p,1,1,N,"${label.label1.nameL3[0:30] or ''}"
+A805,195,2,c,1,1,N,"${label.label1.note or ''}"
+A805,155,2,q,1,1,N,"${formatLang(label.label1.pieces_in_pack, digits=0)  or ''} ${label.label1.uom_name or ''}"
+B788,100,2,E30,3,6,89,B,"${label.label1.barcode or ''}"
+{% end %}
+
+{% if not label.second_label_empty %}
+GG340,340,"cicek"
+A330,390,2,n,1,1,N,"${label.label2.short_code[0:12]}"
+LO23,333,384,2
+A405,335,2,o,1,1,N,"[${label.label2.default_code}]"
+A405,295,2,p,1,1,N,"${label.label2.nameL1[0:30] or ''}"
+A405,263,2,p,1,1,N,"${label.label2.nameL2[0:30] or ''}"
+A405,231,2,p,1,1,N,"${label.label2.nameL3[0:30] or ''}"
+A405,195,2,c,1,1,N,"${label.label2.note or ''}"
+A405,155,2,q,1,1,N,"${formatLang(label.label2.pieces_in_pack, digits=0)  or ''} ${label.label2.uom_name or ''}"
+B388,100,2,E30,3,6,89,B,"${label.label2.barcode or ''}"
+{% end %}
+
+P1,${label.copies_to_print}
+{% end %}

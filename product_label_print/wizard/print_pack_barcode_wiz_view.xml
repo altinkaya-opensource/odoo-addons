@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_print_pack_barcode_form" model="ir.ui.view">
+            <field name="name">view.print.pack.barcode.wiz.form</field>
+            <field name="model">print.pack.barcode.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Ürün Etiketi Yazdır">
+                    <sheet>
+                        <group>
+                            <field name="product_label_ids" invisible="1">
+                                <field name="note" />
+
+                                <field name="pieces_in_pack"/>
+                                <field name="label_to_print"/>
+                            </field>
+                        	<field name="single_label_default_code" readonly="1"/>
+                            <field name="single_label_barcode" readonly="1"/>
+                            <field name="single_label_name" readonly="1"/>
+                            <field name="single_label_product_id"/>
+                            <field name="single_label_lot_ids"
+                                   readonly="context.get('active_model', False) == 'stock.production.lot'"/>
+                            <field name="single_label_note" />
+                            <field name="single_label_pieces_in_pack"/>
+                            <field name="single_label_label_to_print"/>
+                        </group>
+                        <group>
+                          <field name="skip_first" string="Do not print first label"></field>
+                        </group>
+                    </sheet>
+                    <div class="alert alert-primary" role="status"
+                    invisible="context.get('active_model', False) != 'mrp.production'">
+                        Barkod çıkartırken sadece bir adet Lot numarası seçin. Eğer Lot seçmezseniz
+                        sizin için bir Lot oluşturulacak ve üretime kaydedilecek.
+                    </div>
+                    <footer>
+                        <button name="print_label" type="object" string="Print" class="oe_highlight"/>
+                        <button name="show_label" type="object" string="Show Label" groups="base.group_system" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- 
+        <act_window
+           id="action_print_pack_barcode_wiz"
+           name="Product Label Print"
+           target="new"
+           key2="client_action_multi"
+           view_mode="form"
+           res_model="print.pack.barcode.wiz"
+           src_model="product.product"/>
+            -->
+       	
+
+    </data>
+
+    <data noupdate="1">
+
+
+
+
+
+
+      <!--   <ir_set>
+            <field eval="'action'" name="key"/>
+            <field eval="'client_print_multi'" name="key2"/>
+            <field eval="['product.product']" name="models"/>
+            <field name="name">Product_label1</field>
+            <field eval="'ir.actions.report.xml,'+str(aeroo_product_label_print_id)" name="value"/>
+            <field eval="True" name="isobject"/>
+            <field eval="True" name="replace"/>
+        </ir_set> -->
+
+    </data>
+</openerp>

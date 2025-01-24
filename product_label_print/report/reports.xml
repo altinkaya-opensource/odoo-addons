@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+		<report id="label_product_product"
+            model="print.pack.barcode.wiz"
+            string="Product Label (GODEX)"
+            name="product_label_print.product_label_report"
+            file="product_label_print.product_label_report"
+        />
+
+    <report id="label_product_product_kalip"
+            model="product.product"
+            string="Molding Label (GODEX)"
+            name="product_label_print.product_molding_label"
+            file="product_label_print.product_molding_label"
+            report_type="qweb-text"
+        />
+
+</data>
+</odoo>
