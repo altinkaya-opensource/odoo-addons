@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2018, Kod Merkezi Yazılım ve İnternet Hiz. Eğ. Dan. Ltd.
@@ -20,24 +19,18 @@
 ##############################################################################
 
 {
-    'name': 'MRP - Dynamic Raw Materials Calculation',
-    'version': '13.0.0.1.0',
-    'category': 'MRP',
-    'summary': 'Compute raw materials quantity based on the numeric value of a specific attribute of the product to be produced.',
-    'description': """
-MRP - Dynamic Raw Materials Calculation
-====================================================
-
-    """,
-    'author': 'CODEQUARTERS',
-    'website': 'http://www.codequarters.com',
-    'depends': [
-        'mrp',
-#         'mrp_hook',
-        'product_attribute_types'
-        ],
-    'data': ['views/mrp_bom_view.xml',
-             ],
-    'installable': True,
-    'application': False,
+    "name": "MRP - Dynamic Raw Materials Calculation",
+    "version": "16.0.1.0.0",
+    "category": "MRP",
+    "summary": """Compute raw materials quantity based on the numeric
+               value of a specific attribute of the product to be produced.""",
+    "author": "CODEQUARTERS, Altinkaya Enclosures",
+    "license": "AGPL-3",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "depends": ["mrp"],
+    "data": [
+        "views/mrp_bom_view.xml",
+    ],
+    "installable": True,
+    "application": False,
 }
