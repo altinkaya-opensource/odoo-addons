@@ -1,0 +1,53 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* mrp_dynamic_raw_materials
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-19 12:03+0000\n"
+"PO-Revision-Date: 2021-02-19 12:03+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model,name:mrp_dynamic_raw_materials.model_mrp_bom
+msgid "Bill of Material"
+msgstr "Ürün Ağacı"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model,name:mrp_dynamic_raw_materials.model_mrp_bom_line
+msgid "Bill of Material Line"
+msgstr "Ürün Ağacı Satırları"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model.fields,help:mrp_dynamic_raw_materials.field_mrp_bom_line__factor_attribute_id
+msgid "End product attribute to use for raw material calculation"
+msgstr "Hammadde hesabında kullanılacak son ürün özelliği"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model.fields,field_description:mrp_dynamic_raw_materials.field_mrp_bom_line__attribute_factor
+msgid "Factor"
+msgstr "Çarpan"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model.fields,field_description:mrp_dynamic_raw_materials.field_mrp_bom_line__factor_attribute_id
+msgid "Factor Attribute"
+msgstr "Çarpan Özelliği"
+
+#. module: mrp_dynamic_raw_materials
+#: model:ir.model.fields,help:mrp_dynamic_raw_materials.field_mrp_bom_line__attribute_factor
+msgid "Factor to multiply by the numeric value of attribute"
+msgstr "Ürün Özelliğinin sayısal değeri çarpılacak değer"
+
+#. module: mrp_dynamic_raw_materials
+#: code:addons/mrp_dynamic_raw_materials/models/mrp_bom.py:144
+#, python-format
+msgid "Recursion error!  A product with a Bill of Material should not have itself in its BoM or child BoMs!"
+msgstr "Yineleme hatası! Ürün reçetesi olan bir ürün, ürün reçetesinde veya alt ürün reçetelerinde bulunmamalıdır!"
+
