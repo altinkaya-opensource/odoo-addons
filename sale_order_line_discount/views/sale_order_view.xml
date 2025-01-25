@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="view_sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.discount</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook//field[@name='order_line']/tree/field[@name='discount']" position="after">
+                    <field name="unit_discounted" readonly="1"/>
+                    <button name="%(action_update_discount)d" string="Update" type="action" states="draft" modifiers="{'invisible': [['state', 'not in', ['draft']]]}" icon="fa-cut"/>
+                </xpath>
+                <xpath expr="//form/sheet/notebook//field[@name='order_line']//form//field[@name='price_unit']" position="after">
+                    <field name="unit_discounted" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
