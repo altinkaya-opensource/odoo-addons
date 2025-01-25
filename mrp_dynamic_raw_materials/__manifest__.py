@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
+#
+#    Copyright (C) 2018, Kod Merkezi Yazılım ve İnternet Hiz. Eğ. Dan. Ltd.
+#    http://www.codequarters.com
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,21 +19,18 @@
 ##############################################################################
 
 {
-    "name": "Stock Incoterm Extension",
-    "version": "16.0.0.1.0",
+    "name": "MRP - Dynamic Raw Materials Calculation",
+    "version": "16.0.1.0.0",
+    "category": "MRP",
+    "summary": """Compute raw materials quantity based on the numeric
+               value of a specific attribute of the product to be produced.""",
+    "author": "CODEQUARTERS, Altinkaya Enclosures",
     "license": "AGPL-3",
-    "depends": ["stock_account", "sale_stock", "purchase"],
-    "author": "OdooMRP team," "AvanzOSC," "Serv. Tecnol. Avanzados - Pedro M. Baeza" "Ümithan Güldemir",
-    "website": "http://www.odoomrp.com",
-    "category": "Stock",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "depends": ["mrp"],
     "data": [
-        "security/ir.model.access.csv",
-        "views/account_incoterm_view.xml",
-        "views/stock_view.xml",
-        "views/account_move_view.xml",
-        "views/sale_order_view.xml",
-        # "views/purchase_order_view.xml"
+        "views/mrp_bom_view.xml",
     ],
     "installable": True,
-    "auto_install": False,
+    "application": False,
 }
