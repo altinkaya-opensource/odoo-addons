@@ -9,84 +9,85 @@ import hashlib
 def _match_production_with_route(production):
     ongoing_state = ["planned", "progress"]
     production_ids = production.sorted(key=lambda m: m.id)
-    if production_ids:
-        process_ids = production_ids.mapped("process_id.id")
-        if 14 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 14 and r.state in ongoing_state
-                )
-            ):
-                return "06_molding"
-            else:
-                return "04_molding_waiting"
-        elif any(x in [1, 11] for x in process_ids):
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id in [1, 11] and r.state in ongoing_state
-                )
-            ):
-                return "08_injection"
-            else:
-                return "07_injection_waiting"
-        elif 8 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 8 and r.state in ongoing_state
-                )
-            ):
-                return "20_cutting"
-            else:
-                return "19_cutting_waiting"
-        elif 2 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 2 and r.state in ongoing_state
-                )
-            ):
-                return "14_cnc"
-            else:
-                return "13_cnc_waiting"
-        elif 10 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 10 and r.state in ongoing_state
-                )
-            ):
-                return "10_metal"
-            else:
-                return "09_metal_waiting"
-        elif 5 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 5 and r.state in ongoing_state
-                )
-            ):
-                return "12_cnc_lathe"
-            else:
-                return "11_cnc_lathe_waiting"
-        elif 16 in process_ids:
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id == 16 and r.state in ongoing_state
-                )
-            ):
-                return "16_uv_printing"
-            else:
-                return "15_uv_printing_waiting"
-        elif any(x in [3, 6, 7] for x in process_ids):
-            if any(
-                production_ids.filtered(
-                    lambda r: r.process_id.id in [3, 6, 7] and r.state in ongoing_state
-                )
-            ):
-                return "18_assembly"
-            else:
-                return "17_assembly_waiting"
-        else:
-            return "05_production"
-    else:
-        return "21_at_warehouse"
+    return "21_at_warehouse" # TODO: KeyError: 'process_id'
+    # if production_ids:
+    #     process_ids = production_ids.mapped("process_id.id")
+    #     if 14 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 14 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "06_molding"
+    #         else:
+    #             return "04_molding_waiting"
+    #     elif any(x in [1, 11] for x in process_ids):
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id in [1, 11] and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "08_injection"
+    #         else:
+    #             return "07_injection_waiting"
+    #     elif 8 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 8 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "20_cutting"
+    #         else:
+    #             return "19_cutting_waiting"
+    #     elif 2 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 2 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "14_cnc"
+    #         else:
+    #             return "13_cnc_waiting"
+    #     elif 10 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 10 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "10_metal"
+    #         else:
+    #             return "09_metal_waiting"
+    #     elif 5 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 5 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "12_cnc_lathe"
+    #         else:
+    #             return "11_cnc_lathe_waiting"
+    #     elif 16 in process_ids:
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id == 16 and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "16_uv_printing"
+    #         else:
+    #             return "15_uv_printing_waiting"
+    #     elif any(x in [3, 6, 7] for x in process_ids):
+    #         if any(
+    #             production_ids.filtered(
+    #                 lambda r: r.process_id.id in [3, 6, 7] and r.state in ongoing_state
+    #             )
+    #         ):
+    #             return "18_assembly"
+    #         else:
+    #             return "17_assembly_waiting"
+    #     else:
+    #         return "05_production"
+    # else:
+    #     return "21_at_warehouse"
 
 
 class SaleOrder(models.Model):
@@ -425,11 +426,12 @@ class SaleOrderLine(models.Model):
     @api.depends("product_id")
     def _compute_set_product(self):
         bom_obj = self.env["mrp.bom"].sudo()
-        bom_id = bom_obj._bom_find(product=self.product_id)
-        if not bom_id:
+        bom_dict = bom_obj._bom_find(products=self.product_id)
+        if not bom_dict:
             self.set_product = False
         else:
             # bom_id = bom_obj.browse(bom_id.id)
+            bom_id = bom_dict[self.product_id]
             self.set_product = bom_id.type == "phantom"
 
     @api.onchange("show_custom_products")

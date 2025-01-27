@@ -2,25 +2,21 @@
 
 <odoo>
 	<data>
-	
+
 		<record id="product_normal_form_inherit_variant_routes" model="ir.ui.view">
             <field name="name">product.product.form.inherit.variant_routes</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='route_ids']" position="after">
-                    <field name="variant_route_num" invisible="1"/>
-                    
                     <field name="variant_route_ids" widget="many2many_checkboxes"/>
-                    
-                    
                 </xpath>
-                
+
                 <xpath expr="//field[@name='route_ids']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('variant_route_num','!=', 0)]}</attribute>
-                    
+                    <attribute name="attrs">{'invisible':[('variant_route_ids','!=', False)]}</attribute>
+
                 </xpath>
-                
+
             </field>
         </record>
 	</data>

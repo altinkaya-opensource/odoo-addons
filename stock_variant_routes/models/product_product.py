@@ -6,26 +6,25 @@ Created on Jul 18, 2016
 '''
 
 from odoo import models, fields, api
+from odoo import Command
 
 
 class product_product(models.Model):
     _inherit = 'product.product'
 
     route_ids= fields.Many2many('stock.route', string='Routes', domain="[('product_selectable', '=', True)]",
-                                    compute='_compute_variant_routes')
+                                    compute='_compute_variant_routes', store=True)
 
     variant_route_ids= fields.Many2many('stock.route','stock_route_product_variant', 'product_id', 'route_id',
                                         string='Variant Routes')
 
-    variant_route_num = fields.Integer('Variant Routes',compute='_compute_variant_routes')
 
-
-    @api.depends('variant_route_ids')
+    @api.depends('variant_route_ids', 'product_tmpl_id.route_ids')
     def _compute_variant_routes(self):
-        self.variant_route_num = len(self.variant_route_ids)
-        if self.variant_route_num > 0:
-            self.route_ids = self.variant_route_ids
-        else:
-            self.route_ids = self.product_tmpl_id.route_ids
+        for product in self:
+            if product.variant_route_ids:
+                route_ids = product.variant_route_ids
+            else:
+                route_ids = product.product_tmpl_id.route_ids
 
-
+            product.write({'route_ids': [Command.set(route_ids.ids)]})

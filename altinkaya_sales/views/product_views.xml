@@ -22,11 +22,12 @@
                 <field name="attr_val_price_coef"> </field>
              </xpath>
 
-			<xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+            <!--TODO: this group is not correct.-->
+			<!-- <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
 				<button name="compute_set_product_price" string="Compute Set Price" type="object"
 						group="__export__.res_groups_95_4c14ca81"
 						confirm="This method will recalculate the prices of all variants within the current product template. Do you want to continue?"/>
-			</xpath>
+			</xpath> -->
             </field>
         </record>
 
