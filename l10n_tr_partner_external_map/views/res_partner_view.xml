@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+
+<!--  Inherit partner view to add 'Map' and 'Route Map' buttons -->
+<record id="view_partner_form_Tr" model="ir.ui.view">
+    <field name="name">map.button.res.partner.form</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="partner_external_map.view_partner_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//button[@name='open_map']" position="attributes">
+        	<attribute name="attrs">{'invisible': [('neighbour_id', '=', False)]}</attribute>
+		</xpath>
+		<xpath expr="//button[@name='open_route_map']" position="attributes">
+			<attribute name="attrs">{'invisible': [('neighbour_id', '=', False)]}</attribute>
+        </xpath>
+    </field>
+</record>
+
+</odoo>
