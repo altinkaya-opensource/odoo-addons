@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
-            <!-- TODO: attribute logic changed in v13. migrate the fields and views -->
+                <!-- TODO: attribute logic changed in v13. migrate the fields and views -->
                 <!-- <xpath expr="//field[@name='attribute_value_ids']" position="before">
                     <field name="domain_attribute_value_ids" invisible="1"/>
                 </xpath>
@@ -126,6 +126,23 @@
 
 	            </xpath>-->
 
+            </field>
+        </record>
+
+
+        <record id="product_template_product_tree_inherit_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view" />
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="route_ids" widget="many2many_tags"/>
+                    <field name="product_variant_count" invisible="1" />
+                </field>
+                <!-- TODO: sequence not exist anymore, also move here to altinkaya_ecommerce -->
+                <!-- <field name="sequence" position="replace">
+                    <field name="website_sequence" string="#"/>
+                </field> -->
             </field>
         </record>
 

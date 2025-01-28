@@ -15,5 +15,6 @@
         "views/partner_view.xml",
         "views/account_move_view.xml",
         "views/company_view.xml",
+        "views/account_invoice_report_view.xml",
     ],
 }

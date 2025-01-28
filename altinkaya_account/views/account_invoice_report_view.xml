@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="inherit_view_account_invoice_report_search"
+                model="ir.ui.view">
+            <field name="name">account.invoice.report.search</field>
+            <field name="model">account.invoice.report</field>
+            <field name="inherit_id"
+                   ref="account.view_account_invoice_report_search"/>
+            <field name="arch" type="xml">
+                <!--  <filter name="thisyear" position="after"> -->
+                <xpath expr="//search/field[@name='invoice_date']" position="after">
+                    <filter string="This F.Year" name="thisyear"
+                            domain="['|', ('invoice_date', '=', False), '&amp;',('invoice_date','&lt;=', time.strftime('%Y-12-31')),('invoice_date','&gt;=',time.strftime('%Y-01-01'))]"
+                            help="Journal Entries with period in current year"/>
+
+                    <filter string="Last Year" name="lastyear"
+                            domain="['|', ('invoice_date', '=', False), '&amp;', ('invoice_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%Y-01-01')),('invoice_date','&lt;=', time.strftime('%Y-01-01'))]"/>
+                    <separator/>
+                    <filter string="Türkiye" name="turkey"
+                            domain="[('country_id.id', '=','224'),('country_id.name', '!=','False')]"/>
+                    <filter string="Yurtdışı" name="outturkey"
+                            domain="[('country_id.id', '!=','224'),('country_id.id', '!=','55'),('country_id', '!=',False)]"/>
+                    <separator/>
+
+                    <filter string="Due Date" name="duedate"
+                            domain="[('invoice_date_due', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+
+                </xpath>
+
+                <!--  </filter> -->
+                <xpath expr="//search/group/filter[@name='partner_id']" position="replace">
+                    <filter string="Partner" name="partner"
+                            context="{'group_by':'partner_id','residual_visible':True}"/>
+                </xpath>
+                <!-- <filter string="Supplier" position="attributes">
+                    <attribute name="name">supplier</attribute>
+                </filter> -->
+            </field>
+        </record>
+
+        <!--  <record id="inherit_view_account_invoice_report_graph" model="ir.ui.view">
+          <field name="name">account.invoice.report.graph</field>
+          <field name="model">account.invoice.report</field>
+          <field name="inherit_id" ref="account.view_account_invoice_report_graph" />
+          <field name="arch" type="xml">
+                  <xpath expr="//field[@name='period_id']" position="replace"/>
+                  <field name="period_id" type="col" position="replace"/>
+          </field>
+     </record> -->
+
+    </data>
+</odoo>
