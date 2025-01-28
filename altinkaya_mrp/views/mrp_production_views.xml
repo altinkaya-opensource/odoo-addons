@@ -7,11 +7,11 @@
             <field name="model">mrp.production</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='button_unreserve']" position="after">
+                <xpath expr="//button[@name='do_unreserve']" position="after">
                     <button name="button_print_prod_order" string="Print Production Order" type="object"/>
                 </xpath>
 
-                <xpath expr="//button[@name='button_unreserve']" position="after">
+                <xpath expr="//button[@name='do_unreserve']" position="after">
                     <button name="action_set_production_started" string="Start Production"
                             attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"
                             type="object"/>
@@ -22,10 +22,10 @@
                             icon="fa-barcode" string="Print Barcode"/>
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="replace"/>
-                <xpath expr="//field[@name='location_src_id']" position='replace'/>
+                <!-- <xpath expr="//field[@name='location_src_id']" position='replace'/> -->
                 <xpath expr="//field[@name='location_dest_id']" position='replace'/>
                 <xpath expr="//form//field[@name='product_id']" position='attributes'>
-                    <attribute name="domain">[('has_production_bom','=',True)]</attribute>
+                    <!-- <attribute name="domain">[('has_production_bom','=',True)]</attribute> -->
                     <attribute name="class"></attribute>
                 </xpath>
                 <xpath expr="//field[@name='bom_id']" position="after">
@@ -34,24 +34,29 @@
                     <field name="date_start2"/>
                     <field name="date_finished2" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='availability']" position="after">
+                <!-- <xpath expr="//field[@name='availability']" position="after">
                     <field name="location_src_id"/>
                     <field name="location_dest_id"/>
-                </xpath>
+                </xpath> -->
+                <field name="location_src_id"/>
+                <field name="location_dest_id"/>
                 <xpath expr="//field[@name='origin']" position="after">
-                    <field name="sale_id" readonly="1"/>
+                    <!-- <field name="sale_id" readonly="1"/>
                     <field name="procurement_group_id"/>
                     <field name="x_makine"/>
-                    <field name="x_operator"/>
+                    <field name="x_operator"/> -->
                 </xpath>
-                <xpath expr="//field[@name='routing_id']" position="attributes">
+                <!-- <xpath expr="//field[@name='routing_id']" position="attributes">
                     <attribute name="attrs">{'invisible': 1}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='routing_id']" position="after">
+                </xpath> -->
+                <!-- <xpath expr="//field[@name='routing_id']" position="after">
                     <field name="process_id"/>
                     <field name="x_note"/>
                     <field name="sale_note"/>
-                </xpath>
+                </xpath> -->
+                <!-- <field name="process_id"/>
+                <field name="x_note"/>
+                <field name="sale_note"/> -->
                 <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_id']"
                        position="after">
                     <button name="action_create_procurement" type="object" string="Tedarik"

@@ -183,23 +183,23 @@ class MrpProduction(models.Model):
     def button_print_prod_order(self):
         return self.env.ref("mrp.action_report_production_order").report_action(self)
 
-    # def action_print_product_label(self):
-    #     self.ensure_one()
-    #     aw_obj = self.env["ir.actions.act_window"].with_context(
-    #         {"default_restrict_single": True}
-    #     )
-    #     action = aw_obj.for_xml_id(
-    #         "product_label_print", "action_print_pack_barcode_wiz"
-    #     )
-    #     action.update(
-    #         {
-    #             "context": {
-    #                 "default_restrict_single": True,
-    #                 "active_ids": [self.product_id.id],
-    #             }
-    #         }
-    #     )
-    #     return action
+    def action_print_product_label(self):
+        self.ensure_one()
+        aw_obj = self.env["ir.actions.act_window"].with_context(
+            {"default_restrict_single": True}
+        )
+        action = aw_obj._for_xml_id(
+            "product_label_print.action_print_pack_barcode_wiz"
+        )
+        action.update(
+            {
+                "context": {
+                    "default_restrict_single": True,
+                    "active_ids": [self.product_id.id],
+                }
+            }
+        )
+        return action
 
     def action_create_procurement(self):
         return {}
@@ -208,9 +208,9 @@ class MrpProduction(models.Model):
     def action_make_mts(self):
         return {}
 
-    # def action_set_production_started(self):
-    #     for production in self:
-    #         production.write({"state": "planned", "date_start2": fields.Datetime.now()})
+    def action_set_production_started(self):
+        for production in self:
+            production.write({"state": "confirmed", "date_start2": fields.Datetime.now()})
 
     def _update_raw_move(self, bom_line, line_data):
         """Inherited to work with split procurements.
