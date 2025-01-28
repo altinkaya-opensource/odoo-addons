@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_x_makine,x.makine,model_x_makine,,1,1,1,1
+access_mrp_bom_wcparameter,mrp.bom.wcparameter,model_mrp_bom_wcparameter,,1,1,1,1
 access_mrp_bom_template_line,mrp.bom.template.line,model_mrp_bom_template_line,,1,1,1,1
