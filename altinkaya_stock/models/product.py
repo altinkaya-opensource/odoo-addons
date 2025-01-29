@@ -27,7 +27,7 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     default_code = fields.Char(copy=False)
-
+    
     @api.constrains("default_code")
     def _check_default_code_unique(self):
         for template in self:
