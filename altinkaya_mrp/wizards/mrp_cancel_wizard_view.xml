@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record id="view_mrp_cancel_more" model="ir.ui.view">
+            <field name="name">Cancel Manufactuing Orders in bulk</field>
+            <field name="model">mrp.cancel.more</field>
+            <field name="arch" type="xml">
+                <form string="Parameters">
+                    <footer>
+                        <button name="cancel_mrp_order" string="Cancel Orders" type="object"  class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mrp_cancel_more" model="ir.actions.act_window">
+            <field name="name">Cancel Manufacturing Order</field>
+            <field name="res_model">mrp.cancel.more</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

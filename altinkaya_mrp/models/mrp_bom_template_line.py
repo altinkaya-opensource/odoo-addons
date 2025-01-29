@@ -66,6 +66,11 @@ class MrpBomTemplateLine(models.Model):
         string="Target Attribute Values",
         store=True,
     )
+    
+    valid_product_attribute_value_wnva_ids = fields.Many2many(
+        "product.attribute.value",
+        related="bom_product_id.valid_product_template_attribute_line_ids",
+    )
 
     factor_attribute_id = fields.Many2one(
         "product.attribute",
