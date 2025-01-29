@@ -59,6 +59,7 @@ class MrpProduction(models.Model):
     product_pickings = fields.Many2many(compute="_get_product_pickings",string="Product Pickings", relation='stock.picking',
              readonly=True)
 
+    # TODO: Migration of commented out functions if necessary
     # def _generate_moves(self):
     #     if self.env.context.get("context", {}).get("migration", False):
     #         return True

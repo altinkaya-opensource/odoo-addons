@@ -34,6 +34,7 @@
                     <field name="date_start2"/>
                     <field name="date_finished2" invisible="1"/>
                 </xpath>
+                TODO: migration of commented fields
                 <!-- <xpath expr="//field[@name='availability']" position="after">
                     <field name="location_src_id"/>
                     <field name="location_dest_id"/>
