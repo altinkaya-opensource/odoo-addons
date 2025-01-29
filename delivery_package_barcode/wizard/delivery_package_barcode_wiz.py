@@ -37,8 +37,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         )
 
     @api.model
-    def create(self, vals):
-        res = super().create(vals)
+    def create(self, vals_list):
+        res = super(DeliveryPackageBarcodeWiz, self).create(vals_list)
         if not res.name:
             res.name = res.picking_id.name + _(" - PACK BARCODE")
         return res
