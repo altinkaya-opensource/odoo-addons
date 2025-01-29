@@ -39,7 +39,7 @@ class MrpProduction(models.Model):
         compute="_compute_process_id",
         store=True,
     )
-
+    
     @api.depends('bom_id')
     def _compute_process_id(self):
         for record in self:
@@ -56,8 +56,8 @@ class MrpProduction(models.Model):
     procurement_group_name = fields.Char(
         compute="_get_procurement_group_name", string="Procurement Group", readonly=True
     )
-    # product_pickings = fields.Many2many(compute="_get_product_pickings",string="Product Pickings", relation='stock.picking',
-    #          readonly=True)
+    product_pickings = fields.Many2many(compute="_get_product_pickings",string="Product Pickings", relation='stock.picking',
+             readonly=True)
 
     # def _generate_moves(self):
     #     if self.env.context.get("context", {}).get("migration", False):
@@ -142,28 +142,30 @@ class MrpProduction(models.Model):
     #         self.location_src_id = self.routing_id.location_id
     #         self.location_dest_id = self.routing_id.location_id
 
-    # @api.model
-    # def create(self, values):
-    #     production = super(MrpProduction, self).create(values)
+    @api.model
+    def create(self, vals_list):
+        production = super(MrpProduction, self).create(vals_list)
 
-    #     def _get_sale_line(moves):
-    #         if moves and moves[0].sale_line_id:
-    #             return moves[0].sale_line_id
-    #         if moves and moves[0].move_dest_ids:
-    #             return _get_sale_line(moves[0].move_dest_ids)
-    #         return False
+        def _get_sale_line(moves):
+            if moves and moves[0].sale_line_id:
+                return moves[0].sale_line_id
+            if moves and moves[0].move_dest_ids:
+                return _get_sale_line(moves[0].move_dest_ids)
+            return False
+        
+        sale_line = _get_sale_line(
+            production.move_finished_ids and production.move_finished_ids[0]
+        )
+        if sale_line:
+            production.write(
+                {
+                    "sale_id": sale_line.order_id.id or "",
+                }
+            )
+            
+        return production
 
-    #     sale_line = _get_sale_line(
-    #         production.move_finished_ids and production.move_finished_ids[0]
-    #     )
-    #     if sale_line:
-    #         production.write(
-    #             {
-    #                 "sale_id": sale_line.order_id.id or "",
-    #             }
-    #         )
 
-    #     return production
 
     #     @api.model
     #     def _make_consume_line_from_data(self, production, product, uom_id, qty,
@@ -173,12 +175,11 @@ class MrpProduction(models.Model):
     #         self.env['stock.move'].browse([move_id]).priority = production.priority
     #         return move_id
 
-    #     @api.multi
-    #     def action_confirm(self):
-    #         res = super(MrpProduction, self).action_confirm()
-    #         self.env.cr.commit()
-    #         res2 = self.action_assign()
-    #         return res
+    def action_confirm(self):
+        res = super(MrpProduction, self).action_confirm()
+        self.env.cr.commit()
+        res2 = self.action_assign()
+        return res
 
     def button_print_prod_order(self):
         return self.env.ref("mrp.action_report_production_order").report_action(self)
@@ -267,7 +268,7 @@ class MrpProduction(models.Model):
                     mts_move.write(
                         {"product_uom_qty": new_qty - mto_move.product_uom_qty}
                     )
-            move._recompute_state()
+            move.move_line_ids._recompute_state()
             move._action_assign()
             # There is no module that uses this method but Odoo's
             # MRP itself and it doesn't use return value of this method.
@@ -276,31 +277,30 @@ class MrpProduction(models.Model):
         else:
             return super(MrpProduction, self)._update_raw_moves(bom_line, line_data)
 
-    # @api.multi
-    # def _rearrange_procurement_priorities(self):
-    #     """
-    #     Rearrange the priorities of the productions which are created from procurement
-    #     rules.
-    #     0: Not urgent
-    #     1: Normal
-    #     2: Urgent
-    #     3: Very Urgent
-    #     :return:
-    #     """
-    #     ongoing_productions = self.search(
-    #         [
-    #             ("state", "in", ("confirmed", "planned", "progress")),
-    #             ("procurement_group_id.sale_id", "=", False),
-    #         ]
-    #     )
-    #     for production in ongoing_productions:
-    #         stock_rules = self.env["stock.warehouse.orderpoint"].search(
-    #             [("product_id", "=", production.product_id.id)]
-    #         )
-    #         if stock_rules:
-    #             total_minimum_qty = sum(stock_rules.mapped("product_min_qty"))
-    #             total_available_qty = sum(stock_rules.mapped("product_location_qty"))
-    #             # set urgent if available qty is less than 25% of minimum required qty
-    #             if total_available_qty < (total_minimum_qty * 0.25):
-    #                 production.priority = "2"
-    #     return True
+    def _rearrange_procurement_priorities(self):
+        """
+        Rearrange the priorities of the productions which are created from procurement
+        rules.
+        0: Not urgent
+        1: Normal
+        2: Urgent
+        3: Very Urgent
+        :return:
+        """
+        ongoing_productions = self.search(
+            [
+                ("state", "in", ("confirmed", "progress")),
+                ("procurement_group_id.sale_id", "=", False),
+            ]
+        )
+        for production in ongoing_productions:
+            stock_rules = self.env["stock.warehouse.orderpoint"].search(
+                [("product_id", "=", production.product_id.id)]
+            )
+            if stock_rules:
+                total_minimum_qty = sum(stock_rules.mapped("product_min_qty"))
+                total_available_qty = sum(stock_rules.mapped("product_location_qty"))
+                # set urgent if available qty is less than 25% of minimum required qty
+                if total_available_qty < (total_minimum_qty * 0.25):
+                    production.priority = "2"
+        return True

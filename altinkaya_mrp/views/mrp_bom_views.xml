@@ -15,7 +15,7 @@
 					<page name="wcparameters" string="Workcenter Parameters">
 						<field name="wc_parameter_ids" >
 							<tree editable="bottom">
-								<!-- <field name="routing_wc_id" domain="[('routing_id','=',parent.routing_id)]"/> -->
+								<field name="routing_wc_id" domain="[('process_id','=',parent.process_id)]"/>
 								<field name="cycle_nbr"/>
 								<field name="hour_nbr" widget="float_time"/>
 								<field name="time_start" widget="float_time"/>
@@ -26,9 +26,9 @@
 					</page>
 				</xpath>
 
-				<!-- <xpath expr="//field[@name='routing_id']" position="after">
+				<xpath expr="//field[@name='process_id']" position="after">
 					<field name="tool_product_id" domain="[('categ_id','ilike', 'kalıp')]" />
-				</xpath> -->
+				</xpath>
 
 			</field>
 		</record>

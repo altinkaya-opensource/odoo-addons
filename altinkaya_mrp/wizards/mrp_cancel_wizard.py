@@ -1,6 +1,6 @@
 
 
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 from odoo.exceptions import UserError
 
 class mrp_cancel_more(models.TransientModel):

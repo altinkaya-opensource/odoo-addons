@@ -7,9 +7,9 @@
 	            <field name="res_model">mrp.production</field>
 	            <field name="view_mode">tree,form</field>
 	        <field name="domain">[('procurement_group_id','=',active_id)]</field>
-<!--			<field name="domain">['|',-->
-<!--				('procurement_group_id','=',active_id),-->
-<!--				('source_procurement_group_id','=',active_id)]</field>-->
+			<field name="domain">['|',
+				('procurement_group_id','=',active_id),
+				('source_procurement_group_id','=',active_id)]</field>
         </record>
 		<record id="view_procurement_group_form_inherit_mrp" model="ir.ui.view">
 			<field name="name">procurement.group.form.inherit.mrp</field>

@@ -8,7 +8,18 @@
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
-    "depends": ["base", "mrp", "product", "stock", "sale", "hr", "altinkaya_stock"],
+    "depends": [
+        "base",
+        "mrp",
+        "product",
+        "stock",
+        "sale",
+        "hr",
+        "altinkaya_stock",
+        "stock_warehouse_orderpoint_stock_info",
+        "stock_warehouse_orderpoint_stock_info_unreserved",
+        "stock_vlm_mgmt"
+        ],
     "data": [
         "security/ir.model.access.csv",
         "security/mrp_security.xml",
