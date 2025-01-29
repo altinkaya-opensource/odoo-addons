@@ -7,13 +7,13 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
-                <field name="email" position="after">
-                    <field name="ranking" invisible="True"/>
-                </field>
+                <xpath expr="//field[@name='email']" position="after">
+                    <field name="ranking" invisible="1"/>
+                </xpath>
             </field>
         </record>
         <!-- TODO: fix partner_worksector view before this -->
-        <!-- <record id="res_partner_form_view" model="ir.ui.view">
+        <record id="res_partner_form_view" model="ir.ui.view">
             <field name="name">res.partner.form.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="partner_worksector.res_partner_form_view_marketing"/>
@@ -28,6 +28,6 @@
                	</group>
                  </xpath>
             </field>
-        </record> -->
+        </record>
     </data>
 </odoo>

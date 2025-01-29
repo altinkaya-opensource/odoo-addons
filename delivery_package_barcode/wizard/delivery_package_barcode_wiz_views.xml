@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <field name="_barcode_scanned" widget="barcode_handler" invisible="1" />
+                <field name="_barcode_scanned" widget="barcode_handler" invisible="0" />
                 <field name="message_type" invisible="1" />
                 <div class="text-center">
                         <div

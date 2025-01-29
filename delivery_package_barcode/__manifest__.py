@@ -1,9 +1,9 @@
-# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# Copyright 2025 Yiğit Budak, Ümithan Güldemir (https://github.com/yibudak) (https://github.com/umithan-guldemir)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Delivery Package Barcode",
     "summary": "Provides fields to be able to use integration modules.",
-    "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
+    "author": "Yiğit Budak, Ümithan Güldemir, Odoo Turkey Localization Group, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",
