@@ -27,7 +27,7 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     default_code = fields.Char(copy=False)
-    
+
     @api.constrains("default_code")
     def _check_default_code_unique(self):
         for template in self:
@@ -316,7 +316,7 @@ class Product(models.Model):
                 ),
             )
         ]
-
+    # TODO: Location param fix
     def _compute_custom_available(self):
         for product in self:
             product.qty_available_sincan = product.with_context(
@@ -353,31 +353,31 @@ class Product(models.Model):
     def _compute_custom2_available(self):
         for product in self:
             product.qty_available_montaj = product.with_context(
-                {"location": 53}
+                {"location": 12}
             ).qty_available
             product.qty_available_enjek = product.with_context(
-                {"location": 29}
+                {"location": 12}
             ).qty_available
             product.qty_available_cnc = product.with_context(
-                {"location": 61}
+                {"location": 12}
             ).qty_available
             product.qty_available_boya = product.with_context(
-                {"location": 45}
+                {"location": 12}
             ).qty_available
             product.qty_available_metal = product.with_context(
-                {"location": 37}
+                {"location": 12}
             ).qty_available
             product.qty_available_maske = product.with_context(
-                {"location": 114}
+                {"location": 12}
             ).qty_available
             product.qty_available_baski = product.with_context(
-                {"location": 77}
+                {"location": 12}
             ).qty_available
             product.qty_available_torna = product.with_context(
-                {"location": 5895}
+                {"location": 12}
             ).qty_available
             product.qty_available_kaplama = product.with_context(
-                {"location": 6362}
+                {"location": 12}
             ).qty_available
 
     def single_product_update_quant_reservation(self):
