@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="change_production_qty" model="res.groups">
+        <field name="name">MRP Change Quantity Permission</field>
+        <field name="category_id" ref="base.module_category_manufacturing"/>
+    </record>
+
+</odoo>

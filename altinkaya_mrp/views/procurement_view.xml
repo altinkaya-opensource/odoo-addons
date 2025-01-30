@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+    	<record id="do_view_productions" model="ir.actions.act_window">
+            <field name="name">Productions for Groups</field>
+	            <field name="res_model">mrp.production</field>
+	            <field name="view_mode">tree,form</field>
+	        <field name="domain">[('procurement_group_id','=',active_id)]</field>
+			<field name="domain">['|',
+				('procurement_group_id','=',active_id),
+				('source_procurement_group_id','=',active_id)]</field>
+        </record>
+		<record id="view_procurement_group_form_inherit_mrp" model="ir.ui.view">
+			<field name="name">procurement.group.form.inherit.mrp</field>
+			<field name="model">procurement.group</field>
+			<field name="inherit_id" ref="stock.procurement_group_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button"
+							icon="fa-cogs"
+							name="%(do_view_productions)d"
+							string="Productions"
+							type="action"/>
+                </xpath>
+				
+			</field>
+		</record>
+
+    </data>
+</odoo>

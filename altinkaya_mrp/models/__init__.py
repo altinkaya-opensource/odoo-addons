@@ -2,3 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from . import mrp_bom
 from . import mrp_bom_template_line
+from . import mrp_production
+from . import product_product
+from . import product_template
+from . import stock_rule
