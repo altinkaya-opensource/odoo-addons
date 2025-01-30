@@ -18,24 +18,24 @@
 						<field name="procure_move"/>
             		</group>
 					<!-- <group string="Satışlar">
-							<field name="sale_qty30days" widget="uom" options="{'uom_field': 'uom'}"/>
-							<field name="sale_qty180days" widget="uom" options="{'uom_field': 'uom'}"/>
-							<field name="sale_qty360days" widget="uom" options="{'uom_field': 'uom'}"/>
+							<field name="sale_qty30days"   options="{'uom_field': 'uom'}"/>
+							<field name="sale_qty180days"   options="{'uom_field': 'uom'}"/>
+							<field name="sale_qty360days"   options="{'uom_field': 'uom'}"/>
 					</group> -->
 					<group col="6">
             		<group string="Sincan Depo" class="oe_form">
 						<field name="qty_to_sincan" class="oe_inline"/>
-            			<field name="qty_available_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_incoming_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_outgoing_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_virtual_sincan" widget="uom" options="{'uom_field': 'uom'}"/></group>
+            			<field name="qty_available_sincan"/>
+            			<field name="qty_incoming_sincan"/>
+            			<field name="qty_outgoing_sincan"/>
+            			<field name="qty_virtual_sincan"/></group>
 
 						<group string="Merkez Depo" class="oe_form" col="2">
             			<field name="qty_to_merkez" class="oe_inline"/>
-            			<field name="qty_available_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_incoming_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_outgoing_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_virtual_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
+            			<field name="qty_available_merkez"/>
+            			<field name="qty_incoming_merkez"/>
+            			<field name="qty_outgoing_merkez"/>
+            			<field name="qty_virtual_merkez"/>
 					</group>
 					</group>
 

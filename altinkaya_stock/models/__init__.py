@@ -11,4 +11,4 @@ from . import stock_quant
 from . import stock_location_route
 from . import stock_rule
 from . import stock_move_line
-from . import stock_inventory
+# from . import stock_inventory

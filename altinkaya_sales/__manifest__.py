@@ -30,7 +30,7 @@
         "delivery",
         "partner_fax",
         "altinkaya_roles",
-        "altinkaya_mrp",
+        # "altinkaya_mrp",
         "delivery_state",
         "delivery_package_barcode",
         "portal",
@@ -51,7 +51,7 @@
         "views/product_views.xml",
         "views/pricelist.xml",
         "views/res_partner.xml",
-        "data/mail_data.xml",
+        # "data/mail_data.xml",
         # "views/portal_templates.xml", # TODO: migration needed
         # "data/sale_portal_data.xml",
         # "views/sale_portal_templates.xml",

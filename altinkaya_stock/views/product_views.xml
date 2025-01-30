@@ -102,16 +102,16 @@
 
                 <xpath expr="//group[@name='operations']" position="before">
                     <group name="Merkezdepo" string="Merkez Depo">
-                        <field name="qty_available_merkez" widget="uom"/>
-                        <field name="qty_incoming_merkez" widget="uom"/>
-                        <field name="qty_outgoing_merkez" widget="uom"/>
-                        <field name="qty_virtual_merkez" widget="uom"/>
+                        <field name="qty_available_merkez"/>
+                        <field name="qty_incoming_merkez"/>
+                        <field name="qty_outgoing_merkez"/>
+                        <field name="qty_virtual_merkez"/>
                     </group>
                     <group name="Sincandepo" string="Sincan Depo">
-                        <field name="qty_available_sincan" widget="uom"/>
-                        <field name="qty_incoming_sincan" widget="uom"/>
-                        <field name="qty_outgoing_sincan" widget="uom"/>
-                        <field name="qty_virtual_sincan" widget="uom"/>
+                        <field name="qty_available_sincan"/>
+                        <field name="qty_incoming_sincan"/>
+                        <field name="qty_outgoing_sincan"/>
+                        <field name="qty_virtual_sincan"/>
                     </group>
 
 
