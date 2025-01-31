@@ -1,0 +1,12 @@
+.star-rating {
+    line-height: 32px;
+    font-size: 2.5em;
+}
+
+.star-rating .fa-star {
+    color: #FFD119;
+}
+
+.question-seperator {
+    box-shadow: inset 0 -1px 0 #bcbcbc;
+}

@@ -1,0 +1,161 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* altinkaya_survey
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-18 12:58+0000\n"
+"PO-Revision-Date: 2023-01-18 12:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_question_star_rating_form
+msgid "<i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>"
+msgstr ""
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Date"
+msgstr "Tarih"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__default_sale_survey
+msgid "Default Sale Survey"
+msgstr "Varsayılan Satış Anketi"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__default_sale_survey
+msgid "If checked, this survey will be used as default survey for sale orders."
+msgstr "Eğer işaretlenirse, bu anket satış siparişleri için varsayılan anket olarak kullanılacaktır."
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__url_shortener_id
+msgid "If set, survey url will be shortened using this shortener."
+msgstr "Eğer ayarlanırsa anket url'si bu kısaltıcı kullanılarak kısaltılacaktır."
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Matrix"
+msgstr "Matris"
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Multiple Lines Text Box"
+msgstr "Çok Satırlı Metin Kutusu"
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Multiple choice: multiple answers allowed"
+msgstr "Seçmeli: birden fazla cevap izin"
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Multiple choice: only one answer"
+msgstr "(soru başına sadece bir cevap verilir)"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_question__star_count
+msgid "Number of stars to be displayed in the survey."
+msgstr "Ankette görüntülenecek yıldız sayısı."
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Numerical Value"
+msgstr "Sayısal değer"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_sale_order
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__sale_id
+msgid "Sale Order"
+msgstr "Satış Siparişi"
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Single Line Text Box"
+msgstr "Tek Satırlı Metin Kutusu"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__star_count
+msgid "Star Count"
+msgstr "Yıldız Sayısı"
+
+#. module: altinkaya_survey
+#: selection:survey.question,type:0
+msgid "Star Rating"
+msgstr "Yıldız Reytingi"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_survey
+msgid "Survey"
+msgstr "Anket"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_count
+msgid "Survey Count"
+msgstr "Anket Sayısı"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_question
+msgid "Survey Question"
+msgstr "Anket Sorusu"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_url
+msgid "Survey URL"
+msgstr "Anket URL'si"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_user_input
+msgid "Survey User Input"
+msgstr "Anket kullanıcı girişi"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_user_input_line
+msgid "Survey User Input Line"
+msgstr "Anket kullanıcı giriş hattı"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.view_order_form_survey
+msgid "Surveys"
+msgstr "Anketler"
+
+#. module: altinkaya_survey
+#: code:addons/altinkaya_survey/models/survey_survey.py:35
+#, python-format
+msgid "There is already a survey with default sale survey checked (%s).Please uncheck it before checking this survey."
+msgstr "Bu anket için zaten varsayılan satış anketi işaretlenmiş (%s). Lütfen bu anketi işaretlemek için önce işaretini kaldırın."
+
+#. module: altinkaya_survey
+#: code:addons/altinkaya_survey/models/sale_order.py:44
+#, python-format
+msgid "There is no default survey for sale orders."
+msgstr "Satış siparişleri için varsayılan anket yok."
+
+#. module: altinkaya_survey
+#: code:addons/altinkaya_survey/models/survey_question.py:33
+#, python-format
+msgid "This is not a number"
+msgstr "Bu bir sayı değil"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__type
+msgid "Type of Question"
+msgstr "Bir soru türü"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__url_shortener_id
+msgid "URL Shortener"
+msgstr "URL Kısaltıcı"
+

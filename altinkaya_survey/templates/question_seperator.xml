@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SURVEY FORM PRINT -->
+        <template id="survey_form_print_seperator" inherit_id="survey.survey_page_print">
+            <!-- Add seperator between question blocks -->
+            <xpath expr="//div/t" position="after">
+                    <div class="question-seperator d-block mt-4 mb-4 col-12"></div>
+            </xpath>
+        </template>
+
+        <!-- SURVEY FORM -->
+        <template id="survey_form_seperator" inherit_id="survey.survey_page_print">
+            <!-- Add seperator between question blocks -->
+            <xpath expr="//div/t" position="after">
+                    <div class="question-seperator d-block mt-4 mb-4 col-12"></div>
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

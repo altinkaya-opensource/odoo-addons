@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="survey_question_star_rating_form">
+        <field name="name">Form view for survey question star rating</field>
+        <field name="inherit_id" ref="survey.survey_question_form"/>
+        <field name="model">survey.question</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='mx-lg-auto w-lg-50 d-none d-sm-block o_preview_questions']" position="inside">
+                <div attrs="{'invisible': [('question_type', '!=', 'star_rating')]}">
+                    <i class="fa fa-star fa-2x" role="img"
+                       aria-label="Star Rating" title="Star Rating"/>
+                    <i class="fa fa-star fa-2x" role="img"
+                       aria-label="Star Rating" title="Star Rating"/>
+                    <i class="fa fa-star fa-2x" role="img"
+                       aria-label="Star Rating" title="Star Rating"/>
+                    <i class="fa fa-star fa-2x" role="img"
+                       aria-label="Star Rating" title="Star Rating"/>
+                    <i class="fa fa-star fa-2x" role="img"
+                       aria-label="Star Rating" title="Star Rating"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@class='oe_inline']" position="after">
+                <separator />
+                <label for="star_count" attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"/>
+                <field name="star_count" attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
