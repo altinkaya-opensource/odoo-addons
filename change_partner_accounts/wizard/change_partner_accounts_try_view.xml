@@ -17,12 +17,14 @@
             </field>
         </record>
 
-        <!-- <act_window id="action_res_partner_change_accounts_try"
-                    multi="True"
-                    key2="client_action_multi" name="Change Accounts to TRY"
-                    res_model="change.partner.accounts.try" src_model="res.partner"
-                    view_mode="form" target="new" view_type="form"/> -->
-
+        <record id="action_res_partner_change_accounts_try" model="ir.actions.act_window">
+            <field name="name">Change Accounts to TRY</field>
+            <field name="res_model">change.partner.accounts.try</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner" />
+            <field name="binding_view_types">form,list</field>
+        </record>
 
     </data>
 </odoo>

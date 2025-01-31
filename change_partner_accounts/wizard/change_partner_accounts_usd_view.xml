@@ -16,13 +16,15 @@
                 </form>
             </field>
         </record>
-        <!--TODO migration-->
-        <!-- <act_window id="action_res_partner_change_accounts_usd"
-                    multi="True"
-                    key2="client_action_multi" name="Change Accounts to USD"
-                    res_model="change.partner.accounts.usd" src_model="res.partner"
-                    view_mode="form" target="new" view_type="form"/> -->
+        <record id="action_res_partner_change_accounts_usd" model="ir.actions.act_window">
+            <field name="name">Change Accounts to USD</field>
+            <field name="res_model">change.partner.accounts.usd</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner" />
+            <field name="binding_view_types">form,list</field>
 
+        </record>
 
     </data>
 </odoo>
