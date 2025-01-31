@@ -23,24 +23,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tr_invoice_amount_in_words.field_purchase_order__purchase_order_amount_in_words
 #: model:ir.model.fields,field_description:l10n_tr_invoice_amount_in_words.field_sale_order__sale_order_amount_in_words
 msgid "Amount to Text"
-msgstr "Tutarı Yazıyla"
+msgstr ""
 
 #. module: l10n_tr_invoice_amount_in_words
 #: model:ir.model,name:l10n_tr_invoice_amount_in_words.model_account_move
 msgid "Journal Entry"
-msgstr "Yevmiye Kayıtları"
+msgstr ""
 
 #. module: l10n_tr_invoice_amount_in_words
 #: model:ir.model,name:l10n_tr_invoice_amount_in_words.model_account_payment
 msgid "Payments"
-msgstr "Ödemeler"
+msgstr ""
 
 #. module: l10n_tr_invoice_amount_in_words
 #: model:ir.model,name:l10n_tr_invoice_amount_in_words.model_purchase_order
 msgid "Purchase Order"
-msgstr "Satınalma Siparişi"
+msgstr ""
 
 #. module: l10n_tr_invoice_amount_in_words
 #: model:ir.model,name:l10n_tr_invoice_amount_in_words.model_sale_order
 msgid "Sales Order"
-msgstr "Satış Siparişi"
+msgstr ""

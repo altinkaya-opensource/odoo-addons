@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* delivery_package_barcode
+# 	* delivery_package_barcode
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12 .0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-10 07:38+0000\n"
-"PO-Revision-Date: 2022-06-10 07:38+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-01-30 14:39+0000\n"
+"PO-Revision-Date: 2025-01-30 14:39+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,10 +16,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: delivery_package_barcode
-#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:37
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
 #, python-format
 msgid " - PACK BARCODE"
-msgstr "- PAKET"
+msgstr " - PAKET BARKODU"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__barcode
@@ -29,7 +30,7 @@ msgstr "Barkod"
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz___barcode_scanned
 msgid "Barcode Scanned"
-msgstr "Barkod tarandı"
+msgstr "Barkod Tarandı"
 
 #. module: delivery_package_barcode
 #: model:ir.actions.act_window,name:delivery_package_barcode.action_delivery_package_barcode
@@ -58,9 +59,9 @@ msgid "Display Name"
 msgstr "Görünüm"
 
 #. module: delivery_package_barcode
-#: selection:delivery.package.barcode.wiz,message_type:0
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__error
 msgid "Error"
-msgstr ""
+msgstr "Hata"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__id
@@ -68,24 +69,29 @@ msgid "ID"
 msgstr "ID"
 
 #. module: delivery_package_barcode
-#: selection:delivery.package.barcode.wiz,message_type:0
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__info
 msgid "Info"
 msgstr "Bilgi"
 
 #. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__is_packaged
+msgid "Is packaged"
+msgstr "Paketlendi mi?"
+
+#. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz____last_update
 msgid "Last Modified on"
-msgstr "S"
+msgstr "Son Düzenleme"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__write_uid
 msgid "Last Updated by"
-msgstr "Son güncelleyen"
+msgstr "Son Güncelleyen"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__write_date
 msgid "Last Updated on"
-msgstr "Son güncellenme"
+msgstr "Son Güncellenme"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__message
@@ -100,7 +106,7 @@ msgstr "Mesaj Tipi"
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__name
 msgid "Name"
-msgstr "Adı"
+msgstr "Ad"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__package_count
@@ -119,26 +125,32 @@ msgstr "Transfer"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__picking_line_ids
-#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
 msgid "Picking Lines"
-msgstr "Sevkiyat satırları"
+msgstr "Sevkiyat Satırları"
 
 #. module: delivery_package_barcode
-#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:56
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
 #, python-format
 msgid "Picking found:"
 msgstr "Sevkiyat bulundu:"
 
 #. module: delivery_package_barcode
-#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:61
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
 #, python-format
 msgid "Picking not found"
 msgstr "Sevkiyat bulunamadı"
 
 #. module: delivery_package_barcode
-#: selection:delivery.package.barcode.wiz,message_type:0
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__success
 msgid "Success"
 msgstr "Başarılı"
+
+#. module: delivery_package_barcode
+#: model:ir.model,name:delivery_package_barcode.model_stock_picking
+msgid "Transfer"
+msgstr "Teslimat"
 
 #. module: delivery_package_barcode
 #: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
@@ -154,4 +166,3 @@ msgstr "Son taranan barkodun değeri"
 #: model:ir.model,name:delivery_package_barcode.model_delivery_package_barcode_wiz
 msgid "Wizard to read barcode for delivery package"
 msgstr "Teslimat paketi için barkod okuma sihirbazı"
-

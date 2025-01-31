@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* partner_ranking
+# 	* partner_ranking
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 09:04+0000\n"
-"PO-Revision-Date: 2019-01-16 09:04+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-01-30 13:42+0000\n"
+"PO-Revision-Date: 2025-01-30 13:42+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,99 +21,51 @@ msgid "Contact"
 msgstr "İletişim"
 
 #. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__create_uid
-msgid "Created by"
-msgstr "Oluşturan"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__create_date
-msgid "Created on"
-msgstr "Oluşturulma"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__display_name
-msgid "Display Name"
-msgstr "Görünüm Adı"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__id
-msgid "ID"
-msgstr ""
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank____last_update
-msgid "Last Modified on"
-msgstr "Son Güncelleme"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__write_uid
-msgid "Last Updated by"
-msgstr "Son Güncelleyen"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__write_date
-msgid "Last Updated on"
-msgstr "Son Güncelleme"
-
-#. module: partner_ranking
 #: model:ir.model,name:partner_ranking.model_stock_warehouse_orderpoint
 msgid "Minimum Inventory Rule"
 msgstr "Min. Envanter Kuralı"
 
 #. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__partner_id
-msgid "Partner"
-msgstr "İş Ortağı"
-
-#. module: partner_ranking
 #: model:ir.actions.server,name:partner_ranking.ir_cron_res_partner_ranking_ir_actions_server
 #: model:ir.cron,cron_name:partner_ranking.ir_cron_res_partner_ranking
-#: model:ir.cron,name:partner_ranking.ir_cron_res_partner_ranking
 msgid "Partner Ranking"
 msgstr "İş Ortağı Sıralama"
 
 #. module: partner_ranking
-#: model:ir.model,name:partner_ranking.model_product_product
-msgid "Product"
-msgstr "Ürün"
-
-#. module: partner_ranking
 #: model:ir.actions.server,name:partner_ranking.ir_cron_product_sales__count_ir_actions_server
 #: model:ir.cron,cron_name:partner_ranking.ir_cron_product_sales__count
-#: model:ir.cron,name:partner_ranking.ir_cron_product_sales__count
 msgid "Product Sale counts"
 msgstr "Ürün Satış Sayısı"
 
 #. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__rank
-msgid "Rank"
-msgstr "Sıra"
+#: model:ir.model,name:partner_ranking.model_product_product
+msgid "Product Variant"
+msgstr "Ürün"
 
 #. module: partner_ranking
 #: model:ir.model.fields,field_description:partner_ranking.field_res_partner__ranking
+#: model:ir.model.fields,field_description:partner_ranking.field_res_users__ranking
 msgid "Ranking"
 msgstr "Sıralama"
 
 #. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__date_rank
-msgid "Ranking Date"
-msgstr "Sıralama Tarihi"
-
-#. module: partner_ranking
 #: model:ir.model.fields,field_description:partner_ranking.field_product_product__sale_qty180days
 #: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint__sale_qty180days
+#: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint_template__sale_qty180days
 msgid "Sale in last 180 days"
 msgstr "Son 180 gün satışları"
 
 #. module: partner_ranking
 #: model:ir.model.fields,field_description:partner_ranking.field_product_product__sale_qty30days
 #: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint__sale_qty30days
+#: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint_template__sale_qty30days
 msgid "Sale in last 30 days"
 msgstr "Son 30 gün satışları"
 
 #. module: partner_ranking
 #: model:ir.model.fields,field_description:partner_ranking.field_product_product__sale_qty360days
 #: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint__sale_qty360days
+#: model:ir.model.fields,field_description:partner_ranking.field_stock_warehouse_orderpoint_template__sale_qty360days
 msgid "Sale in last 360 days"
 msgstr "Son 1 yıl satışları"
 
@@ -121,14 +73,3 @@ msgstr "Son 1 yıl satışları"
 #: model_terms:ir.ui.view,arch_db:partner_ranking.stock_warehouse_orderpoint_form_view_partner_ranking
 msgid "Sales"
 msgstr "Satış"
-
-#. module: partner_ranking
-#: model:ir.model.fields,field_description:partner_ranking.field_res_partner_rank__total
-msgid "Total Revenue"
-msgstr "Toplam gelir"
-
-#. module: partner_ranking
-#: model:ir.model,name:partner_ranking.model_res_partner_rank
-msgid "res.partner.rank"
-msgstr ""
-

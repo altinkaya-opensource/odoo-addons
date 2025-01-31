@@ -18,22 +18,22 @@ msgstr ""
 #. module: partner_org_chart
 #: model:ir.model,name:partner_org_chart.model_res_partner
 msgid "Contact"
-msgstr "İletişim"
+msgstr ""
 
 #. module: partner_org_chart
 #: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__org_chart_child_ids
 #: model:ir.model.fields,field_description:partner_org_chart.field_res_users__org_chart_child_ids
 msgid "Direct Subordinates"
-msgstr "Doğrudan Altında Çalışanlar"
+msgstr ""
 
 #. module: partner_org_chart
 #: model_terms:ir.ui.view,arch_db:partner_org_chart.res_partner_view_form_inherit_org_chart
 msgid "Organization Chart"
-msgstr "Organizasyon Şeması"
+msgstr ""
 
 #. module: partner_org_chart
 #. odoo-javascript
 #: code:addons/partner_org_chart/static/src/fields/hooks.js:0
 #, python-format
 msgid "Team"
-msgstr "Ekip"
+msgstr ""
