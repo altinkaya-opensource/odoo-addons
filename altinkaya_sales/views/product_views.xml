@@ -38,68 +38,6 @@
 <!--             </xpath> -->
 <!--         </template> -->
 
-        <record id="product_product__form_old_prices" model="ir.ui.view">
-            <field name="name">product.product.form.old_prices</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_normal_form_view" />
-            <field name="arch" type="xml">
-            <xpath expr="/form/sheet/notebook/page[@name='general_information']" position="after">
-            	<page name="Prices" string="Prices">
-            		<group col="1">
-
-            			<group name="old_price" string="Old Prices">
-							<field name="v_tl_fiyat"></field>
-							<field name="v_guncel_fiyat"></field>
-							<field name="v_fiyat_euro"></field>
-							<field name="v_iscilik_fiyat"></field>
-							<field name="v_min_iscilik_fiy"></field>
-							<field name="list_price" string="Sales Price" /> <!-- widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" -->
-			                <field name="v_fiyat_2017"/>
-			                <field name="v_2017_iscilik"/>
-			                <field name="v_min_2017_iscilik"/>
-			                <field name="v_fiyat_2016b"/>
-			                <field name="v_2016b_iscilik"/>
-			                <field name="v_min_2016b_iscilik"/>
-			                <field name="v_fiyat_2016a"/>
-			                <field name="v_2016a_iscilik"/>
-			                <field name="v_min_2016a_iscilik"/>
-			                <field name="v_fiyat_2015a"/>
-			                <field name="v_2015a_iscilik"/>
-			                <field name="v_min_2015a_iscilik"/>
-			                <field name="v_fiyat_2014"/>
-			                <field name="v_2014_iscilik"/>
-			                <field name="v_min_2014_iscilik"/>
-							<field name="v_fiyat_onceki" />
-							<field name="v_fiyat_onceki_iscilik" />
-							<field name="purchase_price"/>
-		               </group>
-
-            		</group>
-
-
-            	</page>
-
-
-            </xpath>
-
-			<xpath expr="//field[@name='valuation']" position="before">
-				<field name="attr_price"/>
-				<field name="v_fiyat_dolar"></field>
-				<field name="v_cari_urun"></field>
-            </xpath>
-
-			<xpath expr="//group[@name='old_price']" position="inside">
-    			<xpath expr="//field[@name='lst_price']" position="move"/>
-			</xpath>
-
-			<xpath expr="//group[@name='properties']" position="before">
-				<group name="fields">
-				</group>
-			</xpath>
-
-            </field>
-        </record>
-
 		<record id="product_category_custom_products" model="ir.ui.view">
 			<field name="name">product.category.custom_products</field>
 			<field name="model">product.category</field>

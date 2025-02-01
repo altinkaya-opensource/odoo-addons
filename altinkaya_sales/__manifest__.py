@@ -35,6 +35,7 @@
         "delivery_package_barcode",
         "portal",
         "sale_stock",
+        "product_attribute_types",
         "stock_picking_invoicing",  # TODO: This module needs to be migrated from our codebase.
         "sale_variant_configurator",
     ],
@@ -49,7 +50,7 @@
         "views/sales_order_view.xml",
         "views/res_partner_views.xml",
         "views/product_views.xml",
-        "views/pricelist.xml",
+        # "views/pricelist.xml",
         "views/res_partner.xml",
         "data/mail_data.xml",
         # "views/portal_templates.xml", # TODO: migration needed

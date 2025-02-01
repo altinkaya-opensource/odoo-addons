@@ -19,15 +19,15 @@ class AccountInvoice(models.Model):
 
     @api.depends('full_reconcile_ids')
     def _compute_other_inv_in_reconciles(self):
-        invoice_amls = self.full_reconcile_ids.mapped('reconciled_line_ids').filtered(lambda x: x.invoice_id)
-        self.other_inv_in_reconciles = invoice_amls.mapped('invoice_id')
+        invoice_amls = self.full_reconcile_ids.mapped('reconciled_line_ids').filtered(lambda x: x.move_id)
+        self.other_inv_in_reconciles = invoice_amls.mapped('move_id')
 
     full_reconcile_ids = fields.Many2many('account.full.reconcile',
                                           string='Full Reconciles',
                                           compute='_compute_full_reconcile_ids',
                                           help="Full reconciles linked to this invoice")
 
-    other_inv_in_reconciles = fields.Many2many('account.invoice', string='Other invoices in reconciles',
+    other_inv_in_reconciles = fields.Many2many('account.move', string='Other invoices in reconciles',
                                                compute='_compute_other_inv_in_reconciles')
 
     def register_payment(self, payment_line, writeoff_acc_id=False, writeoff_journal_id=False):
@@ -39,7 +39,7 @@ class AccountInvoice(models.Model):
         return super(AccountInvoice, self).register_payment(payment_line, writeoff_acc_id=writeoff_acc_id,
                                                             writeoff_journal_id=writeoff_journal_id)
 
-    
+
     def action_invoice_open(self):
         """
         For currency difference Invoices Override method to unreconcile previous account move lines and
@@ -68,7 +68,7 @@ class AccountInvoice(models.Model):
                 aml_to_reconcile._reconcile(diff_aml=diff_aml)
         return res
 
-    
+
     def action_invoice_cancel(self):
         res = super(AccountInvoice, self).action_invoice_cancel()
 
@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
                 for line in invoice.invoice_line_ids.filtered(lambda x: x.difference_base_aml_id):
                     line.difference_base_aml_id.write({'difference_checked': False})
 
-    
+
     def unlink(self):
         for invoice in self:
             if invoice.invoice_line_ids and invoice.journal_id.code == 'KFARK':

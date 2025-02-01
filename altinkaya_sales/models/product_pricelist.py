@@ -11,30 +11,6 @@ from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
 
-class ProductPriceType(models.Model):
-    _name = "product.price.type"
-    _description = "Price type"
-
-    def _compute_selection_fields(self):
-        res = []
-        fields = self.env["ir.model.fields"].search(
-            [("model", "in", ["product.product"]), ("ttype", "=", "float")]
-        )
-        for field in fields:
-            if not (field.name, field.field_description) in res:
-                res.append((field.name, field.field_description))
-        return res
-
-    name = fields.Char(string="Name", required=True)
-    field = fields.Selection(
-        selection=lambda self: self._compute_selection_fields(),
-        string="Field",
-        required=True,
-    )
-    active = fields.Boolean(string="Active", default=True)
-    currency = fields.Many2one("res.currency", "Currency", required=True)
-
-
 class ProductPricelist(models.Model):
     _inherit = "product.pricelist"
 
@@ -57,7 +33,7 @@ class ProductPricelist(models.Model):
         help="If set, this pricelist will be showed on the portal account settings",
     )
 
-    
+
     def _compute_price_rule(self, products_qty_partner, date=False, uom_id=False):
         """Low-level method - Mono pricelist, multi products
         Returns: dict{product_id: (price, suitable_rule) for the given pricelist}
@@ -308,26 +284,3 @@ class ProductPricelist(models.Model):
 
         return results
 
-
-class ProductPriclelistItem(models.Model):
-    _inherit = "product.pricelist.item"
-
-    def _compute_base(self):
-        res = [
-            ("-2", _("Supplier Prices on the product form")),
-            ("-1", _("Other Pricelist")),
-            ("list_price", _("List Price")),
-        ]
-
-        price_types = self.env["product.price.type"].search([("active", "=", True)])
-        for price_type in price_types:
-            if not (price_type.id, price_type.name) in res:
-                res.append((str(price_type.id), price_type.name))
-        return res
-
-    base = fields.Selection(selection=lambda self: self._compute_base())
-    x_guncelleme = fields.Char("Guncelleme Kodu", size=64)
-    free_shipping_limit = fields.Float(
-        "Free Shipping Limit",
-        help="Free shipping limit",
-    )

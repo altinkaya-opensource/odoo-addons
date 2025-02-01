@@ -41,16 +41,14 @@ class ProductPricelistExportWiz(models.TransientModel):
         self._write_header_scales(workbook, worksheet, categ_dict)
         product_count = 0
         for categ, scales in categ_dict.items():
-            categ_name = categ.name_translatable.with_context(
-                lang=self.pricelist_lang.code
-            )
+            categ_name = categ.name_translatable
             products = self._get_products(categ.id)
             if not products:
                 continue
 
             for product in products:
                 base_price_dict = self.pricelist_id._compute_price_rule(
-                    [(product, 1, self.env["res.partner"])]
+                    products=product, qty=1
                 )
                 if not base_price_dict:
                     continue
@@ -68,7 +66,7 @@ class ProductPricelistExportWiz(models.TransientModel):
                 for scale in scales:
                     int_scale = int(scale)
                     price_dict = self.pricelist_id._compute_price_rule(
-                        [(product, int_scale, False)]
+                        products=product, qty=int_scale
                     )
                     final_price = price_dict[product.id][0]
                     discount = 100 - round(final_price / base_price * 100, 4)
@@ -86,7 +84,7 @@ class ProductPricelistExportWiz(models.TransientModel):
         attachment_id = self.env["ir.attachment"].create(
             {
                 "name": f"{pricelist_name}.xlsx",
-                "datas_fname": f"{pricelist_name} - {str(fields.date.today())}.xlsx",
+                "store_fname": f"{pricelist_name} - {str(fields.Date.today())}.xlsx",
                 "datas": fl_b64,
             }
         )
@@ -165,10 +163,10 @@ class ProductPricelistExportWiz(models.TransientModel):
         domain = [
             ("type", "=", "product"),
             ("v_cari_urun", "=", False),
-            ("is_published", "=", True),  # only website published products
+            ("is_published", "=", True),
             ("sale_ok", "=", True),
-            ("v_fiyat_dolar", "!=", 0.0),  # Todo: maybe delete this
-            ("categ_id", "=", categ_id),
+            ("v_fiyat_dolar", "!=", 0.0),
+            ("categ_id", "child_of", categ_id),
         ]
 
         products = self.env["product.product"].search(domain)
