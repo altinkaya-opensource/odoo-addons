@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* sale_order_line_discount
+# 	* sale_order_line_discount
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-14 07:53+0000\n"
-"PO-Revision-Date: 2019-01-14 07:53+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-01-31 06:16+0000\n"
+"PO-Revision-Date: 2025-01-31 06:16+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,27 +33,27 @@ msgstr "Oluşturulma"
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_sale_order_line__unit_discounted
 msgid "Disc. Unit"
-msgstr ""
+msgstr "İnd. Birim"
 
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_update_discount__unit_discounted
 msgid "Discount Price"
-msgstr ""
+msgstr "İndirim Fiyatı
 
 #. module: sale_order_line_discount
 #: model_terms:ir.ui.view,arch_db:sale_order_line_discount.view_update_discount_form
 msgid "Discount Price Update"
-msgstr ""
+msgstr "İndirim Fiyatı Güncelleme"
 
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_update_discount__display_name
 msgid "Display Name"
-msgstr "Görünüm Adı"
+msgstr "Görünen Ad"
 
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_update_discount__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_update_discount____last_update
@@ -83,7 +83,7 @@ msgstr "Gönder"
 #. module: sale_order_line_discount
 #: model:ir.model.fields,field_description:sale_order_line_discount.field_update_discount__price_unit
 msgid "Unit Price"
-msgstr "Birim Maliyet"
+msgstr "Birim Fiyat"
 
 #. module: sale_order_line_discount
 #: model_terms:ir.ui.view,arch_db:sale_order_line_discount.view_sale_order_form_inherit
@@ -91,12 +91,11 @@ msgid "Update"
 msgstr "Güncelle"
 
 #. module: sale_order_line_discount
-#: model:ir.actions.act_window,name:sale_order_line_discount.action_update_discount
-msgid "Update Discount Price"
-msgstr "İndirimli Fiyatı Güncelle"
+#: model:ir.model,name:sale_order_line_discount.model_update_discount
+msgid "Update Discount"
+msgstr "İndirimi Güncelle"
 
 #. module: sale_order_line_discount
-#: model:ir.model,name:sale_order_line_discount.model_update_discount
-msgid "update.discount"
-msgstr ""
-
+#: model:ir.actions.act_window,name:sale_order_line_discount.action_update_discount
+msgid "Update Discount Price"
+msgstr "İndirim Fiyatını Güncelle"
