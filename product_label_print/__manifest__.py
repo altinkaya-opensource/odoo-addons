@@ -1,0 +1,26 @@
+{
+    "name": "Product Label Print",
+    "version": "16.0.1.0.0",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "category": "Stock",
+    "summary": "Product Label Print",
+    "author": "Kiran Kantesariya, Ahmet Altinisik, Altinkaya Enclosures",
+    "license": "AGPL-3",
+    "depends": [
+        "product",
+        "stock",
+        "mrp",
+        "base_report_to_printer",
+    ],
+    "data": [
+        "wizard/print_pack_barcode_wiz_view.xml",
+        "views/product_view.xml",
+        "views/printer.xml",
+        "report/label_reports.xml",
+        "report/molding_label.xml",
+        "report/reports.xml",
+        "security/ir.model.access.csv",
+    ],
+    "installable": True,
+    "auto_install": False,
+}

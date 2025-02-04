@@ -1,0 +1,265 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* product_label_print
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-09 10:40+0000\n"
+"PO-Revision-Date: 2020-06-09 10:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_pieces_in_pack
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__pieces_in_pack
+msgid "# in Cartoon"
+msgstr "Ürün Miktarı"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__copies_to_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_label_to_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__label_to_print
+msgid "# of label to be printed"
+msgstr "Etiket Adedi"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_barcode
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__barcode
+msgid "Barcode"
+msgstr "Barkod"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Cancel"
+msgstr "İptal"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_uid
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_uid
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_date
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_date
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_default_code
+msgid "Default Code"
+msgstr "Ürün Kodu"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__default_code
+msgid "Default_code"
+msgstr "Ürün Kodu"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__display_name
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__display_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__display_name
+msgid "Display Name"
+msgstr "Görünüm Adı"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Do not print first label"
+msgstr "İlk Etiketi Atla"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__id
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__id
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__id
+msgid "ID"
+msgstr "ID"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label1
+msgid "Label 1"
+msgstr "Etiket 1"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label2
+msgid "Label 2"
+msgstr "Etiket 2"
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_label_twoinrow
+msgid "Label Two in Row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__label_ids
+msgid "Labels"
+msgstr "Etiketler"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow____last_update
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz____last_update
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label____last_update
+msgid "Last Modified on"
+msgstr "Son Güncelleme"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_uid
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_uid
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_date
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_date
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__name
+msgid "Name"
+msgstr "İsim"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL1
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL2
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL1
+msgid "NameL1"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL3
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL2
+msgid "NameL2"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL4
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL3
+msgid "NameL3"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL4
+msgid "NameL4"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_note
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__note
+msgid "Note"
+msgstr "Not"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Print"
+msgstr "Yazdır"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_form
+#: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_tree
+msgid "Print Label"
+msgstr "Etiket Yazdır"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.stock_move_tree_print_product_label
+msgid "Print Product Label"
+msgstr "Ürün Etiketi Yazdır"
+
+#. module: product_label_print
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:53
+#, python-format
+msgid "Printing multiple labels is restricted!"
+msgstr "Birden fazla etiket basılamaz!"
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_product_product
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_product_id
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__product_id
+msgid "Product"
+msgstr "Ürün"
+
+#. module: product_label_print
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:57
+#, python-format
+msgid "Product : %s not have default code"
+msgstr "Ürün: %s bir ürün koduna sahip değil"
+
+#. module: product_label_print
+#: model:ir.actions.report,name:product_label_print.label_product_product
+msgid "Product Label (GODEX)"
+msgstr "Urun Etiketi (GODEX)"
+
+#. module: product_label_print
+#: model:ir.actions.act_window,name:product_label_print.action_print_pack_barcode_wiz
+#: model:ir.model,name:product_label_print.model_print_pack_barcode_wiz
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Product Label Print"
+msgstr "Ürün Etiketi Yazdır"
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_product_product_label
+msgid "Product Product Label"
+msgstr "Ürün Etiketi"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__product_label_ids
+msgid "Products"
+msgstr "Ürünler"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__restrict_single
+msgid "Restrict to single product"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_short_code
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__short_code
+msgid "Short Code"
+msgstr "Kısa Kod"
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Show Label"
+msgstr "Etiketi Göster"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_id
+msgid "Single Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__skip_first
+msgid "Skip First Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__first_label_empty
+msgid "Skip first label in row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__second_label_empty
+msgid "Skip second label in row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_stock_move
+msgid "Stock Move"
+msgstr "Stok Hareketi"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_uom_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__uom_name
+msgid "UOM Name"
+msgstr ""
+

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="product_label_report">
+            <t t-foreach="docs" t-as="o">
+                <t t-translation="off">
+
+<t t-if="o.printer_type == 'GODEX'">
+<t t-if="o.label_ids[0].first_label_empty">^B52</t>
+^Q50,3
+^W104
+^H10
+^S5
+^AT
+^C1
+^R0
+~Q+0
+^O0
+^D0
+^E15
+~R255
+^XSET,ROTATION,0
+<t t-foreach="o.label_ids" t-as="label">
+^L
+Dy2-me-dd
+Th:m:s
+<t t-if="not label.first_label_empty">
+Y0,76,cicek_5037
+
+AT,53,72,42,42,0,0,0,0,[<t t-esc="label.label1.default_code"/>]
+AB,0,116,1,1,0,0E,<t t-raw="label.label1.nameL1[0:40] or ''"/>
+AB,0,140,1,1,0,0E,<t t-raw="label.label1.nameL2[0:40] or ''"/>
+AB,0,164,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''"/>
+AB,0,188,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''"/>
+<t t-if="label.label1.pieces_in_pack > 0.0 ">
+AT,21,213,56,56,0,0E,0,0,<t t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"/> <t t-esc="label.label1.uom_name or ''"/>
+</t>
+BE,24,271,3,8,93,0,1,<t t-esc="label.label1.barcode or ''"/>
+BQ,44,2,3,10,68,0,0,<t t-esc="label.label1.lot_id.name or ''"/>
+AB,266,243,1,1,0,0,Lot <t t-esc="label.label1.lot_id.name or ''"/>
+</t>
+<t t-if="not label.second_label_empty">
+Y419,77,cicek_5037
+Dy2-me-dd
+Th:m:s
+AT,472,73,42,42,0,0,0,0,[<t t-raw="label.label2.default_code"/>]
+AB,419,115,1,1,0,0E,<t t-raw="label.label2.nameL1[0:40] or ''"/>
+AB,419,139,1,1,0,0E,<t t-raw="label.label2.nameL2[0:40] or ''"/>
+AB,419,163,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''"/>
+AB,419,187,1,1,0,0E,<t t-raw="label.label1.note or label.label2.nameL4[0:40] or ''"/>
+<t t-if="label.label2.pieces_in_pack > 0.0">
+AT,439,212,56,56,0,0E,0,0,<t t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"/> <t t-esc="label.label2.uom_name or ''"/>
+</t>
+BE,442,270,3,8,93,0,1,<t t-esc="label.label2.barcode or ''"/>
+BQ,462,1,3,10,68,0,0,<t t-esc="label.label2.lot_id.name or ''"/>
+AB,684,242,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''"/>
+</t>
+^P<t t-esc="label.copies_to_print"/>
+E
+</t>
+</t>
+<t t-if="o.printer_type == 'GODEX300'">
+<t t-if="o.label_ids[0].first_label_empty">^B52</t>
+^Q50,3
+^W104
+^H10
+^AT
+^S5
+^R0
+^E15
+~R255
+^XSET,ROTATION,0
+<t t-foreach="o.label_ids" t-as="label">
+^L
+Dy2-me-dd
+Th:m:s
+<t t-if="not label.first_label_empty">
+Y27,153,cicek7052
+Dy2-me-dd
+Th:m:s
+AT,105,149,58,58,0,0,0,0,[<t t-esc="label.label1.default_code"/>]
+AD,27,217,1,1,0,0E,<t t-raw="label.label1.nameL1[0:40] or ''"/>
+AD,27,251,1,1,0,0E,<t t-raw="label.label1.nameL2[0:40] or ''"/>
+AD,27,285,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''"/>
+AD,27,319,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''"/>
+<t t-if="label.label1.pieces_in_pack > 0.0">
+AT,46,345,79,79,0,0E,0,0,<t t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"/> <t t-esc="label.label1.uom_name or ''"/>
+</t>
+BE,30,431,5,12,123,0,1,<t t-esc="label.label1.barcode or ''"/>
+BQ,76,26,5,12,106,0,0,<t t-esc="label.label1.lot_id.name or ''"/>
+AD,399,381,1,1,0,0,Lot <t t-esc="label.label1.lot_id.name or ''"/>
+</t>
+
+<t t-if="not label.second_label_empty">
+Y653,153,cicek7052
+Dy2-me-dd
+Th:m:s
+AT,731,149,58,58,0,0,0,0,[<t t-esc="label.label2.default_code"/>]
+AD,653,217,1,1,0,0E,<t t-raw="label.label2.nameL1[0:40] or ''"/>
+AD,653,251,1,1,0,0E,<t t-raw="label.label2.nameL2[0:40] or ''"/>
+AD,653,285,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''"/>
+AD,653,319,1,1,0,0E,<t t-raw="label.label2.note or label.label2.nameL4[0:40] or ''"/>
+<t t-if="label.label2.pieces_in_pack > 0.0">
+AT,672,345,79,79,0,0E,0,0,<t t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"/> <t t-esc="label.label2.uom_name or ''"/>
+</t>
+BE,656,431,5,12,123,0,1,<t t-esc="label.label2.barcode or ''"/>
+BQ,702,26,5,12,106,0,0,<t t-esc="label.label2.lot_id.name or ''"/>
+AD,1025,381,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''"/>
+</t>
+
+
+^P<t t-esc="label.copies_to_print"/>
+E
+</t>
+</t>
+    </t>
+                </t>
+        </template>
+    </data>
+</odoo>

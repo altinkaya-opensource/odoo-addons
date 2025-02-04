@@ -1,6 +1,4 @@
 id,name,model_id:id,group_id:id,perm_write,perm_read,perm_create,perm_unlink
-access_product_price_type_manager,product.price.type,model_product_price_type,sales_team.group_sale_manager,True,True,True,True
-access_product_price_type,product.price.type,model_product_price_type,,False,True,False,False
 access_sale_order_altinkaya,sale.order,altinkaya_sales.model_sale_order,sales_team.group_sale_manager,True,True,True,False
 access_sale_order_line_altinkaya,sale.order.line,altinkaya_sales.model_sale_order_line,sales_team.group_sale_manager,True,True,True,True
 access_sale_order_manager_altinkaya,sale.order.manager,altinkaya_sales.model_sale_order,sales_team.group_sale_manager,True,True,True,True
