@@ -125,18 +125,6 @@
 			</field>
 		</record>
 
-
-		<record id="res_users_form_inherit_default_procurement_wh" model="ir.ui.view">
-			<field name="inherit_id" ref="base.view_users_form" />
-			<field name="name">res.users.form.inherit.default_procurement_wh</field>
-			<field name="model">res.users</field>
-			<field name="arch" type="xml">
-				<xpath expr="//field[@name='tz']" position="after">
-					<field name="default_procurement_wh_id"/>
-				</xpath>
-			</field>
-		</record>
-
 		<record id="view_company_form_hash_code" model="ir.ui.view">
 			<field name="name">res.company.form</field>
 			<field name="model">res.company</field>

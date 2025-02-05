@@ -32,6 +32,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='value_ids']//field[@name='name']" position="after">
+                <field name="attr_type" invisible="1"/>
                 <field name="numeric_value" attrs="{'readonly':[('attr_type','!=','numeric')],'required':[('attr_type','=','numeric')]}" />
                 <field name="min_range" attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}" />
                 <field name="max_range" attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}" />

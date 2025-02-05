@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="label_product_product" model="ir.actions.report">
+      <field name="name">Product Label (GODEX)</field>
+      <field name="model">print.pack.barcode.wiz</field>
+      <field name="report_name">product_label_print.product_label_report</field>
+      <field name="report_file">label_reports</field>
+      <field name="binding_model_id" ref="model_print_pack_barcode_wiz" />
+      <field name="binding_type">report</field>
+    </record>
+
+    <record id="label_product_product_kalip" model="ir.actions.report">
+      <field name="name">Molding Label (GODEX)</field>
+      <field name="model">product.product</field>
+      <field name="report_name">product_label_print.product_molding_label</field>
+      <field name="report_file">molding_label</field>
+      <field name="report_type">qweb-text</field>
+    </record>
+
+
+</odoo>

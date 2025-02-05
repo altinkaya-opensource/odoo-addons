@@ -27,7 +27,7 @@
     "author": "CODEQUARTERS, Altinkaya Enclosures",
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "depends": ["mrp"],
+    "depends": ["mrp", "altinkaya_mrp"],
     "data": [
         "views/mrp_bom_view.xml",
     ],

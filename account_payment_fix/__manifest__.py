@@ -4,7 +4,7 @@
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'data': [
-        'views/account_payment_view.xml',
+        # 'views/account_payment_view.xml',
     ],
     'demo': [],
     'depends': [
