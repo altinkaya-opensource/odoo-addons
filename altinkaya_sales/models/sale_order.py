@@ -334,7 +334,7 @@ class SaleOrder(models.Model):
                 limit=50,
                 order="id desc",
             )
-            sale.sale_line_history = last_sale_lines.ids
+            sale.sale_line_history = last_sale_lines.ids or False
 
     #
     #     def print_quotation(self):
