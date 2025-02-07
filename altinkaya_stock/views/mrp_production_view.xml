@@ -11,19 +11,19 @@
                     <div colspan="2">
                         <group col="2">
                             <group class="oe_form">
-                                <field name="qty_available_sincan" string="Sincan" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_merkez" string="Merkez" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_enjek" string="Enjeksiyon" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_montaj" string="Montaj" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_torna" string="Torna" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
+                                <field name="qty_available_sincan" string="Sincan"/>
+                                <field name="qty_available_merkez" string="Merkez"/>
+                                <field name="qty_available_enjek" string="Enjeksiyon"/>
+                                <field name="qty_available_montaj" string="Montaj"/>
+                                <field name="qty_available_torna" string="Torna"/>
                             </group>
 
                             <group class="oe_form">
-                                <field name="qty_available_cnc" string="CNC" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_metal" string="Metal" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_boya" string="Boya" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_baski" string="Baskı" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_kaplama" string="Kaplama" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
+                                <field name="qty_available_cnc" string="CNC"/>
+                                <field name="qty_available_metal" string="Metal"/>
+                                <field name="qty_available_boya" string="Boya"/>
+                                <field name="qty_available_baski" string="Baskı"/>
+                                <field name="qty_available_kaplama" string="Kaplama"/>
                             </group>
                         </group>
                     </div>

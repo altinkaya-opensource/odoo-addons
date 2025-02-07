@@ -54,7 +54,7 @@
                                     <field name="location_id"/>
                                     <field name="location_dest_id"/>
                                     <field name="state"/>
-									<!--<field name="invoice_state"/>-->
+									<field name="invoice_state"/>
                                 </tree>
                             </field>
                         </page>
@@ -70,4 +70,3 @@
 
     </data>
 </odoo>
-

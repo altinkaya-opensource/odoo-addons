@@ -61,7 +61,7 @@ class ProductTemplate(models.Model):
                 )
 
     def _guess_main_lang(self):
-        super(ProductTemplate, self)._guess_main_lang()
+        
         turkish = self.env.ref("base.lang_tr")
         if turkish.active:
             code = turkish.code
@@ -78,16 +78,15 @@ class Product(models.Model):
         comodel_name="hr.employee", string="Responsible Employee"
     )
 
-    # domain_attribute_value_ids = fields.Many2many('product.attribute.value',
-    #                                               compute='_compute_domain_attribute_value_ids')
+    domain_attribute_value_ids = fields.Many2many('product.attribute.value',
+                                                  compute='_compute_domain_attribute_value_ids')
 
     move_count = fields.Float("Move Count", default=0.0)
 
-    # @api.multi
-    # @api.depends('product_tmpl_id', 'product_tmpl_id.valid_product_attribute_value_ids')
-    # def _compute_domain_attribute_value_ids(self):
-    #     for product in self:
-    #         product.domain_attribute_value_ids = product.product_tmpl_id.attribute_line_ids.mapped('value_ids')
+    @api.depends('product_tmpl_id')
+    def _compute_domain_attribute_value_ids(self):
+        for product in self:
+            product.domain_attribute_value_ids = product.product_tmpl_id.attribute_line_ids.mapped('value_ids')
 
     qty_available_sincan = fields.Float(
         "Sincan Depo Mevcut",
@@ -170,7 +169,7 @@ class Product(models.Model):
         "Merkez Depo Rezervesiz", compute="_compute_custom_available"
     )
 
-    @api.onchange("attribute_value_ids")
+    @api.onchange("product_template_variant_value_ids")
     def _onchange_attribute_value_ids(self):
         """
         This method prevents the user from creating a variant
@@ -182,7 +181,7 @@ class Product(models.Model):
             if (
                 len(
                     other_variants.filtered(
-                        lambda p: p.attribute_value_ids == product.attribute_value_ids
+                        lambda p: p.product_template_variant_value_ids == product.product_template_variant_value_ids
                     )
                 )
                 > 1
@@ -353,31 +352,31 @@ class Product(models.Model):
     def _compute_custom2_available(self):
         for product in self:
             product.qty_available_montaj = product.with_context(
-                {"location": 53}
+                {"location": 12}
             ).qty_available
             product.qty_available_enjek = product.with_context(
-                {"location": 29}
+                {"location": 12}
             ).qty_available
             product.qty_available_cnc = product.with_context(
-                {"location": 61}
+                {"location": 12}
             ).qty_available
             product.qty_available_boya = product.with_context(
-                {"location": 45}
+                {"location": 12}
             ).qty_available
             product.qty_available_metal = product.with_context(
-                {"location": 37}
+                {"location": 12}
             ).qty_available
             product.qty_available_maske = product.with_context(
-                {"location": 114}
+                {"location": 12}
             ).qty_available
             product.qty_available_baski = product.with_context(
-                {"location": 77}
+                {"location": 12}
             ).qty_available
             product.qty_available_torna = product.with_context(
-                {"location": 5895}
+                {"location": 12}
             ).qty_available
             product.qty_available_kaplama = product.with_context(
-                {"location": 6362}
+                {"location": 12}
             ).qty_available
 
     def single_product_update_quant_reservation(self):
@@ -396,7 +395,7 @@ class Product(models.Model):
                         ("lot_id", "=", quant.lot_id.id),
                         ("package_id", "=", quant.package_id.id),
                         ("owner_id", "=", quant.owner_id.id),
-                        ("product_qty", "!=", 0),
+                        ("reserved_qty", "!=", 0),
                     ]
                 )
                 if quant.location_id.should_bypass_reservation():
@@ -407,7 +406,7 @@ class Product(models.Model):
                     ):
                         quant.write({"reserved_quantity": 0})
                 else:
-                    raw_reserved_qty = sum(move_lines.mapped("product_qty"))
+                    raw_reserved_qty = sum(move_lines.mapped("reserved_qty"))
                     if (
                         float_compare(
                             quant.reserved_quantity,
@@ -421,7 +420,7 @@ class Product(models.Model):
     def _compute_set_quantities(self):
         # Explode set content and find unreserved quantity
         for product in self:
-            bom_id = self.env["mrp.bom"].sudo()._bom_find(product=product)
+            bom_id = self.env["mrp.bom"].sudo()._bom_find(products=product)
             if bom_id and bom_id.type == "phantom":
                 boms, lines = bom_id.explode(
                     product, quantity=1, picking_type=bom_id.picking_type_id

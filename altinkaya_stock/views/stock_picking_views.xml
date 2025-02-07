@@ -9,8 +9,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
                        position="after">
-                    <field name="qty_available_merkez" string="Merkez" widget="uom" options="{'uom_field': 'product_uom'}"/>
-                    <field name="qty_available_sincan" string="Sincan" widget="uom" options="{'uom_field': 'product_uom'}"/>
+                    <field name="qty_available_merkez" string="Merkez"/>
+                    <field name="qty_available_sincan" string="Sincan"/>
                     <button name="action_create_procurement" type="object" string="Tedarik"
                             attrs="{'invisible':[('state','in',['waiting','done'])]}"/>
                     <button name="action_make_mts" type="object" string="Stoktan Al"

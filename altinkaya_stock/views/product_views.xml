@@ -8,16 +8,15 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
-                <!-- TODO: attribute logic changed in v13. migrate the fields and views -->
-                <!-- <xpath expr="//field[@name='attribute_value_ids']" position="before">
+                <xpath expr="//field[@name='product_template_variant_value_ids']" position="before">
                     <field name="domain_attribute_value_ids" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='attribute_value_ids']" position="attributes">
+                <xpath expr="//field[@name='product_template_variant_value_ids']" position="attributes">
                     <attribute name="readonly">0</attribute>
                     <attribute name="domain">[('id','in',domain_attribute_value_ids)]</attribute>
                     <attribute name="options">{'no_create':True,'no_edit':True}</attribute>
                     <attribute name="placeholder">Product Attribute Values</attribute>
-                </xpath> -->
+                </xpath>
                 <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
                     <attribute name="readonly">0</attribute>
                     <attribute name="invisible">0</attribute>
@@ -102,16 +101,16 @@
 
                 <xpath expr="//group[@name='operations']" position="before">
                     <group name="Merkezdepo" string="Merkez Depo">
-                        <field name="qty_available_merkez" widget="uom"/>
-                        <field name="qty_incoming_merkez" widget="uom"/>
-                        <field name="qty_outgoing_merkez" widget="uom"/>
-                        <field name="qty_virtual_merkez" widget="uom"/>
+                        <field name="qty_available_merkez"/>
+                        <field name="qty_incoming_merkez"/>
+                        <field name="qty_outgoing_merkez"/>
+                        <field name="qty_virtual_merkez"/>
                     </group>
                     <group name="Sincandepo" string="Sincan Depo">
-                        <field name="qty_available_sincan" widget="uom"/>
-                        <field name="qty_incoming_sincan" widget="uom"/>
-                        <field name="qty_outgoing_sincan" widget="uom"/>
-                        <field name="qty_virtual_sincan" widget="uom"/>
+                        <field name="qty_available_sincan"/>
+                        <field name="qty_incoming_sincan"/>
+                        <field name="qty_outgoing_sincan"/>
+                        <field name="qty_virtual_sincan"/>
                     </group>
 
 

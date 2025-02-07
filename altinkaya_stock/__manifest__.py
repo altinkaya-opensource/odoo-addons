@@ -14,6 +14,8 @@
         "altinkaya_sales",
         "barcodes_generator_product",
         "partner_ranking",
+        "stock_available_unreserved",
+        "mrp",
     ],
     "data": [
         "views/stock_quant_view.xml",
