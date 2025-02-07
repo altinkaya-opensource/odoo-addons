@@ -1,146 +1,108 @@
 from odoo import http, registry, api, SUPERUSER_ID, _
-from odoo.tools import frozendict
 from odoo.http import request
 import psycopg2
 import json
-from datetime import datetime as dt
-from datetime import timedelta as td
-
+from datetime import datetime as dt, timedelta as td
 
 def iso_to_datetime(iso_string):
-    # We always show date and time in this same format in any chatter
-    delta = td(hours=3)
     if iso_string.endswith("Z"):
         iso_string = iso_string[:-1]
-    date = dt.fromisoformat(iso_string)
-    date += delta
+    date = dt.fromisoformat(iso_string) + td(hours=3)
     return date.strftime("%d/%m/%Y %H:%M:%S")
-
 
 class PostmarkController(http.Controller):
     _webhook_url = "/mail/postmark/webhook"
 
     @http.route(
-        route=_webhook_url,
-        type="json",
-        auth="public",
-        methods=["POST"],
-        csrf=False,
+        route=_webhook_url, 
+        type="json", 
+        auth="public", 
+        methods=["POST"], 
+        csrf=False
     )
     def postmark_webhook(self, **kwargs):
-        postmark_api_message_id = request.jsonrequest.get("MessageID")
-        postmark_api_record_type = request.jsonrequest.get("RecordType")
-        if not (postmark_api_message_id and postmark_api_record_type):
+        message_id = request.jsonrequest.get("MessageID")
+        record_type = request.jsonrequest.get("RecordType")
+        if not (message_id and record_type):
             return False
 
-        mail_message = (
-            request.env["mail.message"]
-            .sudo()
-            .search([("message_id", "=", postmark_api_message_id)], limit=1)
+        mail_message = request.env["mail.message"].sudo().search(
+            [("message_id", "=", message_id)], limit=1
         )
-
         if not mail_message:
             return False
 
-        mail_message.write({"postmark_api_state": postmark_api_record_type.lower()})
-        self._postprocess_webhook_resp(postmark_api_record_type, mail_message)
+        mail_message.write({"postmark_api_state": record_type.lower()})
+        self._postprocess_webhook_resp(record_type, mail_message)
         self._log_request()
         return True
 
     def _log_request(self):
-        db_name = request._cr.dbname
         if not request.jsonrequest:
             return False
-        # Use a new cursor to avoid rollback that could be caused by an upper method
         try:
-            db_registry = registry(db_name)
+            db_registry = registry(request._cr.dbname)
             with db_registry.cursor() as cr:
                 env = api.Environment(cr, SUPERUSER_ID, {})
-                IrLogging = env["ir.logging"]
-                IrLogging.sudo().create(
-                    {
-                        "name": "mail.message",
-                        "type": "server",
-                        "dbname": db_name,
-                        "level": "DEBUG",
-                        "message": json.dumps(request.jsonrequest),
-                        "path": "/opt/odoo",
-                        "func": "postmark_connector",
-                        "line": 1,
-                    }
-                )
+                env["ir.logging"].sudo().create({
+                    "name": "mail.message",
+                    "type": "server",
+                    "dbname": request._cr.dbname,
+                    "level": "DEBUG",
+                    "message": json.dumps(request.jsonrequest),
+                    "path": "/opt/odoo",
+                    "func": "postmark_connector",
+                    "line": 1,
+                })
         except psycopg2.Error:
             pass
 
-    def _postprocess_webhook_resp(self, postmark_api_record_type, mail_message):
-        """
-        Post a message about mail status in the chatter of the related sale order
-        :param postmark_api_record_type: str
-        :param mail_message: mail.message
-        :return: bool
-        """
-        following_states = (
-            "Delivery",
-            "Bounce",
-            "SpamComplaint",
-            "Open",
-            "Click",
+    def _postprocess_webhook_resp(self, record_type, mail_message):
+        states = {
+            "Delivery": _("Message delivered at: %s"),
+            "Bounce": _("Email bounced: %s at %s"),
+            "SpamComplaint": _("%s marked your mail as spam"),
+            "Open": _("%s opened message at %s. Location: %s,%s Device:%s %s %s %s"),
+            "Click": _("%s %s at %s clicked. Location: %s,%s Device:%s %s %s")
+        }
+        if record_type not in states:
+            return True
+
+        related_record = request.env[mail_message.model].sudo().search(
+            [("id", "=", mail_message.res_id)], limit=1
         )
-        related_model = mail_message.model
-        # Todo: fix related model False key error on environment
-        related_record = request.env[related_model].sudo().search([("id", "=", mail_message.res_id)], limit=1)
+        if not related_record:
+            return True
 
-        if related_model and postmark_api_record_type in following_states:
-            chatter_msg = ""
+        data = request.jsonrequest
+        if record_type == "Delivery":
+            msg = states[record_type] % iso_to_datetime(data.get("DeliveredAt", ""))
+        elif record_type == "Bounce":
+            msg = states[record_type] % (data.get("Email", ""), iso_to_datetime(data.get("BouncedAt", "")))
+        elif record_type == "SpamComplaint":
+            msg = states[record_type] % data.get("Email", "")
+        elif record_type == "Open":
+            msg = states[record_type] % (
+                data.get("Recipient", ""),
+                iso_to_datetime(data.get("ReceivedAt", "")),
+                data.get("Geo", {}).get("City", ""),
+                data.get("Geo", {}).get("Country", ""),
+                data.get("OS", {}).get("Name", ""),
+                data.get("Platform", ""),
+                data.get("Client", {}).get("Company", ""),
+                data.get("Client", {}).get("Name", "")
+            )
+        elif record_type == "Click":
+            msg = states[record_type] % (
+                data.get("Recipient", ""),
+                iso_to_datetime(data.get("ReceivedAt", "")),
+                data.get("OriginalLink", ""),
+                data.get("Geo", {}).get("City", ""),
+                data.get("Geo", {}).get("Country", ""),
+                data.get("Platform", ""),
+                data.get("Client", {}).get("Company", ""),
+                data.get("Client", {}).get("Name", "")
+            )
 
-            if postmark_api_record_type == "Delivery":
-                delivered_at = iso_to_datetime(request.jsonrequest.get("DeliveredAt", ""))
-                chatter_msg = _("Message delivered at: %s") % delivered_at
-
-            elif postmark_api_record_type == "Bounce":
-                bounced_email = request.jsonrequest.get("Email", "")
-                bounced_at = iso_to_datetime(request.jsonrequest.get("BouncedAt", ""))
-                chatter_msg = _("Email bounced: %s at %s") % (
-                    bounced_email,
-                    bounced_at,
-                )
-
-            elif postmark_api_record_type == "SpamComplaint":
-                spammed_mail = request.jsonrequest.get("Email", "")
-                chatter_msg = _("%s marked your mail as spam") % spammed_mail
-
-            elif postmark_api_record_type == "Open":
-                client = request.jsonrequest.get("Client", {})
-                geo = request.jsonrequest.get("Geo", {})
-                chatter_msg = _(
-                    "%s opened messsage at %s. Location: %s,%s Device:%s %s %s %s"
-                ) % (
-                    request.jsonrequest.get("Recipient", ""),
-                    iso_to_datetime(request.jsonrequest.get("ReceivedAt", "")),
-                    geo.get("City", ""),
-                    geo.get("Country", ""),
-                    request.jsonrequest.get("OS", "").get("Name"),
-                    request.jsonrequest.get("Platform", ""),
-                    client.get("Company", ""),
-                    client.get("Name", ""),
-                )
-
-            elif postmark_api_record_type == "Click":
-                client = request.jsonrequest.get("Client", {})
-                geo = request.jsonrequest.get("Geo", {})
-                chatter_msg = _(
-                    "%s %s at %s clicked. Location: %s,%s Device:%s %s %s"
-                ) % (
-                    request.jsonrequest.get("Recipient", ""),
-                    iso_to_datetime(request.jsonrequest.get("ReceivedAt", "")),
-                    request.jsonrequest.get("OriginalLink", ""),
-                    geo.get("City"),
-                    geo.get("Country"),
-                    request.jsonrequest.get("Platform", ""),
-                    client.get("Company", ""),
-                    client.get("Name", ""),
-                )
-            if chatter_msg:
-                related_record.message_post(body=chatter_msg, message_type="notification")
-
+        related_record.message_post(body=msg, message_type="notification")
         return True
