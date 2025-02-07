@@ -16,9 +16,9 @@
         <record id="res_partner_form_view" model="ir.ui.view">
             <field name="name">res.partner.form.inherit</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="partner_worksector.res_partner_form_view_marketing"/>
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-               <xpath expr="//group[@name='marketing']" position="inside">
+               <xpath expr="//group[@name='sale']" position="inside">
                	<group>
                		<group>
                		<field name="ranking" readonly="1"/>

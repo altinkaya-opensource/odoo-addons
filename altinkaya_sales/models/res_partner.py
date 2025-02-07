@@ -37,11 +37,9 @@ class ResPartner(models.Model):
         company_dependent=True,
     )
     nace_product_categ_ids = fields.Many2many(
+        comodel_name="product.category",
         search="_search_nace_product_categ",
     )
-    z_old_tel = fields.Char("Eski Tel", size=64, required=False)
-    z_old_fax = fields.Char("Eski Faks", size=64, required=False)
-    z_old_cep = fields.Char("Eski Cep", size=64, required=False)
     z_contact_name = fields.Char("İlgili Kişi", size=64, required=False)
     z_tel_kampanya = fields.Boolean(
         "Kampanyalarda Aranmayacak",
@@ -68,8 +66,7 @@ class ResPartner(models.Model):
     v_cari_urun_count = fields.Integer(
         "Carinin Urunleri", compute="_compute_v_cari_urun_count"
     )
-    x_vergino = fields.Char("Vergi No", size=64)
-    tax_office_name = fields.Char('Tax Office', size=64)
+    tax_office_name = fields.Char("Tax Office", size=64)
     # make country_id is required in res.partner
     country_id = fields.Many2one(required=True)
     segment_id = fields.Many2one(
@@ -101,7 +98,11 @@ class ResPartner(models.Model):
             partner_move_lines = self.env["account.move.line"].search(
                 [
                     ("partner_id", "=", commercial.id),
-                    ("account_id.user_type_id.type", "in", ("payable", "receivable")),
+                    (
+                        "account_id.account_type",
+                        "in",
+                        ("liability_payable", "asset_receivable"),
+                    ),
                 ]
             )
             if (
@@ -111,15 +112,15 @@ class ResPartner(models.Model):
             ):
                 payable_account = AccountAccount.search(
                     [
-                        ("code", "=", "320.%s" % country_default_currency.name),
-                        ("user_type_id.type", "=", "payable"),
+                        ("code", "=", f"320.{country_default_currency.name}"),
+                        ("account_type", "=", "liability_payable"),
                     ],
                     limit=1,
                 )
                 receivable_account = AccountAccount.search(
                     [
-                        ("code", "=", "120.%s" % country_default_currency.name),
-                        ("user_type_id.type", "=", "receivable"),
+                        ("code", "=", f"120.{country_default_currency.name}"),
+                        ("account_type", "=", "asset_receivable"),
                     ],
                     limit=1,
                 )
@@ -141,7 +142,6 @@ class ResPartner(models.Model):
             ):
                 rec.risk_exception = True
 
-    
     @api.depends("email")
     def _compute_email_invalid(self):
         for rec in self:
@@ -162,7 +162,6 @@ class ResPartner(models.Model):
         ]
         return action
 
-    
     def _compute_v_cari_urun_count(self):
         for rec in self:
             rec.v_cari_urun_count = self.env["product.product"].search_count(

@@ -135,11 +135,13 @@ class MrpBoM(models.Model):
             if not line_product and line_type != "bom_line":
                 continue
 
-            bom = self._bom_find(
+            bom_dict = self._bom_find(
                 products=line_product,
                 picking_type=picking_type or self.picking_type_id,
                 company_id=self.company_id.id,
             )
+
+            bom = bom_dict[line_product]
 
             if bom.type == "phantom":
                 new_lines, new_bom = self._process_phantom_bom(

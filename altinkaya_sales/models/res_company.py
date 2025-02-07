@@ -9,7 +9,7 @@ from odoo import models, fields, api
 
 class ResCompany(models.Model):
     _inherit='res.company'
-    
-    
-    hash_code = fields.Char('Hash Comm Code', size=200, help="Used in comm with ext services")
+
+
+    hash_code = fields.Char('Hash Comm Code', help="Used in comm with ext services")
     tax_office_name = fields.Char('Tax Office', related='partner_id.tax_office_name')

@@ -8,12 +8,7 @@
                 <form string="Ürün Etiketi Yazdır">
                     <sheet>
                         <group>
-                            <field name="product_label_ids" invisible="1">
-                                <field name="note" />
-
-                                <field name="pieces_in_pack"/>
-                                <field name="label_to_print"/>
-                            </field>
+                            <field name="product_label_ids" invisible="1" />
                         	<field name="single_label_default_code" readonly="1" />
                             <field name="single_label_barcode" readonly="1" />
                             <field name="single_label_name" readonly="1" />

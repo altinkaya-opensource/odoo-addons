@@ -38,6 +38,8 @@
         "product_attribute_types",
         "stock_picking_invoicing",  # TODO: This module needs to be migrated from our codebase.
         "sale_variant_configurator",
+        "partner_email_check",
+        "account_financial_risk",
     ],
     "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
     "description": """

@@ -10,7 +10,6 @@
     "depends": [
         "stock",
         "product",
-        "partner_worksector",
         "altinkaya_reports",
     ],
     "data": [
