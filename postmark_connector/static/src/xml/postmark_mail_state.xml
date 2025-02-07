@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<template>
+    <t t-extend="mail.widget.Thread.Message">
+        <t t-jquery="strong[data-oe-model='res.partner']" t-operation="before">
+            <span t-if="message.isDiscussion()" class="o_postmark_state">
+                <t t-out="message.getPostmarkMailState()"/>
+            </span>
+        </t>
+    </t>
+</template>

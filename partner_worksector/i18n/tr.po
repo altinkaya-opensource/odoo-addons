@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* partner_worksector
+# 	* partner_worksector
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-10 13:57+0000\n"
-"PO-Revision-Date: 2019-01-10 13:57+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-01-31 06:38+0000\n"
+"PO-Revision-Date: 2025-01-31 06:38+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,12 +49,12 @@ msgstr "Açıklama"
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector__display_name
 msgid "Display Name"
-msgstr "Görünüm Adı"
+msgstr "Görünen Adı"
 
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector____last_update
@@ -72,14 +72,16 @@ msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: partner_worksector
-#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view
-msgid "Marketing"
-msgstr "Pazarlama"
+#: model:ir.model.fields,field_description:partner_worksector.field_res_partner__main_worksector_id
+#: model:ir.model.fields,field_description:partner_worksector.field_res_users__main_worksector_id
+#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view_marketing
+msgid "Main Worksector"
+msgstr "Ana Sektör"
 
 #. module: partner_worksector
-#: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector__name
-msgid "Name"
-msgstr "İsim"
+#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view_marketing
+msgid "Other Worksectors"
+msgstr "Diğer Sektörler"
 
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector__partner_ids
@@ -94,9 +96,15 @@ msgstr "Ürün Kategorisi"
 
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_res_partner__target_product_categ_ids
-#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view
+#: model:ir.model.fields,field_description:partner_worksector.field_res_users__target_product_categ_ids
+#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view_marketing
 msgid "Target Product Category"
 msgstr "Hedef Ürün Kategorisi"
+
+#. module: partner_worksector
+#: model:ir.model.fields,field_description:partner_worksector.field_partner_worksector__name
+msgid "US SIC Description"
+msgstr "US SIC Açıklaması"
 
 #. module: partner_worksector
 #: model:ir.model,name:partner_worksector.model_partner_worksector
@@ -105,7 +113,6 @@ msgstr "Sektör"
 
 #. module: partner_worksector
 #: model:ir.model.fields,field_description:partner_worksector.field_res_partner__worksector_ids
-#: model_terms:ir.ui.view,arch_db:partner_worksector.res_partner_form_view
+#: model:ir.model.fields,field_description:partner_worksector.field_res_users__worksector_ids
 msgid "Worksector"
 msgstr "Sektör"
-

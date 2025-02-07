@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="res_partner_industry_tree_inherit">
+        <field name="name">res.partner.industry.tree.inherit</field>
+        <field name="model">res.partner.industry</field>
+        <field name="inherit_id" ref="base.res_partner_industry_view_tree" />
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='name']" position="before">
+                <field name="code"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='full_name']" position="replace" />
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="res_partner_industry_form_inherit">
+        <field name="name">res.partner.industry.form.inherit</field>
+        <field name="model">res.partner.industry</field>
+        <field name="inherit_id" ref="base.res_partner_industry_view_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='full_name']" position="replace">
+                <field name="complete_name"/>
+                <field name="code"/>
+            </xpath>
+
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="includes" />
+                <field name="also_includes" />
+                <field name="excludes" />
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+
+                <h3>Sub-industries</h3>
+                <field name="child_ids" widget="one2many" readonly="1"/>
+
+                <h3>Product Categories</h3>
+                <field name="product_categ_ids" widget="one2many"/>
+
+                <h3>Partners</h3>
+                <field name="partner_ids" widget="one2many" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
