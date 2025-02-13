@@ -17,7 +17,7 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["survey", "sale", "crm", "account", "altinkaya_reports"],
+    "depends": ["survey","sale","crm","account"],
     "data": [
         # "templates/disable_odoo_branding.xml", # TODO: migration check if this is necessary
         "templates/star_rating.xml",
@@ -29,4 +29,10 @@
         "views/survey_user_input_views.xml",
         "views/sale_order_views.xml",
     ],
+    "assets": {
+        "web.assets_frontend": [
+            "/altinkaya_survey/static/src/star.css",
+            "/altinkaya_survey/static/src/star.js",
+        ],
+    },
 }

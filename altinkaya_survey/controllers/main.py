@@ -10,11 +10,13 @@ _logger = logging.getLogger(__name__)
 
 
 class SurveyInherit(Survey):
-    def get_graph_data(self, question, current_filters=None):
-        res = super(SurveyInherit, self).get_graph_data(question, current_filters)
-        current_filters = current_filters if current_filters else []
-        Survey = request.env["survey.survey"]
-        if question.type == "star_rating":
-            result = Survey.prepare_result(question, current_filters)["answers"]
-            return json.dumps(result)
+    
+    def _prepare_survey_finished_values(self, survey, answer, token=False):
+        res = super()._prepare_survey_finished_values(survey, answer, token)
+        values = {'survey': survey, 'answer': answer}
+        if token:
+            values['token'] = token
+        if survey.scoring_type != 'no_scoring':
+            values['graph_data'] = json.dumps(answer._prepare_statistics()[answer])
         return res
+

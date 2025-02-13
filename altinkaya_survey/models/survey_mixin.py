@@ -103,7 +103,7 @@ class SurveyMapping(models.AbstractModel):
             # survey.default_lang_id.code or "tr_TR",
             survey_user_input.partner_id.lang or "tr_TR",
             slug(survey),
-            survey_user_input.token,
+            survey_user_input.invite_token,
         )
 
         # Read or create shortened url for user_input

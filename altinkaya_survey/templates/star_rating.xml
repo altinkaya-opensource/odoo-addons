@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- STAR RATING ASSETS -->
-        <template id="survey_assets_star_rating" inherit_id="survey.survey_assets" name="Survey Results assets">
-            <xpath expr="//link[@href='/survey/static/src/css/survey_result.css']" position="after">
-                <link href="/altinkaya_survey/static/src/star.css" rel="stylesheet" type="text/css"/>
-                <script type="text/javascript" src="/altinkaya_survey/static/src/star.js"/>
-            </xpath>
-        </template>
 
         <!-- STAR RATING RESULT TEMPLATE -->
         <template id="result_star" name="Star Rating Result">
+
             <div>
                 <!-- Tabs -->
                 <ul class="nav nav-tabs d-print-none" role="tablist">
@@ -80,14 +74,38 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="star-rating">
+                        <div class="star-rating" data-question-type="star_rating" t-att-data-name="question.id">
+                            <t t-set="item_idx" t-value="0"/>
                             <t t-foreach="range(question.star_count)"
                                t-as="star_number">
                                 <span class="fa fa-star-o"
-                                      t-att-data-rating="(star_number+1)"></span>
+                                      t-att-data-rating="(star_number+1)">
+                                </span>
                             </t>
-                            <input type="hidden" t-att-name="prefix"
-                                   class="rating-value" t-att-value="0"/>
+
+                            <input type="hidden" t-att-name="'%d' % question.id"
+                                    t-att-data-question-type="question.question_type"
+                                    t-att-data-data-selection-key="letters[item_idx] if useKeySelection else ''"
+                                    class="rating-value" t-att-value="0"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- STAR FORM PRINT -->
+        <template id="print_star_rating" name="Star Rating Print">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="star-rating" data-question-type="star_rating" t-att-data-name="question.id">
+                            <t t-foreach="answer.user_input_line_ids" t-as="line">
+                                <t t-if="line.answer_type == 'star_rating'">
+                                    <t t-foreach="range(int(line.value_star_rating))" t-as="star_number">
+                                        <span class="fa fa-star" t-att-data-rating="(star_number+1)"></span>
+                                    </t>
+                                </t>
+                            </t>
                         </div>
                     </div>
                 </div>
@@ -95,28 +113,28 @@
         </template>
 
         <!-- SURVEY FORM -->
-        <template id="survey_form_star_rating" inherit_id="survey.question">
-            <xpath expr="//div[@t-field='question.description']" position="after">
-                <t t-if="question.type == 'star_rating'">
+        <template id="survey_form_star_rating" inherit_id="survey.question_container">
+            <xpath expr="//div/t" position="after">
+                <t t-if="question.question_type == 'star_rating'">
                     <t t-call="altinkaya_survey.star_rating"/>
                 </t>
             </xpath>
         </template>
 
         <!-- SURVEY FORM PRINT -->
-        <template id="survey_form_star_rating_print" inherit_id="survey.survey_print">
+        <template id="survey_form_star_rating_print" inherit_id="survey.survey_page_print">
             <xpath expr="//h2" position="after">
-                <t t-if="question.type == 'star_rating'">
-                    <t t-call="altinkaya_survey.star_rating"/>
+                <t t-if="question.question_type == 'star_rating'">
+                    <t t-call="altinkaya_survey.print_star_rating"/>
                 </t>
             </xpath>
         </template>
 
         <!-- SURVEY RESULT -->
-        <template id="survey_star_rating_results" inherit_id="survey.result">
-            <xpath expr="//t[@t-if='question.description']" position="after">
-                <t t-if="question.type == 'star_rating'">
-                    <t t-call="altinkaya_survey.result_star"></t>
+        <template id="survey_star_rating_results" inherit_id="survey.survey_fill_form_in_progress">
+            <xpath expr="//div[@t-if='question.is_page']" position="inside">
+                <t t-if="question.question_type == 'star_rating'">
+                    <t t-call="altinkaya_survey.result_star"/>
                 </t>
             </xpath>
         </template>

@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, _
+from odoo import models, fields, _, api
 
 
 class SurveyUserInput(models.Model):
@@ -16,10 +16,11 @@ class SurveyUserInput(models.Model):
         string="Invoice",
     )
 
-    input_type = fields.Selection(
-        selection_add=[
+    type = fields.Selection(
+        selection=[
             ("qrcode", "QR Code"),
-        ]
+        ],
+        string="Type",
     )
 
     shortened_url = fields.Text(
@@ -27,3 +28,9 @@ class SurveyUserInput(models.Model):
         help="Shortened URL for survey",
         default="",
     )
+
+    def save_lines(self, question, answer, comment=None):
+        if question.question_type == 'star_rating':
+            self._save_line_simple_answer(question, self.mapped('user_input_line_ids'), answer)
+        else:
+            return super().save_lines(question, answer, comment)
