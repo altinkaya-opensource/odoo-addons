@@ -16,7 +16,7 @@
         "mrp",
         "stock",
         "stock_mts_mto_rule",
-        # "stock_mts_mto_rule_mrp", # TODO: Check for the new workflow in v13
+        "stock_mts_mto_rule_mrp",
     ],
     "data": [
         "view/pull_rule.xml",

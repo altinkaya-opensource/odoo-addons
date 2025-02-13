@@ -9,7 +9,9 @@ class StockRule(models.Model):
     _inherit = 'stock.rule'
 
     action = fields.Selection(
-        selection_add=[('split_procurement2', 'MTS+MTS+MTO')])
+        selection_add=[('split_procurement2', 'MTS+MTS+MTO')],
+        ondelete={'split_procurement2': 'cascade'},
+        )
     mts2_rule_id = fields.Many2one(
         'stock.rule', string="MTS2 Rule")
 
