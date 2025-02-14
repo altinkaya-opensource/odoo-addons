@@ -22,5 +22,5 @@ class StockQuant(models.Model):
     @api.model
     def _get_removal_strategy_order(self, removal_strategy):
         if removal_strategy == "priorityfifo":
-            return "priority, in_date ASC NULLS FIRST, id"
+            return "priority, in_date ASC, id"
         return super(StockQuant, self)._get_removal_strategy_order(removal_strategy)

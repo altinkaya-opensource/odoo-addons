@@ -69,6 +69,7 @@
         <record id="product_product_tree_price_view" model="ir.ui.view">
             <field name="name">product.product.price.tree</field>
             <field name="model">product.product</field>
+            <field name="priority" eval="999"/>
             <field name="inherit_id" ref="product.product_product_tree_view" />
             <field name="arch" type="xml">
                 <field name="lst_price" position="replace">
