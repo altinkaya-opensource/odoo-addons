@@ -4,23 +4,65 @@
 # Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.depends("currency_id", "date_order")
-    def _compute_sale_currency_rate(self):
+    company_currency_id = fields.Many2one(
+        related="company_id.currency_id",
+        readonly=True,
+    )
+
+    amount_total_company_currency = fields.Monetary(
+        compute="_compute_amount_total_currency",
+        string="Total",
+        currency_field="company_currency_id",
+    )
+
+    def _compute_amount_total_currency(self):
         for order in self:
-            currency_id = order.currency_id or order.env.user.company_id.currency_id
-            if order.partner_id and order.partner_id.property_rate_field != "rate":
-                curr_dict = currency_id.with_context(
-                    rate_type=order.partner_id.property_rate_field
-                )._get_rates(order.env.user.company_id, order.date_order)
-            else:
-                curr_dict = currency_id._get_rates(
-                    order.env.user.company_id, order.date_order
+            order.amount_total_company_currency = order.currency_id._convert(
+                order.amount_total,
+                order.company_currency_id,
+                order.company_id,
+                order.date_order,
+            )
+
+    @api.depends("currency_id", "date_order", "company_id")
+    def _compute_currency_rate(self):
+        """
+        Overriden Odoo's default method to use custom rate field for specific partners.
+        """
+        cache = {}
+        for order in self:
+            ctx = dict(order._context)
+            order_date = (order.date_order or fields.Datetime.now()).date()
+            if not order.company_id:
+                order.currency_rate = (
+                    order.currency_id.with_context(date=order_date).rate or 1.0
                 )
-            order.sale_currency_rate = 1 / curr_dict.get(currency_id.id, 1.0)
-        return True
+                continue
+            elif not order.currency_id:
+                order.currency_rate = 1.0
+            else:
+                key = (order.company_id.id, order_date, order.currency_id.id)
+                if key not in cache:
+                    if (
+                        order.partner_id
+                        and order.partner_id.property_rate_field != "rate"
+                    ):
+                        ctx["rate_type"] = order.partner_id.property_rate_field
+
+                    cache[key] = (
+                        self.env["res.currency"]
+                        .with_context(**ctx)
+                        ._get_conversion_rate(
+                            from_currency=order.company_id.currency_id,
+                            to_currency=order.currency_id,
+                            company=order.company_id,
+                            date=order_date,
+                        )
+                    )
+                order.currency_rate = cache[key]

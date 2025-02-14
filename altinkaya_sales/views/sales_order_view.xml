@@ -114,10 +114,6 @@
 					<attribute name="editable"/>
 				</xpath>
 
-				<group name="sale_info" position="inside">
-					<field name="sale_currency_rate" />
-				</group>
-
 				<xpath expr="/form/sheet/group/group//field[@name='validity_date']" position="before">
 					<field name="date_order" attrs="{'readonly':[('state','not in',['draft','sent'])]}" />
 				</xpath>
