@@ -1,19 +1,13 @@
-# -*- encoding: utf-8 -*-
 #
 # Created on Jan 17, 2020
 #
 # @author: dogan
 #
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class StockWarehouseOrderpoint(models.Model):
     _inherit = "stock.warehouse.orderpoint"
-
-    # categ_id = fields.Many2one('product.category',
-    #                            related='product_id.categ_id',
-    #                            string='Category',
-    #                            store=True, readonly=True)
 
     transfers_to_customer_ids = fields.Many2many(
         "stock.move",
@@ -34,6 +28,15 @@ class StockWarehouseOrderpoint(models.Model):
     done_orderline_ids = fields.Many2many(
         "sale.order.line", string="Done Orders", compute="_compute_done_orderlines"
     )
+
+    def _get_product_context(self, visibility_days=0):
+        """Inherited to add included_location_ids on stock.location model."""
+        res = super()._get_product_context(visibility_days)
+        res["location_id"] = [
+            self.location_id.id,
+            *self.location_id.included_location_ids.ids,
+        ]
+        return res
 
     @api.depends("product_id")
     def _compute_productions(self):
