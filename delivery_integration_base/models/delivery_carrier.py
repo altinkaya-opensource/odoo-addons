@@ -12,6 +12,7 @@ from odoo.tools.safe_eval import safe_eval
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
+    partner_id = fields.Many2one("res.partner", "Carrier")
     carrier_barcode_type = fields.Selection(
         string="Barcode Type",
         selection=[

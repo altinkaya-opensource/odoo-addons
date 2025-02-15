@@ -1,9 +1,9 @@
 {
     "name": "Altinkaya Stock",
     "version": "16.0.0.1.0",
-    "website": "https://www.altinkaya.com",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
-    "author": "Ahmet Altınışık,OnurUgur,Codequarters,Yavuz Avcı",
+    "author": "Ahmet Altınışık,OnurUgur,Codequarters,Yavuz Avcı,Altinkaya Enclosures",
     "category": "Stock",
     "summary": "add specialized stock extensions",
     "depends": [
