@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 19:12+0000\n"
-"PO-Revision-Date: 2025-02-14 19:12+0000\n"
+"POT-Creation-Date: 2025-02-14 19:11+0000\n"
+"PO-Revision-Date: 2025-02-14 19:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,27 +19,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__ip_address
 #: model_terms:ir.ui.view,arch_db:access_restriction_by_ip.res_users_allowed_ips
 msgid "Allowed IP"
-msgstr "İzin Verilen IP"
+msgstr "Dozwolony adres IP"
 
 #. module: access_restriction_by_ip
 #: model:ir.model,name:access_restriction_by_ip.model_allowed_ips
 msgid "Allowed IP address for Odoo Login"
-msgstr "Odoo Girişi için İzin Verilen IP Adresi"
+msgstr "Dozwolony adres IP dla logowania do Odoo"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr "Stworzone przez"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr "Utworzono na"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__display_name
 msgid "Display Name"
-msgstr "Görünen Ad"
+msgstr "Wyświetlana nazwa"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__id
@@ -55,33 +55,34 @@ msgstr "IP"
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips____last_update
 msgid "Last Modified on"
-msgstr "Son Güncelleme"
+msgstr "Ostatnia modyfikacja"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__write_uid
 msgid "Last Updated by"
-msgstr "Son Güncelleyen"
+msgstr "Ostatnia aktualizacja"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__write_date
 msgid "Last Updated on"
-msgstr "Son Güncelleme"
+msgstr "Ostatnia aktualizacja"
 
 #. module: access_restriction_by_ip
 #. odoo-python
 #: code:addons/access_restriction_by_ip/controllers/main.py:0
 #, python-format
 msgid "Not allowed to login from this IP (%(ip_addr)s)"
-msgstr "Bu IP adresinden girişe izin verilmiyor: (%(ip_addr)s)"
+msgstr "Nie można zalogować się z tego adresu IP (%(ip_addr)s)"
 
 #. module: access_restriction_by_ip
 #. odoo-python
 #: code:addons/access_restriction_by_ip/models/allowed_ips.py:0
 #, python-format
 msgid "Please enter a valid IP address or subnet mask (%(ip_addr)s)"
-msgstr "Lütfen geçerli bir IP adresi ya da subnet mask girin (%(ip_addr)s)"
+msgstr ""
+"Proszę wprowadzić prawidłowy adres IP lub maskę podsieci (%(ip_addr)s)"
 
 #. module: access_restriction_by_ip
 #: model:ir.model,name:access_restriction_by_ip.model_res_users
 msgid "User"
-msgstr "Kullanıcı"
+msgstr "Użytkownik"

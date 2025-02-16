@@ -18,12 +18,12 @@ msgstr ""
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__active
 msgid "Active?"
-msgstr "Aktif?"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_search
 msgid "Archived"
-msgstr "Arşivlendi"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.actions.act_window,name:verimor_bulutsantralim_click2dial.action_bulutsantralim_connector
@@ -31,69 +31,69 @@ msgstr "Arşivlendi"
 #: model:ir.ui.menu,name:verimor_bulutsantralim_click2dial.act_menu_bulutsantralim_server
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
 msgid "Bulutsantralim Connector"
-msgstr "Bulutsantralim Konnektörü"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__name
 msgid "Bulutsantralim Connector Name"
-msgstr "Bulutsantralim Konnektör Adı"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_search
 msgid "Bulutsantralim Server Search"
-msgstr "Bulutsantralim Sunucu Araması"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_res_company__bulutsantralim_connector_id
 msgid "Bulutsantralim connector for this company."
-msgstr "Bu şirket için Bulutsantralim konnektörü."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__call_timeout
 msgid "Call Timout"
-msgstr "Arama Zaman Aşımı"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-python
 #: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
 #, python-format
 msgid "Call rejected."
-msgstr "Arama reddedildi."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.constraint,message:verimor_bulutsantralim_click2dial.constraint_bulutsantralim_connector_check_call_timeout
 msgid "Call timeout must be between 10 and 60."
-msgstr "Arama zaman aşımı 10 ile 60 arasında olmalıdır."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model,name:verimor_bulutsantralim_click2dial.model_phone_common
 msgid "Common methods for phone features"
-msgstr "Telefon özellikleri için ortak yöntemler"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model,name:verimor_bulutsantralim_click2dial.model_res_company
 msgid "Companies"
-msgstr "Şirketler"
+msgstr "会社"
 
 #. module: verimor_bulutsantralim_click2dial
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
 msgid "Connector Name"
-msgstr "Konnektör Adı"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__display_name
 msgid "Display Name"
-msgstr "Görünen Ad"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__id
@@ -107,54 +107,52 @@ msgid ""
 "(Normally, the extension will open automatically and the caller will be "
 "called)."
 msgstr ""
-"Değeri true ise, uzantının telefonu açmasını bekler(Normalde, uzantı "
-"otomatik olarak açılır ve arayan  aranır)."
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.constraint,message:verimor_bulutsantralim_click2dial.constraint_res_users_unique_internal_number
 msgid "Internal number must be unique per user!"
-msgstr "İç numara her kullanıcı için benzersiz olmalıdır!"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector____last_update
 msgid "Last Modified on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__write_uid
 msgid "Last Updated by"
-msgstr "Son Güncelleyen"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__write_date
 msgid "Last Updated on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__manual_answer
 msgid "Manual Answer?"
-msgstr "Manuel Cevapla?"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-python
 #: code:addons/verimor_bulutsantralim_click2dial/models/phone_common.py:0
 #, python-format
 msgid "Missing internal number"
-msgstr "Eksik iç numara"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-python
 #: code:addons/verimor_bulutsantralim_click2dial/models/phone_common.py:0
 #, python-format
 msgid "Missing phone number"
-msgstr "Eksik telefon numarası"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-python
 #: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
 #, python-format
 msgid "No answer."
-msgstr "Cevap yok."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-javascript
@@ -162,54 +160,52 @@ msgstr "Cevap yok."
 #: code:addons/verimor_bulutsantralim_click2dial/static/src/xml/bulutsantralim_click2dial.xml:0
 #, python-format
 msgid "Open Caller"
-msgstr "Açık Arayan"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
 msgid "Optional Settings"
-msgstr "Opsiyonel Ayarlar"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__call_timeout
 msgid ""
 "Timeout for call in seconds, must be between 10 and 60 seconds (default 30)"
 msgstr ""
-"Arama zaman aşımı saniye cinsinden, 10 ile 60 saniye arasında olmalıdır "
-"(varsayılan 30)"
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model,name:verimor_bulutsantralim_click2dial.model_res_users
 msgid "User"
-msgstr "Kullanıcı"
+msgstr "ユーザ"
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_res_users__internal_number
 msgid "User Internal Number"
-msgstr "Kullanıcı İç Numarası"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #. odoo-python
 #: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
 #, python-format
 msgid "User is busy."
-msgstr "Kullanıcı meşgul."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_res_users__internal_number
 msgid "User's internal phone number."
-msgstr "Kullanıcının iç telefon numarası."
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__api_key
 msgid "Verimor Bulutsantralim API Key"
-msgstr "Verimor Bulutsantralim API Anahtarı"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
 msgid "Verimor Bulutsantralim Configuration"
-msgstr "Verimor Bulutsantralim Yapılandırması"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model,name:verimor_bulutsantralim_click2dial.model_bulutsantralim_connector
 msgid "Verimor Bulutsantralim Connector"
-msgstr "Verimor Bulutsantralim Konnektörü"
+msgstr ""
