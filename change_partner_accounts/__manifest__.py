@@ -5,6 +5,7 @@
         This module adds main currency of payment in invoice forms widget
     """,
     "author": "yibudak",
+    "license": "LGPL-3",
     "website": "https://github.com/yibudak",
     "category": "Accounting",
     "version": "13.0.0.1.0",
