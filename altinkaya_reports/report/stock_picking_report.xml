@@ -122,34 +122,34 @@
 
                                         </div>
                                         <div
-                      t-if="o.move_lines and o.move_lines[0].partner_id and o.move_lines[0].partner_id.id != o.partner_id.id"
+                      t-if="o.move_ids and o.move_ids[0].partner_id and o.move_ids[0].partner_id.id != o.partner_id.id"
                     >
                                             <span>
                                                 <strong>Teslimat Adresi:</strong>
                                                 <span style="font-size:14px;">
                                                     <t
-                            t-esc="o.move_lines[0].partner_id.display_name"
+                            t-esc="o.move_ids[0].partner_id.display_name"
                           />
                                                 </span>
                                                 <t
-                          t-esc="o.move_lines[0].partner_id.street"
+                          t-esc="o.move_ids[0].partner_id.street"
                         />
                                                 <t
-                          t-esc="o.move_lines[0].partner_id.street2"
+                          t-esc="o.move_ids[0].partner_id.street2"
                         />
                                                 <t
-                          t-esc="o.move_lines[0].partner_id.city"
+                          t-esc="o.move_ids[0].partner_id.city"
                         />
                                                 <t
-                          t-esc="o.move_lines[0].partner_id.state_id.name"
+                          t-esc="o.move_ids[0].partner_id.state_id.name"
                         />
                                                 <t
-                          t-esc="o.move_lines[0].partner_id.name"
+                          t-esc="o.move_ids[0].partner_id.name"
                         />
                                             </span>
                                         </div>
                                         <div
-                      t-if="o.picking_type_id.code != 'internal' and (not o.move_lines or not o.move_lines[0].partner_id) and o.picking_type_id.warehouse_id.partner_id"
+                      t-if="o.picking_type_id.code != 'internal' and (not o.move_ids or not o.move_ids[0].partner_id) and o.picking_type_id.warehouse_id.partner_id"
                     >
                                             <span>
                                                 <strong>Depo Adresi:</strong>
@@ -188,11 +188,11 @@
                                     Not:
                                     <span style="font-size:14px;" t-field="o.note" />
                                 </div>
-                                <div t-if="o.sale_note" style="font-size:14px;">
+                                <div t-if="o.note" style="font-size:14px;">
                                     Satış Notu:
                                     <span
                     style="font-size:14px;"
-                    t-field="o.sale_note"
+                    t-field="o.note"
                   />
                                 </div>
                                 <table
@@ -281,7 +281,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr t-foreach="o.move_lines" t-as="move">
+                                        <tr t-foreach="o.move_ids" t-as="move">
                                             <t>
                                                 <td>
                                                     <span style="font-size:13px;">
@@ -360,7 +360,7 @@
                                                     </span>
                                                 </td>
 
-                                                <t t-if="move.has_move_lines">
+                                                <t t-if="move.has_move_ids">
                                                     <td style="line-height: 1;">
                                                         <ul style="list-style:none;">
                                                             <li

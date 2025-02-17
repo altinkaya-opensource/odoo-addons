@@ -129,7 +129,7 @@
                                     <td style="width:60px;text-align:left;">
                                         <span t-field="o.id" />
                                         <br />
-                                        <span t-field="o.payment_date" />
+                                        <span t-field="o.date" />
                                     </td>
                                 </tr>
                             </table>
@@ -202,9 +202,9 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <t t-if="o.communication">
+                                <t t-if="o.payment_reference">
                                     Notlar:
-                                    <span t-field="o.communication" />
+                                    <span t-field="o.payment_reference" />
                                 </t>
                             </div>
                         </div>

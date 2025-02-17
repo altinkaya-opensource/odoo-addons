@@ -24,7 +24,7 @@
                                 <tr>
                                     <td>
                                         Atölye :
-                                        <span t-field="o.routing_id.name" />
+                                        <span t-field="o.bom_id.operation_ids.name" />
                                     </td>
                                     <td>
                                         Makine :

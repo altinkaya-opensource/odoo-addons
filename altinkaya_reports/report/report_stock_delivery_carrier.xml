@@ -145,9 +145,9 @@
                                         <span t-field="o.partner_id.state_id.name" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.carrier_package_count" />x<span
+                                        <!-- <span t-field="o.carrier_package_count" />x<span
                       t-field="o.picking_total_weight"
-                    />
+                    /> -->
                                     </td>
                                 </tr>
                             </table>

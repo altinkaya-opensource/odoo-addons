@@ -20,7 +20,7 @@
                                         </h2>
                                         <span
                       style="margin-top: 2px;margin-bottom: 2px;"
-                      t-field="o.process_id.name"
+                      t-field="o.workorder_ids.name"
                     />
 
 
@@ -125,10 +125,10 @@
                                         </h6>
                                     </td>
                                 </tr>
-                                <tr t-if="o.sale_note">
+                                <tr t-if="o.note">
                                     <td>
                                         <h6>Satış Notu:
-                                            <span t-field="o.sale_note" />
+                                            <span t-field="o.note" />
                                         </h6>
                                     </td>
                                 </tr>
@@ -304,11 +304,11 @@
                                                 <span t-field="route[1].name" />
                                                 :
                                                 <span
-                          t-field="route[1].move_lines[0].location_id"
+                          t-field="route[1].move_ids[0].location_id"
                         />
                                                 >>
                                                 <span
-                          t-field="route[1].move_lines[0].location_dest_id"
+                          t-field="route[1].move_ids[0].location_dest_id"
                         />
                                             </h4>
                                             <h6>
@@ -335,7 +335,7 @@
                         >
                                                     <span
                             style="margin-top: 2px;margin-bottom: 2px;"
-                            t-field="route[1].process_id.name"
+                            t-field="route[1].workorder_ids.name"
                           />
                                                 </div>
                                             </div>

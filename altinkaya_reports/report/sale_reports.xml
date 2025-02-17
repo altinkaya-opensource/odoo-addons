@@ -316,7 +316,7 @@
                     t-if="display_discount"
                     style="padding:0;"
                     class="text-center"
-                    groups="sale.group_discount_per_so_line"
+                    groups="product.group_discount_per_so_line"
                   >
                                         <span>İsk.(%)</span>
                                         <t t-set="colspan" t-value="colspan+1" />
@@ -325,7 +325,7 @@
                     t-if="display_discount"
                     class="text-center"
                     style="padding:0;"
-                    groups="sale.group_discount_per_so_line"
+                    groups="product.group_discount_per_so_line"
                   >
                                         <span>İnd. B. Fiyatı</span>
                                     </th>
@@ -381,7 +381,7 @@
                         t-if="display_discount"
                         class="text-right"
                         style="padding:0;"
-                        groups="sale.group_discount_per_so_line"
+                        groups="product.group_discount_per_so_line"
                       >
                                                 <span
                           t-field="line.discount"
@@ -469,7 +469,7 @@
                       />
                                         </td>
                                     </tr>
-                                    <t
+                                    <!-- <t
                     t-foreach="doc.amount_by_group"
                     t-as="amount_by_group"
                   >
@@ -524,7 +524,7 @@
                                                 </td>
                                             </t>
                                         </tr>
-                                    </t>
+                                    </t> -->
                                     <tr> <!-- class="border-black o_total" -->
                                         <td class="text-right" style="padding:0;">
                                             <strong>Genel Toplam</strong>
@@ -1084,7 +1084,7 @@
                     t-if="display_discount"
                     style="padding:0;"
                     class="text-center"
-                    groups="sale.group_discount_per_so_line"
+                    groups="product.group_discount_per_so_line"
                   >
                                         <span>Disc.(%)</span>
                                         <t t-set="colspan" t-value="colspan+1" />
@@ -1093,7 +1093,7 @@
                     t-if="display_discount"
                     class="text-center"
                     style="padding:0;"
-                    groups="sale.group_discount_per_so_line"
+                    groups="product.group_discount_per_so_line"
                   >
                                         <span>Disc. Unit Price</span>
                                     </th>
@@ -1153,7 +1153,7 @@
                         t-if="display_discount"
                         class="text-right"
                         style="padding:0;"
-                        groups="sale.group_discount_per_so_line"
+                        groups="product.group_discount_per_so_line"
                       >
                                                 <span
                           t-field="line.discount"
@@ -1247,7 +1247,7 @@
                       />
                                         </td>
                                     </tr>
-                                    <t
+                                    <!-- <t
                     t-foreach="doc.amount_by_group"
                     t-as="amount_by_group"
                   >
@@ -1302,7 +1302,7 @@
                                                 </td>
                                             </t>
                                         </tr>
-                                    </t>
+                                    </t> -->
                                     <tr> <!-- class="border-black o_total" -->
                                         <td class="text-right" style="padding:0;">
                                             <strong>Total</strong>

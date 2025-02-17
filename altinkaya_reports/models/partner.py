@@ -54,49 +54,69 @@ class Partner(models.Model):
         move_type = ("liability_payable", "asset_receivable")
 
         query = f"""SELECT L.full_reconcile_id, L.DATE, A.CODE, A.CURRENCY_ID as ACCOUNT_CURRENCY,
-    	AJ.NAME AS JOURNAL,	AM.NAME,INV.NUMBER, INV.SUPPLIER_INVOICE_NuMBER,L.MOVE_ID,L.DATE_MATURITY AS DUE_DATE,
+    AJ.NAME AS JOURNAL,	AM.NAME,AM.REF AS INVOICE_NUMBER,
+    AM.PAYMENT_REFERENCE AS SUPPLIER_INVOICE_NUMBER,L.MOVE_ID,L.DATE_MATURITY AS DUE_DATE,
 
-    	CASE
-    					WHEN INV.SUPPLIER_INVOICE_NuMBER IS NOT NULL THEN INV.SUPPLIER_INVOICE_NuMBER
-    					ELSE INV.NUMBER
-    	END AS INNUMBER,
+    CASE
+        WHEN AM.PAYMENT_REFERENCE IS NOT NULL THEN AM.PAYMENT_REFERENCE
+        ELSE AM.REF
+    END AS INNUMBER,
 
-    	CASE
-    					WHEN INV.NUMBER IS NOT NULL THEN AJ.NAME
-    					ELSE AJ.NAME
-    	END AS DESCIRIPTION,
-        CASE
-                        WHEN (SUM(L.DEBIT) - SUM(L.CREDIT)) > 0 THEN ROUND((SUM(L.DEBIT) - SUM(L.CREDIT)),2)
-                        ELSE 0.00
-        END AS DEBIT,
-        CASE
-                        WHEN SUM(L.DEBIT) - SUM(L.CREDIT) < 0 THEN -1 * ROUND((SUM(L.DEBIT) - SUM(L.CREDIT)),2)
-                        ELSE 0.00
-        END AS CREDIT,
-        CASE
-                        WHEN   ABS(SUM (L.AMOUNT_CURRENCY)) > 0 THEN  ROUND(ABS(SUM(L.DEBIT) - SUM(L.CREDIT))/ABS(SUM (L.AMOUNT_CURRENCY)),5)
-                        ELSE 0.00
-        END AS currency_rate,
-        CASE
-                        WHEN ROUND(SUM (L.AMOUNT_CURRENCY),4) > 0 THEN ROUND(SUM (L.AMOUNT_CURRENCY),4)
-                        ELSE 0.00
-        END AS DEBIT_currency,
-        CASE
-                        WHEN ROUND(SUM (L.AMOUNT_CURRENCY),4) < 0 THEN -1 * ROUND(SUM (L.AMOUNT_CURRENCY),4)
-                        ELSE 0.00
-        END AS CREDIT_currency,
-        ROUND(SUM (L.AMOUNT_CURRENCY),4) AS AMOUNT_CURRENCY,AM.STATE,L.CURRENCY_ID AS CURRENCY_ID,
-        L.COMPANY_CURRENCY_ID AS COMPANY_CURRENCY_ID,AJ.ID AS JOURNAL_ID,L.ACCOUNT_ID AS ACCOUNT_ID
-        FROM ACCOUNT_MOVE_LINE AS L
-        LEFT JOIN ACCOUNT_ACCOUNT A ON (L.ACCOUNT_ID = A.ID) LEFT JOIN ACCOUNT_MOVE AM ON (L.MOVE_ID = AM.ID)
-        LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID) LEFT JOIN ACCOUNT_ACCOUNT_TYPE AT ON (A.USER_TYPE_ID = AT.ID)
-        LEFT JOIN ACCOUNT_MOVE INV ON (L.INVOICE_ID = INV.ID)
-        WHERE (L.DATE BETWEEN '{str(start_date)}' AND '{str(end_date)}')
-        AND L.PARTNER_ID = {str(self.commercial_partner_id.id)}
-        AND AT.TYPE IN {str(move_type)}
-        GROUP BY AJ.NAME, A.CODE, A.CURRENCY_ID, L.MOVE_ID,	AM.NAME,	AM.STATE,	L.DATE,	L.DATE_MATURITY,	L.CURRENCY_ID,	L.COMPANY_CURRENCY_ID,
-        INV.NUMBER,INV.SUPPLIER_INVOICE_NUMBER,	AJ.ID,	L.ACCOUNT_ID, L.FULL_RECONCILE_ID
-        ORDER BY ACCOUNT_CURRENCY, L.DATE"""
+    CASE
+        WHEN AM.REF IS NOT NULL THEN AJ.NAME
+        ELSE AJ.NAME
+    END AS DESCRIPTION,
+
+    CASE
+        WHEN (SUM(L.DEBIT) - SUM(L.CREDIT)) > 0 THEN ROUND((SUM(L.DEBIT) - SUM(L.CREDIT)),2)
+        ELSE 0.00
+    END AS DEBIT,
+
+    CASE
+        WHEN SUM(L.DEBIT) - SUM(L.CREDIT) < 0 THEN -1 * ROUND((SUM(L.DEBIT) - SUM(L.CREDIT)),2)
+        ELSE 0.00
+    END AS CREDIT,
+
+    CASE
+        WHEN ABS(SUM(L.AMOUNT_CURRENCY)) > 0 THEN ROUND(ABS(SUM(L.DEBIT) - SUM(L.CREDIT))/ABS(SUM(L.AMOUNT_CURRENCY)),5)
+        ELSE 0.00
+    END AS currency_rate,
+
+    CASE
+        WHEN ROUND(SUM(L.AMOUNT_CURRENCY),4) > 0 THEN ROUND(SUM(L.AMOUNT_CURRENCY),4)
+        ELSE 0.00
+    END AS DEBIT_currency,
+
+    CASE
+        WHEN ROUND(SUM(L.AMOUNT_CURRENCY),4) < 0 THEN -1 * ROUND(SUM(L.AMOUNT_CURRENCY),4)
+        ELSE 0.00
+    END AS CREDIT_currency,
+
+    ROUND(SUM(L.AMOUNT_CURRENCY),4) AS AMOUNT_CURRENCY,
+    AM.STATE,
+    L.CURRENCY_ID AS CURRENCY_ID,
+    L.COMPANY_CURRENCY_ID AS COMPANY_CURRENCY_ID,
+    AJ.ID AS JOURNAL_ID,
+    L.ACCOUNT_ID AS ACCOUNT_ID
+
+FROM ACCOUNT_MOVE_LINE AS L
+
+LEFT JOIN ACCOUNT_ACCOUNT A ON (L.ACCOUNT_ID = A.ID) 
+LEFT JOIN ACCOUNT_MOVE AM ON (L.MOVE_ID = AM.ID)
+LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID)
+
+WHERE 
+    (L.DATE BETWEEN '{str(start_date)}' AND '{str(end_date)}')
+    AND L.PARTNER_ID = {str(self.commercial_partner_id.id)}
+    AND AM.MOVE_TYPE IN {str(move_type)}
+
+GROUP BY 
+    AJ.NAME, A.CODE, A.CURRENCY_ID, L.MOVE_ID, AM.NAME, AM.STATE, L.DATE, 
+    L.DATE_MATURITY, L.CURRENCY_ID, L.COMPANY_CURRENCY_ID,
+    AM.REF, AM.PAYMENT_REFERENCE,
+    AJ.ID, L.ACCOUNT_ID, L.FULL_RECONCILE_ID
+
+ORDER BY ACCOUNT_CURRENCY, L.DATE;"""
         skip_journal_codes = ["ADVR", "KRFRK"]
         if ctx.get("lang") != "tr_TR":
             skip_journal_codes.append("KRDGR")
@@ -230,9 +250,7 @@ class Partner(models.Model):
     def email_statement(
         self,
     ):
-        data_model = self.env["ir.model.data"]
-        template = data_model.get_object(
-            "altinkaya_reports", "email_template_edi_send_statement"
-        )
+        template_id = self.env['ir.model.data']._xmlid_to_res_id('altinkaya_reports.email_template_edi_send_statement')
+        template = self.env['mail.template'].browse(template_id)
         mail_id = template.send_mail(self.id, force_send=True)
         return True
