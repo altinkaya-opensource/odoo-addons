@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <button name="action_confirm" position="before">
-                <button
+                <!-- <button
           name="action_sale_get_rates_wizard"
           type="object"
           Help="Get delivery rates for this order"
@@ -17,9 +17,9 @@
                          ('carrier_payment_type', '=', 'customer_pays'),
                          ('state','in', ['done', 'cancel', 'sale'])
                          ]}"
-        />
+        /> -->
             </button>
-            <xpath expr="//button[@name='get_delivery_price']" position="replace">
+            <!-- <xpath expr="//button[@name='get_delivery_price']" position="replace">
                 <field name="carrier_payment_type" invisible="1" />
             </xpath>
             <xpath expr="//field[@name='delivery_price']" position="after">
@@ -34,21 +34,21 @@
           attrs="{'invisible': ['|', ('currency_id', '=', 'currency_id_try'), ('carrier_id','=', False)]}"
         />
 
-            </xpath>
-            <xpath expr="//button[@name='set_delivery_line']" position="replace">
+            </xpath> -->
+            <!-- <xpath expr="//button[@name='set_delivery_line']" position="replace">
                 <span attrs="{'invisible': [('sale_deci', '&lt;=', 0.001)]}">
                     <span class="ml-3">Deci:</span>
                     <field name="sale_deci" readonly="1" />
                 </span>
-            </xpath>
+            </xpath> -->
 
-            <xpath expr="//label[@for='analytic_tag_ids']" position="before">
+            <!-- <xpath expr="//label[@for='analytic_tag_ids']" position="before">
                 <label for="deci" />
                 <div>
                     <field name="deci" class="oe_inline" />
                     Deci
                 </div>
-            </xpath>
+            </xpath> -->
         </field>
     </record>
 </odoo>
