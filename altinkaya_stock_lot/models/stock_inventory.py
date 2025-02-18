@@ -6,6 +6,6 @@ from odoo import models, api
 class StockInventory(models.Model):
     _inherit = "stock.inventory"
 
-    @api.multi
+    
     def action_validate(self):
         return super(StockInventory, self).action_validate()

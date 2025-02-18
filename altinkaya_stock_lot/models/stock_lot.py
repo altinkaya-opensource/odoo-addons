@@ -6,7 +6,7 @@ import string
 
 
 class StockProductionLot(models.Model):
-    _inherit = "stock.production.lot"
+    _inherit = "stock.lot"
 
     def _compute_lot_name(self):
         """Generates a random lot number. Overrides the default method.

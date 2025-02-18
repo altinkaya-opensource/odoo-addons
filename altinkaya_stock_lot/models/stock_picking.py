@@ -7,7 +7,7 @@ from odoo.tools import float_compare, float_is_zero
 class StockPickin(models.Model):
     _inherit = "stock.picking"
 
-    # @api.multi
+    # 
     # def button_validate(self):
     #     """Overridden to create lot_id for move_lines automatically"""
     #     picking_type = self.picking_type_id
