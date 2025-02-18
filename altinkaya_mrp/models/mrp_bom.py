@@ -153,3 +153,4 @@ class MRPBoM(models.Model):
                 )
 
         return boms_done, lines_done
+
