@@ -7,7 +7,8 @@ class StockInventory(models.Model):
     _inherit = "stock.inventory"
 
     product_selection = fields.Selection(
-        selection_add=[("negative_qty", "Negative Quantities")]
+        selection_add=[("negative_qty", "Negative Quantities")],
+        ondelete={"negative_qty": "cascade"},
     )
 
     def _get_quants(self, locations):

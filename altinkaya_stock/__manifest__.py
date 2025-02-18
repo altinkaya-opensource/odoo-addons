@@ -7,13 +7,17 @@
     "category": "Stock",
     "summary": "add specialized stock extensions",
     "depends": [
+        "hr",
         "stock",
         "sale_stock",
+        "html_text",
         "delivery",
         "delivery_integration_base",
         "altinkaya_sales",
         "barcodes_generator_product",
         "partner_ranking",
+        "stock_inventory",
+        "stock_available_unreserved",
     ],
     "data": [
         "views/stock_quant_view.xml",

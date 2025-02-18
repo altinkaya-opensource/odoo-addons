@@ -38,11 +38,9 @@
                             attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="replace">
-                    <field name="partner_id"
-                           context="{'show_address': 1}" options="{'always_reload': True}"/>
+                    <field name="partner_id" context="{'show_address': 1}" options="{'always_reload': True}"/>
                     <field name="carrier_id"/>
                     <field name="hazirlayan"></field>
-                    <field name='x_hazirlayan' invisible="1"/>
                     <field name='x_durum'/>
                 </xpath>
 
@@ -50,13 +48,7 @@
                 <xpath expr="//field[@name='move_ids_without_package']" position='after'>
                     <group name="notes">
                         <field name="sale_note"/>
-                        <field name="comment_irsaliye" placeholder="İrsaliyeye eklenecek not..."/>
-                        <field name="teslim_alan"/>
                     </group>
-                </xpath>
-                <xpath expr="//field[@name='comment_irsaliye']" position='before'>
-                    <xpath expr="//field[@name='note']" position='move'>
-                    </xpath>
                 </xpath>
                 <xpath expr="//page[@name='note']" position='attributes'>
                     <attribute name="attrs">{'invisible':1}</attribute>
