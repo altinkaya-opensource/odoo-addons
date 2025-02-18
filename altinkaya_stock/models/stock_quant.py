@@ -27,9 +27,3 @@ class StockQuant(models.Model):
         ]
         return action
 
-    @api.model
-    def _get_removal_strategy_order(self, removal_strategy):
-        # TODO: We didn't use this method yet. Check if its still necessary.
-        if removal_strategy == "priorityfifo":
-            return "priority, in_date ASC, id"
-        return super()._get_removal_strategy_order(removal_strategy)

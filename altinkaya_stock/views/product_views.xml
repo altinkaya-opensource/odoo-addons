@@ -8,16 +8,15 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
-                <!-- TODO: attribute logic changed in v13. migrate the fields and views -->
-                <!-- <xpath expr="//field[@name='attribute_value_ids']" position="before">
+                <xpath expr="//field[@name='product_template_variant_value_ids']" position="before">
                     <field name="domain_attribute_value_ids" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='attribute_value_ids']" position="attributes">
+                <xpath expr="//field[@name='product_template_variant_value_ids']" position="attributes">
                     <attribute name="readonly">0</attribute>
                     <attribute name="domain">[('id','in',domain_attribute_value_ids)]</attribute>
                     <attribute name="options">{'no_create':True,'no_edit':True}</attribute>
                     <attribute name="placeholder">Product Attribute Values</attribute>
-                </xpath> -->
+                </xpath>
                 <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
                     <attribute name="readonly">0</attribute>
                     <attribute name="invisible">0</attribute>
@@ -140,10 +139,6 @@
                     <field name="route_ids" widget="many2many_tags"/>
                     <field name="product_variant_count" invisible="1" />
                 </field>
-                <!-- TODO: sequence not exist anymore, also move here to altinkaya_ecommerce -->
-                <!-- <field name="sequence" position="replace">
-                    <field name="website_sequence" string="#"/>
-                </field> -->
             </field>
         </record>
 
