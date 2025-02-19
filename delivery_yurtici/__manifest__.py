@@ -19,6 +19,6 @@
         "views/delivery_yurtici_view.xml",
         "report/yurtici_carrier_label.xml",
         "report/yurtici_sms_template.xml",
-        # 'report/reports.xml',  # TODO: This record has some problem with installation
+        'report/reports.xml',
     ],
 }

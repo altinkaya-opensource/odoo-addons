@@ -1,0 +1,131 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* split_stock_move_picking
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 05:50+0000\n"
+"PO-Revision-Date: 2025-01-31 05:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: split_stock_move_picking
+#: model_terms:ir.ui.view,arch_db:split_stock_move_picking.view_stock_split_picking_line
+#: model_terms:ir.ui.view,arch_db:split_stock_move_picking.view_stock_split_picking_line_window
+msgid "Böl"
+msgstr ""
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__qty
+msgid "Bölmek istediğiniz miktar"
+msgstr ""
+
+#. module: split_stock_move_picking
+#. odoo-python
+#: code:addons/split_stock_move_picking/wizard/split_stock_move_picking.py:0
+#, python-format
+msgid "Bölmek istediğiniz miktar talep edilenden daha fazla."
+msgstr ""
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__after_split_qty
+msgid "Bölünmeden sonra miktar"
+msgstr ""
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__display_name
+msgid "Display Name"
+msgstr "Görünüm Adı"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__id
+msgid "ID"
+msgstr "ID"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking____last_update
+msgid "Last Modified on"
+msgstr "Son Güncelleme"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__move_id
+msgid "Move"
+msgstr "Hareket"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__product_id
+msgid "Product"
+msgstr "Ürün"
+
+#. module: split_stock_move_picking
+#: model:ir.actions.act_window,name:split_stock_move_picking.action_stock_split_picking_line
+msgid "Satırı Böl"
+msgstr ""
+
+#. module: split_stock_move_picking
+#: model:ir.model,name:split_stock_move_picking.model_split_stock_move_picking
+msgid "Splits stock.move in pickings"
+msgstr "stock.move'ları elleçlemede böl"
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__requested_qty
+msgid "Talep Edilen"
+msgstr ""
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,help:split_stock_move_picking.field_split_stock_move_picking__requested_qty
+msgid ""
+"This is the quantity of products from an inventory point of view. For moves "
+"in the state 'done', this is the quantity of products that were actually "
+"moved. For other moves, this is the quantity of product that is planned to "
+"be moved. Lowering this quantity does not generate a backorder. Changing "
+"this quantity on assigned moves affects the product reservation, and should "
+"be done with care."
+msgstr ""
+"Bu, envanter bakış açısından ürün miktarıdır. 'Yapıldı' durumundaki "
+"hareketler için, gerçekten hareket gören ürünlerin miktarıdır. Diğer "
+"hareketleri için, hareket görmesi planlanan ürünlerin miktarıdır. Bu "
+"miktarın azaltılması bir ön teslimat oluşturmaz. Atandığı hareketlerde bu "
+"miktarı değiştirmek ürün rezervasyonunu etkileyeceğinden çok dikkatli "
+"yapılmalıdır."
+
+#. module: split_stock_move_picking
+#: model:ir.model.fields,field_description:split_stock_move_picking.field_split_stock_move_picking__uom
+msgid "UoM"
+msgstr "Ölçü Birimi"
+
+#. module: split_stock_move_picking
+#: model_terms:ir.ui.view,arch_db:split_stock_move_picking.view_stock_split_picking_line_window
+msgid "or"
+msgstr "ya da"
+
+#. module: split_stock_move_picking
+#: model_terms:ir.ui.view,arch_db:split_stock_move_picking.view_stock_split_picking_line_window
+msgid "İptal"
+msgstr ""

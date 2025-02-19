@@ -1,4 +1,4 @@
-from odoo import models, api
+from odoo import models
 
 
 class IrActionsReport(models.Model):
@@ -17,4 +17,4 @@ class IrActionsReport(models.Model):
                 if record.state not in ["done", "cancel"]:
                     record.action_assign()
 
-        return super(IrActionsReport, self).render_qweb_pdf(res_ids=res_ids, data=data)
+        return super().render_qweb_pdf(res_ids=res_ids, data=data)

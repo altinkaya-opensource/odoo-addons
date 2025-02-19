@@ -1,0 +1,137 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* short_url_yourls
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 06:05+0000\n"
+"PO-Revision-Date: 2025-01-31 06:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: short_url_yourls
+#: model_terms:ir.actions.act_window,help:short_url_yourls.action_short_url_yourls
+msgid "Click to add a new URL shortener service."
+msgstr "Yeni bir URL kısaltma hizmeti eklemek için tıklayın."
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__create_uid
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__create_date
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__display_name
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__display_name
+msgid "Display Name"
+msgstr "Görünen Adı"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,help:short_url_yourls.field_short_url_yourls__hostname
+msgid "Example: https://6sn.de"
+msgstr "Örnek: https://6sn.de"
+
+#. module: short_url_yourls
+#. odoo-python
+#: code:addons/short_url_yourls/models/short_url_yourls.py:0
+#, python-format
+msgid "Hostname must be a valid URL. Example: https://6sn.de or http://6sn.de"
+msgstr "Hostname geçerli bir URL olmalıdır. Örnek: https://6sn.de veya http://6sn.de"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__id
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls____last_update
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line____last_update
+msgid "Last Modified on"
+msgstr "Son Güncelleme"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__write_uid
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__write_date
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__long_url
+msgid "Long URL"
+msgstr "Uzun URL"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__name
+msgid "Name"
+msgstr "Adı"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__password
+msgid "Password"
+msgstr "Parola "
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__short_url
+msgid "Short URL"
+msgstr "Kısa URL"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__shortened_urls
+#: model_terms:ir.ui.view,arch_db:short_url_yourls.view_short_url_yourls_form
+msgid "Shortened URLs"
+msgstr "Kısaltılmış URL'ler"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__total_shortened_urls
+msgid "Total Shortened URLs"
+msgstr "Toplam Kısaltılmış URL'ler"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__hostname
+msgid "URL"
+msgstr "URL"
+
+#. module: short_url_yourls
+#: model:ir.actions.act_window,name:short_url_yourls.action_short_url_yourls
+#: model:ir.ui.menu,name:short_url_yourls.short_url_yourls_menu
+msgid "URL Shorteners"
+msgstr "URL Kısaltıcılar"
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls__username
+msgid "Username"
+msgstr "Kullanıcı adı "
+
+#. module: short_url_yourls
+#: model:ir.model.fields,field_description:short_url_yourls.field_short_url_yourls_line__shorter_id
+msgid "YOURLS Provider"
+msgstr "YOURLS Sağlayıcı"
+
+#. module: short_url_yourls
+#: model:ir.model,name:short_url_yourls.model_short_url_yourls_line
+msgid "YOURLS shortened URLs"
+msgstr "YOURLS kısaltılmış URL'ler"
+
+#. module: short_url_yourls
+#: model:ir.model,name:short_url_yourls.model_short_url_yourls
+msgid "YOURLS.org URL Shortener Service"
+msgstr "YOURLS.org URL Kısaltma Hizmeti"

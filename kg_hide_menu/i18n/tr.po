@@ -1,0 +1,36 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* kg_hide_menu
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 07:55+0000\n"
+"PO-Revision-Date: 2025-01-31 07:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: kg_hide_menu
+#: model:ir.model.fields,field_description:kg_hide_menu.field_res_users__hide_menu_access_ids
+msgid "Hide Access Menu"
+msgstr "Menü Erişimini Gizle"
+
+#. module: kg_hide_menu
+#: model_terms:ir.ui.view,arch_db:kg_hide_menu.kg_hide_menu_form_inherit
+msgid "Hide Menu"
+msgstr "Menüyü Gizle"
+
+#. module: kg_hide_menu
+#: model:ir.model,name:kg_hide_menu.model_ir_ui_menu
+msgid "Menu"
+msgstr "Menü"
+
+#. module: kg_hide_menu
+#: model:ir.model,name:kg_hide_menu.model_res_users
+msgid "User"
+msgstr "Kullanıcı"

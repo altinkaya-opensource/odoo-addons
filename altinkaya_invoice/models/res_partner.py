@@ -35,7 +35,6 @@ class ResPartner(models.Model):
         search="_search_due_days",
     )
 
-    @api.model
     def _compute_due_days(self):
         for record in self:
             if record.property_payment_term_id:
@@ -43,28 +42,24 @@ class ResPartner(models.Model):
                     record.property_payment_term_id.line_ids.mapped("days") or [0],
                 )
 
-    @api.model
-    def create(self, vals):
-        if not vals.get("ref") and self._needsRef(vals=vals):
-            vals["ref"] = self._get_next_ref(vals=vals)
-            if (
-                vals.get("ref")
-                and vals.get("country_id")
-                and vals.get("customer")
-                or vals.get("supplier")
-            ):
-                country_id = self.env["res.country"].browse(vals["country_id"])
-                if country_id and country_id.code != "TR":
-                    z_receivable_export = "120.Y%s" % (vals["ref"].strip() or "")
-                    z_payable_export = "320.Y%s" % (vals["ref"].strip() or "")
-                else:
-                    z_receivable_export = "120.%s" % (vals["ref"].strip() or "")
-                    z_payable_export = "320.%s" % (vals["ref"].strip() or "")
-                vals.update(
-                    {
-                        "ref": vals["ref"],
-                        "z_receivable_export": z_receivable_export,
-                        "z_payable_export": z_payable_export,
-                    }
-                )
-        return super(ResPartner, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get("ref") and self._needs_ref(vals=vals):
+                vals["ref"] = self._get_next_ref(vals=vals)
+                if vals.get("ref") and vals.get("country_id"):
+                    country_id = self.env["res.country"].browse(vals["country_id"])
+                    if country_id and country_id.code != "TR":
+                        z_receivable_export = "120.Y%s" % (vals["ref"].strip() or "")
+                        z_payable_export = "320.Y%s" % (vals["ref"].strip() or "")
+                    else:
+                        z_receivable_export = "120.%s" % (vals["ref"].strip() or "")
+                        z_payable_export = "320.%s" % (vals["ref"].strip() or "")
+                    vals.update(
+                        {
+                            "ref": vals["ref"],
+                            "z_receivable_export": z_receivable_export,
+                            "z_payable_export": z_payable_export,
+                        }
+                    )
+        return super().create(vals_list)

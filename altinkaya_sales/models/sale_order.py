@@ -9,7 +9,7 @@ import hashlib
 def _match_production_with_route(production):
     ongoing_state = ["planned", "progress"]
     production_ids = production.sorted(key=lambda m: m.id)
-    return "21_at_warehouse" # TODO: KeyError: 'process_id'
+    return "21_at_warehouse"  # TODO: KeyError: 'process_id'
     # if production_ids:
     #     process_ids = production_ids.mapped("process_id.id")
     #     if 14 in process_ids:
@@ -230,12 +230,7 @@ class SaleOrder(models.Model):
     sale_line_history = fields.One2many(
         "sale.order.line", string="Old Sales", compute="_compute_sale_line_history"
     )
-    sale_currency_rate = fields.Float(
-        string="Currency Rate",
-        compute="_compute_sale_currency_rate",
-        default=1.0,
-        digits=[16, 4],
-    )
+
 
     currency_id_usd = fields.Many2one(
         comodel_name="res.currency",

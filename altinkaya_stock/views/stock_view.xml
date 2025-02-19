@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <menuitem
-            name="Product Categories"
-            action="product.product_category_action_form"
-            id="menu_product_category_on_stock"
-            parent="stock.menu_stock_inventory_control"
-            sequence="16"/>
-
+        name="Product Categories"
+        action="product.product_category_action_form"
+        id="menu_product_category_on_stock"
+        parent="stock.menu_stock_inventory_control"
+        sequence="16"
+    />
 
     <data>
-
         <record id="view_warehouse_inherit_altinkaya" model="ir.ui.view">
             <field name="name">Altinkaya Warehouse Customization</field>
             <field name="model">stock.warehouse</field>
@@ -23,57 +21,51 @@
             </field>
         </record>
 
-
         <!-- altinkaya_customV7 Stock Picking Out Form View -->
-
         <record id="altinkaya_customV7_stock_picking_out_form" model="ir.ui.view">
             <field name="name">Altinkaya CustomV7 Stock Picking Out Form</field>
             <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form"></field>
-            <field name="priority" eval="1"></field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="priority" eval="1"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button name="open_sales_order" string="Sales Order" icon="fa-dollar"
-                            type="object"
-                            attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
-                </xpath>
-                <xpath expr="//field[@name='partner_id']" position="replace">
-                    <field name="partner_id"
-                           context="{'show_address': 1}" options="{'always_reload': True}"/>
-                    <field name="carrier_id"/>
-                    <field name="hazirlayan"></field>
-                    <field name='x_hazirlayan' invisible="1"/>
-                    <field name='x_durum'/>
+                        type="object"
+                        attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
                 </xpath>
 
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" context="{'show_address': 1}" options="{'always_reload': True}" nolabel="1"/>
+                </xpath>
+
+                <field name="origin" position="after">
+                    <field name="carrier_id"/>
+                    <field name="hazirlayan"/>
+                    <field name='x_durum'/>
+                </field>
 
                 <xpath expr="//field[@name='move_ids_without_package']" position='after'>
                     <group name="notes">
                         <field name="sale_note"/>
-                        <field name="comment_irsaliye" placeholder="İrsaliyeye eklenecek not..."/>
-                        <field name="teslim_alan"/>
                     </group>
                 </xpath>
-                <xpath expr="//field[@name='comment_irsaliye']" position='before'>
-                    <xpath expr="//field[@name='note']" position='move'>
-                    </xpath>
-                </xpath>
+
                 <xpath expr="//page[@name='note']" position='attributes'>
                     <attribute name="attrs">{'invisible':1}</attribute>
                 </xpath>
+                
                 <field name="priority" position="replace"/>
                 <field name="date_done" position="replace"/>
 
-                <!--                      <xpath expr="//field[@name='date']" position="replace"> -->
-                <!--               			<field name="priority"/> -->
-                <!--               			<field name="date_done"/> -->
-                <!--               			<field name='invoice_state'/> -->
-                <!--               			<field name="date"/> -->
-                <!--               		</xpath> -->
-
+                <!--
+                <xpath expr="//field[@name='date']" position="replace">
+                    <field name="priority"/>
+                    <field name="date_done"/>
+                    <field name='invoice_state'/>
+                    <field name="date"/>
+                </xpath>
+                -->
             </field>
         </record>
-
-
     </data>
 </odoo>
