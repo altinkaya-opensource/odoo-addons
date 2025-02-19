@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+	 <record id="x_makine_form_view" model="ir.ui.view">
+            <field name="name">x.makine.form</field>
+            <field name="model">x.makine</field>
+            <field name="arch" type="xml">
+                <form>
+                        <group>
+                        	<field name="x_group"/>
+                        	<field name="x_kod"/>
+                        	<field name="x_name"/>
+                            <field name="name"/>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="x_makine_tree_view" model="ir.ui.view">
+            <field name="name">x.makine.tree</field>
+            <field name="model">x.makine</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="x_group"/>
+                   	<field name="x_kod"/>
+                   	<field name="x_name"/>
+                   	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_x_makine" model="ir.actions.act_window">
+            <field name="name">Makine</field>
+            <field name="res_model">x.makine</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_x_makine" id="menuitem_action_x_makine" parent="mrp.menu_mrp_bom" sequence="20"/>
+	
+	
+
+
+
+
+
+</data>
+</odoo>

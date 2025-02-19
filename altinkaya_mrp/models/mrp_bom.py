@@ -5,12 +5,41 @@ from odoo.exceptions import UserError
 from odoo.tools import float_round
 
 
+class MrpBoMWCParameter(models.Model):
+    _name = "mrp.bom.wcparameter"
+    _description = "Mrp Bom WCParameter"
+
+    bom_id = fields.Many2one("mrp.bom", string="BoM")
+    routing_wc_id = fields.Many2one("mrp.routing.workcenter", "Workcenter")
+    cycle_nbr = fields.Float("Cycle Number")
+    hour_nbr = fields.Float("Cycle Time(Hour)")
+    time_start = fields.Float("Time Before Prod.")
+    time_stop = fields.Float("Time After Prod.")
+
 class MRPBoM(models.Model):
     _inherit = "mrp.bom"
 
     bom_template_line_ids = fields.One2many(
         "mrp.bom.template.line", "bom_id", "BoM Template Lines"
     )
+    
+    wc_parameter_ids = fields.One2many(
+        "mrp.bom.wcparameter", "bom_id", "Workcenter Parameters"
+    )
+    
+    categ_id = fields.Many2one(
+        "product.category",
+        related="product_tmpl_id.categ_id",
+        string="Category",
+        store=True,
+        readonly=True,
+    )
+    
+    checked = fields.Boolean(
+        string="Kontrol Edildi", help="Bileşenler ve ağırlıkları kontrol edildi."
+    )
+    
+    tool_product_id = fields.Many2one("product.product", string="Tool")
 
     def explode(self, product, quantity, picking_type=False):
         """
@@ -153,4 +182,3 @@ class MRPBoM(models.Model):
                 )
 
         return boms_done, lines_done
-
