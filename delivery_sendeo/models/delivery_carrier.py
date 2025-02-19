@@ -56,7 +56,10 @@ SENDEO_STATUS_CODES = {
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    delivery_type = fields.Selection(selection_add=[("sendeo", "Sendeo")])
+    delivery_type = fields.Selection(
+        selection_add=[("sendeo", "Sendeo")],
+        ondelete={"sendeo": "cascade"},
+    )
 
     sendeo_cc_code = fields.Char('CC Code', help="Sendeo CC Code")
     sendeo_username = fields.Char(string="Username", help="Sendeo Username")
@@ -309,4 +312,4 @@ class DeliveryCarrier(models.Model):
 
     def sendeo_get_rate(self, order):
         """Get delivery price for Sendeo"""
-        return self._calculate_deci(order)
+        return self.base_on_rule_get_rate(order)
