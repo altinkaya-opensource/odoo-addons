@@ -20,7 +20,7 @@ class ResPartner(models.Model):
             else:
                 partner.partner_currency_id = partner.sudo().company_id.currency_id
 
-    @api.depends("move_line_ids")
+    @api.depends("account_move_line_ids")
     def _compute_balance_fields(self):
         """
         Compute balance fields for partners. Using SQL to avoid performance issues and update_date field update.
@@ -28,6 +28,21 @@ class ResPartner(models.Model):
         """
         if not self.ids:
             return True
+        # Reset the balance fields
+        query_zero_initial = """
+        UPDATE
+            res_partner
+        SET
+            balance_due = 0,
+            currency_balance_due = 0,
+            balance = 0,
+            currency_balance = 0
+        WHERE
+            id IN %s;
+        """
+        params_zero_initial = (tuple(self.ids),)
+        self._cr.execute(query_zero_initial, params_zero_initial)
+
         query = """
         UPDATE
           res_partner rp
@@ -46,7 +61,7 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2021-01-01'
               AND aml.date_maturity <= CURRENT_DATE
@@ -63,7 +78,7 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2021-01-01'
               AND aml.partner_id IN %s
@@ -91,6 +106,10 @@ class ResPartner(models.Model):
             ],
         )
         return True
+
+    account_move_line_ids = fields.One2many(
+        "account.move.line", "partner_id", string="Journal Items"
+    )
 
     partner_currency_id = fields.Many2one(
         "res.currency",
@@ -130,14 +149,14 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
 
         for partner in self:
-            # Always assign a value to the fields
+
             partner.has_2breconciled_customer = False
             partner.has_2breconciled_supplier = False
 
@@ -156,6 +175,12 @@ class ResPartner(models.Model):
                 )
 
                 partner.has_2breconciled_supplier = len(aml_to_reconcile) > 0
+                aml_to_reconcile = partner.env["account.move.line"].search(
+                    domain + [("partner_id", "=", partner.id), ("debit", ">", 0)],
+                    limit=2,
+                )
+
+                partner.has_2breconciled_supplier = len(aml_to_reconcile) > 0
 
     def _search_has_2breconciled(self, partner_type):
         AccountMoveLine = self.env["account.move.line"]
@@ -164,8 +189,8 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
@@ -217,7 +242,7 @@ class ResPartner(models.Model):
         )
         old_receivable = self.property_account_receivable_id
         old_payable = self.property_account_payable_id
-        company_currency = self.env.company.currency_id
+        company_currency = self.env.user.company_id.currency_id
         if not (receivable_usd and payable_usd):
             raise UserError(_("Error in accounts definition"))
 
@@ -254,11 +279,11 @@ class ResPartner(models.Model):
         )
         for aml in partner_amls:
             amount_currency = company_currency._convert(
-                aml.debit - aml.credit, currency_id, self.env.company, aml.date
+                aml.debit - aml.credit, currency_id, self.env.user.company_id, aml.date
             )
 
             amount_residual_currency = company_currency._convert(
-                aml.amount_residual, currency_id, self.env.company, aml.date
+                aml.amount_residual, currency_id, self.env.user.company_id, aml.date
             )
             cr.execute(
                 """ update account_move_line
@@ -283,7 +308,7 @@ class ResPartner(models.Model):
         )
         old_receivable = self.property_account_receivable_id
         old_payable = self.property_account_payable_id
-        company_currency = self.env.company.currency_id
+        company_currency = self.env.user.company_id.currency_id
         if not (receivable_eur and payable_eur):
             raise UserError(_("Error in accounts definition"))
 
@@ -319,11 +344,11 @@ class ResPartner(models.Model):
         )
         for aml in partner_amls:
             amount_currency = company_currency._convert(
-                aml.debit - aml.credit, currency_id, self.env.company, aml.date
+                aml.debit - aml.credit, currency_id, self.env.user.company_id, aml.date
             )
 
             amount_residual_currency = company_currency._convert(
-                aml.amount_residual, currency_id, self.env.company, aml.date
+                aml.amount_residual, currency_id, self.env.user.company_id, aml.date
             )
             cr.execute(
                 """ update account_move_line
