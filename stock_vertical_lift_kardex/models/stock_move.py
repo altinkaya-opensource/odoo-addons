@@ -11,7 +11,6 @@ class StockMove(models.Model):
         string="Product at Kardex", compute="_check_product_at_kardex"
     )
 
-    @api.multi
     def _check_product_at_kardex(self):
         for move in self:
             if move.location_id.vertical_lift_kardex_id:
@@ -19,7 +18,6 @@ class StockMove(models.Model):
             else:
                 move.product_at_kardex = False
 
-    @api.one
     def call_product_kardex(self):
         kardex_id = self.location_id.vertical_lift_kardex_id
         if kardex_id:

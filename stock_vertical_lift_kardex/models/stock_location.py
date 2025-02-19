@@ -11,7 +11,6 @@ class StockLocation(models.Model):
         "stock.vertical.lift.kardex", string="Vertical Lift Kardex"
     )
 
-    @api.one
     def get_kardex_rack(self):
         if self.vertical_lift_kardex_id:
             self.vertical_lift_kardex_id._get_product(self)

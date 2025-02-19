@@ -34,7 +34,6 @@ class StockVerticalLiftKardex(models.Model):
     def _send_request(self, path):
         return requests.get("http://{}:{}{}".format(self.ip_address, self.port, path))
 
-    @api.one
     def _get_product(self, location, product=None):
         posy = location.posy
         posx = location.posx

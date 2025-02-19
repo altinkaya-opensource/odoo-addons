@@ -6,7 +6,7 @@
         <field name="model">stock.location</field>
         <field name="inherit_id" ref="stock.view_location_form" />
         <field name="arch" type="xml">
-            <field name="posx" position="before">
+            <field name="replenish_location" position="after">
                 <field name="vertical_lift_kardex_id" />
                 <button name="get_kardex_rack"
                         type="object"
