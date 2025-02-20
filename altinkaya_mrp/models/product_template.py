@@ -4,6 +4,17 @@ from odoo import api, fields, models
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    has_production_bom = fields.Boolean(
+        "Has production BoM", compute="_compute_has_production_bom", store=True
+    )
+
+
+    @api.depends("bom_ids", "bom_ids.type")
+    def _compute_has_production_bom(self):
+        self.has_production_bom = any(
+            self.bom_ids.filtered(lambda b: b.type != "phantom")
+        )
+
     def action_view_mos(self):
         action = self.env.ref("mrp.mrp_production_report").read()[0]
         action["domain"] = [("product_tmpl_id", "in", self.ids)]

@@ -15,10 +15,6 @@
         "stock",
         "sale",
         "hr",
-        "altinkaya_stock",
-        "stock_warehouse_orderpoint_stock_info",
-        "stock_warehouse_orderpoint_stock_info_unreserved",
-        "stock_vlm_mgmt",
         ],
     "data": [
         "security/ir.model.access.csv",

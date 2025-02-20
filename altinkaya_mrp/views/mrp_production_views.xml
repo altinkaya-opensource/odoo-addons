@@ -58,13 +58,13 @@
                 <!-- <field name="process_id"/>
                 <field name="x_note"/>
                 <field name="sale_note"/> -->
-                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_id']"
+                <!-- <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_id']"
                        position="after">
                     <button name="action_create_procurement" type="object" string="Tedarik"
                             attrs="{'invisible':[('state','in',['waiting','done'])]}"/>
                     <button name="action_make_mts" type="object" string="Stoktan Al"
                             attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"/>
-                </xpath>
+                </xpath> -->
             </field>
         </record>
 
@@ -155,7 +155,7 @@
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        
+
         <menuitem id="menu_mrp_profil_production"
                   name="Profil Kesim İşleri"
                   action="mrp_profil_menu"

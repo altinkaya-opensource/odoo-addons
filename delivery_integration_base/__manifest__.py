@@ -12,11 +12,9 @@
         "stock",
         "delivery",
         "l10n_tr_address",
-        "delivery_state",
         "product_dimension",
         "queue_job",
-        "sms_verimor_http",
-        "short_url_yourls",
+        "delivery_state",
     ],
     "data": [
         "security/ir.model.access.csv",
