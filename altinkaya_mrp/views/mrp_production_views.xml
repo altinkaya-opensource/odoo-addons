@@ -11,11 +11,15 @@
                     <button name="button_print_prod_order" string="Print Production Order" type="object"/>
                 </xpath>
 
-                <xpath expr="//button[@name='do_unreserve']" position="after">
+  <!-- <xpath expr="//button[@name='post_inventory']" position="replace">
+<button name="post_inventory" string="Post Inventory" type="object" attrs="{'invisible': [('post_visible', '=', False)]}" ></button>
+</xpath> -->
+
+                <!-- <xpath expr="//button[@name='do_unreserve']" position="after">
                     <button name="action_set_production_started" string="Start Production"
                             attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"
                             type="object"/>
-                </xpath>
+                </xpath> -->
 
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button class="oe_inline oe_stat_button" name="action_print_product_label" type="object"
@@ -28,6 +32,11 @@
                     <attribute name="domain">[('has_production_bom','=',True)]</attribute>
                     <attribute name="class"></attribute>
                 </xpath>
+
+                <xpath expr="//field[@name='date_planned_start']" position="after">
+                <field name="date_finished" />
+                </xpath>
+
                 <xpath expr="//field[@name='bom_id']" position="after">
                     <field name="priority"/>
                     <field name="date_planned"/>
@@ -90,7 +99,7 @@
                             options="{}">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text">
-                                Üretim
+                                Productions
                             </span>
                         </div>
                     </button>
@@ -99,13 +108,26 @@
         </record>
 
         <record id="mrp_production_tree_view_priority" model="ir.ui.view">
-        <field name="name">MRP Production Tree View Priorityr</field>
+        <field name="name">MRP Production Tree View Priority</field>
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
         <field name="arch" type="xml">
             <field name="date_planned_start" position="after">
                 <field name="priority"/>
             </field>
+        </field>
+        </record>
+
+        <record id="mrp_production_search_inherit" model="ir.ui.view">
+        <field name="name">Altinkaya MRP Production Search Inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+            <filter name="product" position="after" >
+                <filter string="Makine" name="x_makine" domain="[]" context="{'group_by':'x_makine'}"/>
+                <filter string="Operatör" name="x_operator" domain="[]" context="{'group_by':'x_operator'}"/>
+                <filter string="Öncelik" name="priority" domain="[]" context="{'group_by':'priority'}"/>
+            </filter>
         </field>
         </record>
 

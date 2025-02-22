@@ -78,6 +78,12 @@
                 <xpath expr="//field[@name='attr_price']" position="attributes">
                     <attribute name="string">Satış Fiyatı</attribute>
                 </xpath>
+
+                <field name="qty_available" position="before">
+                    <field name="qty_available_merkez" string="Merkez Depo" widget="float_time"/>
+                    <field name="qty_available_sincan" string="Sincan Depo" widget="float_time"/>
+                </field>
+
             </field>
         </record>
 
