@@ -12,7 +12,7 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["base", "queue_job"],
+    "depends": ["base", "queue_job", "stock"],
     "data": [
         "views/stock_vertical_lift_kardex_view.xml",
         "views/stock_location_view.xml",

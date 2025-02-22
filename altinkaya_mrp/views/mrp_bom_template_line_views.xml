@@ -34,6 +34,13 @@
                 <field name="product_uom_id" />
                 <field name="factor_attribute_id" />
                 <field name="attribute_factor" />
+                <!--TODO: valid_product_attribute_value_wnva_ids doesn't exist in 16.0-->
+                <!-- <field name="valid_product_attribute_value_wnva_ids" invisible="1" />
+                <field name="attribute_value_ids"
+                       domain="[('id', 'in', valid_product_attribute_value_wnva_ids)]"
+                       groups="product.group_product_variant"
+                       widget="many2many_tags"
+                       options="{'no_create_edit': True}"/> -->
                 <field
           name="attribute_value_ids"
           groups="product.group_product_variant"
