@@ -73,17 +73,6 @@ class ProductTemplate(models.Model):
         default=0.0,
     )
 
-    has_production_bom = fields.Boolean(
-        "Has production BoM", compute="_compute_has_production_bom", store=True
-    )
-
-    
-    @api.depends("bom_ids", "bom_ids.type")
-    def _compute_has_production_bom(self):
-        self.has_production_bom = any(
-            self.bom_ids.filtered(lambda b: b.type != "phantom")
-        )
-
     def compute_set_product_price(self):
         """
         Compute the price of the set product based on the price of its components.

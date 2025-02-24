@@ -7,4 +7,4 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    tax_office_name = fields.Char("Tax Office", oldname="x_vergidairesi", size=64)
+    tax_office_name = fields.Char("Tax Office")

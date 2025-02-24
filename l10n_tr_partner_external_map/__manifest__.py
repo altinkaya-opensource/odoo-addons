@@ -7,6 +7,7 @@
     'website':'http://www.codequarters.com',
     'author': 'Onur UGUR,Codequarters',
     'depends': ['l10n_tr_address','partner_external_map'],
+    'license': 'AGPL-3',
     'data': [
         'views/res_partner_view.xml',
     ],

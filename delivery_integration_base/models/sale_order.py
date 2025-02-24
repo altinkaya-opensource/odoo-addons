@@ -18,7 +18,6 @@ class SaleOrder(models.Model):
     delivery_price_try = fields.Monetary(
         string="Delivery Price (TRY)",
         currency_field="currency_id_try",
-        digits=dp.get_precision("Product Price"),
         readonly=True,
     )
 
