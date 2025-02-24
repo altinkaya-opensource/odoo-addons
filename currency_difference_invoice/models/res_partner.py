@@ -90,7 +90,7 @@ class ResPartner(models.Model):
             self.property_account_receivable_id.currency_id
             and self.property_account_payable_id.currency_id
         ):
-            inv_obj = self.env["account.invoice"]
+            inv_obj = self.env["account.move"]
             diff_inv_journal = self.env["account.journal"].search(
                 [("code", "=", "KFARK")], limit=1
             )
@@ -104,7 +104,7 @@ class ResPartner(models.Model):
             )
             if draft_dif_inv:
                 for x in draft_dif_inv:
-                    x.action_invoice_cancel()
+                    x.button_cancel()
 
             difference_aml_domain = [
                 ("partner_id", "=", self.id),
@@ -132,7 +132,7 @@ class ResPartner(models.Model):
                 inv_type = "out_invoice"
             if difference_amls:
                 # Get taxes
-                created_inv_lines = self.env["account.invoice.line"]
+                created_inv_lines = self.env["account.move.line"]
                 kdv_rates = [20, 10, 18, 8]
                 taxes_dict = {}
                 for kdv_rate in kdv_rates:
@@ -162,13 +162,13 @@ class ResPartner(models.Model):
                     }
                     amount_untaxed = diff_aml.debit or diff_aml.credit
                     inv_ids = diff_aml.full_reconcile_id.reconciled_line_ids.filtered(
-                        lambda r: r.invoice_id
-                    ).mapped("invoice_id")
+                        lambda r: r.move_id
+                    ).mapped("move_id")
                     if len(inv_ids) > 0:
                         comment_einvoice += ", ".join(
-                            inv_id.supplier_invoice_number
-                            if inv_id.supplier_invoice_number
-                            else inv_id.number
+                            inv_id.ref
+                            if inv_id.ref
+                            else inv_id.name
                             for inv_id in inv_ids
                         )
 
@@ -176,9 +176,9 @@ class ResPartner(models.Model):
                         total_amount = amount_untaxed
                         for rate in kdv_rates:
                             total_tax_amount = sum(
-                                inv_ids.mapped("tax_line_ids")
-                                .filtered(lambda r: r.tax_id.amount == rate)
-                                .mapped("amount")
+                                inv_ids.mapped("line_ids")
+                                .filtered(lambda r: r.tax_line_id.amount == rate)
+                                .mapped("price_total")
                             )
                             tax_rate = round(
                                 100.0
@@ -244,27 +244,27 @@ class ResPartner(models.Model):
 
                     diff_aml.write({"difference_checked": True})
 
-                    created_inv_lines |= self.env["account.invoice.line"].create(
+                    created_inv_lines |= self.env["account.move.line"].create(
                         inv_lines_to_create
                     )
 
                 dif_inv = inv_obj.create(
                     {
                         "partner_id": self.id,
-                        "date_invoice": date,
+                        "date": date,
                         "journal_id": diff_inv_journal.id,
                         "currency_id": self.env.company.currency_id.id,
-                        "type": inv_type,
-                        "billing_point_id": billing_point.id,
-                        "payment_term_id": payment_term.id,
-                        "comment_einvoice": comment_einvoice,
+                        "move_type": inv_type,
+                        # "billing_point_id": billing_point.id,
+                        "invoice_payment_term_id": payment_term.id,
+                        # "comment_einvoice": comment_einvoice,
                     }
                 )
 
                 dif_inv.invoice_line_ids = [
                     (6, False, [x.id for x in created_inv_lines])
                 ]
-                dif_inv._onchange_invoice_line_ids()
+                dif_inv._compute_tax_totals()
                 return dif_inv
 
         return False
@@ -326,13 +326,11 @@ class ResPartner(models.Model):
                         ON (AM.journal_id = AJ.id)
                     LEFT JOIN account_account_type AT
                         ON (A.user_type_id = AT.id)
-                    LEFT JOIN account_invoice INV
-                        ON (L.invoice_id = INV.id)
                     LEFT JOIN res_partner RP
                         ON (L.partner_id = RP.id)
                 WHERE L.DATE <= {date}
                       AND L.partner_id in ({partner_ids})
-                      AND AT.type IN ( 'payable', 'receivable' )
+                      AND AT.type IN ( 'liability_payable', 'asset_receivable' )
                       AND L.currency_id IS NOT NULL
                       AND L.currency_id != 31 -- TRY
                       AND RP.country_id != 224 -- Türkiye
@@ -431,5 +429,5 @@ class ResPartner(models.Model):
 
         move_vals["line_ids"] = [(0, 0, x) for x in difference_aml_list]
         move = self.env["account.move"].create(move_vals)
-        move.post()
+        move._post()
         return move

@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <group name="banks" position="before">
-                    <field name="partner_currency_id" invisible="1" groups="!account.group_account_invoice"/>
+                    <field name="partner_currency_id" invisible="1"/>
 
                     <group string="Currency Difference" colspan="2" col="2"
                            attrs="{'invisible': [('partner_currency_id', '=', 31)]}">

@@ -6,14 +6,14 @@ from odoo import models, fields, api, _
 class AccountInvoice(models.Model):
     _inherit = 'account.move'
 
-    @api.model
+    @api.depends('invoice_line_ids', 'state', 'line_ids')
     def _compute_full_reconcile_ids(self):
         for invoice in self:
             if invoice.state == 'draft' and invoice.invoice_line_ids:
                 invoice.full_reconcile_ids = invoice.invoice_line_ids.mapped(
                     'difference_base_aml_id').mapped('full_reconcile_id')
-            elif invoice.state in ['open', 'in_payment', 'paid'] and invoice.invoice_line_ids:
-                invoice.full_reconcile_ids = invoice.move_id.line_ids.mapped('full_reconcile_id')
+            elif invoice.state in ['posted'] and invoice.invoice_line_ids:
+                invoice.full_reconcile_ids = invoice.line_ids.mapped('full_reconcile_id')
             else:
                 invoice.full_reconcile_ids = False
 
@@ -30,22 +30,18 @@ class AccountInvoice(models.Model):
     other_inv_in_reconciles = fields.Many2many('account.move', string='Other invoices in reconciles',
                                                compute='_compute_other_inv_in_reconciles')
 
-    def register_payment(self, payment_line, writeoff_acc_id=False, writeoff_journal_id=False):
-
+    def action_register_payment(self):
         if not self:
             return True
-        for aml in payment_line:
-            aml.write({'invoice_id': self.id})
-        return super(AccountInvoice, self).register_payment(payment_line, writeoff_acc_id=writeoff_acc_id,
-                                                            writeoff_journal_id=writeoff_journal_id)
+        return super(AccountInvoice, self).action_register_payment()
 
 
-    def action_invoice_open(self):
+    def action_post(self):
         """
         For currency difference Invoices Override method to unreconcile previous account move lines and
         reconcie new account move lines
         """
-        res = super(AccountInvoice, self).action_invoice_open()
+        res = super(AccountInvoice, self).action_post()
 
         if not self:
             return res
@@ -62,15 +58,15 @@ class AccountInvoice(models.Model):
                 aml_to_unreconcile.remove_move_reconcile()
 
             if aml_to_reconcile:
-                diff_aml = invoice.move_id.line_ids.filtered(lambda r: not r.reconciled and
-                                                                       r.account_id.internal_type in
-                                                                       ('payable', 'receivable'))
-                aml_to_reconcile._reconcile(diff_aml=diff_aml)
+                diff_aml = invoice.line_ids.filtered(lambda r: not r.reconciled and
+                                                                       r.account_id.account_type in
+                                                                       ('liability_payable', 'asset_receivable'))
+                (aml_to_reconcile | diff_aml)._reconcile()
         return res
 
 
-    def action_invoice_cancel(self):
-        res = super(AccountInvoice, self).action_invoice_cancel()
+    def button_cancel(self):
+        res = super(AccountInvoice, self).button_cancel()
 
         if not self:
             return res

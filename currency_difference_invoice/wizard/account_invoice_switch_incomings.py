@@ -10,15 +10,15 @@ class AccountInvoiceSwitchIncomings(models.TransientModel):
     def switch_invoices(self):
         context = dict(self._context)
         active_ids = context.get('active_ids', [])
-        invoices = self.env['account.invoice'].browse(active_ids)
+        invoices = self.env['account.move'].browse(active_ids)
         old_invoice = invoices.filtered(lambda i: i.state == 'draft')
         einvoice = invoices.filtered(lambda i: i.einvoice_uuid)
 
-        if any(x != 'out_refund' for x in invoices.mapped('type')):
+        if any(x != 'out_refund' for x in invoices.mapped('move_type')):
             raise ValidationError(_('You can only switch incoming invoices.'))
 
         if invoices.mapped('journal_id.code') != ['KFARK']:
-            raise ValidationError(_('You can only switch curerncy difference invoices.'))
+            raise ValidationError(_('You can only switch currency difference invoices.'))
 
         if einvoice.state == 'draft':
             raise ValidationError(_('You can not switch draft e-invoices. Please validate them first.'))
@@ -32,7 +32,7 @@ class AccountInvoiceSwitchIncomings(models.TransientModel):
         currency_diff_aml = old_invoice.mapped(
             'full_reconcile_ids.reconciled_line_ids').filtered(lambda a: a.journal_id.code == 'KRFRK')
 
-        new_currency_diff_aml = einvoice.move_id.line_ids.filtered(
+        new_currency_diff_aml = einvoice.line_ids.filtered(
             lambda a: '320' in a.account_id.code)
 
         aml_to_reconcile = old_invoice.mapped(

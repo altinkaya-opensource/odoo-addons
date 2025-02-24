@@ -133,7 +133,7 @@ class AccountMoveLine(models.Model):
                     or aml.amount_residual_currency
                 )
 
-        amls += diff_aml
+        amls |= diff_aml if diff_aml else self.env['account.move.line']
         partial_rec_ids += partial_rec.ids
         self.env["account.full.reconcile"].create(
             {
@@ -152,8 +152,13 @@ class AccountMoveLine(models.Model):
         if not self:
             return True
 
+        # In Odoo 16, we need to ensure we're working with proper recordset
+        self = self.with_context(check_move_validity=False)
+        
+        # Check if the entries can be reconciled
         self._check_reconcile_validity()
-        # reconcile everything that can be
+        
+        # Perform auto-reconciliation and get remaining moves
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env["account.move.line"]

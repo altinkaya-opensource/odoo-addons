@@ -15,12 +15,12 @@
                 </form>
             </field>
         </record>
-        <!--TODO migration-->
-        <!-- <act_window id="action_account_invoice_switch_incomings_view"
-            multi="True"
-            key2="client_action_multi" name="Switch Invoices"
-            res_model="account.invoice.switch.incomings" src_model="account.invoice"
-            view_mode="form" target="new" view_type="form" /> -->
+        <record id="action_account_invoice_switch_incomings_view" model="ir.actions.act_window">
+            <field name="name">Switch Invoices</field>
+            <field name="res_model">account.invoice.switch.incomings</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
 
     </data>
 </odoo>
