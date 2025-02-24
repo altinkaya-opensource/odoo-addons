@@ -11,13 +11,14 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     company_currency_id = fields.Many2one(
+        string="Company Currency",
         related="company_id.currency_id",
         readonly=True,
     )
 
     amount_total_company_currency = fields.Monetary(
         compute="_compute_amount_total_currency",
-        string="Total",
+        string="Amount Total in Company Currency",
         currency_field="company_currency_id",
     )
 
