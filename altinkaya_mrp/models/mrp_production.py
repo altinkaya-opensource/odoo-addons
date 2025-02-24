@@ -25,11 +25,6 @@ class MrpProduction(models.Model):
     date_planned = fields.Datetime("Scheduled Date")
     date_start2 = fields.Datetime("Start Date")
     date_finished2 = fields.Datetime("End Date")
-    priority = fields.Selection(
-        [("0", "Not urgent"), ("1", "Normal"), ("2", "Urgent"), ("3", "Very Urgent")],
-        string="Priority",
-        default="0",
-    )
     # process_id = fields.Many2one(
     #     "mrp.routing",
     #     string="Rota",
