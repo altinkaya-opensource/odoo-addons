@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+		<record id="stock_production_lot_print_label_single_form" model="ir.ui.view">
+       		<field name="name">stock.production.lot.form.inherit.print.label</field>
+          	<field name="model">stock.lot</field>
+          	<field name="inherit_id" ref="stock.view_production_lot_form" />
+          	<field name="arch" type="xml">
+
+                <div name="button_box" position="inside">
+                    <button
+          class="oe_inline oe_stat_button"
+          name="action_print_product_label"
+          type="object"
+          icon="fa-barcode"
+          string="Print Label"
+        >
+                    </button>
+
+                </div>
+          	</field>
+       </record>
+
+</odoo>

@@ -29,7 +29,6 @@
 								<field name='date_done' />
 								<field name='carrier_id' />
 								<field name='state' />
-								<!--								<field name='hazirlayan' />-->
 							</tree>
 						</field>
 					</page>
@@ -52,7 +51,7 @@
 						</field>
 					</page>
 				</xpath>
-				<!-- <xpath expr="//field[@name='payment_term']" position='replace' /> -->
+
 				<xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="after">
 					<label for="show_custom_products"/>
 					<div>
@@ -100,7 +99,6 @@
 					<field name="payment_term_id"/>
 				</xpath>
 
-
 			</field>
 		</record>
 
@@ -121,11 +119,7 @@
 					<field name="client_order_ref" />
 					<field name="warehouse_id" />
 				</xpath>
-				<!-- <xpath expr="/form/sheet/notebook//field[@name='fiscal_position_id']" positon="replace">
-					<label for="fiscal_position_id" string="Tax Position" />
-					<field name="fiscal_position_id" nolabel="1" options="{'no_create': True}" />
 
-				</xpath> -->
 				<xpath expr="//field[@name='payment_term_id']" position='replace' />
 				<xpath expr="//field[@name='partner_shipping_id']" position="after">
 					<field name="payment_term_id"/>
@@ -139,14 +133,6 @@
 
 
 		</record>
-
-
-		<!-- <record model='ir.ui.view' id='view_sales_order_remove_dm_form_acespritech'>
-			<field name='name'>sale order form2</field> <field name='model'>sale.order</field>
-			<field name="inherit_id" ref="delivery.view_order_form_with_carrier" /> <field eval="1" name="priority" /> <field name='arch' type='xml'> <field name='carrier_id' position='replace'/> <label for='carrier_id' position='replace'/> <field name='warehouse_id' position='after'> <field name='carrier_id'/> </field>
-			</field> </record> -->
-
-
 
 		<record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
 			<field name="name">Quotations</field>

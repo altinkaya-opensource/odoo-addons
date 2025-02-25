@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_sendeo_delivery_carrier_form" model="ir.ui.view">
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position='before'>
+                <page
+                    string="Sendeo Configuration"
+                    attrs="{'invisible': [('delivery_type', '!=', 'sendeo')]}">
+                    <group>
+                        <group string="Connection">
+                            <field
+                                name="sendeo_username"
+                                attrs="{'required': [('delivery_type', '=', 'sendeo')]}"/>
+                            <field name="sendeo_password" />
+                            <field name="sendeo_cc_code" />
+                        </group>
+                        <group string="Logistics">
+                            <field name="price_rule_ids"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

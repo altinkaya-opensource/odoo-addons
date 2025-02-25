@@ -18,7 +18,6 @@ class SaleOrder(models.Model):
     delivery_price_try = fields.Monetary(
         string="Delivery Price (TRY)",
         currency_field="currency_id_try",
-        digits=dp.get_precision("Product Price"),
         readonly=True,
     )
 
@@ -90,7 +89,7 @@ class SaleOrder(models.Model):
         if res and res.name and res.order_id.carrier_id:
             res.name = res.order_id.carrier_id.product_id.display_name
         # To update discount
-        res.with_context({"sale_id": res.order_id.id})._onchange_discount()
+        res.with_context({"sale_id": res.order_id.id})._compute_discount()
         return res
 
     def action_sale_get_rates_wizard(self):

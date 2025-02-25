@@ -8,8 +8,13 @@
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
                 <field name="return_location" position="after">
-                    <field name="included_location_ids"  widget="many2many_tags" options="{'no_create_edit': True}"/>
+                    <field name="included_location_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                 </field>
+
+                <field name="removal_strategy_id" position="after">
+                    <field name="priority"/>
+                </field>
+
             </field>
         </record>
     </data>

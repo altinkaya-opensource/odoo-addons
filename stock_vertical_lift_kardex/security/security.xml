@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_kardex_controller_user" model="res.groups">
+        <field name="name">Kardex Controller User</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="comment">User group for kardex call button.</field>
+    </record>
+
+</odoo>
