@@ -14,7 +14,7 @@ class SplitStockMovePicking(models.TransientModel):
         "product.product", string="Product", related="move_id.product_id", readonly=True
     )
     requested_qty = fields.Float(
-        "Talep Edilen", related="move_id.product_uom_qty", read_only=True
+        "Talep Edilen", related="move_id.product_uom_qty", readonly=True
     )
     uom = fields.Many2one(
         "uom.uom", string="UoM", related="move_id.product_uom", readonly=True

@@ -8,6 +8,6 @@ class MrpProduction(models.Model):
 
     lot_id_to_create = fields.Many2one(
         "stock.lot",
-        string="Lot to create",
+        string="Lot to Create",
         help="Store the lot id before move line is created",
     )

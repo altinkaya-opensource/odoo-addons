@@ -9,7 +9,12 @@
     "category": "Currency",
     "license": "LGPL-3",
     "summary": """This module adds currency rate fields and providers.""",
-    "depends": ["currency_rate_update", "currency_rate_update_tcmb"],
+    "depends": [
+        "account",
+        "sale",
+        "currency_rate_update",
+        "currency_rate_update_tcmb",
+    ],
     "python-dependencies": ["requests", "bs4"],
     "data": [
         "views/res_currency_view.xml",

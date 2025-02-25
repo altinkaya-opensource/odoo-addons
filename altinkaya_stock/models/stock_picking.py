@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -18,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import models, api, fields
+from odoo import api, fields, models
 
 
 class StockPicking(models.Model):
@@ -49,28 +48,7 @@ class StockPicking(models.Model):
         "Durumu",
         index=True,
     )
-    x_hazirlayan = fields.Selection(
-        [
-            ("Asim", "Asım"),
-            ("Muhammet", "Muhammet"),
-            ("Harun", "Harun"),
-            ("Bilal", "Bilal"),
-            ("Saffet", "Saffet"),
-            ("Esra", "Esra"),
-            ("Selma", "Selma"),
-            ("Uğur", "Uğur"),
-            ("Çağrı", "Çağrı"),
-            ("Hatice", "Hatice"),
-            ("Muhsin", "Muhsin"),
-            ("Muharrem", "Muharrem"),
-            ("Sefer", "Sefer"),
-        ],
-        "Siparişi Hazırlayan",
-        readonly=True,
-    )
-    comment_irsaliye = fields.Text("İrsaliye Notu")
     hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
-    teslim_alan = fields.Char("Malı Teslim Alan", size=32)
     country_id = fields.Many2one(
         "res.country",
         string="Country",
@@ -91,7 +69,9 @@ class StockPicking(models.Model):
     )
     sale_note = fields.Html("Sale Note", related="sale_id.note", readonly=True)
     trimmed_sale_note = fields.Text(
-        "Sale Note", compute="_compute_trimmed_sale_note", readonly=True, store=False
+        "Sale Note",
+        compute="_compute_trimmed_sale_note",
+        readonly=True,
     )
 
     @api.onchange("carrier_id")
@@ -109,16 +89,17 @@ class StockPicking(models.Model):
             pick.button_validate()
         return True
 
-    @api.depends("sale_id.note")
     def _compute_trimmed_sale_note(self):
         """
         Trims the sale note to the first 50 characters.
         """
-        for pick in self:
-            if pick.sale_id.note and len(pick.sale_id.note) > 50:
-                pick.trimmed_sale_note = pick.sale_id.note[:50] + "..."
+        for picking in self:
+            if picking.sale_note:
+                picking.trimmed_sale_note = self.env[
+                    "ir.fields.converter"
+                ].text_from_html(picking.sale_note, max_chars=50)
             else:
-                pick.trimmed_sale_note = pick.sale_id.note
+                picking.trimmed_sale_note = ""
 
     def open_record(self):
         form_id = self.env.ref("stock.view_picking_form")

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 05:25+0000\n"
-"PO-Revision-Date: 2025-01-31 05:25+0000\n"
+"POT-Creation-Date: 2025-02-14 06:45+0000\n"
+"PO-Revision-Date: 2025-02-14 06:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr "Görünen Ad"
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__manual_answer
@@ -107,9 +107,8 @@ msgid ""
 "(Normally, the extension will open automatically and the caller will be "
 "called)."
 msgstr ""
-"Değeri true ise, uzantının telefonu açmasını bekler"
-"(Normalde, uzantı otomatik olarak açılır ve arayan "
-" aranır)."
+"Değeri true ise, uzantının telefonu açmasını bekler(Normalde, uzantı "
+"otomatik olarak açılır ve arayan  aranır)."
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.constraint,message:verimor_bulutsantralim_click2dial.constraint_res_users_unique_internal_number
@@ -175,12 +174,13 @@ msgstr "Opsiyonel Ayarlar"
 msgid ""
 "Timeout for call in seconds, must be between 10 and 60 seconds (default 30)"
 msgstr ""
-"Arama zaman aşımı saniye cinsinden, 10 ile 60 saniye arasında olmalıdır (varsayılan 30)"
+"Arama zaman aşımı saniye cinsinden, 10 ile 60 saniye arasında olmalıdır "
+"(varsayılan 30)"
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model,name:verimor_bulutsantralim_click2dial.model_res_users
 msgid "User"
-msgstr "Kullanıcılar"
+msgstr "Kullanıcı"
 
 #. module: verimor_bulutsantralim_click2dial
 #: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_res_users__internal_number
