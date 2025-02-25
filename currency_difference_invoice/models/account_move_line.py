@@ -143,7 +143,7 @@ class AccountMoveLine(models.Model):
                 # uzlaştırmayı kaldırırken veya faturayı iptal ederken hata veriyor
             }
         )
-
+    
     def _reconcile(
         self, writeoff_acc_id=False, writeoff_journal_id=False, diff_aml=False
     ):
@@ -156,7 +156,7 @@ class AccountMoveLine(models.Model):
         self = self.with_context(check_move_validity=False)
         
         # Check if the entries can be reconciled
-        self._check_reconcile_validity()
+        self._check_reconciliation()
         
         # Perform auto-reconciliation and get remaining moves
         remaining_moves = self.auto_reconcile_lines()
