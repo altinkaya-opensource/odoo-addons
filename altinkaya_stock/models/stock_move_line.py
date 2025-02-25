@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    product_type_related = fields.Selection(
+    product_type = fields.Selection(
         related="product_id.type", string="Product Type"
     )
 

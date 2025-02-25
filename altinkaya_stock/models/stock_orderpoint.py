@@ -1,19 +1,13 @@
-# -*- encoding: utf-8 -*-
 #
 # Created on Jan 17, 2020
 #
 # @author: dogan
 #
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class StockWarehouseOrderpoint(models.Model):
     _inherit = "stock.warehouse.orderpoint"
-
-    # categ_id = fields.Many2one('product.category',
-    #                            related='product_id.categ_id',
-    #                            string='Category',
-    #                            store=True, readonly=True)
 
     transfers_to_customer_ids = fields.Many2many(
         "stock.move",
@@ -35,46 +29,51 @@ class StockWarehouseOrderpoint(models.Model):
         "sale.order.line", string="Done Orders", compute="_compute_done_orderlines"
     )
 
-    @api.depends("product_id")
+    def _get_product_context(self, visibility_days=0):
+        """Inherited to add included_location_ids on stock.location model."""
+        res = super()._get_product_context(visibility_days)
+        res["location_id"] = [
+            self.location_id.id,
+            *self.location_id.included_location_ids.ids,
+        ]
+        return res
+
     def _compute_productions(self):
-        for wizard in self:
-            wizard.production_ids = self.env["mrp.production"].search(
+        for orderpoint in self:
+            orderpoint.production_ids = self.env["mrp.production"].search(
                 [
-                    ("product_id", "=", wizard.product_id.id),
+                    ("product_id", "=", orderpoint.product_id.id),
                     ("state", "not in", ["cancel"]),
                 ],
                 order="create_date desc",
             )
 
-    @api.depends("product_id")
     def _compute_customer_transfers(self):
-        for wizard in self:
-            wizard.transfers_to_customer_ids = self.env["stock.move"].search(
+        for orderpoint in self:
+            orderpoint.transfers_to_customer_ids = self.env["stock.move"].search(
                 [
-                    ("product_id", "=", wizard.product_id.id),
+                    ("product_id", "=", orderpoint.product_id.id),
                     ("state", "not in", ["draft", "cancel"]),
                 ],
                 order="create_date desc",
             )
 
-    @api.depends("product_id")
     def _compute_done_purchaselines(self):
-        for wizard in self:
-            wizard.done_purchaseline_ids = self.env["purchase.order.line"].search(
+        for orderpoint in self:
+            orderpoint.done_purchaseline_ids = self.env["purchase.order.line"].search(
                 [
-                    ("product_id", "=", wizard.product_id.id),
+                    ("product_id", "=", orderpoint.product_id.id),
                     ("state", "not in", ["draft", "cancel"]),
                 ],
                 limit=40,
                 order="create_date desc",
             )
 
-    @api.depends("product_id")
     def _compute_done_orderlines(self):
-        for wizard in self:
-            wizard.done_orderline_ids = self.env["sale.order.line"].search(
+        for orderpoint in self:
+            orderpoint.done_orderline_ids = self.env["sale.order.line"].search(
                 [
-                    ("product_id", "=", wizard.product_id.id),
+                    ("product_id", "=", orderpoint.product_id.id),
                     ("state", "not in", ["draft", "cancel"]),
                 ],
                 order="create_date desc",

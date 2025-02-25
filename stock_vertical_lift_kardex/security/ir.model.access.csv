@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+stock_vertical_lift_kardex,stock.vertical.lift.kardex,model_stock_vertical_lift_kardex,,1,1,1,1

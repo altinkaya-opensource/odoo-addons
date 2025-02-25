@@ -4,6 +4,14 @@ from odoo import api, fields, models
 class StockQuant(models.Model):
     _inherit = "stock.quant"
 
+    categ_id = fields.Many2one(
+        "product.category",
+        string="Category",
+        related="product_id.product_tmpl_id.categ_id",
+        readonly=True,
+        store=True,
+    )
+
     priority = fields.Integer(
         related="location_id.priority",
         help="high priority quants will be reserved first",
@@ -19,8 +27,3 @@ class StockQuant(models.Model):
         ]
         return action
 
-    @api.model
-    def _get_removal_strategy_order(self, removal_strategy):
-        if removal_strategy == "priorityfifo":
-            return "priority, in_date ASC, id"
-        return super(StockQuant, self)._get_removal_strategy_order(removal_strategy)

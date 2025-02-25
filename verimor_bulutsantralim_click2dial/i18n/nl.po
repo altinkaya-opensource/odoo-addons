@@ -1,0 +1,216 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* verimor_bulutsantralim_click2dial
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-14 06:45+0000\n"
+"PO-Revision-Date: 2025-02-14 06:45+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__active
+msgid "Active?"
+msgstr "Actief?"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_search
+msgid "Archived"
+msgstr "Gearchiveerd"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.actions.act_window,name:verimor_bulutsantralim_click2dial.action_bulutsantralim_connector
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_res_company__bulutsantralim_connector_id
+#: model:ir.ui.menu,name:verimor_bulutsantralim_click2dial.act_menu_bulutsantralim_server
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
+msgid "Bulutsantralim Connector"
+msgstr "Aansluiting Bulutsantralim"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__name
+msgid "Bulutsantralim Connector Name"
+msgstr "Bulutsantralim Connector Naam"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_search
+msgid "Bulutsantralim Server Search"
+msgstr "Bulutsantralim server zoeken"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_res_company__bulutsantralim_connector_id
+msgid "Bulutsantralim connector for this company."
+msgstr "Bulutsantralim connector voor dit bedrijf."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__call_timeout
+msgid "Call Timout"
+msgstr "Bel Timout"
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-python
+#: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
+#, python-format
+msgid "Call rejected."
+msgstr "Oproep afgewezen."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.constraint,message:verimor_bulutsantralim_click2dial.constraint_bulutsantralim_connector_check_call_timeout
+msgid "Call timeout must be between 10 and 60."
+msgstr "De time-out voor oproepen moet tussen 10 en 60 liggen."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model,name:verimor_bulutsantralim_click2dial.model_phone_common
+msgid "Common methods for phone features"
+msgstr "Gemeenschappelijke methoden voor telefoonfuncties"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model,name:verimor_bulutsantralim_click2dial.model_res_company
+msgid "Companies"
+msgstr "Bedrijven"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
+msgid "Connector Name"
+msgstr "Naam Connector"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__create_uid
+msgid "Created by"
+msgstr "Gemaakt door"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__create_date
+msgid "Created on"
+msgstr "Gemaakt op"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__display_name
+msgid "Display Name"
+msgstr "Naam weergeven"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__id
+msgid "ID"
+msgstr "ID"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__manual_answer
+msgid ""
+"If its value is true, it waits for the extension to pick up the phone "
+"(Normally, the extension will open automatically and the caller will be "
+"called)."
+msgstr ""
+"Als de waarde waar is, wacht het tot de extensie de telefoon opneemt "
+"(normaal gesproken wordt de extensie automatisch geopend en wordt de beller "
+"gebeld)."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.constraint,message:verimor_bulutsantralim_click2dial.constraint_res_users_unique_internal_number
+msgid "Internal number must be unique per user!"
+msgstr "Het interne nummer moet uniek zijn per gebruiker!"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector____last_update
+msgid "Last Modified on"
+msgstr "Laatst gewijzigd op"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__write_uid
+msgid "Last Updated by"
+msgstr "Laatst bijgewerkt door"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__write_date
+msgid "Last Updated on"
+msgstr "Laatst bijgewerkt op"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__manual_answer
+msgid "Manual Answer?"
+msgstr "Handmatig antwoord?"
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-python
+#: code:addons/verimor_bulutsantralim_click2dial/models/phone_common.py:0
+#, python-format
+msgid "Missing internal number"
+msgstr "Ontbrekend intern nummer"
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-python
+#: code:addons/verimor_bulutsantralim_click2dial/models/phone_common.py:0
+#, python-format
+msgid "Missing phone number"
+msgstr "Ontbrekend telefoonnummer"
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-python
+#: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
+#, python-format
+msgid "No answer."
+msgstr "Geen antwoord."
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-javascript
+#: code:addons/verimor_bulutsantralim_click2dial/static/src/xml/bulutsantralim_click2dial.xml:0
+#: code:addons/verimor_bulutsantralim_click2dial/static/src/xml/bulutsantralim_click2dial.xml:0
+#, python-format
+msgid "Open Caller"
+msgstr "Open Beller"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
+msgid "Optional Settings"
+msgstr "Optionele instellingen"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__call_timeout
+msgid ""
+"Timeout for call in seconds, must be between 10 and 60 seconds (default 30)"
+msgstr ""
+"Time-out voor oproep in seconden, moet tussen 10 en 60 seconden liggen "
+"(standaard 30)"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model,name:verimor_bulutsantralim_click2dial.model_res_users
+msgid "User"
+msgstr "Gebruiker"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_res_users__internal_number
+msgid "User Internal Number"
+msgstr "Gebruiker Intern Nummer"
+
+#. module: verimor_bulutsantralim_click2dial
+#. odoo-python
+#: code:addons/verimor_bulutsantralim_click2dial/models/bulutsantralim_connector.py:0
+#, python-format
+msgid "User is busy."
+msgstr "Gebruiker is bezig."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,help:verimor_bulutsantralim_click2dial.field_res_users__internal_number
+msgid "User's internal phone number."
+msgstr "Intern telefoonnummer van de gebruiker."
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model.fields,field_description:verimor_bulutsantralim_click2dial.field_bulutsantralim_connector__api_key
+msgid "Verimor Bulutsantralim API Key"
+msgstr "Verimor Bulutsantralim API-sleutel"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model_terms:ir.ui.view,arch_db:verimor_bulutsantralim_click2dial.view_bulutsantralim_connector_form
+msgid "Verimor Bulutsantralim Configuration"
+msgstr "Verimor Bulutsantralim Configuratie"
+
+#. module: verimor_bulutsantralim_click2dial
+#: model:ir.model,name:verimor_bulutsantralim_click2dial.model_bulutsantralim_connector
+msgid "Verimor Bulutsantralim Connector"
+msgstr "Verimor Bulutsantralim Aansluiting"

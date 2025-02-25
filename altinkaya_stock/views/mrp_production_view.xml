@@ -40,12 +40,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='move_line_ids']/tree" position="inside">
                     <field name="state" invisible="1" />
-                    <field name="product_type_related" invisible="1" />
+                    <field name="product_type" invisible="1" />
                     <button name="action_scrap_button"
                             type="object"
                             string="Scrap"
                             class="oe_highlight"
-                            attrs="{'invisible':['|', ('state', 'in', ['draft', 'cancel', 'done']), ('product_type_related', '!=', 'product')]}"
+                            attrs="{'invisible':['|', ('state', 'in', ['draft', 'cancel', 'done']), ('product_type', '!=', 'product')]}"
                     />
                 </xpath>
             </field>

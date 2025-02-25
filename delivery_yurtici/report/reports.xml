@@ -1,13 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
-		    <report
-      id="yurtici_carrier_label"
-      model="delivery.carrier"
-      string="Yurtici Carrier Label"
-      name="delivery_yurtici.yurtici_carrier_label"
-      file="delivery_yurtici.yurtici_carrier_label"
-    />
-
-    </data>
+    <record id="action_report_yurtici_carrier_label" model="ir.actions.report">
+        <field name="name">Yurtici Carrier Label</field>
+        <field name="model">delivery.carrier</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">delivery_yurtici.yurtici_carrier_label</field>
+    </record>
 </odoo>

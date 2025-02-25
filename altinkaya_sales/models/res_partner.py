@@ -66,7 +66,6 @@ class ResPartner(models.Model):
     v_cari_urun_count = fields.Integer(
         "Carinin Urunleri", compute="_compute_v_cari_urun_count"
     )
-    tax_office_name = fields.Char("Tax Office", size=64)
     # make country_id is required in res.partner
     country_id = fields.Many2one(required=True)
     segment_id = fields.Many2one(

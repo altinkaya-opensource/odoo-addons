@@ -12,4 +12,3 @@ class ResCompany(models.Model):
 
 
     hash_code = fields.Char('Hash Comm Code', help="Used in comm with ext services")
-    tax_office_name = fields.Char('Tax Office', related='partner_id.tax_office_name')
