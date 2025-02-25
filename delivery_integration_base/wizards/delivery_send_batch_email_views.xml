@@ -25,17 +25,15 @@
             </field>
         </record>
 
-        <act_window
-      id="action_delivery_send_batch_email"
-      multi="True"
-      key2="client_action_multi"
-      name="Send E-mails To Customer"
-      res_model="delivery.send.batch.email"
-      src_model="stock.picking"
-      view_mode="form"
-      target="new"
-      view_type="form"
-    />
+    <record id="action_delivery_send_batch_email" model="ir.actions.act_window">
+        <field name="name">Send E-mails To Customer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">delivery.send.batch.email</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+    </record>
 
     </data>
 </odoo>

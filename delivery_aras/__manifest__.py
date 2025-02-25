@@ -20,6 +20,6 @@
         "views/delivery_aras_view.xml",
         "report/aras_carrier_label.xml",
         "report/aras_sms_template.xml",
-        # 'report/reports.xml',
+        'report/reports.xml',
     ],
 }

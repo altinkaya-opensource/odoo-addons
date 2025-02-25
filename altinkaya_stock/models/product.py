@@ -3,73 +3,6 @@ from odoo.tools import float_is_zero, float_compare
 from odoo.exceptions import UserError
 
 
-class StockQuant(models.Model):
-    _inherit = "stock.quant"
-
-    categ_id = fields.Many2one(
-        "product.category",
-        string="Category",
-        related="product_id.product_tmpl_id.categ_id",
-        readonly=True,
-        store=True,
-    )
-
-
-class ProductTemplate(models.Model):
-    _inherit = "product.category"
-
-    currency_id = fields.Many2one(
-        string="Currency", readonly=False, comodel_name="res.currency"
-    )
-
-
-class ProductTemplate(models.Model):
-    _inherit = "product.template"
-
-    default_code = fields.Char(copy=False)
-
-    @api.constrains("default_code")
-    def _check_default_code_unique(self):
-        for template in self:
-            if template.default_code:
-                if (
-                    self.search_count([("default_code", "=", template.default_code)])
-                    > 1
-                ):
-                    raise UserError(_("The default code must be unique."))
-
-    def _compute_currency_id(self):
-        main_company = self.env["res.company"]._get_main_company()
-        for template in self:
-            if template.categ_id.currency_id:
-                template.currency_id = template.categ_id.currency_id.id
-            else:
-                template.currency_id = (
-                    template.company_id.sudo().currency_id.id
-                    or main_company.currency_id.id
-                )
-
-    def _compute_cost_currency_id(self):
-        main_company = self.env["res.company"]._get_main_company()
-        for template in self:
-            if template.categ_id.currency_id:
-                template.cost_currency_id = template.categ_id.currency_id.id
-            else:
-                template.cost_currency_id = (
-                    template.company_id.sudo().currency_id.id
-                    or main_company.currency_id.id
-                )
-
-    def _guess_main_lang(self):
-        super(ProductTemplate, self)._guess_main_lang()
-        turkish = self.env.ref("base.lang_tr")
-        if turkish.active:
-            code = turkish.code
-        else:
-            code = self.env["res.lang"].search([], limit=1).code
-        return code
-
-
 class Product(models.Model):
     _inherit = "product.product"
 
@@ -78,16 +11,15 @@ class Product(models.Model):
         comodel_name="hr.employee", string="Responsible Employee"
     )
 
-    # domain_attribute_value_ids = fields.Many2many('product.attribute.value',
-    #                                               compute='_compute_domain_attribute_value_ids')
+    domain_attribute_value_ids = fields.Many2many(
+        "product.attribute.value", compute="_compute_domain_attribute_value_ids"
+    )
 
-    move_count = fields.Float("Move Count", default=0.0)
-
-    # @api.multi
-    # @api.depends('product_tmpl_id', 'product_tmpl_id.valid_product_attribute_value_ids')
-    # def _compute_domain_attribute_value_ids(self):
-    #     for product in self:
-    #         product.domain_attribute_value_ids = product.product_tmpl_id.attribute_line_ids.mapped('value_ids')
+    def _compute_domain_attribute_value_ids(self):
+        for product in self:
+            product.domain_attribute_value_ids = (
+                product.product_tmpl_id.attribute_line_ids.mapped("value_ids")
+            )
 
     qty_available_sincan = fields.Float(
         "Sincan Depo Mevcut",
@@ -170,7 +102,7 @@ class Product(models.Model):
         "Merkez Depo Rezervesiz", compute="_compute_custom_available"
     )
 
-    @api.onchange("attribute_value_ids")
+    @api.onchange("product_template_variant_value_ids")
     def _onchange_attribute_value_ids(self):
         """
         This method prevents the user from creating a variant
@@ -182,7 +114,8 @@ class Product(models.Model):
             if (
                 len(
                     other_variants.filtered(
-                        lambda p: p.attribute_value_ids == product.attribute_value_ids
+                        lambda p, product=product: p.product_template_variant_value_ids
+                        == product.product_template_variant_value_ids
                     )
                 )
                 > 1
@@ -396,7 +329,7 @@ class Product(models.Model):
                         ("lot_id", "=", quant.lot_id.id),
                         ("package_id", "=", quant.package_id.id),
                         ("owner_id", "=", quant.owner_id.id),
-                        ("product_qty", "!=", 0),
+                        ("reserved_qty", "!=", 0),
                     ]
                 )
                 if quant.location_id.should_bypass_reservation():
@@ -407,7 +340,7 @@ class Product(models.Model):
                     ):
                         quant.write({"reserved_quantity": 0})
                 else:
-                    raw_reserved_qty = sum(move_lines.mapped("product_qty"))
+                    raw_reserved_qty = sum(move_lines.mapped("reserved_qty"))
                     if (
                         float_compare(
                             quant.reserved_quantity,
@@ -421,7 +354,8 @@ class Product(models.Model):
     def _compute_set_quantities(self):
         # Explode set content and find unreserved quantity
         for product in self:
-            bom_id = self.env["mrp.bom"].sudo()._bom_find(product=product)
+            bom_dict = self.env["mrp.bom"].sudo()._bom_find(products=product)
+            bom_id = bom_dict.get(product)
             if bom_id and bom_id.type == "phantom":
                 boms, lines = bom_id.explode(
                     product, quantity=1, picking_type=bom_id.picking_type_id
@@ -440,21 +374,6 @@ class Product(models.Model):
                 return exploded_set_qty
             else:
                 return product.qty_available_not_res
-
-    def get_quantity_website(self):
-        self.ensure_one()
-        data = {}
-        if self.product_tmpl_id.set_product:
-            data["qty_unreserved_sincan"] = self.with_context(
-                {"location": 21}
-            )._compute_set_quantities()
-            data["qty_unreserved_merkez"] = self.with_context(
-                {"location": 12}
-            )._compute_set_quantities()
-        else:
-            data["qty_unreserved_sincan"] = self.qty_unreserved_sincan
-            data["qty_unreserved_merkez"] = self.qty_unreserved_merkez
-        return data
 
 
 class mrpProduction(models.Model):

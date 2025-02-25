@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="sendeo_carrier_label_report" model="ir.actions.report">
+            <field name="name">Sendeo Carrier Label</field>
+            <field name="model">delivery.carrier</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">delivery_sendeo.sendeo_carrier_label</field>
+            <field name="report_file">delivery_sendeo.sendeo_carrier_label</field>
+        </record>
+    </data>
+</odoo>

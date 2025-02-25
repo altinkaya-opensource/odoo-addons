@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    
+
     def _compute_currency_difference_amls(self):
         difference_aml_domain = [
             ("partner_id", "=", self.id),
@@ -25,16 +25,16 @@ class ResPartner(models.Model):
         else:
             self.currency_difference_amls = False
 
-    
+
     @api.depends("currency_difference_amls")
     def _compute_difference_to_invoice(self):
         for partner in self:
             if len(partner.currency_difference_amls) > 0:
-                partner.difference_to_invoice = True
+                partner.currency_difference_to_invoice = True
             else:
-                partner.difference_to_invoice = False
+                partner.currency_difference_to_invoice = False
 
-    
+
     def _value_search_diff_check(self, operator, value):
         AccountMoveLine = self.env["account.move.line"]
         domain = [

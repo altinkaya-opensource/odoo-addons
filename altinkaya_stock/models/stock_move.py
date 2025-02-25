@@ -1,7 +1,6 @@
 from odoo import models, fields, api
 
 
-# TODO @dogan:  not ported should check onur
 class StockMove(models.Model):
     _inherit = "stock.move"
 
@@ -77,22 +76,6 @@ class StockMove(models.Model):
             "domain": [("move_dest_ids", "in", self.id)],
             "target": "current",
         }
-
-    #     def _action_cancel(self):
-    #         def find_orig_move_ids(moves):
-    #             orig_moves = moves | moves.mapped('production_id.move_raw_ids')
-    #             for move in moves:
-    #                 orig_moves |= self.find_orig_move_ids(move.move_orig_ids)
-    #             return orig_moves
-    # ,
-    #         orig_move_ids = find_orig_move_ids(self.mapped('move_orig_ids'))
-    #
-    #         res = super(StockMove, self)._action_cancel()
-    #         if orig_move_ids:
-    #             orig_move_ids._action_cancel()
-    #             #orig_move_ids.mapped('production_id').action_cancel()
-    #
-    #         return res
 
     def find_orig_move_ids(self, moves):
         orig_moves = moves

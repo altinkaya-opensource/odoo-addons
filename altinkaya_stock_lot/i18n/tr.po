@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* altinkaya_stock_lot
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-28 08:07+0000\n"
+"PO-Revision-Date: 2022-12-28 08:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_stock_lot
+#: model:ir.model,name:altinkaya_stock_lot.model_stock_production_lot
+msgid "Lot/Serial"
+msgstr "Lot/Seri"
+
+#. module: altinkaya_stock_lot
+#: model:ir.model.fields,field_description:altinkaya_stock_lot.field_stock_production_lot__name
+msgid "Lot/Serial Number"
+msgstr "Lot/Seri Numarası"
+
+#. module: altinkaya_stock_lot
+#: model:ir.model,name:altinkaya_stock_lot.model_mrp_product_produce
+msgid "Record Production"
+msgstr "Üretimi Kaydını İşle"
+
+#. module: altinkaya_stock_lot
+#: model:ir.model,name:altinkaya_stock_lot.model_stock_picking
+msgid "Transfer"
+msgstr "Transfer"
+
+#. module: altinkaya_stock_lot
+#: model:ir.model.fields,help:altinkaya_stock_lot.field_stock_production_lot__name
+msgid "Unique Lot/Serial Number"
+msgstr "Benzersiz Lot / Seri Numarası"
+
+#. module: altinkaya_stock_lot
+#: code:addons/altinkaya_stock_lot/wizards/mrp_product_produce.py:16
+#, python-format
+msgid "You have to select a product."
+msgstr "Üretilecek bir ürün seçmelisiniz."
+

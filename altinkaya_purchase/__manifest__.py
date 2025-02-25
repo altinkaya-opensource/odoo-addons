@@ -4,7 +4,7 @@
     "name": "Altinkaya Purchase Order Extensions",
     "version": "16.0.0.1.0",
     "category": "General",
-    "depends": ["base", "purchase", "stock"],
+    "depends": ["base", "purchase", "stock", "altinkaya_pricelist"],
     "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "LGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",

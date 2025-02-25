@@ -26,10 +26,14 @@ class ResCurrencyRateProviderTCMB(models.Model):
         ondelete={"altinkaynak": "cascade"},
     )
     service_rate_type = fields.Selection(
-        [
+        selection_add=[
             ("AltinkaynakBuying", _("Buying")),
             ("AltinkaynakSelling", _("Selling")),
         ],
+        ondelete={
+            "AltinkaynakBuying": "set default",
+            "AltinkaynakSelling": "set default",
+        },
         default="AltinkaynakSelling",
         required=True,
     )
@@ -63,9 +67,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
     def _obtain_rates(self, base_currency, currencies, date_from, date_to):
         self.ensure_one()
         if self.service != "altinkaynak":
-            return super()._obtain_rates(
-base_currency, currencies, date_from, date_to
-)
+            return super()._obtain_rates(base_currency, currencies, date_from, date_to)
 
         invert_calculation = False
         if base_currency != "TRY":
