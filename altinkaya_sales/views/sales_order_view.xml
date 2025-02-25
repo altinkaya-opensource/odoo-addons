@@ -120,12 +120,6 @@
 					<field name="warehouse_id" />
 				</xpath>
 
-				<xpath expr="/form/sheet/notebook//field[@name='fiscal_position_id']" positon="replace">
-					<label for="fiscal_position_id" string="Tax Position" />
-					<field name="fiscal_position_id" nolabel="1" options="{'no_create': True}" />
-
-				</xpath>
-
 				<xpath expr="//field[@name='payment_term_id']" position='replace' />
 				<xpath expr="//field[@name='partner_shipping_id']" position="after">
 					<field name="payment_term_id"/>
