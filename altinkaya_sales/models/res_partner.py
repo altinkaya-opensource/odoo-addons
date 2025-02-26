@@ -4,9 +4,9 @@ Created on Jan 16, 2019
 @author: cq
 """
 
-from odoo import models, fields, api
 import logging
 
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -66,7 +66,6 @@ class ResPartner(models.Model):
     v_cari_urun_count = fields.Integer(
         "Carinin Urunleri", compute="_compute_v_cari_urun_count"
     )
-    tax_office_name = fields.Char("Tax Office", size=64)
     # make country_id is required in res.partner
     country_id = fields.Many2one(required=True)
     segment_id = fields.Many2one(
@@ -152,7 +151,7 @@ class ResPartner(models.Model):
                     is_invalid = False
             except:
                 is_invalid = True
-            _logger.info("Email %s is invalid: %s" % (rec.email, is_invalid))
+            _logger.info(f"Email {rec.email} is invalid: {is_invalid}")
             rec.email_invalid = is_invalid
 
     def action_view_v_cari_urun(self):

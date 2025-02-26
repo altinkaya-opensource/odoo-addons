@@ -60,6 +60,7 @@
         "views/res_partner_segment_view.xml",
         "views/res_country_view.xml",
         "views/res_bank_view.xml",
+        "views/res_partner_email_check.xml",
     ],
     "demo": [],
     "license": "LGPL-3",

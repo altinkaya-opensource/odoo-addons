@@ -21,7 +21,6 @@ class AccountMove(models.Model):
     x_serino = fields.Char('Fatura No',size=64)
     x_teslimat = fields.Char('Teslimat Kisaltmasi',size=64)
     address_contact_id = fields.Many2one('res.partner','Shipping Address')
-    altinkaya_payment_url = fields.Char(compute='_compute_altinkaya_payment_url', string='Altinkaya Payment Url')
     receiver = fields.Char(string="Reciever")
 
     #TODO this is not required we can use invoice.number field for supplier invoices
@@ -74,24 +73,3 @@ class AccountMove(models.Model):
             if invoice.type == 'in_invoice' and fields.first(invoice.invoice_line_ids).account_id:
                 invoice.partner_id.write({"purchase_default_account_id": fields.first(invoice.invoice_line_ids).account_id.id})
         return super(AccountInvoice, self).action_invoice_open()
-
-
-    @api.depends('amount_total','partner_id','currency_id')
-    def _compute_altinkaya_payment_url(self):
-        for invoice in self:
-            tutar = '%d' % (int)(100*invoice.amount_total)
-            eposta = invoice.partner_id.email
-            if eposta is False:
-                eposta = ""
-            params = {
-                    "email": eposta,
-                    "musteri": invoice.partner_id.commercial_partner_id.name,
-                    "oid": invoice.number,
-                    "tutar": tutar,
-                    "ref": invoice.partner_id.commercial_partner_id.ref,
-                    "currency": invoice.currency_id.name,
-                    "lang": invoice.partner_id.lang,
-                    "hashtr": hashlib.sha1(invoice.currency_id.name.encode() + invoice.partner_id.commercial_partner_id.ref.encode() + eposta.encode() + tutar.encode() + invoice.number.encode() + invoice.company_id.hash_code.encode()).hexdigest().upper(),
-                    }
-            invoice.altinkaya_payment_url = "?" + url_encode(params)
-

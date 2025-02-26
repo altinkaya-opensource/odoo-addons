@@ -3,10 +3,11 @@ Created on Jan 17, 2019
 
 @author: cq
 """
-from odoo import models, fields, api, _
-from odoo.addons import decimal_precision as dp
-from odoo.exceptions import UserError
+
 import logging
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -73,17 +74,6 @@ class ProductTemplate(models.Model):
         default=0.0,
     )
 
-    has_production_bom = fields.Boolean(
-        "Has production BoM", compute="_compute_has_production_bom", store=True
-    )
-
-    
-    @api.depends("bom_ids", "bom_ids.type")
-    def _compute_has_production_bom(self):
-        self.has_production_bom = any(
-            self.bom_ids.filtered(lambda b: b.type != "phantom")
-        )
-
     def compute_set_product_price(self):
         """
         Compute the price of the set product based on the price of its components.
@@ -96,9 +86,9 @@ class ProductTemplate(models.Model):
         if not phantom_boms:
             raise UserError(
                 _(
-                    "No phantom BoM found for product %s. Please create"
-                    " a phantom BoM to compute the price of the set product."
-                    % self.name
+                    "No phantom BoM found for product %(name)s. Please create"
+                    " a phantom BoM to compute the price of the set product.",
+                    name=self.name,
                 )
             )
 
@@ -106,8 +96,9 @@ class ProductTemplate(models.Model):
         date_now = fields.Datetime.now()
         dummy_so = self.env["sale.order"].create(
             {
-                "name": "Phantom Bom Price Compute: %s, %s"
-                % (self.id, date_now.strftime("%d-%m-%Y")),
+                "name": "Phantom Bom Price Compute: {}, {}".format(
+                    self.id, date_now.strftime("%d-%m-%Y")
+                ),
                 "partner_id": 12515,  # Ahmet Altınışık test
                 "partner_invoice_id": 12515,
                 "partner_shipping_id": 12515,
@@ -118,8 +109,11 @@ class ProductTemplate(models.Model):
                 "date_order": fields.Datetime.now(),
             }
         )
-        for product in self.web_progress_iter(products_2compute, msg="Set ürünlerin fiyatı hesaplanıyor..."):
-            bom = self.env["mrp.bom"].sudo()._bom_find(product=product)
+        for product in self.web_progress_iter(
+            products_2compute, msg="Set ürünlerin fiyatı hesaplanıyor..."
+        ):
+            bom_dict = self.env["mrp.bom"].sudo()._bom_find(products=product)
+            bom = bom_dict.get(product)
             if not bom.type == "phantom":
                 continue
             # Create a new sale order line
@@ -135,11 +129,11 @@ class ProductTemplate(models.Model):
             # Explode the phantom bom
             dummy_sol.explode_set_contents()
             # Compute the price
-            dummy_so.recalculate_prices()
+            dummy_so._recalculate_prices()
             # Update the product price
             _logger.info(
-                "Updating product price for product %s: %s -> %s"
-                % (product.display_name, product.v_fiyat_dolar, dummy_so.amount_untaxed)
+                f"Updating product price for product {product.display_name}: "
+                f"{product.v_fiyat_dolar} -> {dummy_so.amount_untaxed}"
             )
             product.v_fiyat_dolar = dummy_so.amount_untaxed
             # Clear sale order lines

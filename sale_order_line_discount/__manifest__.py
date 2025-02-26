@@ -3,6 +3,7 @@
     "version": "16.0.1",
     "website": "https://www.codequarters.com",
     "category": "Sales",
+    "license": "AGPL-3",
     "summary": "Sale Order Line Discount",
     "description": """
 	 """,

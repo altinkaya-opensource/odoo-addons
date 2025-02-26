@@ -15,6 +15,7 @@ class SaleOrder(models.Model):
     )
     payment_currency_id = fields.Many2one(
         "res.currency",
+        string="Payment Currency",
         related="transaction_ids.currency_id",
         store=True,
     )

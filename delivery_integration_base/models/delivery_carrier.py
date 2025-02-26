@@ -1,12 +1,16 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import math
+import logging
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_is_zero
 from odoo.tools.safe_eval import safe_eval
+
+
+_logger = logging.getLogger(__name__)
 
 
 class DeliveryCarrier(models.Model):
@@ -132,29 +136,30 @@ class DeliveryCarrier(models.Model):
         Update integrated pickings in a batch
         :return:
         """
-        # Todo: implement this method
-        return True
-        # pickings = self.env["stock.picking"].search(
-        #     [
-        #         (
-        #             "carrier_id.delivery_type",
-        #             "not in",
-        #             [False, "fixed", "base_on_rule"],
-        #         ),
-        #         ("carrier_tracking_ref", "!=", False),
-        #         ("date_done", ">", fields.Date.today() - timedelta(days=5)),
-        #         (
-        #             "delivery_state",
-        #             "in",
-        #             ["shipping_recorded_in_carrier", "in_transit"],
-        #         ),
-        #     ]
-        # )
-        #
-        # for picking in pickings:
-        #     method = "%s_tracking_state_update" % picking.delivery_type
-        #     if hasattr(picking.carrier_id, method):
-        #         getattr(picking.carrier_id, method)(picking)
+        pickings = self.env["stock.picking"].search(
+            [
+                (
+                    "carrier_id.delivery_type",
+                    "not in",
+                    [False, "fixed", "base_on_rule"],
+                ),
+                ("carrier_tracking_ref", "!=", False),
+                ("date_done", ">", fields.Date.today() - timedelta(days=5)),
+                (
+                    "delivery_state",
+                    "in",
+                    ["shipping_recorded_in_carrier", "in_transit"],
+                ),
+            ]
+        )
+
+        for picking in pickings:
+            try:
+                method = f"{picking.delivery_type}_tracking_state_update"
+                if hasattr(picking.carrier_id, method):
+                    getattr(picking.carrier_id, method)(picking)
+            except Exception as exc:
+                _logger.error("Error updating picking %s state: %s", picking.name, exc)
 
     def _sms_notificaton_send(self, picking):
         """
@@ -175,6 +180,15 @@ class DeliveryCarrier(models.Model):
             )
             if message and self.sms_service_id:
                 sms_api._send_sms([mobile_number], message)
+                picking.message_post(
+                    body=_(
+                        "<span>SMS notification sent to %(number)s</span>"
+                        "<br>"
+                        "<span>Message:%(message)s</span>",
+                        number=picking.partner_id.mobile,
+                        message=message,
+                    )
+                )
         return True
 
     def get_tracking_link(self, picking):

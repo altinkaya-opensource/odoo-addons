@@ -1,14 +1,9 @@
-import uuid
-import hashlib
-import hmac
-from werkzeug.urls import url_encode
-from odoo import api, exceptions, fields, models, tools, _
+from odoo import models
 
 
 class PortalMixinInheritance(models.AbstractModel):
     _inherit = "portal.mixin"
 
-    
     def get_portal_url(
         self,
         suffix=None,
@@ -22,13 +17,15 @@ class PortalMixinInheritance(models.AbstractModel):
         """
         self.ensure_one()
         if self._name == "account.invoice" and self.einvoice_pdf_id:
-            invoice_url = f"/report/einvoicepdf/{self.id}" + "?access_token=%s" % (
-                self._portal_ensure_token(),
+            invoice_url = (
+                f"/report/einvoicepdf/{self.id}"
+                f"?access_token={self._portal_ensure_token()}"
             )
+
             return invoice_url
 
         else:
-            return super(PortalMixinInheritance, self).get_portal_url(
+            return super().get_portal_url(
                 suffix=suffix,
                 report_type=report_type,
                 download=download,

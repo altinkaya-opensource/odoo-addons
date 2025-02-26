@@ -1,13 +1,14 @@
 # Copyright 2024 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
 import re
+
+from odoo import fields, models
 
 
 class ResBank(models.Model):
     _inherit = "res.bank"
 
-    fax = fields.Char("Fax")
+    fax = fields.Char()
 
     def _display_address(self):
         """
