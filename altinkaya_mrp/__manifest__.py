@@ -15,7 +15,7 @@
         "stock",
         "sale",
         "hr",
-        ],
+    ],
     "data": [
         "security/ir.model.access.csv",
         "security/mrp_security.xml",
@@ -26,6 +26,7 @@
         "views/procurement_view.xml",
         "views/mrp_production_views.xml",
         "views/mrp_bom_views.xml",
+        "views/mrp_routing_views.xml",
         "wizards/mrp_cancel_wizard_view.xml",
     ],
     "installable": True,

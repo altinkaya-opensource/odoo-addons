@@ -7,6 +7,11 @@
             <field name="model">mrp.production</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="process_id"/>
+                </xpath>
+
                 <xpath expr="//button[@name='do_unreserve']" position="after">
                     <button name="button_print_prod_order" string="Print Production Order" type="object"/>
                 </xpath>
@@ -127,6 +132,18 @@
                 <filter string="Makine" name="x_makine" domain="[]" context="{'group_by':'x_makine'}"/>
                 <filter string="Operatör" name="x_operator" domain="[]" context="{'group_by':'x_operator'}"/>
                 <filter string="Öncelik" name="priority" domain="[]" context="{'group_by':'priority'}"/>
+            </filter>
+
+            <filter name="planning_issues" position="after">
+                <separator/>
+                <filter name="lastmonthplanned" string="Geçen Ay Bitenler" domain="[('date_finished','&gt;=', (context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-01 00:00:00'))]"/>
+                <filter name="thismonthplanned" string="Bu Ay bitenler" domain="[('date_finished','&gt;=', context_today().strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="bugun" string="Bugün Açılanlar" domain="[('create_date','&gt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Dün Açılanlar" name="yesterday" domain="[ ('create_date','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Son 3 Gün Açılanlar" name="threedaydel" domain="[('create_date','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]" />
+                <filter string="Geçen Hafta Açılanlar" name="lastweekdel" domain="[('create_date','&gt;=',(context_today()+relativedelta(weeks=-1,days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(weeks=-1,days=7)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <separator/>
             </filter>
         </field>
         </record>

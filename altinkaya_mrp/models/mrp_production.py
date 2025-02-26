@@ -25,13 +25,13 @@ class MrpProduction(models.Model):
     date_planned = fields.Datetime("Scheduled Date")
     date_start2 = fields.Datetime("Start Date")
     date_finished2 = fields.Datetime("End Date")
-    # process_id = fields.Many2one(
-    #     "mrp.routing",
-    #     string="Rota",
-    #     readonly=True,
-    #     related="bom_id.routing_id",
-    #     store=True,
-    # )
+    process_id = fields.Many2one(
+        "mrp.routing",
+        string="Rota",
+        readonly=True,
+        related="bom_id.routing_id",
+        store=True,
+    )
     x_operator = fields.Many2one("hr.employee", "Uretimi Yapan Operator")
     x_note = fields.Text("Note")
     # TODO: @dogan workcenter_id alanini kullanabiliriz

@@ -39,7 +39,9 @@ class MRPBoM(models.Model):
     )
     tool_product_id = fields.Many2one("product.product", string="Tool")
 
-    # TODO: routing_id does not exist anymore. See operation_ids field.
+    # TODO: Delete this field in the future. Read mrp_routing.py
+    routing_id = fields.Many2one("mrp.routing", "Routing")
+
     # @api.onchange("routing_id")
     # def onchange_routing_id(self):
     #     res = super().onchange_routing_id()

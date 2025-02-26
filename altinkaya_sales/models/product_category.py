@@ -1,14 +1,13 @@
-# -*- encoding: utf-8 -*-
 #
-#Created on Jan 17, 2020
+# Created on Jan 17, 2020
 #
-#@author: dogan
+# @author: dogan
 #
 
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class ProductCategory(models.Model):
-    _inherit="product.category"
+    _inherit = "product.category"
 
-    custom_products = fields.Boolean('Custom Products')
+    custom_products = fields.Boolean("Custom Products")

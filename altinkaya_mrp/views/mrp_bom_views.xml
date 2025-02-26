@@ -11,6 +11,11 @@
 			<field name="name">mrp.bom.form.inherit.parameter</field>
 			<field name="model">mrp.bom</field>
 			<field name="arch" type="xml">
+
+                <field name="code" position="after">
+                    <field name="routing_id"/>
+                </field>
+
 				<xpath expr="//notebook" position="inside">
 					<page name="wcparameters" string="Workcenter Parameters">
 						<field name="wc_parameter_ids" >
@@ -21,7 +26,7 @@
 								<field name="time_start" widget="float_time"/>
 								<field name="time_stop" widget="float_time"/>
 							</tree>
-						
+
 						</field>
 					</page>
 				</xpath>

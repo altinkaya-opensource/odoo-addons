@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_x_makine,x.makine,model_x_makine,,1,1,1,1
 access_mrp_bom_wcparameter,mrp.bom.wcparameter,model_mrp_bom_wcparameter,,1,1,1,1
 access_mrp_bom_template_line,mrp.bom.template.line,model_mrp_bom_template_line,,1,1,1,1
+access_mrp_routing,mrp.routing,model_mrp_routing,mrp.group_mrp_user,1,0,0,0
+access_mrp_routing_manager,mrp.routing.manager,model_mrp_routing,mrp.group_mrp_manager,1,1,1,1
