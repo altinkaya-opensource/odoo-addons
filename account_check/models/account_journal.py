@@ -19,8 +19,8 @@ class AccountJournal(models.Model):
     )
 
     @api.model
-    def create(self, vals):
-        rec = super(AccountJournal, self).create(vals)
+    def create(self, vals_list):
+        rec = super(AccountJournal, self).create(vals_list)
         issue_checks = self.env.ref("account_check.account_payment_method_issue_check")
         if issue_checks.id in rec.outbound_payment_method_line_ids.mapped('payment_method_id').ids and not rec.checkbook_ids:
             rec._create_checkbook()

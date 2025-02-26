@@ -283,7 +283,7 @@ class AccountPayment(models.Model):
             # de asientos ni cheques
             if rec.state in ["confirmed", "posted"]:
                 rec.do_checks_operations(cancel=True)
-        res = super(AccountPayment, self).cancel()
+        res = super(AccountPayment, self).action_cancel()
         return res
 
     def create_check(self, check_type, operation, bank):
@@ -299,13 +299,13 @@ class AccountPayment(models.Model):
             "type": self.check_type,
             "journal_id": self.journal_id.id,
             "amount": self.amount,
-            "payment_date": self.check_payment_date,
+            "date": self.check_payment_date,
             "currency_id": self.currency_id.id,
         }
 
         check = self.env["account.check"].create(check_vals)
         self.check_ids = [(4, check.id, False)]
-        check._add_operation(operation, self, self.partner_id, date=self.payment_date)
+        check._add_operation(operation, self, self.partner_id, date=self.date)
         return check
 
     def do_checks_operations(self, vals=None, cancel=False):
@@ -339,7 +339,7 @@ class AccountPayment(models.Model):
             # si el cheque es entregado en una transferencia tenemos tres
             # opciones
             # TODO we should make this method selectable for transfers
-            inbound_method = rec.destination_journal_id.inbound_payment_method_ids
+            inbound_method = rec.destination_journal_id.inbound_payment_method_line_ids
             # si un solo inbound method y es received third check
             # entonces consideramos que se esta moviendo el cheque de un diario
             # al otro
@@ -360,10 +360,10 @@ class AccountPayment(models.Model):
                 # get the account before changing the journal on the check
                 vals["account_id"] = rec.check_ids.get_third_check_account().id
                 rec.check_ids._add_operation(
-                    "transfered", rec, False, date=rec.payment_date
+                    "transfered", rec, False, date=rec.date
                 )
                 rec.check_ids._add_operation(
-                    "holding", rec, False, date=rec.payment_date
+                    "holding", rec, False, date=rec.date
                 )
                 rec.check_ids.write({"journal_id": rec.destination_journal_id.id})
                 vals["name"] = _("Transfer checks %s") % ", ".join(
@@ -376,7 +376,7 @@ class AccountPayment(models.Model):
                     return None
 
                 _logger.info("Sold Check")
-                rec.check_ids._add_operation("sold", rec, False, date=rec.payment_date)
+                rec.check_ids._add_operation("sold", rec, False, date=rec.date)
                 vals["account_id"] = rec.check_ids.get_third_check_account().id
                 vals["name"] = _("Sell check %s") % ", ".join(
                     rec.check_ids.mapped("name")
@@ -390,7 +390,7 @@ class AccountPayment(models.Model):
 
                 _logger.info("Deposited Check")
                 rec.check_ids._add_operation(
-                    "deposited", rec, False, date=rec.payment_date
+                    "deposited", rec, False, date=rec.date
                 )
                 vals["account_id"] = rec.check_ids.get_third_check_account().id
                 vals["name"] = _("Deposit checks %s") % ", ".join(
@@ -410,7 +410,7 @@ class AccountPayment(models.Model):
 
             _logger.info("Delivered Check")
             rec.check_ids._add_operation(
-                "delivered", rec, rec.partner_id, date=rec.payment_date
+                "delivered", rec, rec.partner_id, date=rec.date
             )
             vals["account_id"] = rec.check_ids.get_third_check_account().id
             vals["name"] = _("Deliver checks %s") % ", ".join(
@@ -497,7 +497,7 @@ class AccountPayment(models.Model):
                     _("Please be sure that check number or name is filled!")
                 )
 
-        res = super(AccountPayment, self).post()
+        res = super(AccountPayment, self).action_post()
         return res
 
     def _get_liquidity_move_line_vals(self, amount):
