@@ -30,6 +30,7 @@
         'views/account_chart_template_view.xml',
         'security/ir.model.access.csv',
         'security/account_check_security.xml',
+        'views/account_check_operation_view.xml',
     ],
     'installable': True,
     'auto_install': False,

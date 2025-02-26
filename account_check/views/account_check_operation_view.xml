@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_check_operation_tree" model="ir.ui.view">
+        <field name="name">account.check.operation.tree</field>
+        <field name="model">account.check.operation</field>
+        <field name="arch" type="xml">
+            <tree string="Çek Operasyonları">
+                <field name="operation"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_checkbook_form" model="ir.ui.view">
+        <field name="name">account.check.operation.form</field>
+        <field name="model">account.check.operation</field>
+        <field name="arch" type="xml">
+            <form string="Çek Operasyonları">
+                <sheet>
+                    <group>
+                        <field name="operation"/>
+                        <field name="date"/>
+                        <field name="check_id"/>
+                        <field name="origin_name"/>
+                        <field name="origin"/>
+                        <field name="partner_id"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_check_operation">
+        <field name="name">Çek Operasyonları</field>
+        <field name="res_model">account.check.operation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        action="action_check_operation"
+        id="menu_check_operation"
+        sequence="30"
+        parent="menu_account_check_root"/>
+
+</odoo>

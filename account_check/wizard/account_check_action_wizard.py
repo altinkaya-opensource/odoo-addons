@@ -29,8 +29,13 @@ class AccountCheckActionWizard(models.TransientModel):
     @api.onchange("journal_id")
     def onchange_journal_id(self):
         if self.journal_id:
-            self.debit_account_id = self.journal_id.default_debit_account_id
-            self.credit_account_id = self.journal_id.default_credit_account_id
+            default_account = self.journal_id.default_account_id
+            if self.journal_id.type in ("bank", "cash"):
+                self.debit_account_id = default_account
+                self.credit_account_id = default_account
+            else:
+                self.debit_account_id = default_account
+                self.credit_account_id = default_account
 
     def action_confirm(self):
         self.ensure_one()
@@ -55,7 +60,5 @@ class AccountCheckActionWizard(models.TransientModel):
                 ),
                 self.action_type,
             )()
-        if len(checks) == 1:
-            return res
-        else:
-            return True
+        return res if len(checks) == 1 else True
+
