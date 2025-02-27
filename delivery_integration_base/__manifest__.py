@@ -27,6 +27,7 @@
         "views/sale_order_views.xml",
         "views/delivery_region_views.xml",
         "report/delivery_mail_template.xml",
+        "views/dispatched_deliveries_views.xml",
     ],
     "installable": True,
 }
