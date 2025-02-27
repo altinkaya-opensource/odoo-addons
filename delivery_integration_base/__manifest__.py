@@ -15,6 +15,8 @@
         "product_dimension",
         "queue_job",
         "delivery_state",
+        "base_report_to_printer",
+        "short_url_yourls",
     ],
     "data": [
         "security/ir.model.access.csv",
