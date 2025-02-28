@@ -55,16 +55,16 @@ class CreateProcurementMove(models.TransientModel):
 
     # procurement_qty_ids = fields.One2many('create.procurement.move.location', 'wizard_id', string='Quantities')
 
-    qty_to_sincan = fields.Float('Tedarik')
-    qty_to_merkez = fields.Float('Tedarik')
-    qty_available_merkez = fields.Float('Mevcut', related='product_id.qty_available_merkez')
-    qty_available_sincan = fields.Float('Mevcut', related='product_id.qty_available_sincan')
-    qty_incoming_merkez = fields.Float('Gelen', related='product_id.qty_incoming_merkez')
-    qty_incoming_sincan = fields.Float('Gelen', related='product_id.qty_incoming_sincan')
-    qty_outgoing_merkez = fields.Float('Giden', related='product_id.qty_outgoing_merkez')
-    qty_outgoing_sincan = fields.Float('Giden', related='product_id.qty_outgoing_sincan')
-    qty_virtual_merkez = fields.Float('Tahmini', related='product_id.qty_virtual_merkez')
-    qty_virtual_sincan = fields.Float('Tahmini', related='product_id.qty_virtual_sincan')
+    qty_to_sincan = fields.Float('Tedarik Sincan')
+    qty_to_merkez = fields.Float('Tedarik Merkez')
+    qty_available_merkez = fields.Float('Merkez Mevcut', related='product_id.qty_available_merkez')
+    qty_available_sincan = fields.Float('Sincan Mevcut', related='product_id.qty_available_sincan')
+    qty_incoming_merkez = fields.Float('Gelen Merkez', related='product_id.qty_incoming_merkez')
+    qty_incoming_sincan = fields.Float('Gelen Sincan', related='product_id.qty_incoming_sincan')
+    qty_outgoing_merkez = fields.Float('Giden Merkez', related='product_id.qty_outgoing_merkez')
+    qty_outgoing_sincan = fields.Float('Giden Sincan', related='product_id.qty_outgoing_sincan')
+    qty_virtual_merkez = fields.Float('Tahmini Merkez', related='product_id.qty_virtual_merkez')
+    qty_virtual_sincan = fields.Float('Tahmini Sincan', related='product_id.qty_virtual_sincan')
 
     production_ids = fields.Many2many('mrp.production',string='Manufacturing Orders', compute='_compute_productions')
     transfers_to_customer_ids = fields.Many2many('stock.move',string='Transfers to Customers',

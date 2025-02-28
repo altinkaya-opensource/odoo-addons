@@ -30,7 +30,7 @@ class MRPBoM(models.Model):
     categ_id = fields.Many2one(
         "product.category",
         related="product_tmpl_id.categ_id",
-        string="Category",
+        string="Product Category",
         store=True,
         readonly=True,
     )

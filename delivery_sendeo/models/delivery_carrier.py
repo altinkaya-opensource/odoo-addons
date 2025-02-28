@@ -62,8 +62,8 @@ class DeliveryCarrier(models.Model):
     )
 
     sendeo_cc_code = fields.Char('CC Code', help="Sendeo CC Code")
-    sendeo_username = fields.Char(string="Username", help="Sendeo Username")
-    sendeo_password = fields.Char(string="Password", help="Sendeo Password")
+    sendeo_username = fields.Char(string="Sendeo Username", help="Sendeo Username")
+    sendeo_password = fields.Char(string="Sendeo Password", help="Sendeo Password")
 
     def _get_sendeo_credentials(self):
         """Access key is mandatory for every request while group and user are

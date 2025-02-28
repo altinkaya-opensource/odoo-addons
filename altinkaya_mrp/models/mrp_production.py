@@ -22,9 +22,9 @@ class MrpProduction(models.Model):
     sale_id = fields.Many2one("sale.order", string="Sale Order")
     sale_note = fields.Html("Sale Note", related="sale_id.note", readonly=True)
     active_rule_id = fields.Many2one("stock.rule", string="Active Rule")
-    date_planned = fields.Datetime("Scheduled Date")
-    date_start2 = fields.Datetime("Start Date")
-    date_finished2 = fields.Datetime("End Date")
+    date_planned = fields.Datetime("Planned Date")
+    date_start2 = fields.Datetime("Date Start")
+    date_finished2 = fields.Datetime("Date End")
     process_id = fields.Many2one(
         "mrp.routing",
         string="Rota",
@@ -38,7 +38,7 @@ class MrpProduction(models.Model):
     x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine")
     x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
     procurement_group_name = fields.Char(
-        compute="_get_procurement_group_name", string="Procurement Group", readonly=True
+        compute="_get_procurement_group_name", string="Procurement Group Name", readonly=True
     )
 
     def _generate_moves(self):

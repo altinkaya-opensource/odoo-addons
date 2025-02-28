@@ -18,12 +18,13 @@ class AccountJournal(models.Model):
         auto_join=True,
     )
 
-    @api.model
-    def create(self, vals):
-        rec = super(AccountJournal, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        rec = super(AccountJournal, self).create(vals_list)
         issue_checks = self.env.ref("account_check.account_payment_method_issue_check")
-        if issue_checks in rec.outbound_payment_method_ids and not rec.checkbook_ids:
-            rec._create_checkbook()
+        for r in rec:
+            if issue_checks in r.outbound_payment_method_ids and not r.checkbook_ids:
+                r._create_checkbook()
         return rec
 
     def _create_checkbook(self):

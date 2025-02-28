@@ -60,17 +60,18 @@ class ShortURLYourls(models.Model):
         string="Total Shortened URLs", compute="_compute_total_shortened_urls"
     )
 
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
-        if re.match(http_regex, res.hostname) is None:
-            raise ValidationError(
-                _(
-                    "Hostname must be a valid URL. Example: https://6sn.de or http://6sn.de"
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        for r in res:
+            if re.match(http_regex, r.hostname) is None:
+                raise ValidationError(
+                    _(
+                        "Hostname must be a valid URL. Example: https://6sn.de or http://6sn.de"
+                    )
                 )
-            )
-        if not res.name:
-            res.name = res.hostname.split("://")[-1]
+            if not r.name:
+                r.name = r.hostname.split("://")[-1]
         return res
 
     def shorten_url(self, url):

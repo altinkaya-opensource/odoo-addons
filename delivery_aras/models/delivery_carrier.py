@@ -32,8 +32,8 @@ class DeliveryCarrier(models.Model):
         ondelete={"aras": "cascade"},
     )
 
-    aras_username = fields.Char(string="Username", help="Aras Username")
-    aras_password = fields.Char(string="Password", help="Aras Password")
+    aras_username = fields.Char(string="Aras Username", help="Aras Username")
+    aras_password = fields.Char(string="Aras Password", help="Aras Password")
     aras_query_username = fields.Char(
         string="Query Username", help="Aras Query Username"
     )

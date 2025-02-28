@@ -15,5 +15,5 @@ class ResPartnerSegment(models.Model):
         comodel_name="res.partner",
         inverse_name="segment_id",
         string="Partners",
-        ondelete="cascade",
+        # ondelete="cascade",
     )
