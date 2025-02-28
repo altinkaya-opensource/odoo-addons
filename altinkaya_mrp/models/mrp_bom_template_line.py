@@ -1,6 +1,6 @@
-# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models
+# Copyright 2023 Yiğit Budak (https://github.com/yibudak)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from odoo import models, fields, api
 
 
 class MrpBomTemplateLine(models.Model):
@@ -68,12 +68,6 @@ class MrpBomTemplateLine(models.Model):
         store=True,
     )
 
-    # TODO: valid_product_attribute_value_wnva_ids doesn't exist in 16.0
-    # valid_product_attribute_value_wnva_ids = fields.Many2many(
-    #     "product.attribute.value",
-    #     related="bom_product_id.valid_product_attribute_value_wnva_ids",
-    # )
-
     factor_attribute_id = fields.Many2one(
         "product.attribute",
         string="Factor Attribute",
@@ -111,7 +105,12 @@ class MrpBomTemplateLine(models.Model):
         self.ensure_one()
         # Case 1: PC-460 attached itself in the BoM
         if self.attribute_value_ids and self.target_attribute_value_ids:
-            return not (self.attribute_value_ids & product.attribute_value_ids)
+            return not (
+                self.attribute_value_ids
+                & product.mapped(
+                    "product_template_attribute_value_ids.product_attribute_value_id"
+                )
+            )
 
         # Case 2: When we have too many variants, and we don't want to create
         # BoM line for them.
@@ -127,7 +126,9 @@ class MrpBomTemplateLine(models.Model):
         self.ensure_one()
         return list(
             set(self.inherited_attribute_ids.ids)
-            & set(product.mapped("attribute_value_ids.attribute_id.id"))
+            & set(
+                product.mapped("product_template_attribute_value_ids.attribute_id").ids
+            )
         )
 
     def _match_possible_variant(self, product):
@@ -140,16 +141,19 @@ class MrpBomTemplateLine(models.Model):
                 return products
             attr_val = attr_val_list[0]
             return match_products(
-                products.filtered(lambda p: attr_val in p.attribute_value_ids),
+                products.filtered(
+                    lambda p: attr_val
+                    in p.product_template_attribute_value_ids.product_attribute_value_id
+                ),
                 attr_val_list[1:],
             )
 
         target_products = self.mapped("product_tmpl_id.product_variant_ids")
 
         # Phase 1: match inherited attributes
-        common_attrs = product.attribute_value_ids.filtered(
+        common_attrs = product.product_template_attribute_value_ids.filtered(
             lambda a: a.attribute_id in self.inherited_attribute_ids
-        )
+        ).product_attribute_value_id
         if not common_attrs:
             return False
         matched_products = match_products(target_products, common_attrs)
@@ -159,13 +163,14 @@ class MrpBomTemplateLine(models.Model):
         # Phase 2: match additional attributes
         if self.attribute_value_ids:
             matched_products = matched_products.filtered(
-                lambda p: self.target_attribute_value_ids in p.attribute_value_ids
+                lambda p: self.target_attribute_value_ids
+                in p.product_template_attribute_value_ids.product_attribute_value_id
             )
         else:
             line_attribute_ids = self.mapped(
                 "product_tmpl_id.attribute_line_ids.attribute_id"
             )
-            additional_attr_vals = product.attribute_value_ids.filtered(
+            additional_attr_vals = product.product_template_attribute_value_ids.product_attribute_value_id.filtered(
                 lambda a: a.attribute_id in line_attribute_ids and a not in common_attrs
             )
             matched_products = match_products(matched_products, additional_attr_vals)
