@@ -35,6 +35,7 @@
         "views/stock_warehouse_orderpoint_view.xml",
         "views/mrp_production_view.xml",
         "security/security_group.xml",
+        "security/ir.model.access.csv",
     ],
     "installable": True,
     "auto_install": False,
