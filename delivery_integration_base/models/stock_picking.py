@@ -36,7 +36,7 @@ class StockPicking(models.Model):
         currency_field="shipping_currency_id",
     )
     sale_shipping_cost_try = fields.Monetary(
-        "Sale Shipping Cost",
+        "Sale Shipping Cost TRY",
         help="Sale shipping cost no VAT",
         compute="_compute_sale_shipping_cost",
         currency_field="currency_id_try",

@@ -36,11 +36,12 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             }
         )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         res = super(DeliveryPackageBarcodeWiz, self).create(vals_list)
-        if not res.name:
-            res.name = res.picking_id.name + _(" - PACK BARCODE")
+        for r in res:
+            if not r.name:
+                r.name = r.picking_id.name + _(" - PACK BARCODE")
         return res
 
     def button_save(self):

@@ -17,10 +17,11 @@ class StockMoveLine(models.Model):
                 rec.lot_id = lot_id.id
         return True
 
-    @api.model
-    def create(self, vals):
-        res = super(StockMoveLine, self).create(vals)
-        res._create_missing_lot()
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(StockMoveLine, self).create(vals_list)
+        for r in res:
+            r._create_missing_lot()
         return res
 
     @api.model

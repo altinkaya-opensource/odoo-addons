@@ -11,7 +11,7 @@ class StockRuleInherit(models.Model):
     action = fields.Selection(tracking=True)
     picking_type_id = fields.Many2one(tracking=True)
     location_src_id = fields.Many2one(tracking=True)
-    location_id = fields.Many2one(tracking=True)
+    location_id = fields.Many2one("stock.location", tracking=True)
     route_id = fields.Many2one(tracking=True)
     auto = fields.Selection(tracking=True)
     sequence = fields.Integer(tracking=True)

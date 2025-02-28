@@ -32,7 +32,7 @@ class ProductProductLabel(models.TransientModel):
     product_id = fields.Many2one("product.product", string="Product")
     barcode = fields.Char()
     lot_id = fields.Many2one("stock.lot", string="Lot")
-    lot_ids = fields.Many2many("stock.lot", string="Lot")
+    lot_ids = fields.Many2many("stock.lot", string="Lots")
     uom_name = fields.Char(string="UOM Name", size=10)
     batch_code = fields.Char(store=False)
     model_ref_id = fields.Reference(selection="_selection_model", string="Reference")

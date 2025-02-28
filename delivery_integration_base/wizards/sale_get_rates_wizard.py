@@ -6,8 +6,6 @@ from datetime import datetime
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons import decimal_precision as dp
-
 
 class SaleGetRatesWizard(models.TransientModel):
     _name = "sale.get.rates.wizard"
@@ -16,18 +14,18 @@ class SaleGetRatesWizard(models.TransientModel):
     carrier_prices = fields.Many2many("delivery.carrier.lines", string="Prices")
     sale_id = fields.Many2one("sale.order", string="Sale Order")
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Inherit to add carrier prices to the wizard.
         :param vals: dict
         :return: recordset
         """
-        res = super().create(vals)
+        res = super().create(vals_list)
         company_id = self.env.user.company_id
         date = datetime.now()
         for wizard in res.filtered(lambda w: w.sale_id):
-            carrier_prices = res.get_delivery_prices()
+            carrier_prices = wizard.get_delivery_prices()
             create_list = []
             for carrier, result in carrier_prices.items():
                 if result["success"]:
@@ -52,8 +50,9 @@ class SaleGetRatesWizard(models.TransientModel):
                         )
 
                     create_list.append(vals)
-            created_items = self.env["delivery.carrier.lines"].create(create_list)
-            wizard.carrier_prices = created_items
+            if create_list:
+                created_items = self.env["delivery.carrier.lines"].create(create_list)
+                wizard.carrier_prices = created_items
         return res
 
     def get_delivery_prices(self):

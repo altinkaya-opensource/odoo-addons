@@ -3,8 +3,6 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons import decimal_precision as dp
-
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
@@ -28,21 +26,21 @@ class SaleOrder(models.Model):
     )
 
     sale_deci = fields.Float(
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_sale_deci",
         store=True,
     )
 
     sale_volume = fields.Float(
         string="Net Sale Volume",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_net_sale_weight_volume",
         store=True,
     )
 
     sale_weight = fields.Float(
         string="Net Sale Weight",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_net_sale_weight_volume",
         store=True,
     )

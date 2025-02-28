@@ -76,7 +76,7 @@ class StockQuant(models.Model):
         )
         return vals
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
         for rec in res:

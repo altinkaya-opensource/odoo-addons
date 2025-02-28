@@ -73,43 +73,44 @@ class ProductAttributeValue(models.Model):
                         pass
         return super(ProductAttributeValue, self).write(vals)
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         create_vals = super(ProductAttributeValue, self).create(vals_list)
-        if vals_list.get("name", False):
-            if create_vals["attr_type"] == "numeric":
-                if create_vals["numeric_value"] == 0.0:
-                    try:
-                        create_vals["numeric_value"] = float(
-                            (
-                                "".join(
-                                    [
-                                        c
-                                        for c in vals_list.get("name", "")
-                                        if c in "1234567890, ."
-                                    ]
-                                )
-                            ).replace(",", ".")
-                        )
-                    except Exception:
-                        pass
-
-                if create_vals["numeric_value"] != 0.0:
-                    try:
-                        create_vals["attribute_code"] = (
-                            (
-                                "".join(
-                                    [
-                                        c
-                                        for c in vals_list.get("name", "")
-                                        if c in "1234567890, ."
-                                    ]
-                                )
+        for record, vals in zip(create_vals, vals_list):
+            if vals.get("name", False):
+                if record.attr_type == "numeric":
+                    if record.numeric_value == 0.0:
+                        try:
+                            record.numeric_value = float(
+                                (
+                                    "".join(
+                                        [
+                                            c
+                                            for c in vals.get("name", "")
+                                            if c in "1234567890,."
+                                        ]
+                                    )
+                                ).replace(",", ".")
                             )
-                            .replace(",", "")
-                            .replace(".", "")
-                        )
-                    except Exception:
-                        pass
+                        except Exception:
+                            pass
 
+                    if record.numeric_value != 0.0:
+                        try:
+                            record.attribute_code = (
+                                (
+                                    "".join(
+                                        [
+                                            c
+                                            for c in vals.get("name", "")
+                                            if c in "1234567890,."
+                                        ]
+                                    )
+                                )
+                                .replace(",", "")
+                                .replace(".", "")
+                            )
+                        except Exception:
+                            pass
+            
         return create_vals

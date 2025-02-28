@@ -15,9 +15,9 @@ class PrintPackBarcodeWizard(models.TransientModel):
     )
     single_label_name = fields.Char(string="Name", related="single_label_id.name")
     single_label_nameL1 = fields.Char(string="NameL1", related="single_label_id.nameL1")
-    single_label_nameL2 = fields.Char(string="NameL1", related="single_label_id.nameL2")
-    single_label_nameL3 = fields.Char(string="NameL2", related="single_label_id.nameL3")
-    single_label_nameL4 = fields.Char(string="NameL3", related="single_label_id.nameL4")
+    single_label_nameL2 = fields.Char(string="NameL2", related="single_label_id.nameL2")
+    single_label_nameL3 = fields.Char(string="NameL3", related="single_label_id.nameL3")
+    single_label_nameL4 = fields.Char(string="NameL4", related="single_label_id.nameL4")
     single_label_default_code = fields.Char(
         string="Default Code", related="single_label_id.default_code"
     )

@@ -5,8 +5,6 @@ import logging
 from odoo import api, fields, models
 from odoo.tools import float_is_zero
 
-from odoo.addons import decimal_precision as dp
-
 _logger = logging.getLogger(__name__)
 
 
@@ -15,7 +13,7 @@ class SaleOrderLine(models.Model):
 
     volume = fields.Float(
         string="Volume (in litre)",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_line_weight_volume",
         store=True,
         readonly=True,
@@ -23,14 +21,14 @@ class SaleOrderLine(models.Model):
 
     weight = fields.Float(
         string="Weight (in kg)",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_line_weight_volume",
         store=True,
         readonly=True,
     )
 
     deci = fields.Float(
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_deci",
     )
 
