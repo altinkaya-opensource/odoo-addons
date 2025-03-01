@@ -104,7 +104,7 @@ class StockPicking(models.Model):
         :return:
         """
         for picking in self:
-            deci = sum(picking.mapped("move_lines.sale_line_id.deci"))
+            deci = sum(picking.mapped("move_ids.sale_line_id.deci"))
             factor = picking.carrier_id._get_dimension_factor(deci)
             picking.picking_total_deci = deci * factor
 
@@ -115,7 +115,7 @@ class StockPicking(models.Model):
         """
         for picking in self:
             total_cost = 0.0
-            sale_move_lines = picking.move_lines.filtered("sale_line_id")
+            sale_move_lines = picking.move_ids.filtered("sale_line_id")
             for move in sale_move_lines:
                 sale_id = move.sale_line_id.order_id
                 ol = move.sale_line_id
