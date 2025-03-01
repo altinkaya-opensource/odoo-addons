@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree default_order="date_done desc" editable="top">
                 <field name="state" invisible="1"/>
+                <field name="company_id" invisible="1"/>
                 <field name="delivery_payment_type" invisible="1"/>
                 <field name="date_done" />
                 <field name="name"/>
@@ -39,5 +40,5 @@
     <menuitem id="stock_picking_dispatched_deliveries_menu"
               action="action_stock_picking_dispatched_deliveries"
               parent="stock.menu_stock_warehouse_mgmt" sequence="0"/>
-    
+
 </odoo>
