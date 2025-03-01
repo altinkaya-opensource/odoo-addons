@@ -259,15 +259,6 @@
             <xpath expr="//field[@name='order_line']/form//field[@name='route_id']" position="before">
                 <field name="deci"/>
             </xpath>
-
-            <xpath expr="//group[@name='utm_link']" position="attributes">
-                <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
-            </xpath>
-
-            <xpath expr="//group[@name='utm_link']" position="inside">
-                <field name="opportunity_id" groups="sales_team.group_sale_salesman_all_leads" />
-            </xpath>
-
         </field>
     </record>
   </data>
