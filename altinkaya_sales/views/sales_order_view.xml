@@ -90,7 +90,7 @@
         <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]"  position="after">
           <field name="client_order_ref"/>
           <field name="warehouse_id"/>
-                    <field name="confirmation_date" readonly="1"
+                    <field name="date_order" readonly="1"
                  attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"
                  on_change="1"
                  modifiers="{'invisible':[['state','in',['draft','sent','cancel']]],'readonly':true}"/>
@@ -225,6 +225,50 @@
           </page>
         </xpath>
       </field>
+    </record>
+
+    <!--RECORD 8: Order Line Modifications-->
+    <record model='ir.ui.view' id='view_sales_order_form_order_line_modifications'>
+        <field name='name'>sales order form</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field eval="100" name="priority" />
+        <field name='arch' type='xml'>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="replace" />
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace" />
+            <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="replace" />
+
+            <xpath expr="//field[@name='order_line']/form/group/group" position="before">
+                <group colspan="2">
+                    <field name="product_id" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" attrs="{
+                                'readonly': [('product_updatable', '=', False)],
+                                'required': [('display_type', '=', False)],
+                            }" force_save="1" widget="many2one_barcode" />
+                    <field name="product_tmpl_id" />
+                    <label for="show_custom_products"/>
+                    <div>
+                        <field name="show_custom_products" />
+                    </div>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//label[@for='customer_lead']" position="before">
+                <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'), ('company_id','=',parent.company_id), ('country_id', '=', parent.tax_country_id)]" on_change="1" modifiers="{&quot;readonly&quot;: [[&quot;qty_invoiced&quot;, &quot;&gt;&quot;, 0]]}" can_create="true" can_write="true"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//field[@name='route_id']" position="before">
+                <field name="deci"/>
+            </xpath>
+
+            <xpath expr="//group[@name='utm_link']" position="attributes">
+                <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='utm_link']" position="inside">
+                <field name="opportunity_id" groups="sales_team.group_sale_salesman_all_leads" />
+            </xpath>
+
+        </field>
     </record>
   </data>
 </odoo>
