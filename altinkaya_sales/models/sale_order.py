@@ -219,7 +219,7 @@ class SaleOrder(models.Model):
 
         return True
 
-    sale_line_history = fields.One2many(
+    sale_line_history = fields.Many2many(
         "sale.order.line", string="Old Sales", compute="_compute_sale_line_history"
     )
 
