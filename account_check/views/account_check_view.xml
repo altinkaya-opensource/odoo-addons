@@ -201,6 +201,8 @@
         </field>
     </record>
 
+    <menuitem id="menu_account_check_root" name="Çek Yönetimi" parent="account.menu_finance" sequence="20"/>
+
     <!-- Third Check Menu -->
     <record model="ir.actions.act_window" id="action_third_check">
         <field name="name">Third Checks</field>
@@ -211,11 +213,11 @@
     </record>
 
     <!--TODO: Enable This-->
-    <!-- <menuitem
+    <menuitem
         action="action_third_check"
         id="menu_third_check"
         sequence="40"
-        parent="account_payment_fix.menu_finance_check_and_promissory_note"/> -->
+        parent="menu_account_check_root"/>
 
     <!-- Issued Check Menu -->
     <record model="ir.actions.act_window" id="action_issue_check">
@@ -226,11 +228,11 @@
         <field name="context">{'default_type':'issue_check'}</field>
     </record>
     <!--TODO: Enable This-->
-    <!-- <menuitem
+    <menuitem
         action="action_issue_check"
         id="menu_issue_check"
         sequence="50"
-        parent="account_payment_fix.menu_finance_check_and_promissory_note"/> -->
+        parent="menu_account_check_root"/>
 
 	<!-- Deposit Promissory Note Menu -->
 <!-- 	<record model="ir.actions.act_window" id="action_deposit_promissory_note"> -->

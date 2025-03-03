@@ -24,7 +24,6 @@ class AccountJournal(models.Model):
         issue_checks = self.env.ref("account_check.account_payment_method_issue_check")
         for r in rec:
             if issue_checks in r.outbound_payment_method_ids and not r.checkbook_ids:
-                r._create_checkbook()
         return rec
 
     def _create_checkbook(self):
@@ -53,7 +52,7 @@ class AccountJournal(models.Model):
                 bank_journal._create_checkbook()
             bank_journal.write(
                 {
-                    "outbound_payment_method_ids": [(4, issue_checks.id, None)],
+                    "outbound_payment_method_line_ids": [(4, issue_checks.id, None)],
                 }
             )
 
@@ -90,10 +89,10 @@ class AccountJournal(models.Model):
             num_checks_to_numerate=num_checks_to_numerate,
             num_holding_third_checks=len(holding_checks),
             show_third_checks=(
-                "received_third_check" in self.inbound_payment_method_ids.mapped("code")
+                "received_third_check" in self.inbound_payment_method_line_ids.mapped("code")
             ),
             show_issue_checks=(
-                "issue_check" in self.outbound_payment_method_ids.mapped("code")
+                "issue_check" in self.outbound_payment_method_line_ids.mapped("code")
             ),
             num_handed_issue_checks=len(handed_checks),
             handed_amount=formatLang(

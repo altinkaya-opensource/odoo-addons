@@ -129,7 +129,7 @@
                                     <td style="width:60px;text-align:left;">
                                         <span t-field="o.id" />
                                         <br />
-                                        <span t-field="o.payment_date" />
+                                        <span t-field="o.date" />
                                     </td>
                                 </tr>
                             </table>
@@ -153,7 +153,7 @@
                                         Bankasına ait
                                         <span t-field="o.check_id.number" />
                                         seri numaralı
-                                        <strong t-field="o.check_id.payment_date" />
+                                        <strong t-field="o.check_id.date" />
                                         vadeli çek alınmıştır.
                                     </span>
 
@@ -168,20 +168,20 @@
                                     <t
                     t-if="o.journal_id.type=='cash' and o.payment_method_code != 'received_third_check'"
                   >
-                                        Nakit
+                                         Nakit
                                     </t>
                                    <t
                     t-elif="o.journal_id.code=='CEK' or o.payment_method_code == 'received_third_check'"
-                  >ÇEK</t>
+                  > ÇEK</t>
                                     <t
                     t-elif="o.journal_id.code=='POSG' or o.journal_id.code=='POSIS'"
-                  >Kredi Kartı
-                                        Ödemesi
+                  > Kredi Kartı
+                                         Ödemesi
                                     </t>
                                     <t
                     t-elif="o.journal_id.code=='POSGB'"
-                  >Sanal Pos Ödemesi</t>
-                                    <t t-else="">Banka Ödemesi</t>
+                  > Sanal Pos Ödemesi</t>
+                                    <t t-else=""> Banka Ödemesi</t>
                                     olarak tahsil edilmiştir.
                                 </p>
                             </div>
@@ -202,9 +202,9 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <t t-if="o.communication">
+                                <t t-if="o.ref">
                                     Notlar:
-                                    <span t-field="o.communication" />
+                                    <span t-field="o.ref" />
                                 </t>
                             </div>
                         </div>

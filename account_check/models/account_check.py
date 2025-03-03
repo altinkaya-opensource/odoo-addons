@@ -290,7 +290,7 @@ class AccountCheck(models.Model):
                         "* Operation Date: %s\n"
                         "* Last Operation Date: %s"
                     )
-                    % (rec.id, rec.name, operation, date, rec.operation_ids[-1].date)
+                    % (rec.id, rec.number, operation, date, rec.operation_ids[-1].date)
                 )
             vals = {
                 "operation": operation,
@@ -457,10 +457,16 @@ class AccountCheck(models.Model):
         # hacemos esa verificación
         account = self.env["account.account"]
         for rec in self:
-            credit_account = rec.journal_id.default_credit_account_id
-            debit_account = rec.journal_id.default_debit_account_id
-            inbound_methods = rec.journal_id["inbound_payment_method_ids"]
-            outbound_methods = rec.journal_id["outbound_payment_method_ids"]
+            credit_account = rec.journal_id.default_account_id.account_type in [
+                "liability_payable",
+                "asset_receivable",
+            ]
+            debit_account = rec.journal_id.default_account_id.account_type in [
+                "liability_payable",
+                "asset_receivable",
+            ]
+            inbound_methods = rec.journal_id["inbound_payment_method_line_ids"]
+            outbound_methods = rec.journal_id["outbound_payment_method_line_ids"]
             # si hay cuenta en diario y son iguales, y si los metodos de pago
             # y cobro son solamente uno, usamos el del diario, si no, usamos el
             # de la compañía
@@ -615,7 +621,7 @@ class AccountCheck(models.Model):
         vals["journal_id"] = journal.id or False
         vals["date"] = action_date
         move = self.env["account.move"].create(vals)
-        move.post()
+        move.action_post()
         self._add_operation(operation, move, partner, date=action_date)
 
         return True
@@ -626,9 +632,16 @@ class AccountCheck(models.Model):
         self.ensure_one()
         ref = name
         amount = self.amount
-        debit, credit, amount_currency, currency_id = self.env[
-            "account.move.line"
-        ]._compute_amount_fields(amount, self.currency_id, self.company_currency_id)
+        if self.currency_id == self.company_currency_id:
+            debit = amount if amount > 0.0 else 0.0
+            credit = -amount if amount < 0.0 else 0.0
+            amount_currency = 0.0
+            currency_id = False
+        else:
+            debit = amount > 0.0 and self.company_currency_id.round(amount) or 0.0
+            credit = amount < 0.0 and self.company_currency_id.round(-amount) or 0.0
+            amount_currency = amount
+            currency_id = self.currency_id.id
         if self.company_currency_id != self.currency_id:
             currency_id = self.currency_id.id
         else:

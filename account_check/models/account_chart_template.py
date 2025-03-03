@@ -76,8 +76,8 @@ class AccountChartTemplate(models.Model):
                 "name": "Cheques de Terceros",
                 "type": "cash",
                 "company_id": company.id,
-                "inbound_payment_method_ids": [(4, received_third_check.id, None)],
-                "outbound_payment_method_ids": [(4, delivered_third_check.id, None)],
+                "inbound_payment_method_line_ids": [(4, received_third_check.id, None)],
+                "outbound_payment_method_line_ids": [(4, delivered_third_check.id, None)],
             }
         )
 

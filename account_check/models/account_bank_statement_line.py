@@ -12,17 +12,17 @@ _logger = logging.getLogger(__name__)
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
-    def button_cancel_reconciliation(self):
+    def action_undo_reconciliation(self):
         """Delete operation of checks that are debited from statement"""
-        for st_line in self.filtered("move_name"):
-            if st_line.journal_entry_ids.filtered(
-                lambda x: x.payment_id.payment_reference == st_line.move_name
+        for st_line in self.filtered("payment_ref"):
+            if st_line.move_id.line_ids.filtered(
+                lambda x: x.payment_id.ref == st_line.payment_ref
             ):
                 check_operation = self.env["account.check.operation"].search(
                     [("origin", "=", "account.bank.statement.line,%s" % st_line.id)]
                 )
                 check_operation.check_id._del_operation(st_line)
-        return super(AccountBankStatementLine, self).button_cancel_reconciliation()
+        return super(AccountBankStatementLine, self).action_undo_reconciliation()
 
     def process_reconciliation(
         self, counterpart_aml_dicts=None, payment_aml_rec=None, new_aml_dicts=None
