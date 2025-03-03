@@ -31,6 +31,13 @@ class SaleOrder(models.Model):
         store=True,
     )
 
+    sale_last_deci = fields.Float(
+        string="Last Confirmed Deci",
+        digits="Product Unit of Measure",
+        compute="_compute_sale_last_deci",
+        store=True,
+    )
+
     sale_volume = fields.Float(
         string="Net Sale Volume",
         digits="Product Unit of Measure",
@@ -53,6 +60,18 @@ class SaleOrder(models.Model):
             factor = carrier._get_dimension_factor(deci)
             order.sale_deci = deci * factor
 
+    @api.depends("order_line.last_deci", "state")
+    def _compute_sale_last_deci(self):
+        for order in self:
+            if order.state != "sale":
+                order.sale_last_deci = 0.0
+                continue
+            
+            carrier = order.carrier_id
+            deci = sum(order.order_line.mapped("last_deci"))
+            factor = carrier._get_dimension_factor(deci)
+            order.sale_last_deci = deci * factor
+
     @api.depends("order_line", "order_line.volume", "order_line.weight")
     def _compute_net_sale_weight_volume(self):
         for order in self:
@@ -65,6 +84,8 @@ class SaleOrder(models.Model):
         We don't want to break workflow of sale confirmation, so we added
         a context on confirm button to check if carrier line added to order
         lines.
+
+        Also, update last_deci field of order lines.
         """
         if self._context.get("check_order_lines_deci"):
             for order in self.filtered(
@@ -79,6 +100,12 @@ class SaleOrder(models.Model):
                             "Please add carrier line to order lines."
                         )
                     )
+
+        # Update last_deci field of order lines
+        order_lines = self.order_line
+        for line in order_lines:
+            line.last_deci = line.deci
+        
         return super().action_confirm()
 
     def _create_delivery_line(self, carrier, price_unit):
@@ -90,23 +117,23 @@ class SaleOrder(models.Model):
         res.with_context({"sale_id": res.order_id.id})._compute_discount()
         return res
 
-    def action_sale_get_rates_wizard(self):
-        """Create wizard to get delivery rates."""
-        self.ensure_one()
-        view = self.env.ref("delivery_integration_base.view_sale_get_rates_wizard")
+    # def action_sale_get_rates_wizard(self):
+    #     """Create wizard to get delivery rates."""
+    #     self.ensure_one()
+    #     view = self.env.ref("delivery_integration_base.view_sale_get_rates_wizard")
 
-        rate_wizard = self.env["sale.get.rates.wizard"].create(
-            {
-                "sale_id": self.id,
-            }
-        )
-        return {
-            "name": _("Carrier Rates"),
-            "type": "ir.actions.act_window",
-            "view_mode": "form",
-            "res_id": rate_wizard.id,
-            "res_model": "sale.get.rates.wizard",
-            "views": [(view.id, "form")],
-            "view_id": view.id,
-            "target": "new",
-        }
+    #     rate_wizard = self.env["sale.get.rates.wizard"].create(
+    #         {
+    #             "sale_id": self.id,
+    #         }
+    #     )
+    #     return {
+    #         "name": _("Carrier Rates"),
+    #         "type": "ir.actions.act_window",
+    #         "view_mode": "form",
+    #         "res_id": rate_wizard.id,
+    #         "res_model": "sale.get.rates.wizard",
+    #         "views": [(view.id, "form")],
+    #         "view_id": view.id,
+    #         "target": "new",
+    #     }

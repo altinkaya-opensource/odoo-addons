@@ -51,4 +51,15 @@
             </xpath> -->
         </field>
     </record>
+
+    <record id="view_sale_order_hide_delivery" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_delivery_wizard']/parent::div" position="attributes">
+                <attribute name="attrs">{'invisible': [('state','in', ['sale'])]}</attribute>
+            </xpath>
+        </field>    
+    </record>
 </odoo>
