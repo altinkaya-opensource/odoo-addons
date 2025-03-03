@@ -36,7 +36,7 @@ class StockPicking(models.Model):
         currency_field="shipping_currency_id",
     )
     sale_shipping_cost_try = fields.Monetary(
-        "Sale Shipping Cost",
+        "Sale Shipping Cost TRY",
         help="Sale shipping cost no VAT",
         compute="_compute_sale_shipping_cost",
         currency_field="currency_id_try",
@@ -104,7 +104,7 @@ class StockPicking(models.Model):
         :return:
         """
         for picking in self:
-            deci = sum(picking.mapped("move_lines.sale_line_id.deci"))
+            deci = sum(picking.mapped("move_ids.sale_line_id.last_deci"))
             factor = picking.carrier_id._get_dimension_factor(deci)
             picking.picking_total_deci = deci * factor
 
@@ -115,15 +115,17 @@ class StockPicking(models.Model):
         """
         for picking in self:
             total_cost = 0.0
-            sale_move_lines = picking.move_lines.filtered("sale_line_id")
+            sale_move_lines = picking.move_ids.filtered("sale_line_id")
             for move in sale_move_lines:
                 sale_id = move.sale_line_id.order_id
                 ol = move.sale_line_id
-                ol_deci = ol.deci * sale_id.carrier_id._get_dimension_factor(ol.deci)
+                ol_deci = ol.last_deci * sale_id.carrier_id._get_dimension_factor(
+                    ol.last_deci
+                )
                 deliver_cost = sum(
                     sale_id.order_line.filtered("is_delivery").mapped("price_unit")
                 )
-                sale_deci = sale_id.sale_deci
+                sale_deci = sale_id.sale_last_deci
                 if deliver_cost and sale_deci:
                     # compute weighted average
                     total_cost += (deliver_cost / sale_deci) * ol_deci

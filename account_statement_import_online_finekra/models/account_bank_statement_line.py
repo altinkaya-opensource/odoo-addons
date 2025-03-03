@@ -17,17 +17,19 @@ class AccountBankStatementLine(models.Model):
         string="Sale Orders",
     )
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Inherited to automatically bind orders to statement line
         :param vals:
         :return:
         """
-        res = super().create(vals)
+        res = super().create(vals_list)
         order_ref_pattern = r"\b[A-Za-z]{2}\d{6,7}\b"
-        matched_refs = re.findall(order_ref_pattern, res.name)
-        if matched_refs:
+        for r in res:
+            matched_refs = re.findall(order_ref_pattern, r.name)
+            if not matched_refs:
+                continue
             # Todo: this method could be multi as well
             orders = self.env["sale.order"].search(
                 [
@@ -36,20 +38,20 @@ class AccountBankStatementLine(models.Model):
                 ]
             )
             if len(orders) != 1:
-                return res
+                continue
 
             if float_compare(orders.amount_total, res.amount, 2) != 0:
-                return res
+                continue
 
             commercial_partner = orders.mapped("partner_id.commercial_partner_id")
 
             # We can't create payment for multiple partners
             if len(commercial_partner) > 1:
-                return res
+                continue
 
             # Only work on positive amounts
-            if res.amount < 0:
-                return res
+            if r.amount < 0:
+                continue
 
             data = [
                 {
@@ -58,12 +60,12 @@ class AccountBankStatementLine(models.Model):
                         {
                             "account_id": commercial_partner.property_account_receivable_id.id,  # noqa
                             "analytic_tag_ids": [[6, None, []]],
-                            "credit": res.amount,
-                            "company_id": res.company_id.id,
+                            "credit": r.amount,
+                            "company_id": r.company_id.id,
                             # we are working with credit, so residual amount is negative
-                            "amount_residual": -res.amount,
+                            "amount_residual": -r.amount,
                             "debit": 0,
-                            "name": res.name,
+                            "name": r.name,
                         }
                     ],
                     "partner_id": commercial_partner.id,
@@ -71,11 +73,11 @@ class AccountBankStatementLine(models.Model):
                 }
             ]
             self.env["account.reconciliation.widget"].process_bank_statement_line(
-                st_line_ids=[res.id], data=data
+                st_line_ids=[r.id], data=data
             )
 
             # Bind orders to statement line
-            res.order_ids = [(6, 0, orders.ids)]
+            r.order_ids = [(6, 0, orders.ids)]
 
             payment_id = res.mapped("journal_entry_ids.payment_id")
             if payment_id:

@@ -38,7 +38,7 @@
                     <field name="partner_id" context="{'show_address': 1}" options="{'always_reload': True}" nolabel="1"/>
                 </xpath>
 
-                <field name="origin" position="after">
+                <field name="location_id" position="before">
                     <field name="carrier_id"/>
                     <field name="hazirlayan"/>
                     <field name='x_durum'/>
@@ -50,9 +50,7 @@
                     </group>
                 </xpath>
 
-                <xpath expr="//page[@name='note']" position='attributes'>
-                    <attribute name="attrs">{'invisible':1}</attribute>
-                </xpath>
+                <xpath expr="//page[@name='note']" position='inside'></xpath>
                 
                 <field name="priority" position="replace"/>
                 <field name="date_done" position="replace"/>

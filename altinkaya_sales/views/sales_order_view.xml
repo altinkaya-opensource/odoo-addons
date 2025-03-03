@@ -1,196 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+  <data>
+    <!--RECORD 1: Sale Order List View Modifications-->
+    <!--RECORD 2: Modifications on main part-->
+    <!--RECORD 3: Order Lines Tab-->
+    <!--RECORD 4: Other Information Tab-->
+    <!--RECORD 5: History Tab-->
+    <!--RECORD 6: Old Sales Tab-->
+    <!--RECORD 7: Manufacturing Orders Tab-->
 
-        <!-- sales order form view -->
+    <!--RECORD 1: Sale Order List View Modifications-->
+    <record model="ir.ui.view" id="view_sales_order_list_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_tree"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <!--Display the untaxed amount on the sales orders list-->
+        <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='amount_untaxed']" position="replace">
+          <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="show"/>
+        </xpath>
+        <!--Hide the tax included total-->
+        <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='amount_total']" position="replace">
+          <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="hide"/>
+        </xpath>
+      </field>
+    </record>
 
-        <record model='ir.ui.view' id='view_sales_order_form_A'>
-            <field name='name'>sales order form</field>
-            <field name='model'>sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form" />
-            <field eval="100" name="priority" />
-            <field name='arch' type='xml'>
-                <xpath expr="//field[@name='partner_invoice_id']" position="replace">
-                    <field name="partner_invoice_id" context="{'default_type':'invoice', 'show_address': 1}" options='{"always_reload": True}' />
-                </xpath>
-                <xpath expr="//field[@name='partner_shipping_id']" position="replace">
-                    <field name="partner_shipping_id" context="{'default_type':'delivery', 'show_address': 1}" options='{"always_reload": True}' />
-                </xpath>
-                <xpath expr="//page[@name='other_information']" position='after'>
-                    <page string='History'>
-                        <label for='invoice_ids' />
-                        <field name='invoice_ids' />
-                        <label for='picking_ids' />
-                        <field name='picking_ids'>
-                            <tree>
-                                <field name='name' />
-                                <field name='location_id' />
-                                <field name='location_dest_id' />
-                                <field name='date_done' />
-                                <field name='carrier_id' />
-                                <field name='state' />
-                            </tree>
-                        </field>
-                    </page>
-                    <page string="Old Sales">
-                        <label for='sale_line_history' />
-                        <field name='sale_line_history' >
-                            <tree>
-                                <button class="oe_edit_only" name="copy_line_to_active_order" type="object" attrs="{'invisible':[('parent.state','not in',['draft'])]}" context="{'active_order_id':parent.id}" string="Copy to Sale" icon="fa-plus"/>
-                                <field name="date_order"/>
-                                <field name="order_id"/>
-                                <field name="name"/>
-                                <field name="salesman_id"/>
-                                <field name="product_uom_qty"/>
-                                <field name="price_unit"/>
-                                <field name="discount"/>
-                                <field name="price_total"/>
+    <!--RECORD 2: Modifications on main part-->
+    <record model="ir.ui.view" id="view_sales_order_form_main_part_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <!--Left Column-->
+        <!--Change the displayed info on partner invoice address-->
+        <xpath expr="//field[@name='partner_invoice_id']" position="replace">
+          <field name="partner_invoice_id" context="{'default_type':'invoice', 'show_address': 1}" options="{'always_reload': True}"/>
+        </xpath>
+        <!--Change the displayed info on partner shipping address-->
+        <xpath expr="//field[@name='partner_shipping_id']" position="replace">
+          <field name="partner_shipping_id" context="{'default_type':'delivery', 'show_address': 1}" options="{'always_reload': True}"/>
+        </xpath>
+        <!--Add payment term and create ewaybill within invoice fields after the shipping address-->
+        <xpath expr="//field[@name='partner_shipping_id']" position="after">
+            <label for="carrier_id" modifiers="{}"/>
+            <div name="carrier_id_display" modifiers="{}">
+                <div modifiers="{}">
+                    <field name="carrier_id"
+                          options="{'no_create': True, 'no_open': True}"
+                          attrs="{'readonly':[('state','not in',('draft','sent'))]}"
+                          modifiers="{'readonly':[['state','not in',['draft','sent']]]}"/>
+                    <i class="fa fa-check text-success"
+                      role="img"
+                      aria-label="Rating OK"
+                      title="Rating OK"
+                      attrs="{'invisible':['|','|',('carrier_id','=',False),('state','not in',('draft','sent')),('delivery_rating_success','=',False)]}"
+                      modifiers="{'invisible':['|','|',['carrier_id','=',false],['state','not in',['draft','sent']],['delivery_rating_success','=',false]]}"/>
+                </div>
+                <div modifiers="{}">
+                    <span modifiers="{}">
+                          <div class="o_row">
+                            <span>Desi: </span>
+                            <t t-if="sale_last_deci != 0">
+                              <field name="sale_last_deci" readonly="1" modifiers="{'readonly': true}"/>
+                            </t>
+                            <t t-else="">
+                              <field name="sale_deci" readonly="1" modifiers="{'readonly': true}"/>
+                            </t>
+                        </div>
+                    </span>
+                    <field name="delivery_rating_success"
+                          invisible="1"
+                          force_save="1"
+                          modifiers="{'invisible':true}"/>
+                </div>
+                <div class="alert alert-info"
+                    role="status"
+                    attrs="{'invisible': ['|',('carrier_id','=', False),('delivery_message','=',False)]}"
+                    modifiers="{'invisible':['|',['carrier_id','=',false],['delivery_message','=',false]]}">
+                    <field name="delivery_message"
+                          force_save="1"
+                          modifiers="{'readonly':true}"/>
+                </div>
+            </div>
+            <!-- <field name="create_ewaybill_within_invoice"/> -->
+        </xpath>
 
-                            </tree>
+        <!--Right Column-->
+        <!--Add elements after the date order-->
+        <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]"  position="after">
+          <field name="client_order_ref"/>
+          <field name="warehouse_id"/>
+                    <field name="date_order" readonly="1"
+                 attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"
+                 on_change="1"
+                 modifiers="{'invisible':[['state','in',['draft','sent','cancel']]],'readonly':true}"/>
+          <field name="create_uid" readonly="1" can_create="true" can_write="true" modifiers="{'readonly':true}"/>
+          <field name="source_id" can_create="true" can_write="true" modifiers="{}" readonly="1"/>
+        </xpath>
+      </field>
+    </record>
 
-                        </field>
-                    </page>
-                </xpath>
+    <!-- RECORD 3: Order Lines Tab -->
+    <record model="ir.ui.view" id="view_sales_order_form_order_lines_tab_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <!-- Remove the product template id. -->
+        <xpath expr="//field[@name='order_line']/tree//field[@name='product_tmpl_id']" position="replace"/>
+      </field>
+    </record>
 
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="after">
+    <!--RECORD 4: Other Information Tab-->
+    <record model="ir.ui.view" id="view_sales_order_form_other_information_tab_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <!--Sale Shipping Group-->
+        <!--Remove the incoterm address id from the Diğer Bilgiler>Sevkiyat-->
+        <xpath expr="//field[@name='incoterm_address_id']" position="replace"/>
+        <!--Remove the incoterm location-->
+        <xpath expr="//group[@name='sale_shipping']/field[@name='incoterm_location']" position="replace"/>
+        <xpath expr="//group[@name='sale_shipping']/label[@for='commitment_date']" position="replace"/>
+        <!--Remove the unstylish commitment date-->
+        <xpath expr="//notebook//group/group[@name='sale_shipping']/div[@class='o_row']" position="replace"/>
+        <!--Add the necessary fields.-->
+        <xpath expr="//notebook//group/group[@name='sale_shipping']/field[@name='picking_policy']" position="after">
+          <field name="expected_date" readonly="true"/>
+          <field name="commitment_date"/>
+          <field name="effective_date" readonly="true"/>
+        </xpath>
+        <!--Sale Info Group-->
+        <!--Add the currency rate field-->
+        <xpath expr="//notebook/page[@name='other_information']//group[@name='sale_info']//field[@name='invoice_status']" position="after">
+          <field name='currency_rate' readonly="1"/>
+        </xpath>
+      </field>
+    </record>
+
+    <!--RECORD 5: History Tab-->
+    <record model="ir.ui.view" id="view_sales_order_form_history_tab_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='other_information']" position="after">
+          <page string="History" name="history">
+            <!--Invoices Part-->
+            <label for="invoice_ids"/>
+            <field name="invoice_ids"/>   
+            <!--Pickings Part-->
+            <label for="picking_ids"/>
+            <field name="picking_ids">
+              <tree>
+                <field name="name"/>
+                <field name="location_id"/>
+                <field name="location_dest_id"/>
+                <field name="date_done"/>
+                <field name="carrier_id"/>
+                <field name="state"/>
+              </tree>
+            </field>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!--RECORD 6: Old Sales Tab-->
+    <record model="ir.ui.view" id="view_sales_order_form_old_sales_tab_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='history']" position="after">
+          <page string="Old Sales" name="old_sales"> 
+            <label for="sale_line_history"/>
+            <field name="sale_line_history">
+              <tree>
+                <button class="oe_edit_only" name="copy_line_to_active_order" type="object"
+                        attrs="{'invisible':[('parent.state','not in',['draft'])]}"
+                        context="{'active_order_id':parent.id}" string="Copy to Sale" icon="fa-plus"/>
+                <field name="date_order"/>
+                <field name="order_id"/>
+                <field name="name"/>
+                <field name="salesman_id"/>
+                <field name="product_uom_qty"/>
+                <field name="price_unit"/>
+                <field name="discount"/>
+                <field name="price_total"/>
+              </tree>
+            </field>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!--RECORD 7: Manufacturing Orders Tab-->
+    <record model="ir.ui.view" id="view_sales_order_form_manufacturing_orders_tab_modifications">
+      <field name="name">sales order form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='old_sales']" position="after">
+          <page string="Manufacturing Orders" name="manufacturing_orders">
+            <field name="production_ids" nolabel="1">
+              <tree>
+                <field name="name"/>
+                <field name="priority"/>
+                <field name="process_id" />
+                <field name="product_qty"/>
+                <field name="product_uom_id"/>     
+                <field name="components_availability_state"/>
+                <field name="state"/>
+                <field name="date_start"/>
+                <field name="date_finished"/>
+              </tree>
+            </field>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!--RECORD 8: Order Line Modifications-->
+    <record model='ir.ui.view' id='view_sales_order_form_order_line_modifications'>
+        <field name='name'>sales order form</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field eval="100" name="priority" />
+        <field name='arch' type='xml'>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="replace" />
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace" />
+            <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="replace" />
+
+            <xpath expr="//field[@name='order_line']/form/group/group" position="before">
+                <group colspan="2">
+                    <field name="product_id" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" attrs="{
+                                'readonly': [('product_updatable', '=', False)],
+                                'required': [('display_type', '=', False)],
+                            }" force_save="1" widget="many2one_barcode" />
+                    <field name="product_tmpl_id" />
                     <label for="show_custom_products"/>
                     <div>
                         <field name="show_custom_products" />
                     </div>
-                </xpath>
+                </group>
+            </xpath>
 
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="after">
-                    <field name="set_product" invisible="1" />
-                    <span class="oe_form_field" attrs="{'invisible':[('set_product','=',False)]}">This is a set product</span>
+            <xpath expr="//field[@name='order_line']/form//label[@for='customer_lead']" position="before">
+                <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'), ('company_id','=',parent.company_id), ('country_id', '=', parent.tax_country_id)]" on_change="1" modifiers="{&quot;readonly&quot;: [[&quot;qty_invoiced&quot;, &quot;&gt;&quot;, 0]]}" can_create="true" can_write="true"/>
+            </xpath>
 
-                </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page string="Manufacturing Orders">
-                        <field name="production_ids" nolabel="1">
-                            <tree>
-                                <field name="name"/>
-                                <field name="priority"/>
-                                <!-- <field name="process_id" /> -->
-                                <field name="product_qty" />
-                                <field name="product_uom_id" />
-                                <!-- <field name="availability" /> -->
-                                <field name="state" />
-                                <!-- <field name="date_start2" /> -->
-                                <field name="date_finished" />
-                            </tree>
-                        </field>
-                    </page>
-                </xpath>
-
-                <xpath expr="/form/sheet/group/group//field[@name='pricelist_id']" position="before">
-                    <field name="create_uid" readonly="1" />
-                </xpath>
-
-                <xpath expr="/form/sheet/group/group//field[@name='pricelist_id']" position="before">
-                    <field name="source_id" can_create="true" can_write="true" modifiers="{}"/>
-                </xpath>
-
-                <xpath expr="/form/sheet/group/group//field[@name='source_id']" position="attributes">
-                    <attribute name="string">Kaynak</attribute>
-                </xpath>
-
-                <xpath expr="/form/sheet/group/group//field[@name='payment_term_id']" position="replace"/>
-                <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                    <field name="payment_term_id"/>
-                </xpath>
-
-            </field>
-        </record>
-
-        <record model='ir.ui.view' id='view_sales_order_form_v2_to_v12_views'>
-            <field name='name'>sales order form</field>
-            <field name='model'>sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form" />
-            <field eval="1098" name="priority" />
-            <field name='arch' type='xml'>
-                <xpath expr="//field[@name='order_line']/tree" position="attributes">
-                    <attribute name="editable"/>
-                </xpath>
-
-                <xpath expr="/form/sheet/group/group//field[@name='validity_date']" position="before">
-                    <field name="date_order" attrs="{'readonly':[('state','not in',['draft','sent'])]}" />
-                </xpath>
-                <xpath expr="/form/sheet/group/group//field[@name='validity_date']" position="after">
-                    <field name="client_order_ref" />
-                    <field name="warehouse_id" />
-                </xpath>
-
-                <xpath expr="//field[@name='payment_term_id']" position='replace' />
-                <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                    <field name="payment_term_id"/>
-                </xpath>
-                <xpath expr="/form/header" position="after">
-                    <header attrs="{'invisible': [('order_state', '=', 'draft')]}">
-                        <field name="order_state" widget="statusbar" statusbar_visible="02_sent,03_sale,06_molding,08_injection,14_cnc,16_uv_printing,18_assembly,21_at_warehouse,22_packaged,23_on_transit,24_delivered"/>
-                    </header>
-                </xpath>
-            </field>
-
-
-        </record>
-
-        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-            <field name="name">Quotations</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-
-            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
-            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-            <field name="context"></field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                Create a new quotation, the first step of a new sale!
-                </p>
-                <p>
-                Once the quotation is confirmed by the customer, it becomes a sales order.<br/>
- You will be able to create an invoice and collect the payment.
-                </p>
-            </field>
-        </record>
-
-        <record id="sale.action_quotations" model="ir.actions.act_window">
-            <field name="name">Quotations</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-            <field name="context"></field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                Create a new quotation, the first step of a new sale!
-                </p>
-                <p>
-                Once the quotation is confirmed by the customer, it becomes a sales order.<br/>
- You will be able to create an invoice and collect the payment.
-                </p>
-            </field>
-        </record>
-
-        <record id="sale_order_kanban_inherit_altinkaya" model="ir.ui.view">
-            <field name="name">sale.order.kanban.inherit.altinkaya</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
-            <field name="arch" type="xml">
-
-                <xpath expr="//kanban" position="attributes">
-                    <attribute name="default_group_by">state</attribute>
-                </xpath>
-
-                <xpath expr="//field[@name='currency_id']" position="after">
-                    <field name="currency_id_usd" />
-                    <field name="amount_untaxed_usd" widget="monetary" options="{'currency_field': 'currency_id_usd'}"/>
-                    <field name="order_state" />
-                    <progressbar field="order_state" colors="{&quot;25_completed&quot;: &quot;success&quot;}" sum_field="amount_untaxed_usd"/>
-                </xpath>
-            </field>
-        </record>
-
-
-    </data>
+            <xpath expr="//field[@name='order_line']/form//field[@name='route_id']" position="before">
+                <field name="deci"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
 </odoo>

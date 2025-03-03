@@ -1,30 +1,51 @@
-# Copyright 2023 Yiğit Budak (https://github.com/yibudak)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
 from datetime import datetime
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 
-class SaleGetRatesWizard(models.TransientModel):
-    _name = "sale.get.rates.wizard"
-    _description = "Sale Get Rates Wizard"
+class ChooseDeliveryCarrier(models.TransientModel):
+    _inherit = "choose.delivery.carrier"
 
     carrier_prices = fields.Many2many("delivery.carrier.lines", string="Prices")
-    sale_id = fields.Many2one("sale.order", string="Sale Order")
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals_list):
-        """
-        Inherit to add carrier prices to the wizard.
-        :param vals: dict
-        :return: recordset
-        """
-        res = super().create(vals_list)
-        company_id = self.env.user.company_id
-        date = datetime.now()
-        for wizard in res.filtered(lambda w: w.sale_id):
+        raw_carrier_price_data = vals_list.get("carrier_prices")[
+            1:
+        ]  # Skip first entry as it is the declaration of the field
+
+        if not raw_carrier_price_data:
+            raise UserError(_("Please select a delivery carrier."))
+
+        carrier_price_data = []
+        for carrier_price in raw_carrier_price_data:
+            if (
+                carrier_price[2].get("selected")
+                and carrier_price not in carrier_price_data
+            ):
+                carrier_price_data.append(carrier_price)
+
+        if len(carrier_price_data) != 1:
+            raise UserError(_("Please select only one delivery carrier."))
+
+        carrier_price = self.env["delivery.carrier.lines"].browse(
+            carrier_price_data[0][1]
+        )
+        vals_list["carrier_id"] = carrier_price.carrier_id.id
+        vals_list["delivery_price"] = carrier_price.price
+
+        return super().create(vals_list)
+
+    @api.model
+    def default_get(self, fields):
+        res = super().default_get(fields)
+        for wizard in self:
+            if not wizard.order_id:
+                continue
+            company_id = self.env.user.company_id
+            date = datetime.now()
             carrier_prices = wizard.get_delivery_prices()
             create_list = []
             for carrier, result in carrier_prices.items():
@@ -32,7 +53,7 @@ class SaleGetRatesWizard(models.TransientModel):
                     vals = {
                         "carrier_id": carrier.id,
                         "price": result["price"],
-                        "order_id": wizard.sale_id.id,
+                        "order_id": wizard.order_id.id,
                         "currency_id": result["currency_id"],
                     }
                     if result["currency_id"] != company_id.currency_id.id:
@@ -63,9 +84,11 @@ class SaleGetRatesWizard(models.TransientModel):
         carrier_dict = {}
         carrier_obj = self.env["delivery.carrier"]
         carrier_ids = carrier_obj.search([("show_in_price_table", "=", True)])
-        order = self.sale_id
+        order = self.order_id
         for carrier in carrier_ids:
             data = carrier.rate_shipment(order)
+            if not data:
+                continue
 
             if not data.get("currency_id"):
                 # Actually they're planning to add currency code to the response.
@@ -73,20 +96,6 @@ class SaleGetRatesWizard(models.TransientModel):
                 data["currency_id"] = order.currency_id.id
             carrier_dict[carrier] = data
         return carrier_dict
-
-    def action_confirm(self):
-        """Action to add selected delivery carrier to sale order"""
-        self.ensure_one()
-        carrier_price = self.carrier_prices.filtered(lambda c: c.selected)
-        if len(carrier_price) != 1:
-            raise UserError(_("Please select one delivery carrier."))
-        order = self.sale_id
-        order.carrier_id = carrier_price.carrier_id
-        order.delivery_rating_success = True
-        order.delivery_price = carrier_price.price
-        order.delivery_price_try = carrier_price.try_price
-        order.set_delivery_line()
-        return {}
 
 
 class DeliveryCarrierLines(models.TransientModel):
@@ -108,4 +117,5 @@ class DeliveryCarrierLines(models.TransientModel):
         currency_field="try_currency_id",
     )
     order_id = fields.Many2one("sale.order", string="Sale Order")
-    selected = fields.Boolean(default=False)
+
+    selected = fields.Boolean(string="Selected")

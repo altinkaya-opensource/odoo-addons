@@ -135,7 +135,7 @@ class SaleOrder(models.Model):
         index=True,
         tracking=True,
         compute="_compute_order_state",
-        track_sequence=3,
+        # track_sequence=3,
         store=True,
     )
 
@@ -219,7 +219,7 @@ class SaleOrder(models.Model):
 
         return True
 
-    sale_line_history = fields.One2many(
+    sale_line_history = fields.Many2many(
         "sale.order.line", string="Old Sales", compute="_compute_sale_line_history"
     )
 

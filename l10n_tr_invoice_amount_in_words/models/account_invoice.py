@@ -46,7 +46,7 @@ class AccountMove(models.Model):
                 _logger.error(f"Error computing invoice amount in words: {e}")
 
     invoice_amount_in_words = fields.Char(
-        compute="_compute_invoice_amount_in_words", string="Amount to Text"
+        compute="_compute_invoice_amount_in_words", string="Amount in Words"
     )
 
 

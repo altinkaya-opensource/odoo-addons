@@ -28,6 +28,7 @@
         "wizard/partner_reconcile_close_view.xml",
         "views/res_currency_rate_view.xml",
         "views/account_payment_term_view.xml",
+        "security/ir.model.access.csv",
     ],
     "demo": [],
     "installable": True,

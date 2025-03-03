@@ -15,6 +15,8 @@
         "product_dimension",
         "queue_job",
         "delivery_state",
+        "base_report_to_printer",
+        "short_url_yourls",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -22,11 +24,13 @@
         "views/stock_picking_views.xml",
         "views/delivery_carrier_views.xml",
         "views/delivery_price_rule_views.xml",
-        "wizards/sale_get_rates_wizard_views.xml",
+        # "wizards/sale_get_rates_wizard_views.xml",
         "wizards/delivery_send_batch_email_views.xml",
+        "wizards/choose_delivery_carrier_views.xml",
         "views/sale_order_views.xml",
         "views/delivery_region_views.xml",
         "report/delivery_mail_template.xml",
+        "views/dispatched_deliveries_views.xml",
     ],
     "installable": True,
 }

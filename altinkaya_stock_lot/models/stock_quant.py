@@ -31,10 +31,11 @@ class InventoryLine(models.Model):
                 rec.lot_id = prod_lot_id.id
         return True
 
-    @api.model
-    def create(self, vals):
-        res = super(InventoryLine, self).create(vals)
-        res._create_missing_lot()
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(InventoryLine, self).create(vals_list)
+        for rec in res:
+            rec._create_missing_lot()
         return res
 
     @api.model

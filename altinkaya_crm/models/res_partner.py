@@ -58,14 +58,15 @@ class ResPartner(models.Model):
                 raise ValidationError(_("Please define a sales team for this country."))
         _logger.info("Sales person assigned to partner %s", self.name)
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Inherited to assign a sales person to the partner on creation
         :param vals:
         :return:
         """
-        partner = super().create(vals)
-        if not partner.user_id:
-            partner._assign_sales_person()
+        partner = super().create(vals_list)
+        for part in partner:
+            if not part.user_id:
+                part._assign_sales_person()
         return partner

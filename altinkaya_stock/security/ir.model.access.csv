@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_create_procurement_move,access_create_procurement_move,model_create_procurement_move,base.group_user,1,0,0,0
+access_make_mts_move,access_make_mts_move,model_make_mts_move,base.group_user,1,0,0,0
+access_update_unreserved_quants,access_update_unreserved_quants,model_update_unreserved_quants,base.group_user,1,0,0,0

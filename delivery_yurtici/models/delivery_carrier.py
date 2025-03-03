@@ -32,8 +32,8 @@ class DeliveryCarrier(models.Model):
         ondelete={"yurtici": "cascade"},
     )
 
-    yurtici_username = fields.Char(string="Username", help="Yurtiçi Username")
-    yurtici_password = fields.Char(string="Password", help="Yurtiçi Password")
+    yurtici_username = fields.Char(string="Yurtiçi Username", help="Yurtiçi Username")
+    yurtici_password = fields.Char(string="Yurtiçi Password", help="Yurtiçi Password")
     yurtici_user_lang = fields.Char(
         "UserLanguage", help="UserLanguage field for Yurtiçi"
     )

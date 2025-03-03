@@ -111,11 +111,12 @@ class AccountCheckbook(models.Model):
         for rec in self.filtered("sequence_id"):
             rec.sequence_id.sudo().number_next_actual = rec.next_number
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         rec = super(AccountCheckbook, self).create(vals_list)
-        if not rec.sequence_id:
-            rec._create_sequence(vals_list.get("next_number", 0))
+        for r, vals in zip(rec, vals_list):
+            if not r.sequence_id:
+                r._create_sequence(vals.get("next_number", 0))
         return rec
 
     def _create_sequence(self, next_number):
