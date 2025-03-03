@@ -30,6 +30,13 @@ class SaleOrderLine(models.Model):
     deci = fields.Float(
         digits="Product Unit of Measure",
         compute="_compute_deci",
+
+    )
+
+    last_deci = fields.Float(
+        digits="Product Unit of Measure",
+        string="Last Confirmed Deci",
+        store=True,
     )
 
     def _compute_deci(self):

@@ -12,22 +12,29 @@ class ChooseDeliveryCarrier(models.TransientModel):
 
     @api.model
     def create(self, vals_list):
-        carrier_price_data = list(
-            filter(
-                lambda c: c[0] == 1 and c[2].get("selected"),
-                vals_list.get("carrier_prices"),
-            )
-        )
+        raw_carrier_price_data = vals_list.get("carrier_prices")[
+            1:
+        ]  # Skip first entry as it is the declaration of the field
+
+        if not raw_carrier_price_data:
+            raise UserError(_("Please select a delivery carrier."))
+
+        carrier_price_data = []
+        for carrier_price in raw_carrier_price_data:
+            if (
+                carrier_price[2].get("selected")
+                and carrier_price not in carrier_price_data
+            ):
+                carrier_price_data.append(carrier_price)
 
         if len(carrier_price_data) != 1:
-            raise UserError(_("Please select one delivery carrier."))
+            raise UserError(_("Please select only one delivery carrier."))
 
         carrier_price = self.env["delivery.carrier.lines"].browse(
             carrier_price_data[0][1]
         )
         vals_list["carrier_id"] = carrier_price.carrier_id.id
         vals_list["delivery_price"] = carrier_price.price
-
 
         return super().create(vals_list)
 
@@ -48,7 +55,6 @@ class ChooseDeliveryCarrier(models.TransientModel):
                         "price": result["price"],
                         "order_id": wizard.order_id.id,
                         "currency_id": result["currency_id"],
-                        "wizard_id": wizard.id,
                     }
                     if result["currency_id"] != company_id.currency_id.id:
                         # Convert the price to the company currency
@@ -111,7 +117,5 @@ class DeliveryCarrierLines(models.TransientModel):
         currency_field="try_currency_id",
     )
     order_id = fields.Many2one("sale.order", string="Sale Order")
-
-    wizard_id = fields.Many2one("choose.delivery.carrier", string="Wizard")
 
     selected = fields.Boolean(string="Selected")

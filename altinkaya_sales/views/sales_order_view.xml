@@ -63,9 +63,12 @@
                     <span modifiers="{}">
                           <div class="o_row">
                             <span>Desi: </span>
-                            <field name="sale_deci"
-                                  readonly="1"
-                                  modifiers="{'readonly':true}"/>
+                            <t t-if="sale_last_deci != 0">
+                              <field name="sale_last_deci" readonly="1" modifiers="{'readonly': true}"/>
+                            </t>
+                            <t t-else="">
+                              <field name="sale_deci" readonly="1" modifiers="{'readonly': true}"/>
+                            </t>
                         </div>
                     </span>
                     <field name="delivery_rating_success"
