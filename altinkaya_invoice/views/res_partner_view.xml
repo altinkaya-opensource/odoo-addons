@@ -13,7 +13,6 @@
                     <field name="accounting_contact" domain="[('parent_id', '=', active_id)]"/>
                     <field name="purchase_default_account_id"/>
 
-                    <hr></hr>
 
 
                     <field name="z_payable_export"/>
