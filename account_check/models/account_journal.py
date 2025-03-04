@@ -24,6 +24,7 @@ class AccountJournal(models.Model):
         issue_checks = self.env.ref("account_check.account_payment_method_issue_check")
         for r in rec:
             if issue_checks in r.outbound_payment_method_ids and not r.checkbook_ids:
+                r._create_checkbook()
         return rec
 
     def _create_checkbook(self):
