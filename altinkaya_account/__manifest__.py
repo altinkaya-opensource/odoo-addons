@@ -10,11 +10,22 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["base", "account"],
+    "depends": [
+        "base",
+        "account",
+        "sale",
+        "stock",
+        "sale_stock",
+        "delivery",
+        "base_partner_sequence",
+    ],
     "data": [
+        "views/account_move_view.xml",
         "views/partner_view.xml",
         "views/account_move_view.xml",
         "views/company_view.xml",
         "views/account_invoice_report_view.xml",
+        "views/account_payment_term_view.xml",
+        "views/res_currency_rate_view.xml",
     ],
 }
