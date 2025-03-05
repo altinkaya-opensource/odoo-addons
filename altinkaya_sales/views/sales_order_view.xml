@@ -155,7 +155,7 @@
           <page string="History" name="history">
             <!--Invoices Part-->
             <label for="invoice_ids"/>
-            <field name="invoice_ids"/>   
+            <field name="invoice_ids"/>
             <!--Pickings Part-->
             <label for="picking_ids"/>
             <field name="picking_ids">
@@ -181,7 +181,7 @@
       <field eval="100" name="priority"/>
       <field name="arch" type="xml">
         <xpath expr="//page[@name='history']" position="after">
-          <page string="Old Sales" name="old_sales"> 
+          <page string="Old Sales" name="old_sales">
             <label for="sale_line_history"/>
             <field name="sale_line_history">
               <tree>
@@ -218,7 +218,7 @@
                 <field name="priority"/>
                 <field name="process_id" />
                 <field name="product_qty"/>
-                <field name="product_uom_id"/>     
+                <field name="product_uom_id"/>
                 <field name="components_availability_state"/>
                 <field name="state"/>
                 <field name="date_start"/>
@@ -241,6 +241,8 @@
             <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace" />
             <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="replace" />
 
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_attribute_ids']" position="replace" />
+
             <xpath expr="//field[@name='order_line']/form/group/group" position="before">
                 <group colspan="2">
                     <field name="product_id" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" attrs="{
@@ -252,6 +254,8 @@
                     <div>
                         <field name="show_custom_products" />
                     </div>
+                    <field name="product_attribute_ids" nolabel="1" colspan="2" attrs="{'invisible': ['|', ('id','!=',False), '|', ('product_tmpl_id','=',False), ('product_attribute_ids', '=', [])]}"
+                        context="{'default_product_template_id': product_tmpl_id, 'default_owner_model': 'product.product', 'show_price_extra': True, 'show_attribute': False}"/>
                 </group>
             </xpath>
 
