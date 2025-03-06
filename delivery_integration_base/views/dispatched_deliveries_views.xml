@@ -22,6 +22,7 @@
                 <field name="carrier_total_deci" sum="True"/>
                 <field name="shipping_currency_id" invisible="1"/>
                 <field name="currency_id_try" invisible="1"/>
+                <button name="open_record" type="object" string="Sevke git"/>
             </tree>
         </field>
     </record>
