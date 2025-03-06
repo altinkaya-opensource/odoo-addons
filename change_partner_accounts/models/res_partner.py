@@ -20,7 +20,7 @@ class ResPartner(models.Model):
             else:
                 partner.partner_currency_id = partner.sudo().company_id.currency_id
 
-    @api.depends("account_move_line_ids")
+    @api.depends("move_line_ids")
     def _compute_balance_fields(self):
         """
         Compute balance fields for partners. Using SQL to avoid performance issues and update_date field update.
@@ -175,12 +175,6 @@ class ResPartner(models.Model):
                 )
 
                 partner.has_2breconciled_supplier = len(aml_to_reconcile) > 0
-                aml_to_reconcile = partner.env["account.move.line"].search(
-                    domain + [("partner_id", "=", partner.id), ("debit", ">", 0)],
-                    limit=2,
-                )
-
-                partner.has_2breconciled_supplier = len(aml_to_reconcile) > 0
 
     def _search_has_2breconciled(self, partner_type):
         AccountMoveLine = self.env["account.move.line"]
@@ -242,7 +236,7 @@ class ResPartner(models.Model):
         )
         old_receivable = self.property_account_receivable_id
         old_payable = self.property_account_payable_id
-        company_currency = self.env.user.company_id.currency_id
+        company_currency = self.env.company.currency_id
         if not (receivable_usd and payable_usd):
             raise UserError(_("Error in accounts definition"))
 
