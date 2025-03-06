@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_survey" model="ir.ui.view">
+        <field name="name">sale.order.form.survey.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_surveys"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-pencil"
+                    groups="sales_team.group_sale_salesman">
+                        <field name="survey_count" widget="statinfo" string="Surveys"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
