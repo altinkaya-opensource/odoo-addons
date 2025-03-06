@@ -14,6 +14,10 @@
 
                 <field name="code" position="after">
                     <field name="routing_id"/>
+					<field name="tool_product_id" domain="[('categ_id','ilike', 'kalıp')]" />
+                </field>
+				<field name="type" position="after">
+                    <field name="checked"/>
                 </field>
 
 				<xpath expr="//notebook" position="inside">
@@ -26,14 +30,9 @@
 								<field name="time_start" widget="float_time"/>
 								<field name="time_stop" widget="float_time"/>
 							</tree>
-
 						</field>
 					</page>
 				</xpath>
-
-				<!-- <xpath expr="//field[@name='process_id']" position="after">
-					<field name="tool_product_id" domain="[('categ_id','ilike', 'kalıp')]" />
-				</xpath> -->
 
 			</field>
 		</record>
