@@ -21,3 +21,28 @@ class AccountMoveLine(models.Model):
 
     move_name = fields.Char(related="move_id.name", string="Move Number")
     move_ref = fields.Char(related="move_id.ref", string="Move Reference")
+    lot_ids = fields.Many2many(
+        "stock.lot",
+        relation="account_move_line_stock_lot_rel",
+        column1="move_line_id",
+        column2="lot_id",
+        string="Lots/Serial Numbers",
+    )
+    moves_picking_ref = fields.Char(string="Picking Ref")
+    partner_order_ref = fields.Char(string="Order Reference")
+    purchase_line_amount = fields.Float(
+        string="PO Unit", related="purchase_line_id.price_unit"
+    )
+
+
+    def _simulate_invoice_line_onchange(self):
+        """
+        Simulate onchange for invoice line
+        :param values: dict
+        :return: dict
+        """
+        for line in self:
+            line._inverse_partner_id()
+            line._inverse_product_id()
+            line._inverse_account_id()
+            line._inverse_amount_currency()

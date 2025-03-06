@@ -16,6 +16,7 @@
         "sale",
         "stock",
         "sale_stock",
+        "purchase",
         "delivery",
         "base_partner_sequence",
     ],

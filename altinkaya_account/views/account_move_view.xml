@@ -49,6 +49,29 @@
                     </field>
                 </page>
             </xpath>
+
+            <xpath expr="//group[@name='sale_info_group']/field[@name='ref']" position="after">
+                <field name="delivery_ref_no" />
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
+                <field name="move_type" invisible="1" />
+                <field name="purchase_line_amount" attrs="{'invisible': [('move_type','not in',['in_invoice', 'in_refund'])]}" />
+                <field name="partner_order_ref"/>
+                <field name="moves_picking_ref"/>
+                <field name="lot_ids" widget="many2many_tags"/>
+            </xpath>
+
+            <xpath expr="//button[@name='button_cancel']"
+                   position="after">
+                <button name="action_match_einvoice_lines_picking" type="object"
+                        class="oe_highlight"
+                        string="Match Picking Lines"
+                        attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}"
+                        groups="account.group_account_invoice"/>
+
+            </xpath>
+
         </field>
     </record>
 </odoo>
