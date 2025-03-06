@@ -28,6 +28,21 @@ class ResPartner(models.Model):
         """
         if not self.ids:
             return True
+        # Reset the balance fields
+        query_zero_initial = """
+        UPDATE
+            res_partner
+        SET
+            balance_due = 0,
+            currency_balance_due = 0,
+            balance = 0,
+            currency_balance = 0
+        WHERE
+            id IN %s;
+        """
+        params_zero_initial = (tuple(self.ids),)
+        self._cr.execute(query_zero_initial, params_zero_initial)
+
         query = """
         UPDATE
           res_partner rp
@@ -46,7 +61,7 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2021-01-01'
               AND aml.date_maturity <= CURRENT_DATE
@@ -63,7 +78,7 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2021-01-01'
               AND aml.partner_id IN %s
@@ -91,6 +106,10 @@ class ResPartner(models.Model):
             ],
         )
         return True
+
+    account_move_line_ids = fields.One2many(
+        "account.move.line", "partner_id", string="Journal Items"
+    )
 
     partner_currency_id = fields.Many2one(
         "res.currency",
@@ -130,14 +149,14 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
 
         for partner in self:
-            # Always assign a value to the fields
+
             partner.has_2breconciled_customer = False
             partner.has_2breconciled_supplier = False
 
@@ -164,8 +183,8 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
