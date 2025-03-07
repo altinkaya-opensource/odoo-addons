@@ -17,5 +17,75 @@
             </field>
         </record>
 
+        <record id="view_partner_search_inherit" model="ir.ui.view">
+            <field name="name">res.partner.search.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/> 
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <separator/>
+                        <filter name="not_zero" string="Sıfır Değil" 
+                            domain="['|','|','|',('currency_balance','&gt;',1),('currency_balance','&lt;',-1),('balance','&gt;',10),('balance','&lt;',-10)]"/>
+                        <separator/>
+
+                    <filter name="turkey" string="Türkiye" domain="[('country_id.id','=',224)]"/>
+                    <filter name="not_turkey" string="Yurtdışı" domain="[('country_id.id','!=',224)]"/>
+
+                    <separator/>
+                    <filter string="Create Date" name="create_date" date="create_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_partner_tree_borc" model="ir.ui.view">
+            <field name="name">res.partner.tree_borc</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree string="Contacts">
+                    <field name="display_name" string="Name"/>
+                    <field name="function" invisible="1"/>
+                    <field name="phone" class="o_force_ltr"/>
+                    <field name="risk_total" string="Risk"/>
+                    <field name="credit_limit" string="Limit"/>
+                    <field name="risk_currency_id" string="Limit Para B."/>
+                    <field name="balance" string="₺ Bakiye" sum="TL Bakiye" widget="monetary"/>
+                    <field name="balance_due" string="₺ V.Gelen" sum="TL Vade Gelen" widget="monetary"/>
+                    <field name="currency_balance" string="$₺€ Bakiye" sum="Döviz Bakiye" widget="monetary" options="{'currency_field': 'partner_currency_id','digits': 'invoice'}"/>
+                    <field name="currency_balance_due" string="$₺€ V.Gelen" sum="Döviz Vade Gelen" widget="monetary" options="{'currency_field': 'partner_currency_id','digits': 'invoice'}"/>
+                    <field name="partner_currency_id" string="$€₺"/>
+                     <field name="currency_difference_amls" string="Fark"/>        
+                    <field name="partner_currency_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="property_payment_term_id" string="Ödeme Şekli"/>
+                    <field name="email" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="is_company" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="parent_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_partner_balance" model="ir.actions.act_window">
+            <field name="name">Kontak Cari Listesi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="res_partner_tree_borc"/>
+        </record>
+
+        <menuitem id="menu_res_partner_tree_borc"
+                  name="Cari Listesi"
+                  action="action_partner_balance"
+                  parent="sale.sale_order_menu"
+                  sequence="0"/>
+
+        <menuitem id="menu_res_partner_tree_borc"
+                  name="Cari Listesi"
+                  action="action_partner_balance"
+                  parent="account.menu_finance_reports"
+                  sequence="0"/>
+
     </data>
 </odoo>
