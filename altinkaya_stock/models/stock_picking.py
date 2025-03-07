@@ -100,16 +100,3 @@ class StockPicking(models.Model):
                 ].text_from_html(picking.sale_note, max_chars=50)
             else:
                 picking.trimmed_sale_note = ""
-
-    def open_record(self):
-        form_id = self.env.ref("stock.view_picking_form")
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "stock.picking",
-            "res_id": self.id,
-            "view_type": "form",
-            "view_mode": "form",
-            "view_id": form_id.id,
-            "context": {},
-            "target": "current",
-        }

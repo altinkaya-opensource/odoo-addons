@@ -1,57 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record id="view_sale_order_delivery_get_rates" model="ir.ui.view">
-        <field name="name">sale.order.form</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form" />
-        <field name="arch" type="xml">
-            <button name="action_confirm" position="before">
-                <button
-          name="action_sale_get_rates_wizard"
-          type="object"
-          Help="Get delivery rates for this order"
-          string="Get Rates"
-          class="oe_highlight"
-          attrs="{'invisible':[
-                        '|',
-                         ('carrier_payment_type', '=', 'customer_pays'),
-                         ('state','in', ['done', 'cancel', 'sale'])
-                         ]}"
-        />
-            </button>
-            <xpath expr="//field[@name='commitment_date']" position="after">
-                <field name="carrier_payment_type" invisible="1" />
-            </xpath>
-            <xpath expr="//field[@name='currency_id']" position="after">
-                <field name="currency_id_try" invisible="1" />
-
-                <field
-          name='delivery_price_try'
-          widget='monetary'
-          class="oe_inline ml-3"
-          options="{'currency_field': 'currency_id_try'}"
-          nolabel="1"
-          attrs="{'invisible': ['|', ('currency_id', '=', 'currency_id_try'), ('carrier_id','=', False)]}"
-        />
-
-            </xpath>
-            <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                <span attrs="{'invisible': [('sale_deci', '&lt;=', 0.001)]}">
-                    <span class="ml-3">Deci:</span>
-                    <field name="sale_deci" readonly="1" />
-                </span>
-            </xpath>
-
-            <xpath expr="//field[@name='price_unit']" position="after">
-                <label for="deci" />
-                <div>
-                    <field name="deci" class="oe_inline" />
-                    Deci
-                </div>
-            </xpath>
-        </field>
-    </record>
-
     <record id="view_sale_order_hide_delivery" model="ir.ui.view">
         <field name="name">sale.order.form</field>
         <field name="model">sale.order</field>
@@ -60,6 +8,6 @@
             <xpath expr="//button[@name='action_open_delivery_wizard']/parent::div" position="attributes">
                 <attribute name="attrs">{'invisible': [('state','in', ['sale'])]}</attribute>
             </xpath>
-        </field>    
+        </field>
     </record>
 </odoo>

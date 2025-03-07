@@ -234,3 +234,16 @@ class StockPicking(models.Model):
         # if sale_order.invoice_shipping_on_delivery:
         #     carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0))
         #     sale_order._create_delivery_line(self.carrier_id, carrier_price)
+
+    def open_record(self):
+        form_id = self.env.ref("stock.view_picking_form")
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "stock.picking",
+            "res_id": self.id,
+            "view_type": "form",
+            "view_mode": "form",
+            "view_id": form_id.id,
+            "context": {},
+            "target": "current",
+        }
