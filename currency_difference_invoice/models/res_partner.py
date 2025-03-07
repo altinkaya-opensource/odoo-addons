@@ -3,6 +3,7 @@ import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
+from odoo import Command
 
 _logger = logging.getLogger(__name__)
 
@@ -10,21 +11,28 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-
     def _compute_currency_difference_amls(self):
-        difference_aml_domain = [
-            ("partner_id", "=", self.id),
-            ("journal_id", "=", self.company_id.currency_exchange_journal_id.id),
-            ("difference_checked", "=", False),
-            ("full_reconcile_id", "!=", False),
-        ]
+        for partner in self:
+            difference_aml_domain = [
+                ("partner_id", "=", partner.id),
+                ("journal_id", "=", self.env.company.currency_exchange_journal_id.id),
+                ("difference_checked", "=", False),
+                ("full_reconcile_id", "!=", False),
+            ]
 
-        difference_amls = self.env["account.move.line"].search(difference_aml_domain)
-        if len(difference_amls) > 0:
-            self.currency_difference_amls = difference_amls
-        else:
-            self.currency_difference_amls = False
-
+            difference_amls = self.env["account.move.line"].search_read(
+                domain=difference_aml_domain, fields=["id"]
+            )
+            if len(difference_amls) > 0:
+                partner.write(
+                    {
+                        "currency_difference_amls": [
+                            Command.set([x["id"] for x in difference_amls])
+                        ]
+                    }
+                )
+            else:
+                partner.write({"currency_difference_amls": [Command.clear()]})
 
     @api.depends("currency_difference_amls")
     def _compute_difference_to_invoice(self):
@@ -33,7 +41,6 @@ class ResPartner(models.Model):
                 partner.currency_difference_to_invoice = True
             else:
                 partner.currency_difference_to_invoice = False
-
 
     def _value_search_diff_check(self, operator, value):
         AccountMoveLine = self.env["account.move.line"]
@@ -53,7 +60,7 @@ class ResPartner(models.Model):
             )
         ]
         return [("id", "in", result)]
-    
+
     currency_difference_amls = fields.Many2many(
         "account.move.line",
         string="Currency Difference Move Lines",
@@ -369,8 +376,7 @@ class ResPartner(models.Model):
         )
 
         move_vals = {
-            "name": "%s %s"
-            % (move_date.strftime("%d.%m.%Y"), _("Currency Valuation")),
+            "name": "%s %s" % (move_date.strftime("%d.%m.%Y"), _("Currency Valuation")),
             "journal_id": diff_journal.id,
             "date": move_date,
             "state": "draft",
