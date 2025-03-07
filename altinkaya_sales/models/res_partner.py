@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-
+    
     def _search_nace_product_categ(self, operator, value):
         return [
             (

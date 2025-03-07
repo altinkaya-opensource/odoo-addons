@@ -22,7 +22,9 @@
 			<field name="arch" type="xml">
 
 				<xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']" position="inside">
-					<field name="segment_id"/>
+					<group>
+						<field name="segment_id" colspan="3"/>
+					</group>
 				</xpath>
 
 				<xpath expr="//group[@name='banks']" position="after">
@@ -41,19 +43,30 @@
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name"/>
 				</xpath>
-				<xpath expr="//field[@name='industry_id']" position="after">
+				<xpath expr="//field[@name='ref']" position="replace">
+					<field name="ref"/>
+					<field name="barcode"/>
 					<field name="z_tel_kampanya"/>
 					<field name="z_kamp_2016A"/>
 					<field name="z_kamp_2017A"/>
 					<field name="z_kat_postala"/>
 					<field name="z_kat_postalandi"/>
 					<field name="z_kat_email"/>
+					
 				</xpath>
-				<!-- should place well onur -->
-
-				<xpath expr="//field[@name='ref']" position="replace">
-					<field name="ref"/>
-				</xpath>
+				<xpath expr="//notebook" position="inside">
+                    <page name="industry" string="Endüstri">
+                        <group string="Ana Sektör">
+                            <field name="industry_id" nolabel="1" colspan="2"/>
+                        </group>
+                        <group string="Diğer Endüstri Iş Sektörleri">
+                            <field name="secondary_industry_ids" nolabel="1" colspan="2"/>
+                        </group>
+                        <group string="Hedef Ürün Kategorisi">
+                            <field name="nace_product_categ_ids" readonly="1" nolabel="1" colspan="2"/>
+                        </group>
+                    </page>
+                </xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath>
@@ -61,23 +74,23 @@
 					<page name="internal_notes" string="Notes" modifiers="{}">
 						<group colspan="2" col="2" modifiers="{}">
 							<separator string="Warning on the Sales Order" colspan="4" modifiers="{}"/>
-							<field name="sale_warn" nolabel="1" modifiers="{}"/>
-							<field name="sale_warn_msg" colspan="3" nolabel="1" attrs="{'required':[('sale_warn', '!=', False), ('sale_warn','!=','no-message')],'readonly':[('sale_warn','=','no-message')]}" modifiers="{'required':[['sale_warn','!=',false],['sale_warn','!=','no-message']],'readonly':[['sale_warn','=','no-message']]}"/>
+							<field name="sale_warn" nolabel="1" modifiers="{}" colspan="2"/>
+							<field name="sale_warn_msg" colspan="2" nolabel="1" attrs="{'required':[('sale_warn', '!=', False), ('sale_warn','!=','no-message')],'readonly':[('sale_warn','=','no-message')]}" modifiers="{'required':[['sale_warn','!=',false],['sale_warn','!=','no-message']],'readonly':[['sale_warn','=','no-message']]}"/>
 						</group>
 						<group colspan="2" col="2" modifiers="{}">
 							<separator string="Warning on the Purchase Order" colspan="4" modifiers="{}"/>
-							<field name="purchase_warn" nolabel="1" modifiers="{}"/>
-							<field name="purchase_warn_msg" colspan="3" nolabel="1" attrs="{'required':[('purchase_warn', '!=', False), ('purchase_warn','!=','no-message')],'readonly':[('purchase_warn','=','no-message')]}" modifiers="{'required':[['purchase_warn','!=',false],['purchase_warn','!=','no-message']],'readonly':[['purchase_warn','=','no-message']]}"/>
+							<field name="purchase_warn" nolabel="1" modifiers="{}" colspan="2"/>
+							<field name="purchase_warn_msg" colspan="2" nolabel="1" attrs="{'required':[('purchase_warn', '!=', False), ('purchase_warn','!=','no-message')],'readonly':[('purchase_warn','=','no-message')]}" modifiers="{'required':[['purchase_warn','!=',false],['purchase_warn','!=','no-message']],'readonly':[['purchase_warn','=','no-message']]}"/>
 						</group>
 						<group colspan="2" col="2" modifiers="{}">
 							<separator string="Warning on the Invoice" colspan="4" modifiers="{}"/>
-							<field name="invoice_warn" nolabel="1" modifiers="{}"/>
-							<field name="invoice_warn_msg" colspan="3" nolabel="1" attrs="{'required':[('invoice_warn', '!=', False), ('invoice_warn','!=','no-message')],'readonly':[('invoice_warn','=','no-message')]}" modifiers="{'required':[['invoice_warn','!=',false],['invoice_warn','!=','no-message']],'readonly':[['invoice_warn','=','no-message']]}"/>
+							<field name="invoice_warn" nolabel="1" modifiers="{}" colspan="2"/>
+							<field name="invoice_warn_msg" colspan="2" nolabel="1" attrs="{'required':[('invoice_warn', '!=', False), ('invoice_warn','!=','no-message')],'readonly':[('invoice_warn','=','no-message')]}" modifiers="{'required':[['invoice_warn','!=',false],['invoice_warn','!=','no-message']],'readonly':[['invoice_warn','=','no-message']]}"/>
 						</group>
 						<group colspan="2" col="2" modifiers="{}">
 							<separator string="Warning on the Picking" colspan="4" modifiers="{}"/>
-							<field name="picking_warn" nolabel="1" modifiers="{}"/>
-							<field name="picking_warn_msg" colspan="3" nolabel="1" attrs="{'required':[('picking_warn', '!=', False), ('picking_warn','!=','no-message')],'readonly':[('picking_warn','=','no-message')]}" modifiers="{'required':[['picking_warn','!=',false],['picking_warn','!=','no-message']],'readonly':[['picking_warn','=','no-message']]}"/>
+							<field name="picking_warn" nolabel="1" modifiers="{}" colspan="2"/>
+							<field name="picking_warn_msg" colspan="2" nolabel="1" attrs="{'required':[('picking_warn', '!=', False), ('picking_warn','!=','no-message')],'readonly':[('picking_warn','=','no-message')]}" modifiers="{'required':[['picking_warn','!=',false],['picking_warn','!=','no-message']],'readonly':[['picking_warn','=','no-message']]}"/>
 						</group>
 					</page>
 				</xpath>

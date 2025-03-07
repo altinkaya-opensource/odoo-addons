@@ -53,7 +53,7 @@ class ResPartner(models.Model):
             )
         ]
         return [("id", "in", result)]
-
+    
     currency_difference_amls = fields.Many2many(
         "account.move.line",
         string="Currency Difference Move Lines",
