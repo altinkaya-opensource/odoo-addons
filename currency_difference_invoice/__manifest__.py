@@ -13,7 +13,7 @@
     "category": "Accounting",
     "version": "0.1",
     "license": "LGPL-3",
-    "depends": ["base", "account", "change_partner_accounts"],
+    "depends": ["base", "account"],
     "data": [
         "views/res_partner_view.xml",
         "views/res_company_view.xml",

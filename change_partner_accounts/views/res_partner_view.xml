@@ -20,11 +20,11 @@
         <record id="view_partner_search_inherit" model="ir.ui.view">
             <field name="name">res.partner.search.inherit</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_res_partner_filter"/> 
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//filter[@name='inactive']" position="after">
                     <separator/>
-                        <filter name="not_zero" string="Sıfır Değil" 
+                        <filter name="not_zero" string="Sıfır Değil"
                             domain="['|','|','|',('currency_balance','&gt;',1),('currency_balance','&lt;',-1),('balance','&gt;',10),('balance','&lt;',-10)]"/>
                         <separator/>
 
@@ -53,7 +53,7 @@
                     <field name="currency_balance" string="$₺€ Bakiye" sum="Döviz Bakiye" widget="monetary" options="{'currency_field': 'partner_currency_id','digits': 'invoice'}"/>
                     <field name="currency_balance_due" string="$₺€ V.Gelen" sum="Döviz Vade Gelen" widget="monetary" options="{'currency_field': 'partner_currency_id','digits': 'invoice'}"/>
                     <field name="partner_currency_id" string="$€₺"/>
-                     <field name="currency_difference_amls" string="Fark"/>        
+                    <field name="currency_difference_amls" string="Fark"/>
                     <field name="partner_currency_id" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="property_payment_term_id" string="Ödeme Şekli"/>
