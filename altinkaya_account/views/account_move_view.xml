@@ -22,6 +22,8 @@
             <xpath expr="//field[@name='narration']" position="replace">
                 <group string="Notes">
                     <field name="narration"/>
+                    <field name="x_comment_export"/>
+                    <field name="comment_einvoice"/>
                 </group>
             </xpath>
 
