@@ -30,6 +30,7 @@
             name="variant_seller_ids_2"
             context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}"
             nolabel="1"
+            colspan="2"
           />
                 </group>
             </xpath>
