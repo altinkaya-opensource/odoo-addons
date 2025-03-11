@@ -56,7 +56,13 @@ class AccountInvoiceReport(models.Model):
             so.medium_id as sale_medium_id,
             partner.create_date as partner_create_date,
             template.id as product_tmpl_id,
-            -line.balance * currency_table.rate * move.usd_rate AS price_total_usd
+            -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
+            -COALESCE(
+               -- Average line price
+               (line.balance / NULLIF(line.quantity, 0.0)) * (CASE WHEN move.move_type IN ('in_invoice','out_refund','in_receipt') THEN -1 ELSE 1 END)
+               -- convert to template uom
+               * (NULLIF(COALESCE(uom_line.factor, 1), 0.0) / NULLIF(COALESCE(uom_template.factor, 1), 0.0)),
+               0.0) * move.usd_rate                               AS price_average_usd
             """
         )
 
