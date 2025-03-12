@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "change_partner_accounts",
     "description": """
@@ -8,7 +7,7 @@
     "license": "LGPL-3",
     "website": "https://github.com/yibudak",
     "category": "Accounting",
-    "version": "13.0.0.1.0",
+    "version": "16.0.0.1.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",

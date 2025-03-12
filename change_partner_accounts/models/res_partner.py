@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 
@@ -18,7 +17,7 @@ class ResPartner(models.Model):
                     or partner.property_account_payable_id.currency_id
                 )
             else:
-                partner.partner_currency_id = partner.sudo().company_id.currency_id
+                partner.partner_currency_id = self.env.company.currency_id
 
     @api.depends("move_line_ids")
     def _compute_balance_fields(self):
@@ -46,9 +45,9 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
-              AND aml.date >= '2021-01-01'
+              AND aml.date >= '2022-01-01'
               AND aml.date_maturity <= CURRENT_DATE
               AND aml.partner_id IN %s
             GROUP BY
@@ -63,9 +62,9 @@ class ResPartner(models.Model):
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
             WHERE
-              aa.internal_type IN ('receivable', 'payable')
+              aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
-              AND aml.date >= '2021-01-01'
+              AND aml.date >= '2022-01-01'
               AND aml.partner_id IN %s
             GROUP BY
               aml.partner_id
@@ -130,8 +129,8 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
@@ -164,8 +163,8 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.account_type", "=", "payable"),
-            ("account_id.account_type", "=", "receivable"),
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
