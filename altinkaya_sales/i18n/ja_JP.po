@@ -1,222 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* altinkaya_sales
+# 	* altinkaya_sales
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 07:20+0000\n"
-"PO-Revision-Date: 2024-03-15 07:20+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-13 13:32+0000\n"
+"PO-Revision-Date: 2025-03-13 13:32+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: altinkaya_sales
-#: model:mail.template,body_html:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid "\n"
-"<div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\">\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Hello, ${object.partner_id.name}</p>\n"
-"    \n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Here is your ${object.state in ('draft', 'sent') and 'quotation' or 'order confirmation'} from Altinkaya Enclosures For Electronics: </p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;\">\n"
-"       &nbsp;&nbsp;<strong style=\"font-weight:bolder;\">REFERENCES</strong><br>\n"
-"       &nbsp;&nbsp;Order number: <strong style=\"font-weight:bolder;\">${object.name}</strong><br>\n"
-"       &nbsp;&nbsp;Order total: <strong style=\"font-weight:bolder;\">${ \"{0:,.4f}\".format(object.amount_total).replace(\".\",\"%\").replace(\",\",\" \").replace(\"%\",\",\")} ${object.pricelist_id.currency_id.name}</strong><br>\n"
-"       &nbsp;&nbsp;Order date: ${object.date_order}<br>\n"
-"       % if object.origin:\n"
-"       &nbsp;&nbsp;Order reference: ${object.origin}<br>\n"
-"       % endif\n"
-"       % if object.client_order_ref:\n"
-"       &nbsp;&nbsp;Your reference: ${object.client_order_ref}<br>\n"
-"       % endif\n"
-"       % if object.user_id:\n"
-"       &nbsp;&nbsp;Prepared By: <a href=\"mailto:${object.user_id.email or ''}?subject=Order%20${object.name}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">${object.user_id.name}</a>\n"
-"       % endif\n"
-"    </p><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"\n"
-" % if object.state in ('draft', 'sent'):\n"
-"    </span></font><br>\n"
-"        <a style=\"text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\" href=\"${object.get_portal_url()}\">\n"
-"            <img src=\"https://www.altinkaya.com.tr/web/content/604751?paynow=1\" style=\"border-style:none;vertical-align:middle;\">\n"
-"        </a><br><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">It is also possible to make your payment by clicking \"Pay Now\" button above. <br>Our web page will open and you will be able to make your payment securely and easily.</p>\n"
-"    <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">NEW: If you mention your order number&nbsp;</span></font><span style=\"color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\">${object.name}</span><span style=\"font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">&nbsp;in the wire transfer/TT description, our system will automatically confirm the order.</span></div><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\"><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"    % endif       \n"
-"\n"
-"    </span></font><br>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">If you have any question, do not hesitate to contact us.</p>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\"><strong style=\"font-weight:bolder;\">You can reply this email to contact us.</strong></p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Thank you for choosing Altinkaya!</p>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
-"        <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
-"            <strong style=\"font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong></h3>\n"
-"    </div>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);\">\n"
-"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
-"        % if object.company_id.street:\n"
-"            ${object.company_id.street}<br>\n"
-"        % endif\n"
-"        % if object.company_id.street2:\n"
-"            ${object.company_id.street2}<br>\n"
-"        % endif\n"
-"        % if object.company_id.city or object.company_id.zip:\n"
-"            ${object.company_id.zip} ${object.company_id.city}<br>\n"
-"        % endif\n"
-"        % if object.company_id.country_id:\n"
-"            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} Turkey<br>\n"
-"        % endif\n"
-"        </span>\n"
-"        % if object.company_id.phone:\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
-"                Phone:&nbsp; ${object.company_id.phone}<br>Fax&nbsp;&nbsp;:&nbsp; ${object.company_id.fax}\n"
-"\n"
-"            </div>\n"
-"        % endif\n"
-"        % if object.company_id.website:\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
-"                Web :&nbsp;<a href=\"http://www.altinkaya.eu\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">www.altinkaya.eu</a>\n"
-"            </div>\n"
-"        %endif\n"
-"        <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"></p>\n"
-"    </div>\n"
-"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">You can rate your customer experience at the following link.</p>\n"
-"            <a href=\"${object.survey_url}\" style=\"text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;\" \"=\"\">\n"
-"                Rate the Experience\n"
-" </a>\n"
-"</div>\n"
-"            "
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_2016a_iscilik
-msgid " kullanılan eski Minimum İşcilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:mail.template,report_name:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid "${(object.name or '').replace('/','_')}"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_2014
-msgid "2014 Eski Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_min_2014_iscilik
-msgid "2014 Min İşçcilik Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_2014_iscilik
-msgid "2014 işçilik Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_2014_iscilik
-msgid "2014 yılında kullanılan birim işçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_2014_iscilik
-msgid "2014 yılında kullanılan eski Minimum İşçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_2014
-msgid "2014 yılında kullanılan eski fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_2016a
-msgid "2015 Ekim Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_min_2016a_iscilik
-msgid "2015 Ekim Min İscilik TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_2016a_iscilik
-msgid "2015 Ekim birim işçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_2016a
-msgid "2015 Ekim fiyati TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_2016a_iscilik
-msgid "2015 Ekim isçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_2015a
-msgid "2015 Ocak Eski Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_min_2015a_iscilik
-msgid "2015 Ocak Min İşçcilik TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_2015a
-msgid "2015 Ocak eski fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_2015a_iscilik
-msgid "2015 Ocak işçilik Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_2015a_iscilik
-msgid "2015 Ocak kullanılan birim işçilik fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_2015a_iscilik
-msgid "2015 Ocak kullanılan eski Minimum İşçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_2016b
-msgid "2016 Aralık Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_min_2016b_iscilik
-msgid "2016 Aralık Min İsçilik TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_2016b_iscilik
-msgid "2016 Aralık Minimum İşçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_2016b_iscilik
-msgid "2016 Aralık birim işçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_2016b
-msgid "2016 Aralık fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_2016b_iscilik
-msgid "2016 Aralık isçilik fiyatı TL"
-msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__z_kamp_2016A
@@ -237,98 +34,173 @@ msgid "2017 Adres güncelleme için arandı"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_2017
-msgid "2017 Aralık Fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_min_2017_iscilik
-msgid "2017 Aralık Min İsçilik TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_2017_iscilik
-msgid "2017 Aralık Minimum İşçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_2017_iscilik
-msgid "2017 Aralık birim işçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_2017
-msgid "2017 Aralık fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_2017_iscilik
-msgid "2017 Aralık isçilik fiyatı TL"
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner__z_kamp_2017A
 #: model:ir.model.fields,help:altinkaya_sales.field_res_users__z_kamp_2017A
 msgid "2017 Temmuz Adres günceleme için arandı."
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_sale_order_portal_template_inherit
-msgid "<i class=\"fa fa-credit-card\"/>\n"
-"                Pay &amp;amp; Confirm"
+#: model:mail.template,body_html:altinkaya_sales.email_template_edi_sale_altinkaya
+msgid ""
+"<html>\n"
+"  <body><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\">\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Hello, <t t-out=\"object.partner_id.name\"></t></p>\n"
+"    \n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Here is your <t t-out=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;) and &#x27;quotation&#x27; or &#x27;order confirmation&#x27;\"></t> from Altinkaya Enclosures For Electronics: </p>\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;\">\n"
+"         <strong style=\"font-weight:bolder;\">REFERENCES</strong><br/>\n"
+"         Order number: <strong style=\"font-weight:bolder;\"><t t-out=\"object.name\"></t></strong><br/>\n"
+"         Order total: <strong style=\"font-weight:bolder;\"><t t-out=\" &quot;{0:,.4f\"></t>\".format(object.amount_total).replace(\".\",\"%\").replace(\",\",\" \").replace(\"%\",\",\")} <t t-out=\"object.pricelist_id.currency_id.name\"></t></strong><br/>\n"
+"         Order date: <t t-out=\"object.date_order\"></t><br/>\n"
+"       <t t-if=\"object.client_order_ref\">\n"
+"         Your reference: <t t-out=\"object.client_order_ref\"></t><br/>\n"
+"       </t>\n"
+"       <t t-if=\"object.user_id\">\n"
+"         Prepared By: <a t-attf-href=\"mailto:{{object.user_id.email or ''}}?subject=Order%20{{object.name}}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\"><t t-out=\"object.user_id.name\"></t></a>\n"
+"       </t>\n"
+"    </p><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
+"\n"
+" <t t-if=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;)\">\n"
+"    </span></font><br/>\n"
+"        <a style=\"text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\" t-attf-href=\"{{object.get_portal_url()}}\">\n"
+"            <img src=\"https://www.altinkaya.com.tr/web/content/604751?paynow=1\" style=\"border-style:none;vertical-align:middle;\"/>\n"
+"        </a><br/><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">It is also possible to make your payment by clicking \"Pay Now\" button above. <br/>Our web page will open and you will be able to make your payment securely and easily.</p>\n"
+"    <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">NEW: If you mention your order number </span></font><span style=\"color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\"><t t-out=\"object.name\"></t></span><span style=\"font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"> in the wire transfer/TT description, our system will automatically confirm the order.</span></div><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\"><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
+"    </t>\n"
+"    </span></font><br/>\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">If you have any question, do not hesitate to contact us.</p>\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\"><strong style=\"font-weight:bolder;\">You can reply this email to contact us.</strong></p>\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Thank you for choosing Altinkaya!</p>\n"
+"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
+"        <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
+"            <strong style=\"font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong></h3>\n"
+"    </div>\n"
+"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"        <t t-if=\"object.company_id.street\">\n"
+"            <t t-out=\"object.company_id.street\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.street2\">\n"
+"            <t t-out=\"object.company_id.street2\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.city or object.company_id.zip\">\n"
+"            <t t-out=\"object.company_id.zip\"></t> <t t-out=\"object.company_id.city\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.country_id\">\n"
+"            <t t-out=\"object.company_id.state_id and (&#x27;%s, &#x27; % object.company_id.state_id.name) or &#x27;&#x27;\"></t> Turkey<br/>\n"
+"        </t>\n"
+"        </span>\n"
+"        <t t-if=\"object.company_id.phone\">\n"
+"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                Phone:  <t t-out=\"object.company_id.phone\"></t><br/>Fax  :  <t t-out=\"object.company_id.fax\"></t>\n"
+"\n"
+"            </div>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.website\">\n"
+"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                Web : <a href=\"http://www.altinkaya.com\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">www.altinkaya.com</a>\n"
+"            </div>\n"
+"        </t>\n"
+"        <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"/>\n"
+"    </div>\n"
+"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">You can rate your customer experience at the following link.</p>\n"
+"            <a t-attf-href=\"{{object.survey_url}}\" style=\"text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;\">\n"
+"                Rate the Experience\n"
+" </a>\n"
+"</div>\n"
+"            </body>\n"
+"</html>\n"
+msgstr ""
+"<html>\n"
+"  <body><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\">\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Hello, <t t-out=\"object.partner_id.name\"></t></p>\n"
+"    \n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Here is your <t t-out=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;) and &#x27;quotation&#x27; or &#x27;order confirmation&#x27;\"></t> from Altinkaya Enclosures For Electronics: </p>\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;\">\n"
+"         <strong style=\"font-weight:bolder;\">REFERENCES</strong><br/>\n"
+"         Order number: <strong style=\"font-weight:bolder;\"><t t-out=\"object.name\"></t></strong><br/>\n"
+"         Order total: <strong style=\"font-weight:bolder;\"><t t-out=\" &quot;{0:,.4f\"></t>\".format(object.amount_total).replace(\".\",\"%\").replace(\",\",\" \").replace(\"%\",\",\")} <t t-out=\"object.pricelist_id.currency_id.name\"></t></strong><br/>\n"
+"         Order date: <t t-out=\"object.date_order\"></t><br/>\n"
+"       <t t-if=\"object.origin\">\n"
+"         Order reference: <t t-out=\"object.origin\"></t><br/>\n"
+"       </t>\n"
+"       <t t-if=\"object.client_order_ref\">\n"
+"         Your reference: <t t-out=\"object.client_order_ref\"></t><br/>\n"
+"       </t>\n"
+"       <t t-if=\"object.user_id\">\n"
+"         Prepared By: <a t-attf-href=\"mailto:{{object.user_id.email or ''}}?subject=Order%20{{object.name}}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\"><t t-out=\"object.user_id.name\"></t></a>\n"
+"       </t>\n"
+"    </p><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
+"\n"
+" <t t-if=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;)\">\n"
+"    </span></font><br/>\n"
+"        <a style=\"text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\" t-attf-href=\"{{object.get_portal_url()}}\">\n"
+"            <img src=\"https://pay.altinkaya.com.tr/pay/images/pay_now.gif\" style=\"border-style:none;vertical-align:middle;\"/>\n"
+"        </a><br/><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">It is also possible to make your payment by clicking \"Pay Now\" button above. <br/>Our web page will open and you will be able to make your payment securely and easily.</p>\n"
+"    <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">NEW: If you mention your order number </span></font><span style=\"color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\"><t t-out=\"object.name\"></t></span><span style=\"font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"> in the wire transfer/TT description, our system will automatically confirm the order.</span></div><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\"><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
+"    </t>\n"
+"    </span></font><br/>\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">If you have any question, do not hesitate to contact us.</p>\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\"><strong style=\"font-weight:bolder;\">You can reply this email to contact us.</strong></p>\n"
+"\n"
+"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Thank you for choosing Altinkaya!</p>\n"
+"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
+"        <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
+"            <strong style=\"font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong></h3>\n"
+"    </div>\n"
+"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"        <t t-if=\"object.company_id.street\">\n"
+"            <t t-out=\"object.company_id.street\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.street2\">\n"
+"            <t t-out=\"object.company_id.street2\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.city or object.company_id.zip\">\n"
+"            <t t-out=\"object.company_id.zip\"></t> <t t-out=\"object.company_id.city\"></t><br/>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.country_id\">\n"
+"            <t t-out=\"object.company_id.state_id and (&#x27;%s, &#x27; % object.company_id.state_id.name) or &#x27;&#x27;\"></t> Turkey<br/>\n"
+"        </t>\n"
+"        </span>\n"
+"        <t t-if=\"object.company_id.phone\">\n"
+"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                Phone:  <t t-out=\"object.company_id.phone\"></t><br/>Fax  :  <t t-out=\"object.company_id.fax\"></t>\n"
+"\n"
+"            </div>\n"
+"        </t>\n"
+"        <t t-if=\"object.company_id.website\">\n"
+"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                Web : <a href=\"http://www.altinkaya.eu\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">www.altinkaya.eu</a>\n"
+"            </div>\n"
+"        </t>\n"
+"        <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"/>\n"
+"    </div>\n"
+"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">You can rate your customer experience at the following link.</p>\n"
+"            <a t-attf-href=\"{{object.survey_url}}\" style=\"text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;\">\n"
+"                Rate the Experience\n"
+" </a>\n"
+"</div>\n"
+"            </body>\n"
+"</html>\n"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
+msgid ""
+"<i class=\"fa fa-check text-success\" role=\"img\" aria-label=\"Rating OK\" "
+"title=\"Rating OK\" "
+"attrs=\"{'invisible':['|','|',('carrier_id','=',False),('state','not "
+"in',('draft','sent')),('delivery_rating_success','=',False)]}\"/>"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<i class=\"fa fa-spinner\"/>\n"
-"                <strong>Order State:</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.portal_record_sidebar_change_brand_link
-msgid "<i class=\"fa fa-star\"/>\n"
-"                        Rate your experience"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<i class=\"fa fa-truck\"/>\n"
-"                            Where is my cargo?"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
-msgid "<span class=\"oe_form_field\" attrs=\"{'invisible':[('set_product','=',False)]}\">This is a set product</span>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong class=\"d-block mb-1\">Partner</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong>Destination Port:</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong>Fiscal Position:</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong>Incoterm:</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong>Payment Term:</strong>"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "<strong>Warehouse:</strong>"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
+msgid "<span>Desi: </span>"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -337,38 +209,34 @@ msgid "Accounting"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__active
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__active
 msgid "Active"
 msgstr "有効"
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.portal_record_sidebar_change_brand_link
-msgid "Altinkaya"
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:mail.template,subject:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid "Altinkaya Enclosure For Electronics ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} (Ref ${object.name or 'n/a' })"
+msgid ""
+"Altinkaya Enclosure For Electronics {{object.state in ('draft', 'sent') and "
+"'Quotation' or 'Order'}} (Ref {{object.name or 'n/a' }})"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_portal_logo_size
-msgid "Altinkaya Enclosures for Electronics ©"
+#: model:mail.template,name:altinkaya_sales.email_template_edi_sale_altinkaya
+msgid "Altinkaya Sales Order: Send by email1"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__altinkaya_payment_url
-msgid "Altinkaya Payment Url"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Ana Sektör"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__18_assembly
 msgid "Assembly"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__17_assembly_waiting
 msgid "Assembly Queue"
 msgstr ""
 
@@ -380,8 +248,15 @@ msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template_attribute_line__attr_val_price_coef
-msgid "Attribute value coefficient used to compute product price based on attribute value."
+msgid ""
+"Attribute value coefficient used to compute product price based on attribute"
+" value."
 msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model,name:altinkaya_sales.model_res_bank
+msgid "Bank"
+msgstr "銀行"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__attr_base_price
@@ -389,21 +264,8 @@ msgid "Base Price"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_pricelist_item__base
-msgid "Base price for computation.\n"
-"Public Price: The base price will be the Sale/public Price.\n"
-"Cost Price : The base price will be the cost price.\n"
-"Other Pricelist : Computation of the base price based on another Pricelist."
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template_attribute_line__attr_base_price
 msgid "Base price used to compute product price based on attribute value."
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_pricelist_item__base
-msgid "Based on"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -421,23 +283,18 @@ msgid "Bu seçenek seçili ise fiyatı yenidir."
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__14_cnc
 msgid "CNC Cutting"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__13_cnc_waiting
 msgid "CNC Cutting Queue"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__27_cancel
 msgid "Canceled"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
-msgid "Cargo Tracking"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -447,13 +304,33 @@ msgid "Carinin Urunleri"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_pricelist__allow_check_stock
-msgid "Check Stock"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__changeset_change_ids
+msgid "Changeset Changes"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_pricelist__allow_check_stock
-msgid "Check stock availability for products in this pricelist"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__changeset_ids
+msgid "Changesets"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -462,17 +339,7 @@ msgid "Code"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_res_company
-msgid "Companies"
-msgstr "会社"
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.product_template_old_price_form_attr_price
-msgid "Compute Set Price"
-msgstr ""
-
-#. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__03_sale
 msgid "Confirmed Sale Order"
 msgstr ""
 
@@ -482,8 +349,58 @@ msgid "Contact"
 msgstr "連絡先"
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_email_check_tree_view
+msgid "Contacts"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "Copy to Sale"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_pending_changesets
+msgid "Count Pending Changesets"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -494,16 +411,21 @@ msgid "Country"
 msgstr "国"
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__create_uid
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__create_uid
 msgid "Created by"
 msgstr "作成者"
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__create_date
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__create_date
 msgid "Created on"
 msgstr "作成日"
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__date_order
+msgid ""
+"Creation date of draft/sent orders,\n"
+"Confirmation date of confirmed orders."
+msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__credit_insurance
@@ -519,18 +441,13 @@ msgid "Credit Insurance Validity"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__currency
-msgid "Currency"
-msgstr "通貨"
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__sale_currency_rate
-msgid "Currency Rate"
-msgstr "為替レート"
-
-#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__custom_products
 msgid "Custom Products"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.actions.act_window,name:altinkaya_sales.res_partner_email_check_act_window
+msgid "Customer Email Check"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -539,17 +456,12 @@ msgid "Default Customer Currency"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__default_procurement_wh_id
-msgid "Default Procurement Warehouse"
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_res_country__default_currency_id
 msgid "Default currency for this country"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__24_delivered
 msgid "Delivered"
 msgstr ""
 
@@ -559,10 +471,14 @@ msgid "Description"
 msgstr "説明"
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__display_name
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__display_name
 msgid "Display Name"
 msgstr "表示名"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Diğer Endüstri Iş Sektörleri"
+msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_dolar
@@ -577,12 +493,12 @@ msgid "Dolarla satılan ürünlerin fiyatı"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__25_completed
 msgid "Done"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__01_draft
 msgid "Draft"
 msgstr ""
 
@@ -594,6 +510,11 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_res_country__default_eur_bank_account_id
 msgid "EUR Bank Account for this country"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.ui.menu,name:altinkaya_sales.res_partner_email_check_menu
+msgid "Email Check"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -609,21 +530,8 @@ msgid "En Az Toplam işçilik Fiyatı USD"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__z_old_cep
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__z_old_cep
-msgid "Eski Cep"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__z_old_fax
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__z_old_fax
-msgid "Eski Faks"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__z_old_tel
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__z_old_tel
-msgid "Eski Tel"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Endüstri"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -639,8 +547,8 @@ msgid "Euro ile satılırken kullanılan temel fiyat"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__field
-msgid "Field"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__fax
+msgid "Fax"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -650,59 +558,37 @@ msgid "Fiyat Güncel"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_pricelist_item__free_shipping_limit
-msgid "Free Shipping Limit"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_pricelist_item__free_shipping_limit
-msgid "Free shipping limit"
-msgstr ""
-
-#. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__16_uv_printing
 msgid "Graphic Print"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__15_uv_printing_waiting
 msgid "Graphic Print Queue"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_pricelist_item__x_guncelleme
-msgid "Guncelleme Kodu"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Hedef Ürün Kategorisi"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__has_production_bom
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__has_production_bom
-msgid "Has production BoM"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_company__hash_code
-msgid "Hash Comm Code"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "History"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__id
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__id
 msgid "ID"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__08_injection
 msgid "Injection"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__07_injection_waiting
 msgid "Injection Queue"
 msgstr ""
 
@@ -749,61 +635,42 @@ msgid "Katalog email ile gönderilecek."
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__x_guncelleme
-msgid "Kategori Referansi"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
-msgid "Kaynak"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type____last_update
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment____last_update
 msgid "Last Modified on"
 msgstr "最終更新日"
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__write_uid
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__write_uid
 msgid "Last Updated by"
 msgstr "最終更新者"
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__write_date
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__write_date
 msgid "Last Updated on"
 msgstr "最終更新日"
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__11_cnc_lathe_waiting
 msgid "Lathe Queue"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__12_cnc_lathe
 msgid "Lathe Shop"
 msgstr ""
 
 #. module: altinkaya_sales
-#: code:addons/altinkaya_sales/models/product_pricelist.py:313
-#, python-format
-msgid "List Price"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "Manufacturing Orders"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__10_metal
 msgid "Metal Shop"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__09_metal_waiting
 msgid "Metal Shop Queue"
 msgstr ""
 
@@ -816,29 +683,22 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__nace_product_categ_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__nace_product_categ_ids
-msgid "NACE Target Product Category"
+msgid "Nace Product Categ"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_nakliye
-msgid "Nakliye Fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_nakliye
-msgid "Nakliye fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_price_type__name
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__name
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_email_check_tree_view
 msgid "Name"
 msgstr "名称"
 
 #. module: altinkaya_sales
-#: code:addons/altinkaya_sales/models/product_template.py:98
+#. odoo-python
+#: code:addons/altinkaya_sales/models/product_template.py:0
 #, python-format
-msgid "No phantom BoM found for product %s. Please create a phantom BoM to compute the price of the set product."
+msgid ""
+"No phantom BoM found for product %(name)s. Please create a phantom BoM to "
+"compute the price of the set product."
 msgstr ""
 
 #. module: altinkaya_sales
@@ -847,18 +707,13 @@ msgid "Notes"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.product_product__form_old_prices
-msgid "Old Prices"
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__sale_line_history
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_A
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "Old Sales"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__23_on_transit
 msgid "On Transit"
 msgstr ""
 
@@ -873,13 +728,7 @@ msgid "Order State"
 msgstr ""
 
 #. module: altinkaya_sales
-#: code:addons/altinkaya_sales/models/product_pricelist.py:312
-#, python-format
-msgid "Other Pricelist"
-msgstr ""
-
-#. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__22_packaged
 msgid "Packaged"
 msgstr ""
 
@@ -907,12 +756,7 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_portal_mixin
 msgid "Portal Mixin"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.portal_record_sidebar_change_brand_link
-msgid "Powered by"
-msgstr ""
+msgstr "ポータル混合"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__attr_price
@@ -921,36 +765,15 @@ msgid "Price calculated based on the product's attribute values."
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_price_type
-msgid "Price type"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_pricelist
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__property_product_pricelist
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__property_product_pricelist
 msgid "Pricelist"
 msgstr "価格リスト"
 
 #. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_pricelist_item
-msgid "Pricelist Item"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_pricelist__list_type_use
-msgid "Pricelist type used in sales or purchases"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.product_product__form_old_prices
-msgid "Prices"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_product
+#: model:ir.model,name:altinkaya_sales.model_product_template
 msgid "Product"
-msgstr "プロダクト"
+msgstr "プロダクトテンプレート"
 
 #. module: altinkaya_sales
 #: model:ir.ui.menu,name:altinkaya_sales.menu_product_category_on_sale
@@ -960,30 +783,20 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_product_category
 msgid "Product Category"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.actions.act_window,name:altinkaya_sales.action_product_price_type
-msgid "Product Price Type"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.ui.menu,name:altinkaya_sales.menu_product_price_type
-msgid "Product Price Types"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_template
-msgid "Product Template"
-msgstr "プロダクトテンプレート"
+msgstr "プロダクトカテゴリ"
 
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_product_template_attribute_line
 msgid "Product Template Attribute Line"
-msgstr ""
+msgstr "プロダクトテンプレート属性明細"
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model,name:altinkaya_sales.model_product_product
+msgid "Product Variant"
+msgstr "プロダクト"
+
+#. module: altinkaya_sales
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__05_production
 msgid "Production"
 msgstr ""
 
@@ -998,55 +811,34 @@ msgid "Products"
 msgstr "プロダクト"
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__20_cutting
 msgid "Profile Cutting"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__19_cutting_waiting
 msgid "Profile Cutting Queue"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:product.pricelist,list_type_use:0
-msgid "Purchases"
-msgstr ""
-
-#. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__02_sent
 msgid "Quotation"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__26_return
 msgid "Returned"
 msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "販売オーダ"
-
-#. module: altinkaya_sales
-#: selection:product.pricelist,list_type_use:0
-msgid "Sales"
-msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "販売オーダ明細"
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.product_product__form_old_prices
-msgid "Sales Price"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__purchase_price
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__purchase_price
-msgid "Satınalma Fiyatı"
-msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__segment_id
@@ -1077,9 +869,18 @@ msgid "Show Custom Products"
 msgstr ""
 
 #. module: altinkaya_sales
-#: code:addons/altinkaya_sales/models/product_pricelist.py:311
-#, python-format
-msgid "Supplier Prices on the product form"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__smart_search
+msgid "Smart Search"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1098,34 +899,81 @@ msgid "Tags..."
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_v2_to_v12_views
-msgid "Tax Position"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_partner_form
+msgid "Tax Office Name"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.product_template_old_price_form_attr_price
-msgid "This method will recalculate the prices of all variants within the current product template. Do you want to continue?"
+#: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_product_category__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template_attribute_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_res_bank__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_res_country__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_category__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_product__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template_attribute_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_bank__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_country__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_category__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_product__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_product_template_attribute_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_bank__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_country__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_changesets
+msgid "The overall number of changesets of this record"
 msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner__property_product_pricelist
 #: model:ir.model.fields,help:altinkaya_sales.field_res_users__property_product_pricelist
-msgid "This pricelist will be used, instead of the default one, for sales to the current partner"
-msgstr ""
+msgid ""
+"This pricelist will be used, instead of the default one, for sales to the "
+"current partner"
+msgstr "この価格リストは現在のパートナに販売するために、デフォルトのそれに代って使用されます。"
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__06_molding
 msgid "Tool Production"
 msgstr ""
 
 #. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__04_molding_waiting
 msgid "Tool Shop Queue"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__amount_total_usd
-msgid "Total (USD)"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
+msgid "Total Tax Excluded"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
+msgid "Total Tax Included"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1150,8 +998,8 @@ msgid "USD Fiyatı"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_pricelist__list_type_use
-msgid "Use Type"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__amount_untaxed_usd
+msgid "Untaxed Total (USD)"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1160,13 +1008,18 @@ msgid "Use in pricing"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_res_company__hash_code
-msgid "Used in comm with ext services"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_res_users
-msgid "Users"
+#: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_bank__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__user_can_see_changeset
+msgid "User Can See Changeset"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1180,13 +1033,7 @@ msgid "Variant Name"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__x_vergino
-#: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__x_vergino
-msgid "Vergi No"
-msgstr ""
-
-#. module: altinkaya_sales
-#: selection:sale.order,order_state:0
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__21_at_warehouse
 msgid "Warehouse"
 msgstr ""
 
@@ -1217,28 +1064,8 @@ msgid "işçilik Fiyatı USD"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:ir.model,name:altinkaya_sales.model_product_pricelist_type
-msgid "product.pricelist.type"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_onceki
-msgid "Önceki Fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_onceki
-msgid "Önceki fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_onceki_iscilik
-msgid "Önceki işçilik fiyatı"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_onceki_iscilik
-msgid "Önceki İşçilik Fiyatı"
+#: model:mail.template,report_name:altinkaya_sales.email_template_edi_sale_altinkaya
+msgid "{{(object.name or '').replace('/','_')}}"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1246,4 +1073,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__z_contact_name
 msgid "İlgili Kişi"
 msgstr ""
-
