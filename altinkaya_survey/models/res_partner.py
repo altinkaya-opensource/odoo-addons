@@ -33,34 +33,31 @@ class ResPartner(models.Model):
                 )
             )
 
+    def send_reconciliation_mail(self, reply_to):
+        self.ensure_one()
+        contact = self.accounting_contact or self
 
-    #### commented out because the template logic will be different in the new implementation
+        if not contact.email:
+            raise Warning(_("Partner %s does not have an email address." % self.name))
 
-    # def send_reconciliation_mail(self, reply_to):
-    #     self.ensure_one()
-    #     contact = self.accounting_contact or self
-
-    #     if not contact.email:
-    #         raise Warning(_("Partner %s does not have an email address." % self.name))
-
-    #     email_values = {
-    #         "recipient_ids": [(4, contact.id)],
-    #         "notification": True,
-    #         "reply_to": reply_to[self.id],
-    #         "email_from": self.env.user.email,
-    #     }
-    #     if contact.lang == "tr_TR":
-    #         template = self.env.ref(
-    #             "altinkaya_reports.email_template_edi_send_statement"
-    #         )
-    #     else:
-    #         template = self.env.ref(
-    #             "altinkaya_reports.email_template_edi_send_statement_en"
-    #         )
-    #     try:
-    #         contact.message_post_with_template(
-    #             template_id=template.id,
-    #         )
-    #         self.env.cr.commit()  # commit after each mail sent
-    #     except Exception as e:
-    #         raise Warning(_("Partner %s could not be sent: %s" % (self.name, e)))
+        email_values = {
+            "recipient_ids": [(4, contact.id)],
+            "notification": True,
+            "reply_to": reply_to[self.id],
+            "email_from": self.env.user.email,
+        }
+        if contact.lang == "tr_TR":
+            template = self.env.ref(
+                "altinkaya_reports.email_template_edi_send_statement"
+            )
+        else:
+            template = self.env.ref(
+                "altinkaya_reports.email_template_edi_send_statement_en"
+            )
+        try:
+            contact.message_post_with_template(
+                template_id=template.id,
+            )
+            self.env.cr.commit()  # commit after each mail sent
+        except Exception as e:
+            raise Warning(_("Partner %s could not be sent: %s" % (self.name, e)))
