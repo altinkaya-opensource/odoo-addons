@@ -164,8 +164,7 @@
                     <field name='currency_rate' readonly="1"/>
                 </xpath>
 
-                <xpath expr="//field[@name='order_line']/tree//field[@name='product_tmpl_id']" position="replace"/>
-
+                <xpath expr="//field[@name='order_line']//tree//field[@name='product_tmpl_id']" position="replace" />
 
 				<xpath expr="/form/header" position="after">
 					<header attrs="{'invisible': [('order_state', '=', 'draft')]}">
