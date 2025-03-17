@@ -151,10 +151,10 @@
                 </xpath>
 
 
-                <xpath expr="//field[@name='incoterm_address_id']" position="replace"/>
-                <xpath expr="//group[@name='sale_shipping']/field[@name='incoterm_location']" position="replace"/>
-                <xpath expr="//group[@name='sale_shipping']/label[@for='commitment_date']" position="replace"/>
-                <xpath expr="//notebook//group/group[@name='sale_shipping']/div[@class='o_row']" position="replace"/>
+                <!-- <xpath expr="//field[@name='incoterm_address_id']" position="replace"/> -->
+                <!-- <xpath expr="//group[@name='sale_shipping']/field[@name='incoterm_location']" position="replace"/> -->
+                <!-- <xpath expr="//group[@name='sale_shipping']/label[@for='commitment_date']" position="replace"/> -->
+                <!-- <xpath expr="//notebook//group/group[@name='sale_shipping']/div[@class='o_row']" position="replace"/> -->
                 <xpath expr="//notebook//group/group[@name='sale_shipping']/field[@name='picking_policy']" position="after">
                     <field name="expected_date" readonly="true"/>
                     <field name="commitment_date"/>
