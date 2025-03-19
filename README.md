@@ -1,11 +1,19 @@
-# Odoo Addons
-Altinkaya Free Odoo Addons
+# Altinkaya Free Odoo Addons
 
+Welcome to the Altinkaya Free Odoo Addons repository. This collection of modules is designed to enhance your Odoo experience with reliable, community-driven solutions.
 
-### We Welcome Your Contributions
+## Contributing
 
-* The project is licensed under the LGPL license. By contributing, you agree to the terms of this license.
-* We aim for the modules and content in our project to meet **OCA quality standards**.
-* General information can be found on the [Contribute to OCA](https://odoo-community.org/page/Contribute) page.
-* You can access the general rules for adding modules at [OCA Maintainer Tools](https://github.com/OCA/maintainer-tools/blob/master/CONTRIBUTING.md).
-* While developing modules, you can simplify your quality control process using the [quality control tools prepared by OCA](https://github.com/OCA/maintainer-quality-tools).
+We appreciate and welcome contributions from the community. By participating, you agree to the project's licensing terms.
+
+- Your contributions are released under the [AGPL-3 license](https://www.gnu.org/licenses/agpl-3.0.en.html).
+- Our modules adhere to the high standards established by the [Odoo Community Association (OCA)](https://odoo-community.org/).
+- For general information and guidance on contributing, please visit the [Contribute to OCA](https://odoo-community.org/page/Contribute) page.
+- Detailed instructions and best practices can be found in the [OCA Maintainer Tools](https://github.com/OCA/maintainer-tools/blob/master/CONTRIBUTING.md).
+- For quality control during module development, we recommend using the [OCA Quality Tools](https://github.com/OCA/maintainer-quality-tools).
+
+## License
+
+This project is licensed under the terms of the AGPL-3 license. Please review the LICENSE file for more details.
+
+We look forward to your valuable contributions!
