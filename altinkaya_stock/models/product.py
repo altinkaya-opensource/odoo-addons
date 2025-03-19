@@ -15,10 +15,23 @@ class Product(models.Model):
         "product.attribute.value", compute="_compute_domain_attribute_value_ids"
     )
 
+    attribute_value_ids = fields.Many2many(
+        "product.attribute.value",
+        compute="_compute_attribute_value_ids",
+        store=True,
+    )  # This field is ported from v12 and is used in odoo2odoo connector.
+
     def _compute_domain_attribute_value_ids(self):
         for product in self:
             product.domain_attribute_value_ids = (
                 product.product_tmpl_id.attribute_line_ids.mapped("value_ids")
+            )
+
+    @api.depends("product_template_attribute_value_ids")
+    def _compute_attribute_value_ids(self):
+        for product in self:
+            product.attribute_value_ids = product.mapped(
+                "product_template_attribute_value_ids.product_attribute_value_id"
             )
 
     qty_available_sincan = fields.Float(
