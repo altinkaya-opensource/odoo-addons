@@ -46,6 +46,8 @@ class ResPartner(models.Model):
                 record.due_days = max(
                     record.property_payment_term_id.line_ids.mapped("days") or [0],
                 )
+            else:
+                record.due_days = 0
 
     @api.model_create_multi
     def create(self, vals_list):
