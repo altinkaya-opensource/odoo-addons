@@ -10,8 +10,8 @@
     "version": "16.0.0.1.0",
     # any module necessary for this one to work correctly
     "depends": [
-        "base",
         "altinkaya_base",
+        "sale",
         "account",
         "account_financial_risk",
         "currency_difference_invoice",
