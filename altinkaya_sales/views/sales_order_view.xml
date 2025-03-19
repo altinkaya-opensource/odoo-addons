@@ -164,8 +164,6 @@
                     <field name='currency_rate' readonly="1"/>
                 </xpath>
 
-                <xpath expr="//field[@name='order_line']//tree//field[@name='product_tmpl_id']" position="replace" />
-
 				<xpath expr="/form/header" position="after">
 					<header attrs="{'invisible': [('order_state', '=', 'draft')]}">
 						<field name="order_state" widget="statusbar" statusbar_visible="02_sent,03_sale,06_molding,08_injection,14_cnc,16_uv_printing,18_assembly,21_at_warehouse,22_packaged,23_on_transit,24_delivered"/>
