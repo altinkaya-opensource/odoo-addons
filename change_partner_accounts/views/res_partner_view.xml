@@ -37,8 +37,8 @@
             </field>
         </record>
 
-        <record id="res_partner_tree_borc" model="ir.ui.view">
-            <field name="name">res.partner.tree_borc</field>
+        <record id="res_partner_balance_tree" model="ir.ui.view">
+            <field name="name">res.partner.balance.tree</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <tree string="Contacts">
@@ -68,24 +68,22 @@
         </record>
 
         <record id="action_partner_balance" model="ir.actions.act_window">
-            <field name="name">Kontak Cari Listesi</field>
+            <field name="name">Partner Balance Action</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="res_partner_tree_borc"/>
+            <field name="view_id" ref="res_partner_balance_tree"/>
         </record>
 
-        <menuitem id="menu_res_partner_tree_borc"
-                  name="Cari Listesi"
+        <menuitem id="menu_res_partner_balance_sale"
+                  name="Borç / Alacak Listesi"
                   action="action_partner_balance"
-                  parent="sale.sale_order_menu"
-                  sequence="0"/>
+                  parent="sale.sale_order_menu"/>
 
-        <menuitem id="menu_res_partner_tree_borc"
-                  name="Cari Listesi"
+        <menuitem id="menu_res_partner_balance_acconut"
+                  name="Borç / Alacak Listesi"
                   action="action_partner_balance"
-                  parent="account.menu_finance_reports"
-                  sequence="0"/>
+                  parent="account.menu_finance_reports"/>
 
     </data>
 </odoo>

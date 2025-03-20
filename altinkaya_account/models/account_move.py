@@ -89,9 +89,12 @@ class AccountMove(models.Model):
                     )
                     picking.write({"carrier_id": move.carrier_id.id})
 
-            if move.payment_term_id and move.payment_term_id.convert_invoice_to_try:
+            if (
+                move.invoice_payment_term_id
+                and move.invoice_payment_term_id.convert_invoice_to_try
+            ):
                 move.currency_id = self.env.ref("base.TRY")
-                move._onchange_currency()
+                move._inverse_currency_id()
                 move._compute_currency_change_rate()
                 move.action_account_change_currency()
 

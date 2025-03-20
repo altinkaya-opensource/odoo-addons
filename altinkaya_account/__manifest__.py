@@ -28,5 +28,6 @@
         "views/account_invoice_report_view.xml",
         "views/account_payment_term_view.xml",
         "views/res_currency_rate_view.xml",
+        "views/account_bank_statement_line_view.xml",
     ],
 }

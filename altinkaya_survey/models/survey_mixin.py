@@ -1,9 +1,11 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, fields, _
-from odoo.exceptions import UserError
-from odoo.addons.http_routing.models.ir_http import slug
 import base64
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.http_routing.models.ir_http import slug
 
 model_field_mapping = {
     "sale.order": "sale_id",
@@ -61,7 +63,6 @@ class SurveyMapping(models.AbstractModel):
         action["domain"] = [(model_field_mapping[self._name], "=", self.id)]
         return action
 
-    
     def _compute_survey_url(self):
         """Base method for computing survey url. This method is overridden in
         models that inherit from this mixin."""
@@ -99,11 +100,9 @@ class SurveyMapping(models.AbstractModel):
         if not survey_user_input:
             survey_user_input = self.env["survey.user_input"].create(vals)
 
-        survey_url = base_url + "/%s/survey/fill/%s/%s" % (
-            # survey.default_lang_id.code or "tr_TR",
-            survey_user_input.partner_id.lang or "tr_TR",
-            slug(survey),
-            survey_user_input.invite_token,
+        survey_url = (
+            f"{base_url}/{survey_user_input.partner_id.lang or 'tr_TR'}"
+            f"/survey/fill/{slug(survey)}/{survey_user_input.invite_token}"
         )
 
         # Read or create shortened url for user_input
@@ -118,7 +117,6 @@ class SurveyMapping(models.AbstractModel):
 
         return survey_user_input.shortened_url or survey_url
 
-    
     def _compute_survey_url_qr(self):
         """Compute survey url qr code for active record"""
         for rec in self:
@@ -142,7 +140,6 @@ class SurveyResPartnerMixin(models.Model):
         translate=True,
     )
 
-    
     def _compute_reconciliation_replied(self):
         default_survey_id = self._get_default_survey("default_partner_survey")
         for partner in self:
@@ -169,7 +166,6 @@ class SurveyResPartnerMixin(models.Model):
         partner_ids = user_inputs.mapped("partner_id").ids
         return [("id", operator, partner_ids)]
 
-    
     def _compute_survey_url(self):
         default_survey_id = self._get_default_survey("default_partner_survey")
         for record in self:

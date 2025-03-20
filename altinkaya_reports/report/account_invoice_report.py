@@ -55,6 +55,7 @@ class AccountInvoiceReport(models.Model):
             so.campaign_id as sale_campaign_id,
             so.medium_id as sale_medium_id,
             partner.create_date as partner_create_date,
+            line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
             -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
             -COALESCE(

@@ -135,7 +135,6 @@ class SaleOrder(models.Model):
         index=True,
         tracking=True,
         compute="_compute_order_state",
-        # track_sequence=3,
         store=True,
     )
 
