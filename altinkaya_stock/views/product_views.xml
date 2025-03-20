@@ -57,10 +57,20 @@
                 <!-- <xpath expr="//button[@name='150']" position="attributes">
                     <attribute name="attrs">{'invisible':0}</attribute>
                 </xpath> -->
-                <xpath expr="//div[@name='options']" position='inside'>
-                    <xpath expr="//field[@name='categ_id']" position='move'>
-                    </xpath>
+                <xpath expr="//div[@name='options']" position='after'>
+                    <group>
+                        <field name="categ_id" colspan="2"/>
+                    </group>
                 </xpath>
+                <xpath expr="//field[@name='invoice_policy']" position='before'>
+                    <field name="barcode"/>
+                </xpath>
+                <xpath expr="//field[@name='description_sale']" position="after">
+                    <group string="Muhasebe" colspan="2">
+                        <field name="invoice_policy"/>
+                    </group>
+                </xpath>
+
             </field>
         </record>
 
