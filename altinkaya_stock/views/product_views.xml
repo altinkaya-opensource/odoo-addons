@@ -26,6 +26,11 @@
             <button name="action_view_stock_move_lines" position="before">
                 <button string="Yapılacak Hareketler" type="object" name= "action_view_todo_moves" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" class="oe_stat_button" icon="fa-arrows-v" groups="stock.group_stock_user"/>
             </button>
+            <xpath expr="//field[@name='description_sale']" position="after">
+                <group string="Muhasebe" colspan="2">
+                    <field name="invoice_policy"/>
+                </group>
+            </xpath>
 
         </field>
     </record>
