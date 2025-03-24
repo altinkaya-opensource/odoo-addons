@@ -4,70 +4,62 @@
 
         <!-- STAR RATING RESULT TEMPLATE -->
         <template id="result_star" name="Star Rating Result">
-
-            <div>
-                <!-- Tabs -->
-                <ul class="nav nav-tabs d-print-none" role="tablist">
-
-                    <li class="nav-item">
-                        <a t-att-href="'#graph_question_%d' % question.id"
-                           t-att-aria-controls="'graph_question_%d' % question.id"
-                           class="nav-link active" data-toggle="tab" role="tab">
-                            <i class="fa fa-bar-chart-o"></i>
-                            Pie Chart
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a t-att-href="'#data_question_%d' % question.id"
-                           t-att-aria-controls="'data_question_%d' % question.id"
-                           class="nav-link" data-toggle="tab" role="tab">
-                            <i class="fa fa-list-alt"></i>
-                            Data
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane survey_graph active"
-                         t-att-id="'graph_question_%d' % question.id"
-                         t-att-data-question_id="question.id" data-graph_type="pie"
-                         t-att-graph-data="graph_data">
-                        <!-- svg element for drawing pie chart -->
-                        <svg style="height:20em"></svg>
-                    </div>
-                    <div role="tabpanel" class="tab-pane"
-                         t-att-id="'data_question_%d' % question.id">
-                        <table class="table table-hover table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Answer Choices</th>
-                                    <th>User Responses</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr t-foreach="prepare_result['answers']"
-                                    t-as="user_input">
-                                    <td>
-                                        <p t-esc="user_input['text']"></p>
-                                    </td>
-                                    <td class="survey_answer">
-                                        <span t-esc="round(user_input['count']*100.0/(input_summary['answered'] or 1),2)"></span>
-                                        %
-                                        <span t-esc="user_input['count']"
-                                              class="badge badge-primary">Vote
-                                        </span>
-                                        <i class="fa fa-filter text-primary invisible survey_filter"
-                                           t-att-data-question_id="question.id"
-                                           role="img" aria-label="Filter question"
-                                           title="Filter question"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <t t-set="graph_data" t-value="question_data['graph_data']"/>
+            <t t-set="table_data" t-value="question_data['table_data']"/>
+            <ul class="nav nav-tabs d-print-none" role="tablist">
+                <li t-if="question_answered" class="nav-item active" >
+                    <a t-att-href="'#survey_graph_question_%d' % question.id"
+                        t-att-aria-controls="'survey_graph_question_%d' % question.id"
+                        class="nav-link active" data-bs-toggle="tab" role="tab">
+                        <i class="fa fa-bar-chart me-1"/>Graph
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a t-att-href="'#survey_data_question_%d' % question.id"
+                        t-att-aria-controls="'survey_data_question_%d' % question.id"
+                        t-attf-class="nav-link #{'active' if not question_answered else ''}" data-bs-toggle="tab" role="tab">
+                        <i class="fa fa-list-alt me-1"/>Data
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div t-if="question_answered" role="tabpanel" class="tab-pane active with-3d-shadow with-transitions survey_graph"
+                    t-att-id="'survey_graph_question_%d' % question.id"
+                    t-att-data-question-id= "question.id"
+                    data-graph-type= "pie"
+                    t-att-data-graph-data="graph_data">
+                    <canvas style="height: 20em;"></canvas>
+                </div>
+                <div role="tabpanel" t-attf-class="tab-pane #{'active' if not question_answered else ''}" t-att-id="'survey_data_question_%d' % question.id">
+                    <table class="table table-hover table-sm text-end">
+                        <thead t-if="table_data">
+                            <tr>
+                                <th>Answer Choices</th>
+                                <th>User Responses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="table_data" t-as="choice_data">
+                                <td>
+                                    <span t-esc="choice_data['value_text']"></span>
+                                </td>
+                                <td class="o_survey_answer">
+                                    <span t-esc="choice_data['perc_data']"></span>
+                                    <span class="badge text-bg-primary" t-esc="choice_data['count']"></span>
+                                    <i t-if="choice_data['count']" class="fa fa-filter text-primary filter-add-answer"
+                                        t-att-data-question-id="question.id"
+                                        t-att-data-row-id="choice_data['value']"
+                                        role="img" aria-label="Filter surveys"
+                                        title="Only show survey results having selected this answer">
+                                    </i>
+                                    <i t-else="" class="o_survey_answer_matrix_whitespace"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </template>
-
 
         <!-- STAR FORM TEMPLATE -->
         <template id="star_rating" name="Star Rating">
@@ -131,8 +123,8 @@
         </template>
 
         <!-- SURVEY RESULT -->
-        <template id="survey_star_rating_results" inherit_id="survey.survey_fill_form_in_progress">
-            <xpath expr="//div[@t-if='question.is_page']" position="inside">
+        <template id="survey_star_rating_results" inherit_id="survey.survey_page_statistics_question">
+             <xpath expr="div/t[5]" position="after">
                 <t t-if="question.question_type == 'star_rating'">
                     <t t-call="altinkaya_survey.result_star"/>
                 </t>
