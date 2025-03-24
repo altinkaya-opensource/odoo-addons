@@ -17,20 +17,20 @@ class MrpProduction(models.Model):
                 line.quantity_done, precision_rounding=line.product_uom.rounding
             ):
                 raise UserError(_("Some products are tracked by lots but no lot is set."))
-
-        # If product tracking is not 'none' and lot is not set, create a lot
-        if self.product_tracking != "none" and not self.lot_id:
-            # Use lot created in a different context, e.g., via the production order
-            if self.lot_id_to_create:
-                self.lot_id = self.lot_id_to_create
-            else:
-                vals = {
-                    "product_id": self.product_id.id,
-                    "ref": self.origin or "",
-                }
-                # Lot creation logic should be handled via stock.lot
-                lot = self.env['stock.lot'].create(vals)
-                self.lot_id = lot
-
+            
+            # If product tracking is not 'none' and lot is not set, create a lot
+            if self.product_tracking != "none" and not line.lot_ids:
+                # Use lot created in a different context, e.g., via the production order
+                if self.lot_producing_id:
+                    line.lot_ids = [(6, 0, [self.lot_producing_id.id])]
+                else:
+                    vals = {
+                        "product_id": self.product_id.id,
+                        "ref": self.origin or "",
+                    }
+                    # Lot creation logic should be handled via stock.lot
+                    lot = self.env['stock.lot'].create(vals)
+                    line.lot_ids = [(6, 0, [lot.id])]
+            
         # Continue with the original method to complete production
         return super(MrpProduction, self).button_mark_done()
