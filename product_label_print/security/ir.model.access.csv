@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_print_pack_barcode_wiz,access_print_pack_barcode_wiz,model_print_pack_barcode_wiz,base_report_to_printer.printing_group_user,1,1,1,1
 access_label_twoinrow,access_label_twoinrow,model_label_twoinrow,base.group_user,1,0,0,0
-access_product_product_label,access_product_product_label,model_product_product_label,base.group_user,1,0,0,0
+access_product_product_label,access_product_product_label,model_product_product_label,base.group_user,1,1,1,1

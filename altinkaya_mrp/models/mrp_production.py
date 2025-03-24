@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.tools.safe_eval import safe_eval
 
 
 class XMakine(models.Model):
@@ -158,20 +159,22 @@ class MrpProduction(models.Model):
 
     def action_print_product_label(self):
         self.ensure_one()
-        aw_obj = self.env["ir.actions.act_window"].with_context(
-            {"default_restrict_single": True}
-        )
-        action = aw_obj.for_xml_id(
-            "product_label_print", "action_print_pack_barcode_wiz"
-        )
-        action.update(
-            {
-                "context": {
-                    "default_restrict_single": True,
-                    "active_ids": [self.product_id.id],
-                }
-            }
-        )
+        action = self.env.ref("product_label_print.action_print_pack_barcode_wiz").sudo().read()[0]
+
+        # Ensure context is a dictionary
+        action_context = action.get("context")
+        if isinstance(action_context, str):
+            try:
+                action_context = safe_eval(action_context)  # Convert string to dict
+            except Exception:
+                action_context = {}  # Fallback to empty dict if conversion fails
+
+        # Merge context properly
+        action["context"] = {
+            **action_context,
+            "default_restrict_single": True,
+            "active_ids": [self.product_id.id],
+        }
         return action
 
     # TODO: check migration 16.0
