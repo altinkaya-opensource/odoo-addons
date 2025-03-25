@@ -166,8 +166,8 @@ class PrintPackBarcodeWizard(models.TransientModel):
                     )
 
                 if len(product_label.lot_ids) == 0 and model._name == "mrp.production":
-                    if model.lot_id_to_create:
-                        lot_id = model.lot_id_to_create
+                    if model.lot_producing_id:
+                        lot_id = model.lot_producing_id
                     else:
                         lot_id = self.env["stock.lot"].create(
                             {
@@ -175,7 +175,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                                 "ref": model.origin,
                             }
                         )
-                        model.lot_id_to_create = lot_id.id
+                        model.lot_producing_id = lot_id.id
                     product_label.lot_ids = [(6, 0, [lot_id.id])]
 
                 product_label.lot_id = fields.first(product_label.lot_ids)
@@ -280,7 +280,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                 model.move_finished_ids.mapped("move_line_ids.lot_id").filtered(
                     lambda x: x.product_id == model.product_id
                 )
-                or model.lot_id_to_create
+                or model.lot_producing_id
             )
 
         if model._name == "stock.move":
