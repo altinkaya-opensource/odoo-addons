@@ -10,7 +10,7 @@ class ChooseDeliveryCarrier(models.TransientModel):
 
     carrier_prices = fields.Many2many("delivery.carrier.lines", string="Prices")
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         raw_carrier_price_data = vals_list.get("carrier_prices")[
             1:
