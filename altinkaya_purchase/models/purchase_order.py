@@ -10,8 +10,7 @@ class PurchaseOrder(models.Model):
     pricelist_id = fields.Many2one(
         "product.pricelist",
         "Pricelist",
-        required=True,
-        default=lambda self: self.partner_id.property_product_pricelist,
+        default=lambda self: self.partner_id.property_purchase_pricelist,
         states={"draft": [("readonly", False)], "sent": [("readonly", True)]},
         help="Pricelist for current purchase order.",
     )
