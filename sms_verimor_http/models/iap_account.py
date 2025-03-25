@@ -14,16 +14,13 @@ class IapAccount(models.Model):
     provider = fields.Selection(
         selection_add=[("sms_verimor_http", "SMS Verimor API")],
         ondelete={"sms_verimor_http": "cascade"},
-        required=True,
     )
     sms_verimor_http_username = fields.Char(
         string="Username",
-        required=True,
         help="Username of your Verimor account. (required)",
     )
     sms_verimor_http_password = fields.Char(
         string="Password",
-        required=True,
         help="Password of your Verimor account. (required)",
     )
     sms_verimor_http_sms_header = fields.Char(
