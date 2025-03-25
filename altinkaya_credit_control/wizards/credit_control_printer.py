@@ -8,6 +8,6 @@ class CreditControlPrinter(models.TransientModel):
     _inherit = "credit.control.printer"
 
     @api.model
-    def default_get(self, fields):
-        super(CreditControlPrinter, self).default_get(fields)
+    def default_get(self, fields_list):
+        super(CreditControlPrinter, self).default_get(fields_list)
         raise UserError(_("This method is restricted by Altinkaya Credit Control."))

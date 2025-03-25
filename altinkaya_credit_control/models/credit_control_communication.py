@@ -69,12 +69,12 @@ class CreditControlCommunication(models.Model):
         """
         for comm in self:
             comm.credit_control_lines_html = (
-                self.env["ir.qweb"]
-                .render(
-                    "altinkaya_credit_control.report_credit_control_lines",
-                    values={"doc": self},
+                str(
+                    self.env["ir.qweb"]._render(
+                        "altinkaya_credit_control.report_credit_control_lines",
+                        values={"doc": self},
+                    )
                 )
-                .decode("utf8")
             )
         return True
 
@@ -97,5 +97,5 @@ class CreditControlCommunication(models.Model):
         """
         self.ensure_one()
         self.write({"state": "done"})
-        self.credit_control_line_ids.write({"state": "done"})
+        self.credit_control_line_ids.write({"state": "sent"})
         return True
