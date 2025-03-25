@@ -80,7 +80,7 @@
                 <button name="action_view_stock_move_lines" position="before">
                     <button string="Yapılacak Hareketler" type="object" name= "action_view_todo_moves" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" class="oe_stat_button" icon="fa-arrows-v" groups="stock.group_stock_user"/>
                 </button>
-
+            </xpath>
             </field>
         </record>
 
@@ -145,7 +145,6 @@
                     <field name="qty_available_sincan" string="Sincan Depo" widget="float_time"/>
                 </field>
 
-            </field>
             <xpath expr="//field[@name='attr_price']" position="attributes">
                 <attribute name="string">Satış Fiyatı</attribute>
             </xpath>
@@ -155,8 +154,8 @@
                 <field name="qty_available_sincan" string="Sincan Depo" widget="float_time"/>
             </field>
 
-        </field>
-    </record>
+            </field>
+        </record>
 
 
     <record id="view_product_category_form" model="ir.ui.view">

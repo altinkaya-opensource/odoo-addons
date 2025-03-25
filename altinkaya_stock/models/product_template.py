@@ -6,6 +6,14 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     default_code = fields.Char(copy=False)
+    responsible_employee_id = fields.Many2one(
+        comodel_name="hr.employee", string="Responsible Employee"
+    )
+    def action_view_todo_moves(self):
+        self.ensure_one()
+        action = self.env.ref("altinkaya_stock.stock_move_line_action").read()[0]
+        action["domain"] = [("product_id", "=", self.id)]
+        return action
 
     @api.constrains("default_code")
     def _check_default_code_unique(self):

@@ -41,6 +41,7 @@ class MrpProduction(models.Model):
     procurement_group_name = fields.Char(
         compute="_get_procurement_group_name", string="Procurement Group Name", readonly=True
     )
+    lot_id_to_create = fields.Many2one('stock.lot', string="Lot to Create")
 
     def _generate_moves(self):
         if self.env.context.get("context", {}).get("migration", False):
