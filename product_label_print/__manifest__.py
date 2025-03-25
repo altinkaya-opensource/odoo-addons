@@ -17,7 +17,6 @@
         "views/product_view.xml",
         "views/stock_lot_view.xml",
         "views/stock_picking_view.xml",
-        "views/mrp_production_view.xml",
         "views/printer.xml",
         "report/label_reports.xml",
         "report/molding_label.xml",
