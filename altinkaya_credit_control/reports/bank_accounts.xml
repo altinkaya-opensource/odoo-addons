@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="credit_control_bank_account_template">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+        <t t-if="doc.partner_id.lang == 'tr_TR'">
+            <p style="margin: 10px 0;">
+                Ödemenizi aşağıdaki banka hesaplarımıza yapabilir veya diğer ödeme<br/>
+                yöntemleri için bizimle iletişime geçebilirsiniz.
+            </p>
+                <table style="table-layout:auto;">
+                    <tr style="font-size:14px;">
+                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                            <span>
+                                Banka Adı
+                            </span>
+                        </th>
+
+                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                            <span>
+                                Şb.Kd.
+                            </span>
+                        </th>
+                        <th style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                            <span>
+                                Hs.No.
+                            </span>
+                        </th>
+                        <th  style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;">
+                            <span>
+                                IBAN
+                            </span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            İş Bankası
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            4384
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            0012114
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            TR26 0006 4000 0014 3840 0121 14 (TL)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            Garanti Bankası
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            682
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            6294510
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            TR40 0006 2000 6820 0006 2945 10 (TL)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            AKBANK
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            945
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            1322
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            TR90 0004 6009 4588 8000 0013 22 (TL)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            Ziraat Bankası
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            1912
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            82247151-5001
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            TR47 0001 0019 1282 2471 5150 01 (TL)
+                        </td>
+                    </tr>
+                </table>
+        </t>
+
+        <t t-else="">
+            <p style="margin: 10px 0;">
+                You can make your payment to our bank accounts below or contact us<br/>
+                for other payment methods you can move on.
+            </p>
+            <div class="row">
+                <div class="col">
+                    <t t-if="doc.currency_id.name == 'TRY'">
+                        <strong>TRY BANK ACCOUNT INFORMATION</strong>
+                    </t>
+                    <t t-if="doc.currency_id.name == 'USD'">
+                        <strong>USD BANK ACCOUNT INFORMATION</strong>
+                    </t>
+                    <t t-if="doc.currency_id.name=='EUR'">
+                        <strong>EURO BANK ACCOUNT INFORMATION</strong>
+                    </t>
+                </div>
+            </div>
+            <div class="row">
+                <table style="table-layout:auto;">
+                    <tr style="white-space:nowrap;">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>BENEFICIARY</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <span>ALTINKAYA ELEKTRONIK CIH KUT SAN TIC AS</span>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>BANK NAME</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <span>GARANTI BANK, ANKARA OSB BRANCH (682)</span>
+                        </td>
+                    </tr>
+                    <tr style="white-space:nowrap;">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>ACCOUNT NO</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='TRY'">
+                            682-6294510
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='USD'">
+                            682-9074502
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='EUR'">
+                            682-9074503
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>BANK ADDRESS</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <span>AHIEVRAN CD. NO:86 OSTIM YENIMAHALLE 06280 ANKARA TURKEY
+                            </span>
+                        </td>
+                    </tr>
+                    <tr style="white-space:nowrap;">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>IBAN NO</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='TRY'">
+                            <strong>
+                                TR400006200068200006294510
+                            </strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='USD'">
+                            <strong>
+                                TR200006200068200009074502
+                            </strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;" t-if="doc.currency_id.name=='EUR'">
+                            <strong>
+                                TR900006200068200009074503
+                            </strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>BANK PHONE</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            +90 312 3850860
+                        </td>
+                    </tr>
+                    <tr style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>SWIFT CODE</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <span>TGBATRIS</span>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            <strong>BANK FAX</strong>
+                        </td>
+                        <td style="border: 1px solid black !important;padding: 0 2px;text-align: center;">
+                            +90 312 3853722
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+
+
+
+    </template>
+</odoo>
