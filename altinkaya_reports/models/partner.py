@@ -283,9 +283,6 @@ class Partner(models.Model):
     def email_statement(
         self,
     ):
-        data_model = self.env["ir.model.data"]
-        template = data_model.get_object(
-            "altinkaya_reports", "email_template_edi_send_statement"
-        )
+        template = self.env.ref('altinkaya_reports.email_template_edi_send_statement')
         mail_id = template.send_mail(self.id, force_send=True)
         return True
