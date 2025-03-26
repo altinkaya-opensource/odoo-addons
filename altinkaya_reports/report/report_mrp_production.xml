@@ -79,7 +79,7 @@
                     style="border-color: #ffffff; text-align: center; vertical-align: center;"
                   >
                                         <img
-                      t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
+                      t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
                       style="width:300px;height:50px;"
                     />
                                     </td>
@@ -169,7 +169,7 @@
                       t-if="o.product_id and o.product_id.barcode"
                     >
                                             <img
-                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', o.product_id.barcode, 200, 45)"
+                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', o.product_id.barcode, 200, 45)"
                         style="width:200px;height:45px"
                       />
                                             <br />
@@ -215,7 +215,7 @@
                         t-if="line.product_id and line.product_id.barcode"
                       >
                                                 <img
-                          t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line.product_id.barcode, 200, 15)"
+                          t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line.product_id.barcode, 200, 15)"
                           style="width:200px;height:15px"
                         />
                                             </span>
@@ -279,7 +279,7 @@
                           style="align-content: center;text-align:center;"
                         >
                                                     <img
-                            t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
+                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
                             style="width:200px;height:30px;"
                           />
                                                 </div>
@@ -304,11 +304,11 @@
                                                 <span t-field="route[1].name" />
                                                 :
                                                 <span
-                          t-field="route[1].move_lines[0].location_id"
+                          t-field="route[1].move_ids[0].location_id"
                         />
                                                 >>
                                                 <span
-                          t-field="route[1].move_lines[0].location_dest_id"
+                          t-field="route[1].move_ids[0].location_dest_id"
                         />
                                             </h4>
                                             <h6>
@@ -326,7 +326,7 @@
                           style="align-content: center;text-align:center;"
                         >
                                                     <img
-                            t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
+                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
                             style="width:200px;height:30px;"
                           />
                                                 </div>
