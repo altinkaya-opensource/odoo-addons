@@ -12,14 +12,14 @@
                 '__EXPORT__': {
                     'Fatura': {
                         'results': {  # prefix with _CONT_ to continue rows from previous row field
-                            'A2': '${object.payment_date.strftime("%d.%m.%Y") or ""}#{border=thin_border;align=left;style=date}',
-                            'B2': 'x_cek_no${value or ""}#{border=thin_border;align=left;style=text}',
+                            'A2': '${object.date.strftime("%d.%m.%Y") or ""}#{border=thin_border;align=left;style=date}',
+                            'B2': 'check_number${value or ""}#{border=thin_border;align=left;style=text}',
                             'C2': 'journal_id.name${value or ""}#{border=thin_border;align=left;style=text}',
                             'D2': 'partner_id.name${value or ""}#{border=thin_border;align=left;style=text}',
                             'E2': '${"\'%s" % (object.partner_id.vat or "")}#{border=thin_border;align=left;style=text}',
                             'F2': '${"\'%s" % (object.partner_id.z_payable_export if object.payment_type == "outbound" else (object.partner_id.z_receivable_export or object.destination_account_id.code)) or ""}#{border=thin_border;align=left;style=text}',
                             'G2': 'name${value or ""}#{border=thin_border;align=left;style=text}',
-                            'H2': 'x_cek_no${value or ""}#{border=thin_border;align=left;style=text}',
+                            'H2': 'check_number${value or ""}#{border=thin_border;align=left;style=text}',
                             'I2': 'amount${"%.2f" % (value) or ""}#{border=thin_border;align=left;style=number}',
                             'J2': '${"EURO" if object.currency_id.name == "EUR" else object.currency_id.name or ""}#{border=thin_border;align=left;style=text}',
                         },
