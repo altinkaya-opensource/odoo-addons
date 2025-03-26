@@ -6,10 +6,10 @@
         <field name="model">utm.campaign</field>
         <field name="inherit_id" ref="utm.utm_campaign_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//form" position="inside">
+            <xpath expr="//form/sheet/notebook" position="after">
                 <notebook>
                     <page string="Partners" name="partners">
-                        <field name="partner_ids" widget="many2many_list" />
+                        <field name="partner_ids" widget="many2many_list" colspan="1"/>
                     </page>
                 </notebook>
             </xpath>
