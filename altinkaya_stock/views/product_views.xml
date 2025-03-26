@@ -74,78 +74,71 @@
                     <attribute name="invisible">0</attribute>
                     <attribute name="placeholder">Product Template</attribute>
                 </xpath>
-                <xpath expr="//field[@name='uom_po_id']" position="after">
-                    <field name="responsible_employee_id"/>
-                </xpath>
-                <button name="action_view_stock_move_lines" position="before">
-                    <button string="Yapılacak Hareketler" type="object" name= "action_view_todo_moves" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" class="oe_stat_button" icon="fa-arrows-v" groups="stock.group_stock_user"/>
-                </button>
+            </xpath>
+        </field>
+    </record>
 
-            </field>
-        </record>
+    <record id="stock_move_line_action" model="ir.actions.act_window">
+        <field name="name">Yapılacak Hareketler</field>
+        <field name="res_model">stock.move</field>
+        <field name="type">ir.actions.act_window</field>
 
-        <record id="stock_move_line_action" model="ir.actions.act_window">
-            <field name="name">Yapılacak Hareketler</field>
-            <field name="res_model">stock.move</field>
-            <field name="type">ir.actions.act_window</field>
-
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="stock.view_move_tree_receipt_picking"/>
-            <field name="context">{'search_default_future': 1}</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_empty_folder">
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock.view_move_tree_receipt_picking"/>
+        <field name="context">{'search_default_future': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
                 Bu ürün için yapılacak hareketleri yok.
-                </p>
-            </field>
-        </record>
+            </p>
+        </field>
+    </record>
 
 
-        <record id="product_variant_button_altinkaya_stock" model="ir.ui.view">
-            <field name="name">Altinkaya Product Variant Button</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_only_form_view"/>
-            <field name="priority" eval="1"/>
-            <field name="arch" type="xml">
-                <!-- <xpath expr="//button[@name='150']" position="attributes">
+    <record id="product_variant_button_altinkaya_stock" model="ir.ui.view">
+        <field name="name">Altinkaya Product Variant Button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//button[@name='150']" position="attributes">
                     <attribute name="attrs">{'invisible':0}</attribute>
                 </xpath> -->
-                <xpath expr="//div[@name='options']" position='after'>
-                    <group>
-                        <field name="categ_id" colspan="2"/>
-                    </group>
-                </xpath>
-                <xpath expr="//field[@name='invoice_policy']" position='before'>
-                    <field name="barcode"/>
-                </xpath>
-                <xpath expr="//field[@name='description_sale']" position="after">
-                    <group string="Muhasebe" colspan="2">
-                        <field name="invoice_policy"/>
-                    </group>
-                </xpath>
+            <xpath expr="//div[@name='options']" position='after'>
+                <group>
+                    <field name="categ_id" colspan="2"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='invoice_policy']" position='before'>
+                <field name="barcode"/>
+            </xpath>
+            <xpath expr="//field[@name='description_sale']" position="after">
+                <group string="Muhasebe" colspan="2">
+                    <field name="invoice_policy"/>
+                </group>
+            </xpath>
 
+        </field>
+    </record>
+
+
+    <record id="product_product_tree_price_view" model="ir.ui.view">
+        <field name="name">product.product.price.tree</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="999"/>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <field name="lst_price" position="replace">
+                <field name="attr_price"/>
             </field>
-        </record>
+            <xpath expr="//field[@name='attr_price']" position="attributes">
+                <attribute name="string">Satış Fiyatı</attribute>
+            </xpath>
 
-
-        <record id="product_product_tree_price_view" model="ir.ui.view">
-            <field name="name">product.product.price.tree</field>
-            <field name="model">product.product</field>
-            <field name="priority" eval="999"/>
-            <field name="inherit_id" ref="product.product_product_tree_view" />
-            <field name="arch" type="xml">
-                <field name="lst_price" position="replace">
-                    <field name="attr_price"/>
-                </field>
-                <xpath expr="//field[@name='attr_price']" position="attributes">
-                    <attribute name="string">Satış Fiyatı</attribute>
-                </xpath>
-
-                <field name="qty_available" position="before">
-                    <field name="qty_available_merkez" string="Merkez Depo" widget="float_time"/>
-                    <field name="qty_available_sincan" string="Sincan Depo" widget="float_time"/>
-                </field>
-
+            <field name="qty_available" position="before">
+                <field name="qty_available_merkez" string="Merkez Depo" widget="float_time"/>
+                <field name="qty_available_sincan" string="Sincan Depo" widget="float_time"/>
             </field>
+
             <xpath expr="//field[@name='attr_price']" position="attributes">
                 <attribute name="string">Satış Fiyatı</attribute>
             </xpath>
@@ -268,12 +261,5 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem
-        id="menu_product_shipment_dimensions"
-        name="Product Shipment Dimensions"
-        action="product_product_product_shipment_dimensions"
-        parent="stock.menu_stock_inventory_control"
-        sequence="30"
-        groups="sales_team.group_sale_salesman"
-    />
+    <menuitem id="menu_product_shipment_dimensions" name="Product Shipment Dimensions" action="product_product_product_shipment_dimensions" parent="stock.menu_stock_inventory_control" sequence="30" groups="sales_team.group_sale_salesman" />
 </odoo>
