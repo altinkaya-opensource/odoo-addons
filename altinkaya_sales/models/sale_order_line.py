@@ -54,13 +54,16 @@ class SaleOrderLine(models.Model):
     @api.depends("product_id")
     def _compute_set_product(self):
         bom_obj = self.env["mrp.bom"].sudo()
-        bom_dict = bom_obj._bom_find(products=self.product_id)
-        if not bom_dict:
-            self.set_product = False
-        else:
-            # bom_id = bom_obj.browse(bom_id.id)
-            bom_id = bom_dict[self.product_id]
-            self.set_product = bom_id.type == "phantom"
+        # We need to iterate over the self
+        # because there might be multiple lines within self
+        for ln in self:
+            bom_dict = bom_obj._bom_find(products=ln.product_id)
+            if not bom_dict:
+                ln.set_product = False
+            else:
+                # bom_id = bom_obj.browse(bom_id.id)
+                bom_id = bom_dict[ln.product_id]
+                ln.set_product = bom_id.type == "phantom"
 
     @api.onchange("show_custom_products")
     def onchange_show_custom(self):

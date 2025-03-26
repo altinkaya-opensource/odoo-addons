@@ -291,10 +291,10 @@ class Product(models.Model):
             ).virtual_available
             product.qty_unreserved_sincan = product.with_context(
                 {"location": 21}
-            ).qty_available_not_res
+            ).free_qty
             product.qty_unreserved_merkez = product.with_context(
                 {"location": 12}
-            ).qty_available_not_res
+            ).free_qty
 
     def _compute_custom2_available(self):
         for product in self:
