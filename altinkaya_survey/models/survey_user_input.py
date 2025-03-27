@@ -16,13 +16,6 @@ class SurveyUserInput(models.Model):
         string="Invoice",
     )
 
-    type = fields.Selection(
-        selection=[
-            ("qrcode", "QR Code"),
-        ],
-        string="Type",
-    )
-
     shortened_url = fields.Text(
         string="Shortened URL",
         help="Shortened URL for survey",
@@ -30,7 +23,9 @@ class SurveyUserInput(models.Model):
     )
 
     def save_lines(self, question, answer, comment=None):
-        if question.question_type == 'star_rating':
-            self._save_line_simple_answer(question, self.mapped('user_input_line_ids'), answer)
+        if question.question_type == "star_rating":
+            self._save_line_simple_answer(
+                question, self.mapped("user_input_line_ids"), answer
+            )
         else:
             return super().save_lines(question, answer, comment)

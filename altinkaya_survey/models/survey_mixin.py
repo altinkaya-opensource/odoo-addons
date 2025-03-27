@@ -172,7 +172,6 @@ class SurveyResPartnerMixin(models.Model):
             vals = {
                 "survey_id": default_survey_id.id,
                 "partner_id": record.id,
-                "type": "link",
             }
             record.survey_url = record._create_survey_url(vals, default_survey_id)
 
@@ -188,7 +187,6 @@ class SurveySaleOrderMixin(models.Model):
                 "survey_id": default_survey_id.id,
                 "partner_id": record.partner_id.id,
                 "sale_id": record.id,
-                "type": "link",
             }
             record.survey_url = self._create_survey_url(vals, default_survey_id)
 
@@ -204,6 +202,5 @@ class SurveyAccountInvoiceMixin(models.Model):
                 "survey_id": default_survey_id.id,
                 "partner_id": record.partner_id.id,
                 "invoice_id": record.id,
-                "type": "qrcode",
             }
             record.survey_url = self._create_survey_url(vals, default_survey_id)
