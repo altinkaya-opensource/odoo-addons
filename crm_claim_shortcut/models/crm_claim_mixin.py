@@ -48,7 +48,7 @@ class CRMClaimMapping(models.AbstractModel):
         return action
 
     def _prepare_claim_context(self):
-        vals = {"default_model_ref_id": "{self._name},{self.id}"}
+        vals = {"default_model_ref_id": f"{self._name},{self.id}"}
 
         if self._name == "sale.order":
             sale_order = self
@@ -61,7 +61,8 @@ class CRMClaimMapping(models.AbstractModel):
 
         elif self._name == "stock.picking":
             sale_order = (
-                fields.first(self.mapped("move_lines.sale_line_id.order_id")) or False
+                fields.first(self.mapped("move_ids.sale_line_id.order_id"))
+                or False
             )
 
         else:
