@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* altinkaya_purchase
+# 	* altinkaya_purchase
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-11 11:09+0000\n"
-"PO-Revision-Date: 2024-03-11 11:09+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 08:17+0000\n"
+"PO-Revision-Date: 2025-03-28 08:17+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,9 +16,44 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: altinkaya_purchase
 #: model:ir.model,name:altinkaya_purchase.model_res_partner
 msgid "Contact"
 msgstr "İletişim"
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
 
 #. module: altinkaya_purchase
 #: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__pricelist_id
@@ -28,17 +63,12 @@ msgstr "Fiyat Listesi"
 #. module: altinkaya_purchase
 #: model:ir.model.fields,help:altinkaya_purchase.field_purchase_order__pricelist_id
 msgid "Pricelist for current purchase order."
-msgstr ""
+msgstr "Mevcut satınalma sipariçi için fiyat listesi"
 
 #. module: altinkaya_purchase
 #: model:ir.model,name:altinkaya_purchase.model_product_product
-msgid "Product"
+msgid "Product Variant"
 msgstr "Ürün"
-
-#. module: altinkaya_purchase
-#: model:ir.model,name:altinkaya_purchase.model_product_template
-msgid "Product Template"
-msgstr "Ürün Şablonu"
 
 #. module: altinkaya_purchase
 #: model:ir.model,name:altinkaya_purchase.model_purchase_order
@@ -46,16 +76,10 @@ msgid "Purchase Order"
 msgstr "Satınalma Siparişi"
 
 #. module: altinkaya_purchase
-#: model:ir.model,name:altinkaya_purchase.model_purchase_order_line
-msgid "Purchase Order Line"
-msgstr "Satınalma Sipariş Satırı"
-
-#. module: altinkaya_purchase
 #: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__property_purchase_pricelist
 #: model:ir.model.fields,field_description:altinkaya_purchase.field_res_users__property_purchase_pricelist
 msgid "Purchase Pricelist"
 msgstr "Satınalma Fiyat Listesi\n"
-""
 
 #. module: altinkaya_purchase
 #: model_terms:ir.ui.view,arch_db:altinkaya_purchase.altinkaya_purchase_procurement_group_form_view
@@ -68,14 +92,39 @@ msgid "Purchases for Groups"
 msgstr "Tedarik Grubu Satınalımları"
 
 #. module: altinkaya_purchase
-#: model_terms:ir.ui.view,arch_db:altinkaya_purchase.purchase_order_form_altinkaya
-msgid "Recalculate prices"
-msgstr "Fiyatları Tekrar Hesapla"
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__smart_search
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__smart_search
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
 
 #. module: altinkaya_purchase
-#: model_terms:ir.ui.view,arch_db:altinkaya_purchase.purchase_order_form_altinkaya
-msgid "Recompute Descriptions"
-msgstr "Açıklamaları Yenile"
+#: model:ir.model.fields,help:altinkaya_purchase.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_purchase.field_purchase_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_purchase.field_res_partner__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,help:altinkaya_purchase.field_product_product__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_purchase.field_purchase_order__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_purchase.field_res_partner__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,help:altinkaya_purchase.field_product_product__count_changesets
+#: model:ir.model.fields,help:altinkaya_purchase.field_purchase_order__count_changesets
+#: model:ir.model.fields,help:altinkaya_purchase.field_res_partner__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: altinkaya_purchase
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_purchase_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_purchase.field_res_partner__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
 
 #. module: altinkaya_purchase
 #: model:ir.model.fields,field_description:altinkaya_purchase.field_product_product__variant_seller_ids_2
@@ -86,4 +135,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_purchase.altinkaya_purchase_product_product_form_view
 msgid "Vendors"
 msgstr "Tedarikçiler"
-

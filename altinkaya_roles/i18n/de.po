@@ -1,0 +1,177 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* altinkaya_roles
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 08:31+0000\n"
+"PO-Revision-Date: 2025-03-28 08:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__model_access
+msgid "Access Controls"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__menu_access
+msgid "Access Menu"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "Access Rights"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,name:altinkaya_roles.module_category_altinkaya_accounting_and_finance
+msgid "Altinkaya Accounting & Finance"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,name:altinkaya_roles.module_category_altinkaya_warehouse_management
+msgid "Altinkaya Inventory"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,name:altinkaya_roles.module_category_altinkaya_manufacturing
+msgid "Altinkaya Manufacturing"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,name:altinkaya_roles.module_category_altinkaya_sales_management
+msgid "Altınkaya Sales"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Änderungen"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__changeset_ids
+msgid "Changesets"
+msgstr "Änderungssätze"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_changesets
+msgid "Count Changesets"
+msgstr "Changesets zählen"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Ausstehende Changeset-Änderungen zählen"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Ausstehende Changesets zählen"
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "Groups of the user"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_accounting_and_finance
+msgid ""
+"Helps you handle your accounting needs, if you are not an accountant, we "
+"suggest you to install only the Invoicing."
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_sales_management
+msgid "Helps you handle your quotations, sale orders and invoicing."
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_warehouse_management
+msgid ""
+"Helps you manage your inventory and main stock operations: delivery orders, "
+"receptions, etc."
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_manufacturing
+msgid ""
+"Helps you manage your manufacturing processes and generate reports on those "
+"processes."
+msgstr ""
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "Record Rules"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__rule_groups
+msgid "Rules"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__smart_search
+msgid "Smart Search"
+msgstr "Intelligente Suche"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Die Anzahl der ausstehenden Änderungen in diesem Datensatz"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Die Anzahl der ausstehenden Changesets dieses Datensatzes"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Die Gesamtzahl der Änderungen in diesem Datensatz"
+
+#. module: altinkaya_roles
+#: model:ir.model,name:altinkaya_roles.model_res_users
+msgid "User"
+msgstr "Benutzer"
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Access Menu"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Access Model"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Access Views"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Benutzer kann Changeset sehen"
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Groups"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Rules"
+msgstr ""
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__view_access
+msgid "Views"
+msgstr ""
