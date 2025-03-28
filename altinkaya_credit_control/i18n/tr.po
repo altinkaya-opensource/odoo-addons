@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* altinkaya_credit_control
+# 	* altinkaya_credit_control
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-19 13:57+0000\n"
-"PO-Revision-Date: 2023-06-19 13:57+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 07:25+0000\n"
+"PO-Revision-Date: 2025-03-28 07:25+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,13 +16,211 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:62
-#, python-format
-msgid "%s Invoice Notifying"
-msgstr "%s Fatura Bildirimi"
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "+90 312 3850860"
+msgstr ""
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_run.py:38
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "+90 312 3853722"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "0012114"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "1322"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "1912"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "4384"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "6294510"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "682"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "682-6294510"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "682-9074502"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "682-9074503"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "82247151-5001"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "945"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<span>\n"
+"                                Banka Adı\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<span>\n"
+"                                Hs.No.\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<span>\n"
+"                                IBAN\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<span>\n"
+"                                Şb.Kd.\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<span>AHIEVRAN CD. NO:86 OSTIM YENIMAHALLE 06280 ANKARA TURKEY\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<span>ALTINKAYA ELEKTRONIK CIH KUT SAN TIC AS</span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<span>GARANTI BANK, ANKARA OSB BRANCH (682)</span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<span>TGBATRIS</span>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<strong>\n"
+"                                TR200006200068200009074502\n"
+"                            </strong>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<strong>\n"
+"                                TR400006200068200006294510\n"
+"                            </strong>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"<strong>\n"
+"                                TR900006200068200009074503\n"
+"                            </strong>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>ACCOUNT NO</strong>"
+msgstr "<strong>HESAP NO</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>BANK ADDRESS</strong>"
+msgstr "<strong>BANKA ADRESI</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>BANK FAX</strong>"
+msgstr "<strong>BANKA FAKS</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>BANK NAME</strong>"
+msgstr "<strong>BANKA ISMI</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>BANK PHONE</strong>"
+msgstr "<strong>BANKA TELEFON</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>BENEFICIARY</strong>"
+msgstr "<strong>LEHDAR BANKA</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>EURO BANK ACCOUNT INFORMATION</strong>"
+msgstr "<strong>EURO BANKA HESABI BILGILERI</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>IBAN NO</strong>"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>SWIFT CODE</strong>"
+msgstr "<strong>SWIFT KODU</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>TRY BANK ACCOUNT INFORMATION</strong>"
+msgstr "<strong>TRY BANKA HESABI BILGILERI</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "<strong>USD BANK ACCOUNT INFORMATION</strong>"
+msgstr "<strong>USD BANKA HESABI BILGILERI</strong>"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "AKBANK"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#. odoo-python
+#: code:addons/altinkaya_credit_control/models/credit_control_run.py:0
 #, python-format
 msgid "Account Follow-up Phone Call"
 msgstr "Hesap Takibi Telefon Görüşmesi"
@@ -38,14 +236,38 @@ msgid "Amount"
 msgstr "Tutar"
 
 #. module: altinkaya_credit_control
-#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Amount Residual"
-msgstr "Açık Tutar"
-
-#. module: altinkaya_credit_control
 #: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
 msgid "Are you sure to send an email with all the lines?"
-msgstr "Taslak durumundaki bütün satırları içeren bir email göndermeyi onaylıyor musunuz?"
+msgstr ""
+"Taslak durumundaki bütün satırları içeren bir email göndermeyi onaylıyor "
+"musunuz?"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Açıklama"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Değişiklikler"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklik"
 
 #. module: altinkaya_credit_control
 #: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__communication_channel
@@ -53,14 +275,42 @@ msgid "Channel"
 msgstr "Kanal"
 
 #. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__count_changesets
+msgid "Count Changesets"
+msgstr "Değişiklik Sayısı"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklikler Sayısı"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Sayısı"
+
+#. module: altinkaya_credit_control
 #: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__credit_control_lines_html
 msgid "Credit Control Lines"
 msgstr "Kredi Kontrol Hatları"
-
-#. module: altinkaya_credit_control
-#: model:ir.model,name:altinkaya_credit_control.model_credit_control_communication
-msgid "Credit control communication process"
-msgstr "Kredi kontrol iletişim süreci"
 
 #. module: altinkaya_credit_control
 #: model:ir.model,name:altinkaya_credit_control.model_credit_control_run
@@ -79,16 +329,16 @@ msgstr "Bir hatırlatma politikası tanımlayın"
 
 #. module: altinkaya_credit_control
 #: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
-msgid "Description"
+msgid "Descriptipon"
 msgstr "Açıklama"
 
 #. module: altinkaya_credit_control
-#: selection:credit.control.communication,state:0
+#: model:ir.model.fields.selection,name:altinkaya_credit_control.selection__credit_control_communication__state__done
 msgid "Done"
-msgstr "Tamamlandı"
+msgstr "Bitti"
 
 #. module: altinkaya_credit_control
-#: selection:credit.control.communication,state:0
+#: model:ir.model.fields.selection,name:altinkaya_credit_control.selection__credit_control_communication__state__draft
 msgid "Draft"
 msgstr "Taslak"
 
@@ -98,10 +348,19 @@ msgid "Due Date"
 msgstr "Vade T."
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:97
-#, python-format
-msgid "Error while sending email: %s"
-msgstr "Mail gönderirken bir hata oluştu: %s"
+#: model:ir.model,name:altinkaya_credit_control.model_mail_template
+msgid "Email Templates"
+msgstr "E-posta Şablonları"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "Garanti Bankası"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Kalan Miktar"
+msgstr ""
 
 #. module: altinkaya_credit_control
 #: model:ir.model,name:altinkaya_credit_control.model_credit_control_emailer
@@ -119,13 +378,18 @@ msgid "Mass printer"
 msgstr "Toplu yazıcı"
 
 #. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Miktar"
+msgstr ""
+
+#. module: altinkaya_credit_control
 #: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_run__activity_deadline
 msgid "Number of days to set as deadline for the activity"
 msgstr "Etkinlik için son tarih olarak ayarlanacak gün sayısı"
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:78
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:81
+#. odoo-python
+#: code:addons/altinkaya_credit_control/models/mail_template.py:0
 #, python-format
 msgid "Partner Statement"
 msgstr "Müşteri Ekstresi"
@@ -136,12 +400,17 @@ msgid "Ref"
 msgstr "REF"
 
 #. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Residual Amount"
+msgstr "Açık Tutar"
+
+#. module: altinkaya_credit_control
 #: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.view_communication_form_altinkaya
 msgid "Send Email"
 msgstr "Email Gönder"
 
 #. module: altinkaya_credit_control
-#: selection:credit.control.communication,state:0
+#: model:ir.model.fields.selection,name:altinkaya_credit_control.selection__credit_control_communication__state__sent
 msgid "Sent"
 msgstr "Gönderildi"
 
@@ -151,33 +420,144 @@ msgid "Set to Done"
 msgstr "Bitti olarak ayarla"
 
 #. module: altinkaya_credit_control
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__smart_search
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: altinkaya_credit_control
 #: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__state
 msgid "Status"
 msgstr "Durum"
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:49
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "TR26 0006 4000 0014 3840 0121 14 (TL)"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "TR40 0006 2000 6820 0006 2945 10 (TL)"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "TR47 0001 0019 1282 2471 5150 01 (TL)"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "TR90 0004 6009 4588 8000 0013 22 (TL)"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Tarih"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_communication__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_emailer__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_marker__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_policy__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_printer__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_run__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_credit_control.field_mail_template__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kayıt için bekleyen değişiklik sayısı"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_communication__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_emailer__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_marker__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_policy__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_printer__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_run__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_mail_template__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kayıt için bekleyen değişiklikler sayısı"
+
+#. module: altinkaya_credit_control
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_communication__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_emailer__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_marker__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_policy__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_printer__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_credit_control_run__count_changesets
+#: model:ir.model.fields,help:altinkaya_credit_control.field_mail_template__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kayıt için bekleyen genel değişikliklerin sayısı"
+
+#. module: altinkaya_credit_control
+#. odoo-python
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:0
 #, python-format
 msgid "There is no draft lines to send."
 msgstr "Mail göndermek için taslak satır mevcut değil."
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:42
+#. odoo-python
+#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:0
 #, python-format
 msgid "This communication is already sent."
 msgstr "Bu iletişim zaten gönderildi."
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/wizards/credit_control_emailer.py:13
-#: code:addons/altinkaya_credit_control/wizards/credit_control_marker.py:13
-#: code:addons/altinkaya_credit_control/wizards/credit_control_printer.py:13
+#. odoo-python
+#: code:addons/altinkaya_credit_control/wizards/credit_control_emailer.py:0
+#: code:addons/altinkaya_credit_control/wizards/credit_control_marker.py:0
+#: code:addons/altinkaya_credit_control/wizards/credit_control_printer.py:0
 #, python-format
 msgid "This method is restricted by Altinkaya Credit Control."
-msgstr "Bu yöntemin kullanımı Altınkaya Kredi Kontrolü tarafından kısıtlanmıştır."
+msgstr ""
+"Bu yöntemin kullanımı Altınkaya Kredi Kontrolü tarafından kısıtlanmıştır."
 
 #. module: altinkaya_credit_control
-#: code:addons/altinkaya_credit_control/models/credit_control_communication.py:80
-#, python-format
-msgid "altinkaya_partner_statement.pdf"
-msgstr "altinkaya_cari_ekstresi.pdf"
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_communication__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_emailer__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_marker__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_policy__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_printer__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_credit_control_run__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_credit_control.field_mail_template__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
 
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.report_credit_control_lines
+msgid "Vadesi"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"You can make your payment to our bank accounts below or contact us<br/>\n"
+"                for other payment methods you can move on."
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "Ziraat Bankası"
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model:ir.model,name:altinkaya_credit_control.model_credit_control_communication
+msgid "credit control communication"
+msgstr "Kredi kontrol iletişim süreci"
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid ""
+"Ödemenizi aşağıdaki banka hesaplarımıza yapabilir veya diğer ödeme<br/>\n"
+"                yöntemleri için bizimle iletişime geçebilirsiniz."
+msgstr ""
+
+#. module: altinkaya_credit_control
+#: model_terms:ir.ui.view,arch_db:altinkaya_credit_control.credit_control_bank_account_template
+msgid "İş Bankası"
+msgstr ""

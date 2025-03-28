@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* altinkaya_roles
+# 	* altinkaya_roles
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-25 12:30+0000\n"
-"PO-Revision-Date: 2020-02-25 12:30+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 08:31+0000\n"
+"PO-Revision-Date: 2025-03-28 08:31+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,54 +46,48 @@ msgid "Altinkaya Manufacturing"
 msgstr "Altınkaya Üretim"
 
 #. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_accountant_manager
-msgid "Altınkaya Accountant Manager"
-msgstr "Yönetici"
-
-#. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_accountant_operator
-msgid "Altınkaya Accountant Operator"
-msgstr "Kullanıcı"
-
-#. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_mrp_manager
-msgid "Altınkaya MRP Manager"
-msgstr "Yönetici"
-
-#. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_mrp_operator
-msgid "Altınkaya MRP Operator"
-msgstr "Kullanıcı"
-
-#. module: altinkaya_roles
 #: model:ir.module.category,name:altinkaya_roles.module_category_altinkaya_sales_management
 msgid "Altınkaya Sales"
 msgstr "Altınkaya Satış"
 
 #. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_sale_manager
-msgid "Altınkaya Sales Manager"
-msgstr "Yönetici"
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
 
 #. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_sale_operator
-msgid "Altınkaya Sales Operator"
-msgstr "Kullanıcı"
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__changeset_ids
+msgid "Changesets"
+msgstr ""
 
 #. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_stock_manager
-msgid "Altınkaya Stock Manager"
-msgstr "Yönetici"
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
 
 #. module: altinkaya_roles
-#: model:res.groups,name:altinkaya_roles.group_altinkaya_stock_operator
-msgid "Altınkaya Stock Operator"
-msgstr "Kullanıcı"
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "Groups of the user"
+msgstr "Kullanıcı grupları"
 
 #. module: altinkaya_roles
 #: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_accounting_and_finance
-msgid "Helps you handle your accounting needs, if you are not an accountant, we suggest you to install only the Invoicing."
-msgstr "Muhasebe gereksinimlerinizi yürütmenizi sağlar, muhasebeci değilseniz yalnızca Faturalamayı yüklemenizi öneririz."
+msgid ""
+"Helps you handle your accounting needs, if you are not an accountant, we "
+"suggest you to install only the Invoicing."
+msgstr ""
+"Muhasebe gereksinimlerinizi yürütmenizi sağlar, muhasebeci değilseniz "
+"yalnızca Faturalamayı yüklemenizi öneririz."
 
 #. module: altinkaya_roles
 #: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_sales_management
@@ -102,13 +96,20 @@ msgstr "Teklifleri, sipariş emirlerini ve faturalarınızı yönetmenizi sağla
 
 #. module: altinkaya_roles
 #: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_warehouse_management
-msgid "Helps you manage your inventory and main stock operations: delivery orders, receptions, etc."
-msgstr "Stoklarınızı ve ana stok işlemlerinizi: sevkiyat emirleri, kabuller, v.s. yönetmenize yardım eder"
+msgid ""
+"Helps you manage your inventory and main stock operations: delivery orders, "
+"receptions, etc."
+msgstr ""
+"Stoklarınızı ve ana stok işlemlerinizi: sevkiyat emirleri, kabuller, v.s. "
+"yönetmenize yardım eder"
 
 #. module: altinkaya_roles
 #: model:ir.module.category,description:altinkaya_roles.module_category_altinkaya_manufacturing
-msgid "Helps you manage your manufacturing processes and generate reports on those processes."
-msgstr "Üretim süreçlerinizi yönetmeyi ve üretim süreçlerini raporlamanızı sağlar."
+msgid ""
+"Helps you manage your manufacturing processes and generate reports on those "
+"processes."
+msgstr ""
+"Üretim süreçlerinizi yönetmeyi ve üretim süreçlerini raporlamanızı sağlar."
 
 #. module: altinkaya_roles
 #: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
@@ -119,6 +120,31 @@ msgstr "Kayıt Kuralları"
 #: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__rule_groups
 msgid "Rules"
 msgstr "Kurallar"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: altinkaya_roles
+#: model:ir.model.fields,help:altinkaya_roles.field_res_users__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: altinkaya_roles
+#: model:ir.model,name:altinkaya_roles.model_res_users
+msgid "User"
+msgstr "Kullanıcılar"
 
 #. module: altinkaya_roles
 #: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
@@ -136,17 +162,21 @@ msgid "User Access Views"
 msgstr "Kullanıcı Görünümleri"
 
 #. module: altinkaya_roles
+#: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: altinkaya_roles
+#: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
+msgid "User Groups"
+msgstr "Kullanıcı Grupları"
+
+#. module: altinkaya_roles
 #: model_terms:ir.ui.view,arch_db:altinkaya_roles.view_res_users_security_from
 msgid "User Rules"
 msgstr "Kullanıcı Kurallar"
 
 #. module: altinkaya_roles
-#: model:ir.model,name:altinkaya_roles.model_res_users
-msgid "Users"
-msgstr "Kullanıcılar"
-
-#. module: altinkaya_roles
 #: model:ir.model.fields,field_description:altinkaya_roles.field_res_users__view_access
 msgid "Views"
 msgstr "Görünümler"
-

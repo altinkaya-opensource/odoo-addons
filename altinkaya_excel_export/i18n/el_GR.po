@@ -1,0 +1,567 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* altinkaya_excel_export
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 07:42+0000\n"
+"PO-Revision-Date: 2025-03-28 07:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,print_report_name:altinkaya_excel_export.action_report_purchaseorder_excel
+msgid "('Altinkaya_PO_%s' % (object.name))"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,print_report_name:altinkaya_excel_export.action_report_purchaseorder_rfq_excel
+msgid "('Altinkaya_RFQ_%s' % (object.name))"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,print_report_name:altinkaya_excel_export.action_report_purchaseorder_rfq_excel_tr
+msgid "('Altinkaya_Talep_%s' % (object.name))"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,print_report_name:altinkaya_excel_export.action_report_purchaseorder_excel_tr
+msgid "('Altinkaya_satinalma_%s' % (object.name))"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move__state
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_kviks__state
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_line__state
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_payment__state
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement__state
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement_currency__state
+msgid ""
+"* Choose: wizard show in user selection mode\n"
+"* Get: wizard show results from user action"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__choose_template
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__choose_template
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__choose_template
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__choose_template
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__choose_template
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__choose_template
+msgid "Allow Choose Template"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__balance
+msgid "Balance"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#. odoo-python
+#: code:addons/altinkaya_excel_export/export_partner_currency_statement/partner_statement_currency_export.py:0
+#, python-format
+msgid ""
+"Bu müşteri için dövizli ekstre çıkartamazsınız.\n"
+"                    Müşteri hesaplarının dövizli olduğunu kontrol ediniz."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_partner_statement_currency_excel_export
+msgid "Cari Dövizli Ekstre"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_partner_statement_excel_export
+msgid "Cari Ekstresi"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_partner_statement_currency
+msgid ""
+"Carinin dövizli ekstresini çıkartmak için aşağıdaki butonları kullanınız."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_partner_statement
+msgid "Carinin ekstresini çıkartmak için aşağıdaki butonları kullanınız."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__create_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__create_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__credit
+msgid "Credit"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__default_currency
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__default_currency
+msgid "Currency"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__currency_rate
+msgid "Currency Rate"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__partner_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__partner_id
+msgid "Customer Name"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__date_now
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__date_now
+msgid "Date"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__dc
+msgid "Dc"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__debit
+msgid "Debit"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__description
+msgid "Description"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__display_name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__due_date
+msgid "Due Date"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__date_end
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__date_end
+msgid "End Date"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_account_move
+msgid ""
+"Faturaları, Zirve Yazılım sistemine uygun şekilde çıktı almak için aşağıdaki"
+" butonları kullanınız."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__data
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__data
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__data
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__data
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__data
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__data
+msgid "File"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__name
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__name
+msgid "File Name"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_account_invoice_excel_export_gelir_fatura
+msgid "Gelir Fatura Excel"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__id
+msgid "ID"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__results
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__results
+msgid "Invoices"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_account_move_kviks_excel_export
+msgid "KVIKS Sevkiyat bildirimi"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_account_move_kviks
+msgid ""
+"KVIKS sistemine uygun şekilde çıktı almak için aşağıdaki\n"
+"                butonları kullanınız."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement____last_update
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__write_uid
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__write_date
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__results
+msgid "Move Lines"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__number
+msgid "Number"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__results
+msgid "Payments"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__primary_currency
+msgid "Primary Currency"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,name:altinkaya_excel_export.action_report_purchaseorder_excel
+msgid "Purchase Order (.xlsx)"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,name:altinkaya_excel_export.action_report_purchaseorder_rfq_excel
+msgid "Request for Quotation (.xlsx)"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,name:altinkaya_excel_export.action_report_purchaseorder_excel_tr
+msgid "Satınalma Siparişi (.xlsx)"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sec_curr_balance
+msgid "Sec Curr Balance"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sec_curr_credit
+msgid "Sec Curr Credit"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sec_curr_dc
+msgid "Sec Curr Dc"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sec_curr_debit
+msgid "Sec Curr Debit"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sec_curr_total
+msgid "Sec Curr Total"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__secondary_currency
+msgid "Secondary Currency"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__smart_search
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__date_start
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__date_start
+msgid "Start Date"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__state
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__state
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__state
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__state
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__state
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__state
+msgid "State"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__results
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__results
+msgid "Statement Lines"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.report,name:altinkaya_excel_export.action_report_purchaseorder_rfq_excel_tr
+msgid "Teklif Talebi (.xlsx)"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__template_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__template_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__template_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__template_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__template_id
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__template_id
+msgid "Template"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,help:altinkaya_excel_export.field_partner_statement_lines__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_kviks__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_payment__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement_currency__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,help:altinkaya_excel_export.field_partner_statement_lines__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_kviks__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_payment__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement_currency__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,help:altinkaya_excel_export.field_partner_statement_lines__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_kviks__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_payment__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement__count_changesets
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement_currency__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__total
+msgid "Total"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_partner_statement_lines
+msgid "Transient model for partner statement"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move__results
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_kviks__results
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_move_line__results
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_account_payment__results
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement__results
+#: model:ir.model.fields,help:altinkaya_excel_export.field_report_partner_statement_currency__results
+msgid "Use compute fields, so there is nothing stored in database"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_partner_statement_lines__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_kviks__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_move_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_account_payment__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_excel_export.field_report_partner_statement_currency__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_report_account_move
+msgid "Wizard for report.account.move"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_report_account_move_kviks
+msgid "Wizard for report.account.move.kviks"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_report_account_move_line
+msgid "Wizard for report.account.move.line"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_report_account_payment
+msgid "Wizard for report.account.payment"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.model,name:altinkaya_excel_export.model_report_partner_statement
+#: model:ir.model,name:altinkaya_excel_export.model_report_partner_statement_currency
+msgid "Wizard for report.partner.statement"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_account_move_line_excel_export
+msgid "Yevmiye Excel"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_account_move_line
+msgid ""
+"Yevmiye kalemlerini, Zirve Yazılım sistemine uygun şekilde çıktı almak için "
+"aşağıdaki butonları kullanınız."
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_account_move_excel_export
+msgid "Zirve Masraf Fatura"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model:ir.actions.act_window,name:altinkaya_excel_export.action_account_payment_excel_export
+msgid "Ödemeler Excel"
+msgstr ""
+
+#. module: altinkaya_excel_export
+#: model_terms:ir.ui.view,arch_db:altinkaya_excel_export.report_account_payment
+msgid ""
+"Ödemeleri, Zirve Yazılım sistemine uygun şekilde çıktı almak için aşağıdaki "
+"butonları kullanınız."
+msgstr ""
