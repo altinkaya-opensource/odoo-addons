@@ -61,9 +61,9 @@
                 <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]" position="after">
                     <field name="client_order_ref"/>
                     <field name="warehouse_id"/>
-                    <field name="date_order" readonly="1" attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"/>
-                    <field name="create_uid" readonly="1" can_create="true" can_write="true"/>
-                    <field name="source_id" can_create="true" can_write="true" readonly="1"/>
+                    <field name="date_order" attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"/>
+                    <field name="create_uid" widget="many2one_avatar_user"/>
+                    <field name="source_id"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="replace" />
                 <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace" />

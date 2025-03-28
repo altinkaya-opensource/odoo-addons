@@ -55,7 +55,7 @@ class CRMClaimMapping(models.AbstractModel):
 
         elif self._name == "account.move":
             sale_order = (
-                fields.first(self.mapped("move_line_ids.sale_line_ids.order_id"))
+                fields.first(self.mapped("invoice_line_ids.sale_line_ids.order_id"))
                 or False
             )
 

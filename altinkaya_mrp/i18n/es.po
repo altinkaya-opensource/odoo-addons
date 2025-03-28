@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 07:57+0000\n"
-"PO-Revision-Date: 2025-03-28 07:57+0000\n"
+"POT-Creation-Date: 2025-03-28 07:28+0000\n"
+"PO-Revision-Date: 2025-03-28 07:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -382,6 +382,12 @@ msgid "Inherited Attributes"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_kaliphane_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_kaliphane_production
+msgid "Kalıphane İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__location_id
 msgid ""
 "Keep empty if you produce at the location where you find the raw materials. "
@@ -714,6 +720,11 @@ msgstr "Búsqueda inteligente"
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
 msgid "Son 3 Gün Açılanlar"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Start Production"
 msgstr ""
 
 #. module: altinkaya_mrp
