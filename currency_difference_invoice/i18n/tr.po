@@ -1,25 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* currency_difference_invoice
+# 	* currency_difference_invoice
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 13:34+0000\n"
-"PO-Revision-Date: 2024-01-17 13:34+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 13:06+0000\n"
+"PO-Revision-Date: 2025-03-28 13:06+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:370
-#, python-format
-msgid "%s Currency Valuation"
-msgstr "%s Kur Değerleme"
 
 #. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_account_invoice_switch_incomings
@@ -44,9 +38,35 @@ msgid "Cancel"
 msgstr "İptal"
 
 #. module: currency_difference_invoice
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__changeset_change_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__changeset_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_res_company
 msgid "Companies"
-msgstr "Şirketler"
+msgstr "Firmalar"
 
 #. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_res_partner
@@ -54,20 +74,50 @@ msgid "Contact"
 msgstr "İletişim"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:277
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__count_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__count_pending_changesets
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: currency_difference_invoice
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "Create Currency Difference Invoice"
 msgstr "Kur Farkı Faturası Oluştur"
-
-#. module: currency_difference_invoice
-#: model:ir.actions.act_window,name:currency_difference_invoice.action_res_partner_create_currency_invoices
-msgid "Create Currency Difference Invoices"
-msgstr "Kur Farkı faturası oluştur"
-
-#. module: currency_difference_invoice
-#: model:ir.actions.act_window,name:currency_difference_invoice.action_res_partner_currency_valuation_move
-msgid "Create Currency Valuation Move"
-msgstr "Kur Değerleme Oluştur"
 
 #. module: currency_difference_invoice
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.res_partner_create_difference_inv
@@ -100,13 +150,16 @@ msgid "Created on"
 msgstr "Oluşturulma"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:406
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "Currency Diff. Counterpart"
 msgstr "Kur Dğr. Karşı Kayıt"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:159
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.partner_currency_difference_view
 #, python-format
 msgid "Currency Difference"
@@ -137,22 +190,25 @@ msgid "Currency Difference to invoice"
 msgstr "Faturalanacak Kur Farkı"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:390
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "Currency Valuation"
 msgstr "Kur Değerleme"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/account_partial_reconcile.py:35
-#: code:addons/currency_difference_invoice/models/account_partial_reconcile.py:47
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/account_partial_reconcile.py:0
+#: code:addons/currency_difference_invoice/models/account_partial_reconcile.py:0
 #, python-format
 msgid "Currency exchange rate difference"
 msgstr "Kur farkı"
 
 #. module: currency_difference_invoice
-#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_line__difference_base_aml_id
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__difference_base_aml_id
 msgid "Difference base move"
-msgstr "Kur farkı temel Yevmiye kaydı"
+msgstr "Fark ana hareket"
 
 #. module: currency_difference_invoice
 #: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__display_name
@@ -167,14 +223,18 @@ msgid "Full Reconcile"
 msgstr "Tam Uzlaşma"
 
 #. module: currency_difference_invoice
-#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice__full_reconcile_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_bank_statement_line__full_reconcile_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__full_reconcile_ids
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_payment__full_reconcile_ids
 msgid "Full Reconciles"
-msgstr "Tam Uzlaştırılmışlar"
+msgstr "Tam Uzlaşmalar"
 
 #. module: currency_difference_invoice
-#: model:ir.model.fields,help:currency_difference_invoice.field_account_invoice__full_reconcile_ids
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_bank_statement_line__full_reconcile_ids
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move__full_reconcile_ids
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_payment__full_reconcile_ids
 msgid "Full reconciles linked to this invoice"
-msgstr "Bu faturaya bağlı Tam Uzlaşmalar"
+msgstr "Bu faturaya bağlı tam uzlaşmalar"
 
 #. module: currency_difference_invoice
 #: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__id
@@ -184,27 +244,23 @@ msgid "ID"
 msgstr ""
 
 #. module: currency_difference_invoice
-#: model:ir.model,name:currency_difference_invoice.model_account_invoice
-msgid "Invoice"
-msgstr "Fatura"
-
-#. module: currency_difference_invoice
 #: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__invoice_date
 msgid "Invoice Date"
 msgstr "Fatura Tarihi"
 
 #. module: currency_difference_invoice
-#: model:ir.model,name:currency_difference_invoice.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Fatura Satırı"
+#: model:ir.model,name:currency_difference_invoice.model_account_move
+msgid "Journal Entry"
+msgstr "Yevmiye Kaydı"
 
 #. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_account_move_line
 msgid "Journal Item"
-msgstr "Yevmiye Kalemleri"
+msgstr "Yevmiye Kalemi"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:151
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "KDV %s oranlı vergi tanımlanmamış!"
 msgstr ""
@@ -242,25 +298,30 @@ msgid "Move Date"
 msgstr "Yevmiye Tarihi"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:363
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "No exchange rate information found for the selected day!"
 msgstr "Seçili tarih için kur bilgisi bulunamadı!"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/create_currency_difference_invoices.py:25
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/create_currency_difference_invoices.py:0
 #, python-format
 msgid "No invoice created!"
 msgstr "Herhangi bir fatura oluşturulmadı!"
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/models/res_partner.py:399
+#. odoo-python
+#: code:addons/currency_difference_invoice/models/res_partner.py:0
 #, python-format
 msgid "No records found to calculate exchange rate difference!"
 msgstr "Kur değerleme yapılacak kayıt bulunamadı!"
 
 #. module: currency_difference_invoice
-#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice__other_inv_in_reconciles
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_bank_statement_line__other_inv_in_reconciles
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__other_inv_in_reconciles
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_payment__other_inv_in_reconciles
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.view_account_invoice_currency_diff_tab
 msgid "Other invoices in reconciles"
 msgstr "Uzlaşmadaki diğer faturalar"
@@ -286,58 +347,127 @@ msgid "Reconcile and Currency Difference"
 msgstr "Uzlaşma ve kur farkı"
 
 #. module: currency_difference_invoice
-#: model:ir.actions.act_window,name:currency_difference_invoice.action_account_invoice_switch_incomings_view
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__smart_search
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: currency_difference_invoice
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.account_invoice_switch_incomings_view
 msgid "Switch Invoices"
 msgstr "Faturaları Değiştir"
 
 #. module: currency_difference_invoice
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_full_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_invoice_switch_incomings__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_partial_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_difference_invoices__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_company__count_pending_changeset_changes
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_partner__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_full_reconcile__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_invoice_switch_incomings__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_partial_reconcile__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_difference_invoices__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_company__count_pending_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_partner__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_full_reconcile__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_invoice_switch_incomings__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_move_line__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_account_partial_reconcile__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_difference_invoices__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_company__count_changesets
+#: model:ir.model.fields,help:currency_difference_invoice.field_res_partner__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: currency_difference_invoice
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.res_partner_create_difference_inv
 msgid "This action will create an invoice for every selected partner."
-msgstr "Bu eylem seçili iş ortakları için Kur farkı faturası oluturur"
+msgstr "Bu eylem seçili iş ortakları için Kur farkı faturası oluşturur"
 
 #. module: currency_difference_invoice
 #: model_terms:ir.ui.view,arch_db:currency_difference_invoice.res_partner_currency_valuation_move
 msgid "This action will currency valuation move for selected partners."
-msgstr "Bu eylem seçili iş ortakları için Kur değerleme yevmiye kaydı oluturur"
+msgstr ""
+"Bu eylem seçili iş ortakları için Kur değerleme yevmiye kaydı oluşturur"
 
 #. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_create_currency_difference_invoices
 msgid "Transient Model For Currency Difference Invoice"
-msgstr ""
+msgstr "Kur Farkı Faturası için Geçici Model"
 
 #. module: currency_difference_invoice
 #: model:ir.model,name:currency_difference_invoice.model_create_currency_valuation_move
 msgid "Transient Model For Currency Valuation Move"
+msgstr "Kur Değerleme Hareketi için Geçici Model"
+
+#. module: currency_difference_invoice
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_full_reconcile__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_invoice_switch_incomings__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_move_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_account_partial_reconcile__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_difference_invoices__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_create_currency_valuation_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_company__user_can_see_changeset
+#: model:ir.model.fields,field_description:currency_difference_invoice.field_res_partner__user_can_see_changeset
+msgid "User Can See Changeset"
 msgstr ""
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:24
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:0
 #, python-format
 msgid "You can not switch draft e-invoices. Please validate them first."
 msgstr "Taslak e-faturaları değiştiremezsiniz. Lütfen önce onaylayın."
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:21
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:0
 #, python-format
 msgid "You can only switch curerncy difference invoices."
-msgstr ""
+msgstr "Sadece kur farkı faturalarını değiştirebilirsiniz."
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:18
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:0
 #, python-format
 msgid "You can only switch incoming invoices."
-msgstr ""
+msgstr "Sadece gelen faturaları değiştirebilirsiniz."
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:27
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:0
 #, python-format
 msgid "You can only switch invoices with same amount."
-msgstr ""
+msgstr "Sadece aynı tutardaki faturaları değiştirebilirsiniz."
 
 #. module: currency_difference_invoice
-#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:30
+#. odoo-python
+#: code:addons/currency_difference_invoice/wizard/account_invoice_switch_incomings.py:0
 #, python-format
 msgid "You can only switch invoices with same partner."
-msgstr ""
-
+msgstr "Sadece aynı iş ortağına ait faturaları değiştirebilirsiniz."
