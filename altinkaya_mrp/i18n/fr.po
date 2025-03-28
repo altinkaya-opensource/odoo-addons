@@ -76,7 +76,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__attribute_value_ids
 msgid "Apply on Variants"
-msgstr "Varyantlara Uygula"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
@@ -101,7 +101,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_bom
 msgid "Bill of Material"
-msgstr "Ürün Reçetesi"
+msgstr "Nomenclature"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
@@ -121,12 +121,12 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__bom_product_id
 msgid "Bom Product"
-msgstr "Bom Ürünü"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__bom_id
 msgid "Bom Template"
-msgstr "Bom Şablonu"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
@@ -168,7 +168,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_change_production_qty
 msgid "Change Production Qty"
-msgstr "Üretim Miktarını Değiştir"
+msgstr "Changer la qté de fabrication"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_change_ids
@@ -257,7 +257,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_date
@@ -266,7 +266,7 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_date
 msgid "Created on"
-msgstr "Oluşturulma Tarihi"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__cycle_nbr
@@ -300,7 +300,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__display_name
 msgid "Display Name"
-msgstr "Adı"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
@@ -310,7 +310,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__factor_attribute_id
 msgid "End product attribute to use for raw material calculation"
-msgstr "Hammadde hesabında kullanılacak son ürün özelliği"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_enjek_menu
@@ -321,17 +321,17 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__attribute_factor
 msgid "Factor"
-msgstr "Faktör"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__factor_attribute_id
 msgid "Factor Attribute"
-msgstr "Faktör Niteliği"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__attribute_factor
 msgid "Factor to multiply by the numeric value of attribute"
-msgstr "Niteliklerin sayısal değerleri ile çarpılacak faktör"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
@@ -358,7 +358,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__has_production_bom
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__has_production_bom
 msgid "Has production BoM"
-msgstr "Üretim BOM "
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__id
@@ -379,7 +379,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__inherited_attribute_ids
 msgid "Inherited Attributes"
-msgstr "Devralınan Nitelikler"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_kaliphane_menu
@@ -407,7 +407,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine____last_update
 msgid "Last Modified on"
-msgstr "Son Değiştirme Tarihi"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_uid
@@ -416,7 +416,7 @@ msgstr "Son Değiştirme Tarihi"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__write_uid
 msgid "Last Updated by"
-msgstr "Son Güncelleyen"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_date
@@ -425,12 +425,12 @@ msgstr "Son Güncelleyen"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__write_date
 msgid "Last Updated on"
-msgstr "Son Güncelleme Tarihi"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:res.groups,name:altinkaya_mrp.change_production_qty
 msgid "MRP Change Quantity Permission"
-msgstr "MRP Üretim Miktarı Değiştirme İzni"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.action_x_makine
@@ -491,7 +491,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_bom_template_line
 msgid "Mrp Bom Template Lines"
-msgstr "Mrp Bom Şablonu Satırları"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_bom_wcparameter
@@ -511,7 +511,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__name
 msgid "Name"
-msgstr "İsim"
+msgstr ""
 
 #. module: altinkaya_mrp
 #. odoo-python
@@ -569,7 +569,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_product_template
 msgid "Product"
-msgstr "Ürün Şablonu"
+msgstr "Mod??le d'article"
 
 #. module: altinkaya_mrp
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_product_category_on_mrp
@@ -584,12 +584,12 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_tmpl_id
 msgid "Product Template"
-msgstr "Ürün Şablonu"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_product_product
 msgid "Product Variant"
-msgstr "Ürün"
+msgstr "Article"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
@@ -599,7 +599,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_production
 msgid "Production Order"
-msgstr "Üretim Emri"
+msgstr "Ordre de fabrication"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_procurement_group_form_inherit_mrp
@@ -621,7 +621,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_qty
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
 msgid "Quantity"
-msgstr "Miktar"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__location_id
@@ -685,7 +685,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__sale_id
 msgid "Sale order"
-msgstr "Satış siparişi"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
@@ -695,7 +695,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__sequence
 msgid "Sequence"
-msgstr "Sıra"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
@@ -715,7 +715,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__smart_search
 msgid "Smart Search"
-msgstr "Akıllı Arama"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
@@ -725,22 +725,22 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
 msgid "Start Production"
-msgstr "Üretimi Başlat"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_stock_rule
 msgid "Stock Rule"
-msgstr "Stok Kuralı"
+msgstr "Règle de stock"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_bom_form_inherit_tmpl_line
 msgid "Sub-products"
-msgstr "Alt Ürünler"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__target_attribute_value_ids
 msgid "Target Attribute Values"
-msgstr "Hedef Nitelik Değerleri"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
@@ -810,7 +810,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_uom_id
 msgid "Unit of Measure"
-msgstr "Ölçü Birimi"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_makine

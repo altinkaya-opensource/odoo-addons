@@ -20,11 +20,11 @@
 <button name="post_inventory" string="Post Inventory" type="object" attrs="{'invisible': [('post_visible', '=', False)]}" ></button>
 </xpath> -->
 
-                <!-- <xpath expr="//button[@name='do_unreserve']" position="after">
+                <xpath expr="//button[@name='do_unreserve']" position="after">
                     <button name="action_set_production_started" string="Start Production"
                             attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"
                             type="object"/>
-                </xpath> -->
+                </xpath>
 
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button class="oe_inline oe_stat_button" name="action_print_product_label" type="object"
@@ -51,6 +51,8 @@
                     <field name="sale_note"/>
                 </xpath>
                 <xpath expr="//field[@name='components_availability']" position="after">
+                    <field name="location_src_id"/>
+                    <field name="location_dest_id"/>
                     <field name="date_finished"/>
                     <field name="origin"/>
                     <field name="sale_id"/>
@@ -58,30 +60,11 @@
                     <field name="x_makine"/>
                     <field name="x_operator"/>
                 </xpath>
-                <!-- TODO: migration of commented fields -->
-                <!-- <xpath expr="//field[@name='availability']" position="after">
-                    <field name="location_src_id"/>
-                    <field name="location_dest_id"/>
-                </xpath> -->
-                <!-- <field name="location_src_id"/>
-                <field name="location_dest_id"/> -->
-                <!-- <xpath expr="//field[@name='origin']" position="after">
-                    <field name="sale_id" readonly="1"/>
-                    <field name="procurement_group_id"/>
-                    <field name="x_makine"/>
-                    <field name="x_operator"/>
-                </xpath> -->
+
                 <!-- <xpath expr="//field[@name='routing_id']" position="attributes">
                     <attribute name="attrs">{'invisible': 1}</attribute>
                 </xpath> -->
-                <!-- <xpath expr="//field[@name='routing_id']" position="after">
-                    <field name="process_id"/>
-                    <field name="x_note"/>
-                    <field name="sale_note"/>
-                </xpath> -->
-                <!-- <field name="process_id"/>
-                <field name="x_note"/>
-                <field name="sale_note"/> -->
+
                 <!-- <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_id']"
                        position="after">
                     <button name="action_create_procurement" type="object" string="Tedarik"
@@ -308,9 +291,6 @@
                   sequence="0"/>
 
 
-
-
-
         <record id="mrp_gorsel_menu" model="ir.actions.act_window">
             <field name="name">Görsel Baskı İşleri</field>
             <field name="type">ir.actions.act_window</field>
@@ -325,6 +305,24 @@
         <menuitem id="menu_mrp_gorsel_production"
                   name="Görsel Baskı İşleri"
                   action="mrp_gorsel_menu"
+                  parent="mrp.menu_mrp_manufacturing"
+                  groups="mrp.group_mrp_routings"
+                  sequence="0"/>
+
+        <record id="mrp_kaliphane_menu" model="ir.actions.act_window">
+            <field name="name">Kalıphane İşleri</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <!-- <field name="priority">1</field> -->
+            <field name="domain">[["process_id","=",14]]</field>
+            <field name="context">{'search_default_todo':1}</field>
+        </record>
+
+        <menuitem id="menu_mrp_kaliphane_production"
+                  name="Kalıphane İşleri"
+                  action="mrp_kaliphane_menu"
                   parent="mrp.menu_mrp_manufacturing"
                   groups="mrp.group_mrp_routings"
                   sequence="0"/>
