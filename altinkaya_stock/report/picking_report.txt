@@ -17,7 +17,7 @@
                                                                                                                     ${o.partner_id.commercial_partner_id.tax_office_name or '' }
 
                                                                                                                     ${o.partner_id.commercial_partner_id.vat or '' }
-       {% if o.invoice_id.number %} ${formatLang(o.invoice_id.date_invoice, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
+       {% if o.invoice_id.number %} ${formatLang(o.invoice_id.invoice_date, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
 
                            {%if len(o.move_lines.ids) > 24 %}Sayfa 1/${((int(len(o.move_lines.ids))/-24)*-1)}{% end %}
 
@@ -44,7 +44,7 @@
                                                                                                                     ${o.partner_id.commercial_partner_id.tax_office_name or '' }
 
                                                                                                                     ${o.partner_id.commercial_partner_id.vat or '' }
-      {% if o.invoice_id.number %} ${formatLang(o.invoice_id.date_invoice, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
+      {% if o.invoice_id.number %} ${formatLang(o.invoice_id.invoice_date, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
 
            Sayfa ${(((int(o.move_lines.ids.index(orderitem.id))-1)/-24)*-1)+1}
 

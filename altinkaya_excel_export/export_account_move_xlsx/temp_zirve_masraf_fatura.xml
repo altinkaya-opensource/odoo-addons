@@ -12,7 +12,7 @@
                 '__EXPORT__': {
                     'Fatura': {  # sheet can be name (string) or index (integer)
                         'results': {  # prefix with _CONT_ to continue rows from previous row field
-                            'A2': '${object.date_invoice.strftime("%d.%m.%Y") or ""}#{border=thin_border;align=left;style=date}',
+                            'A2': '${object.invoice_date.strftime("%d.%m.%Y") or ""}#{border=thin_border;align=left;style=date}',
                             'B2': 'supplier_invoice_number${value or ""}#{border=thin_border;align=left;style=text}',
                             'C2': 'journal_id.name${value or ""}#{border=thin_border;align=left;style=text}',
                             'D2': 'z_tevkifatli_mi${"Yes" if value else "No"}#{border=thin_border;align=left;style=text}',
@@ -21,9 +21,9 @@
                             'G2': '${"\'%s" % (object.partner_id.vat or "")}#{border=thin_border;align=left;style=text}',
                             'H2': 'partner_id.vat${value or ""}#{border=thin_border;align=left;style=text}',
                             'I2': 'amount_untaxed${"%.2f" % (object.currency_rate * value) or ""}#{border=thin_border;align=left;style=number}',
-                            'J2': '${"\'%s" % (object.partner_id.z_payable_export or "") if object.type != "out_refund" else "\'%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',
+                            'J2': '${"\'%s" % (object.partner_id.z_payable_export or "") if object.move_type != "out_refund" else "\'%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',
 
-            'K2': '${"%s" % (object.partner_id.z_payable_export or "") if object.type != "out_refund" else "%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',
+            'K2': '${"%s" % (object.partner_id.z_payable_export or "") if object.move_type != "out_refund" else "%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',
             'L2': '${" ".join("* %s ^" % x.account_id.code for x in object.invoice_line_ids)}#{border=thin_border;align=left;style=text}',
             'M2': '${object.invoice_line_ids[0].account_id.code if object.invoice_line_ids else ""}#{border=thin_border;align=left;style=text}',
 
