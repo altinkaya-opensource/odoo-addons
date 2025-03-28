@@ -42,6 +42,17 @@ class AccountMove(models.Model):
         " the shipment is sent to the carrier.",
     )
 
+    tax_line_ids = fields.One2many(
+        "account.move.line",
+        "move_id",
+        string="Tax Lines",
+        compute="_compute_tax_line_ids",
+    )
+
+    def _compute_tax_line_ids(self):
+        for move in self:
+            move.tax_line_ids = move.line_ids.filtered("tax_repartition_line_id")
+
     def _compute_partner_balance(self):
         for move in self:
             partner = move.partner_id
