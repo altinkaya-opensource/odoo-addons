@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* delivery_integration_base
+# 	* delivery_integration_base
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-01 14:39+0000\n"
-"PO-Revision-Date: 2023-02-01 14:39+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 13:20+0000\n"
+"PO-Revision-Date: 2025-03-28 13:20+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,59 +16,93 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: delivery_integration_base
-#: model:mail.template,report_name:delivery_integration_base.delivery_mail_template
-msgid "${(object.name or '').replace('/','_')}"
-msgstr "${(object.name or '').replace('/','_')}"
-
-#. module: delivery_integration_base
-#: model:mail.template,subject:delivery_integration_base.delivery_mail_template
-msgid "${object.company_id.name|safe} Sevk (Ref ${object.sale_id.client_order_ref or ''} ${object.sale_id.name or '/'})"
-msgstr "Altınkaya Kargo Bilgisi (Ref ${object.sale_id.client_order_ref or ''} ${object.sale_id.name or '/'})"
-
-#. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/stock_picking.py:67
+#. odoo-python
+#: code:addons/delivery_integration_base/models/stock_picking.py:0
 #, python-format
 msgid "%s etiket"
-msgstr "%s etiket"
+msgstr ""
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,deci_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__deci_type__3000
 msgid "(3000)"
-msgstr "(3000)"
+msgstr ""
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,deci_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__deci_type__4000
 msgid "(4000)"
-msgstr "(4000)"
+msgstr ""
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,deci_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__deci_type__5000
 msgid "(5000)"
-msgstr "(5000)"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__deci_type__6000
+msgid "(6000)"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:mail.template,body_html:delivery_integration_base.delivery_mail_template
-msgid "<p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Merhaba,</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br><span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">${object.sale_id.client_order_ref or ''}&nbsp;</span>${object.sale_id.name or ''} referans numaralı siparişiniz kargoya verilmiştir.</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Teslimat Yöntemi: ${object.carrier_id.display_name or ''}</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Takip No:&nbsp;<span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">${object.shipping_number or ''}</span><br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">${'Takip için: %s' % object.carrier_tracking_url if object.carrier_tracking_url else ''}<br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Altınkaya Elektronik Cihaz Kutuları</p>"
-msgstr "<p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Merhaba,</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br><span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">${object.sale_id.client_order_ref or ''}&nbsp;</span>${object.sale_id.name or ''} referans numaralı siparişiniz kargoya verilmiştir.</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Teslimat Yöntemi: ${object.carrier_id.display_name or ''}</p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Takip No:&nbsp;<span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">${object.shipping_number or ''}</span><br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">${'Takip için: %s' % object.carrier_tracking_url if object.carrier_tracking_url else ''}<br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br></p><p style=\"margin-right: 0px; margin-left: 0px; font-family: &quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Altınkaya Elektronik Cihaz Kutuları</p>"
-
-#. module: delivery_integration_base
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_order_delivery_get_rates
-msgid "<span class=\"ml-3\">Deci: </span>"
-msgstr "<span class=\"ml-3\">Desi: </span>"
+msgid ""
+"<html>\n"
+"  <body><p/><p>Hello,</p><p><br/><span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">Your order with reference number </span><t t-out=\"object.sale_id.client_order_ref or &#x27;&#x27;\"></t> <t t-out=\"object.sale_id.name or &#x27;&#x27;\"></t> has been shipped.</p><p>Shipping Method: <t t-out=\"object.carrier_id.display_name or &#x27;&#x27;\"></t></p><p>Tracking Number: <span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"><t t-out=\"object.shipping_number or &#x27;&#x27;\"></t></span><br/></p><p>Tracking Link: <a t-attf-href=\"{{object.carrier_tracking_url or ''}}\" style=\"color:rgb(77, 119, 143);\"><t t-out=\"object.carrier_tracking_url or &#x27;&#x27;\"></t></a></p><p><br/></p><p>ALTINKAYA Enclosure for Electronics</p>\n"
+"<t t-if=\"object.sale_id \">\n"
+"<p>You can rate your customer experience via following link.</p><a t-attf-href=\"{{object.sale_id.survey_url}}\" style=\"color:rgb(77, 119, 143);background-color:#875A7B; padding:8px 16px 8px 16px; color:#fff; border-radius:5px; font-size:13px\">Rate Your Experience</a>\n"
+"</t>\n"
+"<br/>\n"
+"<br/></body>\n"
+"</html>\n"
+msgstr ""
+"<html>\n"
+"  <body><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"/><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Merhaba,</p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br/><span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"><t t-out=\"object.sale_id.client_order_ref or &#x27;&#x27;\"></t> </span><t t-out=\"object.sale_id.name or &#x27;&#x27;\"></t> referans numaralı siparişiniz kargoya verilmiştir.</p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Teslimat Yöntemi: <t t-out=\"object.carrier_id.display_name or &#x27;&#x27;\"></t></p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Takip No: <span style=\"font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"><t t-out=\"object.shipping_number or &#x27;&#x27;\"></t></span><br/></p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Takip için: <a t-attf-href=\"{{object.carrier_tracking_url or ''}}\" style=\"text-decoration:none;background-color:transparent;color:rgb(77, 119, 143);\"><t t-out=\"object.carrier_tracking_url or &#x27;&#x27;\"></t></a></p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"><br/></p><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Altınkaya Elektronik Cihaz Kutuları</p>\n"
+"<t t-if=\"object.sale_id \">\n"
+"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">Aşağıdaki bağlantıdan müşteri deneyiminizi puanlayabilirsiniz.</p><a t-attf-href=\"{{object.sale_id.survey_url}}\" style=\"text-decoration:none;color:rgb(77, 119, 143);background-color:#875A7B; padding:8px 16px 8px 16px; color:#fff; border-radius:5px; font-size:13px\">Deneyimi Puanla</a>\n"
+"</t>\n"
+"<br/>\n"
+"<br/></body>\n"
+"</html>\n"
 
 #. module: delivery_integration_base
 #: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_integration_base_delivery_price_rule_form
-msgid "<span class=\"text-muted\" attrs=\"{'invisible': [('variable', '!=', 'deci')]}\">\n"
+msgid ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('variable', '!=', 'deci')]}\">\n"
 "                    Variable factor must be deci.\n"
 "                </span>"
-msgstr "<span class=\"text-muted\" attrs=\"{'invisible': [('variable', '!=', 'deci')]}\">\n"
+msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('variable', '!=', 'deci')]}\">\n"
 "                    Değişen faktör desi olmalıdır.\n"
 "                </span>"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__fuel_surcharge_percentage
-msgid "Tabloların hesaplanmasından sonra eklenecek Ek Fiyat"
+#. odoo-python
+#: code:addons/delivery_integration_base/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"<span>SMS notification sent to "
+"%(number)s</span><br><span>Message:%(message)s</span>"
 msgstr ""
+"<span>SMS bildirimi şu adrese gönderildi: "
+"%(number)s</span><br><span>Mesaj:%(message)s</span>"
+
+#. module: delivery_integration_base
+#: model:mail.template,subject:delivery_integration_base.delivery_mail_template
+msgid ""
+"ALTINKAYA Shipment Information (Ref {{object.sale_id.client_order_ref or "
+"''}} {{object.sale_id.name or '/'}})"
+msgstr ""
+"Altınkaya Kargo Bilgisi (Ref {{object.sale_id.client_order_ref or ''}} "
+"{{object.sale_id.name or '/'}})"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__fuel_surcharge_percentage
+msgid "Additional Price to add after calculation of tables"
+msgstr "Tabloların hesaplanmasından sonra uygulanacak Ek Fiyat"
+
+#. module: delivery_integration_base
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.choose_delivery_carrier_view_form
+msgid "Apply"
+msgstr "Uygula"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__attach_barcode
@@ -87,15 +121,8 @@ msgstr "Barkod Tipi"
 
 #. module: delivery_integration_base
 #: model_terms:ir.ui.view,arch_db:delivery_integration_base.delivery_send_batch_email
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_get_rates_wizard
 msgid "Cancel"
 msgstr "İptal"
-
-#. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/delivery_carrier.py:206
-#, python-format
-msgid "Cannot calculate Shipping, Weight and Volume for product %s missing."
-msgstr "Eksik %s ürünü için Kargo, Ağırlık ve Hacim hesaplanamıyor."
 
 #. module: delivery_integration_base
 #: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_carrier_picking_withcarrier_out_form
@@ -103,16 +130,17 @@ msgid "Cargo Label"
 msgstr "Kargo Etiketi"
 
 #. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__partner_id
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__carrier_id
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__carrier_ids
 msgid "Carrier"
 msgstr "Nakliyeci"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_currency_id
-#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_currency_id
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__shipping_currency_id
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__shipping_currency_id
 msgid "Carrier Currency"
-msgstr "Nakliyeci para birimi"
+msgstr "Nakliyeci Para Birimi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__carrier_payment_type
@@ -120,27 +148,110 @@ msgid "Carrier Payment Type"
 msgstr "Nakliyeci Ödeme Türü"
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/sale_order.py:55
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_get_rates_wizard
-#, python-format
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.choose_delivery_carrier_view_form
 msgid "Carrier Rates"
-msgstr "Kurye Ücretleri"
+msgstr "Nakliyeci Döviz Kurları"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_total_weight
-msgid "Carrier Total Weight"
-msgstr "Kurye Toplam Ağırlığı"
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_shipping_cost
+msgid "Carrier Shipping Cost"
+msgstr "Taşıma maliyeti"
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/sale_order.py:30
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_total_deci
+msgid "Carrier Total Deci"
+msgstr "Nakliyeci Toplam Desi"
+
+#. module: delivery_integration_base
+#. odoo-python
+#: code:addons/delivery_integration_base/models/sale_order.py:0
 #, python-format
-msgid "Carrier line is not added to order lines. Please add carrier line to order lines."
-msgstr "Sipariş satırlarında nakliyeci satırı bulunamadı. Lütfen kargo fiyat al butonunu kullanın."
+msgid ""
+"Carrier line is not added to order lines. Please add carrier line to order "
+"lines."
+msgstr ""
+"Sipariş satırlarında nakliyeci satırı bulunamadı. Lütfen kargo fiyat al "
+"butonunu kullanın."
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_shipping_cost
+msgid "Carrier shipping cost"
+msgstr "Teslimat bedeli"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_total_deci
+msgid "Carrier total reception Deci"
+msgstr "Nakliyeci toplam alım Desi"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__changeset_ids
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model_terms:ir.actions.act_window,help:delivery_integration_base.action_delivery_region
 msgid "Click to add a Region in your Delivery Region list."
 msgstr "Kargo bölgeler listenize bölge eklemek için basın."
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__count_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__country_ids
@@ -151,7 +262,6 @@ msgstr "Ülke"
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__create_uid
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__create_uid
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__create_uid
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__create_uid
 msgid "Created by"
 msgstr "Oluşturan"
 
@@ -159,25 +269,26 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__create_date
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__create_date
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__create_date
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__create_date
 msgid "Created on"
 msgstr "Oluşturulma"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__currency_id
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__currency_id
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__currency_id_try
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__currency_id_try
 msgid "Currency"
 msgstr "Para Birimi"
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,payment_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__payment_type__customer_pays
 msgid "Customer Pays"
-msgstr "Müşteri öder"
+msgstr "Alıcı Ödemeli"
 
 #. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
 #: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__deci
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_price_rule__variable__deci
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_price_rule__variable_factor__deci
 msgid "Deci"
 msgstr "Desi"
 
@@ -185,12 +296,6 @@ msgstr "Desi"
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__deci_type
 msgid "Deci Type"
 msgstr "Desi Tipi"
-
-#. module: delivery_integration_base
-#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_total_weight
-#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__picking_total_weight
-msgid "Decimal of packages"
-msgstr "Paketlerin desisi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__default_printer_id
@@ -203,63 +308,99 @@ msgid "Delivery Carrier Lines"
 msgstr "Teslimat Nakliye Satırları"
 
 #. module: delivery_integration_base
+#: model:ir.model,name:delivery_integration_base.model_choose_delivery_carrier
+msgid "Delivery Carrier Selection Wizard"
+msgstr "Teslimat Taşıyıcı Seçim Sihirbazı"
+
+#. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__delivery_deadline_no_integration
 msgid "Delivery Deadline (In Days)"
 msgstr "Teslim Deadline (Gün)"
 
 #. module: delivery_integration_base
-#: model:ir.model,name:delivery_integration_base.model_delivery_carrier
-msgid "Delivery Methods"
-msgstr "Teslimat Yöntemleri"
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__delivery_price_try
+msgid "Delivery Price (TRY)"
+msgstr "Teslimat Fiyatı (TRY)"
 
 #. module: delivery_integration_base
 #: model:ir.model,name:delivery_integration_base.model_delivery_price_rule
 msgid "Delivery Price Rules"
-msgstr "Teslim Fiyatı Kuralları"
+msgstr "Teslimat Fiyatı Kuralları"
 
 #. module: delivery_integration_base
 #: model:ir.actions.act_window,name:delivery_integration_base.action_delivery_region
-#: model:ir.ui.menu,name:delivery_integration_base.delivery_region_menu
 msgid "Delivery Regions"
 msgstr "Teslimat Bölgeleri"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__delivery_deadline_no_integration
 msgid "Delivery deadline for carrier that has no integration."
-msgstr ""
+msgstr "Entegrasyonu bulunmayan nakliyeci için son teslimat tarihi"
 
 #. module: delivery_integration_base
 #: model:ir.model,name:delivery_integration_base.model_delivery_region
 msgid "Delivery regions for price calculation"
-msgstr ""
+msgstr "Fiyat hesaplaması için gereken teslimat bölgeleri"
+
+#. module: delivery_integration_base
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.choose_delivery_carrier_view_form
+msgid "Discard"
+msgstr "Iptal Et"
+
+#. module: delivery_integration_base
+#: model:ir.actions.act_window,name:delivery_integration_base.action_stock_picking_dispatched_deliveries
+#: model:ir.ui.menu,name:delivery_integration_base.stock_picking_dispatched_deliveries_menu
+msgid "Dispatched Deliveries"
+msgstr "Çıkan Teslimatlar"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__display_name
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__display_name
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__display_name
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__Emergency_fee_per_kg
-msgid "Emergency Charge Per Kg"
-msgstr ""
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__picking_total_deci
+msgid "Dynamic Total Deci, calculated based on the move lines."
+msgstr "Dinamik Toplam Desi, hareket satırlarına bağlı olarak hesaplanır."
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__Emergency_fee_per_kg
-msgid "Emergency fee added after postal chargee percentage"
-msgstr ""
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__emergency_fee_per_kg
+msgid "Emergency Charge Per Kg"
+msgstr "Kg Başına Acil Durum Bedeli"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__emergency_fee_per_kg
+msgid "Emergency fee added after postal charge percentage"
+msgstr "Posta bedeli yüzdesinden sonra acil durum bedeli eklendi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__environment_fee_per_kg
 msgid "Environment Charge per Kg"
-msgstr ""
+msgstr "Kg Başına Çevre Bedeli"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__environment_fee_per_kg
 msgid "Environment fee per KG added after fuel surcharge"
-msgstr ""
+msgstr "Yakıt ek bedelinden sonra eklenen KG başına çevre bedeli"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__factor_a
+msgid "Factor A"
+msgstr "Faktör A"
+
+#. module: delivery_integration_base
+#. odoo-python
+#: code:addons/delivery_integration_base/models/delivery_carrier.py:0
+#, python-format
+msgid "Factor A and Factor B must be greater than 0."
+msgstr "Faktör A ve B 0'dan büyük olmalıdır."
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__factor_b
+msgid "Factor B"
+msgstr "Faktör B"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__postal_charge_percentage
@@ -269,18 +410,12 @@ msgstr ""
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__fuel_surcharge_percentage
 msgid "Fuel Surcharge Percentage"
-msgstr ""
-
-#. module: delivery_integration_base
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_order_delivery_get_rates
-msgid "Get Rates"
-msgstr "Kargo Hesapla"
+msgstr "Yakıt Ek Bedeli Yüzdesi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__id
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__id
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__id
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__id
 msgid "ID"
 msgstr ""
 
@@ -290,10 +425,15 @@ msgid "If checked, barcode will be attached to picking as a file."
 msgstr "Seçiliyse barkod sevke dosya olarak iliştirilecektir."
 
 #. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__sale_last_deci
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__last_deci
+msgid "Last Confirmed Deci"
+msgstr "Son Onaylanan Desi"
+
+#. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines____last_update
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region____last_update
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email____last_update
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
 
@@ -301,7 +441,6 @@ msgstr "Son Güncelleme"
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__write_uid
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__write_uid
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__write_uid
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Son Güncelleyen"
 
@@ -309,32 +448,54 @@ msgstr "Son Güncelleyen"
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__write_date
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__write_date
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__write_date
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__write_date
 msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__mail_sent
 msgid "Mail Sent To Customer"
-msgstr ""
+msgstr "Müşteriye Mail Gönderildi"
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/delivery_carrier.py:114
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__try_currency_id
+msgid "Main Currency"
+msgstr "Temel Para Birimi"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__try_price
+msgid "Main Price"
+msgstr "Temel Fiyat"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__sale_volume
+msgid "Net Sale Volume"
+msgstr "Net Satış Hacmi"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__sale_weight
+msgid "Net Sale Weight"
+msgstr "Net Satış Ağırlığı"
+
+#. module: delivery_integration_base
+#. odoo-python
+#: code:addons/delivery_integration_base/models/delivery_carrier.py:0
 #, python-format
 msgid "No Reference Sequence defined for this carrier"
 msgstr "Bu nakliyeci için herhangi bir referans sırası tanımlanmadı."
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/stock_picking.py:54
+#. odoo-python
+#: code:addons/delivery_integration_base/models/stock_picking.py:0
 #, python-format
 msgid "No default printer defined for the carrier %s"
 msgstr "Bu nakliyeci için varsayılan yazıcı tanımlanmadı. %s"
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/models/delivery_carrier.py:288
+#. odoo-python
+#: code:addons/delivery_integration_base/models/delivery_carrier.py:0
 #, python-format
 msgid "No price rule matching this order; delivery cost cannot be computed."
-msgstr ""
+msgstr "Bu siparişle eşleşen fiyat kuralı yok; teslimat maliyeti hesaplanamıyor."
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_package_count
@@ -342,7 +503,7 @@ msgid "Number of packages"
 msgstr "Paket sayısı"
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,carrier_barcode_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__carrier_barcode_type__pdf
 msgid "PDF"
 msgstr ""
 
@@ -353,15 +514,25 @@ msgstr "Paket Sayısı"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__payment_type
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__delivery_payment_type
 msgid "Payment Type"
 msgstr "Ödeme Türü"
 
 #. module: delivery_integration_base
+#: model:mail.template,name:delivery_integration_base.delivery_mail_template
+msgid "Picking Delivery Information Mail Template"
+msgstr "Sevk Teslimat Bilgileri Mail Şablonu"
+
+#. module: delivery_integration_base
 #: model:ir.actions.server,name:delivery_integration_base.ir_cron_delivery_update_pickings_state_ir_actions_server
 #: model:ir.cron,cron_name:delivery_integration_base.ir_cron_delivery_update_pickings_state
-#: model:ir.cron,name:delivery_integration_base.ir_cron_delivery_update_pickings_state
 msgid "Picking Delivery State Update"
-msgstr ""
+msgstr "Sevk Teslimat Durumu Güncelle"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__picking_total_deci
+msgid "Picking Total Deci"
+msgstr "Sevk Toplam Desi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__picking_total_weight
@@ -369,33 +540,40 @@ msgid "Picking Total Weight"
 msgstr "Sevk Toplam Ağırlığı"
 
 #. module: delivery_integration_base
-#: code:addons/delivery_integration_base/wizards/sale_get_rates_wizard.py:65
+#. odoo-python
+#: code:addons/delivery_integration_base/wizards/choose_delivery_carrier.py:0
+#, python-format
+msgid "Please select a delivery carrier."
+msgstr "Lütfen nakliyeci seçiniz."
+
+#. module: delivery_integration_base
+#. odoo-python
+#: code:addons/delivery_integration_base/wizards/sale_get_rates_wizard.py:0
 #, python-format
 msgid "Please select one delivery carrier."
 msgstr "Lütfen bir nakliyeci seçiniz."
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__postal_charge_percentage
-msgid "Postal Charge Percentage"
-msgstr ""
+#. odoo-python
+#: code:addons/delivery_integration_base/wizards/choose_delivery_carrier.py:0
+#, python-format
+msgid "Please select only one delivery carrier."
+msgstr "Lütfen sadece bir nakliyeci seçiniz."
 
 #. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__postal_charge_percentage
+msgid "Postal Charge Percentage"
+msgstr "Posta Bedeli Yüzdesi"
+
+#. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__price
 msgid "Price"
 msgstr "Fiyat"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__carrier_prices
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__carrier_prices
 msgid "Prices"
 msgstr "Fiyatlar"
-
-#. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
-msgid "Quantity"
-msgstr "Miktar"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_received_by
@@ -433,15 +611,29 @@ msgid "Sale Deci"
 msgstr "Satış Desisi"
 
 #. module: delivery_integration_base
-#: model:ir.model,name:delivery_integration_base.model_sale_get_rates_wizard
-msgid "Sale Get Rates Wizard"
-msgstr "Satış Teslimat Fiyatları Sihirbazı"
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__order_id
+msgid "Sale Order"
+msgstr "Satış Siparişi"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__sale_shipping_cost
+msgid "Sale Shipping Cost"
+msgstr "Satış Teslimat Bedeli"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__sale_shipping_cost_try
+msgid "Sale Shipping Cost TRY"
+msgstr "Satış Teslimat Bedeli TRY"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__sale_shipping_cost
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__sale_shipping_cost_try
+msgid "Sale shipping cost no VAT"
+msgstr "KDV Hariç"
 
 #. module: delivery_integration_base
 #: model:ir.model,name:delivery_integration_base.model_sale_order
-#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__order_id
-#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_get_rates_wizard__sale_id
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Satış Siparişi"
 
 #. module: delivery_integration_base
@@ -450,14 +642,13 @@ msgid "Sales Order Line"
 msgstr "Satış Sipariş Satırı"
 
 #. module: delivery_integration_base
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_get_rates_wizard
-msgid "Select"
-msgstr "Seç"
-
-#. module: delivery_integration_base
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_get_rates_wizard
-msgid "Tercih edilen teslimat yöntemini seçin. Sevkiyat fiyatı ürün olarak sipariş satırlarına eklenecektir."
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.choose_delivery_carrier_view_form
+msgid ""
+"Select preferred delivery carrier. Shipment price will be added on order "
+"lines as product."
 msgstr ""
+"Tercih ettiğiniz nakliyeciyi seçin. Gönderi fiyatı, sipariş satırlarına "
+"bir ürün olarak eklenecektir."
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__selected
@@ -486,14 +677,34 @@ msgid "Send SMS to Customer"
 msgstr "Müşteriye SMS gönder"
 
 #. module: delivery_integration_base
-#: selection:delivery.carrier,payment_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__payment_type__sender_pays
 msgid "Sender Pays"
-msgstr "Gönderici öder"
+msgstr "Gönderici Ödemeli"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_shipping_cost
-msgid "Shipping Cost"
-msgstr "Taşıma maliyeti"
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_stock_picking_dispatched_deliveries_tree
+msgid "Sevke git"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__picking_total_weight
+msgid "Shipments Total Measured Exit Deci weight"
+msgstr "Paketlerin desisi"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__carrier_shipping_cost_try
+msgid "Shipping Cost (TRY)"
+msgstr "Teslimat Bedeli (TRY)"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_shipping_cost_try
+msgid "Shipping Cost No VAT (TRY)"
+msgstr "KDV Hariç (TRY)"
+
+#. module: delivery_integration_base
+#: model:ir.model,name:delivery_integration_base.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Teslimat Yöntemleri"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__shipping_number
@@ -517,11 +728,6 @@ msgid "Shipping VAT"
 msgstr "Teslimat KDV"
 
 #. module: delivery_integration_base
-#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_shipping_cost
-msgid "Shipping cost"
-msgstr "Teslimat bedeli"
-
-#. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__carrier_shipping_total
 msgid "Shipping total"
 msgstr "Teslimat toplamı"
@@ -534,7 +740,20 @@ msgstr "Fiyat Tablosunda Göster"
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__show_in_price_table
 msgid "Show this carrier in Sale Order Shipment Price table"
-msgstr ""
+msgstr "Bu nakliyeciyi Satış Siparişi Teslimat Fiyat tablosunda göster"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__smart_search
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__barcode_text_1
@@ -545,6 +764,45 @@ msgstr "Paket etiketleri için sabit metin."
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__state_ids
 msgid "States"
 msgstr "Durum"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_choose_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier_lines__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_price_rule__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_region__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_send_batch_email__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_choose_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier_lines__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_price_rule__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_region__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_send_batch_email__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,help:delivery_integration_base.field_choose_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_carrier_lines__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_price_rule__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_region__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_delivery_send_batch_email__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_sale_order_line__count_changesets
+#: model:ir.model.fields,help:delivery_integration_base.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__tracking_url_prefix_no_integration
@@ -559,12 +817,30 @@ msgstr "Entegrasyonu olmayan kargo için takip URL öneki."
 #. module: delivery_integration_base
 #: model:ir.model,name:delivery_integration_base.model_stock_picking
 msgid "Transfer"
-msgstr "Transfer"
+msgstr "Teslimat"
+
+#. module: delivery_integration_base
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_stock_picking_dispatched_deliveries_tree
+msgid "True"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__url_shortener_id
 msgid "URL Shortener"
 msgstr "URL Kısaltıcı"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_choose_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier_lines__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_region__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_send_batch_email__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_price_rule__variable
@@ -577,27 +853,19 @@ msgid "Variable Factor"
 msgstr "Değişken Faktörü"
 
 #. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
-msgid "Volume"
-msgstr "Hacim"
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__volume
+msgid "Volume (in litre)"
+msgstr "Hacim (litre)"
 
 #. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
-msgid "Weight"
-msgstr "Ağırlık"
+#: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order_line__weight
+msgid "Weight (in kg)"
+msgstr "Ağırlık (kg)"
 
 #. module: delivery_integration_base
-#: selection:delivery.price.rule,variable:0
-#: selection:delivery.price.rule,variable_factor:0
-msgid "Weight * Volume"
-msgstr "Ağırlık * Hacim"
-
-#. module: delivery_integration_base
-#: selection:delivery.carrier,carrier_barcode_type:0
+#: model:ir.model.fields.selection,name:delivery_integration_base.selection__delivery_carrier__carrier_barcode_type__zpl
 msgid "ZPL (Zebra)"
-msgstr "ZPL (Zebra)"
+msgstr ""
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_delivery_carrier__weight_calc_percentage
@@ -605,7 +873,6 @@ msgid "additional percentage for weight calculation"
 msgstr "ek ağırlık hesaplama yüzdesi"
 
 #. module: delivery_integration_base
-#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_sale_get_rates_wizard
-msgid "or"
-msgstr "ya da"
-
+#: model:mail.template,report_name:delivery_integration_base.delivery_mail_template
+msgid "{{(object.name or '').replace('/','_')}}"
+msgstr "${(object.name or '').replace('/','_')}"

@@ -1,0 +1,371 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* change_partner_accounts
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 12:58+0000\n"
+"PO-Revision-Date: 2025-03-28 12:58+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "$₺€ Bakiye"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "$₺€ V.Gelen"
+msgstr ""
+
+#. module: change_partner_accounts
+#. odoo-python
+#: code:addons/change_partner_accounts/wizard/change_partner_accounts_eur.py:0
+#: code:addons/change_partner_accounts/wizard/change_partner_accounts_try.py:0
+#: code:addons/change_partner_accounts/wizard/change_partner_accounts_usd.py:0
+#, python-format
+msgid ""
+"Action is completed but there is an error happened for these partners\n"
+" %s\n"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.ui.menu,name:change_partner_accounts.menu_res_partner_balance_acconut
+#: model:ir.ui.menu,name:change_partner_accounts.menu_res_partner_balance_sale
+msgid "Borç / Alacak Listesi"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
+msgid "Cancel"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
+msgid "Change Accounts"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_eur_view
+msgid "Change Partner Accounts to EUR"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model,name:change_partner_accounts.model_change_partner_accounts_eur
+msgid "Change Partner Accounts to EUR Wizard"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
+msgid "Change Partner Accounts to TRY"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
+msgid "Change Partner Accounts to USD"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__changeset_change_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__changeset_change_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__changeset_change_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__changeset_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__changeset_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__changeset_ids
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model,name:change_partner_accounts.model_change_partner_accounts_usd
+msgid "Changing partner accounts to USD Wizard"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model,name:change_partner_accounts.model_res_partner
+msgid "Contact"
+msgstr "Kapcsolattartó"
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Contacts"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__count_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__count_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__count_pending_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changesets
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
+msgid "Create Date"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__create_uid
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__create_uid
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__create_date
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__create_date
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__display_name
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__display_name
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Döviz Bakiye"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Döviz Vade Gelen"
+msgstr ""
+
+#. module: change_partner_accounts
+#. odoo-python
+#: code:addons/change_partner_accounts/models/res_partner.py:0
+#: code:addons/change_partner_accounts/models/res_partner.py:0
+#: code:addons/change_partner_accounts/models/res_partner.py:0
+#, python-format
+msgid "Error in accounts definition"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Fark"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__id
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__id
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__id
+msgid "ID"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur____last_update
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try____last_update
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__write_uid
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__write_uid
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__write_date
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__write_date
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Limit"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Limit Para B."
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Name"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_partner_balance
+msgid "Partner Balance Action"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__partner_currency_id
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__partner_currency_id
+msgid "Partner Currency"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__currency_balance
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__currency_balance
+msgid "Partner Currency Balance"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__currency_balance_due
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__currency_balance_due
+msgid "Partner Currency Balance Due"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Risk"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__smart_search
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__smart_search
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__smart_search
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
+msgid "Sıfır Değil"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "TL Bakiye"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "TL Vade Gelen"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__balance
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__balance
+msgid "TRY Balance"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__balance_due
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__balance_due
+msgid "TRY Balance Due"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changeset_changes
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_try__count_pending_changeset_changes
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changeset_changes
+#: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_try__count_pending_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_eur__count_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_try__count_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_changesets
+#: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
+msgid ""
+"This action will change every accounting records of partner. Ask your "
+"administrator before use it."
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__has_2breconciled_customer
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__has_2breconciled_customer
+msgid "To be reconciled customer"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__has_2breconciled_supplier
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_users__has_2breconciled_supplier
+msgid "To be reconciled supplier"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
+msgid "Türkiye"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__user_can_see_changeset
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__user_can_see_changeset
+#: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__user_can_see_changeset
+#: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.model,name:change_partner_accounts.model_change_partner_accounts_try
+msgid "Wizard for changing partner accounts to TRY"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
+msgid "Yurtdışı"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "Ödeme Şekli"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "₺ Bakiye"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
+msgid "₺ V.Gelen"
+msgstr ""
