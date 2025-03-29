@@ -116,7 +116,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__bom_template_line_ids
 msgid "BoM Template Lines"
-msgstr ""
+msgstr "BoM Şablon Satırları"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__bom_product_id

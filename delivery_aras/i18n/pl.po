@@ -1,0 +1,224 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_aras
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 13:11+0000\n"
+"PO-Revision-Date: 2025-03-28 13:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_aras
+#. odoo-python
+#: code:addons/delivery_aras/models/delivery_carrier.py:0
+#, python-format
+msgid " It's a required field for dispatch."
+msgstr ""
+
+#. module: delivery_aras
+#: model:mail.template,body_html:delivery_aras.aras_sms_template
+msgid ""
+"<html>\n"
+"  <body>\n"
+"    <p><t t-out=\"object.sale_id.name or &#x27;&#x27;\"></t> order has been shipped. <t t-out=\"&#x27;For Tracking: %s&#x27; % object.carrier_tracking_url if object.carrier_tracking_url else &#x27;&#x27;\"></t></p>\n"
+"  </body>\n"
+"</html>\n"
+msgstr ""
+"<html>\n"
+"  <body>\n"
+"    <p><t t-out=\"object.sale_id.name or ''\"/> order has been shipped. <t t-out=\"'For Tracking: %s' % object.carrier_tracking_url if object.carrier_tracking_url else ''\"/></p>\n"
+"  </body>\n"
+"</html>\n"
+
+#. module: delivery_aras
+#: model:ir.actions.report,name:delivery_aras.aras_carrier_label_report
+msgid "Aras Carrier Label"
+msgstr ""
+
+#. module: delivery_aras
+#: model_terms:ir.ui.view,arch_db:delivery_aras.view_aras_delivery_carrier_form
+msgid "Aras Configuration"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__aras_customer_code
+msgid "Aras Customer Code"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields.selection,name:delivery_aras.selection__delivery_carrier__delivery_type__aras
+#: model:ir.model.fields.selection,name:delivery_aras.selection__stock_package_type__package_carrier_type__aras
+msgid "Aras Kargo"
+msgstr ""
+
+#. module: delivery_aras
+#. odoo-python
+#: code:addons/delivery_aras/models/delivery_carrier.py:0
+#, python-format
+msgid "Aras Kargo API doesn't provide methods to print label."
+msgstr ""
+
+#. module: delivery_aras
+#: model:mail.template,name:delivery_aras.aras_sms_template
+msgid "Aras Kargo SMS Template"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__aras_password
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__aras_password
+msgid "Aras Password"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__aras_query_password
+msgid "Aras Query Password"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__aras_query_username
+msgid "Aras Query Username"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__aras_username
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__aras_username
+msgid "Aras Username"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__package_carrier_type
+msgid "Carrier"
+msgstr "Przewoźnik"
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: delivery_aras
+#: model_terms:ir.ui.view,arch_db:delivery_aras.view_aras_delivery_carrier_form
+msgid "Connection"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__aras_customer_code
+msgid "Customer Code"
+msgstr ""
+
+#. module: delivery_aras
+#. odoo-python
+#: code:addons/delivery_aras/models/aras_request.py:0
+#, python-format
+msgid "Error in the request to the Aras API. %s"
+msgstr ""
+
+#. module: delivery_aras
+#: model_terms:ir.ui.view,arch_db:delivery_aras.view_aras_delivery_carrier_form
+msgid "Logistics"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Dostawca"
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__aras_query_password
+msgid "Query Password"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__aras_query_username
+msgid "Query Username"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model,name:delivery_aras.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Sposoby dostawy"
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model,name:delivery_aras.model_stock_package_type
+msgid "Stock package type"
+msgstr "Typ pakietu magazynowego"
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_aras.field_stock_package_type__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_aras.field_stock_package_type__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,help:delivery_aras.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_aras.field_stock_package_type__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: delivery_aras
+#: model:ir.model.fields,field_description:delivery_aras.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_aras.field_stock_package_type__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: delivery_aras
+#. odoo-python
+#: code:addons/delivery_aras/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"You can't cancel a shipment that\n"
+"                        already has been sent to Aras Kargo"
+msgstr ""
+
+#. module: delivery_aras
+#: model:mail.template,report_name:delivery_aras.aras_sms_template
+msgid "{{(object.name or '').replace('/','_')}}"
+msgstr ""
+
+#. module: delivery_aras
+#: model:mail.template,subject:delivery_aras.aras_sms_template
+msgid "{{object.company_id.name}} Picking (Ref {{object.name or 'n/a' }})"
+msgstr ""
