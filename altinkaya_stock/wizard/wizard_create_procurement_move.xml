@@ -22,7 +22,7 @@
 							<field name="sale_qty180days" widget="uom" options="{'uom_field': 'uom'}"/>
 							<field name="sale_qty360days" widget="uom" options="{'uom_field': 'uom'}"/>
 					</group> -->
-					<group col="6">
+					<group>
             		<group string="Sincan Depo" class="oe_form">
 						<field name="qty_to_sincan" class="oe_inline"/>
             			<field name="qty_available_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
@@ -30,7 +30,7 @@
             			<field name="qty_outgoing_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
             			<field name="qty_virtual_sincan" widget="uom" options="{'uom_field': 'uom'}"/></group>
 
-						<group string="Merkez Depo" class="oe_form" col="2">
+						<group string="Merkez Depo" class="oe_form">
             			<field name="qty_to_merkez" class="oe_inline"/>
             			<field name="qty_available_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
             			<field name="qty_incoming_merkez" widget="uom" options="{'uom_field': 'uom'}"/>

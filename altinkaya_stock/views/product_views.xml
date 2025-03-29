@@ -63,18 +63,8 @@
             <xpath expr="//div[@name='options']" position='inside'>
                 <xpath expr="//field[@name='categ_id']" position='move'>
                 </xpath>
-                <xpath expr="//field[@name='product_template_variant_value_ids']" position="attributes">
-                    <attribute name="readonly">0</attribute>
-                    <attribute name="domain">[('id','in',domain_attribute_value_ids)]</attribute>
-                    <attribute name="options">{'no_create':True,'no_edit':True}</attribute>
-                    <attribute name="placeholder">Product Attribute Values</attribute>
-                </xpath>
-                <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
-                    <attribute name="readonly">0</attribute>
-                    <attribute name="invisible">0</attribute>
-                    <attribute name="placeholder">Product Template</attribute>
-                </xpath>
             </xpath>
+
         </field>
     </record>
 
