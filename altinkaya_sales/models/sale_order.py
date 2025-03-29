@@ -295,7 +295,7 @@ class SaleOrder(models.Model):
         ir_model_data = self.env["ir.model.data"]
         try:
             template_id = ir_model_data.check_object_reference(
-                "altinkaya_sales", "email_template_edi_sale_altinkaya"
+                "altinkaya_sales", "email_template_edi_sale_altinkaya1"
             )[1]
         except ValueError:
             template_id = False
