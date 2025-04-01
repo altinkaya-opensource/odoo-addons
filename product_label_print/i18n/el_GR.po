@@ -19,20 +19,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_pieces_in_pack
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__pieces_in_pack
 msgid "# in Cartoon"
-msgstr "Ürün Miktarı"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__copies_to_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_label_to_print
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__label_to_print
 msgid "# of label to be printed"
-msgstr "Etiket Adedi"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_barcode
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__barcode
 msgid "Barcode"
-msgstr "Barkod"
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
@@ -49,7 +49,7 @@ msgstr ""
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
 msgid "Cancel"
-msgstr "İptal"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__changeset_change_ids
@@ -61,7 +61,7 @@ msgstr "İptal"
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__changeset_change_ids
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__changeset_change_ids
 msgid "Changeset Changes"
-msgstr "Changeset Değişiklikleri"
+msgstr "Αλλαγές σετ αλλαγών"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__changeset_ids
@@ -85,7 +85,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_changesets
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_changesets
 msgid "Count Changesets"
-msgstr "Sayım Değişiklik Setleri"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__count_pending_changeset_changes
@@ -97,7 +97,7 @@ msgstr "Sayım Değişiklik Setleri"
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+msgstr "Μετρήστε τις αλλαγές που εκκρεμούν"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__count_pending_changesets
@@ -109,43 +109,43 @@ msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_pending_changesets
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr "Bekleyen Değişiklik Setlerini Say"
+msgstr "Μετρήστε τα σύνολα αλλαγών που εκκρεμούν"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_uid
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_uid
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_date
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_date
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_default_code
 msgid "Default Code"
-msgstr "Ürün Kodu"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__default_code
 msgid "Default_code"
-msgstr "Ürün Kodu"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__display_name
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__display_name
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__display_name
 msgid "Display Name"
-msgstr "Görünüm Adı"
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
 msgid "Do not print first label"
-msgstr "İlk Etiketi Atla"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__id
@@ -157,12 +157,12 @@ msgstr ""
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label1
 msgid "Label 1"
-msgstr "Etiket 1"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label2
 msgid "Label 2"
-msgstr "Etiket 2"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_label_twoinrow
@@ -172,28 +172,28 @@ msgstr ""
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__label_ids
 msgid "Labels"
-msgstr "Etiketler"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow____last_update
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz____last_update
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label____last_update
 msgid "Last Modified on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_uid
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_uid
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_uid
 msgid "Last Updated by"
-msgstr "Son Güncelleyen"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_date
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_date
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_date
 msgid "Last Updated on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__lot_id
@@ -203,23 +203,23 @@ msgstr ""
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_stock_lot
 msgid "Lot/Serial"
-msgstr "Lot/Seri"
+msgstr "Παρτίδα/Σειριακός"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__lot_ids
 msgid "Lots"
-msgstr "Lotlar"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.actions.report,name:product_label_print.label_product_product_kalip
 msgid "Molding Label (GODEX)"
-msgstr "Kalıp Etiketi (GODEX)"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_name
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__name
 msgid "Name"
-msgstr "İsim"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL1
@@ -250,39 +250,39 @@ msgstr ""
 #: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
 #, python-format
 msgid "No product found."
-msgstr "Ürün bulunamadı."
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_note
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__note
 msgid "Note"
-msgstr "Not"
+msgstr ""
 
 #. module: product_label_print
 #. odoo-python
 #: code:addons/product_label_print/models/product.py:0
 #, python-format
 msgid "Please define printer for this label"
-msgstr "Lütfen bu etiket için yazıcı tanımlayın"
+msgstr ""
 
 #. module: product_label_print
 #. odoo-python
 #: code:addons/product_label_print/models/product.py:0
 #, python-format
 msgid "Please use product variant to print labels."
-msgstr "Etiket yazdırmak için lütfen ürün varyantını kullanın."
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
 msgid "Print"
-msgstr "Yazdır"
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_form
 #: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_tree
 #: model_terms:ir.ui.view,arch_db:product_label_print.stock_production_lot_print_label_single_form
 msgid "Print Label"
-msgstr "Etiket Yazdır"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.actions.server,name:product_label_print.action_print_molding_label_multi
@@ -292,24 +292,24 @@ msgstr ""
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.stock_move_tree_print_product_label
 msgid "Print Product Label"
-msgstr "Ürün Etiketi Yazdır"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_printing_printer
 msgid "Printer"
-msgstr "Yazıcı"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_printing_printer__type
 msgid "Printer Type"
-msgstr "Yazıcı Türü"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_product_template
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_product_id
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__product_id
 msgid "Product"
-msgstr "Ürün Şablonu"
+msgstr "Πρότυπο Είδους "
 
 #. module: product_label_print
 #: model:ir.actions.report,name:product_label_print.action_aeroo_product_label_print
@@ -319,38 +319,38 @@ msgstr ""
 #. module: product_label_print
 #: model:ir.actions.report,name:product_label_print.label_product_product
 msgid "Product Label (GODEX)"
-msgstr "Urun Etiketi (GODEX)"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.actions.act_window,name:product_label_print.action_print_pack_barcode_wiz
 #: model:ir.model,name:product_label_print.model_print_pack_barcode_wiz
 msgid "Product Label Print"
-msgstr "Ürün Etiketi Yazdır"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_lot_ids
 msgid "Product Lot"
-msgstr "Ürün Lotu"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_product_product_label
 msgid "Product Product Label"
-msgstr "Ürün Etiketi"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_product_product
 msgid "Product Variant"
-msgstr "Ürün"
+msgstr "Είδος"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__product_label_ids
 msgid "Products"
-msgstr "Ürünler"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__model_ref_id
 msgid "Reference"
-msgstr "Referans"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__restrict_single
@@ -361,32 +361,32 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_short_code
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__short_code
 msgid "Short Code"
-msgstr "Kısa Kod"
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
 msgid "Show Label"
-msgstr "Etiketi Göster"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_id
 msgid "Single Label"
-msgstr "Tek Etiket"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__skip_first
 msgid "Skip First Label"
-msgstr "İlk Etiketi Atla"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__first_label_empty
 msgid "Skip first label in row"
-msgstr "İlk etiketi atla"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__second_label_empty
 msgid "Skip second label in row"
-msgstr "İkinci etiketi atla"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__smart_search
@@ -398,19 +398,19 @@ msgstr "İkinci etiketi atla"
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__smart_search
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__smart_search
 msgid "Smart Search"
-msgstr "Akıllı Arama"
+msgstr "Έξυπνη αναζήτηση"
 
 #. module: product_label_print
 #. odoo-python
 #: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
 #, python-format
 msgid "Something went wrong. Please refresh the page and try again."
-msgstr "Bir şeyler ters gitti. Lütfen sayfayı yenileyin ve tekrar deneyin."
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_stock_move
 msgid "Stock Move"
-msgstr "Stok Hareketi"
+msgstr "Κίνηση Αποθέματος"
 
 #. module: product_label_print
 #: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_pending_changeset_changes
@@ -422,7 +422,7 @@ msgstr "Stok Hareketi"
 #: model:ir.model.fields,help:product_label_print.field_stock_lot__count_pending_changeset_changes
 #: model:ir.model.fields,help:product_label_print.field_stock_move__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr "Bu kaydın bekleyen değişiklik sayısı"
+msgstr "Ο αριθμός των εκκρεμών αλλαγών αυτής της εγγραφής"
 
 #. module: product_label_print
 #: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_pending_changesets
@@ -434,7 +434,7 @@ msgstr "Bu kaydın bekleyen değişiklik sayısı"
 #: model:ir.model.fields,help:product_label_print.field_stock_lot__count_pending_changesets
 #: model:ir.model.fields,help:product_label_print.field_stock_move__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+msgstr "Ο αριθμός των εκκρεμών συνόλων αλλαγών αυτής της εγγραφής"
 
 #. module: product_label_print
 #: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_changesets
@@ -446,13 +446,13 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #: model:ir.model.fields,help:product_label_print.field_stock_lot__count_changesets
 #: model:ir.model.fields,help:product_label_print.field_stock_move__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr "Bu kaydın toplam değişiklik seti sayısı"
+msgstr "Ο συνολικός αριθμός των αλλαγών αυτού του αρχείου"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_uom_name
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__uom_name
 msgid "UOM Name"
-msgstr "Ölçü Birimi Adı"
+msgstr ""
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__user_can_see_changeset
@@ -464,12 +464,12 @@ msgstr "Ölçü Birimi Adı"
 #: model:ir.model.fields,field_description:product_label_print.field_stock_lot__user_can_see_changeset
 #: model:ir.model.fields,field_description:product_label_print.field_stock_move__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr "Kullanıcı Değişiklikleri Görebilir"
+msgstr "Ο χρήστης μπορεί να δει το σύνολο αλλαγών"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__printer_type
 msgid "User Printer Type"
-msgstr "Kullanıcı Yazıcı Türü"
+msgstr ""
 
 #. module: product_label_print
 #. odoo-python
@@ -478,16 +478,14 @@ msgstr "Kullanıcı Yazıcı Türü"
 msgid ""
 "You can't print more than one lot per label. Please select only one lot or "
 "leave it empty."
-msgstr "Etiket başına birden fazla lot yazdıramazsınız. Lütfen yalnızca bir "
-"lot seçin veya boş bırakın."
-
+msgstr ""
 
 #. module: product_label_print
 #. odoo-python
 #: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
 #, python-format
 msgid "You need to set a label printer in order to print."
-msgstr "Yazdırmak için bir etiket yazıcısı ayarlamalısınız."
+msgstr ""
 
 #. module: product_label_print
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
