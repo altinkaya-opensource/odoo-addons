@@ -17,7 +17,7 @@ class CRMClaim(models.Model):
     source_id = fields.Many2one("utm.source", string="Source")
     carrier_id = fields.Many2one("delivery.carrier", string="Carrier")
 
-    @api.model_create_multi()
+    @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
         for rec in res.filtered(lambda x: x.model_ref_id):
