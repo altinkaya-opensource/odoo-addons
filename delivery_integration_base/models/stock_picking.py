@@ -115,6 +115,7 @@ class StockPicking(models.Model):
         """
         for picking in self:
             total_cost = 0.0
+            picking.sale_shipping_cost = total_cost  # reset the value
             sale_move_lines = picking.move_ids.filtered("sale_line_id")
             for move in sale_move_lines:
                 sale_id = move.sale_line_id.order_id
