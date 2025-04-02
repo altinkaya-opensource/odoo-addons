@@ -25,7 +25,7 @@ class StockPicking(models.Model):
 
     def open_sales_order(self):
         self.ensure_one()
-        action = self.env.ref("sale.action_orders").read()[0]
+        action = self.env.ref("sale.action_orders").sudo().read()[0]
         form = self.env.ref("sale.view_order_form")
         action["views"] = [(form.id, "form")]
         action["res_id"] = self.sale_id.id
