@@ -26,7 +26,7 @@ class CRMClaimMapping(models.AbstractModel):
 
     def action_view_claims(self):
         claims = self.mapped("crm_claim_ids")
-        action = self.env.ref("crm_claim.crm_claim_category_claim0").read()[0]
+        action = self.env.ref("crm_claim.crm_claim_category_claim0").sudo().read()[0]
         form_view = [(self.env.ref("crm_claim.crm_case_claims_form_view").id, "form")]
         if len(claims) > 1:
             action["domain"] = [("id", "in", claims.ids)]
