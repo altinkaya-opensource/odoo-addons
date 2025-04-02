@@ -38,11 +38,6 @@ class MrpProduction(models.Model):
     # TODO: @dogan workcenter_id alanini kullanabiliriz
     x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine")
     x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
-    procurement_group_name = fields.Char(
-        compute="_get_procurement_group_name",
-        string="Procurement Group Name",
-        readonly=True,
-    )
 
     def _generate_moves(self):
         if self.env.context.get("context", {}).get("migration", False):
@@ -66,13 +61,6 @@ class MrpProduction(models.Model):
             production.move_raw_ids._action_confirm()
             production.move_raw_ids._action_assign()
         return True
-
-    def _get_procurement_group_name(self):
-        for mo in self:
-            if mo.move_finished_ids:
-                mo.id = mo.move_finished_ids[0].group_id.name
-            else:
-                mo.id = False
 
     def get_product_route(self):
         def _get_next_moves(move_id):
