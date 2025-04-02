@@ -12,35 +12,35 @@ class ChooseDeliveryCarrier(models.TransientModel):
 
     @api.model_create_multi
     def create(self, vals_list):
-        raw_carrier_price_data = vals_list.get("carrier_prices")[
-            1:
-        ]  # Skip first entry as it is the declaration of the field
+        for vals in vals_list:
+            raw_carrier_price_data = vals.get("carrier_prices")
 
-        if not raw_carrier_price_data:
-            raise UserError(_("Please select a delivery carrier."))
+            if not raw_carrier_price_data:
+                raise UserError(_("Please select a delivery carrier."))
 
-        carrier_price_data = []
-        for carrier_price in raw_carrier_price_data:
-            if (
-                carrier_price[2].get("selected")
-                and carrier_price not in carrier_price_data
-            ):
-                carrier_price_data.append(carrier_price)
+            carrier_price_data = []
+            for carrier_price in raw_carrier_price_data:
+                if (
+                    isinstance(carrier_price[2], dict)
+                    and carrier_price[2].get("selected")
+                    and carrier_price not in carrier_price_data
+                ):
+                    carrier_price_data.append(carrier_price)
 
-        if len(carrier_price_data) != 1:
-            raise UserError(_("Please select only one delivery carrier."))
+            if len(carrier_price_data) != 1:
+                raise UserError(_("Please select only one delivery carrier."))
 
-        carrier_price = self.env["delivery.carrier.lines"].browse(
-            carrier_price_data[0][1]
-        )
-        vals_list["carrier_id"] = carrier_price.carrier_id.id
-        vals_list["delivery_price"] = carrier_price.price
+            carrier_price = self.env["delivery.carrier.lines"].browse(
+                carrier_price_data[0][1]
+            )
+            vals["carrier_id"] = carrier_price.carrier_id.id
+            vals["delivery_price"] = carrier_price.price
 
         return super().create(vals_list)
 
     @api.model
-    def default_get(self, fields):
-        res = super().default_get(fields)
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
         for wizard in self:
             if not wizard.order_id:
                 continue
