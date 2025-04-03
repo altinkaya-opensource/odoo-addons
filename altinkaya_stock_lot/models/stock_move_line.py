@@ -6,7 +6,7 @@ from odoo import models, api
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    
+
     def _create_missing_lot(self):
         """EXPERIMENTAL: Create a lot for the move line if it is missing."""
         for rec in self:
@@ -24,7 +24,6 @@ class StockMoveLine(models.Model):
             r._create_missing_lot()
         return res
 
-    @api.model
     def write(self, vals):
         res = super(StockMoveLine, self).write(vals)
         self._create_missing_lot()
