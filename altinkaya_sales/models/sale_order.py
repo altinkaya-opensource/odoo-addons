@@ -289,6 +289,14 @@ class SaleOrder(models.Model):
             else:
                 order.amount_untaxed_usd = 0.0
 
+    @api.onchange("partner_shipping_id")
+    def onchange_partner_id_carrier_id(self):
+        if self.partner_shipping_id:
+            self.carrier_id = (
+                self.partner_shipping_id.property_delivery_carrier_id
+                or self.partner_shipping_id.commercial_partner_id.property_delivery_carrier_id
+            ).filtered("active")
+
     def action_quotation_send(self):
         res = super(SaleOrder, self).action_quotation_send()
 
