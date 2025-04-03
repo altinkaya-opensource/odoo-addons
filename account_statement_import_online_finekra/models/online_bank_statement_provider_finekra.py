@@ -8,7 +8,7 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-FINEKRA_ENDPOINT = "https://test-api.finekra.com"
+FINEKRA_ENDPOINT = "https://polynom-api.finekra.com"
 
 
 class OnlineBankStatementProviderFinekra(models.Model):
