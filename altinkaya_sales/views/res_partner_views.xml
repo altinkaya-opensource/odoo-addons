@@ -22,9 +22,7 @@
 			<field name="arch" type="xml">
 
 				<xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']" position="inside">
-					<group>
-						<field name="segment_id" colspan="3"/>
-					</group>
+						<field name="segment_id"/>
 				</xpath>
 
 				<xpath expr="//group[@name='banks']" position="after">
@@ -52,7 +50,7 @@
 					<field name="z_kat_postala"/>
 					<field name="z_kat_postalandi"/>
 					<field name="z_kat_email"/>
-					
+
 				</xpath>
 				<xpath expr="//notebook" position="inside">
                     <page name="industry" string="Endüstri">
