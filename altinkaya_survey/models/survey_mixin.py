@@ -122,7 +122,7 @@ class SurveyMapping(models.AbstractModel):
         for rec in self:
             barcode = self.env["ir.actions.report"].barcode(
                 "QR",
-                value=rec.survey_url,
+                value=rec.sudo().survey_url,  # avoid access rights issues
                 width=300,
                 height=300,
             )
