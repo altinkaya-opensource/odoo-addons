@@ -64,15 +64,15 @@ class AccountMove(models.Model):
             move.total_balance = balance
 
     def _compute_waiting_picking_ids(self):
-        stocks = self.env["stock.picking"].search(
-            [
-                ("partner_id", "=", self.partner_id.id),
-                ("picking_type_id.code", "=", "incoming"),
-                ("invoice_state", "=", "2binvoiced"),
-            ]
-        )
-
-        return stocks
+        for inv in self:
+            stocks = self.env["stock.picking"].search(
+                [
+                    ("partner_id", "=", self.partner_id.id),
+                    ("picking_type_id.code", "=", "incoming"),
+                    ("invoice_state", "=", "2binvoiced"),
+                ]
+            )
+            inv.waiting_picking_ids = stocks
 
     def _onchange_invoice_line_ids(self):
         """This method was removed in 16.0 but we've added a simulation of it here"""
