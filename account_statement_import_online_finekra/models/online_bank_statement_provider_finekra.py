@@ -157,7 +157,7 @@ class OnlineBankStatementProviderFinekra(models.Model):
             vals_line = {
                 "sequence": sequence,
                 "date": date,
-                "name": transaction.get("description", journal.name),
+                "payment_ref": transaction.get("description", journal.name),
                 "unique_import_id": transaction["id"],
                 "amount": transaction["amountForExcel"],
             }
