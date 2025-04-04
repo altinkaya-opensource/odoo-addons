@@ -82,7 +82,7 @@
                         <div>
                             <field name="show_custom_products" />
                         </div>
-                        <field name="product_attribute_ids" nolabel="1" colspan="2" attrs="{'invisible': ['|', ('id','!=',False), '|', ('product_tmpl_id','=',False), ('product_attribute_ids', '=', [])]}" context="{'default_product_template_id': product_tmpl_id, 'default_owner_model': 'product.product', 'show_price_extra': True, 'show_attribute': False}"/>
+                        <field name="product_attribute_ids" nolabel="1" colspan="2" attrs="{'invisible': ['|', ('product_tmpl_id','=',False), ('product_attribute_ids', '=', [])]}" context="{'default_product_template_id': product_tmpl_id, 'default_owner_model': 'product.product', 'show_price_extra': True, 'show_attribute': False}"/>
                     </group>
                 </xpath>
 
