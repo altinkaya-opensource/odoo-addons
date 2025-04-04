@@ -111,7 +111,11 @@ class MailMail(models.Model):
                 pass
 
         params["Headers"] = headers
-        params["HtmlBody"] = str(self.body_content) or " "
+
+        # Debrand the body
+        params["HtmlBody"] = self.env["mail.render.mixin"].remove_href_odoo(
+            str(self.body_content) or "", to_keep=self.body
+        )
         params["Subject"] = self.subject or _("(No subject)")
 
         email_to = []
