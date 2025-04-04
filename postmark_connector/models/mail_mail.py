@@ -94,7 +94,12 @@ class MailMail(models.Model):
         """
         self.ensure_one()
         params = {}
-        params["From"] = self.email_from
+
+        msg_from = self.email_from
+        if "@altinkaya.com" not in msg_from:
+            msg_from = '\"ALTINKAYA\" <erp@altinkaya.com>'
+
+        params["From"] = msg_from
         if self.reply_to:
             params["ReplyTo"] = self.reply_to
 
