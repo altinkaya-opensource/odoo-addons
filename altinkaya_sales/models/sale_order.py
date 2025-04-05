@@ -298,9 +298,9 @@ class SaleOrder(models.Model):
             ).filtered("active")
 
     def action_quotation_send(self):
-        res = super(SaleOrder, self).action_quotation_send()
+        res = super().action_quotation_send()
 
-        ir_model_data = self.env["ir.model.data"]
+        ir_model_data = self.env["ir.model.data"]   
         try:
             template_id = ir_model_data.check_object_reference(
                 "altinkaya_sales", "email_template_edi_sale_altinkaya1"
@@ -313,6 +313,15 @@ class SaleOrder(models.Model):
 
         res.update({"context": context})
         return res
+
+    def _get_confirmation_template(self):
+        """
+        Overriden to use our custom template for confirmation email
+        """
+        return self.env.ref(
+            "altinkaya_sales.email_template_edi_sale_altinkaya1",
+            raise_if_not_found=False,
+        )
 
     def _compute_sale_line_history(self):
         for sale in self:
