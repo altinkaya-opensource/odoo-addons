@@ -65,6 +65,7 @@ class ProductProduct(models.Model):
         return self.action_print_label()
 
     def action_print_molding_label(self):
+        self = self.with_context(must_skip_send_to_printer=True)
         molding_label = self.env.ref("product_label_print.label_product_product_kalip")
         printer_id = molding_label.printing_printer_id
         if not printer_id:
