@@ -16,7 +16,7 @@ class PortalMixinInheritance(models.AbstractModel):
         Changes the invoice download link in the portal to e-invoice.
         """
         self.ensure_one()
-        if self._name == "account.invoice" and self.einvoice_pdf_id:
+        if self._name == "account.move" and self.einvoice_pdf_id:
             invoice_url = (
                 f"/report/einvoicepdf/{self.id}"
                 f"?access_token={self._portal_ensure_token()}"
