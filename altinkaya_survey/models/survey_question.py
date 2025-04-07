@@ -100,8 +100,7 @@ class SurveyQuestion(models.Model):
         suggested_answers = []
         for question in self:
             all_lines = user_input_lines.filtered(lambda line: line.question_id == question)
-            suggested_answers = all_lines.filtered(lambda line: line.question_id.question_type == 'star_rating')
-                
+            suggested_answers.extend(all_lines.filtered(lambda line: line.question_id.question_type == 'star_rating'))
         count_data = dict.fromkeys(['1.0','2.0','3.0','4.0','5.0'], 0)
         for answer in suggested_answers:
             if answer.answer_type == "numerical_box":
