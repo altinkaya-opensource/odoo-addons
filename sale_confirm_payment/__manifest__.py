@@ -10,6 +10,10 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "depends": ["sale", "payment", "altinkaya_sales"],
     "license": "LGPL-3",
-    "data": ["views/sale_view.xml", "wizard/sale_confirm_payment_view.xml"],
+    "data": [
+        "views/sale_view.xml",
+        "wizard/sale_confirm_payment_view.xml",
+        "security/ir.model.access.csv",
+    ],
     "maintainers": ["yibudak"],
 }
