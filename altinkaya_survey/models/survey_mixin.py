@@ -102,7 +102,7 @@ class SurveyMapping(models.AbstractModel):
 
         survey_url = (
             f"{base_url}/{survey_user_input.partner_id.lang or 'tr_TR'}"
-            f"/survey/fill/{slug(survey)}/{survey_user_input.invite_token}"
+            f"/survey/fill/{slug(survey)}/{survey_user_input.access_token}"
         )
 
         # Read or create shortened url for user_input
