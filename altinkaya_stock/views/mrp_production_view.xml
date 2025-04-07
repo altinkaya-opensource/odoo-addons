@@ -28,6 +28,15 @@
                         </group>
                     </div>
                 </field>
+
+                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
+                       position="after">
+                    <button name="action_create_procurement" type="object" string="Tedarik"
+                            attrs="{'invisible':[('state','in',['waiting','done'])]}"/>
+                    <button name="action_make_mts" type="object" string="Stoktan Al"
+                            attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"/>
+                </xpath>
+
             </field>
         </record>
 

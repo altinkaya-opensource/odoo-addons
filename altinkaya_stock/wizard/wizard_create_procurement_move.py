@@ -176,16 +176,18 @@ class CreateProcurementMove(models.TransientModel):
                 }
             )
         values = {
-            "date_planned": self.move_id.date_deadline,
+            "date_planned": self.move_id.date_deadline or self.move_id.forecast_expected_date,
             "group_id": group_id,
             "warehouse_id": warehouse,
+            "move_dest_ids": self.move_id,
         }
         product_qty = qty
         product_uom = self.uom
         origin = self.move_id.origin or "/"
 
-        self.env['procurement.group'].with_context(clean_context(self.env.context)).run([
-                self.env['procurement.group'].Procurement(
+        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(
+            [
+                self.env["procurement.group"].Procurement(
                     self.product_id,
                     product_qty,
                     product_uom,
@@ -193,6 +195,7 @@ class CreateProcurementMove(models.TransientModel):
                     origin,  # Name
                     origin,  # Origin
                     warehouse.company_id,
-                    values  # Values
+                    values,  # Values
                 )
-            ])
+            ]
+        )
