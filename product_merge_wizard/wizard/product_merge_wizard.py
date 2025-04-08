@@ -288,40 +288,31 @@ class ProductMergeProductLine(models.TransientModel):
 
     wizard_id = fields.Many2one("product.merge.wizard", string="Wizard")
     product_id = fields.Many2one("product.product", string="Product")
+    possible_value_ids = fields.Many2many(
+        "product.attribute.value",
+        relation="product_merge_possible_value_ids_rel",
+        string="Possible Values",
+    )
     value_ids = fields.Many2many(
-        "product.template.attribute.value",
-        relation="product_merge_product_att_val_rel",
+        "product.attribute.value",
+        relation="product_merge_value_ids_rel",
     )
 
     @api.onchange("product_id")
     def onchange_product_id(self):
-        self.value_ids = False
-        attribute_value_ids = self.env["product.template.attribute.value"]
+        value_ids = self.wizard_id.attribute_line_ids.value_ids
+        self.possible_value_ids = [(6, False, value_ids.ids)]
 
-        attribute_ids = self.wizard_id.attribute_line_ids.mapped("attribute_id")
-        for value_from_product in self.product_id.product_template_attribute_value_ids:
-            if value_from_product.attribute_id in attribute_ids:
-                attribute_value_ids = attribute_value_ids | value_from_product
-                # Eksik özellikleri yukarya eklemek çalışmadı. güncelleme yapmıyor.
-                # for attribute_line in self.wizard_id.attribute_line_ids:
-                #     if value_from_product.attribute_id == attribute_line.attribute_id:
-                #         attribute_line.value_ids = [(6, False, (attribute_line.value_ids | value_from_product).ids)]  # noqa: E501
-
-        self.value_ids = [(6, False, attribute_value_ids.ids)]
-
-    @api.onchange("value_ids")
+    @api.onchange("possible_value_ids")
     def onchange_value_ids(self):
-        existing_attribute_ids = self.value_ids.mapped("attribute_id.id")
-
         return {
             "domain": {
                 "value_ids": [
                     (
                         "id",
                         "in",
-                        self.wizard_id.attribute_line_ids.value_ids._origin.ids,
+                        self.possible_value_ids.ids,
                     ),
-                    ("attribute_id", "not in", existing_attribute_ids),
                 ]
             }
         }

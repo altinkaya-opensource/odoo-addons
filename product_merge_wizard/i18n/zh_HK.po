@@ -53,7 +53,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "变更集变更"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__changeset_ids
@@ -62,7 +62,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_ids
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "变更集"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_changesets
@@ -71,7 +71,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_changesets
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "计数变更集"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changeset_changes
@@ -80,7 +80,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "统计待处理的变更集变更"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
@@ -89,7 +89,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changesets
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "统计待处理的变更集"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__create_uid
@@ -240,7 +240,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__smart_search
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "智能搜索"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_pending_changeset_changes
@@ -249,7 +249,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "此记录的待更改次数"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
@@ -258,7 +258,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changesets
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "此记录的待处理更改集数量"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_changesets
@@ -267,7 +267,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_changesets
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "该记录的更改集总数"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__user_can_see_changeset
@@ -276,7 +276,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__user_can_see_changeset
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "用户可查看变更集"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__value_ids

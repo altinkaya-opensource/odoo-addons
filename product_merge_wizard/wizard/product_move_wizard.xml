@@ -30,7 +30,7 @@
         </record>
 
         <record id="product_move_wizard_action" model="ir.actions.act_window">
-            <field name="name">Move to Other Template</field>
+            <field name="name">Change Variant Attributes</field>
             <field name="res_model">product.move.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

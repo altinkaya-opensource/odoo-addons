@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-14 08:25+0000\n"
-"PO-Revision-Date: 2025-01-14 08:25+0000\n"
+"POT-Creation-Date: 2025-04-08 06:44+0000\n"
+"PO-Revision-Date: 2025-04-08 06:44+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,6 +42,56 @@ msgid "Cancel"
 msgstr "İptal"
 
 #. module: product_merge_wizard
+#: model:ir.actions.act_window,name:product_merge_wizard.product_move_wizard_action
+msgid "Change Variant Attributes"
+msgstr "Çeşit Niteliklerini Değiştir"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__changeset_change_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__changeset_change_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__changeset_change_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_change_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__changeset_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__changeset_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__changeset_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_ids
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__count_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__count_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__count_pending_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__count_pending_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changesets
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__create_uid
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__create_uid
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__create_uid
@@ -71,7 +121,7 @@ msgstr "Görünen Ad"
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__id
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard____last_update
@@ -123,11 +173,6 @@ msgstr "Taşı"
 #: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_move_wizard_form
 msgid "Move Product"
 msgstr "Ürünü Taşı"
-
-#. module: product_merge_wizard
-#: model:ir.actions.act_window,name:product_merge_wizard.product_move_wizard_action
-msgid "Move to Other Template"
-msgstr "Başka Şablona Taşı"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__product_tmpl_id
@@ -187,6 +232,51 @@ msgstr "Gerekli"
 #: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_merge_wizard_form
 msgid "Select product as merge target"
 msgstr "Birleştirme hedefi olarak ürün seçin"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__smart_search
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__smart_search
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__smart_search
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__smart_search
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_attribute_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_product_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_attribute_line__count_pending_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_product_line__count_pending_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_attribute_line__count_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard_product_line__count_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_changesets
+#: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__value_ids

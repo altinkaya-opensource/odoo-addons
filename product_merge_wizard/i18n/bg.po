@@ -53,7 +53,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Промени в набора от промени"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__changeset_ids
@@ -62,7 +62,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__changeset_ids
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Промени"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_changesets
@@ -71,7 +71,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_changesets
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Промени в броя"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changeset_changes
@@ -80,7 +80,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Отчитане на чакащите промени в набора от промени"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
@@ -89,7 +89,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__count_pending_changesets
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Брой чакащи промени"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__create_uid
@@ -211,7 +211,7 @@ msgstr ""
 #. module: product_merge_wizard
 #: model:ir.model,name:product_merge_wizard.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продукт"
 
 #. module: product_merge_wizard
 #: model:ir.model,name:product_merge_wizard.model_product_merge_wizard_attribute_line
@@ -249,7 +249,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Брой на предстоящите промени на този запис"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_pending_changesets
@@ -258,7 +258,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_pending_changesets
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Броят на чакащите промени в този запис"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,help:product_merge_wizard.field_product_merge_wizard__count_changesets
@@ -267,7 +267,7 @@ msgstr ""
 #: model:ir.model.fields,help:product_merge_wizard.field_product_move_wizard__count_changesets
 #: model:ir.model.fields,help:product_merge_wizard.field_product_product__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Общ брой на промените в този запис"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__user_can_see_changeset
@@ -276,7 +276,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__user_can_see_changeset
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_product__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Потребителят може да види набора от промени"
 
 #. module: product_merge_wizard
 #: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__value_ids
