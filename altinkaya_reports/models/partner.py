@@ -130,6 +130,8 @@ class Partner(models.Model):
             )
             AND L.PARTNER_ID = {self.commercial_partner_id.id}
             AND A.ACCOUNT_TYPE IN {move_type}
+            AND AM.STATE = 'posted'
+            AND AM.date >= '{start_date}'
             GROUP BY
             AJ.NAME,
             A.CODE,
