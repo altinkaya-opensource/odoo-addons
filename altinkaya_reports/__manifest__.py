@@ -38,6 +38,7 @@
         "wizard/partner_statement_wizard_view.xml",
         "views/res_users_views.xml",
         "views/partner_view.xml",
+        "views/res_company_views.xml",
         "views/utm_views.xml",
         "data/partner_data.xml",
         "security/ir.model.access.csv",
