@@ -4,11 +4,19 @@ Created on Nov 27, 2017
 @author: dogan
 """
 
+import functools
+import itertools
+import logging
+from collections import defaultdict
+
 import psycopg2
 
 from odoo import _, api, exceptions, fields, models
-from odoo.models import BaseModel
+from odoo.exceptions import ValidationError
+from odoo.tools import mute_logger
 from odoo.tools.misc import mute_logger
+
+_logger = logging.getLogger(__name__)
 
 # from odoo.osv import fields as osv_fields
 
@@ -87,8 +95,20 @@ class ProductMergeWizard(models.TransientModel):
         new_product_tmpl_id.with_context(create_product_product=False).write(vals)
 
         for product_line in self.product_line_ids:
+            new_attribute_values = (
+                product_line.product_id.product_template_variant_value_ids.search(
+                    [
+                        ("product_tmpl_id", "=", new_product_tmpl_id.id),
+                        (
+                            "product_attribute_value_id",
+                            "in",
+                            product_line.value_ids.ids,
+                        ),
+                    ]
+                )
+            )
             product_line.product_id.product_template_attribute_value_ids = [
-                (6, False, product_line.value_ids.ids)
+                (6, False, new_attribute_values.ids)
             ]
 
         product_tmpl_ids = self.mapped("product_line_ids.product_id.product_tmpl_id")
@@ -123,41 +143,60 @@ class ProductMergeWizard(models.TransientModel):
         self._update_values(product_tmpl_id, new_product_tmpl_id)
         return
 
-    def get_fk_on(self, table):
-        q = """  SELECT cl1.relname as table,
-                        att1.attname as column
-                FROM pg_constraint as con, pg_class as cl1, pg_class as cl2,
-                        pg_attribute as att1, pg_attribute as att2
-                  WHERE con.conrelid = cl1.oid
-                    AND con.confrelid = cl2.oid
-                    AND array_lower(con.conkey, 1) = 1
-                    AND con.conkey[1] = att1.attnum
-                    AND att1.attrelid = cl1.oid
-                    AND cl2.relname = %s
-                    AND att2.attname = 'id'
-                    AND array_lower(con.confkey, 1) = 1
-                    AND con.confkey[1] = att2.attnum
-                    AND att2.attrelid = cl2.oid
-                    AND con.contype = 'f'
+    def _get_fk_on(self, table):
+        """return a list of many2one relation with the given table.
+        :param table : the name of the sql table to return relations
+        :returns a list of tuple 'table name', 'column name'.
         """
-        self.env.cr.execute(q, (table,))
-        return self.env.cr.fetchall()
+        query = """
+            SELECT cl1.relname as table, att1.attname as column
+            FROM pg_constraint as con, pg_class as cl1, pg_class as cl2, pg_attribute as att1, pg_attribute as att2
+            WHERE con.conrelid = cl1.oid
+                AND con.confrelid = cl2.oid
+                AND array_lower(con.conkey, 1) = 1
+                AND con.conkey[1] = att1.attnum
+                AND att1.attrelid = cl1.oid
+                AND cl2.relname = %s
+                AND att2.attname = 'id'
+                AND array_lower(con.confkey, 1) = 1
+                AND con.confkey[1] = att2.attnum
+                AND att2.attrelid = cl2.oid
+                AND con.contype = 'f'
+        """
+        self._cr.execute(query, (table,))
+        return self._cr.fetchall()
 
-    def _update_foreign_keys(self, product_tmpl_id, new_product_tmpl_id):
-        for table, column in self.get_fk_on("product_template"):
-            if "product_merge_wizard_" in table:
+    @api.model
+    def _update_foreign_keys(self, src_products, dst_product):
+        _logger.debug(
+            "_update_foreign_keys for dst_product: %s for src_products: %s",
+            dst_product.id,
+            str(src_products.ids),
+        )
+
+        # find the many2one relation to a partner
+        Products = self.env["product.template"]
+        relations = self._get_fk_on("product_template")
+
+        # this guarantees cache consistency
+        self.env.invalidate_all()
+
+        for table, column in relations:
+            if "product_merge_wizard" in table:  # ignore two tables
                 continue
 
+            # get list of columns of current table (exept the current fk column)
             query = (
-                "SELECT column_name FROM information_schema.columns "
-                f"WHERE table_name LIKE '{table}'"
+                "SELECT column_name FROM information_schema.columns WHERE table_name LIKE '%s'"
+                % (table)
             )
-            self.env.cr.execute(query, ())
+            self._cr.execute(query, ())
             columns = []
-            for data in self.env.cr.fetchall():
+            for data in self._cr.fetchall():
                 if data[0] != column:
                     columns.append(data[0])
 
+            # do the update for the current table/column in SQL
             query_dic = {
                 "table": table,
                 "column": column,
@@ -165,107 +204,131 @@ class ProductMergeWizard(models.TransientModel):
             }
             if len(columns) <= 1:
                 # unique key treated
-                query = """
-                    UPDATE "{table}" as ___tu
-                    SET {column} = %s
+                query = (
+                    """
+                    UPDATE "%(table)s" as ___tu
+                    SET "%(column)s" = %%s
                     WHERE
-                        {column} = %s AND
+                        "%(column)s" = %%s AND
                         NOT EXISTS (
                             SELECT 1
-                            FROM "{table}" as ___tw
+                            FROM "%(table)s" as ___tw
                             WHERE
-                                {column} = %s AND
-                                ___tu.{value} = ___tw.{value}
-                        )""".format(**query_dic)
-                self.env.cr.execute(
-                    query,
-                    (
-                        new_product_tmpl_id.id,
-                        product_tmpl_id.id,
-                        new_product_tmpl_id.id,
-                    ),
+                                "%(column)s" = %%s AND
+                                ___tu.%(value)s = ___tw.%(value)s
+                        )"""
+                    % query_dic
                 )
+                for partner in src_products:
+                    self._cr.execute(
+                        query, (dst_product.id, partner.id, dst_product.id)
+                    )
             else:
-                with mute_logger("odoo.sql_db"), self.env.cr.savepoint():
-                    query = (
-                        'UPDATE "{table}" SET {column} = %s WHERE {column} = %s'.format(
-                            **query_dic
+                try:
+                    with mute_logger("odoo.sql_db"), self._cr.savepoint():
+                        query = (
+                            'UPDATE "%(table)s" SET "%(column)s" = %%s WHERE "%(column)s" IN %%s'
+                            % query_dic
                         )
+                        self._cr.execute(
+                            query,
+                            (
+                                dst_product.id,
+                                tuple(src_products.ids),
+                            ),
+                        )
+                except psycopg2.Error:
+                    query = (
+                        'DELETE FROM "%(table)s" WHERE "%(column)s" IN %%s' % query_dic
                     )
-                    self.env.cr.execute(
-                        query,
-                        (
-                            new_product_tmpl_id.id,
-                            product_tmpl_id.id,
-                        ),
-                    )
+                    self._cr.execute(query, (tuple(src_products.ids),))
 
-    def _update_reference_fields(self, product_tmpl_id, new_product_tmpl_id):
+    @api.model
+    def _update_reference_fields(self, src_products, dst_product):
+        _logger.debug(
+            "_update_reference_fields for dst_product: %s for src_products: %r",
+            dst_product.id,
+            src_products.ids,
+        )
+
         def update_records(model, src, field_model="model", field_id="res_id"):
-            try:
-                proxy = self.env[model].sudo()
-            except KeyError:
+            Model = self.env[model] if model in self.env else None
+            if Model is None:
                 return
-
-            domain = [(field_model, "=", "product.template"), (field_id, "=", src.id)]
-            ids = proxy.search(domain)
+            records = Model.sudo().search(
+                [(field_model, "=", "product.template"), (field_id, "=", src.id)]
+            )
             try:
-                with mute_logger("odoo.sql_db"), self.env.cr.savepoint():
-                    return ids.write({field_id: new_product_tmpl_id.id})
+                with mute_logger("odoo.sql_db"), self._cr.savepoint():
+                    records.sudo().write({field_id: dst_product.id})
+                    records.env.flush_all()
             except psycopg2.Error:
                 # updating fails, most likely due to a violated unique constraint
-                # keeping record with nonexistent partner_id is useless, better
-                # delete it
-                return ids.unlink()
+                # keeping record with nonexistent partner_id is useless, better delete it
+                records.sudo().unlink()
 
-        update_records("ir.attachment", src=product_tmpl_id, field_model="res_model")
-        update_records("mail.followers", src=product_tmpl_id, field_model="res_model")
-        update_records("mail.message", src=product_tmpl_id)
-        update_records("ir.model.data", src=product_tmpl_id)
+        update_records = functools.partial(update_records)
 
-        proxy = self.env["ir.model.fields"].sudo()
-        domain = [("ttype", "=", "reference")]
-        record_ids = proxy.search(domain)
+        for product in src_products:
+            update_records("ir.attachment", src=product, field_model="res_model")
+            update_records("mail.followers", src=product, field_model="res_model")
+            update_records("mail.activity", src=product, field_model="res_model")
+            update_records("mail.message", src=product)
+            update_records("ir.model.data", src=product)
 
-        for record in record_ids:
+        records = (
+            self.env["ir.model.fields"].sudo().search([("ttype", "=", "reference")])
+        )
+        for record in records:
             try:
-                proxy_model = self.env[record.model].sudo()
-                column = proxy_model._fields[record.name]
+                Model = self.env[record.model]
+                field = Model._fields[record.name]
             except KeyError:
                 # unknown model or field => skip
                 continue
 
-            if not column.store:
+            if Model._abstract or field.compute is not None:
                 continue
 
-            domain = [(record.name, "=", f"product.template,{product_tmpl_id.id}")]
-            model_ids = proxy_model.search(domain)
-            values = {record.name: f"product.template,{new_product_tmpl_id.id}"}
-            model_ids.write(values)
+            for product in src_products:
+                records_ref = Model.sudo().search(
+                    [(record.name, "=", "product.template,%d" % product.id)]
+                )
+                values = {
+                    record.name: "product.template,%d" % dst_product.id,
+                }
+                records_ref.sudo().write(values)
 
-    def _update_values(self, product_tmpl_id, new_product_tmpl_id):
-        columns = new_product_tmpl_id._fields
+        self.env.flush_all()
+
+    @api.model
+    def _update_values(self, src_products, dst_product):
+        _logger.debug(
+            "_update_values for dst_product: %s for src_products: %r",
+            dst_product.id,
+            src_products.ids,
+        )
+
+        model_fields = dst_product.fields_get().keys()
 
         def write_serializer(item):
-            if isinstance(item, BaseModel):
+            if isinstance(item, models.BaseModel):
                 return item.id
             else:
                 return item
 
+        # get all fields that are not computed or x2many
         values = dict()
-        for column, field in columns.items():
-            if (
-                isinstance(field, fields.One2many)
-                or isinstance(field, fields.Many2many)
-                or not field.store
-            ):
-                continue
-            elif not new_product_tmpl_id[column] and product_tmpl_id[column]:
-                values[column] = write_serializer(product_tmpl_id[column])
+        for column in model_fields:
+            field = dst_product._fields[column]
+            if field.type not in ("many2many", "one2many") and field.compute is None:
+                for item in itertools.chain(src_products, [dst_product]):
+                    if item[column]:
+                        values[column] = write_serializer(item[column])
 
+        # remove fields that can not be updated (id and parent_id)
         values.pop("id", None)
-
-        new_product_tmpl_id.write(values)
+        dst_product.write(values)
 
 
 class ProductMergeAttributeLine(models.TransientModel):
