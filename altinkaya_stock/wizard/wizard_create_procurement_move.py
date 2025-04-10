@@ -164,7 +164,22 @@ class CreateProcurementMove(models.TransientModel):
         product = self.product_id
         location = warehouse.lot_stock_id
         origin = "Manuel" + str(self.env.user.id)
-        group_id.run(product, product_qty, product_uom, location, "/", origin, values)
+        # group_id.run(product, product_qty, product_uom, location, "/", origin, values)
+        
+        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(
+            [
+                self.env["procurement.group"].Procurement(
+                    product,
+                    product_qty,
+                    product_uom,
+                    location,  # Location
+                    "/",  # Name
+                    origin,  # Origin
+                    warehouse.company_id,
+                    values,  # Values
+                )
+            ]
+        )
 
     def create_procurement(self, group_id, location_id, qty):
         self.ensure_one()
