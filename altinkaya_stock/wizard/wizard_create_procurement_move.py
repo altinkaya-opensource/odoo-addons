@@ -141,17 +141,21 @@ class CreateProcurementMove(models.TransientModel):
             self.move_id.write({"state": "waiting"})
 
         if self.qty_to_sincan > 0.0:
-            self.create_replenishment(location_id=2, qty=self.qty_to_sincan)
+            self.create_replenishment(location_id=21, qty=self.qty_to_sincan)
 
         if self.qty_to_merkez > 0.0:
-            self.create_replenishment(location_id=1, qty=self.qty_to_merkez)
+            self.create_replenishment(location_id=12, qty=self.qty_to_merkez)
 
     def create_replenishment(self, location_id, qty):
+        """
+        Create a replenishment with new procurement group
+        """
         self.ensure_one()
-        warehouse = self.env["stock.warehouse"].search([("id", "=", location_id)])
+        location_id = self.env["stock.location"].browse(location_id)
+        warehouse = location_id.warehouse_id
         group_id = self.env["procurement.group"].create(
             {
-                "name": "%s" % (warehouse.name + " Manuel: " + self.env.user.name),
+                "name": f"{warehouse.name} Manuel: {self.env.user.name}",
             }
         )
 
@@ -161,12 +165,26 @@ class CreateProcurementMove(models.TransientModel):
         }
         product_qty = qty
         product_uom = self.uom
-        product = self.product_id
-        location = warehouse.lot_stock_id
         origin = "Manuel" + str(self.env.user.id)
-        group_id.run(product, product_qty, product_uom, location, "/", origin, values)
+        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(
+            [
+                self.env["procurement.group"].Procurement(
+                    self.product_id,
+                    product_qty,
+                    product_uom,
+                    warehouse.lot_stock_id,  # Location
+                    origin,  # Name
+                    origin,  # Origin
+                    warehouse.company_id,
+                    values,  # Values
+                )
+            ]
+        )
 
     def create_procurement(self, group_id, location_id, qty):
+        """
+        Create a procurement with current procurement group
+        """
         self.ensure_one()
         warehouse = location_id.warehouse_id
         if not group_id:
@@ -176,7 +194,8 @@ class CreateProcurementMove(models.TransientModel):
                 }
             )
         values = {
-            "date_planned": self.move_id.date_deadline or self.move_id.forecast_expected_date,
+            "date_planned": self.move_id.date_deadline
+            or self.move_id.forecast_expected_date,
             "group_id": group_id,
             "warehouse_id": warehouse,
             "move_dest_ids": self.move_id,
