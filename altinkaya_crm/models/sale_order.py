@@ -6,13 +6,13 @@ class SaleOrder(models.Model):
 
     @api.model
     def _search_my_team(self, operator, operand):
-        if operator == "=":
-            new_operator = "in"
-        else:
-            new_operator = "not in"
+        crm_member_id = self.env["crm.team.member"].search(
+            [("user_id", "=", self.env.user.id)]
+        )
+
         res = self.search(
             [
-                ("team_id.member_ids", new_operator, self.env.user.id),
+                ("team_id", operator, crm_member_id.crm_team_id.id),
             ],
         )
         return [("id", "in", res.ids)]
