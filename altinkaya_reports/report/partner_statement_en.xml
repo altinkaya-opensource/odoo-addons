@@ -22,19 +22,22 @@
             }
             tr {
             font-size:14px;}
+            .page{
+            font-size: 80%;
+            }
 
         </style>
         <div class="header" style="font-size:10pt">
             <div class="row" style="border-bottom:2px solid black;margin">
-                <div class="col-7">
+                <div class="col-7" style="font-size:8pt">
                     <img
             src="/altinkaya_reports/static/img/altinkaya.svg"
-            style="max-height:30px"
+            style="max-height:24px"
           />
                     <br />
                     <br />
                     <strong
-            style="font-size:12pt"
+            style="font-size:8pt"
           >ALTINKAYA ELEKTRONİK CİHAZ KUTULARI SAN.
                         TİC. A.Ş.
                     </strong>
@@ -46,12 +49,12 @@
                     <span>06378 Yenimahalle / ANKARA</span>
                 </div>
                 <div class="col-5">
-                    <strong class="text-right" style="font-size:16pt">PARTNER STATEMENT
+                    <strong class="text-end" style="font-size:12pt">PARTNER STATEMENT
                     </strong>
                     <br />
                     <br />
-                    <div class="row">
-                        <div class="col-4 text-left">
+                    <div class="row text-end" style="font-size:8pt">
+                        <div class="col-4 text-start" style="font-size:8pt">
                             <strong>
                                 <span>VAT:</span>
                             </strong>
@@ -69,7 +72,7 @@
                             </strong>
                             <br />
                         </div>
-                        <div class="col-8 text-right">
+                        <div class="col-8 text-end" style="font-size:8pt">
                             <span>0610422947</span>
                             <br />
                             <span>+90 850 432 25 15</span>
@@ -88,7 +91,7 @@
 
         </div>
         <div class="footer">
-            <div class="row" style="border-top:2px solid black;font-size:10pt">
+            <div class="row" style="border-top:2px solid black;font-size:8pt">
                 <div class="col-12 text-center">
                     <span>Phone: +90 850 432 25 15 | Fax: +90 312 395 2772 |
                         www.altinkaya.eu | VAT: 0610422947
@@ -107,12 +110,12 @@
                 </div>
             </div>
         </div>
-        <div class="page" style="font-size=8pt;">
+        <div class="page" style="font-size=6pt;">
             <div class="row">
                 <div class="col-12">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td>
+                            <td class="col-8">
                                 <strong>
                                     Partner:
                                     <span t-esc="o.display_name" />
@@ -133,7 +136,7 @@
 
                                 </span>
                             </td>
-                            <td class="text-right">
+                            <td class="text-end col-4">
                                 <span>
                                     <strong>Date:</strong>
                                 </span>
@@ -201,7 +204,7 @@
             <span t-esc="x[0]['account_code']" />
             Account:
         </strong>
-        <table class="table table-bordered" style="table-layout:auto;">
+        <table class="table table-bordered" style="table-layout:auto;font-size:8pt;">
             <tr>
                 <th>#</th>
                 <th>Date</th>
@@ -237,17 +240,17 @@
                     <td>
                         <span t-esc="s['description']" />
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <span
               t-raw="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
             />
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <span
               t-raw="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
             />
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <span
               t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
             />
@@ -266,16 +269,16 @@
                 <td />
                 <td />
                 <td />
-                <td class="text-right">
+                <td class="text-end">
                     TOTAL
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     <span t-esc="'{:,.2f}'.format(float(toplamBorc))" />
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     <span t-esc="'{:,.2f}'.format(float(toplamAlacak))" />
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     <span t-esc="'{:,.2f}'.format(float(toplamBakiye))" />
                 </td>
                 <td class="text-center">
@@ -288,12 +291,17 @@
     </template>
 
     <template id="report_partner_statement_en_currency_table">
+        <style>
+        .table th, .table td {
+        font-size: 8pt;
+        }
+        </style>
         <strong style="margin:15px 0px;">
             <span t-esc="x[0]['account_code']" />
             Account:
         </strong>
         <table class="table table-bordered">
-            <tr>
+            <tr style="font-size:8pt">
                 <th>#</th>
                 <th>Date</th>
                 <th>Desc.</th>
@@ -339,12 +347,12 @@
                         <span t-esc="s['due_date']" />
                     </td>
 
-                    <td class="text-right">
+                    <td class="text-end">
                         <span
               t-raw="number_lang.format('%.2f', s['amount_currency'],grouping=True, monetary=True)"
             />
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <span
               t-raw="number_lang.format('%.2f', s['currency_balance'],grouping=True, monetary=True)"
             />
@@ -383,14 +391,14 @@
                 <td />
                 <td />
                 <td />
-                <td class="text-right">
+                <td class="text-end">
                     TOTAL
                 </td>
 
-                <td class="text-right">
+                <td class="text-end">
 
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     <span t-esc="'{:,.2f}'.format(float(currency_toplamBakiye))" />
                 </td>
                 <td class="text-center">
