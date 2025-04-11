@@ -51,14 +51,15 @@ class ResCurrencyRateProviderSecondRate(models.Model):
                 continue
 
             if not data:
-                if is_scheduled:
-                    provider._schedule_next_run()
                 continue
             if newest_only:
                 data = [max(data, key=lambda x: fields.Date.from_string(x[0]))]
 
+            newest_date = False
             for content_date, rates in data:
                 timestamp = fields.Date.from_string(content_date)
+                if not newest_date or timestamp > newest_date:
+                    newest_date = timestamp
                 for currency_name, rates_dict in rates.items():
                     if currency_name == provider.company_id.currency_id.name:
                         continue
@@ -112,4 +113,5 @@ class ResCurrencyRateProviderSecondRate(models.Model):
                             record = CurrencyRate.create(vals)
 
             if is_scheduled:
-                provider._schedule_next_run()
+                provider._schedule_last_successful_run(newest_date)
+                provider._schedule_next_run(newest_date)
