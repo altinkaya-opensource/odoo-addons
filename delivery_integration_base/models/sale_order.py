@@ -63,10 +63,10 @@ class SaleOrder(models.Model):
     @api.depends("order_line.last_deci", "state")
     def _compute_sale_last_deci(self):
         for order in self:
-            if order.state != "sale":
+            if order.state not in ["sale", "done"]:
                 order.sale_last_deci = 0.0
                 continue
-            
+
             carrier = order.carrier_id
             deci = sum(order.order_line.mapped("last_deci"))
             factor = carrier._get_dimension_factor(deci)
@@ -105,7 +105,7 @@ class SaleOrder(models.Model):
         order_lines = self.order_line
         for line in order_lines:
             line.last_deci = line.deci
-        
+
         return super().action_confirm()
 
     def _create_delivery_line(self, carrier, price_unit):
