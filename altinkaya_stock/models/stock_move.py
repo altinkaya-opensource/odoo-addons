@@ -97,6 +97,21 @@ class StockMove(models.Model):
         productions = productions.filtered(
             lambda p: p.state not in ["progress", "done", "cancel"]
         )
+
         for production in productions:
             production.action_cancel()
         moves_no_production._action_cancel()
+
+    def _action_cancel(self):
+        """
+        Always cancel all origin moves recursively when canceling a move.
+        """
+        # Save all origin moves because Odoo unlinks them
+        # after canceling the single move.
+        all_moves = self.find_orig_move_ids(self)
+        res = super()._action_cancel()
+        for move in all_moves.filtered(
+            lambda m: m.state not in ["done", "cancel"]
+        ):
+            move.cancel_move_origs(move)
+        return res
