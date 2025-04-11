@@ -40,6 +40,7 @@
         "sale_variant_configurator",
         "partner_email_check",
         "account_financial_risk",
+        "altinkaya_py3o_reports",
     ],
     "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
     "description": """
