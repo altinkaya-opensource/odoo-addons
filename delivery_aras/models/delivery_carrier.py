@@ -227,8 +227,10 @@ class DeliveryCarrier(models.Model):
 
     def aras_get_tracking_link(self, picking):
         """Provide tracking link for the customer"""
-        return f"""https://kargotakip.araskargo.com.tr
-            /mainpage.aspx?code={picking.carrier_tracking_ref}"""
+        return (
+            "https://kargotakip.araskargo.com.tr/mainpage.aspx"
+            f"?code={picking.shipping_number}"
+        )
 
     def aras_tracking_state_update(self, picking):
         """Tracking state update"""
