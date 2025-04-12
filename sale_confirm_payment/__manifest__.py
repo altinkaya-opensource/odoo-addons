@@ -12,6 +12,7 @@
     "license": "LGPL-3",
     "data": [
         "views/sale_view.xml",
+        "views/account_journal_view.xml",
         "wizard/sale_confirm_payment_view.xml",
         "security/ir.model.access.csv",
     ],

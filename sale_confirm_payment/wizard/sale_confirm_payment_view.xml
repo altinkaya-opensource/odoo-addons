@@ -7,11 +7,10 @@
             <form>
                 <group>
                     <group>
-                        <field name="transaction_id" invisible="1" />
-                        <field name="provider_id" />
+                        <field name="journal_id" domain="[('inbound_payment_method_line_ids', '!=', False), ('manual_payment_journal', '=', True)]" options="{'no_create': True, 'no_create_edit': True}"/>
                         <field name="amount" />
                         <field name="payment_date" />
-                        <field name="currency_id" />
+                        <field name="currency_id" invisible="1"/>
                         <field name="order_id" invisible="1" />
                     </group>
 

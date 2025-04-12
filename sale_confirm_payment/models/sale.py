@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
     payment_currency_id = fields.Many2one(
         "res.currency",
         string="Payment Currency",
-        related="transaction_ids.currency_id",
+        related="payment_ids.currency_id",
         store=True,
     )
     payment_amount = fields.Monetary(
@@ -47,18 +47,20 @@ class SaleOrder(models.Model):
 
     def action_confirm_payment(self):
         aw_obj = self.env["ir.actions.act_window"]
-        action = aw_obj._for_xml_id(
-            "sale_confirm_payment.action_confirm_payment_sale"
-        )
+        action = aw_obj._for_xml_id("sale_confirm_payment.action_confirm_payment_sale")
         return action
 
-    @api.depends("transaction_ids")
+    def _compute_payment_ids(self):
+        for order in self:
+            order.payment_ids = order.mapped("order_line.invoice_lines.payment_id")
+
+    @api.depends("payment_ids")
     def _compute_payment_state(self):
         for order in self:
             payment_amount = sum(
-                order.sudo()
-                .transaction_ids.filtered(lambda a: a.state == "done")
-                .mapped("amount")
+                order.payment_ids.filtered(lambda p: p.state == "posted").mapped(
+                    "amount"
+                )
             )
             order.payment_amount = payment_amount
             if payment_amount:
