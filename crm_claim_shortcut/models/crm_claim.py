@@ -25,6 +25,6 @@ class CRMClaim(models.Model):
         return res
 
     def unlink(self):
-        for rec in self:
+        for rec in self.filtered(lambda x: x.model_ref_id):
             rec.model_ref_id.crm_claim_ids = [(3, rec.id)]
         return super().unlink()
