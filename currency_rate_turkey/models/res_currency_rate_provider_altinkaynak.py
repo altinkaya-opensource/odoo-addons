@@ -92,7 +92,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                 result[date_to] = currency_data
                 self._action_log_update(rate_date)
             except Exception:
-                _logger.error(
+                _logger.info(
                     _("No currency rate on %s") % date_from.strftime("%Y-%m-%d")
                 )
         else:
@@ -103,7 +103,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                     result[single_date] = currency_data
                     self._action_log_update(rate_date)
                 except Exception:
-                    _logger.error(
+                    _logger.info(
                         _("No currency rate on %s") % single_date.strftime("%Y-%m-%d")
                     )
                     continue
