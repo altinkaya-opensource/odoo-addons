@@ -1,6 +1,7 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class DeliveryPackageBarcodeWiz(models.TransientModel):
@@ -40,8 +41,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     def create(self, vals_list):
         res = super(DeliveryPackageBarcodeWiz, self).create(vals_list)
         for r in res:
+            if not r.picking_id:
+                raise UserError(_("Please scan a barcode to find the picking."))
             if not r.name:
-                r.name = r.picking_id.name + _(" - PACK BARCODE")
+                r.name = r.picking_id.name or "" + _(" - PACK BARCODE")
         return res
 
     def button_save(self):
