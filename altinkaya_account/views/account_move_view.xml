@@ -76,4 +76,26 @@
 
         </field>
     </record>
+
+    <record id="account_move_search_inherit" model="ir.ui.view">
+        <field name="name">account.move.search.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='late']" position="after">
+                <separator/>
+                <filter string="İhracat" name="Export" domain="['&amp;','&amp;',('state','!=','draft'),('state','!=','cancel'),('fiscal_position_id','ilike','İHRACAT')]"/>
+                <filter string="Yurtiçi Normal TL" name="TRNormalTL" domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','=',31),('state','!=','draft'),('state','!=','cancel')]"/>
+                <filter string="Yurtiçi Normal YP" name="TRNormalYP" domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','!=',31),('state','!=','draft'),('state','!=','cancel')]"/>
+                <filter string="Yurtiçi Tevkifat" name="TRTevkifat" domain="['&amp;', '&amp;', ('fiscal_position_id', 'ilike', 'tevkifat'), ('state', '!=', 'draft'), ('state', '!=', 'cancel')]"/>
+            </xpath>
+
+            <xpath expr="//filter[@name='duedate']" position="after">
+                <filter string="Mali Koşul" name="fiscal_pos" context="{'group_by':'fiscal_position_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
 </odoo>
