@@ -32,8 +32,8 @@
             'T2': '${"%.2f" % abs(sum(object.tax_line_ids.filtered(lambda txl: txl.tax_line_id.amount == 10).mapped("amount_currency"))) or 0.0}#{border=thin_border;align=left;style=number}',
             'U2': '${"%.2f" % abs(sum(object.tax_line_ids.filtered(lambda txl: txl.tax_line_id.amount == 20).mapped("tax_base_amount"))) or 0.0}#{border=thin_border;align=left;style=number}',
             'V2': '${"%.2f" % abs(sum(object.tax_line_ids.filtered(lambda txl: txl.tax_line_id.amount == 20).mapped("amount_currency"))) or 0.0}#{border=thin_border;align=left;style=number}',
-            'W2': 'amount_untaxed${"%.2f" % (value) or ""}#{border=thin_border;align=left;style=number}',
-            'X2': 'amount_tax${"%.2f" % (value) or ""}#{border=thin_border;align=left;style=number}',
+            'W2': 'amount_untaxed${"%.2f" % (value) or 0.0}#{border=thin_border;align=left;style=number}',
+            'X2': 'amount_tax${"%.2f" % (value) or 0.0}#{border=thin_border;align=left;style=number}',
 
             },
                     },
