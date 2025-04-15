@@ -15,6 +15,11 @@ class Product(models.Model):
         "product.attribute.value", compute="_compute_domain_attribute_value_ids"
     )
 
+    product_template_variant_value_ids = fields.Many2many(
+        # Remove domain in this field
+        domain=None,
+    )
+
     attribute_value_ids = fields.Many2many(
         "product.attribute.value",
         compute="_compute_attribute_value_ids",
@@ -425,3 +430,13 @@ class mrpProduction(models.Model):
     qty_available_kaplama = fields.Float(
         "Kaplama Depo Mevcut", related="product_id.qty_available_kaplama"
     )
+
+
+class ProductTemplateAttributeValue(models.Model):
+    _inherit = "product.template.attribute.value"
+
+    def _filter_single_value_lines(self):
+        """
+        Overriden to disable filtering single value lines
+        """
+        return self
