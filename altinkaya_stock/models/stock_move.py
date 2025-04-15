@@ -110,8 +110,10 @@ class StockMove(models.Model):
         # after canceling the single move.
         all_moves = self.find_orig_move_ids(self)
         res = super()._action_cancel()
-        for move in all_moves.filtered(
-            lambda m: m.state not in ["done", "cancel"]
-        ):
+        for move in all_moves.filtered(lambda m: m.state not in ["done", "cancel"]):
             move.cancel_move_origs(move)
         return res
+
+    def _action_confirm(self, merge=True, merge_into=False):
+        # Always disable merge when confirming a move
+        return super()._action_confirm(merge=False, merge_into=merge_into)
