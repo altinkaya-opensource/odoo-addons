@@ -9,12 +9,11 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": [
-        "base",
         "mrp",
-        "product",
         "stock",
         "sale",
         "hr",
+        "mrp_sale_info",
     ],
     "data": [
         "security/ir.model.access.csv",
