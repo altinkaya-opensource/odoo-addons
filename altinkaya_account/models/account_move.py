@@ -168,3 +168,11 @@ class AccountMove(models.Model):
             invoice._compute_tax_totals()
             invoice._create_missing_supplierinfo()
         return True
+
+    def _must_check_constrains_date_sequence(self):
+        # Overriden to disable weird sequence check in Odoo
+        # that is not needed for our use case
+        # and causes issues with the Turkish e-invoice
+        # and supplier invoice numbers
+        super()._must_check_constrains_date_sequence()
+        return False
