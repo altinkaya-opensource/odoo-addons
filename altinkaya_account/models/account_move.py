@@ -42,9 +42,8 @@ class AccountMove(models.Model):
         " the shipment is sent to the carrier.",
     )
 
-    tax_line_ids = fields.One2many(
+    tax_line_ids = fields.Many2many(
         "account.move.line",
-        "move_id",
         string="Tax Lines",
         compute="_compute_tax_line_ids",
     )

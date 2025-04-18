@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class AccountMoveLine(models.Model):
@@ -33,7 +33,6 @@ class AccountMoveLine(models.Model):
     purchase_line_amount = fields.Float(
         string="PO Unit", related="purchase_line_id.price_unit"
     )
-
 
     def _simulate_invoice_line_onchange(self):
         """

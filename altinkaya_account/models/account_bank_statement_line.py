@@ -12,22 +12,17 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from odoo import models, fields, api, _
 
 
-from odoo import fields, models
-
-
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
-
-    statement_line_id = fields.Many2one(
-        "account.bank.statement.line", "Bank Statement Line"
-    )
+class AccountBankStatementLine(models.Model):
+    _inherit = "account.bank.statement.line"
 
     def _synchronize_from_moves(self, changed_fields):
         """
         Convert payments amount_currency and currency_id fields related
-        to the partner currency.
+        to the partner currency. This function is the same as the one
+        in account_payment.
         """
         res = super()._synchronize_from_moves(changed_fields)
         self = self.with_context(skip_account_move_synchronization=True)
