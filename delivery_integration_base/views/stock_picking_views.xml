@@ -21,6 +21,7 @@
                 />
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
+                <field name="picking_total_deci"/>
                 <field name="picking_total_weight" attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"/>
                 <field name="carrier_package_count" attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"/>
             </xpath>
