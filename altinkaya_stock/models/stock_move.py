@@ -117,3 +117,20 @@ class StockMove(models.Model):
     def _action_confirm(self, merge=True, merge_into=False):
         # Always disable merge when confirming a move
         return super()._action_confirm(merge=False, merge_into=merge_into)
+
+    def _action_assign(self, force_qty=False):
+        """
+        Recursively assign all moves in the procurement group when
+        assigning a move.
+        """
+        res = super()._action_assign(force_qty=force_qty)
+        for move in self:
+            orig_moves = move.find_orig_move_ids(move)
+            orig_moves = orig_moves.filtered(
+                lambda m: m.state not in ["done", "cancel"]
+            )
+            # exclude current move from the list to avoid infinite loop
+            orig_moves = orig_moves - move
+            if orig_moves:
+                orig_moves._action_assign(force_qty=force_qty)
+        return res
