@@ -42,12 +42,8 @@
                             <span>
                                 <div class="o_row">
                                     <span>Desi: </span>
-                                    <t t-if="sale_last_deci != 0">
-                                        <field name="sale_last_deci" readonly="1" />
-                                    </t>
-                                    <t t-else="">
-                                        <field name="sale_deci" readonly="1" />
-                                    </t>
+                                    <field name="sale_deci" readonly="1" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}" />
+                                    <field name="sale_last_deci" readonly="1" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}" />
                                 </div>
                             </span>
                             <field name="delivery_rating_success" invisible="1" force_save="1" />
@@ -55,7 +51,7 @@
                         <div class="alert alert-info" role="status" attrs="{'invisible': ['|',('carrier_id','=', False),('delivery_message','=',False)]}">
                             <field name="delivery_message" force_save="1"/>
                         </div>
-                    </div>
+                    </div>  
                 </xpath>
 
                 <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]" position="after">
