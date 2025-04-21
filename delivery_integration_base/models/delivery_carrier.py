@@ -167,28 +167,25 @@ class DeliveryCarrier(models.Model):
         :param order: sale order
         :return:
         """
-        sms_api = self.env["sms.api"]
-        mobile_number = self.env["sms.send_sms"]._sms_sanitization(
-            picking.partner_id, "mobile"
-        )
-        if mobile_number:
+        partner_phone = picking.partner_id.mobile or picking.partner_id.phone
+        if partner_phone and self.send_sms_customer and self.sms_service_id:
             sms_template = self.env.ref(
                 f"delivery_{self.delivery_type}.{self.delivery_type}_sms_template"
             )
             message = sms_template._render_template(
-                sms_template.body_html, sms_template.model, picking.id
+                sms_template.body_html, sms_template.model, [picking.id]
+            )[picking.id]
+            composer = self.env["sms.composer"].create(
+                {
+                    "composition_mode": "comment",
+                    "body": message,
+                    "numbers": picking.partner_id.mobile,
+                    "res_model": "stock.picking",
+                    "res_id": picking.id,
+                }
             )
-            if message and self.sms_service_id:
-                sms_api._send_sms([mobile_number], message)
-                picking.message_post(
-                    body=_(
-                        "<span>SMS notification sent to %(number)s</span>"
-                        "<br>"
-                        "<span>Message:%(message)s</span>",
-                        number=picking.partner_id.mobile,
-                        message=message,
-                    )
-                )
+            composer.action_send_sms()
+
         return True
 
     def get_tracking_link(self, picking):
