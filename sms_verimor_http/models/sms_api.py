@@ -7,7 +7,7 @@
 
 import requests
 
-from odoo import models
+from odoo import api, models
 from odoo.exceptions import ValidationError
 
 VERIMOR_SEND_SMS_ENDPOINT = "http://sms.verimor.com.tr/v2/send.json"
@@ -22,7 +22,7 @@ class SmsApi(models.AbstractModel):
             "username": account.sms_verimor_http_username,
             "password": account.sms_verimor_http_password,
             "source_addr": account.sms_verimor_http_sms_header,
-            "messages": [{"msg": message, "dest": ",".join(n for n in number)}],
+            "messages": [{"msg": message, "dest": number}],
         }
 
     def _send_sms_with_verimor_http(self, account, number, message):
@@ -52,13 +52,15 @@ class SmsApi(models.AbstractModel):
             raise ValidationError(response)
         return response
 
-    def _send_sms(self, number, message):
+    @api.model
+    def _send_sms(self, numbers, message):
         account = self.env["iap.account"].get("sms")
         if account.provider == "sms_verimor_http":
-            self._send_sms_with_verimor_http(account, number, message)
+            self._send_sms_with_verimor_http(account, numbers, message)
         else:
-            return super()._send_sms(number, message)
+            return super()._send_sms(numbers, message)
 
+    @api.model
     def _send_sms_batch(self, messages):
         """Send SMS messages in batch using Verimor HTTP API"""
         account = self.env["iap.account"].get("sms")
@@ -68,11 +70,13 @@ class SmsApi(models.AbstractModel):
         result = []
         for message in messages:
             try:
+                self._send_sms_with_verimor_http(
+                    account, message["number"], message["content"]
+                )
                 result.append(
                     {
                         "res_id": message["res_id"],
                         "state": "success",
-                        "credit": 1,  # Adjust based on the response from the API
                     }
                 )
             except ValidationError as e:
@@ -80,7 +84,6 @@ class SmsApi(models.AbstractModel):
                     {
                         "res_id": message["res_id"],
                         "state": str(e),
-                        "credit": 0,
                     }
                 )
 
