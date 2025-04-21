@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gmail_int_ext,gmail.int.ext,model_gmail_integration,,1,1,1,1
+access_gmail_int_ext_mail,gmail.int.ext.mail,model_gmail_integration_mail,,1,1,1,1
