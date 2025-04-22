@@ -40,7 +40,7 @@ class AccountBankStatementLine(models.Model):
             if len(orders) != 1:
                 continue
 
-            if float_compare(orders.amount_total, res.amount, 2) != 0:
+            if float_compare(orders.amount_total, r.amount, 2) != 0:
                 continue
 
             commercial_partner = orders.mapped("partner_id.commercial_partner_id")
