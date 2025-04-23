@@ -26,6 +26,7 @@
         "views/mrp_production_views.xml",
         "views/mrp_bom_views.xml",
         "views/mrp_routing_views.xml",
+        "views/sale_order_view.xml",
         "wizards/mrp_cancel_wizard_view.xml",
     ],
     "installable": True,
