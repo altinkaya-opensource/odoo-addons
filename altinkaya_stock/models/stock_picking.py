@@ -67,7 +67,7 @@ class StockPicking(models.Model):
         related="sale_id.create_uid",
         store=True,
     )
-    sale_note = fields.Html("Sale Note", related="sale_id.note", readonly=True)
+    sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
     trimmed_sale_note = fields.Text(
         "Trimmed Sale Note",
         compute="_compute_trimmed_sale_note",
