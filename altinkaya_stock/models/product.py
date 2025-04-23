@@ -12,7 +12,8 @@ class Product(models.Model):
     )
 
     domain_attribute_value_ids = fields.Many2many(
-        "product.attribute.value", compute="_compute_domain_attribute_value_ids"
+        "product.template.attribute.value",
+        compute="_compute_domain_attribute_value_ids",
     )
 
     product_template_variant_value_ids = fields.Many2many(
@@ -29,7 +30,9 @@ class Product(models.Model):
     def _compute_domain_attribute_value_ids(self):
         for product in self:
             product.domain_attribute_value_ids = (
-                product.product_tmpl_id.attribute_line_ids.mapped("value_ids")
+                product.product_tmpl_id.attribute_line_ids.mapped(
+                    "product_template_value_ids"
+                )
             )
 
     @api.depends("product_template_attribute_value_ids")
