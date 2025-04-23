@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 08:41+0000\n"
-"PO-Revision-Date: 2025-03-28 08:41+0000\n"
+"POT-Creation-Date: 2025-04-23 12:02+0000\n"
+"PO-Revision-Date: 2025-04-23 12:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -112,6 +112,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__changeset_change_ids
@@ -124,7 +126,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Wijzigingen Wijzigingen"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__changeset_ids
@@ -134,6 +136,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__changeset_ids
@@ -146,7 +150,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Wijzigingssets"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_make_mts_move_form
@@ -161,6 +165,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_changesets
@@ -173,7 +179,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Tel Wijzigingen"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_pending_changeset_changes
@@ -183,6 +189,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_pending_changeset_changes
@@ -195,7 +203,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "In afwachting van wijzigingen tellen"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_pending_changesets
@@ -205,6 +213,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_pending_changesets
@@ -217,7 +227,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Aantal Wijzigingen"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__country_id
@@ -303,6 +313,11 @@ msgid "Enjeksiyonda"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
+msgid "Fix Quant Reservation"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:res.groups,name:altinkaya_stock.stock_force_avail_button
 msgid "Force Avail. Button"
 msgstr ""
@@ -363,6 +378,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__default_code
 msgid "Internal Reference"
 msgstr "Interne referentie"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__sale_note
+msgid ""
+"Internal note for the order. This field is not visible to the customer."
+msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_inventory
@@ -604,6 +625,11 @@ msgid "Product Template"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_product_template_attribute_value
+msgid "Product Template Attribute Value"
+msgstr "Productsjabloon kenmerk waarde"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__product_type
 msgid "Product Type"
 msgstr ""
@@ -666,9 +692,10 @@ msgid "Sale Note"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_sale_order
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.altinkaya_customV7_stock_picking_out_form
 msgid "Sales Order"
-msgstr ""
+msgstr "Verkooporder"
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_sale_order_line
@@ -772,6 +799,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__smart_search
@@ -784,7 +813,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "Slim zoeken"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__sale_qty30days
@@ -813,6 +842,7 @@ msgstr "Voorraadverplaatsing"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
 msgid "Stoktan Al"
 msgstr ""
 
@@ -828,6 +858,7 @@ msgstr ""
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
 msgid "Tedarik"
 msgstr ""
 
@@ -868,6 +899,8 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_pending_changeset_changes
@@ -880,7 +913,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Het aantal lopende wijzigingen van deze record"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__count_pending_changesets
@@ -890,6 +923,8 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_pending_changesets
@@ -902,7 +937,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Het aantal hangende wijzigingssets van deze record"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__count_changesets
@@ -912,6 +947,8 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_changesets
@@ -924,7 +961,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Het totale aantal wijzigingen van deze record"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_internal_search_day_filters
@@ -1022,6 +1059,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__user_can_see_changeset
@@ -1034,12 +1073,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Gebruiker kan wijzigingen zien"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_force_assign
 msgid "Uygunluğu Zorla"
 msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__product_template_variant_value_ids
+msgid "Variant Values"
+msgstr "Variant waardes"
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_warehouse
