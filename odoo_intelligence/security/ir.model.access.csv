@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_intelligence_provider_user,intelligence.provider user,model_intelligence_provider,odoo_intelligence.group_intelligence_user,1,0,0,0
+access_intelligence_provider_manager,intelligence.provider manager,model_intelligence_provider,odoo_intelligence.group_intelligence_manager,1,1,1,1
+access_intelligence_prompt_user,intelligence.prompt user,model_intelligence_prompt,,1,1,1,1
+access_intelligence_prompt_test_wizard_user,intelligence.prompt.test.wizard user,model_intelligence_prompt_test_wizard,,1,1,1,1
