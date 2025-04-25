@@ -8,34 +8,58 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position='inside'>
                 <button
-                    name="carrier_get_label"
-                    string="Cargo Label"
-                    type="object"
-                    attrs="{
+          name="carrier_get_label"
+          string="Cargo Label"
+          type="object"
+          attrs="{
                         'invisible':[
                             '|',
                             ('carrier_tracking_ref', '=', False),
                             ('state', '!=', 'done')
                         ]
                     }"
-                />
+        />
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="picking_total_deci"/>
-                <field name="picking_total_weight" attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"/>
-                <field name="carrier_package_count" attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"/>
+                <field name="picking_total_deci" />
+                <field
+          name="picking_total_weight"
+          attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"
+        />
+                <field
+          name="carrier_package_count"
+          attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"
+        />
             </xpath>
             <xpath expr="//field[@name='delivery_state']" position="after">
-                <field name="carrier_received_by" attrs="{'invisible': [('delivery_state', '!=', 'customer_delivered')]}"/>
-                <field name="shipping_number" attrs="{'readonly': 1}"/>
+                <field
+          name="carrier_received_by"
+          attrs="{'invisible': [('delivery_state', '!=', 'customer_delivered')]}"
+        />
+                <field name="shipping_number" attrs="{'readonly': 1}" />
             </xpath>
             <xpath expr="//field[@name='shipping_weight']" position="after">
-                <field name="carrier_total_deci" attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"/>
-                <field name="carrier_shipping_cost" attrs="{'readonly': 1}" widget="monetary"/>
-                <field name="carrier_shipping_vat" attrs="{'readonly': 1}" widget="monetary"/>
-                <field name="carrier_shipping_total" attrs="{'readonly': 1}" widget="monetary"/>
-                <field name="shipping_currency_id" attrs="{'readonly': 1}"/>
-                <field name="mail_sent" attrs="{'readonly': 1}"/>
+                <field
+          name="carrier_total_deci"
+          attrs="{'readonly': [('carrier_tracking_ref', '!=', False)]}"
+        />
+                <field
+          name="carrier_shipping_cost"
+          attrs="{'readonly': 1}"
+          widget="monetary"
+        />
+                <field
+          name="carrier_shipping_vat"
+          attrs="{'readonly': 1}"
+          widget="monetary"
+        />
+                <field
+          name="carrier_shipping_total"
+          attrs="{'readonly': 1}"
+          widget="monetary"
+        />
+                <field name="shipping_currency_id" attrs="{'readonly': 1}" />
+                <field name="mail_sent" attrs="{'readonly': 1}" />
             </xpath>
             <xpath expr="//field[@name='shipping_weight']" position="attributes">
                 <attribute name="invisible">1</attribute>

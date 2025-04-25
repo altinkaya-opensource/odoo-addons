@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-<data>
 		<record model="ir.ui.view" id="view_utm_campaign_form_inherit_altinkaya">
         <field name="name">utm.campaign.form.inherit.altinkaya</field>
         <field name="model">utm.campaign</field>
@@ -9,14 +8,11 @@
             <xpath expr="//form/sheet/notebook" position="after">
                 <notebook>
                     <page string="Partners" name="partners">
-                        <field name="partner_ids" widget="many2many_list" colspan="1"/>
+                        <field name="partner_ids" widget="many2many_list" colspan="1" />
                     </page>
                 </notebook>
             </xpath>
         </field>
     </record>
 
-
-
-</data>
 </odoo>

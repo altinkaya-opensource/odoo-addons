@@ -1,17 +1,11 @@
-# -*- coding: utf-8 -*-
 {
     "name": "Currency Difference Invoice",
     "summary": """
         This module is for creating invoice with difference currency amount""",
-    "description": """
-        * Calculate currency difference amount
-        * Create an invoice with calculated amount
-        * Calculate currency valuation amount for foreign currency partners
-    """,
-    "author": "Yiğit Budak",
-    "website": "https://github.com/yibudak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Accounting",
-    "version": "0.1",
+    "version": "16.0.1.0.0",
     "license": "LGPL-3",
     "depends": ["base", "account"],
     "data": [

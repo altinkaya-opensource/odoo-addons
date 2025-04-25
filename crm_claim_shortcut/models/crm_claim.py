@@ -4,7 +4,7 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 from odoo.addons.crm_claim.models.crm_claim import APPLICABLE_MODELS
 

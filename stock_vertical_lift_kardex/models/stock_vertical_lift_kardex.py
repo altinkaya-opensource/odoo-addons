@@ -1,10 +1,12 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
-import requests
 import math
 import time
 import urllib.parse
+
+import requests
+
+from odoo import fields, models
 
 RESET_PATH = (
     "/cgi-bin/setValues.exe?PDP,"
@@ -19,11 +21,11 @@ class StockVerticalLiftKardex(models.Model):
     _name = "stock.vertical.lift.kardex"
     _description = "Kardex Vertical Lift Controller"
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(required=True)
     ip_address = fields.Char(
         string="IP Address", required=True, help="Example: 192.168.1.100"
     )
-    port = fields.Integer(string="Port")
+    port = fields.Integer()
     location_ids = fields.One2many(
         string="Locations",
         comodel_name="stock.location",
@@ -32,7 +34,7 @@ class StockVerticalLiftKardex(models.Model):
     )
 
     def _send_request(self, path):
-        return requests.get("http://{}:{}{}".format(self.ip_address, self.port, path))
+        return requests.get(f"http://{self.ip_address}:{self.port}{path}", timeout=15)
 
     def _get_product(self, location, product=None):
         posy = location.posy

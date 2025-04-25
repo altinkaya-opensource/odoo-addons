@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,8 +20,8 @@
     "version": "16.0.0.1.0",
     "license": "AGPL-3",
     "depends": ["stock_account", "sale_stock", "purchase"],
-    "author": "OdooMRP team," "AvanzOSC," "Serv. Tecnol. Avanzados - Pedro M. Baeza" "Ümithan Güldemir",
-    "website": "http://www.odoomrp.com",
+    "author": "OdooMRP team, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Stock",
     "data": [
         "security/ir.model.access.csv",

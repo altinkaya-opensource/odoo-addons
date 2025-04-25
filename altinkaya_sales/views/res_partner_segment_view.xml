@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record model="ir.ui.view" id="res_partner_segment_form_view">
@@ -8,15 +8,19 @@
             <form>
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" />
                     </h1>
                     <group>
-                        <field name="code"/>
-                        <field name="description"/>
+                        <field name="code" />
+                        <field name="description" />
                     </group>
                     <notebook>
                         <page name="partners" string="Partners">
-                            <field name="partner_ids" widget="one2many_list" readonly="1"/>
+                            <field
+                name="partner_ids"
+                widget="one2many_list"
+                readonly="1"
+              />
                         </page>
                     </notebook>
                 </sheet>
@@ -30,8 +34,8 @@
         <field name="model">res.partner.segment</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="code"/>
+                <field name="name" />
+                <field name="code" />
             </tree>
         </field>
     </record>
@@ -44,9 +48,9 @@
 
     <record model="ir.ui.menu" id="res_partner_segment_menu">
         <field name="name">Segments</field>
-        <field name="parent_id" ref="crm.crm_menu_config"/>
-        <field name="action" ref="res_partner_segment_act_window"/>
-        <field name="sequence" eval="16"/>
+        <field name="parent_id" ref="crm.crm_menu_config" />
+        <field name="action" ref="res_partner_segment_act_window" />
+        <field name="sequence" eval="16" />
     </record>
 
 </odoo>

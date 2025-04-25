@@ -24,7 +24,6 @@ class AccountMove(models.Model):
     address_contact_id = fields.Many2one("res.partner", "Shipping Address")
     receiver = fields.Char(string="Reciever")
     supplier_invoice_number = fields.Char(
-        string="Supplier Invoice Number",
         help="The reference of this invoice as provided by the supplier.",
         readonly=True,
         states={"draft": [("readonly", False)]},

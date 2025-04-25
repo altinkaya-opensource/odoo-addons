@@ -4,7 +4,7 @@ Created on Feb 20, 2020
 @author: cq
 """
 
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class ResUsers(models.Model):

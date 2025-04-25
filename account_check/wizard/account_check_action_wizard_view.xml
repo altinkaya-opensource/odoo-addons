@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record model="ir.ui.view" id="account_check_action_wizard_form_view">
@@ -6,18 +6,23 @@
         <field name="model">account.check.action.wizard</field>
         <field name="arch" type="xml">
             <form string="Check Action">
-                <field name="action_type" invisible="1"/>
-                <group >
-                    <field name="date"/>
-                    <field name="journal_id"/>
-                    <field name="debit_account_id"/>
-                    <field name="credit_account_id"/>
+                <field name="action_type" invisible="1" />
+                <group>
+                    <field name="date" />
+                    <field name="journal_id" />
+                    <field name="debit_account_id" />
+                    <field name="credit_account_id" />
 <!--                     attrs="{'invisible':[('action_type','not in',['deposit'])], 'required':[('action_type','in',['deposit'])]}"/> -->
                 </group>
                 <footer>
-                    <button string="Confirm" name="action_confirm" type="object" class="oe_highlight"/>
+                    <button
+            string="Confirm"
+            name="action_confirm"
+            type="object"
+            class="oe_highlight"
+          />
                     or
-                    <button string="Cancel" class="oe_link" special="cancel"/>
+                    <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
             </form>
         </field>

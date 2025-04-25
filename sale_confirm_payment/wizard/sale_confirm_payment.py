@@ -47,7 +47,7 @@ class SaleConfirmPayment(models.TransientModel):
                 "date": self.payment_date,
                 "payment_type": "inbound",
                 "journal_id": self.journal_id.id,
-                "payment_method_line_id": self.journal_id.inbound_payment_method_line_ids[
+                "payment_method_line_id": self.journal_id.inbound_payment_method_line_ids[  # noqa
                     0
                 ].id,
             }

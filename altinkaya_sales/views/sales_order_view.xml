@@ -1,18 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
 
         <record model="ir.ui.view" id="view_sales_order_tree_modifications">
             <field name="name">sales order form</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_tree"/>
-            <field eval="999" name="priority"/>
+            <field name="inherit_id" ref="sale.view_order_tree" />
+            <field eval="999" name="priority" />
             <field name="arch" type="xml">
-                <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='amount_untaxed']" position="replace">
-                    <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="show"/>
+                <xpath
+        expr="//tree[not(@class='o_sale_order')]/field[@name='amount_untaxed']"
+        position="replace"
+      >
+                    <field
+          name="amount_untaxed"
+          sum="Total Tax Excluded"
+          widget="monetary"
+          optional="show"
+        />
                 </xpath>
-                <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='amount_total']" position="replace">
-                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="hide"/>
+                <xpath
+        expr="//tree[not(@class='o_sale_order')]/field[@name='amount_total']"
+        position="replace"
+      >
+                    <field
+          name="amount_total"
+          sum="Total Tax Included"
+          widget="monetary"
+          decoration-bf="1"
+          optional="hide"
+        />
                 </xpath>
             </field>
         </record>
@@ -20,90 +36,170 @@
         <record model="ir.ui.view" id="view_sales_order_form_modifications">
             <field name="name">sales order form</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field eval="100" name="priority"/>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field eval="100" name="priority" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_invoice_id']" position="replace">
-                    <field name="partner_invoice_id" context="{'default_type':'invoice', 'show_address': 1}" options="{'always_reload': True}"/>
+                    <field
+          name="partner_invoice_id"
+          context="{'default_type':'invoice', 'show_address': 1}"
+          options="{'always_reload': True}"
+        />
                 </xpath>
 
                 <xpath expr="//field[@name='partner_shipping_id']" position="replace">
-                    <field name="partner_shipping_id" context="{'default_type':'delivery', 'show_address': 1}" options="{'always_reload': True}"/>
+                    <field
+          name="partner_shipping_id"
+          context="{'default_type':'delivery', 'show_address': 1}"
+          options="{'always_reload': True}"
+        />
                 </xpath>
 
                 <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                    <label for="carrier_id"/>
+                    <label for="carrier_id" />
                     <div name="carrier_id_display">
                         <div>
-                            <field name="carrier_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
-                            <i class="fa fa-check text-success" role="img" aria-label="Rating OK" title="Rating OK" attrs="{'invisible':['|','|',('carrier_id','=',False),('state','not in',('draft','sent')),('delivery_rating_success','=',False)]}"/>
+                            <field
+              name="carrier_id"
+              options="{'no_create': True, 'no_open': True}"
+              attrs="{'readonly':[('state','not in',('draft','sent'))]}"
+            />
+                            <i
+              class="fa fa-check text-success"
+              role="img"
+              aria-label="Rating OK"
+              title="Rating OK"
+              attrs="{'invisible':['|','|',('carrier_id','=',False),('state','not in',('draft','sent')),('delivery_rating_success','=',False)]}"
+            />
                         </div>
                         <div>
                             <span>
                                 <div class="o_row">
                                     <span>Desi: </span>
-                                    <field name="sale_deci" readonly="1" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}" />
-                                    <field name="sale_last_deci" readonly="1" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}" />
+                                    <field
+                  name="sale_deci"
+                  readonly="1"
+                  attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}"
+                />
+                                    <field
+                  name="sale_last_deci"
+                  readonly="1"
+                  attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"
+                />
                                 </div>
                             </span>
-                            <field name="delivery_rating_success" invisible="1" force_save="1" />
+                            <field
+              name="delivery_rating_success"
+              invisible="1"
+              force_save="1"
+            />
                         </div>
-                        <div class="alert alert-info" role="status" attrs="{'invisible': ['|',('carrier_id','=', False),('delivery_message','=',False)]}">
-                            <field name="delivery_message" force_save="1"/>
+                        <div
+            class="alert alert-info"
+            role="status"
+            attrs="{'invisible': ['|',('carrier_id','=', False),('delivery_message','=',False)]}"
+          >
+                            <field name="delivery_message" force_save="1" />
                         </div>
-                    </div>  
+                    </div>
                 </xpath>
 
-                <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]" position="after">
-                    <field name="client_order_ref"/>
-                    <field name="warehouse_id"/>
-                    <field name="date_order" attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"/>
-                    <field name="create_uid" widget="many2one_avatar_user"/>
-                    <field name="source_id"/>
+                <xpath
+        expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='date_order'][2]"
+        position="after"
+      >
+                    <field name="client_order_ref" />
+                    <field name="warehouse_id" />
+                    <field
+          name="date_order"
+          attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}"
+        />
+                    <field name="create_uid" widget="many2one_avatar_user" />
+                    <field name="source_id" />
                 </xpath>
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']" position="replace" />
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace" />
-                <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="replace" />
+                <xpath
+        expr="//field[@name='order_line']/form//field[@name='product_tmpl_id']"
+        position="replace"
+      />
+                <xpath
+        expr="//field[@name='order_line']/form//field[@name='product_id']"
+        position="replace"
+      />
+                <xpath
+        expr="//field[@name='order_line']/form//field[@name='tax_id']"
+        position="replace"
+      />
 
-                <xpath expr="//field[@name='order_line']/form//field[@name='product_attribute_ids']" position="replace" />
+                <xpath
+        expr="//field[@name='order_line']/form//field[@name='product_attribute_ids']"
+        position="replace"
+      />
 
-                <xpath expr="//field[@name='order_line']/form/group/group" position="before">
+                <xpath
+        expr="//field[@name='order_line']/form/group/group"
+        position="before"
+      >
                     <group colspan="2">
-                        <field name="product_id" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" attrs="{
+                        <field
+            name="product_id"
+            domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
+            context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+            attrs="{
                                 'readonly': [('product_updatable', '=', False)],
                                 'required': [('display_type', '=', False)],
-                            }" force_save="1" widget="many2one_barcode" />
+                            }"
+            force_save="1"
+            widget="many2one_barcode"
+          />
                         <field name="product_tmpl_id" />
-                        <label for="show_custom_products"/>
+                        <label for="show_custom_products" />
                         <div>
                             <field name="show_custom_products" />
                         </div>
-                        <field name="product_attribute_ids" nolabel="1" colspan="2" attrs="{'invisible': ['|', ('product_tmpl_id','=',False), ('product_attribute_ids', '=', [])]}" context="{'default_product_template_id': product_tmpl_id, 'default_owner_model': 'product.product', 'show_price_extra': True, 'show_attribute': False}"/>
+                        <field
+            name="product_attribute_ids"
+            nolabel="1"
+            colspan="2"
+            attrs="{'invisible': ['|', ('product_tmpl_id','=',False), ('product_attribute_ids', '=', [])]}"
+            context="{'default_product_template_id': product_tmpl_id, 'default_owner_model': 'product.product', 'show_price_extra': True, 'show_attribute': False}"
+          />
                     </group>
                 </xpath>
 
 
-                <xpath expr="//field[@name='order_line']/form//label[@for='customer_lead']" position="before">
-                    <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'), ('company_id','=',parent.company_id), ('country_id', '=', parent.tax_country_id)]"/>
+                <xpath
+        expr="//field[@name='order_line']/form//label[@for='customer_lead']"
+        position="before"
+      >
+                    <field
+          name="tax_id"
+          widget="many2many_tags"
+          options="{'no_create': True}"
+          context="{'search_view_ref': 'account.account_tax_view_search'}"
+          domain="[('type_tax_use','=','sale'), ('company_id','=',parent.company_id), ('country_id', '=', parent.tax_country_id)]"
+        />
                 </xpath>
 
-                <xpath expr="//field[@name='order_line']/form//field[@name='route_id']" position="before">
-                    <field name="deci"/>
+                <xpath
+        expr="//field[@name='order_line']/form//field[@name='route_id']"
+        position="before"
+      >
+                    <field name="deci" />
                 </xpath>
 
                 <xpath expr="//page[@name='other_information']" position="after">
                     <page string="History" name="history">
-                        <label for="invoice_ids" options="{'no_create_edit': True}"/>
-                        <field name="invoice_ids"/>
-                        <label for="picking_ids"/>
+                        <label for="invoice_ids" options="{'no_create_edit': True}" />
+                        <field name="invoice_ids" />
+                        <label for="picking_ids" />
                         <field name="picking_ids" options="{'no_create_edit': True}">
                             <tree>
-                                <field name="name"/>
-                                <field name="location_id"/>
-                                <field name="location_dest_id"/>
-                                <field name="date_done"/>
-                                <field name="carrier_id"/>
-                                <field name="state"/>
+                                <field name="name" />
+                                <field name="location_id" />
+                                <field name="location_dest_id" />
+                                <field name="date_done" />
+                                <field name="carrier_id" />
+                                <field name="state" />
                             </tree>
                         </field>
                     </page>
@@ -111,18 +207,26 @@
 
                 <xpath expr="//page[@name='history']" position="after">
                     <page string="Old Sales" name="old_sales">
-                        <label for="sale_line_history"/>
+                        <label for="sale_line_history" />
                         <field name="sale_line_history">
                             <tree>
-                                <button class="oe_edit_only" name="copy_line_to_active_order" type="object" attrs="{'invisible':[('parent.state','not in',['draft'])]}" context="{'active_order_id':parent.id}" string="Copy to Sale" icon="fa-plus"/>
-                                <field name="date_order"/>
-                                <field name="order_id"/>
-                                <field name="name"/>
-                                <field name="salesman_id"/>
-                                <field name="product_uom_qty"/>
-                                <field name="price_unit"/>
-                                <field name="discount"/>
-                                <field name="price_total"/>
+                                <button
+                class="oe_edit_only"
+                name="copy_line_to_active_order"
+                type="object"
+                attrs="{'invisible':[('parent.state','not in',['draft'])]}"
+                context="{'active_order_id':parent.id}"
+                string="Copy to Sale"
+                icon="fa-plus"
+              />
+                                <field name="date_order" />
+                                <field name="order_id" />
+                                <field name="name" />
+                                <field name="salesman_id" />
+                                <field name="product_uom_qty" />
+                                <field name="price_unit" />
+                                <field name="discount" />
+                                <field name="price_total" />
                             </tree>
                         </field>
                     </page>
@@ -132,15 +236,15 @@
                     <page string="Manufacturing Orders" name="manufacturing_orders">
                         <field name="production_ids" nolabel="1">
                             <tree>
-                                <field name="name"/>
-                                <field name="priority"/>
+                                <field name="name" />
+                                <field name="priority" />
                                 <field name="process_id" />
-                                <field name="product_qty"/>
-                                <field name="product_uom_id"/>
-                                <field name="components_availability_state"/>
-                                <field name="state"/>
-                                <field name="date_start"/>
-                                <field name="date_finished"/>
+                                <field name="product_qty" />
+                                <field name="product_uom_id" />
+                                <field name="components_availability_state" />
+                                <field name="state" />
+                                <field name="date_start" />
+                                <field name="date_finished" />
                             </tree>
                         </field>
                     </page>
@@ -151,23 +255,32 @@
                 <!-- <xpath expr="//group[@name='sale_shipping']/field[@name='incoterm_location']" position="replace"/> -->
                 <!-- <xpath expr="//group[@name='sale_shipping']/label[@for='commitment_date']" position="replace"/> -->
                 <!-- <xpath expr="//notebook//group/group[@name='sale_shipping']/div[@class='o_row']" position="replace"/> -->
-                <xpath expr="//notebook//group/group[@name='sale_shipping']/field[@name='picking_policy']" position="after">
-                    <field name="expected_date" readonly="true"/>
-                    <field name="commitment_date"/>
-                    <field name="effective_date" readonly="true"/>
+                <xpath
+        expr="//notebook//group/group[@name='sale_shipping']/field[@name='picking_policy']"
+        position="after"
+      >
+                    <field name="expected_date" readonly="true" />
+                    <field name="commitment_date" />
+                    <field name="effective_date" readonly="true" />
                 </xpath>
-                <xpath expr="//notebook/page[@name='other_information']//group[@name='sale_info']//field[@name='invoice_status']" position="after">
-                    <field name='currency_rate' readonly="1"/>
+                <xpath
+        expr="//notebook/page[@name='other_information']//group[@name='sale_info']//field[@name='invoice_status']"
+        position="after"
+      >
+                    <field name='currency_rate' readonly="1" />
                 </xpath>
 
 				<xpath expr="/form/header" position="after">
 					<header attrs="{'invisible': [('order_state', '=', 'draft')]}">
-						<field name="order_state" widget="statusbar" statusbar_visible="02_sent,03_sale,06_molding,08_injection,14_cnc,16_uv_printing,18_assembly,21_at_warehouse,22_packaged,23_on_transit,24_delivered"/>
+						<field
+            name="order_state"
+            widget="statusbar"
+            statusbar_visible="02_sent,03_sale,06_molding,08_injection,14_cnc,16_uv_printing,18_assembly,21_at_warehouse,22_packaged,23_on_transit,24_delivered"
+          />
 					</header>
 				</xpath>
 
             </field>
         </record>
 
-    </data>
 </odoo>

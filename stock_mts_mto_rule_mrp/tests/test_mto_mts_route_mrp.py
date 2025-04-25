@@ -1,27 +1,32 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
+from odoo.tests.common import TransactionCase
 
 
-@tagged('post_install', '-at_install')
+@tagged("post_install", "-at_install")
 class TestMtoMtsRouteMRP(TransactionCase):
-
     def setUp(self):
         super().setUp()
         wh = self.env.ref("stock.warehouse0")
         self.wh = wh
         wh.manufacture_steps = "pbm"  # 2 step manufacturing
         route = self.env["stock.location.route"].search(
-            [("warehouse_ids", "=", wh.id),
-             ("name", "like", "% Pick components and then manufacture")]
+            [
+                ("warehouse_ids", "=", wh.id),
+                ("name", "like", "% Pick components and then manufacture"),
+            ]
         )
         mto_rule = route.rule_ids.filtered(
             lambda r: r.location_id.usage == "production"
         )
-        mto_rule.name = "%s MTO" % mto_rule.name
-        mts_rule = mto_rule.copy({"name": mto_rule.name.replace("MTO", "MTS"),
-                                  "procure_method": "make_to_stock"})
+        mto_rule.name = f"{mto_rule.name} MTO"
+        mts_rule = mto_rule.copy(
+            {
+                "name": mto_rule.name.replace("MTO", "MTS"),
+                "procure_method": "make_to_stock",
+            }
+        )
         # mts_mto_rule
         self.env["stock.rule"].create(
             {
@@ -33,7 +38,7 @@ class TestMtoMtsRouteMRP(TransactionCase):
                 "picking_type_id": mts_rule.picking_type_id.id,
                 "location_id": mts_rule.location_id.id,
                 "location_src_id": mts_rule.location_src_id.id,
-                "warehouse_id": wh.id
+                "warehouse_id": wh.id,
             }
         )
         self.stock_location = wh.lot_stock_id
@@ -63,10 +68,10 @@ class TestMtoMtsRouteMRP(TransactionCase):
                         {
                             "product_id": self.component_product.id,
                             "product_qty": 2,
-                            "product_uom_id": self.component_product.uom_id.id
-                        }
+                            "product_uom_id": self.component_product.uom_id.id,
+                        },
                     )
-                ]
+                ],
             }
         )
 
@@ -109,17 +114,13 @@ class TestMtoMtsRouteMRP(TransactionCase):
         mo = self._create_mo()
         self.assertEqual(
             len(
-                mo.move_raw_ids.filtered(
-                    lambda r: r.procure_method == "make_to_stock"
-                )
+                mo.move_raw_ids.filtered(lambda r: r.procure_method == "make_to_stock")
             ),
-            1
+            1,
         )
         self.assertEqual(
             len(
-                mo.move_raw_ids.filtered(
-                    lambda r: r.procure_method == "make_to_order"
-                )
+                mo.move_raw_ids.filtered(lambda r: r.procure_method == "make_to_order")
             ),
-            1
+            1,
         )

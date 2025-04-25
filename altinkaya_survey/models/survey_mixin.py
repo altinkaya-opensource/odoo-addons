@@ -26,7 +26,6 @@ class SurveyMapping(models.AbstractModel):
     )
 
     survey_count = fields.Integer(
-        string="Survey Count",
         store=False,
         compute="_compute_survey_count",
     )
@@ -113,7 +112,7 @@ class SurveyMapping(models.AbstractModel):
                     or survey_url,
                 }
             )
-            self.env.cr.commit()
+            self.env.cr.commit()  # pylint: disable=E8102
 
         return survey_user_input.shortened_url or survey_url
 
@@ -134,7 +133,6 @@ class SurveyResPartnerMixin(models.Model):
     _inherit = ["res.partner", "survey.mapping"]
 
     reconciliation_replied = fields.Boolean(
-        string="Reconciliation Replied",
         compute="_compute_reconciliation_replied",
         search="_search_reconciliation_replied",
         translate=True,

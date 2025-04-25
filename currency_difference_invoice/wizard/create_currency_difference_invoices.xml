@@ -1,22 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="res_partner_create_difference_inv" model="ir.ui.view">
             <field name="name">create.difference.inv.res.partner</field>
             <field name="model">create.currency.difference.invoices</field>
             <field name="arch" type="xml">
                 <form string="Create Difference Invoices">
-                    <p>This action will create an invoice for every selected partner.</p>
+                    <p
+        >This action will create an invoice for every selected partner.</p>
                     <group>
-                        <field name="invoice_date"/>
-                        <field name="payment_term_id"/>
-                        <field name="billing_point_id"/>
+                        <field name="invoice_date" />
+                        <field name="payment_term_id" />
+                        <field name="billing_point_id" />
                     </group>
                     <footer>
-                        <button string="Create Invoices" name="create_invoices" type="object"
-                                default_focus="1" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button
+            string="Create Invoices"
+            name="create_invoices"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+          />
+                        <button
+            string="Cancel"
+            class="btn-secondary"
+            special="cancel"
+          />
                     </footer>
                 </form>
             </field>
@@ -28,6 +37,4 @@
                     res_model="create.currency.difference.invoices" src_model="res.partner"
                     view_mode="form" target="new" view_type="form"/> -->
 
-
-    </data>
 </odoo>

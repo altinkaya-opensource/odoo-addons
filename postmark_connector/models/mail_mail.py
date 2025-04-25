@@ -97,7 +97,7 @@ class MailMail(models.Model):
 
         msg_from = self.email_from
         if "@altinkaya.com" not in msg_from:
-            msg_from = '\"ALTINKAYA\" <erp@altinkaya.com>'
+            msg_from = '"ALTINKAYA" <erp@altinkaya.com>'
 
         params["From"] = msg_from
         if self.reply_to:
@@ -107,7 +107,10 @@ class MailMail(models.Model):
         if self.headers:
             try:
                 headers.update(safe_eval(self.headers))
-            except Exception:
+            except Exception as exc:
+                _logger.error(
+                    "Error while parsing headers for email %s: %s", self.id, exc
+                )
                 pass
 
         params["Headers"] = headers

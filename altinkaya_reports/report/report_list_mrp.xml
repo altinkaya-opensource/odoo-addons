@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <template id="report_list_mrp_report_data">
             <t t-call="web.html_container">
                 <style>
@@ -33,9 +32,9 @@
                                     <td class="text-right">
                                         Tarih :
                                         <span
-                      t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
-                      t-options="{'widget': 'date'}"
-                    />
+                    t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                    t-options="{'widget': 'date'}"
+                  />
                                     </td>
                                 </tr>
 
@@ -49,8 +48,8 @@
                     <div class="row">
                         <div class="col-12">
                             <t
-                t-call="altinkaya_reports.altinkaya_mrp_report_data_table"
-              />
+              t-call="altinkaya_reports.altinkaya_mrp_report_data_table"
+            />
                         </div>
                     </div>
                 </div>
@@ -62,15 +61,15 @@
                 <tr>
                     <th class="text-center" style="width:150px">No</th>
                     <th
-            class="text-center"
-            style="width:500px"
-          >Ürün Adı Hammaddeler ve Notlar</th>
+          class="text-center"
+          style="width:500px"
+        >Ürün Adı Hammaddeler ve Notlar</th>
                     <th class="text-center" style="width:100px">Miktar</th>
                     <th class="text-center" style="width:100px">Gerçekleşen Miktar</th>
                     <th
-            class="text-center"
-            style="width:150px"
-          >Başlama / Bitiş Tarih saati</th>
+          class="text-center"
+          style="width:150px"
+        >Başlama / Bitiş Tarih saati</th>
                     <th class="text-center" style="width:100px">Operatör</th>
                     <th class="text-center" style="width:100px">İmza</th>
                 </tr>
@@ -113,5 +112,4 @@
             </table>
         </template>
 
-    </data>
 </odoo>

@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import api, fields, models, _, tools
+from odoo import _, fields, models, tools
 
 
 class SurveyQuestion(models.Model):
@@ -12,7 +12,6 @@ class SurveyQuestion(models.Model):
     )
 
     star_count = fields.Integer(
-        string="Star Count",
         default=5,
         help="Number of stars to be displayed in the survey.",
     )

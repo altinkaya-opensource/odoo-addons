@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api, _
-from odoo.tools.misc import formatLang
 from ast import literal_eval
+
+from odoo import _, api, fields, models
+from odoo.tools.misc import formatLang
 
 
 class AccountJournal(models.Model):
@@ -20,7 +20,7 @@ class AccountJournal(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        rec = super(AccountJournal, self).create(vals_list)
+        rec = super().create(vals_list)
         issue_checks = self.env.ref("account_check.account_payment_method_issue_check")
         for r in rec:
             if (
@@ -90,7 +90,7 @@ class AccountJournal(models.Model):
                 ]
             )
         return dict(
-            super(AccountJournal, self).get_journal_dashboard_datas(),
+            super().get_journal_dashboard_datas(),
             num_checks_to_numerate=num_checks_to_numerate,
             num_holding_third_checks=len(holding_checks),
             show_third_checks=(

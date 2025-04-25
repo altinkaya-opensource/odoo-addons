@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
 import logging
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -41,7 +41,10 @@ class ResCompany(models.Model):
             raise UserError(_("Check type %s not implemented!") % check_type)
         if not account:
             raise UserError(
-                _("No checks %s account defined for company %s")
-                % (check_type, self.name)
+                _(
+                    "No checks %(c_type)s account defined for company %(name)s",
+                    c_type=check_type,
+                    name=self.name,
+                )
             )
         return account

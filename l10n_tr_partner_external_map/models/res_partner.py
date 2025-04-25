@@ -1,17 +1,19 @@
-'''
+"""
 Created on Jan 24, 2019
 
 @author: cq
-'''
-from odoo import models, _
+"""
+
 import logging
+
+from odoo import _, models
 from odoo.exceptions import UserError
 
 logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
     def _address_as_string(self):
         self.ensure_one()
@@ -30,4 +32,4 @@ class ResPartner(models.Model):
             addr.append(self.country_id.name)
         if not addr:
             raise UserError(_("Address missing on partner '%s'.") % self.name)
-        return ' '.join(addr)
+        return " ".join(addr)

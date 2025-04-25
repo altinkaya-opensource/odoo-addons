@@ -1,13 +1,12 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api
-from odoo.tools import float_compare, float_is_zero
+from odoo import models
 
 
 class StockPickin(models.Model):
     _inherit = "stock.picking"
 
-    # 
+    #
     # def button_validate(self):
     #     """Overridden to create lot_id for move_lines automatically"""
     #     picking_type = self.picking_type_id

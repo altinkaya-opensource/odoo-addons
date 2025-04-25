@@ -3,7 +3,7 @@
 #
 # @author: dogan
 #
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class StockWarehouseOrderpoint(models.Model):

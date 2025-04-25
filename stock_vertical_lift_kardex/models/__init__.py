@@ -3,4 +3,3 @@
 from . import stock_vertical_lift_kardex
 from . import stock_location
 from . import stock_move
-

@@ -8,7 +8,6 @@ class ProductTemplate(models.Model):
         "Has production BoM", compute="_compute_has_production_bom", store=True
     )
 
-
     @api.depends("bom_ids", "bom_ids.type")
     def _compute_has_production_bom(self):
         self.has_production_bom = any(

@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-
-from odoo import models, fields, api
-from odoo.tools import float_is_zero, float_compare
 from datetime import date
+
+from odoo import fields, models
+from odoo.tools import float_is_zero
 
 
 class AccountMoveLine(models.Model):
@@ -53,7 +52,7 @@ class AccountMoveLine(models.Model):
             vals.update(
                 {
                     "amount_currency": amount_currency,
-                    "currency_id": partner_id.property_account_receivable_id.currency_id.id,
+                    "currency_id": partner_id.property_account_receivable_id.currency_id.id,  # noqa
                 }
             )
 
@@ -95,12 +94,11 @@ class AccountMoveLine(models.Model):
         else:
             amls = self.browse(list(amls))
 
-        # If we have multiple currency, we can only base ourselve on debit-credit to see if it is fully reconciled
-        currency = set([a.currency_id for a in amls if a.currency_id.id != False])
-        multiple_currency = False
+        # If we have multiple currency, we can only base ourselve on
+        # debit-credit to see if it is fully reconciled
+        currency = set([a.currency_id for a in amls if a.currency_id.id])
         if len(currency) != 1:
             currency = False
-            multiple_currency = True
         else:
             currency = list(currency)[0]
         # Get the sum(debit, credit, amount_currency) of all amls involved
@@ -118,11 +116,11 @@ class AccountMoveLine(models.Model):
             total_amount_currency += aml.amount_currency
             # Convert in currency if we only have one currency and no amount_currency
             if not aml.amount_currency and currency:
-                multiple_currency = True
                 total_amount_currency += aml.company_id.currency_id._convert(
                     aml.balance, currency, aml.company_id, aml.date
                 )
-            # If we still have residual value, it means that this move might need to be balanced using an exchange rate entry
+            # If we still have residual value, it means that this move might
+            # need to be balanced using an exchange rate entry
             if aml.amount_residual != 0 or aml.amount_residual_currency != 0:
                 if not to_balance.get(aml.currency_id):
                     to_balance[aml.currency_id] = [self.env["account.move.line"], 0]
@@ -139,16 +137,15 @@ class AccountMoveLine(models.Model):
             {
                 "partial_reconcile_ids": [(6, 0, partial_rec_ids)],
                 "reconciled_line_ids": [(6, 0, amls.ids)],
-                #    'exchange_move_id': invoice.move_id.id, bu hiçbir işimize yaramıyor ama
-                # uzlaştırmayı kaldırırken veya faturayı iptal ederken hata veriyor
             }
         )
 
     def _reconcile(
         self, writeoff_acc_id=False, writeoff_journal_id=False, diff_aml=False
     ):
-        # Empty self can happen if the user tries to reconcile entries which are already reconciled.
-        # The calling method might have filtered out reconciled lines.
+        # Empty self can happen if the user tries to reconcile entries which
+        # are already reconciled. The calling method might have filtered out
+        # reconciled lines.
         if not self:
             return True
 
@@ -157,7 +154,8 @@ class AccountMoveLine(models.Model):
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env["account.move.line"]
-        # if writeoff_acc_id specified, then create write-off move with value the remaining amount from move in self
+        # if writeoff_acc_id specified, then create write-off move with
+        # value the remaining amount from move in self
         if writeoff_acc_id and writeoff_journal_id and remaining_moves:
             all_aml_share_same_currency = all(
                 [x.currency_id == self[0].currency_id for x in self]

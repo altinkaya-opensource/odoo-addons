@@ -10,6 +10,8 @@ extend-select = [
     "I",  # isort
     "UP",  # pyupgrade
 ]
+extend-safe-fixes = ["UP008"]
+ignore = ["B904", "E741", "B023"]
 exclude = ["setup/*"]
 
 [format]

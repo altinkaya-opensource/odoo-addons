@@ -3,11 +3,9 @@
 #
 # @author: dogan
 #
-from collections import defaultdict
 
 from odoo import _, fields, models
 from odoo.exceptions import Warning as UserError
-from odoo.tools.float_utils import float_round
 
 
 class MrpBoM(models.Model):

@@ -4,10 +4,10 @@
 {
     "name": "Altinkaya Stock Lot Extensions",
     "summary": "Adds custom fields to stock.production.lot",
-    "version": "13.0.1.0.0",
+    "version": "16.0.1.0.0",
     "category": "stock",
-    "website": "https://github.com/yibudak",
-    "author": "Yiğit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,

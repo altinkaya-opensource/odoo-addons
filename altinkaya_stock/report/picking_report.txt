@@ -25,7 +25,7 @@
 {% for orderitem in o.move_lines %} {%if (((o.move_lines.ids.index(orderitem.id)%23)==1) and (o.move_lines.ids.index(orderitem.id)!=1)) %}
 
                                                                Sayfa ${((int(o.move_lines.ids.index(orderitem.id)-1)/-24)*-1)}/${((int(len(o.move_lines.ids))/-24)*-1)}
- 
+
 
 
 
@@ -54,4 +54,3 @@
  ${orderitem.product_id.display_name[:80].ljust(80) }      ${str(orderitem.product_uom_qty).rjust(8) or '' }${orderitem.product_uom.name.ljust(8) or '' }{% if orderitem.procurement_id.sale_line_id.order_id.client_order_ref %}(${orderitem.procurement_id.sale_line_id.order_id.client_order_ref[:12]  or '' }){%end %}{% if  (orderitem.procurement_id.sale_line_id.order_id.name) %}(${orderitem.procurement_id.sale_line_id.order_id.name[:10]  or '' }){% end %}{% end %}
                                                                       -----------------Liste Sonu--------------------
  {% if o.comment_irsaliye %}Not:${o.comment_irsaliye  or '' }{% end %}
- 

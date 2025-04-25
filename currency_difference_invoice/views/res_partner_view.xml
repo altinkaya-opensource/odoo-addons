@@ -1,28 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
 
-        <record id="partner_currency_difference_view" model="ir.ui.view">
-            <field name="name">partner.currency.diff.form.view</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form"/>
-            <field name="arch" type="xml">
-                <group name="banks" position="before">
+    <record id="partner_currency_difference_view" model="ir.ui.view">
+        <field name="name">partner.currency.diff.form.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <group name="banks" position="before">
 
-                    <group string="Currency Difference" colspan="2" col="2">
-                        <group>
-                            <field name="currency_difference_checked"/>
-                            <button name="action_generate_currency_diff_invoice" type="object"
-                                    string="Calculate Difference Invoice"
-                                    attrs="{'invisible': [('parent_id','!=',False)]}" options="{}"/>
-                        </group>
-                        <field name="currency_difference_amls"/>
-
+                <group string="Currency Difference" colspan="2" col="2">
+                    <group>
+                        <field name="currency_difference_checked" />
+                        <button
+              name="action_generate_currency_diff_invoice"
+              type="object"
+              string="Calculate Difference Invoice"
+              attrs="{'invisible': [('parent_id','!=',False)]}"
+              options="{}"
+            />
                     </group>
+                    <field name="currency_difference_amls" />
 
                 </group>
-            </field>
-        </record>
 
-    </data>
+            </group>
+        </field>
+    </record>
+
 </odoo>

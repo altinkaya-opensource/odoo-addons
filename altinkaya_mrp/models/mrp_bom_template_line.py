@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class MrpBomTemplateLine(models.Model):
@@ -15,7 +15,6 @@ class MrpBomTemplateLine(models.Model):
     )
 
     sequence = fields.Integer(
-        string="Sequence",
         default=100,
     )
 
@@ -170,7 +169,7 @@ class MrpBomTemplateLine(models.Model):
             line_attribute_ids = self.mapped(
                 "product_tmpl_id.attribute_line_ids.attribute_id"
             )
-            additional_attr_vals = product.product_template_attribute_value_ids.product_attribute_value_id.filtered(
+            additional_attr_vals = product.product_template_attribute_value_ids.product_attribute_value_id.filtered(  # noqa
                 lambda a: a.attribute_id in line_attribute_ids and a not in common_attrs
             )
             matched_products = match_products(matched_products, additional_attr_vals)

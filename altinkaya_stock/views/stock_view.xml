@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <menuitem
-        name="Product Categories"
-        action="product.product_category_action_form"
-        id="menu_product_category_on_stock"
-        parent="stock.menu_stock_inventory_control"
-        sequence="16"
-    />
+    name="Product Categories"
+    action="product.product_category_action_form"
+    id="menu_product_category_on_stock"
+    parent="stock.menu_stock_inventory_control"
+    sequence="16"
+  />
 
     <data>
         <record id="view_warehouse_inherit_altinkaya" model="ir.ui.view">
             <field name="name">Altinkaya Warehouse Customization</field>
             <field name="model">stock.warehouse</field>
-            <field name="inherit_id" ref="stock.view_warehouse"/>
-            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="stock.view_warehouse" />
+            <field name="priority" eval="40" />
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='group_resupply']" position="inside">
-                    <field name='selectable_on_procurement_wizard'/>
+                    <field name='selectable_on_procurement_wizard' />
                 </xpath>
             </field>
         </record>
@@ -25,35 +25,47 @@
         <record id="altinkaya_customV7_stock_picking_out_form" model="ir.ui.view">
             <field name="name">Altinkaya CustomV7 Stock Picking Out Form</field>
             <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form"/>
-            <field name="priority" eval="1"/>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="priority" eval="100" />
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button name="open_sales_order" string="Sales Order" icon="fa-dollar"
-                        type="object"
-                        attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                    <button
+            name="open_sales_order"
+            string="Sales Order"
+            icon="fa-dollar"
+            type="object"
+            attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"
+          />
                 </xpath>
 
                 <xpath expr="//field[@name='partner_id']" position="replace">
-                    <field name="partner_id" context="{'show_address': 1}" options="{'always_reload': True}" nolabel="1"/>
+                    <field
+            name="partner_id"
+            context="{'show_address': 1}"
+            options="{'always_reload': True}"
+            nolabel="1"
+          />
                 </xpath>
 
                 <field name="location_id" position="before">
-                    <field name="carrier_id"/>
-                    <field name="hazirlayan"/>
-                    <field name='x_durum'/>
+                    <field name="carrier_id" />
+                    <field name="hazirlayan" />
+                    <field name='x_durum' />
                 </field>
 
-                <xpath expr="//field[@name='move_ids_without_package']" position='after'>
+                <xpath
+          expr="//field[@name='move_ids_without_package']"
+          position='after'
+        >
                     <group name="notes">
-                        <field name="sale_note"/>
+                        <field name="sale_note" />
                     </group>
                 </xpath>
 
-                <xpath expr="//page[@name='note']" position='inside'></xpath>
-                
-                <field name="priority" position="replace"/>
-                <field name="date_done" position="replace"/>
+                <xpath expr="//page[@name='note']" position='inside' />
+
+                <field name="priority" position="replace" />
+                <field name="date_done" position="replace" />
 
                 <!--
                 <xpath expr="//field[@name='date']" position="replace">
@@ -69,19 +81,19 @@
         <record id="view_stock_move_form" model="ir.ui.view">
             <field name="name">stock.move.form</field>
             <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_move_form"/>
-            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="stock.view_move_form" />
+            <field name="priority" eval="40" />
             <field name="arch" type="xml">
                 <field name="procure_method" position="after">
-                    <field name="warehouse_id"></field>
-                    <field name="route_ids"></field>
-                    <field name="rule_id"></field>
-                    <field name="production_id"></field>
-                    <field name="picking_id"></field>
-                    <field name="created_production_id"></field>
-                    <field name="raw_material_production_id"></field>
-                    <field name="created_purchase_line_id"></field>
-                    <field name="move_line_ids"></field>
+                    <field name="warehouse_id" />
+                    <field name="route_ids" />
+                    <field name="rule_id" />
+                    <field name="production_id" />
+                    <field name="picking_id" />
+                    <field name="created_production_id" />
+                    <field name="raw_material_production_id" />
+                    <field name="created_purchase_line_id" />
+                    <field name="move_line_ids" />
                 </field>
             </field>
         </record>

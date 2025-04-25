@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="choose_delivery_carrier_view_form" model="ir.ui.view">
-        <field name="name">choose.delivery.carrier.form - delivery_integration_base</field>
+        <field name="name">choose.delivery.carrier.form</field>
         <field name="model">choose.delivery.carrier</field>
         <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form" />
+        <field name="priority" eval="100" />
         <field name="arch" type="xml">
             <xpath expr="//form" position="replace">
                 <form string="Carrier Rates">
@@ -11,19 +12,41 @@
                     <field name="carrier_prices" widget="many2many">
                         <tree editable="top" delete="0" create="0">
                             <field name="carrier_id" readonly="1" />
-                            <field name="price" readonly="1" currency_field="currency_id" />
+                            <field
+                name="price"
+                readonly="1"
+                currency_field="currency_id"
+              />
                             <field name="currency_id" invisible="1" />
                             <field name="try_currency_id" invisible="1" />
-                            <field name="try_price" readonly="1" attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}" currency_field="try_currency_id" />
+                            <field
+                name="try_price"
+                readonly="1"
+                attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
+                currency_field="try_currency_id"
+              />
                             <field name="selected" />
                         </tree>
                     </field>
                     <div>
-                        <p class="text-muted">Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
+                        <p
+              class="text-muted"
+            >Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
                     </div>
                     <footer>
-                        <button name="button_confirm" type="object" string="Apply" class="btn-primary" data-hotkey="q"/>
-                        <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary"/>
+                        <button
+              name="button_confirm"
+              type="object"
+              string="Apply"
+              class="btn-primary"
+              data-hotkey="q"
+            />
+                        <button
+              string="Discard"
+              special="cancel"
+              data-hotkey="z"
+              class="btn-secondary"
+            />
                     </footer>
                 </form>
             </xpath>

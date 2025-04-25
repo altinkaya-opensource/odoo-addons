@@ -250,7 +250,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
         )
 
     def print_label(self):
-        # Do not print rendered text with Odoo's default behaviour.
+        # Do not print rendered text with Odoo's default behaviour.
         self = self.with_context(must_skip_send_to_printer=True)
         self.generate_labels()
         printer = self.env.user.context_def_label_printer

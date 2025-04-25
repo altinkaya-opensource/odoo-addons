@@ -61,8 +61,7 @@ class CRMClaimMapping(models.AbstractModel):
 
         elif self._name == "stock.picking":
             sale_order = (
-                fields.first(self.mapped("move_ids.sale_line_id.order_id"))
-                or False
+                fields.first(self.mapped("move_ids.sale_line_id.order_id")) or False
             )
 
         else:

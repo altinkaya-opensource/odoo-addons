@@ -1,7 +1,11 @@
 <?xml version="1.0" ?>
 <odoo>
     <data>
-        <template id="report_mrporder_altinkaya" inherit_id="mrp.report_mrporder">
+        <template
+      id="report_mrporder_altinkaya"
+      inherit_id="mrp.report_mrporder"
+      priority="100"
+    >
             <xpath expr="//t[@t-call='web.internal_layout']" position="replace">
                 <t t-call="web.basic_layout">
                     <div class="header">

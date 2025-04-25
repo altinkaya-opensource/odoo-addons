@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <record id="view_account_payment_term_form_altinkaya_invoice" model="ir.ui.view">
-            <field name="name">altinkaya.invoice.account.payment.term.form.inherit</field>
+        <record
+    id="view_account_payment_term_form_altinkaya_invoice"
+    model="ir.ui.view"
+  >
+            <field
+      name="name"
+    >altinkaya.invoice.account.payment.term.form.inherit</field>
             <field name="model">account.payment.term</field>
-            <field name="inherit_id" ref="account.view_payment_term_form"/>
+            <field name="inherit_id" ref="account.view_payment_term_form" />
             <field name="arch" type="xml">
-                <data>
                     <xpath expr="//field[@name='name']" position="after">
-                        <field name="convert_invoice_to_try"/>
+                        <field name="convert_invoice_to_try" />
                     </xpath>
-                </data>
             </field>
         </record>
-    </data>
 </odoo>

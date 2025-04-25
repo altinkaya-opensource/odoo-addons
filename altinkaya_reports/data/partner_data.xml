@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
 
         <!--Email template for send partner statement-->
         <record id="email_template_edi_send_statement" model="mail.template">
@@ -13,8 +12,8 @@
             <field name="auto_delete" eval="True" />
             <field name="report_template" ref="partner_statement_altinkaya" />
             <field
-        name="body_html"
-      ><![CDATA[
+      name="body_html"
+    ><![CDATA[
 <div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
    <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
        Değerli iş ortağımız <t t-out="object.name or ''" />,
@@ -43,8 +42,8 @@
             <field name="auto_delete" eval="True" />
             <field name="report_template" ref="partner_statement_altinkaya_en" />
             <field
-        name="body_html"
-      ><![CDATA[
+      name="body_html"
+    ><![CDATA[
 <div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
    <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
        Our valued business partner <t t-out="object.name or ''" />,
@@ -62,5 +61,4 @@
             ]]></field>
         </record>
 
-    </data>
 </odoo>

@@ -10,4 +10,4 @@ from odoo import fields, models
 class ProductCategory(models.Model):
     _inherit = "product.category"
 
-    custom_products = fields.Boolean("Custom Products")
+    custom_products = fields.Boolean()

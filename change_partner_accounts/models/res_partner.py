@@ -1,4 +1,4 @@
-from odoo import models, api, fields, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -6,7 +6,7 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     @api.depends("property_account_receivable_id", "property_account_payable_id")
-    def _get_partner_currency(self):
+    def _compute_partner_currency(self):
         for partner in self:
             if (
                 partner.property_account_receivable_id.currency_id
@@ -22,7 +22,8 @@ class ResPartner(models.Model):
     @api.depends("move_line_ids")
     def _compute_balance_fields(self):
         """
-        Compute balance fields for partners. Using SQL to avoid performance issues and update_date field update.
+        Compute balance fields for partners. Using SQL to avoid performance
+        issues and update_date field update.
         :return:
         """
         if not self.ids:
@@ -31,8 +32,10 @@ class ResPartner(models.Model):
         UPDATE
           res_partner rp
         SET
-          balance_due = CASE WHEN due_balance_table.due_balance > 0 THEN due_balance_table.due_balance ELSE 0 END,
-          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0 THEN due_balance_table.due_amount_currency ELSE 0 END,
+          balance_due = CASE WHEN due_balance_table.due_balance > 0
+          THEN due_balance_table.due_balance ELSE 0 END,
+          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0
+          THEN due_balance_table.due_amount_currency ELSE 0 END,
           balance = balance_table.balance,
           currency_balance = balance_table.amount_currency
         FROM
@@ -77,8 +80,9 @@ class ResPartner(models.Model):
         """
         params = (tuple(self.ids), tuple(self.ids), tuple(self.ids))
         self._cr.execute(query, params)
-        # HACK: Since we are directly updating the database in a compute method, this causes the cache to be out of sync
-        # also invalidate_cache() method causes CacheMiss error, this looks like a bug in Odoo,
+        # HACK: Since we are directly updating the database in a compute method,
+        # this causes the cache to be out of sync also invalidate_cache() method
+        # causes CacheMiss error, this looks like a bug in Odoo,
         # so we are using search_read to update the cache.
         self.search_read(
             domain=[("id", "in", self.ids)],
@@ -96,7 +100,7 @@ class ResPartner(models.Model):
         string="Partner Currency",
         readonly=True,
         store=True,
-        compute="_get_partner_currency",
+        compute="_compute_partner_currency",
     )
 
     balance = fields.Monetary(
@@ -205,7 +209,10 @@ class ResPartner(models.Model):
     )
 
     def change_accounts_to_usd(self):
-        """Change partners receivable and payable account to USD and update move lines accordingly"""
+        """
+        Change partners receivable and payable account to
+        USD and update move lines accordingly
+        """
         if self.parent_id:
             return self.parent_id.change_accounts_to_usd()
         receivable_usd = self.env["account.account"].search(
@@ -222,14 +229,14 @@ class ResPartner(models.Model):
 
         cr = self.env.cr
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                receivable_usd.id, self.id, old_receivable.id
-            )
+            """update account_move_line set account_id = %s "
+            "where partner_id = %s and account_id = %s""",
+            (receivable_usd.id, self.id, old_receivable.id),
         )
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                payable_usd.id, self.id, old_payable.id
-            )
+            """update account_move_line set account_id = %s "
+            "where partner_id = %s and account_id = %s""",
+            (payable_usd, self.id, old_payable.id),
         )
 
         self.write(
@@ -262,16 +269,18 @@ class ResPartner(models.Model):
             cr.execute(
                 """ update account_move_line
                  SET
-                  amount_currency = {0},
-                  currency_id = {1},
-                  amount_residual_currency = {2}
-                where id = {3}""".format(
-                    amount_currency, currency_id.id, amount_residual_currency, aml.id
-                )
+                  amount_currency = %s,
+                  currency_id = %s,
+                  amount_residual_currency = %s
+                where id = %s""",
+                (amount_currency, currency_id.id, amount_residual_currency, aml.id),
             )
 
     def change_accounts_to_eur(self):
-        """Change partners receivable and payable account to eur and update move lines accordingly"""
+        """
+        Change partners receivable and payable account to eur
+        and update move lines accordingly
+        """
         if self.parent_id:
             return self.parent_id.change_accounts_to_eur()
         receivable_eur = self.env["account.account"].search(
@@ -289,14 +298,14 @@ class ResPartner(models.Model):
         cr = self.env.cr
 
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                receivable_eur.id, self.id, old_receivable.id
-            )
+            """update account_move_line set account_id = %s "
+            "where partner_id = %s and account_id = %s""",
+            (receivable_eur.id, self.id, old_receivable.id),
         )
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                payable_eur.id, self.id, old_payable.id
-            )
+            """update account_move_line set account_id = %s "
+            "where partner_id = %s and account_id = %s""",
+            (payable_eur.id, self.id, old_payable.id),
         )
 
         self.write(
@@ -327,16 +336,18 @@ class ResPartner(models.Model):
             cr.execute(
                 """ update account_move_line
                  SET
-                  amount_currency = {0},
-                  currency_id = {1},
-                  amount_residual_currency = {2}
-                where id = {3}""".format(
-                    amount_currency, currency_id.id, amount_residual_currency, aml.id
-                )
+                  amount_currency = %s,
+                  currency_id = %s,
+                  amount_residual_currency = %s
+                where id = %s""",
+                (amount_currency, currency_id.id, amount_residual_currency, aml.id),
             )
 
     def change_accounts_to_try(self):
-        """Change partners receivable and payable account to company currency and donot update move lines"""
+        """
+        Change partners receivable and payable account to company
+        currency and donot update move lines
+        """
         if self.parent_id:
             return self.parent_id.change_accounts_to_try()
         receivable_try = self.env["account.account"].search(
@@ -353,14 +364,16 @@ class ResPartner(models.Model):
 
         cr = self.env.cr
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                receivable_try.id, self.id, old_receivable.id
-            )
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s
+            """,
+            (receivable_try.id, self.id, old_receivable.id),
         )
         cr.execute(
-            """update account_move_line set account_id = {0} where partner_id = {1} and account_id = {2}""".format(
-                payable_try.id, self.id, old_payable.id
-            )
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s
+            """,
+            (payable_try.id, self.id, old_payable.id),
         )
         self.write(
             {

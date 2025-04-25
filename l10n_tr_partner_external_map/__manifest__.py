@@ -1,16 +1,15 @@
 {
-    'name': 'Partner External Map For Turkey',
-    'version': '16.0.2',
-    'summary': "Add Partner external Map to Neighbour",
-    'description': """This Module is used to add custom field in res.partner Object""",
-    'category': 'Partner',
-    'website':'http://www.codequarters.com',
-    'author': 'Onur UGUR,Codequarters',
-    'depends': ['l10n_tr_address','partner_external_map'],
-    'license': 'AGPL-3',
-    'data': [
-        'views/res_partner_view.xml',
+    "name": "Partner External Map For Turkey",
+    "version": "16.0.1.0.0",
+    "summary": "Add Partner external Map to Neighbour",
+    "category": "Partner",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Onur UGUR,Codequarters, Altinkaya Enclosures",
+    "depends": ["l10n_tr_address", "partner_external_map"],
+    "license": "AGPL-3",
+    "data": [
+        "views/res_partner_view.xml",
     ],
-    'installable': True,
-    'auto_install': False
+    "installable": True,
+    "auto_install": False,
 }

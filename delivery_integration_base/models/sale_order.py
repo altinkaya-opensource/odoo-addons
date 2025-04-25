@@ -114,7 +114,7 @@ class SaleOrder(models.Model):
         if res and res.name and res.order_id.carrier_id:
             res.name = res.order_id.carrier_id.product_id.display_name
         # To update discount
-        res.with_context({"sale_id": res.order_id.id})._compute_discount()
+        res.with_context(**{"sale_id": res.order_id.id})._compute_discount()
         return res
 
     # def action_sale_get_rates_wizard(self):

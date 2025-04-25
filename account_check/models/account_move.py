@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class AccountMove(models.Model):
@@ -34,14 +34,14 @@ class AccountMove(models.Model):
                     lambda x: x.account_id == deferred_account
                 )
                 deferred_account_line.remove_move_reconcile()
-        return super(AccountMove, self).action_cancel()
+        return super().action_cancel()
 
     def action_move_create(self):
         """
         Si al validar la factura, la misma tiene un cheque de rechazo asociado
         intentamos concilarlo
         """
-        res = super(AccountMove, self).action_move_create()
+        res = super().action_move_create()
         for rec in self.filtered(lambda x: x.rejected_check_id):
             check = rec.rejected_check_id
             if check.state == "rejected" and check.type == "issue_check":

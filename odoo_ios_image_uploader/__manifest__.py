@@ -7,14 +7,10 @@
     "summary": """
         This module provides a connector between Odoo and iOS Image Uploader App.
     """,
-    "description": """
-    - This module provides a connector between Odoo and iOS Image Uploader App.
-    - Product images are based on "base_multi_image.image" model from OCA.
-    """,
     "version": "16.0.1.0.0",
     "category": "Stock",
-    "website": "https://github.com/yibudak/odoo-image-uploader",
-    "author": "Yiğit Budak, krokan",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, krokan, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,

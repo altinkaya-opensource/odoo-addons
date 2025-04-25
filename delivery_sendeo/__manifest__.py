@@ -3,10 +3,10 @@
 {
     "name": "Delivery Sendeo",
     "summary": "Delivery Carrier implementation for Sendeo Kargo API",
-    "version": "12.0.1.1.0",
+    "version": "16.0.1.1.0",
     "category": "Stock",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Yiğit Budak, Odoo Turkey Localization Group",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
@@ -16,7 +16,7 @@
         "views/delivery_sendeo_view.xml",
         # "views/address_district_views.xml",
         # "data/delivery_sendeo_data.xml",
-        'report/sendeo_carrier_label.xml',
-        'report/reports.xml',
+        "report/sendeo_carrier_label.xml",
+        "report/reports.xml",
     ],
 }

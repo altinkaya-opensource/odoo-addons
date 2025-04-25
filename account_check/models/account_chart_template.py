@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api, fields
 import logging
+
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -34,7 +34,7 @@ class AccountChartTemplate(models.Model):
     def _load_template(
         self, company, code_digits=None, account_ref=None, taxes_ref=None
     ):
-        account_ref, taxes_ref = super(AccountChartTemplate, self)._load_template(
+        account_ref, taxes_ref = super()._load_template(
             company,
             code_digits=code_digits,
             account_ref=account_ref,
@@ -60,9 +60,7 @@ class AccountChartTemplate(models.Model):
         and they will be disable by default
         """
 
-        res = super(AccountChartTemplate, self)._create_bank_journals(
-            company, acc_template_ref
-        )
+        res = super()._create_bank_journals(company, acc_template_ref)
 
         # creamos diario para cheques de terceros
         received_third_check = self.env.ref(
@@ -77,7 +75,9 @@ class AccountChartTemplate(models.Model):
                 "type": "cash",
                 "company_id": company.id,
                 "inbound_payment_method_line_ids": [(4, received_third_check.id, None)],
-                "outbound_payment_method_line_ids": [(4, delivered_third_check.id, None)],
+                "outbound_payment_method_line_ids": [
+                    (4, delivered_third_check.id, None)
+                ],
             }
         )
 

@@ -1,18 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="account_move_form_ext_inh" model="ir.ui.view">
         <field name="name">account.move.form.ext.inh.form</field>
-        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="priority" eval="100" />
         <field name="model">account.move</field>
         <field name="arch" type="xml">
-            <field name="invoice_incoterm_id" position="replace"/>
+            <field name="invoice_incoterm_id" position="replace" />
             <page name="other_info" position="inside">
                 <group string="Incoterms">
-                    <field name="invoice_incoterm_id"/>
-                    <field name="req_destination_port" invisible="1"/>
-                    <field name="req_transport_type" invisible="1"/>
-                    <field name="destination_port" attrs="{'required':[('req_destination_port', '=', True)]}"/>
-                    <field name="transport_type" attrs="{'required':[('req_transport_type', '=', True)]}"/>
+                    <field name="invoice_incoterm_id" />
+                    <field name="req_destination_port" invisible="1" />
+                    <field name="req_transport_type" invisible="1" />
+                    <field
+            name="destination_port"
+            attrs="{'required':[('req_destination_port', '=', True)]}"
+          />
+                    <field
+            name="transport_type"
+            attrs="{'required':[('req_transport_type', '=', True)]}"
+          />
                 </group>
             </page>
         </field>

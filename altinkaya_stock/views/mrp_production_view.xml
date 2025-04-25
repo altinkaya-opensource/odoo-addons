@@ -1,47 +1,106 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <record id="view_production_form_inherit_print_product_label" model="ir.ui.view">
-            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
-            <field name="name">mrp.production.form.inherit.label</field>
-            <field name="model">mrp.production</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <field name="production_location_id" position="after">
-                    <div colspan="2">
-                        <group col="2">
-                            <group class="oe_form">
-                                <field name="qty_available_sincan" string="Sincan" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_merkez" string="Merkez" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_enjek" string="Enjeksiyon" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_montaj" string="Montaj" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_torna" string="Torna" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                            </group>
-
-                            <group class="oe_form">
-                                <field name="qty_available_cnc" string="CNC" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_metal" string="Metal" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_boya" string="Boya" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_baski" string="Baskı" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                                <field name="qty_available_kaplama" string="Kaplama" widget="uom" options="{'uom_field': 'product_uom_id'}"/>
-                            </group>
+    <record id="view_production_form_inherit_print_product_label" model="ir.ui.view">
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="name">mrp.production.form.inherit.label</field>
+        <field name="model">mrp.production</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="production_location_id" position="after">
+                <div colspan="2">
+                    <group col="2">
+                        <group class="oe_form">
+                            <field
+                name="qty_available_sincan"
+                string="Sincan"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_merkez"
+                string="Merkez"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_enjek"
+                string="Enjeksiyon"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_montaj"
+                string="Montaj"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_torna"
+                string="Torna"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
                         </group>
-                    </div>
-                </field>
 
-                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
-                       position="after">
-                    <button name="action_create_procurement" type="object" string="Tedarik"
-                            attrs="{'invisible':[('state','in',['waiting','done'])]}"/>
-                    <button name="action_make_mts" type="object" string="Stoktan Al"
-                            attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"/>
-                </xpath>
-
+                        <group class="oe_form">
+                            <field
+                name="qty_available_cnc"
+                string="CNC"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_metal"
+                string="Metal"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_boya"
+                string="Boya"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_baski"
+                string="Baskı"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                            <field
+                name="qty_available_kaplama"
+                string="Kaplama"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                        </group>
+                    </group>
+                </div>
             </field>
-        </record>
+
+            <xpath
+        expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
+        position="after"
+      >
+                <button
+          name="action_create_procurement"
+          type="object"
+          string="Tedarik"
+          attrs="{'invisible':[('state','in',['waiting','done'])]}"
+        />
+                <button
+          name="action_make_mts"
+          type="object"
+          string="Stoktan Al"
+          attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
+        />
+            </xpath>
+
+        </field>
+    </record>
 
 
-        <!-- <record id="view_form_scrap_move_line" model="ir.ui.view">
+    <!-- <record id="view_form_scrap_move_line" model="ir.ui.view">
             <field name="inherit_id" ref="mrp.view_stock_move_lots"/>
             <field name="name">mrp.stock.move.scrap.button</field>
             <field name="model">stock.move</field>
@@ -50,15 +109,9 @@
                 <xpath expr="//field[@name='move_line_ids']/tree" position="inside">
                     <field name="state" invisible="1" />
                     <field name="product_type" invisible="1" />
-                    <button name="action_scrap_button"
-                            type="object"
-                            string="Scrap"
-                            class="oe_highlight"
-                            attrs="{'invisible':['|', ('state', 'in', ['draft', 'cancel', 'done']), ('product_type', '!=', 'product')]}"
-                    />
+                    <button name="action_scrap_button" type="object" string="Scrap" class="oe_highlight" attrs="{'invisible':['|', ('state', 'in', ['draft', 'cancel', 'done']), ('product_type', '!=', 'product')]}" />
                 </xpath>
             </field>
         </record> -->
 
-    </data>
 </odoo>

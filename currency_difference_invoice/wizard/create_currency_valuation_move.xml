@@ -1,20 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="res_partner_currency_valuation_move" model="ir.ui.view">
             <field name="name">create.currency.valuation.res.partner</field>
             <field name="model">create.currency.valuation.move</field>
             <field name="arch" type="xml">
                 <form string="Create Difference Invoices">
-                    <p>This action will currency valuation move for selected partners.</p>
+                    <p
+        >This action will currency valuation move for selected partners.</p>
                     <group>
-                        <field name="move_date"/>
+                        <field name="move_date" />
                     </group>
                     <footer>
-                        <button string="Create Move" name="create_move" type="object"
-                                default_focus="1" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button
+            string="Create Move"
+            name="create_move"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+          />
+                        <button
+            string="Cancel"
+            class="btn-secondary"
+            special="cancel"
+          />
                     </footer>
                 </form>
             </field>
@@ -27,5 +36,4 @@
                     view_mode="form" target="new" view_type="form"/> -->
 
 
-    </data>
 </odoo>

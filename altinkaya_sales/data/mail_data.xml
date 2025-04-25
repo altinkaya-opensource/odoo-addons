@@ -1,119 +1,203 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <data noupdate="1">
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
         <record id="email_template_edi_sale_altinkaya1" model="mail.template">
             <field name="name">Altinkaya Sales Order: Send by email</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="model_id" ref="sale.model_sale_order" />
             <field name="email_from">{{ object.user_id.email_formatted }}</field>
             <field name="partner_to">{{ object.partner_id.id }}</field>
-            <field name="subject">{{ object.company_id.name }} {{ object.state in ('draft', 'sent') and 'Quotation' or 'Order'}} (Ref {{object.name or 'n/a' }})</field>
+            <field
+      name="subject"
+    >{{ object.company_id.name }} {{ object.state in ('draft', 'sent') and 'Quotation' or 'Order'}} (Ref {{object.name or 'n/a' }})</field>
             <field name="body_html" type="html">
                 <t t-if="object.partner_id.lang == 'tr_TR'">
-                    <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);">
+                    <div
+          style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);"
+        >
 
-                        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">Sayın <t t-out="object.partner_id.name"/>
+                        <p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >Sayın <t t-out="object.partner_id.name" />
 ,</p>
 
-                        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-                            <t t-out="object.state in ('draft', 'sent') and 'Öncelikle ürünlerimizle ilgilendiğiniz için teşekkür ederiz. İstemiş olduğunuz ürünlerle ilgili fiyat teklifimizi ekte bulabilirsiniz.' or 'Ekte işleme aldığımız siparişinize ait bilgileri içeren sipariş emrini bulabilirsiniz.'"/>
+                        <p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+                            <t
+              t-out="object.state in ('draft', 'sent') and 'Öncelikle ürünlerimizle ilgilendiğiniz için teşekkür ederiz. İstemiş olduğunuz ürünlerle ilgili fiyat teklifimizi ekte bulabilirsiniz.' or 'Ekte işleme aldığımız siparişinize ait bilgileri içeren sipariş emrini bulabilirsiniz.'"
+            />
                         </p>
-                        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-                            <t t-out="object.state in ('draft', 'sent') and 'Teklifimizi işleme alabilmemiz için bu e-postaya teklifimizi onayladığınızı belirten bir cevap gönderebilir ya da teklifimizi onaylayıp bize geri gönderebilirsiniz.' or 'Siparişinizi en kısa sürede hazırlamak için çalışıyoruz.'"/>
+                        <p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+                            <t
+              t-out="object.state in ('draft', 'sent') and 'Teklifimizi işleme alabilmemiz için bu e-postaya teklifimizi onayladığınızı belirten bir cevap gönderebilir ya da teklifimizi onaylayıp bize geri gönderebilirsiniz.' or 'Siparişinizi en kısa sürede hazırlamak için çalışıyoruz.'"
+            />
                         </p>
-                        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-                            <t t-out="object.state in ('draft', 'sent') and 'Teklifimizle ' or 'Siparişinizle '"/>
-ilgili sormak istediğiniz soruları bu mesaja cevap vererek ya da <strong style="font-weight:bolder;">0312 3952768</strong> nolu telefonumuzdan bizi arayarak sorabilirsiniz.</p>
+                        <p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+                            <t
+              t-out="object.state in ('draft', 'sent') and 'Teklifimizle ' or 'Siparişinizle '"
+            />
+ilgili sormak istediğiniz soruları bu mesaja cevap vererek ya da <strong
+              style="font-weight:bolder;"
+            >0312 3952768</strong> nolu telefonumuzdan bizi arayarak sorabilirsiniz.</p>
 
-                        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;">
+                        <p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;"
+          >
                             <strong style="font-weight:bolder;">
-                                <t t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"/>
+                                <t
+                t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"
+              />
  Detayları</strong>
-                            <br/>
-                            <t t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"/>
+                            <br />
+                            <t
+              t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"
+            />
  Numarası: <strong style="font-weight:bolder;">
-                            <t t-out="object.name"/>
+                            <t t-out="object.name" />
                         </strong>
-                        <br/>
-                        <t t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"/>
+                        <br />
+                        <t
+              t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"
+            />
  Toplamı: <strong style="font-weight:bolder;">
-                        <t t-out="object.pricelist_id.currency_id.symbol"/>
-                        <t t-out=" '{0:,.2f}'.format(object.amount_total).replace('.','%').replace(',',' ').replace('%',',')"/>
+                        <t t-out="object.pricelist_id.currency_id.symbol" />
+                        <t
+                t-out=" '{0:,.2f}'.format(object.amount_total).replace('.','%').replace(',',' ').replace('%',',')"
+              />
                     </strong>
-                    <br/>
-                    <t t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"/>
- Tarihi: <t t-out="'{:%d.%m.%Y %H.%M}'.format(object.date_order)"/>
-                <br/>
+                    <br />
+                    <t
+              t-out="object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'"
+            />
+ Tarihi: <t t-out="'{:%d.%m.%Y %H.%M}'.format(object.date_order)" />
+                <br />
                 <t t-if="object.client_order_ref">
-         Sizin Referansınız: <t t-out="object.client_order_ref"/>
-                <br/>
+         Sizin Referansınız: <t t-out="object.client_order_ref" />
+                <br />
             </t>
             <t t-if="object.user_id">
-                <t t-out="object.state in ('draft', 'sent') and 'Teklifi' or 'Siparişi'"/>
- Hazırlayan : <a t-attf-href="mailto:{object.user_id.email or ''}?subject=Siparis%20{object.name}" style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);">
-                <t t-out="object.user_id.name"/>
+                <t
+                t-out="object.state in ('draft', 'sent') and 'Teklifi' or 'Siparişi'"
+              />
+ Hazırlayan : <a
+                t-attf-href="mailto:{object.user_id.email or ''}?subject=Siparis%20{object.name}"
+                style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);"
+              >
+                <t t-out="object.user_id.name" />
             </a>
         </t>
     </p>
     <t t-if="object.state in ('draft', 'sent')">
 
 
-        <br/>
-        <a style="text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: initial; margin-left: 120px;" t-attf-href="{object.get_portal_url()}">
-            <img src="https://www.altinkaya.com/web/content/604752?simdiode=1" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip792264" style="border-style:none;vertical-align:middle;"/>
+        <br />
+        <a
+              style="text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: initial; margin-left: 120px;"
+              t-attf-href="{object.get_portal_url()}"
+            >
+            <img
+                src="https://www.altinkaya.com/web/content/604752?simdiode=1"
+                class="o_we_selected_image"
+                data-original-title=""
+                title=""
+                aria-describedby="tooltip792264"
+                style="border-style:none;vertical-align:middle;"
+              />
         </a>
-        <br/>
-        <p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">Dilerseniz yukarıdaki şimdi öde butonuna tıklayarak ödemenizi web sitemiz üzerinden kredi kartınızla kolay ve güvenli bir şekide yapabilirsiniz:</p>
+        <br />
+        <p
+              style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+            >Dilerseniz yukarıdaki şimdi öde butonuna tıklayarak ödemenizi web sitemiz üzerinden kredi kartınızla kolay ve güvenli bir şekide yapabilirsiniz:</p>
         <font color="#222222" face="Lucica Grande, Ubuntu, Arial, Verdana, sans-serif">
             <span style="font-size: 12px;">YENİ: Havale/EFT açıklamasında </span>
         </font>
-        <span style="color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;">
-            <t t-out="object.name"/>
+        <span
+              style="color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;"
+            >
+            <t t-out="object.name" />
         </span>
-        <span style="font-size: 12px; color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;"> sipariş numaranızı belirtirseniz sistemimiz siparişi otomatik onaylar.</span>
-        <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);">
-            <font color="#222222" face="Lucica Grande, Ubuntu, Arial, Verdana, sans-serif">
+        <span
+              style="font-size: 12px; color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;"
+            > sipariş numaranızı belirtirseniz sistemimiz siparişi otomatik onaylar.</span>
+        <div
+              style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);"
+            >
+            <font
+                color="#222222"
+                face="Lucica Grande, Ubuntu, Arial, Verdana, sans-serif"
+              >
                 <span style="font-size: 12px;" />
             </font>
-            <br/>
+            <br />
         </div>
     </t>
-    <br/>
-    <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 0px; background-color: rgb(171, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;">
-        <h3 style="font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+    <br />
+    <div
+            style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 0px; background-color: rgb(171, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;"
+          >
+        <h3
+              style="font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;"
+            >
             <strong style="font-weight:bolder;text-transform:uppercase;">
-                <t t-out="object.company_id.name"/>
+                <t t-out="object.company_id.name" />
             </strong>
         </h3>
     </div>
-    <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);">
+    <div
+            style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);"
+          >
         <span style="color: #222; margin-bottom: 5px; display: block; ">
             <t t-if="object.company_id.partner_id">
-                <t t-out="object.company_id.partner_id.contact_address"/>
-                <br/>
+                <t t-out="object.company_id.partner_id.contact_address" />
+                <br />
             </t>
         </span>
         <t t-if="object.company_id.phone">
-            <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
-                Telefon:  <t t-out="object.company_id.phone"/>
-   Faks:  <t t-out="object.company_id.partner_id.fax"/>
+            <div
+                style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; "
+              >
+                Telefon:  <t t-out="object.company_id.phone" />
+   Faks:  <t t-out="object.company_id.partner_id.fax" />
         </div>
     </t>
     <t t-if="object.company_id.website">
-        <div style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;">
-                Web : <a t-attf-href="{object.company_id.website}" style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);">
-            <t t-out="object.company_id.website"/>
+        <div
+                style="font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;"
+              >
+                Web : <a
+                  t-attf-href="{object.company_id.website}"
+                  style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);"
+                >
+            <t t-out="object.company_id.website" />
         </a>
-        <br/>
-E-posta : <a t-attf-href="mailto:satis@altinkaya.com?subject=Siparis%20{object.name}" style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);">satis@altinkaya.com</a>
+        <br />
+E-posta : <a
+                  t-attf-href="mailto:satis@altinkaya.com?subject=Siparis%20{object.name}"
+                  style="background-color:transparent;text-decoration-thickness:initial;color:rgb(124, 123, 173);"
+                >satis@altinkaya.com</a>
     </div>
 </t>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;"></p>
+<p
+              style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;"
+            />
 </div>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-<t t-out="object.state in ('draft', 'sent') and 'Değerli siparişlerinizi bekler iyi çalışmalar dileriz.' or 'Siparişiniz için teşekkür eder hayırlı işler dileriz.'"/>
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+<t
+              t-out="object.state in ('draft', 'sent') and 'Değerli siparişlerinizi bekler iyi çalışmalar dileriz.' or 'Siparişiniz için teşekkür eder hayırlı işler dileriz.'"
+            />
 </p>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">Aşağıdaki bağlantıdan müşteri deneyiminizi puanlayabilirsiniz.</p>
-<a t-attf-href="{object.survey_url}" style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >Aşağıdaki bağlantıdan müşteri deneyiminizi puanlayabilirsiniz.</p>
+<a
+            t-attf-href="{object.survey_url}"
+            style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;"
+          >
                 Deneyimi Puanla
 </a>
 
@@ -121,60 +205,90 @@ E-posta : <a t-attf-href="mailto:satis@altinkaya.com?subject=Siparis%20{object.n
 </t>
 
 <t t-else="">
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);">
+<div
+          style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);"
+        >
 
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-        Hello, <t t-out="object.partner_id.name"/>
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+        Hello, <t t-out="object.partner_id.name" />
 </p>
 
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-        Here is your <t t-out="object.state in ('draft', 'sent') and 'quotation' or 'order confirmation'"/>
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
+        Here is your <t
+              t-out="object.state in ('draft', 'sent') and 'quotation' or 'order confirmation'"
+            />
  from Altinkaya Enclosures For Electronics:
 </p>
 
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;"
+          >
 <strong style="font-weight:bolder;">REFERENCES</strong>
-<br/>
+<br />
          Order number: <strong style="font-weight:bolder;">
-<t t-out="object.name"/>
+<t t-out="object.name" />
 </strong>
-<br/>
+<br />
          Order total: <strong style="font-weight:bolder;">
-<t t-out="'{0:,.4f}'.format(object.amount_total).replace('.', '%').replace(',', ' ').replace('%', ',')"/>
-<t t-out="object.pricelist_id.currency_id.name"/>
+<t
+                t-out="'{0:,.4f}'.format(object.amount_total).replace('.', '%').replace(',', ' ').replace('%', ',')"
+              />
+<t t-out="object.pricelist_id.currency_id.name" />
 </strong>
-<br/>
-         Order date: <t t-out="object.date_order"/>
-<br/>
+<br />
+         Order date: <t t-out="object.date_order" />
+<br />
 <t t-if="object.client_order_ref">
-            Your reference: <t t-out="object.client_order_ref"/>
-<br/>
+            Your reference: <t t-out="object.client_order_ref" />
+<br />
 </t>
 <t t-if="object.user_id">
-         Prepared By: <a t-attf-href="mailto:{object.user_id.email or ''}?subject=Order%20{object.name}" style="background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);">
-<t t-out="object.user_id.name"/>
+         Prepared By: <a
+                t-attf-href="mailto:{object.user_id.email or ''}?subject=Order%20{object.name}"
+                style="background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);"
+              >
+<t t-out="object.user_id.name" />
 </a>
 </t>
 </p>
 <t t-if="object.state in ('draft', 'sent')">
-<a t-attf-href="{object.get_portal_url()}" style="text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;">
-<img src="https://www.altinkaya.com.tr/web/content/604751?paynow=1" style="border-style:none;vertical-align:middle;"/>
+<a
+              t-attf-href="{object.get_portal_url()}"
+              style="text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;"
+            >
+<img
+                src="https://www.altinkaya.com.tr/web/content/604751?paynow=1"
+                style="border-style:none;vertical-align:middle;"
+              />
 </a>
-<br/>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
-            It is also possible to make your payment by clicking "Pay Now" button above.  <br/>
+<br />
+<p
+              style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+            >
+            It is also possible to make your payment by clicking "Pay Now" button above.  <br
+              />
 Our web page will open and you will be able to make your payment securely and easily.
 </p>
 <font color="#222222" face="Lucica Grande, Ubuntu, Arial, Verdana, sans-serif">
 <span style="font-size: 12px;">NEW: If you mention your order number </span>
 </font>
-<span style="color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;">
-<t t-out="object.name"/>
+<span
+              style="color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;"
+            >
+<t t-out="object.name" />
 </span>
-<span style="font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;">
+<span
+              style="font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;"
+            >
             in the wire transfer/TT description, our system will automatically confirm the order.
 </span>
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);">
+<div
+              style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);"
+            >
 <font color="#222222" face="Lucica Grande, Ubuntu, Arial, Verdana, sans-serif">
 <span style="font-size: 12px;">
 </span>
@@ -182,71 +296,95 @@ Our web page will open and you will be able to make your payment securely and ea
 </div>
 </t>
 
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
             If you have any question, do not hesitate to contact us.
 </p>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
 <strong style="font-weight:bolder;">You can reply this email to contact us.</strong>
 </p>
 
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;"
+          >
             Thank you for choosing Altinkaya!
 </p>
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;">
-<h3 style="font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
-<strong style="font-weight:bolder;text-transform:uppercase;">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong>
+<div
+            style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;"
+          >
+<h3
+              style="font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;"
+            >
+<strong
+                style="font-weight:bolder;text-transform:uppercase;"
+              >ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong>
 </h3>
 </div>
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);">
+<div
+            style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);"
+          >
 <t t-if="object.company_id.street">
-<t t-out="object.company_id.street"/>
-<br/>
+<t t-out="object.company_id.street" />
+<br />
 </t>
 <t t-if="object.company_id.street2">
-<t t-out="object.company_id.street2"/>
-<br/>
+<t t-out="object.company_id.street2" />
+<br />
 </t>
 <t t-if="object.company_id.city or object.company_id.zip">
-<t t-out="object.company_id.zip"/>
-<t t-out="object.company_id.city"/>
-<br/>
+<t t-out="object.company_id.zip" />
+<t t-out="object.company_id.city" />
+<br />
 </t>
 <t t-if="object.company_id.country_id">
-<t t-out="object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''"/>
- Turkey <br/>
+<t
+                t-out="object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''"
+              />
+ Turkey <br />
 </t>
 <t t-if="object.company_id.phone">
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
-                    Phone:  <t t-out="object.company_id.phone"/>
-<br/>
-Fax  :  <t t-out="object.company_id.partner_id.fax"/>
+<div
+                style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; "
+              >
+                    Phone:  <t t-out="object.company_id.phone" />
+<br />
+Fax  :  <t t-out="object.company_id.partner_id.fax" />
 </div>
 </t>
 <t t-if="object.company_id.website">
-<div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
-                    Web : <a t-attf-href="http://www.altinkaya.com" style="background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);">www.altinkaya.com</a>
+<div
+                style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;"
+              >
+                    Web : <a
+                  t-attf-href="http://www.altinkaya.com"
+                  style="background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);"
+                >www.altinkaya.com</a>
 </div>
 </t>
 </div>
-<p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;">
+<p
+            style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;"
+          >
             You can rate your customer experience at the following link.
 </p>
-<a t-attf-href="{object.survey_url}" style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;">
+<a
+            t-attf-href="{object.survey_url}"
+            style="text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;"
+          >
             Rate the Experience
 </a>
 </div>
 </t>
 </field>
-<field name="report_template" ref="sale.action_report_saleorder"/>
+<field name="report_template" ref="sale.action_report_saleorder" />
 <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
 <field name="lang">{{ object.partner_id.lang }}</field>
 <!-- <field name="user_signature" eval="False"/>  -->
-<field name="auto_delete" eval="True"/>
+<field name="auto_delete" eval="True" />
 </record>
-
-
-
-</data>
 
 
 </odoo>

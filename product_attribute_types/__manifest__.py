@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,19 +17,16 @@
 
 {
     "name": "Product Attribute Types",
-    "version": "16.0",
+    "version": "16.0.1.0.0",
     "license": "AGPL-3",
     "depends": [
         "product",
     ],
-    "author": "OdooMRP team,"
-              "AvanzOSC,"
-              "Tecnativa,"
-              "Codequarters",
+    "author": "Altinkaya Enclosures",
     "category": "Product Management",
-    "website": "http://www.codequarters.com",
-    'data': [
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "data": [
         "views/product_view.xml",
     ],
-    'installable': True,
+    "installable": True,
 }
