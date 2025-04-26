@@ -1,14 +1,13 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-import math
 import logging
+import math
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_is_zero
 from odoo.tools.safe_eval import safe_eval
-
 
 _logger = logging.getLogger(__name__)
 

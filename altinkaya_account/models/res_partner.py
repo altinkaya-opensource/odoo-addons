@@ -28,12 +28,9 @@ class ResPartner(models.Model):
         required=False,
         help="Satın alma işlemlerinde varsayılan muhasebe hesabı.",
     )
-    accounting_contact = fields.Many2one(
-        "res.partner", string="Accounting Contact", required=False
-    )
+    accounting_contact = fields.Many2one("res.partner", required=False)
     devir_yapildi = fields.Boolean("Devir Yapıldı", default=False)
     due_days = fields.Integer(
-        "Due Days",
         compute="_compute_due_days",
         store=False,
         default=0,

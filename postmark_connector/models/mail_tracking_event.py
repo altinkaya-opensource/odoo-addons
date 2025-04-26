@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from odoo import fields, models
 
@@ -37,7 +37,7 @@ class MailTrackingEvent(models.Model):
         usage.
         """
         ts = time.time()
-        dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+        dt = datetime.fromtimestamp(ts, tz=UTC)
         geo_dict = metadata.get("Geo", {})
         os_dict = metadata.get("OS", {})
         client_dict = metadata.get("Client", {})

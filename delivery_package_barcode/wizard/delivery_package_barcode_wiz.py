@@ -39,7 +39,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = super(DeliveryPackageBarcodeWiz, self).create(vals_list)
+        res = super().create(vals_list)
         for r in res:
             if not r.picking_id:
                 raise UserError(_("Please scan a barcode to find the picking."))

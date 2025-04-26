@@ -1,11 +1,10 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api
+from odoo import api, models
 
 
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
-
 
     def _create_missing_lot(self):
         """EXPERIMENTAL: Create a lot for the move line if it is missing."""
@@ -19,12 +18,12 @@ class StockMoveLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = super(StockMoveLine, self).create(vals_list)
+        res = super().create(vals_list)
         for r in res:
             r._create_missing_lot()
         return res
 
     def write(self, vals):
-        res = super(StockMoveLine, self).write(vals)
+        res = super().write(vals)
         self._create_missing_lot()
         return res

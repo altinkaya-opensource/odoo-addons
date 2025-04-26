@@ -8,6 +8,6 @@ class CreditControlMarker(models.TransientModel):
     _inherit = "credit.control.marker"
 
     @api.model
-    def default_get(self, fields_list):
-        super(CreditControlMarker, self).default_get(fields_list)
+    def default_get(self, fields_list):  # pylint: disable=W8110
+        super().default_get(fields_list)
         raise UserError(_("This method is restricted by Altinkaya Credit Control."))

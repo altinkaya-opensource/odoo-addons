@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2016 Mikel Arregui - AvanzOSC
 # Copyright 2014-2016 Oihane Crucelaegui - AvanzOSC
 # Copyright 2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
 # Copyright 2025 Ümithan Güldemir <guldemirumithan@gmail.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
+import logging
+
 from odoo import api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class ProductAttribute(models.Model):
@@ -22,7 +25,7 @@ class ProductAttribute(models.Model):
 class ProductAttributeLine(models.Model):
     _inherit = "product.template.attribute.line"
 
-    default = fields.Many2one("product.attribute.value", "Default")
+    default = fields.Many2one("product.attribute.value")
     attr_type = fields.Selection(
         string="Type", store=False, related="attribute_id.attr_type"
     )
@@ -32,7 +35,7 @@ class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
 
     attr_type = fields.Selection(string="Type", related="attribute_id.attr_type")
-    numeric_value = fields.Float("Numeric Value", digits=(12, 6))
+    numeric_value = fields.Float(digits=(12, 6))
     min_range = fields.Float("Min", digits=(12, 6))
     max_range = fields.Float("Max", digits=(12, 6))
 
@@ -50,7 +53,12 @@ class ProductAttributeValue(models.Model):
                     .replace(",", "")
                     .replace(".", "")
                 )
-            except Exception:
+            except Exception as exc:
+                _logger.error(
+                    "Error converting attribute value %s to numeric: %s",
+                    self.name,
+                    exc,
+                )
                 pass
 
     def write(self, vals):
@@ -69,14 +77,18 @@ class ProductAttributeValue(models.Model):
                                 )
                             ).replace(",", ".")
                         )
-                    except Exception:
-                        pass
-        return super(ProductAttributeValue, self).write(vals)
+                    except Exception as exc:
+                        _logger.error(
+                            "Error converting attribute value %s to numeric: %s",
+                            vals.get("name", ""),
+                            exc,
+                        )
+        return super().write(vals)
 
     @api.model_create_multi
     def create(self, vals_list):
-        create_vals = super(ProductAttributeValue, self).create(vals_list)
-        for record, vals in zip(create_vals, vals_list):
+        create_vals = super().create(vals_list)
+        for record, vals in zip(create_vals, vals_list, strict=False):
             if vals.get("name", False):
                 if record.attr_type == "numeric":
                     if record.numeric_value == 0.0:
@@ -92,8 +104,12 @@ class ProductAttributeValue(models.Model):
                                     )
                                 ).replace(",", ".")
                             )
-                        except Exception:
-                            pass
+                        except Exception as exc:
+                            _logger.error(
+                                "Error converting attribute value %s to numeric: %s",
+                                vals.get("name", ""),
+                                exc,
+                            )
 
                     if record.numeric_value != 0.0:
                         try:
@@ -110,7 +126,11 @@ class ProductAttributeValue(models.Model):
                                 .replace(",", "")
                                 .replace(".", "")
                             )
-                        except Exception:
-                            pass
-            
+                        except Exception as exc:
+                            _logger.error(
+                                "Error converting attribute value %s to numeric: %s",
+                                vals.get("name", ""),
+                                exc,
+                            )
+
         return create_vals

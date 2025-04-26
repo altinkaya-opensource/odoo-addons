@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 <data>
 	<record id="action_res_partner_account_check" model="ir.actions.act_window">
@@ -10,7 +10,7 @@
         <field name="context">{'search_default_state':'holding'}</field>
         <field name="target">current</field>
     </record>
-    
+
 	<record id="view_partner_form_account_check" model="ir.ui.view">
 		<field name="name">res.partner.form.inherit.local</field>
 		<field name="model">res.partner</field>
@@ -18,13 +18,17 @@
 		<field name="priority" eval="25" />
 		<field name="arch" type="xml">
 			<xpath expr="//div[@name='button_box']" position="inside">
-			    <button name="%(account_check.action_res_partner_account_check)d" type="action"
-			            class="oe_stat_button" icon="fa-list"
-			            string="Check List" >
+			    <button
+            name="%(account_check.action_res_partner_account_check)d"
+            type="action"
+            class="oe_stat_button"
+            icon="fa-list"
+            string="Check List"
+          >
 			    </button>
 			</xpath>
 		</field>
 	</record>
-	
+
 </data>
 </odoo>

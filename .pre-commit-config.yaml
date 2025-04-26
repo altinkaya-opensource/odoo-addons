@@ -40,7 +40,7 @@ repos:
         language: fail
         files: '[a-zA-Z0-9_]*/i18n/en\.po$'
   - repo: https://github.com/oca/maintainer-tools
-    rev: d5fab7ee87fceee858a3d01048c78a548974d935
+    rev: 7a4cec2599267d03bcea6f7502c3abee8f42259f
     hooks:
       # update the NOT INSTALLABLE ADDONS section above
       - id: oca-update-pre-commit-excluded-addons
@@ -48,7 +48,7 @@ repos:
         args: ["https://github.com/altinkaya-opensource/odoo-addons"]
 
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
-    rev: v0.0.25
+    rev: v0.1.1
     hooks:
       - id: oca-checks-odoo-module
       - id: oca-checks-po
@@ -65,6 +65,9 @@ repos:
           - --ignore-unknown
         files: \.(css|htm|html|js|json|jsx|less|md|scss|toml|ts|xml|yaml|yml)$
         language: node
+        additional_dependencies:
+          - "prettier@2.7.1"
+          - "@prettier/plugin-xml@2.2.0"
   - repo: local
     hooks:
       - id: eslint

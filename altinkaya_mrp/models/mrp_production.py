@@ -3,7 +3,6 @@ from odoo.tools.safe_eval import safe_eval
 
 
 class XMakine(models.Model):
-    # TODO: @dogan bence bu verilerin workcentera tasinmasi gerek uzerinde olmasi gerekli.
     _name = "x.makine"
     _description = "X Makine"
     _order = "name"
@@ -200,7 +199,7 @@ class MrpProduction(models.Model):
     #         mto_move = move.filtered(lambda x: x.procure_method == "make_to_order")
     #         # Handle the case where there is no split procurement but we have 2 moves
     #         if not mts_move or not mto_move:
-    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data)
+    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data) # noqa
     #         old_qty = sum(move.mapped("product_uom_qty"))
     #         if new_qty > old_qty:
     #             # Firstly, try to maximize MTS Move Qty
@@ -210,7 +209,7 @@ class MrpProduction(models.Model):
     #                     + mts_move.availability
     #                 }
     #             )
-    #             mto_move.write({"product_uom_qty": new_qty - mts_move.product_uom_qty})
+    #             mto_move.write({"product_uom_qty": new_qty - mts_move.product_uom_qty}) # noqa
     #         else:
     #             if mts_move.product_uom_qty >= new_qty:
     #                 # Update the MTS Move

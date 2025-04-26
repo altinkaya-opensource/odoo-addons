@@ -1,12 +1,10 @@
 {
     "name": "Partner Worksector",
     "version": "16.0.0.1.0",
-    "website": "https://www.codequarters.com",
-    "author": "OnurUgur,Codequarters",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "OnurUgur,Codequarters, Altinkaya Enclosures",
     "category": "Sales",
     "summary": "add Partner Product relation with sector",
-    "description": """
-	 """,
     "depends": [
         "sale",
         "crm",

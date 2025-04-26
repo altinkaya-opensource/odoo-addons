@@ -1,12 +1,11 @@
 {
     "name": "Order Line Discount",
-    "version": "16.0.1",
-    "website": "https://www.codequarters.com",
+    "version": "16.0.1.0.0",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Sales",
+    "author": "Altinkaya Enclosures",
     "license": "AGPL-3",
     "summary": "Sale Order Line Discount",
-    "description": """
-	 """,
     "depends": [
         "sale",
     ],

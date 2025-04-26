@@ -4,7 +4,7 @@
 # @author: dogan
 #
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.tools.misc import clean_context
 
 
@@ -24,8 +24,6 @@ class CreateProcurementMove(models.TransientModel):
     uom = fields.Many2one(
         "uom.uom", string="UoM", related="move_id.product_uom", readonly=True
     )
-
-    # procurement_qty_ids = fields.One2many('create.procurement.move.location', 'wizard_id', string='Quantities')
 
     qty_to_sincan = fields.Float("Tedarik Sincan")
     qty_to_merkez = fields.Float("Tedarik Merkez")
@@ -166,7 +164,7 @@ class CreateProcurementMove(models.TransientModel):
         product_qty = qty
         product_uom = self.uom
         origin = "Manuel" + str(self.env.user.id)
-        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(
+        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(  # pylint: disable=W8121
             [
                 self.env["procurement.group"].Procurement(
                     self.product_id,
@@ -204,7 +202,7 @@ class CreateProcurementMove(models.TransientModel):
         product_uom = self.uom
         origin = self.move_id.origin or "/"
 
-        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(
+        self.env["procurement.group"].with_context(clean_context(self.env.context)).run(  # pylint: disable=W8121
             [
                 self.env["procurement.group"].Procurement(
                     self.product_id,

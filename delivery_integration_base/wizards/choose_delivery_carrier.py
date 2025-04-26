@@ -118,4 +118,4 @@ class DeliveryCarrierLines(models.TransientModel):
     )
     order_id = fields.Many2one("sale.order", string="Sale Order")
 
-    selected = fields.Boolean(string="Selected")
+    selected = fields.Boolean()

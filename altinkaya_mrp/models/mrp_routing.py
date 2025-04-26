@@ -12,13 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import fields, models
-
-"""
-TODO: This is a temporary model to use MRP module views with our custom
-routing filters. We will need to create our mrp.routing.workcenter rules
-after migration for better usability.
-"""
+from odoo import _, fields, models
 
 
 class MrpRouting(models.Model):
@@ -29,9 +23,9 @@ class MrpRouting(models.Model):
 
     name = fields.Char("Routing", required=True)
     active = fields.Boolean(
-        "Active",
         default=True,
-        help="If the active field is set to False, it will allow you to hide the routing without removing it.",
+        help="If the active field is set to False, it will allow you to hide the "
+        "routing without removing it.",
     )
     code = fields.Char(
         "Reference", copy=False, default=lambda self: _("New"), readonly=True
@@ -40,7 +34,8 @@ class MrpRouting(models.Model):
     location_id = fields.Many2one(
         "stock.location",
         "Raw Materials Location",
-        help="Keep empty if you produce at the location where you find the raw materials. "
-        "Set a location if you produce at a fixed location. This can be a partner location "
-        "if you subcontract the manufacturing operations.",
+        help="Keep empty if you produce at the location where you find the "
+        "raw materials. Set a location if you produce at a fixed location. "
+        "This can be a partner location if you subcontract the "
+        "manufacturing operations.",
     )

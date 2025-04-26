@@ -23,7 +23,7 @@ class AccountInvoiceReport(models.Model):
     partner_medium_id = fields.Many2one(
         "utm.medium", string="P. Marketing Medium", readonly=True
     )
-    partner_create_date = fields.Date("Partner Create Date", readonly=True)
+    partner_create_date = fields.Date(readonly=True)
     # sale order UTM fields
     # sale_id = fields.Many2one('sale.order', string='Sale Order', readonly=True)
     sale_source_id = fields.Many2one(
@@ -60,9 +60,12 @@ class AccountInvoiceReport(models.Model):
             -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
             -COALESCE(
                -- Average line price
-               (line.balance / NULLIF(line.quantity, 0.0)) * (CASE WHEN move.move_type IN ('in_invoice','out_refund','in_receipt') THEN -1 ELSE 1 END)
+               (line.balance / NULLIF(line.quantity, 0.0)) *
+               (CASE WHEN move.move_type IN ('in_invoice','out_refund','in_receipt')
+               THEN -1 ELSE 1 END)
                -- convert to template uom
-               * (NULLIF(COALESCE(uom_line.factor, 1), 0.0) / NULLIF(COALESCE(uom_template.factor, 1), 0.0)),
+               * (NULLIF(COALESCE(uom_line.factor, 1), 0.0)
+               / NULLIF(COALESCE(uom_template.factor, 1), 0.0)),
                0.0) * move.usd_rate                               AS price_average_usd
             """
         )
@@ -71,9 +74,11 @@ class AccountInvoiceReport(models.Model):
         return (
             super()._from()
             + """
-               LEFT JOIN sale_order_line_invoice_rel solir ON (line.id = solir.invoice_line_id)
+               LEFT JOIN sale_order_line_invoice_rel solir
+               ON (line.id = solir.invoice_line_id)
                LEFT JOIN sale_order_line sol ON (solir.order_line_id = sol.id)
                LEFT JOIN sale_order so ON (sol.order_id = so.id)
-               LEFT JOIN utm_campaign_partner_rel partner_campaign_rel ON (partner_campaign_rel.res_partner_id = partner.id)
+               LEFT JOIN utm_campaign_partner_rel partner_campaign_rel
+               ON (partner_campaign_rel.res_partner_id = partner.id)
                """
         )

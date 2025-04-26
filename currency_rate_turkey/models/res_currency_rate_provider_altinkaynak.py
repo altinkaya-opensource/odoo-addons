@@ -7,18 +7,18 @@
 import logging
 from datetime import date, timedelta
 
+from odoo import fields, models
+from odoo.tools.translate import _
+
 from .altinkaynak_connector import (
     AltinkaynakConnector,
 )
-
-from odoo import fields, models
-from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
 
 class ResCurrencyRateProviderTCMB(models.Model):
-    _inherit = "res.currency.rate.provider"
+    _inherit = "res.currency.rate.provider"  # pylint: disable=R8180
 
     service = fields.Selection(
         selection_add=[("altinkaynak", "Altinkaynak")],

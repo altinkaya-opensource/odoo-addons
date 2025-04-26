@@ -12,7 +12,7 @@ class Partner(models.Model):
     _inherit = "res.partner"
     _order = "ranking,name"
 
-    ranking = fields.Integer("Ranking", default=_DEFAULT_RANKING)
+    ranking = fields.Integer(default=_DEFAULT_RANKING)
 
     @api.model
     def evaluate_ranking(self):

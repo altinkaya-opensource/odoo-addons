@@ -1,19 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <record id="view_production_form_inherit_print_product_label" model="ir.ui.view">
-            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <record
+    id="view_production_form_inherit_print_product_label"
+    model="ir.ui.view"
+  >
+            <field name="inherit_id" ref="mrp.mrp_production_form_view" />
             <field name="name">mrp.production.form.inherit.label</field>
             <field name="model">mrp.production</field>
             <field name="type">form</field>
+            <field name="priority" eval="100" />
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='product_id']" position="after">
-                    <field name="process_id"/>
+                    <field name="process_id" />
                 </xpath>
 
                 <xpath expr="//button[@name='do_unreserve']" position="after">
-                    <button name="button_print_prod_order" string="Print Production Order" type="object"/>
+                    <button
+          name="button_print_prod_order"
+          string="Print Production Order"
+          type="object"
+        />
                 </xpath>
 
   <!-- <xpath expr="//button[@name='post_inventory']" position="replace">
@@ -21,21 +28,31 @@
 </xpath> -->
 
                 <xpath expr="//button[@name='do_unreserve']" position="after">
-                    <button name="action_set_production_started" string="Start Production"
-                            attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"
-                            type="object"/>
+                    <button
+          name="action_set_production_started"
+          string="Start Production"
+          attrs="{'invisible':[('state', 'not in', ['confirmed'])]}"
+          type="object"
+        />
                 </xpath>
 
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button class="oe_inline oe_stat_button" name="action_print_product_label" type="object"
-                            icon="fa-barcode" string="Print Barcode"/>
+                    <button
+          class="oe_inline oe_stat_button"
+          name="action_print_product_label"
+          type="object"
+          icon="fa-barcode"
+          string="Print Barcode"
+        />
                 </xpath>
-                <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//field[@name='user_id']" position="replace" />
                 <!-- <xpath expr="//field[@name='location_src_id']" position='replace'/> -->
                 <!-- <xpath expr="//field[@name='location_dest_id']" position='replace'/> -->
                 <xpath expr="//form//field[@name='product_id']" position='attributes'>
-                    <attribute name="domain">[('has_production_bom','=',True)]</attribute>
-                    <attribute name="class"></attribute>
+                    <attribute
+          name="domain"
+        >[('has_production_bom','=',True)]</attribute>
+                    <attribute name="class" />
                 </xpath>
 
                 <xpath expr="//field[@name='date_planned_start']" position="after">
@@ -43,23 +60,27 @@
                 </xpath>
 
                 <xpath expr="//field[@name='process_id']" position="after">
-                    <field name="partner_id" readonly="1" attrs="{'invisible': [('partner_id', '=', False)]}"/>
-                    <field name="priority"/>
-                    <field name="date_planned"/>
-                    <field name="date_start2"/>
-                    <field name="date_finished2" invisible="1"/>
-                    <field name="x_note"/>
-                    <field name="sale_note"/>
+                    <field
+          name="partner_id"
+          readonly="1"
+          attrs="{'invisible': [('partner_id', '=', False)]}"
+        />
+                    <field name="priority" />
+                    <field name="date_planned" />
+                    <field name="date_start2" />
+                    <field name="date_finished2" invisible="1" />
+                    <field name="x_note" />
+                    <field name="sale_note" />
                 </xpath>
                 <xpath expr="//field[@name='components_availability']" position="after">
-                    <field name="location_src_id"/>
-                    <field name="location_dest_id"/>
-                    <field name="date_finished"/>
-                    <field name="sale_id"/>
-                    <field name="origin"/>
+                    <field name="location_src_id" />
+                    <field name="location_dest_id" />
+                    <field name="date_finished" />
+                    <field name="sale_id" />
+                    <field name="origin" />
                     <field name="procurement_group_id" />
-                    <field name="x_makine"/>
-                    <field name="x_operator"/>
+                    <field name="x_makine" />
+                    <field name="x_operator" />
                 </xpath>
 
                 <!-- <xpath expr="//field[@name='routing_id']" position="attributes">
@@ -86,16 +107,19 @@
         <record id="remove_production_smart_button_stat" model="ir.ui.view">
             <field name="name">remove.smart.button.stat</field>
             <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="priority" eval="100" />
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_view_mos']" position="replace">
-                    <button class="oe_stat_button"
-                            name="action_view_mos"
-                            type="object"
-                            attrs="{'invisible': [('type', 'not in', ['product', 'consu'])]}"
-                            icon="fa-list-alt"
-                            help="Manufactured in the last 365 days"
-                            options="{}">
+                    <button
+          class="oe_stat_button"
+          name="action_view_mos"
+          type="object"
+          attrs="{'invisible': [('type', 'not in', ['product', 'consu'])]}"
+          icon="fa-list-alt"
+          help="Manufactured in the last 365 days"
+          options="{}"
+        >
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text">
                                 Productions
@@ -109,18 +133,20 @@
         <record id="mrp_production_tree_view_priority" model="ir.ui.view">
         <field name="name">MRP Production Tree View Priority</field>
         <field name="model">mrp.production</field>
-        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
         <field name="arch" type="xml">
             <field name="date_planned_start" position="after">
-                <field name="priority"/>
+                <field name="priority" />
             </field>
 
             <field name="origin" position="before">
-                <field name="process_id"/>
+                <field name="process_id" />
             </field>
 
             <xpath expr="//tree" position="attributes">
-                <attribute name="default_order">priority desc, date_planned_start desc</attribute>
+                <attribute
+          name="default_order"
+        >priority desc, date_planned_start desc</attribute>
             </xpath>
 
         </field>
@@ -129,24 +155,63 @@
         <record id="mrp_production_search_inherit" model="ir.ui.view">
         <field name="name">Altinkaya MRP Production Search Inherit</field>
         <field name="model">mrp.production</field>
-        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter" />
         <field name="arch" type="xml">
-            <filter name="product" position="after" >
-                <filter string="Makine" name="x_makine" domain="[]" context="{'group_by':'x_makine'}"/>
-                <filter string="Operatör" name="x_operator" domain="[]" context="{'group_by':'x_operator'}"/>
-                <filter string="Öncelik" name="priority" domain="[]" context="{'group_by':'priority'}"/>
+            <filter name="product" position="after">
+                <filter
+          string="Makine"
+          name="x_makine"
+          domain="[]"
+          context="{'group_by':'x_makine'}"
+        />
+                <filter
+          string="Operatör"
+          name="x_operator"
+          domain="[]"
+          context="{'group_by':'x_operator'}"
+        />
+                <filter
+          string="Öncelik"
+          name="priority"
+          domain="[]"
+          context="{'group_by':'priority'}"
+        />
             </filter>
 
             <filter name="planning_issues" position="after">
-                <separator/>
-                <filter name="lastmonthplanned" string="Geçen Ay Bitenler" domain="[('date_finished','&gt;=', (context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-01 00:00:00'))]"/>
-                <filter name="thismonthplanned" string="Bu Ay bitenler" domain="[('date_finished','&gt;=', context_today().strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
-                <separator/>
-                <filter name="bugun" string="Bugün Açılanlar" domain="[('create_date','&gt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]"/>
-                <filter string="Dün Açılanlar" name="yesterday" domain="[ ('create_date','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"/>
-                <filter string="Son 3 Gün Açılanlar" name="threedaydel" domain="[('create_date','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]" />
-                <filter string="Geçen Hafta Açılanlar" name="lastweekdel" domain="[('create_date','&gt;=',(context_today()+relativedelta(weeks=-1,days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(weeks=-1,days=7)).strftime('%Y-%m-%d 23:59:59'))]"/>
-                <separator/>
+                <separator />
+                <filter
+          name="lastmonthplanned"
+          string="Geçen Ay Bitenler"
+          domain="[('date_finished','&gt;=', (context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-01 00:00:00'))]"
+        />
+                <filter
+          name="thismonthplanned"
+          string="Bu Ay bitenler"
+          domain="[('date_finished','&gt;=', context_today().strftime('%Y-%m-01 00:00:00')), ('date_finished','&lt;=', context_today().strftime('%Y-%m-%d'))]"
+        />
+                <separator />
+                <filter
+          name="bugun"
+          string="Bugün Açılanlar"
+          domain="[('create_date','&gt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]"
+        />
+                <filter
+          string="Dün Açılanlar"
+          name="yesterday"
+          domain="[ ('create_date','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"
+        />
+                <filter
+          string="Son 3 Gün Açılanlar"
+          name="threedaydel"
+          domain="[('create_date','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(days=0)).strftime('%Y-%m-%d 23:59:59'))]"
+        />
+                <filter
+          string="Geçen Hafta Açılanlar"
+          name="lastweekdel"
+          domain="[('create_date','&gt;=',(context_today()+relativedelta(weeks=-1,days=0)).strftime('%Y-%m-%d 00:00:00')), ('create_date','&lt;=',(context_today()+relativedelta(weeks=-1,days=7)).strftime('%Y-%m-%d 23:59:59'))]"
+        />
+                <separator />
             </filter>
         </field>
         </record>
@@ -155,20 +220,38 @@
             <field name="name">mrp.production.tree.without.route</field>
             <field name="model">mrp.production</field>
             <field name="arch" type="xml">
-                <tree decoration-bf="message_needaction==True" default_order="priority desc,name asc" decoration-danger="date_planned_start&lt;current_date and state not in ('done','cancel')" decoration-info="sale_id != False" decoration-success="state=='progress'" decoration-muted="state in ('done','cancel')" string="Manufacturing Orders">
-                    <field name="message_needaction" invisible="1"/>
-                    <field name="name"/>
-                    <field name="date_planned_start"/>
-                    <field name="date_finished"/>
-                    <field name="priority"/>
-                    <field name="product_id"/>
-                    <field name="origin"/>
-                    <field name="product_qty" sum="Total Qty" string="Quantity" widget="uom" options="{'uom_field':'product_uom_id'}"/>
-                    <field name="product_uom_id" string="ÖB" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
-                    <field name="x_makine_kod" string="Makine"/>
-                    <field name="x_operator" string="Operatör"/>
-                    <field name="sale_id" string="Sipariş"/>
-                    <field name="state"/>
+                <tree
+        decoration-bf="message_needaction==True"
+        default_order="priority desc,name asc"
+        decoration-danger="date_planned_start&lt;current_date and state not in ('done','cancel')"
+        decoration-info="sale_id != False"
+        decoration-success="state=='progress'"
+        decoration-muted="state in ('done','cancel')"
+      >
+                    <field name="message_needaction" invisible="1" />
+                    <field name="name" />
+                    <field name="date_planned_start" />
+                    <field name="date_finished" />
+                    <field name="priority" />
+                    <field name="product_id" />
+                    <field name="origin" />
+                    <field
+          name="product_qty"
+          sum="Total Qty"
+          string="Quantity"
+          widget="uom"
+          options="{'uom_field':'product_uom_id'}"
+        />
+                    <field
+          name="product_uom_id"
+          string="ÖB"
+          options="{'no_open':True,'no_create':True}"
+          groups="uom.group_uom"
+        />
+                    <field name="x_makine_kod" string="Makine" />
+                    <field name="x_operator" string="Operatör" />
+                    <field name="sale_id" string="Sipariş" />
+                    <field name="state" />
                 </tree>
             </field>
         </record>
@@ -178,18 +261,20 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","ilike","enjeksiyon"]]</field>
             <field name="context">{'search_default_todo':1}</field>
         </record>
 
-        <menuitem id="menu_mrp_enjeksiyon_production"
-                  name="Enjeksiyon İşleri"
-                  action="mrp_enjek_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_enjeksiyon_production"
+    name="Enjeksiyon İşleri"
+    action="mrp_enjek_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
         <record id="mrp_cnc_menu" model="ir.actions.act_window">
@@ -197,18 +282,20 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",2]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        <menuitem id="menu_mrp_cnc_production"
-                  name="CNC Kesim İşleri"
-                  action="mrp_cnc_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_cnc_production"
+    name="CNC Kesim İşleri"
+    action="mrp_cnc_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
         <record id="mrp_profil_menu" model="ir.actions.act_window">
@@ -216,19 +303,21 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",8]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
 
-        <menuitem id="menu_mrp_profil_production"
-                  name="Profil Kesim İşleri"
-                  action="mrp_profil_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_profil_production"
+    name="Profil Kesim İşleri"
+    action="mrp_profil_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
 
@@ -239,18 +328,20 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",10]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        <menuitem id="menu_mrp_sac_production"
-                  name="Sac Atölyesi İşleri"
-                  action="mrp_sac_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_sac_production"
+    name="Sac Atölyesi İşleri"
+    action="mrp_sac_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
 
@@ -259,18 +350,22 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
-            <field name="domain">["|",["process_id","ilike","basit montaj"],["process_id","ilike","ayrıntılı montaj"]]</field>
+            <field
+      name="domain"
+    >["|",["process_id","ilike","basit montaj"],["process_id","ilike","ayrıntılı montaj"]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        <menuitem id="menu_mrp_ayrintili_production"
-                  name="Montaj İşleri"
-                  action="mrp_ayrintili_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_ayrintili_production"
+    name="Montaj İşleri"
+    action="mrp_ayrintili_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
         <record id="mrp_cnctorna_menu" model="ir.actions.act_window">
@@ -278,18 +373,20 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",5]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        <menuitem id="menu_mrp_cnctorna_production"
-                  name="CNC Torna İşleri"
-                  action="mrp_cnctorna_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_cnctorna_production"
+    name="CNC Torna İşleri"
+    action="mrp_cnctorna_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
 
         <record id="mrp_gorsel_menu" model="ir.actions.act_window">
@@ -297,37 +394,39 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",16]]</field>
             <field name="context">{'search_default_todo':1}</field>
 
         </record>
-        <menuitem id="menu_mrp_gorsel_production"
-                  name="Görsel Baskı İşleri"
-                  action="mrp_gorsel_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_gorsel_production"
+    name="Görsel Baskı İşleri"
+    action="mrp_gorsel_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
         <record id="mrp_kaliphane_menu" model="ir.actions.act_window">
             <field name="name">Kalıphane İşleri</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mrp.production</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="mrp_production_tree_without_route"/>
+            <field name="view_id" ref="mrp_production_tree_without_route" />
             <!-- <field name="priority">1</field> -->
             <field name="domain">[["process_id","=",14]]</field>
             <field name="context">{'search_default_todo':1}</field>
         </record>
 
-        <menuitem id="menu_mrp_kaliphane_production"
-                  name="Kalıphane İşleri"
-                  action="mrp_kaliphane_menu"
-                  parent="mrp.menu_mrp_manufacturing"
-                  groups="mrp.group_mrp_routings"
-                  sequence="0"/>
+        <menuitem
+    id="menu_mrp_kaliphane_production"
+    name="Kalıphane İşleri"
+    action="mrp_kaliphane_menu"
+    parent="mrp.menu_mrp_manufacturing"
+    groups="mrp.group_mrp_routings"
+    sequence="0"
+  />
 
-
-    </data>
 </odoo>

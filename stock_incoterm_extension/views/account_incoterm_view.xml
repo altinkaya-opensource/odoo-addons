@@ -1,40 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<data>
         <record id="view_incoterms_tree_ext_inh" model="ir.ui.view">
             <field name="name">account.incoterms.tree</field>
-            <field name="inherit_id" ref="account.view_incoterms_tree"/>
+            <field name="inherit_id" ref="account.view_incoterms_tree" />
             <field name="model">account.incoterms</field>
             <field name="arch" type="xml">
-                <field  name="name" position="after">
-                    <field name="destination_port"/>
-                    <field name="transport_type"/>
+                <field name="name" position="after">
+                    <field name="destination_port" />
+                    <field name="transport_type" />
                 </field>
             </field>
         </record>
         <record id="view_incoterms_form_ext_inh" model="ir.ui.view">
             <field name="name">account.incoterms.form</field>
-            <field name="inherit_id" ref="account.account_incoterms_form"/>
+            <field name="inherit_id" ref="account.account_incoterms_form" />
             <field name="model">account.incoterms</field>
             <field name="arch" type="xml">
                 <field name="name" position="before">
-                    <label for="name"/>
+                    <label for="name" />
                 </field>
                 <field name="code" position="before">
-                    <label for="code"/>
+                    <label for="code" />
                 </field>
                 <field name="active" position="before">
-                    <label for="active"/>
+                    <label for="active" />
                 </field>
                 <field name="code" position="after">
                     <group>
-                        <field name="destination_port"/>
-                        <field name="transport_type"/>
+                        <field name="destination_port" />
+                        <field name="transport_type" />
                     </group>
                 </field>
             </field>
         </record>
 
-
-</data>
 </odoo>

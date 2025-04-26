@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 <!--    Removes sign in button from sale portal-->
     <record model="ir.ui.view" id="portal.portal_show_sign_in">
@@ -6,7 +6,10 @@
     </record>
 
 <!--    Removes deliveries in sale portal-->
-    <record model="ir.ui.view" id="sale_stock.sale_order_portal_content_inherit_sale_stock">
+    <record
+    model="ir.ui.view"
+    id="sale_stock.sale_order_portal_content_inherit_sale_stock"
+  >
         <field name="active">False</field>
     </record>
 

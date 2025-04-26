@@ -1,8 +1,7 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models, _
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
-from base64 import b64encode
 
 
 class CreditControlCommunication(models.Model):
@@ -28,7 +27,6 @@ class CreditControlCommunication(models.Model):
         tracking=True,
     )
 
-    
     def action_send_email(self):
         """
         Send account follow-up email to the customer.
@@ -68,12 +66,10 @@ class CreditControlCommunication(models.Model):
         :return: HTML string
         """
         for comm in self:
-            comm.credit_control_lines_html = (
-                str(
-                    self.env["ir.qweb"]._render(
-                        "altinkaya_credit_control.report_credit_control_lines",
-                        values={"doc": self},
-                    )
+            comm.credit_control_lines_html = str(
+                self.env["ir.qweb"]._render(
+                    "altinkaya_credit_control.report_credit_control_lines",
+                    values={"doc": self},
                 )
             )
         return True

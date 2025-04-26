@@ -1391,7 +1391,7 @@ msgstr ""
 "* Ödeme Tipi: %s\n"
 "* İş Ortağı Tipi: %s\n"
 "* Ödeme Yöntemi: %s\n"
-"* Hedef yevmiyesi"
+"* Hedef yevmiyesi: %s\n"
 
 #. module: account_check
 #: model:ir.model.fields,help:account_check.field_account_payment__check_deposit_type

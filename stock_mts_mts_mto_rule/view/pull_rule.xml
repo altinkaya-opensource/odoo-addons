@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
     <record id="stock_location_route_form_view_mto_mto2" model="ir.ui.view">
@@ -7,15 +7,24 @@
         <field name="inherit_id" ref="stock.stock_location_route_form_view" />
         <field name="arch" type="xml">
             <field name="action" position="after">
-                <field name="mts_rule_id" invisible="1"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
-                <field name="mts2_rule_id" invisible="1"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
-                <field name="mto_rule_id" invisible="1"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
+                <field
+          name="mts_rule_id"
+          invisible="1"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
+                <field
+          name="mts2_rule_id"
+          invisible="1"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
+                <field
+          name="mto_rule_id"
+          invisible="1"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
             </field>
         </field>
     </record>
@@ -26,15 +35,21 @@
         <field name="inherit_id" ref="stock.view_stock_rule_form" />
         <field name="arch" type="xml">
             <field name="action" position="after">
-                <field name="mts_rule_id"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
-                <field name="mts2_rule_id"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
-                <field name="mto_rule_id"
-                    groups="stock.group_adv_location"
-                    attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/>
+                <field
+          name="mts_rule_id"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
+                <field
+          name="mts2_rule_id"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
+                <field
+          name="mto_rule_id"
+          groups="stock.group_adv_location"
+          attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"
+        />
                 <!-- <field name="do_not_split_percentage"
                     groups="stock.group_adv_location"
                     attrs="{'invisible': [('action', '!=', 'split_procurement2')]}"/> -->

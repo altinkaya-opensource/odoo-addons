@@ -1,6 +1,6 @@
 # # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -10,19 +10,16 @@ class StockPicking(models.Model):
     carrier_package_count = fields.Integer(
         "Package Count", help="Number of packages", default=1
     )
-    carrier_total_deci = fields.Float(
-        "Carrier Total Deci", help="Carrier total reception Deci"
-    )
+    carrier_total_deci = fields.Float(help="Carrier total reception Deci")
     picking_total_deci = fields.Float(
-        "Picking Total Deci",
         compute="_compute_picking_total_deci",
         help="Dynamic Total Deci, calculated based on the move lines.",
     )
     picking_total_weight = fields.Float(
-        "Picking Total Weight", help="Shipments Total Measured Exit Deci weight"
+        help="Shipments Total Measured Exit Deci weight"
     )
     carrier_received_by = fields.Char("Received By", help="Received by")
-    shipping_number = fields.Char("Shipping Number", help="Shipping Tracking Number")
+    shipping_number = fields.Char(help="Shipping Tracking Number")
     mail_sent = fields.Boolean("Mail Sent To Customer", default=False, copy=False)
     delivery_payment_type = fields.Selection(
         related="carrier_id.payment_type", readonly=True
@@ -30,7 +27,6 @@ class StockPicking(models.Model):
 
     # Accounting fields
     sale_shipping_cost = fields.Monetary(
-        "Sale Shipping Cost",
         help="Sale shipping cost no VAT",
         compute="_compute_sale_shipping_cost",
         currency_field="shipping_currency_id",
@@ -42,7 +38,6 @@ class StockPicking(models.Model):
         currency_field="currency_id_try",
     )
     carrier_shipping_cost = fields.Monetary(
-        "Carrier Shipping Cost",
         help="Carrier shipping cost",
         default=0.0,
         currency_field="shipping_currency_id",
@@ -186,7 +181,10 @@ class StockPicking(models.Model):
         :param data:
         :return: boolean
         """
-        label_name = f"{self.carrier_id.delivery_type}_etiket_{self.carrier_tracking_ref}.{self.carrier_id.carrier_barcode_type}"
+        label_name = (
+            f"{self.carrier_id.delivery_type}_etiket_"
+            f"{self.carrier_tracking_ref}.{self.carrier_id.carrier_barcode_type}"
+        )
         self.message_post(
             body=(_("%s etiket") % self.carrier_id.display_name),
             attachments=[(label_name, data)],
@@ -237,7 +235,7 @@ class StockPicking(models.Model):
         return True
         # sale_order = self.sale_id
         # if sale_order.invoice_shipping_on_delivery:
-        #     carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0))
+        #     carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0)) # noqa
         #     sale_order._create_delivery_line(self.carrier_id, carrier_price)
 
     def open_record(self):

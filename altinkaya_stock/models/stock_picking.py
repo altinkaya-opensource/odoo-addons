@@ -1,7 +1,8 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (c) 2012-Present (<http://www.acespritech.com/>) Acespritech Solutions Pvt.Ltd
+#    Copyright (c) 2012-Present (<http://www.acespritech.com/>)
+#    Acespritech Solutions Pvt.Ltd
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -69,7 +70,6 @@ class StockPicking(models.Model):
     )
     sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
     trimmed_sale_note = fields.Text(
-        "Trimmed Sale Note",
         compute="_compute_trimmed_sale_note",
         readonly=True,
     )

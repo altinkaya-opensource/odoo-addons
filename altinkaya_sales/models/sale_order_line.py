@@ -18,7 +18,7 @@ from odoo import api, fields, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    show_custom_products = fields.Boolean("Show Custom Products")
+    show_custom_products = fields.Boolean()
     set_product = fields.Boolean("Set product?", compute="_compute_set_product")
     date_order = fields.Datetime(related="order_id.date_order")
     set_parent_product_id = fields.Many2one(

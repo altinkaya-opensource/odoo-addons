@@ -6,15 +6,22 @@
         <field name="model">print.prenumbered.checks</field>
         <field name="arch" type="xml">
             <form string="Print Pre-numbered Checks">
-                <p>Please enter the number of the first pre-printed check that you are about to print on.</p>
-                <p>This will allow to save on payments the number of the corresponding check.</p>
+                <p
+        >Please enter the number of the first pre-printed check that you are about to print on.</p>
+                <p
+        >This will allow to save on payments the number of the corresponding check.</p>
                 <group>
-                    <field name="next_check_number"/>
+                    <field name="next_check_number" />
                 </group>
                 <footer>
-                    <button name="print_checks" string="Print" type="object" class="oe_highlight"/>
+                    <button
+            name="print_checks"
+            string="Print"
+            type="object"
+            class="oe_highlight"
+          />
                     or
-                    <button string="Cancel" class="oe_link" special="cancel"/>
+                    <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
             </form>
         </field>

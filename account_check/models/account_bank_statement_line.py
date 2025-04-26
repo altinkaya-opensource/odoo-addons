@@ -2,9 +2,10 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api, _
-from odoo.exceptions import ValidationError
 import logging
+
+from odoo import _, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -19,10 +20,10 @@ class AccountBankStatementLine(models.Model):
                 lambda x: x.payment_id.ref == st_line.payment_ref
             ):
                 check_operation = self.env["account.check.operation"].search(
-                    [("origin", "=", "account.bank.statement.line,%s" % st_line.id)]
+                    [("origin", "=", f"account.bank.statement.line,{st_line.id}")]
                 )
                 check_operation.check_id._del_operation(st_line)
-        return super(AccountBankStatementLine, self).action_undo_reconciliation()
+        return super().action_undo_reconciliation()
 
     def process_reconciliation(
         self, counterpart_aml_dicts=None, payment_aml_rec=None, new_aml_dicts=None
@@ -40,7 +41,7 @@ class AccountBankStatementLine(models.Model):
             for line in counterpart_aml_dicts:
                 move_line = line.get("move_line")
                 check = move_line and move_line.payment_id.check_id or False
-        moves = super(AccountBankStatementLine, self).process_reconciliation(
+        moves = super().process_reconciliation(
             counterpart_aml_dicts=counterpart_aml_dicts,
             payment_aml_rec=payment_aml_rec,
             new_aml_dicts=new_aml_dicts,

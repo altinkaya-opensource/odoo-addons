@@ -1,12 +1,13 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
 
     <menuitem
-            name="Product Categories"
-            action="product.product_category_action_form"
-			id="menu_product_category_on_sale"
-            parent="sale.product_menu_catalog"
-			sequence="16" />
+    name="Product Categories"
+    action="product.product_category_action_form"
+    id="menu_product_category_on_sale"
+    parent="sale.product_menu_catalog"
+    sequence="16"
+  />
 
 
 	<data>
@@ -17,7 +18,7 @@
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
            <xpath expr="//field[@name='value_ids']" position="after">
-                <field name="use_in_pricing"  />
+                <field name="use_in_pricing" />
                 <field name="attr_base_price"> </field>
                 <field name="attr_val_price_coef"> </field>
              </xpath>
@@ -44,7 +45,7 @@
 			<field name="inherit_id" ref="product.product_category_form_view" />
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='parent_id']" position="after">
-					<field name="custom_products"/>
+					<field name="custom_products" />
 
 				</xpath>
 			</field>
@@ -53,7 +54,7 @@
 		<record id="product_product_tree_hide_fields" model="ir.ui.view">
 			<field name="name">product.product.tree.hide.fields</field>
 			<field name="model">product.product</field>
-			<field name="inherit_id" ref="product.product_product_tree_view"/>
+			<field name="inherit_id" ref="product.product_product_tree_view" />
 			<field name="arch" type="xml">
 				<xpath expr="//tree/field[@name='standard_price']" position="attributes">
 					<attribute name="invisible">1</attribute>

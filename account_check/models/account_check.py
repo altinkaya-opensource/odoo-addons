@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models, _, api
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero
 import logging
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -85,18 +84,13 @@ class AccountCheck(models.Model):
         string="Status",
     )
     issue_date = fields.Date(
-        "Issue Date",
         required=True,
         readonly=True,
         states={"draft": [("readonly", False)]},
         default=fields.Date.context_today,
     )
-    owner_vat = fields.Char(
-        "Owner Vat", readonly=True, states={"draft": [("readonly", False)]}
-    )
-    owner_name = fields.Char(
-        "Owner Name", readonly=True, states={"draft": [("readonly", False)]}
-    )
+    owner_vat = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
+    owner_name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
     bank_id = fields.Many2one(
         "res.bank", "Bank", readonly=True, states={"draft": [("readonly", False)]}
     )
@@ -172,14 +166,14 @@ class AccountCheck(models.Model):
         "operation_ids.origin" in field_onchange and field_onchange.pop(
             "operation_ids.origin"
         )
-        return super(AccountCheck, self).onchange(values, field_name, field_onchange)
+        return super().onchange(values, field_name, field_onchange)
 
     @api.constrains("issue_date", "payment_date")
     @api.onchange("issue_date", "payment_date")
     def onchange_date(self):
         for rec in self:
             if (
-                rec.issue_date
+                -rec.issue_date
                 and rec.payment_date
                 and rec.issue_date > rec.payment_date
             ):
@@ -196,14 +190,12 @@ class AccountCheck(models.Model):
                 if int(rec.number) > rec.checkbook_id.range_to:
                     raise UserError(
                         _(
-                            "Check number (%s) can't be greater than %s on "
-                            "checkbook %s (%s)"
-                        )
-                        % (
-                            rec.number,
-                            rec.checkbook_id.range_to,
-                            rec.checkbook_id.name,
-                            rec.checkbook_id.id,
+                            "Check number (%(number)s) can't be greater than "
+                            "%(range)s on checkbook %(c_name)s (%(c_id)s)",
+                            number=rec.number,
+                            range=rec.checkbook_id.range_to,
+                            c_name=rec.checkbook_id.name,
+                            c_id=rec.checkbook_id.id,
                         )
                     )
                 elif rec.number == rec.checkbook_id.range_to:
@@ -229,10 +221,11 @@ class AccountCheck(models.Model):
                 if same_checks:
                     raise ValidationError(
                         _(
-                            "Check Number (%s) must be unique per Checkbook!\n"
-                            "* Check ids: %s"
+                            "Check Number (%(number)s) must be unique per Checkbook!\n"
+                            "* Check ids: %(ids)s",
+                            number=rec.number,
+                            ids=same_checks.ids,
                         )
-                        % (rec.number, same_checks.ids)
                     )
             elif self.type == "third_check":
                 # agregamos condicion de company ya que un cheque de terceros
@@ -250,10 +243,12 @@ class AccountCheck(models.Model):
                 if same_checks:
                     raise ValidationError(
                         _(
-                            "Check Number (%s) must be unique per Owner and Bank!"
-                            "\n* Check ids: %s"
-                        )
-                        % (rec.number, same_checks.ids)
+                            "Check Number (%(number)s) must be unique per "
+                            "Owner and Bank!"
+                            "\n* Check ids: %(ids)s"
+                        ),
+                        number=rec.number,
+                        ids=same_checks.ids,
                     )
         return True
 
@@ -267,9 +262,11 @@ class AccountCheck(models.Model):
                 raise ValidationError(
                     _(
                         "You can not cancel this operation because this is not "
-                        "the last operation over the check.\nCheck (id): %s (%s)"
+                        "the last operation over the check.\nCheck (id): %(number)s "
+                        "(%(rec_id)s)",
+                        number=rec.number,
+                        rec_id=rec.id,
                     )
-                    % (rec.number, rec.id)
                 )
             rec.operation_ids[-1].origin = False
             rec.operation_ids[-1].unlink()
@@ -284,19 +281,23 @@ class AccountCheck(models.Model):
                     _(
                         "The date of a new check operation can not be minor than "
                         "last operation date.\n"
-                        "* Check Id: %s\n"
-                        "* Check Number: %s\n"
-                        "* Operation: %s\n"
-                        "* Operation Date: %s\n"
-                        "* Last Operation Date: %s"
+                        "* Check Id: %(c_id)s\n"
+                        "* Check Number: %(c_name)s\n"
+                        "* Operation: %(op)s\n"
+                        "* Operation Date: %(date)s\n"
+                        "* Last Operation Date: %(l_date)s",
+                        c_id=rec.id,
+                        c_name=rec.number,
+                        op=operation,
+                        date=date,
+                        l_date=rec.operation_ids[-1].date,
                     )
-                    % (rec.id, rec.number, operation, date, rec.operation_ids[-1].date)
                 )
             vals = {
                 "operation": operation,
                 "date": date,
                 "check_id": rec.id,
-                "origin": "%s,%i" % (origin._name, origin.id),
+                "origin": f"{origin._name},{origin.id}",
                 "partner_id": partner and partner.id or False,
             }
             rec.operation_ids.create(vals)
@@ -342,21 +343,19 @@ class AccountCheck(models.Model):
         from_states = operation_from_state_map.get(operation)
         if not from_states:
             raise ValidationError(
-                _("Operation %s not implemented for checks!") % operation
+                _("Operation %(op)s not implemented for checks!", op=operation)
             )
         if old_state not in from_states:
             raise ValidationError(
                 _(
-                    'You can not "%s" a check from state "%s"!\n'
-                    "Check nbr (id): %s (%s)"
-                )
-                % (
-                    self.operation_ids._fields["operation"].convert_to_export(
+                    'You can not "%(op)s" a check from state "%(state)s"!\n'
+                    "Check nbr (id): %(number)s (%(rec_id)s)",
+                    op=self.operation_ids._fields["operation"].convert_to_export(
                         operation, self
                     ),
-                    self._fields["state"].convert_to_export(old_state, self),
-                    self.number,
-                    self.id,
+                    state=old_state,
+                    number=self.number,
+                    rec_id=self.id,
                 )
             )
 
@@ -366,7 +365,7 @@ class AccountCheck(models.Model):
                 raise ValidationError(
                     _("The Check must be in draft state for unlink !")
                 )
-        return super(AccountCheck, self).unlink()
+        return super().unlink()
 
     # checks operations from checks
 
@@ -526,10 +525,11 @@ class AccountCheck(models.Model):
             if not op.partner_id:
                 raise ValidationError(
                     _(
-                        "The %s (id %s) operation has no partner linked."
-                        "You will need to do it manually."
+                        "The %(op)s (id %(op_id)s) operation has no partner linked."
+                        "You will need to do it manually.",
+                        op=operation,
+                        op_id=op.id,
                     )
-                    % (operation, op.id)
                 )
         return op
 
@@ -599,20 +599,20 @@ class AccountCheck(models.Model):
         credit_account = self._context.get("credit_account_id")
 
         if operation in ["rejected", "reclaimed"]:
-            name = 'Rejected Check "%s"' % (self.number)
+            name = f'Rejected Check "{self.number}"'
         elif operation == "customer_returned":
-            name = 'Customer Returned Check "%s"' % (self.number)
+            name = f'Customer Returned Check "{self.number}"'
         elif operation == "debited":
-            name = 'Debited Check "%s"' % (self.number)
+            name = f'Debited Check "{self.number}"'
         elif operation == "bank_rejected":
-            name = 'Bank Returned Check "%s"' % (self.number)
-        #         elif operation in ['rejected', 'reclaimed'] and self.type == 'deposit_promissory_note':
+            name = f'Bank Returned Check "{self.number}"'
+        #         elif operation in ['rejected', 'reclaimed'] and self.type == 'deposit_promissory_note': # noqa
         #             name = 'Rejected  promissory note "%s"' % (self.number)
         #         elif operation == 'returned' and self.type == 'third_promissory_note':
         #             name = 'Returned promissory note "%s"' % (self.number)
         else:
             raise ValidationError(
-                _("Debit note for operation %s not implemented!" % (operation))
+                _("Debit note for operation %(op)s not implemented!", op=operation)
             )
 
         vals = self.prepare_new_operation_move_values(

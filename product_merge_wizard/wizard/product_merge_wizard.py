@@ -7,14 +7,11 @@ Created on Nov 27, 2017
 import functools
 import itertools
 import logging
-from collections import defaultdict
 
 import psycopg2
 
 from odoo import _, api, exceptions, fields, models
-from odoo.exceptions import ValidationError
 from odoo.tools import mute_logger
-from odoo.tools.misc import mute_logger
 
 _logger = logging.getLogger(__name__)
 
@@ -150,7 +147,8 @@ class ProductMergeWizard(models.TransientModel):
         """
         query = """
             SELECT cl1.relname as table, att1.attname as column
-            FROM pg_constraint as con, pg_class as cl1, pg_class as cl2, pg_attribute as att1, pg_attribute as att2
+            FROM pg_constraint as con, pg_class as cl1, pg_class as cl2,
+            pg_attribute as att1, pg_attribute as att2
             WHERE con.conrelid = cl1.oid
                 AND con.confrelid = cl2.oid
                 AND array_lower(con.conkey, 1) = 1
@@ -175,7 +173,6 @@ class ProductMergeWizard(models.TransientModel):
         )
 
         # find the many2one relation to a partner
-        Products = self.env["product.template"]
         relations = self._get_fk_on("product_template")
 
         # this guarantees cache consistency
@@ -187,10 +184,10 @@ class ProductMergeWizard(models.TransientModel):
 
             # get list of columns of current table (exept the current fk column)
             query = (
-                "SELECT column_name FROM information_schema.columns WHERE table_name LIKE '%s'"
-                % (table)
+                "SELECT column_name FROM information_schema.columns "
+                "WHERE table_name LIKE %s"
             )
-            self._cr.execute(query, ())
+            self._cr.execute(query, (table))
             columns = []
             for data in self._cr.fetchall():
                 if data[0] != column:
@@ -204,21 +201,18 @@ class ProductMergeWizard(models.TransientModel):
             }
             if len(columns) <= 1:
                 # unique key treated
-                query = (
-                    """
-                    UPDATE "%(table)s" as ___tu
-                    SET "%(column)s" = %%s
+                query = """
+                    UPDATE "{table}" as ___tu
+                    SET "{column}" = %s
                     WHERE
-                        "%(column)s" = %%s AND
+                        "{column}" = %s AND
                         NOT EXISTS (
                             SELECT 1
-                            FROM "%(table)s" as ___tw
+                            FROM "{table}" as ___tw
                             WHERE
-                                "%(column)s" = %%s AND
-                                ___tu.%(value)s = ___tw.%(value)s
-                        )"""
-                    % query_dic
-                )
+                                "{column}" = %s AND
+                                ___tu.{value} = ___tw.{value}
+                        )""".format(**query_dic)
                 for partner in src_products:
                     self._cr.execute(
                         query, (dst_product.id, partner.id, dst_product.id)
@@ -227,7 +221,7 @@ class ProductMergeWizard(models.TransientModel):
                 try:
                     with mute_logger("odoo.sql_db"), self._cr.savepoint():
                         query = (
-                            'UPDATE "%(table)s" SET "%(column)s" = %%s WHERE "%(column)s" IN %%s'
+                            'UPDATE "%(table)s" SET "%(column)s" = %%s WHERE "%(column)s" IN %%s'  # noqa
                             % query_dic
                         )
                         self._cr.execute(
@@ -239,7 +233,7 @@ class ProductMergeWizard(models.TransientModel):
                         )
                 except psycopg2.Error:
                     query = (
-                        'DELETE FROM "%(table)s" WHERE "%(column)s" IN %%s' % query_dic
+                        'DELETE FROM "%(table)s" WHERE "%(column)s" IN %%s' % query_dic  # noqa
                     )
                     self._cr.execute(query, (tuple(src_products.ids),))
 
@@ -264,7 +258,8 @@ class ProductMergeWizard(models.TransientModel):
                     records.env.flush_all()
             except psycopg2.Error:
                 # updating fails, most likely due to a violated unique constraint
-                # keeping record with nonexistent partner_id is useless, better delete it
+                # keeping record with nonexistent partner_id is useless,
+                # better delete it
                 records.sudo().unlink()
 
         update_records = functools.partial(update_records)
@@ -292,10 +287,10 @@ class ProductMergeWizard(models.TransientModel):
 
             for product in src_products:
                 records_ref = Model.sudo().search(
-                    [(record.name, "=", "product.template,%d" % product.id)]
+                    [(record.name, "=", f"product.template,{product.id}")]
                 )
                 values = {
-                    record.name: "product.template,%d" % dst_product.id,
+                    record.name: f"product.template,{dst_product.id}",
                 }
                 records_ref.sudo().write(values)
 

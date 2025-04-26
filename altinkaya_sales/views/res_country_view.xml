@@ -3,12 +3,12 @@
     <record model="ir.ui.view" id="res_country_view_form_inherit_altinkaya_sales">
         <field name="name">res.country.view.altinkaya.sales.form.inherit</field>
         <field name="model">res.country</field>
-        <field name="inherit_id" ref="base.view_country_form"/>
+        <field name="inherit_id" ref="base.view_country_form" />
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='state_ids']" position="after">
                 <group string="Accounting">
-                    <field name="default_currency_id" required="1"/>
+                    <field name="default_currency_id" required="1" />
                     <field name="default_eur_bank_account_id" />
                     <field name="default_usd_bank_account_id" />
                     <field name="default_try_bank_account_id" />

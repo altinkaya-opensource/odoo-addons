@@ -1,12 +1,11 @@
 {
     "name": "Partner Ranking with Sale",
-    "version": "13.0.0.1.0",
-    "website": "https://www.codequarters.com",
+    "version": "16.0.0.1.0",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Sales",
+    "author": "Altinkaya Enclosures",
     "summary": "Altinkaya Partner Ranking",
     "license": "LGPL-3",
-    "description": """
-	 """,
     "depends": [
         "stock",
         "product",

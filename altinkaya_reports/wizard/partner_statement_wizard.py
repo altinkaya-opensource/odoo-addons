@@ -24,11 +24,11 @@ class WizarPartnerStatement(models.TransientModel):
         "End Date", required=1, default=_default_date_end, store=True
     )
     partner_id = fields.Many2one("res.partner", default=_default_partner_ids)
-    english_statement = fields.Boolean(string="English Statement", default=False)
+    english_statement = fields.Boolean(default=False)
 
     @api.model
     def _default_get(self, fields):
-        res = super(WizarPartnerStatement, self).default_get(fields)
+        res = super().default_get(fields)
         lang = self.env.context.get("lang", [])
         if lang == "en_US":
             res["english_statement"] = True
@@ -60,4 +60,4 @@ class IrActionsReport(models.Model):
             and not res_ids
         ):
             res_ids = self.env.context.get("partner_ids", [])
-        return super(IrActionsReport, self).render_qweb_pdf(res_ids=res_ids, data=data)
+        return super().render_qweb_pdf(res_ids=res_ids, data=data)

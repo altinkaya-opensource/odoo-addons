@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="account_invoice_switch_incomings_view" model="ir.ui.view">
             <field name="name">account.invoice.switch.incomings.form</field>
@@ -8,9 +7,18 @@
             <field name="arch" type="xml">
                 <form string="Switch Invoices">
                     <footer>
-                        <button string="Switch Invoices" name="switch_invoices" type="object"
-                                default_focus="1" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button
+            string="Switch Invoices"
+            name="switch_invoices"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+          />
+                        <button
+            string="Cancel"
+            class="btn-secondary"
+            special="cancel"
+          />
                     </footer>
                 </form>
             </field>
@@ -22,5 +30,4 @@
             res_model="account.invoice.switch.incomings" src_model="account.invoice"
             view_mode="form" target="new" view_type="form" /> -->
 
-    </data>
 </odoo>

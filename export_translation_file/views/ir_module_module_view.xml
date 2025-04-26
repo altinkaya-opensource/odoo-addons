@@ -7,20 +7,20 @@
             <field name="arch" type="xml">
                 <button name="button_install_cancel" position="after">
                     <button
-                    name="button_save_translation"
-                    string="Save translation file"
-                    confirm="Overwrite all i18n files for this module?"
-                    type="object"
-                    states="installed"
-                    icon="fa-language"
-                />
+          name="button_save_translation"
+          string="Save translation file"
+          confirm="Overwrite all i18n files for this module?"
+          type="object"
+          states="installed"
+          icon="fa-language"
+        />
                     <button
-                    name="button_translate_missing_terms"
-                    string="Translate Module (DeepL)"
-                    confirm="Translate missing terms of this module using DeepL?"
-                    type="object"
-                    icon="fa-language"
-                />
+          name="button_translate_missing_terms"
+          string="Translate Module (DeepL)"
+          confirm="Translate missing terms of this module using DeepL?"
+          type="object"
+          icon="fa-language"
+        />
                 </button>
             </field>
         </record>
@@ -31,13 +31,13 @@
             <field name="arch" type="xml">
                 <field name="state" position="after">
                     <button
-                    name="button_save_translation"
-                    string="Save translation file"
-                    confirm="Overwrite all i18n files for this module ?"
-                    type="object"
-                    states="installed"
-                    icon="fa-language"
-                />
+          name="button_save_translation"
+          string="Save translation file"
+          confirm="Overwrite all i18n files for this module ?"
+          type="object"
+          states="installed"
+          icon="fa-language"
+        />
                 </field>
             </field>
         </record>

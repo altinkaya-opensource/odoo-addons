@@ -102,14 +102,14 @@ msgstr "آخر تحديث في"
 #: code:addons/access_restriction_by_ip/controllers/main.py:0
 #, python-format
 msgid "Not allowed to login from this IP (%(ip_addr)s)"
-msgstr "غير مسموح بتسجيل الدخول من عنوان IP هذا (%(ip_addr)"
+msgstr "غير مسموح بتسجيل الدخول من عنوان IP هذا (%(ip_addr)s)"
 
 #. module: access_restriction_by_ip
 #. odoo-python
 #: code:addons/access_restriction_by_ip/models/allowed_ips.py:0
 #, python-format
 msgid "Please enter a valid IP address or subnet mask (%(ip_addr)s)"
-msgstr "يرجى إدخال عنوان IP أو قناع شبكة فرعية صالح (%(ip_addr)"
+msgstr "يرجى إدخال عنوان IP أو قناع شبكة فرعية صالح (%(ip_addr)s)"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__smart_search

@@ -5,10 +5,10 @@
 
 import logging
 
-from .res_currency_rate import RATE_FIELD_MAPPING
-
 from odoo import _, fields, models
 from odoo.exceptions import UserError
+
+from .res_currency_rate import RATE_FIELD_MAPPING
 
 _logger = logging.getLogger(__name__)
 

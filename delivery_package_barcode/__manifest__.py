@@ -3,7 +3,7 @@
 {
     "name": "Delivery Package Barcode",
     "summary": "Provides fields to be able to use integration modules.",
-    "author": "Yiğit Budak, Ümithan Güldemir, Odoo Turkey Localization Group, Altinkaya Enclosures",
+    "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",

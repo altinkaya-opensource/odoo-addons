@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
         <record id="view_mrp_cancel_more" model="ir.ui.view">
@@ -7,7 +7,12 @@
             <field name="arch" type="xml">
                 <form string="Parameters">
                     <footer>
-                        <button name="cancel_mrp_order" string="Cancel Orders" type="object"  class="oe_highlight"/>
+                        <button
+            name="cancel_mrp_order"
+            string="Cancel Orders"
+            type="object"
+            class="oe_highlight"
+          />
                     </footer>
                 </form>
             </field>

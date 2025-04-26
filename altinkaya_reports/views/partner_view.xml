@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<openerp>
-    <data>
-
+<odoo>
         <record id="email_partner_statement_form_inherit" model="ir.ui.view">
             <field name="name">email.partner.statement.form.inherit</field>
             <field name="model">res.partner</field>
@@ -10,17 +8,17 @@
                 <xpath expr="//sheet" position="before">
                     <header>
                        <button
-              name="email_statement"
-              string="Email Statement"
-              type="object"
-              class="oe_highlight"
-            />
+            name="email_statement"
+            string="Email Statement"
+            type="object"
+            class="oe_highlight"
+          />
                     </header>
                 </xpath>
                 <xpath
-          expr="//field[@name='property_account_payable_id']"
-          position="after"
-        >
+        expr="//field[@name='property_account_payable_id']"
+        position="after"
+      >
 
 
 
@@ -28,5 +26,4 @@
             </field>
         </record>
 
-    </data>
-</openerp>
+</odoo>

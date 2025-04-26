@@ -4,7 +4,9 @@
         <field name="res_model">report.account.move</field>
         <field name="fname">gelir_fatura.xlsx</field>
         <field name="name">Gelir Fatura Şablonu</field>
-        <field name="description">Zirve Muhasebe programına uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
+        <field
+      name="description"
+    >Zirve Muhasebe programına uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {

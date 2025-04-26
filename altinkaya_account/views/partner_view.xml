@@ -21,15 +21,24 @@
             </field>
 
             <xpath expr="//field[@name='property_account_payable_id']" position="after">
-                <field name="accounting_contact" domain="[('parent_id', '=', active_id)]"/>
-                <field name="purchase_default_account_id"/>
-                <field name="z_payable_export"/>
-                <field name="z_receivable_export"/>
-                <field name="devir_yapildi"/>
+                <field
+          name="accounting_contact"
+          domain="[('parent_id', '=', active_id)]"
+        />
+                <field name="purchase_default_account_id" />
+                <field name="z_payable_export" />
+                <field name="z_receivable_export" />
+                <field name="devir_yapildi" />
             </xpath>
 
             <button name="action_view_partner_invoices" position="after">
-                <button class="oe_stat_button" type="action" name="%(act_res_partner_2_account_move_line)d" icon="fa-book" string="Yevmiye Kalemleri">
+                <button
+          class="oe_stat_button"
+          type="action"
+          name="%(act_res_partner_2_account_move_line)d"
+          icon="fa-book"
+          string="Yevmiye Kalemleri"
+        >
                 </button>
             </button>
 

@@ -17,11 +17,14 @@
         </field>
 
         <field name="product_id" position="after">
-            <field name="currency_id"/>
+            <field name="currency_id" />
             <field name="ref_sequence_id" />
             <field name="url_shortener_id" />
             <field name="sms_service_id" />
-            <field name="send_sms_customer" attrs="{'invisible': [('sms_service_id', '=', False)]}"/>
+            <field
+          name="send_sms_customer"
+          attrs="{'invisible': [('sms_service_id', '=', False)]}"
+        />
             <field name="factor_a" />
             <field name="factor_b" />
             <field name="show_in_price_table" />

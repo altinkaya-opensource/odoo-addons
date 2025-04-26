@@ -19,7 +19,6 @@ class AccountJournal(models.Model):
     _inherit = "account.journal"
 
     manual_payment_journal = fields.Boolean(
-        string="Manual Payment Journal",
         help="Check this box if you want to use this journal for manual "
         "payment confirmation.",
     )

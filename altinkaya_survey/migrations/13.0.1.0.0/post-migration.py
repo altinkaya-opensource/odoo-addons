@@ -8,7 +8,8 @@ def _fill_survey_user_input(env):
     for u_input in user_inputs:
         env.cr.execute(
             """
-            SELECT * from survey_user_input WHERE id = %s and old_invoice_id in (select id from account_move);
+            SELECT * from survey_user_input WHERE id = %s and
+            old_invoice_id in (select id from account_move);
             """,
             (u_input.id,),
         )

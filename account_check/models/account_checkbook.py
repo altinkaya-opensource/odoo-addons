@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models, api, _
 import logging
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -26,7 +26,6 @@ class AccountCheckbook(models.Model):
         context={"default_code": "issue_check"},
     )
     next_number = fields.Integer(
-        "Next Number",
         # usamos compute y no related para poder usar sudo cuando se setea
         # secuencia sin necesidad de dar permiso en ir.sequence
         compute="_compute_next_number",
@@ -34,7 +33,6 @@ class AccountCheckbook(models.Model):
     )
     issue_check_subtype = fields.Selection(
         [("deferred", "Deferred"), ("currents", "Currents")],
-        string="Issue Check Subtype",
         required=True,
         default="deferred",
         help="* Con cheques corrientes el asiento generado por el pago "
@@ -113,8 +111,8 @@ class AccountCheckbook(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        rec = super(AccountCheckbook, self).create(vals_list)
-        for r, vals in zip(rec, vals_list):
+        rec = super().create(vals_list)
+        for r, vals in zip(rec, vals_list, strict=False):
             if not r.sequence_id:
                 r._create_sequence(vals.get("next_number", 0))
         return rec
@@ -127,7 +125,7 @@ class AccountCheckbook(models.Model):
                 .sudo()
                 .create(
                     {
-                        "name": "%s - %s" % (rec.journal_id.name, rec.name),
+                        "name": f"{rec.journal_id.name} - {rec.name}",
                         "implementation": "no_gap",
                         "padding": 8,
                         "number_increment": 1,
@@ -154,4 +152,4 @@ class AccountCheckbook(models.Model):
             raise ValidationError(
                 _("You can drop a checkbook if it has been used on checks!")
             )
-        return super(AccountCheckbook, self).unlink()
+        return super().unlink()

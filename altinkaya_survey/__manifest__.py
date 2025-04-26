@@ -10,16 +10,15 @@
     - Auto compute survey url on sale order
     - Easy access to survey user input from sale order
     """,
-    "version": "13.0.1.0.0",
+    "version": "16.0.1.0.0",
     "category": "Marketing",
-    "website": "https://github.com/yibudak",
-    "author": "Yiğit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
     "depends": ["survey", "sale", "crm", "account"],
     "data": [
-        # "templates/disable_odoo_branding.xml", # TODO: migration check if this is necessary
         "templates/star_rating.xml",
         "templates/clean_survey_fill.xml",
         "templates/clean_survey_print.xml",

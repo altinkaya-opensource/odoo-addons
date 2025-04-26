@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <template id="report_delivery_carrier_report_data">
             <t t-call="web.html_container">
                 <t t-call="web.basic_layout">
@@ -27,7 +26,10 @@
                                             ALTINKAYA ELEKTRONİK CİHAZ KUTULARI
                                 </td>
                                 <td class="text-right">
-                                            Tarih :<span t-out="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')" t-options="{'widget': 'date'}" />
+                                            Tarih :<span
+                  t-out="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                  t-options="{'widget': 'date'}"
+                />
                                 </td>
                             </tr>
                         </table>
@@ -47,7 +49,7 @@
                                         </td>
                                         <td class="text-center" style="width:500px">
                                             <span
-                        >Yukarıda listelenmiş paketleri teslim aldım.</span>
+                    >Yukarıda listelenmiş paketleri teslim aldım.</span>
                                             <br />
                                             <span>Adı Soyadı İmza:</span>
                                             <br />
@@ -73,7 +75,10 @@
                                     </li>
                                     <li class="list-inline-item">
                                         Tarih:
-                                        <span z="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')" t-options="{'widget': 'date'}" />
+                                        <span
+                    z="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                    t-options="{'widget': 'date'}"
+                  />
                                     </li>
                                 </ul>
                             </div>
@@ -84,35 +89,69 @@
                     <div class="page">
                         <div class="row">
                             <div class="col-12">
-                                <table class="table table-bordered" style="page-break-inside:avoid;">
+                                <table
+                class="table table-bordered"
+                style="page-break-inside:avoid;"
+              >
                                     <tr>
-                                        <th class="text-center" style="width:170px">SEVK NO</th>
-                                        <th class="text-center" style="width:400px">ALICI</th>
-                                        <th class="text-center" style="width:100px">REF. NO</th>
-                                        <th class="text-center" style="width:200px">KARGO ŞEKLİ</th>
-                                        <th class="text-center" style="width:120px">ŞEHİR</th>
-                                        <th class="text-center" style="width:100px">DESİ</th>
+                                        <th
+                    class="text-center"
+                    style="width:170px"
+                  >SEVK NO</th>
+                                        <th
+                    class="text-center"
+                    style="width:400px"
+                  >ALICI</th>
+                                        <th
+                    class="text-center"
+                    style="width:100px"
+                  >REF. NO</th>
+                                        <th
+                    class="text-center"
+                    style="width:200px"
+                  >KARGO ŞEKLİ</th>
+                                        <th
+                    class="text-center"
+                    style="width:120px"
+                  >ŞEHİR</th>
+                                        <th
+                    class="text-center"
+                    style="width:100px"
+                  >DESİ</th>
                                     </tr>
-                                    <tr t-foreach="docs.sorted(lambda x: x.partner_id.display_name)" t-as="o">
+                                    <tr
+                  t-foreach="docs.sorted(lambda x: x.partner_id.display_name)"
+                  t-as="o"
+                >
                                         <td class="text-center">
                                             <span t-out="o.display_name or ''" />
                                         </td>
                                         <td class="text-center">
-                                            <span t-out="o.partner_id.display_name or ''" />
+                                            <span
+                      t-out="o.partner_id.display_name or ''"
+                    />
                                         </td>
                                         <td class="text-center">
-                                            <span t-out="o.carrier_tracking_ref or ''" />
+                                            <span
+                      t-out="o.carrier_tracking_ref or ''"
+                    />
                                         </td>
                                         <td class="text-center">
                                             <span t-out="o.carrier_id.name or ''" />
                                         </td>
                                         <td class="text-center">
-                                            <span t-out="o.partner_id.district_id.name or ''" />
+                                            <span
+                      t-out="o.partner_id.district_id.name or ''"
+                    />
                                             <br />
-                                            <span t-out="o.partner_id.state_id.name or ''" />
+                                            <span
+                      t-out="o.partner_id.state_id.name or ''"
+                    />
                                         </td>
                                         <td class="text-center">
-                                            <span t-out="o.carrier_package_count or ''" />
+                                            <span
+                      t-out="o.carrier_package_count or ''"
+                    />
     x <span t-out="o.picking_total_weight" />
                                         </td>
                                     </tr>
@@ -124,5 +163,5 @@
             </t>
 
         </template>
-    </data>
+
 </odoo>
