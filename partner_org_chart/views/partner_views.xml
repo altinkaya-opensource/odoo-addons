@@ -5,7 +5,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='internal_notes']" position="after">
+            <xpath expr="//notebook/page[@name='contact_addresses']/field[@name='child_ids']" position="after">
                 <page name="organization_chart" string="Organization Chart">
                     <h4 class="o_org_chart_title mb16 mt0">Organization Chart</h4>
                     <div id="o_partner_main_chart">

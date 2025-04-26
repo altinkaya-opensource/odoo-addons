@@ -20,7 +20,6 @@
     "data": [
         "views/crm_lead_view.xml",
         "views/sale_order_view.xml",
-        "views/res_partner_view.xml",
         "views/res_country_view.xml",
         "views/crm_phonecall_view.xml",
         "views/res_partner_industry_view.xml",

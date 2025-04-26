@@ -21,10 +21,8 @@
 			<field eval="12445" name="priority" />
 			<field name="arch" type="xml">
 
-				<xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']" position="inside">
-					<group>
-						<field name="segment_id" colspan="3"/>
-					</group>
+				<xpath expr="//page[@name='sales_purchases']//field[@name='ranking']" position="after">
+					<field name="segment_id" colspan="2"/>
 				</xpath>
 
 				<xpath expr="//group[@name='banks']" position="after">
@@ -54,24 +52,18 @@
 					<field name="z_kat_email"/>
 					
 				</xpath>
-				<xpath expr="//notebook" position="inside">
-                    <page name="industry" string="Endüstri">
-                        <group string="Ana Sektör">
-                            <field name="industry_id" nolabel="1" colspan="2"/>
-                        </group>
-                        <group string="Diğer Endüstri Iş Sektörleri">
-                            <field name="secondary_industry_ids" nolabel="1" colspan="2"/>
-                        </group>
-                        <group string="Hedef Ürün Kategorisi">
-                            <field name="nace_product_categ_ids" readonly="1" nolabel="1" colspan="2"/>
-                        </group>
-                    </page>
+				<xpath expr="//page[@name='sales_purchases']" position="inside">
+                    <group name="industry" string="Sektör (NACE)">
+						<field name="industry_id" colspan="2"/>
+						<field name="secondary_industry_ids" colspan="2"/>
+						<field name="nace_product_categ_ids" readonly="1" colspan="2"/>
+                    </group>
                 </xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath>
-				<xpath expr="/form/sheet/notebook/page[@name='accounting']" position="after">
-					<page name="internal_notes" string="Notes" modifiers="{}">
+				<xpath expr="//page[@name='sales_purchases']" position="inside">
+					<group name="internal_notes" string="Uyarılar" modifiers="{}">
 						<group colspan="2" col="2" modifiers="{}">
 							<separator string="Warning on the Sales Order" colspan="4" modifiers="{}"/>
 							<field name="sale_warn" nolabel="1" modifiers="{}" colspan="2"/>
@@ -92,7 +84,7 @@
 							<field name="picking_warn" nolabel="1" modifiers="{}" colspan="2"/>
 							<field name="picking_warn_msg" colspan="2" nolabel="1" attrs="{'required':[('picking_warn', '!=', False), ('picking_warn','!=','no-message')],'readonly':[('picking_warn','=','no-message')]}" modifiers="{'required':[['picking_warn','!=',false],['picking_warn','!=','no-message']],'readonly':[['picking_warn','=','no-message']]}"/>
 						</group>
-					</page>
+					</group>
 				</xpath>
 				<xpath expr="/form/sheet//field[@name='category_id']" position="replace"/>
 				<xpath expr="/form/sheet//field[@name='name']" position="after">
