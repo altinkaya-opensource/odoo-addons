@@ -21,7 +21,7 @@
 			<field name="arch" type="xml">
 
 				<xpath expr="//page[@name='sales_purchases']//field[@name='ranking']" position="after">
-					<field name="segment_id" colspan="2"/>
+					<field name="segment_id" colspan="2" />
 				</xpath>
 
 				<xpath expr="//group[@name='banks']" position="after">
@@ -63,9 +63,9 @@
 				</xpath>
 				<xpath expr="//page[@name='sales_purchases']" position="inside">
                     <group name="industry" string="Sektör (NACE)">
-						<field name="industry_id" colspan="2"/>
-						<field name="secondary_industry_ids" colspan="2"/>
-						<field name="nace_product_categ_ids" readonly="1" colspan="2"/>
+						<field name="industry_id" colspan="2" />
+						<field name="secondary_industry_ids" colspan="2" />
+						<field name="nace_product_categ_ids" readonly="1" colspan="2" />
                     </group>
                 </xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
