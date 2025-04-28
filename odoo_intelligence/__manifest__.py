@@ -6,13 +6,13 @@
     "summary": """
         Odoo Intelligence Base Module
                """,
-    "author": "Ismail Çağan Yılmaz",
-    "website": "https://github.com/milleniumkid",
+    "author": "Ismail Çağan Yılmaz, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Tools",
     "version": "16.0.1.0.0",
     "depends": ["base", "mail"],
-    'external_dependencies': {
-        'python': ['openai'],
+    "external_dependencies": {
+        "python": ["openai"],
     },
     "data": [
         "security/security.xml",

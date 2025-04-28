@@ -5,25 +5,30 @@
       <field name="arch" type="xml">
         <form string="LLM Provider">
           <header>
-            <button name="action_test_connection" type="object" string="Test Connection" class="btn-primary"/>
+            <button
+            name="action_test_connection"
+            type="object"
+            string="Test Connection"
+            class="btn-primary"
+          />
           </header>
           <sheet>
                 <group>
-                  <field name="name"/>
-                  <field name="provider_url"/>
-                  <field name="api_key"/>
-                  <field name="model_name"/>
-                  <field name="system_role"/>
-                  <field name="system_prompt"/>
-                  <field name="active"/>
+                  <field name="name" />
+                  <field name="provider_url" />
+                  <field name="api_key" />
+                  <field name="model_name" />
+                  <field name="system_role" />
+                  <field name="system_prompt" />
+                  <field name="active" />
                 </group>
                 <group>
                   <field name="prompt_ids" readonly="1">
                     <tree>
-                      <field name="name"/>
-                      <field name="provider_id"/>
-                      <field name="model_id"/>
-                      <field name="active"/>
+                      <field name="name" />
+                      <field name="provider_id" />
+                      <field name="model_id" />
+                      <field name="active" />
                     </tree>
                   </field>
                 </group>
@@ -31,17 +36,17 @@
         </form>
       </field>
     </record>
-  
+
     <record id="view_intelligence_provider_tree" model="ir.ui.view">
       <field name="name">intelligence.provider.tree</field>
       <field name="model">intelligence.provider</field>
       <field name="arch" type="xml">
-        <tree string="AI Providers">
-          <field name="name"/>
-          <field name="provider_url"/>
-          <field name="model_name"/>
-          <field name="system_role"/>
-          <field name="active"/>
+        <tree>
+          <field name="name" />
+          <field name="provider_url" />
+          <field name="model_name" />
+          <field name="system_role" />
+          <field name="active" />
         </tree>
       </field>
     </record>
@@ -51,11 +56,17 @@
       <field name="res_model">intelligence.provider</field>
       <field name="view_mode">tree,form</field>
     </record>
-  
-    <menuitem id="menu_intelligence_root" name="Artificial Intelligence"/>
-    <menuitem id="menu_intelligence_settings" name="Settings" parent="menu_intelligence_root"/>
-    <menuitem id="menu_intelligence_providers"
-              name="OpenAI"
-              parent="menu_intelligence_settings"
-              action="action_intelligence_providers"/>
-  </odoo>  
+
+    <menuitem id="menu_intelligence_root" name="Artificial Intelligence" />
+    <menuitem
+    id="menu_intelligence_settings"
+    name="Settings"
+    parent="menu_intelligence_root"
+  />
+    <menuitem
+    id="menu_intelligence_providers"
+    name="OpenAI"
+    parent="menu_intelligence_settings"
+    action="action_intelligence_providers"
+  />
+  </odoo>

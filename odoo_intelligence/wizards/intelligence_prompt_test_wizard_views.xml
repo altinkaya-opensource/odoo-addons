@@ -6,16 +6,21 @@
       <form string="Prompt Test">
         <sheet>
           <group>
-            <field name="prompt_id" invisible="1"/>
-            <field name="model_id"/>
-            <field name="record_id" attrs="{'invisible': [('model_id', '=', False)]}"/>
-            <field name="user_id"/>
-            <field name="lang"/>
-            <field name="body_html"/>
+            <field name="prompt_id" invisible="1" />
+            <field name="model_id" />
+            <field name="record_id" attrs="{'invisible': [('model_id', '=', False)]}" />
+            <field name="user_id" />
+            <field name="lang" />
+            <field name="body_html" />
           </group>
           <footer>
-            <button name="action_test" type="object" string="Test Translation" class="btn-primary"/>
-            <button string="Close" class="btn-secondary" special="cancel"/>
+            <button
+              name="action_test"
+              type="object"
+              string="Test Translation"
+              class="btn-primary"
+            />
+            <button string="Close" class="btn-secondary" special="cancel" />
           </footer>
         </sheet>
       </form>

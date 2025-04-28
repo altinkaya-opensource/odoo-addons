@@ -5,45 +5,53 @@
       <field name="arch" type="xml">
         <form string="Prompt">
           <header>
-            <button name="action_test_prompt" type="object" string="Test Prompt" class="btn-secondary"/>
+            <button
+            name="action_test_prompt"
+            type="object"
+            string="Test Prompt"
+            class="btn-secondary"
+          />
           </header>
           <sheet>
             <group>
-              <field name="name"/>
-              <field name="provider_id"/>
-              <field name="system_role" readonly="1"/>
-              <field name="model_id"/>
-              <field name="prompt_text"/>
-              <field name="body_html"/>
-              <field name="temperature"/>
-              <field name="active"/>
+              <field name="name" />
+              <field name="provider_id" />
+              <field name="system_role" readonly="1" />
+              <field name="model_id" />
+              <field name="prompt_text" />
+              <field name="body_html" />
+              <field name="temperature" />
+              <field name="active" />
             </group>
           </sheet>
         </form>
       </field>
     </record>
-  
+
     <record id="view_intelligence_prompt_tree" model="ir.ui.view">
       <field name="name">intelligence.prompt.tree</field>
       <field name="model">intelligence.prompt</field>
       <field name="arch" type="xml">
-        <tree string="Prompts">
-          <field name="name"/>
-          <field name="provider_id"/>
-          <field name="model_id"/>
-          <field name="system_role"/>
-          <field name="active"/>
+        <tree>
+          <field name="name" />
+          <field name="provider_id" />
+          <field name="model_id" />
+          <field name="system_role" />
+          <field name="active" />
         </tree>
       </field>
     </record>
-  
+
     <record id="action_intelligence_prompt" model="ir.actions.act_window">
       <field name="name">Prompts</field>
       <field name="res_model">intelligence.prompt</field>
       <field name="view_mode">tree,form</field>
     </record>
-  
-    <menuitem id="menu_intelligence_prompt" name="Prompts"
-              parent="menu_intelligence_settings"
-              action="action_intelligence_prompt"/>
-</odoo>  
+
+    <menuitem
+    id="menu_intelligence_prompt"
+    name="Prompts"
+    parent="menu_intelligence_settings"
+    action="action_intelligence_prompt"
+  />
+</odoo>
