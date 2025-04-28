@@ -9,7 +9,7 @@
     />
         <field name="arch" type="xml">
             <field name="ref" position="after">
-                <field name="order_ids" />
+                <field name="order_ids" widget="many2many_tags" />
             </field>
         </field>
     </record>

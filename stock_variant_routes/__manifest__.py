@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-
 {
     "name": "Routes on product variants",
-    "website": "www.codequarters.com",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "version": "16.0.0.1.0",
-    "description": "Adds variant specific routes",
-    "author": "CODEQUARTERS",
+    "author": "CODEQUARTERS, Altinkaya Enclosures",
     "depends": ["product", "stock"],
     "data": ["views/product_product.xml"],
     "installable": True,

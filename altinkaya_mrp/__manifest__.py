@@ -9,12 +9,11 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": [
-        "base",
         "mrp",
-        "product",
         "stock",
         "sale",
         "hr",
+        "mrp_sale_info",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -27,6 +26,7 @@
         "views/mrp_production_views.xml",
         "views/mrp_bom_views.xml",
         "views/mrp_routing_views.xml",
+        "views/sale_order_view.xml",
         "wizards/mrp_cancel_wizard_view.xml",
     ],
     "installable": True,

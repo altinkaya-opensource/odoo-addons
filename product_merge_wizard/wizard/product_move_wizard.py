@@ -68,9 +68,27 @@ class ProductMoveWizard(models.TransientModel):
     # @api.multi
     def action_move(self):
         self.ensure_one()
+        attribute_value_ids = self.value_ids
+        template_variant_value_ids = self.env[
+            "product.template.attribute.value"
+        ].search(
+            [
+                ("product_tmpl_id", "=", self.product_id.product_tmpl_id.id),
+                ("product_attribute_value_id", "in", attribute_value_ids.ids),
+            ]
+        )
+
+        if len(template_variant_value_ids) != len(attribute_value_ids):
+            raise exceptions.UserError(
+                _("Something went wrong. Please check the attribute values.")
+            )
+
         self.product_id.write(
             {
                 "product_tmpl_id": self.product_tmpl_id.id,
-                "attribute_value_ids": [(6, False, self.value_ids.ids)],
+                "attribute_value_ids": [(6, False, attribute_value_ids.ids)],
+                "product_template_attribute_value_ids": [
+                    (6, False, template_variant_value_ids.ids)
+                ],
             }
         )

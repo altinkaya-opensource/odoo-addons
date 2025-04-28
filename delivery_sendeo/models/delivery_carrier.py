@@ -1,10 +1,13 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-import phonenumbers
 import base64
+
+import phonenumbers
 from dateutil import parser
+
 from odoo import _, fields, models
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import ValidationError
+
 from .sendeo_request import SendeoRequest
 
 SENDEO_STATUS_CODES = {
@@ -53,6 +56,7 @@ SENDEO_STATUS_CODES = {
     151: ("İade Olarak Teslim", "İade Olarak Teslim"),
 }
 
+
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
@@ -61,9 +65,9 @@ class DeliveryCarrier(models.Model):
         ondelete={"sendeo": "cascade"},
     )
 
-    sendeo_cc_code = fields.Char('CC Code', help="Sendeo CC Code")
-    sendeo_username = fields.Char(string="Sendeo Username", help="Sendeo Username")
-    sendeo_password = fields.Char(string="Sendeo Password", help="Sendeo Password")
+    sendeo_cc_code = fields.Char("CC Code", help="Sendeo CC Code")
+    sendeo_username = fields.Char(help="Sendeo Username")
+    sendeo_password = fields.Char(help="Sendeo Password")
 
     def _get_sendeo_credentials(self):
         """Access key is mandatory for every request while group and user are
@@ -76,15 +80,14 @@ class DeliveryCarrier(models.Model):
         return credentials
 
     def _sendeo_address(self, partner):
-        """Sender address is the address of the company, required field.
-        """
+        """Sender address is the address of the company, required field."""
         return partner._display_address()
 
     def _sendeo_city_id(self, partner):
-        """ Sendeo requires city ids without zeros. """
-        return int(partner.state_id.code.lstrip('0'))
+        """Sendeo requires city ids without zeros."""
+        return int(partner.state_id.code.lstrip("0"))
 
-    def _sendeo_phone_number(self, partner, priority='mobile'):
+    def _sendeo_phone_number(self, partner, priority="mobile"):
         """
         Sendeo requires phone number without spaces and country code.
         We use priority selector to handle two different phone numbers.
@@ -96,23 +99,33 @@ class DeliveryCarrier(models.Model):
         if priority_field:
             return phonenumbers.format_number(
                 phonenumbers.parse(priority_field, partner.country_id.code or "TR"),
-                phonenumbers.PhoneNumberFormat.E164).lstrip('+90')
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+90")
         elif partner.phone or partner.mobile:
             return phonenumbers.format_number(
-                phonenumbers.parse(partner.phone or partner.mobile, partner.country_id.code or "TR"),
-                phonenumbers.PhoneNumberFormat.E164).lstrip('+90')
+                phonenumbers.parse(
+                    partner.phone or partner.mobile, partner.country_id.code or "TR"
+                ),
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+90")
         else:
-            raise ValidationError(_("%s\nPartner's phone number is missing."
-                                    " It's a required field for dispatch."
-                                    % partner.name))
+            raise ValidationError(
+                _(
+                    "%(partner)s\nPartner's phone number is missing."
+                    " It's a required field for dispatch.",
+                    partner=partner.name,
+                )
+            )
 
     def _prepare_sendeo_products(self, picking):
         # TODO: implement stock.quant.package
         vals = {
-            'products': [{
-                'count': picking.carrier_package_count,
-                'deci': 1  # Doc: required field but there is no description, so we put 1
-            }]
+            "products": [
+                {
+                    "count": picking.carrier_package_count,
+                    "deci": 1,  # Doc: required field but there is no description
+                }
+            ]
         }
         return vals
 
@@ -138,27 +151,39 @@ class DeliveryCarrier(models.Model):
                 "deliveryType": 1,  # Lokasyonunuz >> Müşteriniz
                 "referenceNo": picking.name,
                 "senderAuthority": picking.company_id.name,
-                "senderAddress": self._sendeo_address(picking.picking_type_id.warehouse_id.partner_id),
-                "senderCityId": self._sendeo_city_id(picking.picking_type_id.warehouse_id.partner_id),
-                "senderDistrictId": self._sendeo_district_code(picking.picking_type_id.warehouse_id.partner_id),
-                "senderPhone": self._sendeo_phone_number(picking.picking_type_id.warehouse_id.partner_id,
-                                                         priority='phone'),
-                "senderGSM": self._sendeo_phone_number(picking.picking_type_id.warehouse_id.partner_id,
-                                                       priority='mobile'),
+                "senderAddress": self._sendeo_address(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderCityId": self._sendeo_city_id(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderDistrictId": self._sendeo_district_code(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderPhone": self._sendeo_phone_number(
+                    picking.picking_type_id.warehouse_id.partner_id, priority="phone"
+                ),
+                "senderGSM": self._sendeo_phone_number(
+                    picking.picking_type_id.warehouse_id.partner_id, priority="mobile"
+                ),
                 "senderEmail": picking.picking_type_id.warehouse_id.partner_id.email,
                 "receiver": picking.partner_id.display_name,
                 "receiverAuthority": picking.partner_id.name,
                 "receiverAddress": self._sendeo_address(picking.partner_id),
                 "receiverCityId": self._sendeo_city_id(picking.partner_id),
                 "receiverDistrictId": self._sendeo_district_code(picking.partner_id),
-                "receiverPhone": self._sendeo_phone_number(picking.partner_id, priority='phone'),
-                "receiverGSM": self._sendeo_phone_number(picking.partner_id, priority='mobile'),
+                "receiverPhone": self._sendeo_phone_number(
+                    picking.partner_id, priority="phone"
+                ),
+                "receiverGSM": self._sendeo_phone_number(
+                    picking.partner_id, priority="mobile"
+                ),
                 "receiverEmail": picking.partner_id.email,
                 "paymentType": 1,  # Default is 1, required
                 "collectionType": 0,
                 "collectionPrice": 0,
                 "serviceType": 1,  # Default is 1, required
-                "barcodeLabelType": 1 if self.carrier_barcode_type == 'pdf' else 2,
+                "barcodeLabelType": 1 if self.carrier_barcode_type == "pdf" else 2,
             }
         )
         product_array = self._prepare_sendeo_products(picking)
@@ -200,7 +225,9 @@ class DeliveryCarrier(models.Model):
             if barcode and self.attach_barcode:
                 attachment = [
                     (
-                        "sendeo_etiket_{}.{}".format(response.get("TrackingNumber"), barcode_type),
+                        "sendeo_etiket_{}.{}".format(
+                            response.get("TrackingNumber"), barcode_type
+                        ),
                         data,
                     )
                 ]
@@ -215,22 +242,28 @@ class DeliveryCarrier(models.Model):
         """
         sendeo_request = SendeoRequest(**self._get_sendeo_credentials())
         for picking in pickings.filtered("carrier_tracking_ref"):
-            if hasattr(self, '%s_tracking_state_update' % self.delivery_type):  # check state before cancel
-                getattr(self, '%s_tracking_state_update' % self.delivery_type)(picking)
+            if hasattr(
+                self, f"{self.delivery_type}_tracking_state_update"
+            ):  # check state before cancel
+                getattr(self, f"{self.delivery_type}_tracking_state_update")(picking)
 
-            if picking.delivery_state not in ['shipping_recorded_in_carrier', 'canceled_shipment']:
-                raise ValidationError(_("You can't cancel a shipment that already has been sent to Sendeo"))
+            if picking.delivery_state not in [
+                "shipping_recorded_in_carrier",
+                "canceled_shipment",
+            ]:
+                raise ValidationError(
+                    _(
+                        "You can't cancel a shipment that already "
+                        "has been sent to Sendeo"
+                    )
+                )
             sendeo_request._cancel_shipment(reference=picking.name)
-            picking.write({
-                'shipping_number': False
-            })
+            picking.write({"shipping_number": False})
         return True
 
     def sendeo_get_tracking_link(self, picking):
         """Provide tracking link for the customer"""
-        return "https://sube.sendeo.com.tr/takip?ccode=%s&musref=%s" % (self.sendeo_cc_code,
-                                                                        picking.carrier_tracking_ref)
-
+        return f"https://sube.sendeo.com.tr/takip?ccode={self.sendeo_cc_code}&musref={picking.carrier_tracking_ref}"
 
     def _sendeo_status_codes(self, status_code):
         """
@@ -243,7 +276,23 @@ class DeliveryCarrier(models.Model):
             return "in_transit"
         elif status_code in [133, 139, 136]:
             return "canceled_shipment"
-        elif status_code in [112, 113, 114, 115, 117, 118, 119, 120, 121, 122, 125, 127, 128, 129, 130]:
+        elif status_code in [
+            112,
+            113,
+            114,
+            115,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            125,
+            127,
+            128,
+            129,
+            130,
+        ]:
             return "incidence"
         elif status_code in [111]:
             return "customer_delivered"
@@ -267,17 +316,18 @@ class DeliveryCarrier(models.Model):
                     "tracking_state_history": (
                         "\n".join(
                             "{} - [{}] {}".format(
-                                parser.parse(t['StatusDate']).strftime("%d/%m/%Y %H:%M:%S"),
-                                t['Status'],
-                                t['Description'],
+                                parser.parse(t["StatusDate"]).strftime(
+                                    "%d/%m/%Y %H:%M:%S"
+                                ),
+                                t["Status"],
+                                t["Description"],
                             )
                             for t in status_event_list
-
                         )
                     ),
-                    "tracking_state": response['StateText'],
-                    "delivery_state": self._sendeo_status_codes(response['State']),
-                    "shipping_number": response['TrackingNo'],
+                    "tracking_state": response["StateText"],
+                    "delivery_state": self._sendeo_status_codes(response["State"]),
+                    "shipping_number": response["TrackingNo"],
                 }
             )
         return True

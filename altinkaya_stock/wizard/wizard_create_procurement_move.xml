@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="view_wizard_create_procurement_move_form" model="ir.ui.view">
             <field name="name">create.procurement.move.form</field>
@@ -8,65 +7,102 @@
             <field name="arch" type="xml">
 	            <form>
             		<group invisible="0">
-            			<field name="move_id"/>
-            			<field name="product_id"/>
-            			<label for="move_qty"/>
+            			<field name="move_id" />
+            			<field name="product_id" />
+            			<label for="move_qty" />
             			<div>
-            				<field name="move_qty" class="oe_inline"/>
-            				<field name="uom" class="oe_inline"/>
+            				<field name="move_qty" class="oe_inline" />
+            				<field name="uom" class="oe_inline" />
             			</div>
-						<field name="procure_move"/>
+						<field name="procure_move" />
             		</group>
 					<!-- <group string="Satışlar">
 							<field name="sale_qty30days" widget="uom" options="{'uom_field': 'uom'}"/>
 							<field name="sale_qty180days" widget="uom" options="{'uom_field': 'uom'}"/>
 							<field name="sale_qty360days" widget="uom" options="{'uom_field': 'uom'}"/>
 					</group> -->
-					<group col="6">
+					<group>
             		<group string="Sincan Depo" class="oe_form">
-						<field name="qty_to_sincan" class="oe_inline"/>
-            			<field name="qty_available_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_incoming_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_outgoing_sincan" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_virtual_sincan" widget="uom" options="{'uom_field': 'uom'}"/></group>
+						<field name="qty_to_sincan" class="oe_inline" />
+            			<field
+              name="qty_available_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_incoming_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_outgoing_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_virtual_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            /></group>
 
-						<group string="Merkez Depo" class="oe_form" col="2">
-            			<field name="qty_to_merkez" class="oe_inline"/>
-            			<field name="qty_available_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_incoming_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_outgoing_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
-            			<field name="qty_virtual_merkez" widget="uom" options="{'uom_field': 'uom'}"/>
+						<group string="Merkez Depo" class="oe_form">
+            			<field name="qty_to_merkez" class="oe_inline" />
+            			<field
+              name="qty_available_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_incoming_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_outgoing_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+            			<field
+              name="qty_virtual_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
 					</group>
 					</group>
 
 					<div>
-            			<p>Tedarik Oluştur tuşuna basıldığında siparişin kaleminin tam sayısı kadar ilgili depoya tedarik oluşturulup sevk satırına bağlanır.<br/>
+            			<p
+          >Tedarik Oluştur tuşuna basıldığında siparişin kaleminin tam sayısı kadar ilgili depoya tedarik oluşturulup sevk satırına bağlanır.<br
+            />
 							Ek olarak depolara da tedarik oluşturulması isteniyorsa ilgili deponun kutusuna adet girilir.</p>
             		</div>
 					<notebook>
             			<page name="production" string="Açık Üretim Emirleri">
 								<field name="production_ids" widget="many2many">
 									<tree>
-										<field name="name"/>
+										<field name="name" />
 										<!-- <field name="date_planned"/> -->
-										<field name="product_id"/>
-										<field name="product_qty"/>
+										<field name="product_id" />
+										<field name="product_qty" />
 					                    <!-- <field name="routing_id" groups="mrp.group_mrp_routings"/> -->
-					                    <field name="location_src_id"/>
-   								        <field name="state"/>
+					                    <field name="location_src_id" />
+   								        <field name="state" />
 									</tree>
 								</field>
             			</page>
             		</notebook>
             		<footer>
-                        <button name="action_create" string="Tedarik Oluştur" type="object" class="oe_highlight"/>
+                        <button
+            name="action_create"
+            string="Tedarik Oluştur"
+            type="object"
+            class="oe_highlight"
+          />
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
 	            </form>
             </field>
         </record>
 
-
-    </data>
 </odoo>

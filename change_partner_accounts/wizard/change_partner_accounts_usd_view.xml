@@ -1,17 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="res_partner_change_accounts_usd_view" model="ir.ui.view">
             <field name="name">change.partner.accounts.usd.popup</field>
             <field name="model">change.partner.accounts.usd</field>
             <field name="arch" type="xml">
                 <form string="Change Partner Accounts to USD">
-                    <p>This action will change every accounting records of partner. Ask your administrator before use it.</p>
+                    <p
+        >This action will change every accounting records of partner. Ask your administrator before use it.</p>
                     <footer>
-                        <button string="Change Accounts" name="change_partners_account_to_usd" type="object"
-                                default_focus="1" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button
+            string="Change Accounts"
+            name="change_partners_account_to_usd"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+          />
+                        <button
+            string="Cancel"
+            class="btn-secondary"
+            special="cancel"
+          />
                     </footer>
                 </form>
             </field>
@@ -23,6 +32,4 @@
                     res_model="change.partner.accounts.usd" src_model="res.partner"
                     view_mode="form" target="new" view_type="form"/> -->
 
-
-    </data>
 </odoo>

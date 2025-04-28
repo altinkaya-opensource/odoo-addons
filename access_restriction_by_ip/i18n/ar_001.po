@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 19:11+0000\n"
-"PO-Revision-Date: 2025-02-14 19:11+0000\n"
+"POT-Creation-Date: 2025-03-28 09:07+0000\n"
+"PO-Revision-Date: 2025-03-28 09:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,36 @@ msgstr "بروتوكول الإنترنت المسموح به"
 #: model:ir.model,name:access_restriction_by_ip.model_allowed_ips
 msgid "Allowed IP address for Odoo Login"
 msgstr "عنوان IP المسموح به لتسجيل الدخول إلى أودو"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__changeset_change_ids
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "تغييرات مجموعة التغييرات"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__changeset_ids
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__changeset_ids
+msgid "Changesets"
+msgstr "مجموعات التغييرات"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__count_changesets
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__count_changesets
+msgid "Count Changesets"
+msgstr "عدد التغييرات"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "عدد تغييرات مجموعة التغييرات المعلقة"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__count_pending_changesets
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "عدد مجموعات التغييرات المعلقة"
 
 #. module: access_restriction_by_ip
 #: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__create_uid
@@ -72,16 +102,46 @@ msgstr "آخر تحديث في"
 #: code:addons/access_restriction_by_ip/controllers/main.py:0
 #, python-format
 msgid "Not allowed to login from this IP (%(ip_addr)s)"
-msgstr "غير مسموح بتسجيل الدخول من عنوان IP هذا (%(ip_addr)"
+msgstr "غير مسموح بتسجيل الدخول من عنوان IP هذا (%(ip_addr)s)"
 
 #. module: access_restriction_by_ip
 #. odoo-python
 #: code:addons/access_restriction_by_ip/models/allowed_ips.py:0
 #, python-format
 msgid "Please enter a valid IP address or subnet mask (%(ip_addr)s)"
-msgstr "يرجى إدخال عنوان IP أو قناع شبكة فرعية صالح (%(ip_addr)"
+msgstr "يرجى إدخال عنوان IP أو قناع شبكة فرعية صالح (%(ip_addr)s)"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__smart_search
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__smart_search
+msgid "Smart Search"
+msgstr "البحث الذكي"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,help:access_restriction_by_ip.field_allowed_ips__count_pending_changeset_changes
+#: model:ir.model.fields,help:access_restriction_by_ip.field_res_users__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "عدد التغييرات المعلقة لهذا السجل"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,help:access_restriction_by_ip.field_allowed_ips__count_pending_changesets
+#: model:ir.model.fields,help:access_restriction_by_ip.field_res_users__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "عدد مجموعات التغييرات المعلقة لهذا السجل"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,help:access_restriction_by_ip.field_allowed_ips__count_changesets
+#: model:ir.model.fields,help:access_restriction_by_ip.field_res_users__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "العدد الإجمالي للتغييرات في هذا السجل"
 
 #. module: access_restriction_by_ip
 #: model:ir.model,name:access_restriction_by_ip.model_res_users
 msgid "User"
 msgstr "المستخدم"
+
+#. module: access_restriction_by_ip
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_allowed_ips__user_can_see_changeset
+#: model:ir.model.fields,field_description:access_restriction_by_ip.field_res_users__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "يمكن للمستخدم الاطلاع على مجموعة التغييرات"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
 
         <record id="delivery_send_batch_email" model="ir.ui.view">
             <field name="name">delivery.send.batch.email.form</field>
@@ -9,17 +8,17 @@
                 <form string="Send E-mails To Customer">
                     <footer>
                         <button
-              string="Send Mails"
-              name="send_batch_email"
-              type="object"
-              default_focus="1"
-              class="btn-primary"
-            />
+            string="Send Mails"
+            name="send_batch_email"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+          />
                         <button
-              string="Cancel"
-              class="btn-secondary"
-              special="cancel"
-            />
+            string="Cancel"
+            class="btn-secondary"
+            special="cancel"
+          />
                     </footer>
                 </form>
             </field>
@@ -32,8 +31,7 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="context">{}</field>
-        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
     </record>
 
-    </data>
 </odoo>

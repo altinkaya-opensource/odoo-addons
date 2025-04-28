@@ -1,6 +1,6 @@
-from odoo import models, fields, api, _
-from odoo.tools import float_is_zero, float_compare
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare, float_is_zero
 
 
 class Product(models.Model):
@@ -12,7 +12,13 @@ class Product(models.Model):
     )
 
     domain_attribute_value_ids = fields.Many2many(
-        "product.attribute.value", compute="_compute_domain_attribute_value_ids"
+        "product.template.attribute.value",
+        compute="_compute_domain_attribute_value_ids",
+    )
+
+    product_template_variant_value_ids = fields.Many2many(
+        # Remove domain in this field
+        domain=None,
     )
 
     attribute_value_ids = fields.Many2many(
@@ -24,7 +30,9 @@ class Product(models.Model):
     def _compute_domain_attribute_value_ids(self):
         for product in self:
             product.domain_attribute_value_ids = (
-                product.product_tmpl_id.attribute_line_ids.mapped("value_ids")
+                product.product_tmpl_id.attribute_line_ids.mapped(
+                    "product_template_value_ids"
+                )
             )
 
     @api.depends("product_template_attribute_value_ids")
@@ -147,7 +155,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 12})._search_qty_available(
+                self.with_context(**{"location": 12})._search_qty_available(
                     operator, value
                 ),
             )
@@ -158,7 +166,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 21})._search_qty_available(
+                self.with_context(**{"location": 21})._search_qty_available(
                     operator, value
                 ),
             )
@@ -169,7 +177,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 29})._search_qty_available(
+                self.with_context(**{"location": 29})._search_qty_available(
                     operator, value
                 ),
             )
@@ -180,7 +188,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 53})._search_qty_available(
+                self.with_context(**{"location": 53})._search_qty_available(
                     operator, value
                 ),
             )
@@ -191,7 +199,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 61})._search_qty_available(
+                self.with_context(**{"location": 61})._search_qty_available(
                     operator, value
                 ),
             )
@@ -202,7 +210,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 45})._search_qty_available(
+                self.with_context(**{"location": 45})._search_qty_available(
                     operator, value
                 ),
             )
@@ -213,7 +221,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 37})._search_qty_available(
+                self.with_context(**{"location": 37})._search_qty_available(
                     operator, value
                 ),
             )
@@ -224,7 +232,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 114})._search_qty_available(
+                self.with_context(**{"location": 114})._search_qty_available(
                     operator, value
                 ),
             )
@@ -235,7 +243,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 77})._search_qty_available(
+                self.with_context(**{"location": 77})._search_qty_available(
                     operator, value
                 ),
             )
@@ -246,7 +254,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 5895})._search_qty_available(
+                self.with_context(**{"location": 5895})._search_qty_available(
                     operator, value
                 ),
             )
@@ -257,7 +265,7 @@ class Product(models.Model):
             (
                 "id",
                 "in",
-                self.with_context({"location": 6362})._search_qty_available(
+                self.with_context(**{"location": 6362})._search_qty_available(
                     operator, value
                 ),
             )
@@ -266,64 +274,64 @@ class Product(models.Model):
     def _compute_custom_available(self):
         for product in self:
             product.qty_available_sincan = product.with_context(
-                {"location": 21}
+                **{"location": 21}
             ).qty_available
             product.qty_available_merkez = product.with_context(
-                {"location": 12}
+                **{"location": 12}
             ).qty_available
             product.qty_incoming_sincan = product.with_context(
-                {"location": 21}
+                **{"location": 21}
             ).incoming_qty
             product.qty_incoming_merkez = product.with_context(
-                {"location": 12}
+                **{"location": 12}
             ).incoming_qty
             product.qty_outgoing_sincan = product.with_context(
-                {"location": 21}
+                **{"location": 21}
             ).outgoing_qty
             product.qty_outgoing_merkez = product.with_context(
-                {"location": 12}
+                **{"location": 12}
             ).outgoing_qty
             product.qty_virtual_sincan = product.with_context(
-                {"location": 21}
+                **{"location": 21}
             ).virtual_available
             product.qty_virtual_merkez = product.with_context(
-                {"location": 12}
+                **{"location": 12}
             ).virtual_available
             product.qty_unreserved_sincan = product.with_context(
-                {"location": 21}
-            ).qty_available_not_res
+                **{"location": 21}
+            ).free_qty
             product.qty_unreserved_merkez = product.with_context(
-                {"location": 12}
-            ).qty_available_not_res
+                **{"location": 12}
+            ).free_qty
 
     def _compute_custom2_available(self):
         for product in self:
             product.qty_available_montaj = product.with_context(
-                {"location": 53}
+                **{"location": 53}
             ).qty_available
             product.qty_available_enjek = product.with_context(
-                {"location": 29}
+                **{"location": 29}
             ).qty_available
             product.qty_available_cnc = product.with_context(
-                {"location": 61}
+                **{"location": 61}
             ).qty_available
             product.qty_available_boya = product.with_context(
-                {"location": 45}
+                **{"location": 45}
             ).qty_available
             product.qty_available_metal = product.with_context(
-                {"location": 37}
+                **{"location": 37}
             ).qty_available
             product.qty_available_maske = product.with_context(
-                {"location": 114}
+                **{"location": 114}
             ).qty_available
             product.qty_available_baski = product.with_context(
-                {"location": 77}
+                **{"location": 77}
             ).qty_available
             product.qty_available_torna = product.with_context(
-                {"location": 5895}
+                **{"location": 5895}
             ).qty_available
             product.qty_available_kaplama = product.with_context(
-                {"location": 6362}
+                **{"location": 6362}
             ).qty_available
 
     def single_product_update_quant_reservation(self):
@@ -346,8 +354,8 @@ class Product(models.Model):
                     ]
                 )
                 if quant.location_id.should_bypass_reservation():
-                    # If a quant is in a location that should bypass the reservation, its `reserved_quantity` field
-                    # should be 0.
+                    # If a quant is in a location that should bypass the reservation,
+                    # its `reserved_quantity` field should be 0.
                     if not float_is_zero(
                         quant.reserved_quantity, precision_digits=decimal_places
                     ):
@@ -425,3 +433,13 @@ class mrpProduction(models.Model):
     qty_available_kaplama = fields.Float(
         "Kaplama Depo Mevcut", related="product_id.qty_available_kaplama"
     )
+
+
+class ProductTemplateAttributeValue(models.Model):
+    _inherit = "product.template.attribute.value"
+
+    def _filter_single_value_lines(self):
+        """
+        Overriden to disable filtering single value lines
+        """
+        return self

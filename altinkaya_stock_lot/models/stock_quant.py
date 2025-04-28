@@ -4,7 +4,6 @@ from odoo import api, models
 class InventoryLine(models.Model):
     _inherit = "stock.quant"
 
-    
     def _create_missing_lot(self):
         """EXPERIMENTAL: Create a lot for the move line if it is missing."""
         for rec in self:
@@ -33,13 +32,12 @@ class InventoryLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = super(InventoryLine, self).create(vals_list)
+        res = super().create(vals_list)
         for rec in res:
             rec._create_missing_lot()
         return res
 
-    @api.model
     def write(self, vals):
-        res = super(InventoryLine, self).write(vals)
+        res = super().write(vals)
         self._create_missing_lot()
         return res

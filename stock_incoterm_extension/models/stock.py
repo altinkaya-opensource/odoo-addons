@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,47 +15,51 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class StockPicking(models.Model):
-
-    _inherit = 'stock.picking'
+    _inherit = "stock.picking"
 
     @api.model
     def _get_selection_transport_type(self):
-        return self.env['sale.order'].fields_get(
-            allfields=['transport_type'])['transport_type']['selection']
+        return self.env["sale.order"].fields_get(allfields=["transport_type"])[
+            "transport_type"
+        ]["selection"]
 
-    incoterm = fields.Many2one('account.incoterms', string="Incoterm")
-    req_destination_port = fields.Boolean(string="Requires destination port",
-                                          related="incoterm.destination_port")
-    req_transport_type = fields.Boolean(string="Requires transport type",
-                                        related="incoterm.transport_type")
+    incoterm = fields.Many2one("account.incoterms")
+    req_destination_port = fields.Boolean(
+        string="Requires destination port", related="incoterm.destination_port"
+    )
+    req_transport_type = fields.Boolean(
+        string="Requires transport type", related="incoterm.transport_type"
+    )
     destination_port = fields.Char(string="Destination port")
     transport_type = fields.Selection(
-        selection='_get_selection_transport_type', string="Transport type")
+        selection="_get_selection_transport_type", string="Transport type"
+    )
 
     @api.model
     def _create_invoice_from_picking(self, picking, vals):
         if picking and picking.sale_id:
             sale = picking.sale_id
-            vals.update({
-                'incoterm': sale.incoterm and sale.incoterm or False,
-                'destination_port': sale.destination_port,
-                'transport_type': sale.transport_type
-                })
-        return super(StockPicking, self)._create_invoice_from_picking(picking,
-                                                                      vals)
+            vals.update(
+                {
+                    "incoterm": sale.incoterm and sale.incoterm or False,
+                    "destination_port": sale.destination_port,
+                    "transport_type": sale.transport_type,
+                }
+            )
+        return super()._create_invoice_from_picking(picking, vals)
 
 
 class StockMove(models.Model):
     _inherit = "stock.move"
 
     def action_confirm(self):
-        res = super(StockMove, self).action_confirm()
+        res = super().action_confirm()
         for move in self:
-            if (move.procurement_id and move.procurement_id.sale_line_id):
+            if move.procurement_id and move.procurement_id.sale_line_id:
                 sale = move.procurement_id.sale_line_id.order_id
                 picking = move.picking_id
                 if picking and sale:

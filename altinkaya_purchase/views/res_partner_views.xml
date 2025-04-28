@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-	<data>
 	<record id="res_partner_view_form_altinkaya_purchase" model="ir.ui.view">
             <field name="name">altinkaya.purchase.partner.form</field>
             <field name="model">res.partner</field>
@@ -8,10 +7,9 @@
             <field name="arch" type="xml">
             	<group name="purchase" position="inside">
                     <field
-            name="property_purchase_pricelist"
-          /> <!-- domain="[('list_type_use', '=', 'purchase')]" -->
+          name="property_purchase_pricelist"
+        /> <!-- domain="[('list_type_use', '=', 'purchase')]" -->
                 </group>
            </field>
       </record>
-	</data>
 </odoo>

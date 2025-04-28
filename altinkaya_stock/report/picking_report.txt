@@ -17,7 +17,7 @@
                                                                                                                     ${o.partner_id.commercial_partner_id.tax_office_name or '' }
 
                                                                                                                     ${o.partner_id.commercial_partner_id.vat or '' }
-       {% if o.invoice_id.number %} ${formatLang(o.invoice_id.date_invoice, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
+       {% if o.invoice_id.number %} ${formatLang(o.invoice_id.invoice_date, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
 
                            {%if len(o.move_lines.ids) > 24 %}Sayfa 1/${((int(len(o.move_lines.ids))/-24)*-1)}{% end %}
 
@@ -25,7 +25,7 @@
 {% for orderitem in o.move_lines %} {%if (((o.move_lines.ids.index(orderitem.id)%23)==1) and (o.move_lines.ids.index(orderitem.id)!=1)) %}
 
                                                                Sayfa ${((int(o.move_lines.ids.index(orderitem.id)-1)/-24)*-1)}/${((int(len(o.move_lines.ids))/-24)*-1)}
- 
+
 
 
 
@@ -44,7 +44,7 @@
                                                                                                                     ${o.partner_id.commercial_partner_id.tax_office_name or '' }
 
                                                                                                                     ${o.partner_id.commercial_partner_id.vat or '' }
-      {% if o.invoice_id.number %} ${formatLang(o.invoice_id.date_invoice, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
+      {% if o.invoice_id.number %} ${formatLang(o.invoice_id.invoice_date, date=True)} tarih ${o.invoice_id.number} sayılı faturaya istinaden düzenlenen sevk irsaliyesidir.{% end %}
 
            Sayfa ${(((int(o.move_lines.ids.index(orderitem.id))-1)/-24)*-1)+1}
 
@@ -54,4 +54,3 @@
  ${orderitem.product_id.display_name[:80].ljust(80) }      ${str(orderitem.product_uom_qty).rjust(8) or '' }${orderitem.product_uom.name.ljust(8) or '' }{% if orderitem.procurement_id.sale_line_id.order_id.client_order_ref %}(${orderitem.procurement_id.sale_line_id.order_id.client_order_ref[:12]  or '' }){%end %}{% if  (orderitem.procurement_id.sale_line_id.order_id.name) %}(${orderitem.procurement_id.sale_line_id.order_id.name[:10]  or '' }){% end %}{% end %}
                                                                       -----------------Liste Sonu--------------------
  {% if o.comment_irsaliye %}Not:${o.comment_irsaliye  or '' }{% end %}
- 

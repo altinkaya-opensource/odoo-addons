@@ -1,7 +1,8 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (c) 2012-Present (<http://www.acespritech.com/>) Acespritech Solutions Pvt.Ltd
+#    Copyright (c) 2012-Present (<http://www.acespritech.com/>)
+#    Acespritech Solutions Pvt.Ltd
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -25,7 +26,7 @@ class StockPicking(models.Model):
 
     def open_sales_order(self):
         self.ensure_one()
-        action = self.env.ref("sale.action_orders").read()[0]
+        action = self.env.ref("sale.action_orders").sudo().read()[0]
         form = self.env.ref("sale.view_order_form")
         action["views"] = [(form.id, "form")]
         action["res_id"] = self.sale_id.id
@@ -67,9 +68,8 @@ class StockPicking(models.Model):
         related="sale_id.create_uid",
         store=True,
     )
-    sale_note = fields.Html("Sale Note", related="sale_id.note", readonly=True)
+    sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
     trimmed_sale_note = fields.Text(
-        "Trimmed Sale Note",
         compute="_compute_trimmed_sale_note",
         readonly=True,
     )

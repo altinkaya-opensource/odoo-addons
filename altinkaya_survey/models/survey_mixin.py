@@ -26,7 +26,6 @@ class SurveyMapping(models.AbstractModel):
     )
 
     survey_count = fields.Integer(
-        string="Survey Count",
         store=False,
         compute="_compute_survey_count",
     )
@@ -102,7 +101,7 @@ class SurveyMapping(models.AbstractModel):
 
         survey_url = (
             f"{base_url}/{survey_user_input.partner_id.lang or 'tr_TR'}"
-            f"/survey/fill/{slug(survey)}/{survey_user_input.invite_token}"
+            f"/survey/fill/{slug(survey)}/{survey_user_input.access_token}"
         )
 
         # Read or create shortened url for user_input
@@ -113,7 +112,7 @@ class SurveyMapping(models.AbstractModel):
                     or survey_url,
                 }
             )
-            self.env.cr.commit()
+            self.env.cr.commit()  # pylint: disable=E8102
 
         return survey_user_input.shortened_url or survey_url
 
@@ -122,7 +121,7 @@ class SurveyMapping(models.AbstractModel):
         for rec in self:
             barcode = self.env["ir.actions.report"].barcode(
                 "QR",
-                value=rec.survey_url,
+                value=rec.sudo().survey_url,  # avoid access rights issues
                 width=300,
                 height=300,
             )
@@ -134,7 +133,6 @@ class SurveyResPartnerMixin(models.Model):
     _inherit = ["res.partner", "survey.mapping"]
 
     reconciliation_replied = fields.Boolean(
-        string="Reconciliation Replied",
         compute="_compute_reconciliation_replied",
         search="_search_reconciliation_replied",
         translate=True,
@@ -172,7 +170,6 @@ class SurveyResPartnerMixin(models.Model):
             vals = {
                 "survey_id": default_survey_id.id,
                 "partner_id": record.id,
-                "type": "link",
             }
             record.survey_url = record._create_survey_url(vals, default_survey_id)
 
@@ -188,7 +185,6 @@ class SurveySaleOrderMixin(models.Model):
                 "survey_id": default_survey_id.id,
                 "partner_id": record.partner_id.id,
                 "sale_id": record.id,
-                "type": "link",
             }
             record.survey_url = self._create_survey_url(vals, default_survey_id)
 
@@ -204,6 +200,5 @@ class SurveyAccountInvoiceMixin(models.Model):
                 "survey_id": default_survey_id.id,
                 "partner_id": record.partner_id.id,
                 "invoice_id": record.id,
-                "type": "qrcode",
             }
             record.survey_url = self._create_survey_url(vals, default_survey_id)

@@ -1,37 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2025 Erol Develi (https://github.com/erlinberg) -->
 <!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).  -->
-
 <odoo>
     <record id="filter_admin_stock_picking_type_allowed" model="ir.rule">
         <field name="name">Filter Stock Picking Type Admin</field>
-        <field name="model_id" ref="stock.model_stock_picking_type"/>
-        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+        <field name="model_id" ref="stock.model_stock_picking_type" />
+        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]" />
         <field name="domain_force">[]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 
     <record id="filter_user_stock_picking_type_allowed" model="ir.rule">
         <field name="name">Filter Stock Picking Type Allowed</field>
-        <field name="model_id" ref="stock.model_stock_picking_type"/>
-        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
-        <field name="domain_force">[('id','in', [p.id for p in user.default_picking_type_ids])]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
+        <field name="model_id" ref="stock.model_stock_picking_type" />
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]" />
+        <field
+      name="domain_force"
+    >[('id','in', [p.id for p in user.default_picking_type_ids])]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 
     <record id="filter_sale_order_warehouse_allowed" model="ir.rule">
         <field name="name">Filter Sale Order Allowed Warehouse</field>
-        <field name="model_id" ref="sale.model_sale_order"/>
-        <field name="domain_force">[('warehouse_id','in', [w.id for w in user.sale_order_restricted_warehouse_ids])]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field
+      name="domain_force"
+    >[('warehouse_id','in', [w.id for w in user.sale_order_restricted_warehouse_ids])]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 </odoo>

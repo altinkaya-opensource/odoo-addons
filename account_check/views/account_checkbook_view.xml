@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record id="view_account_checkbook_tree" model="ir.ui.view">
@@ -6,14 +6,14 @@
         <field name="model">account.checkbook</field>
         <field name="arch" type="xml">
         <!-- colors="blue:state == 'draft';black:state in ('active');red:state == 'hrejected';gray:state == 'used'" -->
-            <tree string="Checkbooks" editable="bottom">
-                <field name="issue_check_subtype"/>
-                <field name="name"/>
-                <field name="next_number"/>
-                <field name="range_to"/>
-                <field name="numerate_on_printing"/>
+            <tree editable="bottom">
+                <field name="issue_check_subtype" />
+                <field name="name" />
+                <field name="next_number" />
+                <field name="range_to" />
+                <field name="numerate_on_printing" />
                 <!-- <field name="block_manual_number"/> -->
-                <field name="state"/>
+                <field name="state" />
             </tree>
         </field>
     </record>
@@ -24,18 +24,18 @@
         <field name="arch" type="xml">
             <form string="Checkbooks">
                 <header string="Checkbooks">
-                    <field name="state" widget="statusbar" clickable="True"/>
+                    <field name="state" widget="statusbar" clickable="True" />
                 </header>
                 <sheet string="Checkbooks">
                     <group>
-                        <field name="name" invisible="1"/>
-                        <field name="sequence_id" groups="base.group_no_one"/>
-                        <field name="next_number"/>
-                        <field name="issue_check_subtype"/>
-                        <field name="range_to"/>
-                        <field name="numerate_on_printing"/>
+                        <field name="name" invisible="1" />
+                        <field name="sequence_id" groups="base.group_no_one" />
+                        <field name="next_number" />
+                        <field name="issue_check_subtype" />
+                        <field name="range_to" />
+                        <field name="numerate_on_printing" />
                         <!-- <field name="block_manual_number"/> -->
-                        <field name="report_template"/>
+                        <field name="report_template" />
                     </group>
                 </sheet>
             </form>

@@ -8,6 +8,6 @@ class CreditControlEmailer(models.TransientModel):
     _inherit = "credit.control.emailer"
 
     @api.model
-    def default_get(self, fields_list):
-        super(CreditControlEmailer, self).default_get(fields_list)
+    def default_get(self, fields_list):  # pylint: disable=W8110
+        super().default_get(fields_list)
         raise UserError(_("This method is restricted by Altinkaya Credit Control."))

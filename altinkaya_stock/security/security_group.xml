@@ -1,7 +1,5 @@
 <odoo>
-     <data>
-        <record id="stock_force_avail_button" model="res.groups">
-            <field name="name">Force Avail. Button</field>
-        </record>
-     </data>
- </odoo>
+    <record id="stock_force_avail_button" model="res.groups">
+        <field name="name">Force Avail. Button</field>
+    </record>
+</odoo>

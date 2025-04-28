@@ -60,7 +60,12 @@ class ProductProduct(models.Model):
         action.update({"context": {"default_restrict_single": True}})
         return action
 
+    def action_open_label_layout(self):
+        # Overriden to open our custom label layout
+        return self.action_print_label()
+
     def action_print_molding_label(self):
+        self = self.with_context(must_skip_send_to_printer=True)
         molding_label = self.env.ref("product_label_print.label_product_product_kalip")
         printer_id = molding_label.printing_printer_id
         if not printer_id:
@@ -71,3 +76,10 @@ class ProductProduct(models.Model):
                 molding_label.render_qweb_text([product.id])[0],
                 doc_form="txt",
             )
+
+
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
+
+    def action_open_label_layout(self):
+        raise UserError(_("Please use product variant to print labels."))

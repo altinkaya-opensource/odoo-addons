@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 import logging
-from odoo import models, fields, api, _
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
-from odoo import Command
 
 _logger = logging.getLogger(__name__)
 
@@ -42,7 +41,7 @@ class ResPartner(models.Model):
             else:
                 partner.currency_difference_to_invoice = False
 
-    def _value_search_diff_check(self, operator, value):
+    def _search_diff_check(self, operator, value):
         AccountMoveLine = self.env["account.move.line"]
         domain = [
             ("difference_checked", "=", False),
@@ -72,11 +71,10 @@ class ResPartner(models.Model):
         compute="_compute_difference_to_invoice",
         default=False,
         store=False,
-        search="_value_search_diff_check",
+        search="_search_diff_check",
     )
 
     currency_difference_checked = fields.Boolean(
-        string="Currency Difference Checked",
         default=False,
         help="Manual check for currency difference",
     )
@@ -337,8 +335,8 @@ class ResPartner(models.Model):
                         ON (L.invoice_id = INV.id)
                     LEFT JOIN res_partner RP
                         ON (L.partner_id = RP.id)
-                WHERE L.DATE <= {date}
-                      AND L.partner_id in ({partner_ids})
+                WHERE L.DATE <= %s
+                      AND L.partner_id in %s
                       AND AT.type IN ( 'payable', 'receivable' )
                       AND L.currency_id IS NOT NULL
                       AND L.currency_id != 31 -- TRY
@@ -356,12 +354,7 @@ class ResPartner(models.Model):
             ) sub
             group by partner_id, currency_id, account_id;
         """
-        self.env.cr.execute(
-            query.format(
-                date="'%s'" % move_date,
-                partner_ids=",".join([str(x) for x in self.ids]),
-            )
-        )
+        self.env.cr.execute(query, (move_date, tuple(self.ids)))
         result = self.env.cr.dictfetchall()
         rates = self.env["res.currency.rate"].search_read(
             [("name", "=", move_date)], ["currency_id", "tcmb_forex_buying"]
@@ -376,7 +369,7 @@ class ResPartner(models.Model):
         )
 
         move_vals = {
-            "name": "%s %s" % (move_date.strftime("%d.%m.%Y"), _("Currency Valuation")),
+            "name": f"{move_date.strftime('%d.%m.%Y')} {_('Currency Valuation')}",
             "journal_id": diff_journal.id,
             "date": move_date,
             "state": "draft",

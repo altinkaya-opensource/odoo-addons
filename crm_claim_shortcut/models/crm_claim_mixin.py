@@ -26,7 +26,7 @@ class CRMClaimMapping(models.AbstractModel):
 
     def action_view_claims(self):
         claims = self.mapped("crm_claim_ids")
-        action = self.env.ref("crm_claim.crm_claim_category_claim0").read()[0]
+        action = self.env.ref("crm_claim.crm_claim_category_claim0").sudo().read()[0]
         form_view = [(self.env.ref("crm_claim.crm_case_claims_form_view").id, "form")]
         if len(claims) > 1:
             action["domain"] = [("id", "in", claims.ids)]
@@ -48,20 +48,20 @@ class CRMClaimMapping(models.AbstractModel):
         return action
 
     def _prepare_claim_context(self):
-        vals = {"default_model_ref_id": "{self._name},{self.id}"}
+        vals = {"default_model_ref_id": f"{self._name},{self.id}"}
 
         if self._name == "sale.order":
             sale_order = self
 
         elif self._name == "account.move":
             sale_order = (
-                fields.first(self.mapped("move_line_ids.sale_line_ids.order_id"))
+                fields.first(self.mapped("invoice_line_ids.sale_line_ids.order_id"))
                 or False
             )
 
         elif self._name == "stock.picking":
             sale_order = (
-                fields.first(self.mapped("move_lines.sale_line_id.order_id")) or False
+                fields.first(self.mapped("move_ids.sale_line_id.order_id")) or False
             )
 
         else:

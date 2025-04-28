@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class update_discount(models.TransientModel):
@@ -7,7 +7,7 @@ class update_discount(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super(update_discount, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         context = dict(self._context)
         active_id = context.get("active_id")
         so_line_rec = self.env["sale.order.line"].browse(active_id)
@@ -20,9 +20,7 @@ class update_discount(models.TransientModel):
             )
         return res
 
-    unit_discounted = fields.Float(
-        "Discount Price", digits=(16, 2)
-    )
+    unit_discounted = fields.Float("Discount Price", digits=(16, 2))
     price_unit = fields.Float("Unit Price", digits=(16, 2))
 
     def update_discount_price(self):

@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models, _, api
-from odoo.exceptions import UserError, ValidationError
 import logging
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 # import odoo.addons.decimal_precision as dp
 _logger = logging.getLogger(__name__)
@@ -59,13 +59,11 @@ class AccountPayment(models.Model):
     # them by a m2o record
 
     check_number = fields.Integer(
-        "Check Number",
         readonly=True,
         states={"draft": [("readonly", False)]},
         copy=False,
     )
     check_issue_date = fields.Date(
-        "Check Issue Date",
         readonly=True,
         copy=False,
         states={"draft": [("readonly", False)]},
@@ -96,13 +94,11 @@ class AccountPayment(models.Model):
         auto_join=True,
     )
     check_owner_vat = fields.Char(
-        "Check Owner Vat",
         readonly=True,
         copy=False,
         states={"draft": [("readonly", False)]},
     )
     check_owner_name = fields.Char(
-        "Check Owner Name",
         readonly=True,
         copy=False,
         states={"draft": [("readonly", False)]},
@@ -147,7 +143,7 @@ class AccountPayment(models.Model):
                 checks_desc = ", ".join(str(x) for x in rec.check_ids.mapped("number"))
             else:
                 checks_desc = str(rec.check_number)
-            name = "%s: %s" % (rec.payment_method_id.display_name, checks_desc)
+            name = f"{rec.payment_method_id.display_name}: {checks_desc}"
             rec.payment_method_description = name
         return super(
             AccountPayment, (self - check_payments)
@@ -192,7 +188,7 @@ class AccountPayment(models.Model):
             padding = 8
             if len(str(number)) > padding:
                 padding = len(str(number))
-            return "%%0%sd" % padding % number
+            return "%%0%sd" % padding % number  # noqa
 
         for rec in self:
             if rec.payment_method_code in ["issue_check"]:
@@ -283,7 +279,7 @@ class AccountPayment(models.Model):
             # de asientos ni cheques
             if rec.state in ["confirmed", "posted"]:
                 rec.do_checks_operations(cancel=True)
-        res = super(AccountPayment, self).action_cancel()
+        res = super().action_cancel()
         return res
 
     def create_check(self, check_type, operation, bank):
@@ -308,7 +304,7 @@ class AccountPayment(models.Model):
         check._add_operation(operation, self, self.partner_id, date=self.date)
         return check
 
-    def do_checks_operations(self, vals=None, cancel=False):
+    def do_checks_operations(self, vals=None, cancel=False):  # noqa: C901
         self.ensure_one()
         rec = self
         if not rec.check_type:
@@ -359,12 +355,8 @@ class AccountPayment(models.Model):
                 _logger.info("Transfered Check")
                 # get the account before changing the journal on the check
                 vals["account_id"] = rec.check_ids.get_third_check_account().id
-                rec.check_ids._add_operation(
-                    "transfered", rec, False, date=rec.date
-                )
-                rec.check_ids._add_operation(
-                    "holding", rec, False, date=rec.date
-                )
+                rec.check_ids._add_operation("transfered", rec, False, date=rec.date)
+                rec.check_ids._add_operation("holding", rec, False, date=rec.date)
                 rec.check_ids.write({"journal_id": rec.destination_journal_id.id})
                 vals["name"] = _("Transfer checks %s") % ", ".join(
                     rec.check_ids.mapped("name")
@@ -389,9 +381,7 @@ class AccountPayment(models.Model):
                     return None
 
                 _logger.info("Deposited Check")
-                rec.check_ids._add_operation(
-                    "deposited", rec, False, date=rec.date
-                )
+                rec.check_ids._add_operation("deposited", rec, False, date=rec.date)
                 vals["account_id"] = rec.check_ids.get_third_check_account().id
                 vals["name"] = _("Deposit checks %s") % ", ".join(
                     rec.check_ids.mapped("name")
@@ -467,16 +457,14 @@ class AccountPayment(models.Model):
             raise UserError(
                 _(
                     "This operatios is not implemented for checks:\n"
-                    "* Payment type: %s\n"
-                    "* Partner type: %s\n"
-                    "* Payment method: %s\n"
-                    "* Destination journal: %s\n"
-                    % (
-                        rec.payment_type,
-                        rec.partner_type,
-                        rec.payment_method_code,
-                        rec.destination_journal_id.type,
-                    )
+                    "* Payment type: %(payment_type)s\n"
+                    "* Partner type: %(partner_type)s\n"
+                    "* Payment method: %(method)s\n"
+                    "* Destination journal: %(dest)s\n",
+                    payment_type=rec.payment_type,
+                    partner_type=rec.partner_type,
+                    method=rec.payment_method_code,
+                    dest=rec.destination_journal_id.type,
                 )
             )
         return vals
@@ -488,8 +476,8 @@ class AccountPayment(models.Model):
             ):
                 raise UserError(
                     _(
-                        "The total of the payment does not match the total of the selected checks. "
-                        "Please try deleting or re-adding a check."
+                        "The total of the payment does not match the total of "
+                        "the selected checks. Please try deleting or re-adding a check."
                     )
                 )
             if rec.payment_method_code == "issue_check" and (not rec.check_number):
@@ -497,11 +485,11 @@ class AccountPayment(models.Model):
                     _("Please be sure that check number or name is filled!")
                 )
 
-        res = super(AccountPayment, self).action_post()
+        res = super().action_post()
         return res
 
     def _get_liquidity_move_line_vals(self, amount):
-        vals = super(AccountPayment, self)._get_liquidity_move_line_vals(amount)
+        vals = super()._get_liquidity_move_line_vals(amount)
         vals = self.do_checks_operations(vals=vals)
         return vals
 
@@ -569,9 +557,7 @@ class AccountPayment(models.Model):
             return self.do_print_checks()
 
     def _get_counterpart_move_line_vals(self, invoice=False):
-        vals = super(AccountPayment, self)._get_counterpart_move_line_vals(
-            invoice=invoice
-        )
+        vals = super()._get_counterpart_move_line_vals(invoice=invoice)
         force_account_id = self._context.get("force_account_id")
         if force_account_id:
             vals["account_id"] = force_account_id
@@ -622,7 +608,7 @@ class AccountPayment(models.Model):
         return res
 
     def _create_payment_entry(self, amount):
-        move = super(AccountPayment, self)._create_payment_entry(amount)
+        move = super()._create_payment_entry(amount)
         if self.filtered(
             lambda x: x.payment_type == "transfer"
             and x.payment_method_code == "delivered_third_check"
@@ -632,7 +618,7 @@ class AccountPayment(models.Model):
         return move
 
     def _create_transfer_entry(self, amount):
-        transfer_debit_aml = super(AccountPayment, self)._create_transfer_entry(amount)
+        transfer_debit_aml = super()._create_transfer_entry(amount)
         if self.filtered(
             lambda x: x.payment_type == "transfer"
             and x.payment_method_code == "delivered_third_check"
@@ -647,7 +633,7 @@ class AccountPayment(models.Model):
         """
         This method adds maturity date to move lines if our payment is check based.
         """
-        res = super(AccountPayment, self)._get_shared_move_line_vals(
+        res = super()._get_shared_move_line_vals(
             debit, credit, amount_currency, move_id, invoice_id=invoice_id
         )
         check_payment_date2 = fields.first(self.check_ids).payment_date

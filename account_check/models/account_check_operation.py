@@ -1,8 +1,9 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
 import logging
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -57,7 +58,6 @@ class AccountCheckOperation(models.Model):
         ],
         required=True,
         index=True,
-        string="Operation",
     )
     origin_name = fields.Char(compute="_compute_origin_name")
     origin = fields.Reference(string="Origin Document", selection="_reference_models")
@@ -76,7 +76,7 @@ class AccountCheckOperation(models.Model):
                         "\nYou can delete the origin reference and unlink after."
                     )
                 )
-        return super(AccountCheckOperation, self).unlink()
+        return super().unlink()
 
     @api.depends("origin")
     def _compute_origin_name(self):
@@ -97,7 +97,7 @@ class AccountCheckOperation(models.Model):
                 else:
                     origin_name = False
             except Exception as e:
-                _logger.exception("Compute origin on checks exception: %s" % e)
+                _logger.exception(f"Compute origin on checks exception: {e}")
                 # if we can get origin we clean it
                 rec.write({"origin": False})
                 origin_name = False

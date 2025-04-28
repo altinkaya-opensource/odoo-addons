@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -21,7 +21,7 @@ class ChangeProductionQty(models.TransientModel):
             return False
 
         self._check_change_permitted()
-        res = super(ChangeProductionQty, self).change_prod_qty()
+        res = super().change_prod_qty()
         for wizard in self:
             production = wizard.mo_id
             for dest_move in production.move_dest_ids:

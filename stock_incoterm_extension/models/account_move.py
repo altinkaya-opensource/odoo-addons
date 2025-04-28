@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,7 +15,7 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class AccountMove(models.Model):
@@ -29,7 +28,8 @@ class AccountMove(models.Model):
         ]["selection"]
 
     req_destination_port = fields.Boolean(
-        string="Requires destination port", related="invoice_incoterm_id.destination_port"
+        string="Requires destination port",
+        related="invoice_incoterm_id.destination_port",
     )
     req_transport_type = fields.Boolean(
         string="Requires transport type", related="invoice_incoterm_id.transport_type"

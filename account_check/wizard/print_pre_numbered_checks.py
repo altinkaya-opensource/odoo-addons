@@ -1,11 +1,11 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class PrintPreNumberedChecks(models.TransientModel):
     _name = "print.prenumbered.checks"
     _description = "Print Pre-numbered Checks"
 
-    next_check_number = fields.Integer("Next Check Number", required=True)
+    next_check_number = fields.Integer(required=True)
 
     def print_checks(self):
         check_number = self.next_check_number

@@ -32,7 +32,6 @@
         <field name="name">Delivery Regions</field>
         <field name="res_model">delivery.region</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[]</field>
         <field name="help" type="html">

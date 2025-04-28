@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
-from odoo import models, fields, api
 from datetime import datetime, timedelta
-from werkzeug.urls import url_encode
-import hashlib
+
+from odoo import api, fields, models
 
 
-def _match_production_with_route(production):
+def _match_production_with_route(production):  # noqa: C901
     ongoing_state = ["planned", "progress"]
     production_ids = production.sorted(key=lambda m: m.id)
     if production_ids:
@@ -128,7 +125,6 @@ class SaleOrder(models.Model):
             ("26_return", "Returned"),
             ("27_cancel", "Canceled"),
         ],
-        string="Order State",
         readonly=True,
         copy=False,
         default="01_draft",
@@ -258,19 +254,25 @@ class SaleOrder(models.Model):
                                CASE
                                    WHEN pl.currency_id = 1 THEN
                                        (
-                                           SELECT sale_order.amount_untaxed / rateEUR.rate * rateUSD.rate
-                                           FROM res_currency_rate rateEUR, res_currency_rate rateUSD
+                                           SELECT sale_order.amount_untaxed /
+                                           rateEUR.rate * rateUSD.rate
+                                           FROM res_currency_rate rateEUR,
+                                           res_currency_rate rateUSD
                                            WHERE rateEUR.currency_id = 1
                                            AND rateUSD.currency_id = 2
-                                           AND rateEUR.name = sale_order.date_order::date
-                                           AND rateUSD.name = sale_order.date_order::date
+                                           AND rateEUR.name =
+                                           sale_order.date_order::date
+                                           AND rateUSD.name =
+                                           sale_order.date_order::date
                                        )
                                    ELSE
                                        (
-                                           SELECT sale_order.amount_untaxed * rateUSD.rate
+                                           SELECT sale_order.amount_untaxed
+                                           * rateUSD.rate
                                            FROM res_currency_rate rateUSD
                                            WHERE rateUSD.currency_id = 2
-                                           AND rateUSD.name = sale_order.date_order::date
+                                           AND rateUSD.name
+                                           = sale_order.date_order::date
                                        )
                                END
                            ELSE 0.0
@@ -289,13 +291,21 @@ class SaleOrder(models.Model):
             else:
                 order.amount_untaxed_usd = 0.0
 
+    @api.onchange("partner_shipping_id")
+    def onchange_partner_id_carrier_id(self):
+        if self.partner_shipping_id:
+            self.carrier_id = (
+                self.partner_shipping_id.property_delivery_carrier_id
+                or self.partner_shipping_id.commercial_partner_id.property_delivery_carrier_id  # noqa
+            ).filtered("active")
+
     def action_quotation_send(self):
-        res = super(SaleOrder, self).action_quotation_send()
+        res = super().action_quotation_send()
 
         ir_model_data = self.env["ir.model.data"]
         try:
-            template_id = ir_model_data.get_object_reference(
-                "altinkaya_sales", "email_template_edi_sale_altinkaya"
+            template_id = ir_model_data.check_object_reference(
+                "altinkaya_sales", "email_template_edi_sale_altinkaya1"
             )[1]
         except ValueError:
             template_id = False
@@ -305,6 +315,15 @@ class SaleOrder(models.Model):
 
         res.update({"context": context})
         return res
+
+    def _get_confirmation_template(self):
+        """
+        Overriden to use our custom template for confirmation email
+        """
+        return self.env.ref(
+            "altinkaya_sales.email_template_edi_sale_altinkaya1",
+            raise_if_not_found=False,
+        )
 
     def _compute_sale_line_history(self):
         for sale in self:

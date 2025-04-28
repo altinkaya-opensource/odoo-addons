@@ -27,7 +27,7 @@ class AccountBankStatementLine(models.Model):
         res = super().create(vals_list)
         order_ref_pattern = r"\b[A-Za-z]{2}\d{6,7}\b"
         for r in res:
-            matched_refs = re.findall(order_ref_pattern, r.name)
+            matched_refs = re.findall(order_ref_pattern, r.payment_ref)
             if not matched_refs:
                 continue
             # Todo: this method could be multi as well
@@ -40,7 +40,7 @@ class AccountBankStatementLine(models.Model):
             if len(orders) != 1:
                 continue
 
-            if float_compare(orders.amount_total, res.amount, 2) != 0:
+            if float_compare(orders.amount_total, r.amount, 2) != 0:
                 continue
 
             commercial_partner = orders.mapped("partner_id.commercial_partner_id")
@@ -53,42 +53,41 @@ class AccountBankStatementLine(models.Model):
             if r.amount < 0:
                 continue
 
-            data = [
-                {
-                    "counterpart_aml_dicts": [],
-                    "new_aml_dicts": [
-                        {
-                            "account_id": commercial_partner.property_account_receivable_id.id,  # noqa
-                            "analytic_tag_ids": [[6, None, []]],
-                            "credit": r.amount,
-                            "company_id": r.company_id.id,
-                            # we are working with credit, so residual amount is negative
-                            "amount_residual": -r.amount,
-                            "debit": 0,
-                            "name": r.name,
-                        }
-                    ],
-                    "partner_id": commercial_partner.id,
-                    "payment_aml_ids": [],
-                }
-            ]
-            self.env["account.reconciliation.widget"].process_bank_statement_line(
-                st_line_ids=[r.id], data=data
-            )
+            # Update statement line parameters
+            r.partner_id = commercial_partner.id
+            reconcile_data_copy = r.reconcile_data_info.copy()
+            for reconcile_line in reconcile_data_copy["data"]:
+                if not reconcile_line["id"]:
+                    reconcile_line["kind"] = "other"
+                    reconcile_line["account_id"] = [
+                        commercial_partner.property_account_receivable_id.id,
+                        commercial_partner.property_account_receivable_id.display_name,
+                    ]
+                    reconcile_line["currency_id"] = (
+                        commercial_partner.property_account_receivable_id.currency_id.id
+                        or r.company_id.currency_id.id
+                    )
+
+                    # Set the manual reference for the reconciliation
+                    reconcile_data_copy["manual_reference"] = reconcile_line[
+                        "reference"
+                    ]
+
+            r.reconcile_data_info = reconcile_data_copy
+
+            # Recompute amounts etc.
+            r._onchange_manual_reconcile_vals()
+            r.reconcile_bank_line()
 
             # Bind orders to statement line
             r.order_ids = [(6, 0, orders.ids)]
 
-            payment_id = res.mapped("journal_entry_ids.payment_id")
-            if payment_id:
-                # Bind the payment to orders and Confirm orders
-                for order in orders:
-                    order.write(
-                        {
-                            "payment_status": "done",
-                            "payment_ids": [(6, 0, payment_id.ids)],
-                            "payment_term_id": 23,  # Banka havalesi
-                        },
-                    )
-                    order.with_context(bypass_risk=True).action_confirm()
+            # Update orders with payment
+            orders.write(
+                {
+                    "payment_status": "done",
+                    "payment_term_id": 23,  # Banka havalesi
+                },
+            )
+            orders.with_context(bypass_risk=True).action_confirm()
         return res

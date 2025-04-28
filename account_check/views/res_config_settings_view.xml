@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_account_config_settings_inherit" model="ir.ui.view">
         <field name="name">account.config.settings.inherit</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
 	        <xpath expr="//field[@name='has_chart_of_accounts']" position="before">
 				<h2>Checks</h2>
@@ -12,12 +12,24 @@
 	                    <div class="o_setting_left_pane">
 	                    </div>
 	                    <div class="o_setting_right_pane">
-	                        <label for="holding_check_account_id" string="Holding Account" class="col-lg-3"/>
-	                        <field name="holding_check_account_id" class="oe_inline"/>
-	                        <label for="rejected_check_account_id" string="Rejected Account" class="col-lg-3"/>
-	                        <field name="rejected_check_account_id" class="oe_inline"/>
-	                        <label for="deferred_check_account_id" string="Deferred Account" class="col-lg-3"/>
-	                        <field name="deferred_check_account_id" class="oe_inline"/>
+	                        <label
+                for="holding_check_account_id"
+                string="Holding Account"
+                class="col-lg-3"
+              />
+	                        <field name="holding_check_account_id" class="oe_inline" />
+	                        <label
+                for="rejected_check_account_id"
+                string="Rejected Account"
+                class="col-lg-3"
+              />
+	                        <field name="rejected_check_account_id" class="oe_inline" />
+	                        <label
+                for="deferred_check_account_id"
+                string="Deferred Account"
+                class="col-lg-3"
+              />
+	                        <field name="deferred_check_account_id" class="oe_inline" />
 	                    </div>
 	                </div>
 	            </div>

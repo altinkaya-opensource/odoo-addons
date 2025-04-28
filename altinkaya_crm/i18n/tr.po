@@ -118,7 +118,7 @@ msgstr "Satış Elemanları"
 #. module: altinkaya_crm
 #: model:ir.model.fields,help:altinkaya_crm.field_res_country__sale_person_ids
 msgid "Sales Persons for this country"
-msgstr ""
+msgstr "Bu ülke için Satış Elemanları"
 
 #. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__sale_team_id
@@ -145,7 +145,9 @@ msgstr "Başarılı"
 msgid "The status is set to Confirmed, when a case is created.\n"
 "When the call is over, the status is set to Held.\n"
 "If the call is not applicable anymore, the status can be set to Cancelled."
-msgstr ""
+msgstr "Bir vaka oluşturulduğunda durum Onaylandı olarak ayarlanır.\n"
+"Çağrı bittiğinde durum Beklemede olarak ayarlanır.\n"
+"Çağrı artık geçerli değilse durum İptal Edildi olarak ayarlanabilir."
 
 #. module: altinkaya_crm
 #: selection:crm.phonecall,state:0
@@ -166,5 +168,5 @@ msgstr "Vergi No Tipi"
 #. module: altinkaya_crm
 #: model:ir.model,name:altinkaya_crm.model_crm_phonecall
 msgid "crm.phonecall"
-msgstr ""
+msgstr "Telefon çağrısı"
 

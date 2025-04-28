@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-13 13:32+0000\n"
-"PO-Revision-Date: 2025-03-13 13:32+0000\n"
+"POT-Creation-Date: 2025-03-28 08:34+0000\n"
+"PO-Revision-Date: 2025-03-28 08:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -243,6 +243,8 @@ msgid ""
 "Attribute value coefficient used to compute product price based on attribute"
 " value."
 msgstr ""
+"Nitelik değerine göre ürün fiyatını hesaplamak için kullanılan nitelik değeri
+" katsayısı."
 
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_res_bank
@@ -348,7 +350,7 @@ msgstr "İş Ortakları"
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "Copy to Sale"
-msgstr ""
+msgstr "Satışa Kopyala"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_changesets
@@ -656,7 +658,7 @@ msgstr "CNC Tornada"
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Üretim Emirleri"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__10_metal
@@ -694,6 +696,8 @@ msgid ""
 "No phantom BoM found for product %(name)s. Please create a phantom BoM to "
 "compute the price of the set product."
 msgstr ""
+"%(name)s ürünü için set ürün reçetesi bulunamadı. Ayarlanan ürünün fiyatını "
+"hesaplamak için lütfen bir set ürün reçetesi oluşturun."
 
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
@@ -729,7 +733,7 @@ msgstr "Paketlendi"
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__set_parent_product_id
 msgid "Parent Product"
-msgstr ""
+msgstr "Üst Ürün"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_cari_urun
@@ -750,7 +754,7 @@ msgstr "İş Ortakları"
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_portal_mixin
 msgid "Portal Mixin"
-msgstr ""
+msgstr "Portal"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__attr_price
@@ -875,7 +879,7 @@ msgstr "Özelleştirilebilir Ürünleri Göster"
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "Akıllı Arama"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__default_try_bank_account_id
@@ -985,7 +989,7 @@ msgstr "Bu ülke için USD Banka Hesabı"
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__currency_id_usd
 msgid "USD Currency"
-msgstr ""
+msgstr "USD Para Birimi"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_tl_fiyat

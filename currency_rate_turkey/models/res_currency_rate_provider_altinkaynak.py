@@ -7,18 +7,18 @@
 import logging
 from datetime import date, timedelta
 
+from odoo import fields, models
+from odoo.tools.translate import _
+
 from .altinkaynak_connector import (
     AltinkaynakConnector,
 )
-
-from odoo import fields, models
-from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
 
 class ResCurrencyRateProviderTCMB(models.Model):
-    _inherit = "res.currency.rate.provider"
+    _inherit = "res.currency.rate.provider"  # pylint: disable=R8180
 
     service = fields.Selection(
         selection_add=[("altinkaynak", "Altinkaynak")],
@@ -92,7 +92,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                 result[date_to] = currency_data
                 self._action_log_update(rate_date)
             except Exception:
-                _logger.error(
+                _logger.info(
                     _("No currency rate on %s") % date_from.strftime("%Y-%m-%d")
                 )
         else:
@@ -103,7 +103,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                     result[single_date] = currency_data
                     self._action_log_update(rate_date)
                 except Exception:
-                    _logger.error(
+                    _logger.info(
                         _("No currency rate on %s") % single_date.strftime("%Y-%m-%d")
                     )
                     continue

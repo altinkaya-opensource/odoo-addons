@@ -29,4 +29,4 @@ class CurrencyRate(models.Model):
     @api.depends("rate")
     def _compute_rate_inverse(self):
         for rate in self:
-            rate.rate_inverse = 1.0 / rate.rate
+            rate.rate_inverse = 1.0 / (rate.rate or 1.0)

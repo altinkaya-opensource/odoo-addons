@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (c) 2012-Present (<http://www.acespritech.com/>) Acespritech Solutions Pvt.Ltd
+#    Copyright (c) 2012-Present (<http://www.acespritech.com/>)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,7 +19,7 @@
 ##############################################################################
 {
     "name": "Altinkaya Sale Order Extensions",
-    "version": "12.0",
+    "version": "16.0.1.0.0",
     "category": "General",
     "depends": [
         "base",
@@ -36,16 +35,14 @@
         "portal",
         "sale_stock",
         "product_attribute_types",
-        "stock_picking_invoicing",  # TODO: This module needs to be migrated from our codebase.
+        "stock_picking_invoicing",
         "sale_variant_configurator",
         "partner_email_check",
         "account_financial_risk",
+        "altinkaya_py3o_reports",
     ],
-    "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
-    "description": """
-    Sales Order Customization
-    """,
-    "website": "http://www.codequarters.com",
+    "author": "Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "data": [
         "security/ir.model.access.csv",
         "views/sale_workflow_new_menus_actions.xml",

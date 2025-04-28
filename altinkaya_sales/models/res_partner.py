@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-    
+
     def _search_nace_product_categ(self, operator, value):
         return [
             (
@@ -73,16 +73,14 @@ class ResPartner(models.Model):
         string="Segment",
     )
     email_invalid = fields.Boolean(
-        "Email Invalid",
         default=False,
         store=True,
         compute="_compute_email_invalid",
     )
     credit_insurance = fields.Boolean(
-        "Credit Insurance",
         default=False,
     )
-    credit_insurance_validity = fields.Date("Credit Insurance Validity")
+    credit_insurance_validity = fields.Date()
 
     @api.constrains("country_id")
     def _check_country_accounts(self):
@@ -133,13 +131,14 @@ class ResPartner(models.Model):
         Inherited from account_financial_risk to add credit_insurance_validity
         :return:
         """
-        super()._compute_risk_exception()
+        res = super()._compute_risk_exception()
         for rec in self:
             if (
                 rec.credit_insurance
                 and rec.credit_insurance_validity < fields.Date.today()
             ):
                 rec.risk_exception = True
+        return res
 
     @api.depends("email")
     def _compute_email_invalid(self):
@@ -149,7 +148,7 @@ class ResPartner(models.Model):
                     is_invalid = not bool(rec.email_check(rec.email))
                 else:
                     is_invalid = False
-            except:
+            except:  # noqa: E722
                 is_invalid = True
             _logger.info(f"Email {rec.email} is invalid: {is_invalid}")
             rec.email_invalid = is_invalid

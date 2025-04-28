@@ -15,14 +15,15 @@ class MrpProduction(models.Model):
         return res
 
     def _run_split_procurement_mrp(self):
-
         precision = self.env["decimal.precision"].precision_get(
             "Product Unit of Measure"
         )
         for move in self.move_raw_ids:
             product = move.product_id
             routes = (
-                product.route_ids + product.route_from_categ_ids + move.warehouse_id.route_ids
+                product.route_ids
+                + product.route_from_categ_ids
+                + move.warehouse_id.route_ids
             )
             # find if we have a "split_procurement" rule in the routes
             split_rule = self.env["stock.rule"].search(
@@ -30,9 +31,9 @@ class MrpProduction(models.Model):
                     ("route_id", "in", [x.id for x in routes]),
                     ("location_src_id", "=", move.location_id.id),
                     ("location_dest_id", "=", move.location_dest_id.id),
-                    ("action", "=", "split_procurement")
+                    ("action", "=", "split_procurement"),
                 ],
-                limit=1
+                limit=1,
             )
             if split_rule:
                 product_qty = move.product_uom_qty
@@ -43,8 +44,10 @@ class MrpProduction(models.Model):
                 if float_is_zero(needed_qty, precision_digits=precision):
                     # no additional product -> MTS
                     move.procure_method = split_rule.mts_rule_id.procure_method
-                elif float_compare(needed_qty, product_qty,
-                                   precision_digits=precision) == 0.0:
+                elif (
+                    float_compare(needed_qty, product_qty, precision_digits=precision)
+                    == 0.0
+                ):
                     # no stock -> MTO
                     move.procure_method = split_rule.mto_rule_id.procure_method
                 else:
@@ -55,13 +58,13 @@ class MrpProduction(models.Model):
                     move.update(
                         {
                             "procure_method": mts_rule.procure_method,
-                            "product_uom_qty": mts_qty
+                            "product_uom_qty": mts_qty,
                         }
                     )
                     # create the MTO move, attached to same MO
                     move.copy(
                         default={
                             "procure_method": mto_rule.procure_method,
-                            "product_uom_qty": needed_qty
+                            "product_uom_qty": needed_qty,
                         }
                     )

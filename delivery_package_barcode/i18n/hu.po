@@ -1,0 +1,228 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_package_barcode
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 14:20+0000\n"
+"PO-Revision-Date: 2025-03-28 14:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
+#, python-format
+msgid " - PACK BARCODE"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__barcode
+msgid "Barcode"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz___barcode_scanned
+msgid "Barcode Scanned"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.actions.act_window,name:delivery_package_barcode.action_delivery_package_barcode
+#: model:ir.ui.menu,name:delivery_package_barcode.delivery_region_menu
+msgid "Barcodes Read"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__changeset_ids
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__count_changesets
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
+msgid "Delivery Package Barcode"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__error
+msgid "Error"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__id
+msgid "ID"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__info
+msgid "Info"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__is_packaged
+msgid "Is packaged"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__message
+msgid "Message"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__message_type
+msgid "Message Type"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__name
+msgid "Name"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__package_count
+msgid "Package Count"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__package_weight
+msgid "Package Weight"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__picking_id
+msgid "Picking"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__picking_line_ids
+msgid "Picking Lines"
+msgstr ""
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
+#, python-format
+msgid "Picking found:"
+msgstr ""
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
+#, python-format
+msgid "Picking not found"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__smart_search
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__success
+msgid "Success"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_delivery_package_barcode_wiz__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_package_barcode.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_delivery_package_barcode_wiz__count_pending_changesets
+#: model:ir.model.fields,help:delivery_package_barcode.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_delivery_package_barcode_wiz__count_changesets
+#: model:ir.model.fields,help:delivery_package_barcode.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model,name:delivery_package_barcode.model_stock_picking
+msgid "Transfer"
+msgstr "Szállítás"
+
+#. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
+msgid "Update"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_delivery_package_barcode_wiz___barcode_scanned
+msgid "Value of the last barcode scanned."
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model,name:delivery_package_barcode.model_delivery_package_barcode_wiz
+msgid "Wizard to read barcode for delivery package"
+msgstr ""

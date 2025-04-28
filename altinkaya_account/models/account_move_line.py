@@ -34,7 +34,6 @@ class AccountMoveLine(models.Model):
         string="PO Unit", related="purchase_line_id.price_unit"
     )
 
-
     def _simulate_invoice_line_onchange(self):
         """
         Simulate onchange for invoice line

@@ -23,3 +23,21 @@ class AccountPayment(models.Model):
     statement_line_id = fields.Many2one(
         "account.bank.statement.line", "Bank Statement Line"
     )
+
+    def _synchronize_from_moves(self, changed_fields):
+        """
+        Convert payments amount_currency and currency_id fields related
+        to the partner currency.
+        """
+        res = super()._synchronize_from_moves(changed_fields)
+        self = self.with_context(skip_account_move_synchronization=True)
+        for line in self.mapped("line_ids"):
+            account_currency = line.account_id.currency_id
+            if account_currency and line.currency_id != account_currency:
+                line.currency_id = account_currency
+                line.invalidate_cache(["currency_rate"])  # Recompute currency rate
+                line.amount_currency = line.currency_id.round(
+                    line.balance * line.currency_rate
+                )  # Recompute amount_currency
+
+        return res

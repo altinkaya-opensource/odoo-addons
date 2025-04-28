@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
         <record id="view_currency_tree_rate" model="ir.ui.view">
             <field name="name">res.currency.form.rate</field>
             <field name="model">res.currency.rate</field>
-            <field name="inherit_id" ref="base.view_currency_rate_tree"/>
+            <field name="inherit_id" ref="base.view_currency_rate_tree" />
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='rate']" position="before">
-                        <field name="rate_inverse"/>
+                        <field name="rate_inverse" />
                     </xpath>
                 </data>
             </field>
         </record>
-    </data>
 </odoo>

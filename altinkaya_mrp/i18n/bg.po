@@ -1,0 +1,921 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* altinkaya_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-23 12:00+0000\n"
+"PO-Revision-Date: 2025-04-23 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "&amp;bull;"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "&gt;&gt;"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<b>Müşteri:</b>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.remove_production_smart_button_stat
+msgid ""
+"<span class=\"o_stat_text\">\n"
+"                                Productions\n"
+"                            </span>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<strong>Kaynak</strong>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<strong>Kullanılmış Ürünler</strong>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<strong>Mamül Ürün Rotası</strong>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<strong>Quantity</strong>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "<strong>Üretimde Kullanılacak Ürünler</strong>"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__active
+msgid "Active"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__active_rule_id
+msgid "Active Rule"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__attribute_value_ids
+msgid "Apply on Variants"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
+msgid "Archived"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Baskı Tarih Saat:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Başlama Tarih Saat:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__checked
+msgid "Bileşenler ve ağırlıkları kontrol edildi."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mrp_bom
+msgid "Bill of Material"
+msgstr "Фактура за покупка на материали"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Bitiş Tarih Saat:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__bom_id
+msgid "BoM"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__bom_template_line_ids
+msgid "BoM Template Lines"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__bom_product_id
+msgid "Bom Product"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__bom_id
+msgid "Bom Template"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Bu Ay bitenler"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Bugün Açılanlar"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__x_group
+msgid "Bölüm"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_cnc_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_cnc_production
+msgid "CNC Kesim İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_cnctorna_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_cnctorna_production
+msgid "CNC Torna İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.action_mrp_cancel_more
+msgid "Cancel Manufacturing Order"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_mrp_cancel_more
+msgid "Cancel Orders"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_change_production_qty
+msgid "Change Production Qty"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Промени в набора от промени"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__changeset_ids
+msgid "Changesets"
+msgstr "Промени"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__count_changesets
+msgid "Count Changesets"
+msgstr "Промени в броя"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Отчитане на чакащите промени в набора от промени"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Брой чакащи промени"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.actions.act_window,help:altinkaya_mrp.mrp_routing_action
+msgid "Create a new routing"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__cycle_nbr
+msgid "Cycle Number"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__hour_nbr
+msgid "Cycle Time(Hour)"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__date_finished2
+msgid "Date End"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__date_start2
+msgid "Date Start"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__note
+msgid "Description"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__display_name
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__display_name
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__display_name
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__display_name
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Dün Açılanlar"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__factor_attribute_id
+msgid "End product attribute to use for raw material calculation"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_enjek_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_enjeksiyon_production
+msgid "Enjeksiyon İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__attribute_factor
+msgid "Factor"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__factor_attribute_id
+msgid "Factor Attribute"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__attribute_factor
+msgid "Factor to multiply by the numeric value of attribute"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Geçen Ay Bitenler"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Geçen Hafta Açılanlar"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
+msgid "Group By..."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_gorsel_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_gorsel_production
+msgid "Görsel Baskı İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__has_production_bom
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__has_production_bom
+msgid "Has production BoM"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__id
+msgid "ID"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__active
+msgid ""
+"If the active field is set to False, it will allow you to hide the routing "
+"without removing it."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__inherited_attribute_ids
+msgid "Inherited Attributes"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__internal_note
+msgid "Internal Note"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_order_form_inherit
+msgid "Internal Notes"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__sale_note
+#: model:ir.model.fields,help:altinkaya_mrp.field_sale_order__internal_note
+msgid ""
+"Internal note for the order. This field is not visible to the customer."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_kaliphane_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_kaliphane_production
+msgid "Kalıphane İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__location_id
+msgid ""
+"Keep empty if you produce at the location where you find the raw materials. "
+"Set a location if you produce at a fixed location. This can be a partner "
+"location if you subcontract the manufacturing operations."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__checked
+msgid "Kontrol Edildi"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line____last_update
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter____last_update
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more____last_update
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing____last_update
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__write_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__write_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:res.groups,name:altinkaya_mrp.change_production_qty
+msgid "MRP Change Quantity Permission"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.action_x_makine
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_makine_kod
+#: model:ir.ui.menu,name:altinkaya_mrp.menuitem_action_x_makine
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Makine"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__x_name
+msgid "Makine Adı"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Makine Adı:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__x_kod
+msgid "Makine Kodu"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__name
+msgid "Makine Numarası"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__mo_printed
+msgid "Manufacting Order Printed"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.remove_production_smart_button_stat
+msgid "Manufactured in the last 365 days"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Manufacturing Orders"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.server,name:altinkaya_mrp.ir_cron_mrp_auto_print_mrp_orders_ir_actions_server
+#: model:ir.cron,cron_name:altinkaya_mrp.ir_cron_mrp_auto_print_mrp_orders
+msgid "Manufacturing: Auto Print MRP Orders"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_ayrintili_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_ayrintili_production
+msgid "Montaj İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mrp_bom_template_line
+msgid "Mrp Bom Template Lines"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mrp_bom_wcparameter
+msgid "Mrp Bom WCParameter"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mrp_cancel_more
+msgid "Mrp Cancel More"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "NOT:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__name
+msgid "Name"
+msgstr ""
+
+#. module: altinkaya_mrp
+#. odoo-python
+#: code:addons/altinkaya_mrp/models/mrp_routing.py:0
+#, python-format
+msgid "New"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_note
+msgid "Note"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_form_view
+msgid "Notes"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Operatör"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Operatör Adı:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_mrp_cancel_more
+msgid "Parameters"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__date_planned
+msgid "Planned Date"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Print Barcode"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Print Production Order"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_product_template
+msgid "Product"
+msgstr "Шаблон за продукт "
+
+#. module: altinkaya_mrp
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_product_category_on_mrp
+msgid "Product Categories"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__categ_id
+msgid "Product Category"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_tmpl_id
+msgid "Product Template"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_product_product
+msgid "Product Variant"
+msgstr "Продукт"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
+msgid "Production Location"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mrp_production
+msgid "Production Order"
+msgstr "Производствена поръчка"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_procurement_group_form_inherit_mrp
+msgid "Productions"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.do_view_productions
+msgid "Productions for Groups"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_profil_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_profil_production
+msgid "Profil Kesim İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_qty
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Quantity"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__location_id
+msgid "Raw Materials Location"
+msgstr ""
+
+#. module: altinkaya_mrp
+#. odoo-python
+#: code:addons/altinkaya_mrp/models/mrp_bom.py:0
+#, python-format
+msgid ""
+"Recursion error!  A product with a Bill of Material should not have itself "
+"in its BoM or child BoMs!"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__code
+msgid "Reference"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__process_id
+msgid "Rota"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__routing_id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__name
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_form_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_tree_view
+msgid "Routing"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_routing_action
+#: model:ir.model,name:altinkaya_mrp.model_mrp_routing
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_routing_action
+msgid "Routings"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.actions.act_window,help:altinkaya_mrp.mrp_routing_action
+msgid ""
+"Routings define the successive operations that need to be\n"
+"                done to realize a Manufacturing Order. Each operation from\n"
+"                a Routing is done at a specific Work Center and has a specific duration."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.mrp_sac_menu
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_sac_production
+msgid "Sac Atölyesi İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__sale_note
+msgid "Sale Note"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__sale_id
+msgid "Sale Order"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_sale_order
+msgid "Sales Order"
+msgstr "Поръчка"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Sayfa:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Sipariş"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Son 3 Gün Açılanlar"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Start Production"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_stock_rule
+msgid "Stock Rule"
+msgstr "Правило зс наличност"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_bom_form_inherit_tmpl_line
+msgid "Sub-products"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__target_attribute_value_ids
+msgid "Target Attribute Values"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_cancel_more__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_stock_rule__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_x_makine__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Брой на предстоящите промени на този запис"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_cancel_more__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_product__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_template__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_stock_rule__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_x_makine__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Броят на чакащите промени в този запис"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_cancel_more__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_product__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_product_template__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_sale_order__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_stock_rule__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_x_makine__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Общ брой на промените в този запис"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__time_stop
+msgid "Time After Prod."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__time_start
+msgid "Time Before Prod."
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__tool_product_id
+msgid "Tool"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "Total Qty"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_uom_id
+msgid "Unit of Measure"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_makine
+msgid "Uretim Yapilan Makine"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_operator
+msgid "Uretimi Yapan Operator"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_template__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_stock_rule__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Потребителят може да види набора от промени"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__routing_wc_id
+msgid "Workcenter"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__wc_parameter_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_bom_form_inherit_parameter
+msgid "Workcenter Parameters"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_x_makine
+msgid "X Makine"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Yazdıran:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#. odoo-python
+#: code:addons/altinkaya_mrp/wizards/mrp_cancel_wizard.py:0
+#, python-format
+msgid ""
+"You can not cancel production order, a work order is still in progress."
+msgstr ""
+
+#. module: altinkaya_mrp
+#. odoo-python
+#: code:addons/altinkaya_mrp/wizards/change_production_qty.py:0
+#, python-format
+msgid "You can only increase or decrease the quantity by 10%"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
+msgid "ÖB"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
+msgid "Öncelik"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Üretilen Adet:"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
+msgid "Üretim Emri"
+msgstr ""

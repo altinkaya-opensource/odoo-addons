@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,17 +18,14 @@
 #
 ##############################################################################
 
-import time
 from datetime import date, datetime
-from odoo.exceptions import UserError
-from odoo import models, fields, api
+
+from odoo import models
 from odoo.tools.translate import _
 
 
 class Partner(models.Model):
     _inherit = "res.partner"
-
-    # use_secondary_currency = fields.Boolean(string="Ekstrede çift para birimi yazdır",default=False)
 
     def _get_statement_data_currency(self, data=None):
         return self._get_statement_data(self)
@@ -43,19 +39,19 @@ class Partner(models.Model):
         balance, seq = 0.0, 0
         currency_balance = 0.0
         Currency = self.env["res.currency"]
-        end_date = ctx.get("date_end") or "%s-12-31" % date.today().year
+        end_date = ctx.get("date_end") or f"{date.today().year}-12-31"
 
         if ctx.get("date_start"):
             user_start_date = ctx.get("date_start")
         else:
             if date.today().month < 3:
-                user_start_date = "%s-01-01" % (int(date.today().year) - 1)
+                user_start_date = f"{int(date.today().year) - 1}-01-01"
             else:
-                user_start_date = "%s-01-01" % int(date.today().year)
+                user_start_date = f"{int(date.today().year)}-01-01"
         start_date = "2022-01-01"
         move_type = ("liability_payable", "asset_receivable")
 
-        query = f"""
+        query = """
            SELECT
             L.full_reconcile_id,
             L.DATE,
@@ -125,11 +121,13 @@ class Partner(models.Model):
             LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID)
             WHERE
             (
-                L.DATE BETWEEN '{start_date}'
-                AND '{end_date}'
+                L.DATE BETWEEN %s
+                AND %s
             )
-            AND L.PARTNER_ID = {self.commercial_partner_id.id}
-            AND A.ACCOUNT_TYPE IN {move_type}
+            AND L.PARTNER_ID = %s
+            AND A.ACCOUNT_TYPE IN %s
+            AND AM.STATE = 'posted'
+            AND AM.date >= %s
             GROUP BY
             AJ.NAME,
             A.CODE,
@@ -164,7 +162,16 @@ class Partner(models.Model):
             .search([("code", "in", skip_journal_codes)])
             .mapped("id")
         )
-        self.env.cr.execute(query)
+        self.env.cr.execute(
+            query,
+            (
+                start_date,
+                end_date,
+                self.commercial_partner_id.id,
+                move_type,
+                start_date,
+            ),
+        )
         data = self.env.cr.dictfetchall()
         if len(data) == 0:
             return {}
@@ -283,6 +290,6 @@ class Partner(models.Model):
     def email_statement(
         self,
     ):
-        template = self.env.ref('altinkaya_reports.email_template_edi_send_statement')
-        mail_id = template.send_mail(self.id, force_send=True)
+        template = self.env.ref("altinkaya_reports.email_template_edi_send_statement")
+        template.send_mail(self.id, force_send=True)
         return True

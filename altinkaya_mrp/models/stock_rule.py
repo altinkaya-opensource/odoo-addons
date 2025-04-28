@@ -29,4 +29,11 @@ class StockRule(models.Model):
         )
         res.update({"priority": values.get("priority")})
 
+        if values.get("group_id"):  # Always propagate the group_id
+            res.update(
+                {
+                    "procurement_group_id": values["group_id"].id,
+                    "origin": origin,
+                }
+            )
         return res

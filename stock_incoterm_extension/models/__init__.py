@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,5 +18,4 @@ from . import account_incoterms
 from . import account_move
 from . import sale_order
 from . import stock
-from . import account_move
 # from . import purchase_order

@@ -3,7 +3,6 @@ from odoo.tools.safe_eval import safe_eval
 
 
 class XMakine(models.Model):
-    # TODO: @dogan bence bu verilerin workcentera tasinmasi gerek uzerinde olmasi gerekli.
     _name = "x.makine"
     _description = "X Makine"
     _order = "name"
@@ -21,7 +20,7 @@ class MrpProduction(models.Model):
     _inherit = "mrp.production"
     mo_printed = fields.Boolean("Manufacting Order Printed", default=False)
     sale_id = fields.Many2one("sale.order", string="Sale Order")
-    sale_note = fields.Html("Sale Note", related="sale_id.note", readonly=True)
+    sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
     active_rule_id = fields.Many2one("stock.rule", string="Active Rule")
     date_planned = fields.Datetime("Planned Date")
     date_start2 = fields.Datetime("Date Start")
@@ -38,9 +37,6 @@ class MrpProduction(models.Model):
     # TODO: @dogan workcenter_id alanini kullanabiliriz
     x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine")
     x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
-    procurement_group_name = fields.Char(
-        compute="_get_procurement_group_name", string="Procurement Group Name", readonly=True
-    )
 
     def _generate_moves(self):
         if self.env.context.get("context", {}).get("migration", False):
@@ -64,13 +60,6 @@ class MrpProduction(models.Model):
             production.move_raw_ids._action_confirm()
             production.move_raw_ids._action_assign()
         return True
-
-    def _get_procurement_group_name(self):
-        for mo in self:
-            if mo.move_finished_ids:
-                mo.id = mo.move_finished_ids[0].group_id.name
-            else:
-                mo.id = False
 
     def get_product_route(self):
         def _get_next_moves(move_id):
@@ -112,19 +101,18 @@ class MrpProduction(models.Model):
             else:
                 mo.id = False
 
-    # TODO: migration 16.0
-    # def name_search(self, name, args=None, operator="ilike", limit=80):
+    # @api.model
+    # def name_search(self, name="", args=None, operator="ilike", limit=100):
     #     if name:
     #         args += [("move_finished_ids[0].group_id.name", operator, name)]
     #     ids = self.search(args, limit=limit)
     #     return ids.name_get()
 
-    # TODO: migration 16.0
-    # @api.onchange("routing_id")
-    # def onchange_routing_id(self):
-    #     if self.routing_id.location_id:
-    #         self.location_src_id = self.routing_id.location_id
-    #         self.location_dest_id = self.routing_id.location_id
+    @api.onchange("process_id")
+    def onchange_routing_id(self):
+        if self.process_id.location_id:
+            self.location_src_id = self.process_id.location_id
+            self.location_dest_id = self.process_id.location_id
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -159,7 +147,11 @@ class MrpProduction(models.Model):
 
     def action_print_product_label(self):
         self.ensure_one()
-        action = self.env.ref("product_label_print.action_print_pack_barcode_wiz").sudo().read()[0]
+        action = (
+            self.env.ref("product_label_print.action_print_pack_barcode_wiz")
+            .sudo()
+            .read()[0]
+        )
 
         # Ensure context is a dictionary
         action_context = action.get("context")
@@ -177,10 +169,11 @@ class MrpProduction(models.Model):
         }
         return action
 
-    # TODO: check migration 16.0
-    # def action_set_production_started(self):
-    #     for production in self:
-    #         production.write({"state": "planned", "date_start2": fields.Datetime.now()})
+    def action_set_production_started(self):
+        for production in self:
+            production.write(
+                {"state": "progress", "date_start2": fields.Datetime.now()}
+            )
 
     # TODO: this function changed to _update_raw_moves. Check the changes.
     # def _update_raw_move(self, bom_line, line_data):
@@ -206,7 +199,7 @@ class MrpProduction(models.Model):
     #         mto_move = move.filtered(lambda x: x.procure_method == "make_to_order")
     #         # Handle the case where there is no split procurement but we have 2 moves
     #         if not mts_move or not mto_move:
-    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data)
+    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data) # noqa
     #         old_qty = sum(move.mapped("product_uom_qty"))
     #         if new_qty > old_qty:
     #             # Firstly, try to maximize MTS Move Qty
@@ -216,7 +209,7 @@ class MrpProduction(models.Model):
     #                     + mts_move.availability
     #                 }
     #             )
-    #             mto_move.write({"product_uom_qty": new_qty - mts_move.product_uom_qty})
+    #             mto_move.write({"product_uom_qty": new_qty - mts_move.product_uom_qty}) # noqa
     #         else:
     #             if mts_move.product_uom_qty >= new_qty:
     #                 # Update the MTS Move

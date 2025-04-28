@@ -8,7 +8,6 @@ class ProductTemplate(models.Model):
         "Has production BoM", compute="_compute_has_production_bom", store=True
     )
 
-
     @api.depends("bom_ids", "bom_ids.type")
     def _compute_has_production_bom(self):
         self.has_production_bom = any(
@@ -16,7 +15,7 @@ class ProductTemplate(models.Model):
         )
 
     def action_view_mos(self):
-        action = self.env.ref("mrp.mrp_production_report").read()[0]
+        action = self.env.ref("mrp.mrp_production_report").sudo().read()[0]
         action["domain"] = [("product_tmpl_id", "in", self.ids)]
         action["context"] = {
             "search_default_last_year_mo_order": 1,

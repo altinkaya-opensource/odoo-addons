@@ -1,11 +1,8 @@
 {
     "name": "change_partner_accounts",
-    "description": """
-        This module adds main currency of payment in invoice forms widget
-    """,
-    "author": "yibudak",
+    "author": "yibudak, Altinkaya Enclosures",
     "license": "LGPL-3",
-    "website": "https://github.com/yibudak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Accounting",
     "version": "16.0.0.1.0",
     # any module necessary for this one to work correctly

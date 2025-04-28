@@ -1,14 +1,14 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, fields, _
 from datetime import date, timedelta
+
+from odoo import _, fields, models
 
 
 class CreditControlRun(models.Model):
     _inherit = "credit.control.run"
 
     activity_deadline = fields.Integer(
-        string="Activity Deadline",
         default=7,
         help="Number of days to set as deadline for the activity",
     )

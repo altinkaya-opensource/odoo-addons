@@ -4,9 +4,9 @@
 from odoo import _, api, models
 from odoo.exceptions import AccessError
 
-
 LOCATION_RESTRICTED_MESSAGE = _(
-    "Invalid Location. You cannot process this move since you do not control the location "
+    "Invalid Location. You cannot process this move since "
+    "you do not control the location "
     '"%s". Please contact your Adminstrator.'
 )
 
@@ -20,7 +20,7 @@ class StockMove(models.Model):
         in the given locations.
 
         Raises:
-            `AccessError`: If the user does not have the rights to process the move in 
+            `AccessError`: If the user does not have the rights to process the move in
             particular location.
         """
         if not self.env.user.restrict_locations:

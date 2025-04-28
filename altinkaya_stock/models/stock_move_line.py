@@ -1,15 +1,13 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
-    product_type = fields.Selection(
-        related="product_id.type", string="Product Type"
-    )
+    product_type = fields.Selection(related="product_id.type", string="Product Type")
 
     def action_scrap_button(self):
         self.ensure_one()

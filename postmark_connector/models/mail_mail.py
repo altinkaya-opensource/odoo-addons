@@ -94,7 +94,12 @@ class MailMail(models.Model):
         """
         self.ensure_one()
         params = {}
-        params["From"] = self.email_from
+
+        msg_from = self.email_from
+        if "@altinkaya.com" not in msg_from:
+            msg_from = '"ALTINKAYA" <erp@altinkaya.com>'
+
+        params["From"] = msg_from
         if self.reply_to:
             params["ReplyTo"] = self.reply_to
 
@@ -102,11 +107,18 @@ class MailMail(models.Model):
         if self.headers:
             try:
                 headers.update(safe_eval(self.headers))
-            except Exception:
+            except Exception as exc:
+                _logger.error(
+                    "Error while parsing headers for email %s: %s", self.id, exc
+                )
                 pass
 
         params["Headers"] = headers
-        params["HtmlBody"] = str(self.body_content) or " "
+
+        # Debrand the body
+        params["HtmlBody"] = self.env["mail.render.mixin"].remove_href_odoo(
+            str(self.body_content) or "", to_keep=self.body
+        )
         params["Subject"] = self.subject or _("(No subject)")
 
         email_to = []

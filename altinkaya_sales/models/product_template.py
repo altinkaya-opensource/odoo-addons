@@ -23,7 +23,10 @@ class ProductTemplateAttributeLine(models.Model):
     attr_val_price_coef = fields.Float(
         "Value Price Multiplier",
         digits="Product Price",
-        help="Attribute value coefficient used to compute product price based on attribute value.",
+        help=(
+            "Attribute value coefficient used to compute "
+            "product price based on attribute value."
+        ),
     )
     use_in_pricing = fields.Boolean("Use in pricing")
 
@@ -140,5 +143,4 @@ class ProductTemplate(models.Model):
             dummy_so.order_line.unlink()
         # Clear the dummy sale order
         dummy_so.unlink()
-        self.env.cr.commit()
         return True

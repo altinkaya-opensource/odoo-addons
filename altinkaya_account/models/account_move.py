@@ -24,7 +24,6 @@ class AccountMove(models.Model):
     address_contact_id = fields.Many2one("res.partner", "Shipping Address")
     receiver = fields.Char(string="Reciever")
     supplier_invoice_number = fields.Char(
-        string="Supplier Invoice Number",
         help="The reference of this invoice as provided by the supplier.",
         readonly=True,
         states={"draft": [("readonly", False)]},
@@ -42,6 +41,16 @@ class AccountMove(models.Model):
         " the shipment is sent to the carrier.",
     )
 
+    tax_line_ids = fields.Many2many(
+        "account.move.line",
+        string="Tax Lines",
+        compute="_compute_tax_line_ids",
+    )
+
+    def _compute_tax_line_ids(self):
+        for move in self:
+            move.tax_line_ids = move.line_ids.filtered("tax_repartition_line_id")
+
     def _compute_partner_balance(self):
         for move in self:
             partner = move.partner_id
@@ -53,15 +62,15 @@ class AccountMove(models.Model):
             move.total_balance = balance
 
     def _compute_waiting_picking_ids(self):
-        stocks = self.env["stock.picking"].search(
-            [
-                ("partner_id", "=", self.partner_id.id),
-                ("picking_type_id.code", "=", "incoming"),
-                ("invoice_state", "=", "2binvoiced"),
-            ]
-        )
-
-        return stocks
+        for inv in self:
+            stocks = self.env["stock.picking"].search(
+                [
+                    ("partner_id", "=", self.partner_id.id),
+                    ("picking_type_id.code", "=", "incoming"),
+                    ("invoice_state", "=", "2binvoiced"),
+                ]
+            )
+            inv.waiting_picking_ids = stocks
 
     def _onchange_invoice_line_ids(self):
         """This method was removed in 16.0 but we've added a simulation of it here"""
@@ -158,3 +167,11 @@ class AccountMove(models.Model):
             invoice._compute_tax_totals()
             invoice._create_missing_supplierinfo()
         return True
+
+    def _must_check_constrains_date_sequence(self):
+        # Overriden to disable weird sequence check in Odoo
+        # that is not needed for our use case
+        # and causes issues with the Turkish e-invoice
+        # and supplier invoice numbers
+        super()._must_check_constrains_date_sequence()
+        return False

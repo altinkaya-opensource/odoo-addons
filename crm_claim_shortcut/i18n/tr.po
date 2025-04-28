@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* crm_claim_shortcut
+# 	* crm_claim_shortcut
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-02 13:26+0000\n"
-"PO-Revision-Date: 2022-11-02 13:26+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-28 13:04+0000\n"
+"PO-Revision-Date: 2025-03-28 13:04+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,33 @@ msgstr ""
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_crm_claim_mapping
 msgid "Base model for CRM Claim - Odoo models integration"
-msgstr "CRM Talepler ve Odoo modelleri arasında bağlantı kurmak için temel model"
+msgstr ""
+"CRM Talepler ve Odoo modelleri arasında bağlantı kurmak için temel model"
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__carrier_id
+msgid "Carrier"
+msgstr "Nakliyeci"
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__changeset_change_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__changeset_change_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__changeset_change_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__changeset_change_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__changeset_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__changeset_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__changeset_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__changeset_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr ""
 
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_crm_claim
@@ -26,7 +52,9 @@ msgid "Claim"
 msgstr "Talep"
 
 #. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_invoice__crm_claim_count
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_bank_statement_line__crm_claim_count
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__crm_claim_count
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_payment__crm_claim_count
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__crm_claim_count
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__crm_claim_count
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__crm_claim_count
@@ -35,13 +63,14 @@ msgid "Claim Count"
 msgstr "Talep Sayısı"
 
 #. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_invoice__crm_claim_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_bank_statement_line__crm_claim_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__crm_claim_ids
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_payment__crm_claim_ids
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__crm_claim_ids
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__crm_claim_ids
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__crm_claim_ids
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__crm_claim_ids
-#: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_invoice_form_crm
-#: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_invoice_form_supplier_crm
+#: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_move_form_crm
 #: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_order_form_crm
 #: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_picking_form_crm
 #: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_product_form_crm
@@ -49,57 +78,106 @@ msgid "Claims"
 msgstr "Talepler"
 
 #. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__claim_department
-msgid "Department"
-msgstr "Departman"
-
-#. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__display_name
-msgid "Display Name"
-msgstr "Görünüm"
-
-#. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__id
-msgid "ID"
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__count_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__count_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__count_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__count_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__count_changesets
+msgid "Count Changesets"
 msgstr ""
 
 #. module: crm_claim_shortcut
-#: model:ir.model,name:crm_claim_shortcut.model_account_invoice
-msgid "Invoice"
-msgstr "Fatura"
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
 
 #. module: crm_claim_shortcut
-#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping____last_update
-msgid "Last Modified on"
-msgstr "S"
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__count_pending_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__count_pending_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__count_pending_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__count_pending_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: crm_claim_shortcut
+#: model:ir.model,name:crm_claim_shortcut.model_account_move
+msgid "Journal Entry"
+msgstr "Yevmiye Kaydı"
 
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_product_product
-msgid "Product"
+msgid "Product Variant"
 msgstr "Ürün"
 
 #. module: crm_claim_shortcut
-#: selection:crm.claim,claim_department:0
-msgid "Production"
-msgstr "Üretim"
-
-#. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Satış Siparişi"
 
 #. module: crm_claim_shortcut
-#: selection:crm.claim,claim_department:0
-msgid "Sales"
-msgstr "Satış"
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__smart_search
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__smart_search
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__smart_search
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__smart_search
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__source_id
+msgid "Source"
+msgstr "Kaynak"
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,help:crm_claim_shortcut.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim__count_pending_changeset_changes
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,help:crm_claim_shortcut.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,help:crm_claim_shortcut.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:crm_claim_shortcut.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,help:crm_claim_shortcut.field_account_move__count_pending_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim__count_pending_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim_mapping__count_pending_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_product_product__count_pending_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: crm_claim_shortcut
+#: model:ir.model.fields,help:crm_claim_shortcut.field_account_move__count_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim__count_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_crm_claim_mapping__count_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_product_product__count_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_sale_order__count_changesets
+#: model:ir.model.fields,help:crm_claim_shortcut.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
 
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_stock_picking
 msgid "Transfer"
-msgstr "Sevkiyat"
+msgstr "Teslimat"
 
 #. module: crm_claim_shortcut
-#: selection:crm.claim,claim_department:0
-msgid "Warehouse"
-msgstr "Depo"
-
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__user_can_see_changeset
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim_mapping__user_can_see_changeset
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_product_product__user_can_see_changeset
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""

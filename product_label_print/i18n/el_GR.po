@@ -1,0 +1,493 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_label_print
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-01 21:24+0000\n"
+"PO-Revision-Date: 2025-04-01 21:24+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_pieces_in_pack
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__pieces_in_pack
+msgid "# in Cartoon"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__copies_to_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_label_to_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__label_to_print
+msgid "# of label to be printed"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_barcode
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__barcode
+msgid "Barcode"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid ""
+"Barkod çıkartırken sadece bir adet Lot numarası seçin. Eğer Lot seçmezseniz\n"
+"                        sizin için bir Lot oluşturulacak ve üretime kaydedilecek."
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__batch_code
+msgid "Batch Code"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Cancel"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__changeset_change_ids
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Αλλαγές σετ αλλαγών"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__changeset_ids
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Μετρήστε τις αλλαγές που εκκρεμούν"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__count_pending_changesets
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Μετρήστε τα σύνολα αλλαγών που εκκρεμούν"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_uid
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_uid
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__create_date
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__create_date
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_default_code
+msgid "Default Code"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__default_code
+msgid "Default_code"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__display_name
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__display_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Do not print first label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__id
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__id
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__id
+msgid "ID"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label1
+msgid "Label 1"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label2
+msgid "Label 2"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_label_twoinrow
+msgid "Label Two in Row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__label_ids
+msgid "Labels"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow____last_update
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz____last_update
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_uid
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_uid
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__write_date
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__write_date
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__lot_id
+msgid "Lot"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_stock_lot
+msgid "Lot/Serial"
+msgstr "Παρτίδα/Σειριακός"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__lot_ids
+msgid "Lots"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.actions.report,name:product_label_print.label_product_product_kalip
+msgid "Molding Label (GODEX)"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__name
+msgid "Name"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL1
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL1
+msgid "NameL1"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL2
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL2
+msgid "NameL2"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL3
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL3
+msgid "NameL3"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_nameL4
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__nameL4
+msgid "NameL4"
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
+#, python-format
+msgid "No product found."
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_note
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__note
+msgid "Note"
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/models/product.py:0
+#, python-format
+msgid "Please define printer for this label"
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/models/product.py:0
+#, python-format
+msgid "Please use product variant to print labels."
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Print"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_form
+#: model_terms:ir.ui.view,arch_db:product_label_print.product_product_print_label_single_tree
+#: model_terms:ir.ui.view,arch_db:product_label_print.stock_production_lot_print_label_single_form
+msgid "Print Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.actions.server,name:product_label_print.action_print_molding_label_multi
+msgid "Print Molding Label Multi Action"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.stock_move_tree_print_product_label
+msgid "Print Product Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_printing_printer
+msgid "Printer"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__type
+msgid "Printer Type"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_product_template
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_product_id
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__product_id
+msgid "Product"
+msgstr "Πρότυπο Είδους "
+
+#. module: product_label_print
+#: model:ir.actions.report,name:product_label_print.action_aeroo_product_label_print
+msgid "Product Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.actions.report,name:product_label_print.label_product_product
+msgid "Product Label (GODEX)"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.actions.act_window,name:product_label_print.action_print_pack_barcode_wiz
+#: model:ir.model,name:product_label_print.model_print_pack_barcode_wiz
+msgid "Product Label Print"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_lot_ids
+msgid "Product Lot"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_product_product_label
+msgid "Product Product Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_product_product
+msgid "Product Variant"
+msgstr "Είδος"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__product_label_ids
+msgid "Products"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__model_ref_id
+msgid "Reference"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__restrict_single
+msgid "Restrict to single product"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_short_code
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__short_code
+msgid "Short Code"
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Show Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_id
+msgid "Single Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__skip_first
+msgid "Skip First Label"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__first_label_empty
+msgid "Skip first label in row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__second_label_empty
+msgid "Skip second label in row"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__smart_search
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__smart_search
+msgid "Smart Search"
+msgstr "Έξυπνη αναζήτηση"
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
+#, python-format
+msgid "Something went wrong. Please refresh the page and try again."
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model,name:product_label_print.model_stock_move
+msgid "Stock Move"
+msgstr "Κίνηση Αποθέματος"
+
+#. module: product_label_print
+#: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_print_pack_barcode_wiz__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_printing_printer__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_product_product__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_product_product_label__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_product_template__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_stock_lot__count_pending_changeset_changes
+#: model:ir.model.fields,help:product_label_print.field_stock_move__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Ο αριθμός των εκκρεμών αλλαγών αυτής της εγγραφής"
+
+#. module: product_label_print
+#: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_print_pack_barcode_wiz__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_printing_printer__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_product__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_product_label__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_template__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_stock_lot__count_pending_changesets
+#: model:ir.model.fields,help:product_label_print.field_stock_move__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Ο αριθμός των εκκρεμών συνόλων αλλαγών αυτής της εγγραφής"
+
+#. module: product_label_print
+#: model:ir.model.fields,help:product_label_print.field_label_twoinrow__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_print_pack_barcode_wiz__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_printing_printer__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_product__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_product_label__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_product_template__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_stock_lot__count_changesets
+#: model:ir.model.fields,help:product_label_print.field_stock_move__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Ο συνολικός αριθμός των αλλαγών αυτού του αρχείου"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_uom_name
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__uom_name
+msgid "UOM Name"
+msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_printing_printer__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_product_product__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_product_template__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_stock_lot__user_can_see_changeset
+#: model:ir.model.fields,field_description:product_label_print.field_stock_move__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Ο χρήστης μπορεί να δει το σύνολο αλλαγών"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__printer_type
+msgid "User Printer Type"
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
+#, python-format
+msgid ""
+"You can't print more than one lot per label. Please select only one lot or "
+"leave it empty."
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
+#, python-format
+msgid "You need to set a label printer in order to print."
+msgstr ""
+
+#. module: product_label_print
+#: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
+msgid "Ürün Etiketi Yazdır"
+msgstr ""
