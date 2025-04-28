@@ -1481,7 +1481,7 @@ msgstr "Vade Tarihi"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.email_partner_statement_form_inherit
 msgid "Email Statement"
-msgstr "Mail Statement"
+msgstr "Posta Beyannamesi"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__date_end

@@ -11,11 +11,6 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="partner_external_map.view_partner_form" />
     <field name="arch" type="xml">
-        <xpath expr="//button[@name='open_map']" position="attributes">
-        	<attribute
-          name="attrs"
-        >{'invisible': [('neighbour_id', '=', False)]}</attribute>
-		</xpath>
 		<xpath expr="//button[@name='open_route_map']" position="attributes">
 			<attribute name="attrs">{'invisible': [('neighbour_id', '=', False)]}</attribute>
         </xpath>
