@@ -1,7 +1,9 @@
 <odoo>
-    <menuitem id="menu_gmail_integration_main"
-              name="Gmail API Integration"
-              parent="base.menu_email"
-              action="action_gmail_integration"
-              sequence="50"/>
+    <menuitem
+    id="menu_gmail_integration_main"
+    name="Gmail API Integration"
+    parent="base.menu_email"
+    action="action_gmail_integration"
+    sequence="50"
+  />
 </odoo>

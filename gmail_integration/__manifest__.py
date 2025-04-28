@@ -3,11 +3,11 @@
 
 {
     "name": "Odoo Gmail Integration",
-    "version": "16.0.1.0",
+    "version": "16.0.1.0.0",
     "depends": ["base", "mail", "queue_job"],
     "category": "Tools",
-    "author": "Ismail Çağan Yılmaz",
-    "website": "https://github.com/milleniumkid",
+    "author": "Ismail Çağan Yılmaz, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "summary": "Gmail API Integration with OAuth for Odoo",
     "license": "AGPL-3",
     "data": [
@@ -17,11 +17,7 @@
         "data/cron.xml",
     ],
     "external_dependencies": {
-        "python": [
-            "google-api-python-client",
-            "google-auth",
-            "google-auth-oauthlib"
-        ]
+        "python": ["google-api-python-client", "google-auth", "google-auth-oauthlib"]
     },
     "installable": True,
     "application": False,

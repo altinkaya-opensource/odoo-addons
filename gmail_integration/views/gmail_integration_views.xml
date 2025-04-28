@@ -5,49 +5,70 @@
         <field name="arch" type="xml">
             <form string="Gmail Integration">
                 <header>
-                    <button name="action_fetch_mail" type="object" string="Mail Çek" class="btn-primary"/>
+                    <button
+            name="action_fetch_mail"
+            type="object"
+            string="Mail Çek"
+            class="btn-primary"
+          />
                 </header>
                 <sheet>
                     <notebook>
                         <page string="OAuth Ayarları">
                             <group>
-                                <field name="name"/>
-                                <field name="client_id"/>
-                                <field name="client_secret"/>
-                                <field name="refresh_token"/>
-                                <field name="access_token" readonly="1"/>
-                                <field name="token_expiry" readonly="1"/>
+                                <field name="name" />
+                                <field name="client_id" />
+                                <field name="client_secret" />
+                                <field name="refresh_token" />
+                                <field name="access_token" readonly="1" />
+                                <field name="token_expiry" readonly="1" />
                             </group>
                         </page>
                         <page string="Filtre Ayarları">
                             <group>
-                                <field name="enable_filter"/>
-                                <field name="filter_subject" attrs="{'readonly': [('enable_filter', '=', False)]}"/>
-                                <field name="filter_sender" attrs="{'readonly': [('enable_filter', '=', False)]}"/>
-                                <field name="filter_body" attrs="{'readonly': [('enable_filter', '=', False)]}"/>
+                                <field name="enable_filter" />
+                                <field
+                  name="filter_subject"
+                  attrs="{'readonly': [('enable_filter', '=', False)]}"
+                />
+                                <field
+                  name="filter_sender"
+                  attrs="{'readonly': [('enable_filter', '=', False)]}"
+                />
+                                <field
+                  name="filter_body"
+                  attrs="{'readonly': [('enable_filter', '=', False)]}"
+                />
                             </group>
                             <group>
-                                <field name="mail_file" filename="mail_filename" widget="binary"
-                                       attrs="{'invisible': [('mail_file', '=', False)]}"/>
+                                <field
+                  name="mail_file"
+                  filename="mail_filename"
+                  widget="binary"
+                  attrs="{'invisible': [('mail_file', '=', False)]}"
+                />
                             </group>
                         </page>
                         <page string="Çekilen Mailler">
-                            <field name="mail_ids" attrs="{'readonly': [('mail_ids', '=', False)]}">
+                            <field
+                name="mail_ids"
+                attrs="{'readonly': [('mail_ids', '=', False)]}"
+              >
                                 <tree>
-                                    <field name="from_name"/>
-                                    <field name="subject"/>
-                                    <field name="date_mail"/>
+                                    <field name="from_name" />
+                                    <field name="subject" />
+                                    <field name="date_mail" />
                                 </tree>
                                 <form>
                                     <group>
-                                        <field name="from_name"/>
-                                        <field name="subject"/>
-                                        <field name="date_mail"/>
-                                        <field name="body_html"/>
+                                        <field name="from_name" />
+                                        <field name="subject" />
+                                        <field name="date_mail" />
+                                        <field name="body_html" />
                                     </group>
                                 </form>
                             </field>
-                        </page>                        
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -59,8 +80,8 @@
         <field name="model">gmail.integration</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="client_id"/>
+                <field name="name" />
+                <field name="client_id" />
             </tree>
         </field>
     </record>
