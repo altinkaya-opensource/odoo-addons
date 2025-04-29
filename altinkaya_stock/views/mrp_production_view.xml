@@ -10,88 +10,118 @@
                 <div colspan="2">
                     <group col="2">
                         <group class="oe_form">
-                          <div class="d-flex flex-row align-items-start">
-                            <strong class="me-2">Sincan:</strong>
-                            <field name="qty_available_sincan" class="ms-4" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_sincan" />
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Sincan:</strong>
+                                <field name="qty_available_sincan" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_sincan" />
 
-                          </div>
-                          <div class="d-flex flex-row align-items-start">
-                            <strong class="me-2">CNC:</strong>
-                            <field name="qty_available_cnc" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_cnc" />
-                          </div>
+                            </div>
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">CNC:</strong>
+                                <field name="qty_available_cnc" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_cnc" />
+                            </div>
                         </group>
                     </group>
                     <group col="2">
-                      <group class="oe_form">
-                        <div class="d-flex flex-row align-items-start">
-                          <strong class="me-2">Merkez:</strong>
-                          <field name="qty_available_merkez" class="ms-4" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_merkez" />
+                        <group class="oe_form">
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Merkez:</strong>
+                                <field name="qty_available_merkez" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_merkez" />
 
-                        </div>
-                        <div class="d-flex flex-row align-items-start">
-                          <strong class="me-2">Metal:</strong>
-                          <field name="qty_available_metal" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_metal" />
-                        </div>
-                      </group>
-                  </group>
-                  <group col="2">
-                    <group class="oe_form">
-                      <div class="d-flex flex-row align-items-start">
-                        <strong class="me-2">Enjeksiyon:</strong>
-                        <field name="qty_available_enjek" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_enjek" />
-
-                      </div>
-                      <div class="d-flex flex-row align-items-start">
-                        <strong class="me-2">Boya:</strong>
-                        <field name="qty_available_boya" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_boya" />
-                      </div>
+                            </div>
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Metal:</strong>
+                                <field name="qty_available_metal" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_metal" />
+                            </div>
+                        </group>
                     </group>
-                </group>
-                <group col="2">
-                  <group class="oe_form">
-                    <div class="d-flex flex-row align-items-start">
-                      <strong class="me-2">Montaj:</strong>
-                      <field name="qty_available_montaj" class="ms-4" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_montaj" />
-                    </div>
-                    <div class="d-flex flex-row align-items-start">
-                      <strong class="me-2">Baskı:</strong>
-                      <field name="qty_available_baski" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_baski" />
-                    </div>
-                  </group>
-              </group>
-              <group col="2">
-                <group class="oe_form">
-                  <div class="d-flex flex-row align-items-start">
-                    <strong class="me-2">Torna:</strong>
-                    <field name="qty_available_torna" class="ms-4" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_torna" />
+                    <group col="2">
+                        <group class="oe_form">
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Enjeksiyon:</strong>
+                                <field name="qty_available_enjek" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_enjek" />
 
-                  </div>
-                  <div class="d-flex flex-row align-items-start">
-                    <strong class="me-2">Kaplama:</strong>
-                    <field name="qty_available_kaplama" /><span
-                  class="mx-2"
-                >/</span><field name="qty_virtual_kaplama" />
-                  </div>
-                </group>
-            </group>
+                            </div>
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Boya:</strong>
+                                <field name="qty_available_boya" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_boya" />
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group class="oe_form">
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Montaj:</strong>
+                                <field name="qty_available_montaj" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_montaj" />
+                            </div>
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Baskı:</strong>
+                                <field name="qty_available_baski" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_baski" />
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group class="oe_form">
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Torna:</strong>
+                                <field name="qty_available_torna" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_torna" />
+
+                            </div>
+                            <div
+                class="d-flex flex-row align-items-start"
+                style="width:200px;"
+              >
+                                <strong class="me-2">Kaplama:</strong>
+                                <field name="qty_available_kaplama" class="w-auto" />
+                                <span class="mx-2">/</span>
+                                <field name="qty_virtual_kaplama" />
+                            </div>
+                        </group>
+                    </group>
                 </div>
             </field>
 
