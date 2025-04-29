@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="inherit_choose_delivery_package_view_form" model="ir.ui.view">
+            <field name="name">choose.delivery.package.form.inherit</field>
+            <field name="model">choose.delivery.package</field>
+            <field name="inherit_id" ref="delivery.choose_delivery_package_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                    <field name="picking_id" invisible="1"/>
+                    <field name="allowed_move_line_ids" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+
+                    <field name="selected_move_line_ids" widget="many2many_list" domain="[('id', 'in', allowed_move_line_ids)]" options="{'no_create_edit': True}">
+                        <tree editable="bottom" create="true" delete="true">
+                            <field name="product_id"/>
+                            <field name="qty_done"/>
+                            <field name="location_id"/>
+                            <field name="location_dest_id"/>
+                            <field name="company_id" invisible="1"/>
+                         </tree>
+                    </field>
+                </xpath>
+                <xpath expr="//footer/button[@name='action_put_in_pack']" position="replace">
+                    <button name="action_put_in_pack" type="object" string="Paketle" class="btn-primary"/>
+                </xpath>
+            </field>
+        </record>
+</odoo>

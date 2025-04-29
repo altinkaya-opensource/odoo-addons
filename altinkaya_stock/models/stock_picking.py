@@ -73,6 +73,12 @@ class StockPicking(models.Model):
         compute="_compute_trimmed_sale_note",
         readonly=True,
     )
+    package_count = fields.Integer(string="Packaging Count", compute="_compute_package_count")
+
+    @api.depends('package_ids')
+    def _compute_package_count(self):
+        for record in self:
+            record.package_count = len(record.package_ids)
 
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):

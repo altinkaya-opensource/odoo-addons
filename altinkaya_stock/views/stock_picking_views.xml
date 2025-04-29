@@ -34,6 +34,9 @@
           attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
         />
                 </xpath>
+                <xpath expr="//button[@name='action_see_packages']" position="inside">
+                      <field name="package_count" widget="statinfo" string="Packages"/>
+                </xpath>
             </field>
         </record>
 

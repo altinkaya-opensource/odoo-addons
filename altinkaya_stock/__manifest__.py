@@ -33,6 +33,7 @@
         "wizard/wizard_update_unreserved_quants.xml",
         "views/stock_warehouse_orderpoint_view.xml",
         "views/mrp_production_view.xml",
+        "views/choose_delivery_package_views.xml",
         "security/security_group.xml",
         "security/ir.model.access.csv",
     ],
