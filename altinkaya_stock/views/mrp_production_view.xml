@@ -12,14 +12,14 @@
                         <group class="oe_form">
                           <div class="d-flex flex-row align-items-start">
                             <strong class="me-2">Sincan:</strong>
-                            <field name="qty_available_sincan" class="ms-4" />/<field
+                            <field name="qty_available_sincan" class="ms-4" /><span class="mx-2">/</span><field
                   name="qty_virtual_sincan"
                 />
 
                           </div>
                           <div class="d-flex flex-row align-items-start">
                             <strong class="me-2">CNC:</strong>
-                            <field name="qty_available_cnc" />/<field
+                            <field name="qty_available_cnc" /><span class="mx-2">/</span><field
                   name="qty_virtual_cnc"
                 />
                           </div>
@@ -29,14 +29,14 @@
                       <group class="oe_form">
                         <div class="d-flex flex-row align-items-start">
                           <strong class="me-2">Merkez:</strong>
-                          <field name="qty_available_merkez" class="ms-4" />/<field
+                          <field name="qty_available_merkez" class="ms-4" /><span class="mx-2">/</span><field
                   name="qty_virtual_merkez"
                 />
 
                         </div>
                         <div class="d-flex flex-row align-items-start">
                           <strong class="me-2">Metal:</strong>
-                          <field name="qty_available_metal" />/<field
+                          <field name="qty_available_metal" /><span class="mx-2">/</span><field
                   name="qty_virtual_metal"
                 />
                         </div>
@@ -46,14 +46,14 @@
                     <group class="oe_form">
                       <div class="d-flex flex-row align-items-start">
                         <strong class="me-2">Enjeksiyon:</strong>
-                        <field name="qty_available_enjek" />/<field
+                        <field name="qty_available_enjek" /><span class="mx-2">/</span><field
                   name="qty_virtual_enjek"
                 />
 
                       </div>
                       <div class="d-flex flex-row align-items-start">
                         <strong class="me-2">Boya:</strong>
-                        <field name="qty_available_boya" />/<field
+                        <field name="qty_available_boya" /><span class="mx-2">/</span><field
                   name="qty_virtual_boya"
                 />
                       </div>
@@ -63,13 +63,13 @@
                   <group class="oe_form">
                     <div class="d-flex flex-row align-items-start">
                       <strong class="me-2">Montaj:</strong>
-                      <field name="qty_available_montaj" class="ms-4" />/<field
+                      <field name="qty_available_montaj" class="ms-4" /><span class="mx-2">/</span><field
                   name="qty_virtual_montaj"
                 />
                     </div>
                     <div class="d-flex flex-row align-items-start">
                       <strong class="me-2">Baskı:</strong>
-                      <field name="qty_available_baski" />/<field
+                      <field name="qty_available_baski" /><span class="mx-2">/</span><field
                   name="qty_virtual_baski"
                 />
                     </div>
@@ -79,14 +79,14 @@
                 <group class="oe_form">
                   <div class="d-flex flex-row align-items-start">
                     <strong class="me-2">Torna:</strong>
-                    <field name="qty_available_torna" class="ms-4" />/<field
+                    <field name="qty_available_torna" class="ms-4" /><span class="mx-2">/</span><field
                   name="qty_virtual_torna"
                 />
 
                   </div>
                   <div class="d-flex flex-row align-items-start">
                     <strong class="me-2">Kaplama:</strong>
-                    <field name="qty_available_kaplama" />/<field
+                    <field name="qty_available_kaplama" /><span class="mx-2">/</span><field
                   name="qty_virtual_kaplama"
                 />
                   </div>
