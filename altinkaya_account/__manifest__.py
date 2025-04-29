@@ -21,6 +21,7 @@
         "base_partner_sequence",
     ],
     "data": [
+        "views/product_pricelist_view.xml",
         "views/account_move_view.xml",
         "views/partner_view.xml",
         "views/account_move_view.xml",

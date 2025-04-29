@@ -1,7 +1,7 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -46,6 +46,23 @@ class AccountMove(models.Model):
         string="Tax Lines",
         compute="_compute_tax_line_ids",
     )
+
+    @api.depends("pricelist_id")
+    def _compute_currency_id(self):
+        """
+        Override to use invoice_currency_id from pricelist when
+        computing invoice's currency_id.
+        """
+        res = super()._compute_currency_id()
+        for invoice in self:
+            if (
+                invoice.is_sale_document()
+                and invoice.pricelist_id
+                and invoice.pricelist_id.invoice_currency_id
+                and invoice.currency_id != invoice.pricelist_id.invoice_currency_id
+            ):
+                invoice.currency_id = self.pricelist_id.invoice_currency_id
+        return res
 
     def _compute_tax_line_ids(self):
         for move in self:
