@@ -322,28 +322,28 @@ class Product(models.Model):
                 **{"location": 12}
             ).virtual_available
             product.qty_virtual_enjeksiyon = product.with_context(
-                **{"location": 21}
+                **{"location": 29}
             ).virtual_available
             product.qty_virtual_montaj = product.with_context(
-                **{"location": 12}
+                **{"location": 53}
             ).virtual_available
             product.qty_virtual_torna = product.with_context(
-                **{"location": 21}
+                **{"location": 5895}
             ).virtual_available
             product.qty_virtual_cnc = product.with_context(
-                **{"location": 12}
+                **{"location": 61}
             ).virtual_available
             product.qty_virtual_metal = product.with_context(
-                **{"location": 21}
+                **{"location": 37}
             ).virtual_available
             product.qty_virtual_boya = product.with_context(
-                **{"location": 12}
+                **{"location": 45}
             ).virtual_available
             product.qty_virtual_baski = product.with_context(
-                **{"location": 21}
+                **{"location": 77}
             ).virtual_available
             product.qty_virtual_kaplama = product.with_context(
-                **{"location": 12}
+                **{"location": 6362}
             ).virtual_available
             product.qty_unreserved_sincan = product.with_context(
                 **{"location": 21}
