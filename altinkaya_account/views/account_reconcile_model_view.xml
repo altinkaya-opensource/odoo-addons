@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_account_reconcile_model_form_inherit" model="ir.ui.view">
+        <field name="name">account.reconcile.model.form.inherit</field>
+        <field name="model">account.reconcile.model</field>
+        <field name="inherit_id" ref="account.view_account_reconcile_model_form" />
+        <field name="arch" type="xml">
+            <field name="rule_type" position="after">
+                <field name="journal_id" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

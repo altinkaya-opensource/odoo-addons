@@ -33,17 +33,19 @@ class AccountAccountReconcile(models.Model):
     @api.onchange("manual_model_id")
     def _onchange_manual_model_id(self):
         if self.manual_model_id:
-            lines_copy = self.reconcile_data_info.copy()
-            data = lines_copy.get("data", [])
+            reconciliation_data_copy = self.reconcile_data_info.copy()
+            data = reconciliation_data_copy.get("data", [])
             # balance = 0.0
             amount_currency = 0.0
-            account_currency = self.account_id.currency_id
+            account_currency = (
+                self.account_id.currency_id or self.company_id.currency_id
+            )
             company_currency = self.company_id.currency_id
 
             # 1. Remove current writeoff lines
             for idx, line in enumerate(data):
                 if "reconcile_auxiliary" in line.get("reference", ""):
-                    lines_copy["data"].pop(idx)
+                    reconciliation_data_copy["data"].pop(idx)
 
             # 2. Compute amount for writeoff lines
             for datum in data:
@@ -72,7 +74,10 @@ class AccountAccountReconcile(models.Model):
                             amount = amount_currency
 
                         datum_new = {
-                            "reference": "reconcile_auxiliary",
+                            # Save the model id in the reference field
+                            "reference": (
+                                "reconcile_auxiliary;" f"{self.manual_model_id.id}"
+                            ),
                             "id": False,
                             "name": self.manual_model_id.name,
                             "account_id": man_line.account_id.name_get()[0],
@@ -90,8 +95,76 @@ class AccountAccountReconcile(models.Model):
 
                         # balance -= amount
                         amount_currency -= amount_currency
-            lines_copy["can_reconcile"] = True
-            lines_copy["data"] = data
-            self.reconcile_data_info = lines_copy
+            reconciliation_data_copy["can_reconcile"] = True
+            reconciliation_data_copy["data"] = data
+            self.reconcile_data_info = reconciliation_data_copy
 
         self.can_reconcile = self.reconcile_data_info.get("can_reconcile", False)
+
+    def reconcile(self):
+        """
+        Inherited to create writeoff lines and their moves.
+        """
+        reconciliation_data_copy = self.reconcile_data_info.copy()
+        data = reconciliation_data_copy.get("data", [])
+
+        for datum in data:
+            if "reconcile_auxiliary" in datum.get("reference", ""):
+                model_id = self.env["account.reconcile.model"].browse(
+                    int(datum["reference"].split(";")[1])
+                )
+                move_lines = []
+
+                # Create writeoff line
+                move_lines.append(
+                    {
+                        "name": datum["name"],
+                        "account_id": datum["account_id"][0],
+                        "partner_id": datum["partner_id"][0],
+                        "date": datum["date"],
+                        "currency_id": datum["line_currency_id"],
+                        "balance": datum["amount"],
+                        "debit": datum["debit"] if datum["debit"] > 0 else 0.0,
+                        "credit": datum["credit"] if datum["credit"] > 0 else 0.0,
+                        "amount_currency": datum["currency_amount"],
+                    }
+                )
+
+                # Create counterpart line
+                move_lines.append(
+                    {
+                        "name": datum["name"],
+                        "account_id": self.partner_id.property_account_receivable_id.id,
+                        "partner_id": datum["partner_id"][0],
+                        "date": datum["date"],
+                        "currency_id": datum["line_currency_id"],
+                        "balance": -datum["amount"],
+                        "debit": datum["credit"] if datum["credit"] > 0 else 0.0,
+                        "credit": datum["debit"] if datum["debit"] > 0 else 0.0,
+                        "amount_currency": -datum["currency_amount"],
+                    }
+                )
+
+                move = self.env["account.move"].create(
+                    {
+                        "journal_id": model_id.journal_id.id,
+                        "move_type": "entry",
+                        "date": datum["date"],
+                        "ref": datum["name"],
+                        "line_ids": [(0, 0, line) for line in move_lines],
+                    }
+                )
+                move.action_post()
+
+                writeoff_line = self.env["account.move.line"].search(
+                    [
+                        ("move_id", "=", move.id),
+                        ("account_id", "=", self.account_id.id),
+                    ],
+                    limit=1,
+                )
+
+                reconciliation_data_copy["counterparts"].append(writeoff_line.id)
+
+        self.reconcile_data_info = reconciliation_data_copy
+        return super().reconcile()

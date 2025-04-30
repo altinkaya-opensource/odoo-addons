@@ -31,6 +31,7 @@
         "views/account_payment_term_view.xml",
         "views/res_currency_rate_view.xml",
         "views/account_bank_statement_line_view.xml",
+        "views/account_reconcile_model_view.xml",
         "views/account_account_reconcile.xml",
     ],
 }
