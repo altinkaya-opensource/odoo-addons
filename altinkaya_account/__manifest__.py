@@ -19,6 +19,7 @@
         "purchase",
         "delivery",
         "base_partner_sequence",
+        "account_reconcile_oca",
     ],
     "data": [
         "views/product_pricelist_view.xml",
@@ -30,5 +31,7 @@
         "views/account_payment_term_view.xml",
         "views/res_currency_rate_view.xml",
         "views/account_bank_statement_line_view.xml",
+        "views/account_reconcile_model_view.xml",
+        "views/account_account_reconcile.xml",
     ],
 }
