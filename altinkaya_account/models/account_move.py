@@ -91,13 +91,13 @@ class AccountMove(models.Model):
 
     def _onchange_invoice_line_ids(self):
         """This method was removed in 16.0 but we've added a simulation of it here"""
-        for invoice in self:
-            pass
-            # invoice._onchange_partner_id()
-            # invoice._onchange_date()
-            # invoice._compute_currency_id()
-            # invoice._compute_tax_totals()
-            # invoice._compute_amount()
+        return True
+        # for invoice in self:
+        #     invoice._onchange_partner_id()
+        #     invoice._onchange_date()
+        #     invoice._compute_currency_id()
+        #     invoice._compute_tax_totals()
+        #     invoice._compute_amount()
 
     def action_post(self):
         res = super().action_post()
