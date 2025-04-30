@@ -11,3 +11,4 @@ from . import account_payment
 from . import res_currency_rate
 from . import res_currency
 from . import account_bank_statement_line
+from . import account_account_reconcile
