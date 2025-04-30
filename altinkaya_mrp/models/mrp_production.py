@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.tools.safe_eval import safe_eval
 
@@ -101,13 +103,6 @@ class MrpProduction(models.Model):
             else:
                 mo.id = False
 
-    # @api.model
-    # def name_search(self, name="", args=None, operator="ilike", limit=100):
-    #     if name:
-    #         args += [("move_finished_ids[0].group_id.name", operator, name)]
-    #     ids = self.search(args, limit=limit)
-    #     return ids.name_get()
-
     @api.onchange("process_id")
     def onchange_routing_id(self):
         if self.process_id.location_id:
@@ -174,6 +169,52 @@ class MrpProduction(models.Model):
             production.write(
                 {"state": "progress", "date_start2": fields.Datetime.now()}
             )
+
+    def _action_cancel(self):
+        """
+        Overriden prevent destination move and picking cancellation
+        """
+        documents_by_production = {}
+        for production in self:
+            documents = defaultdict(list)
+            for move_raw_id in self.move_raw_ids.filtered(
+                lambda m: m.state not in ("done", "cancel")
+            ):
+                iterate_key = self._get_document_iterate_key(move_raw_id)
+                if iterate_key:
+                    document = self.env["stock.picking"]._log_activity_get_documents(
+                        {move_raw_id: (move_raw_id.product_uom_qty, 0)},
+                        iterate_key,
+                        "UP",
+                    )
+                    for key, value in document.items():
+                        documents[key] += [value]
+            if documents:
+                documents_by_production[production] = documents
+            # log an activity on Parent MO if child MO is cancelled.
+            finish_moves = production.move_finished_ids.filtered(
+                lambda x: x.state not in ("done", "cancel")
+            )
+            if finish_moves:
+                production._log_downside_manufactured_quantity(
+                    {
+                        finish_move: (production.product_uom_qty, 0.0)
+                        for finish_move in finish_moves
+                    },
+                    cancel=True,
+                )
+
+        self.workorder_ids.filtered(
+            lambda x: x.state not in ["done", "cancel"]
+        ).action_cancel()
+
+        raw_moves = self.move_raw_ids.filtered(
+            lambda x: x.state not in ("done", "cancel")
+        )
+        raw_moves._action_cancel()
+
+        for production in self:
+            production.state = "cancel"
 
     # TODO: this function changed to _update_raw_moves. Check the changes.
     # def _update_raw_move(self, bom_line, line_data):
