@@ -42,9 +42,9 @@ class ProductProduct(models.Model):
                 "name": image.name,
                 "sequence": image.sequence,
                 "storage": image.storage,
-                "image_data": image.image_main.decode("utf-8").replace("\n", "")
-                if isinstance(image.image_main, bytes)
-                else image.image_main,
+                "image_data": image.image_1920.decode("utf-8").replace("\n", "")
+                if isinstance(image.image_1920, bytes)
+                else image.image_1920,
                 "is_published": image.is_published,
                 "filename": image.filename,
                 "product_variant_ids": [
