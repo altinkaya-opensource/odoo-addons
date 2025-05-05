@@ -9,7 +9,7 @@ import session from "web.session";
 patch(AccountReconcileDataWidget.prototype, "altinkaya_account.AccountReconcileDataWidget", {
     getTotals() {
         const data = this.getReconcileLines();
-        if (!data) {
+        if (data.length === 0) {
             return false;
         }
         const totals = {

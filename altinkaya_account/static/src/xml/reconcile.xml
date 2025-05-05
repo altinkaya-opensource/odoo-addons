@@ -11,9 +11,9 @@
                 <td colspan="4" class="text-end">
                     <strong>Sum:</strong>
                 </td>
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-if="totals.amount_currency &gt; 0" t-esc="totals.amount_currency_format" />
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-if="totals.debit &gt; 0" t-esc="totals.debit_format" />
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-if="totals.credit &gt; 0" t-esc="totals.credit_format" />
+                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.amount_currency_format" />
+                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.debit_format" />
+                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.credit_format" />
             </tr>
         </xpath>
 
