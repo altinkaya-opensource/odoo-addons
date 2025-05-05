@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
 
-    <t t-name="altinkaya_account.ReconcileDataWidget" t-inherit="account_reconcile_oca.ReconcileDataWidget" t-inherit-mode="extension" owl="1">
+    <t
+    t-name="altinkaya_account.ReconcileDataWidget"
+    t-inherit="account_reconcile_oca.ReconcileDataWidget"
+    t-inherit-mode="extension"
+    owl="1"
+  >
 
         <xpath expr="//t[@t-as='reconcile_line']" position="after">
             <!-- Add sum to table -->
@@ -11,9 +16,18 @@
                 <td colspan="4" class="text-end">
                     <strong>Sum:</strong>
                 </td>
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.amount_currency_format" />
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.debit_format" />
-                <td class="text-end o_field_account_reconcile_oca_balance_float" t-esc="totals.credit_format" />
+                <td
+          class="text-end o_field_account_reconcile_oca_balance_float"
+          t-esc="totals.amount_currency_format"
+        />
+                <td
+          class="text-end o_field_account_reconcile_oca_balance_float"
+          t-esc="totals.debit_format"
+        />
+                <td
+          class="text-end o_field_account_reconcile_oca_balance_float"
+          t-esc="totals.credit_format"
+        />
             </tr>
         </xpath>
 

@@ -25,12 +25,17 @@
         <record id="account_bank_statement_line_reconcile_view" model="ir.ui.view">
             <field name="name">account.bank.statement.line.reconcile.view</field>
             <field name="model">account.bank.statement.line</field>
-            <field name="inherit_id" ref="account_reconcile_oca.bank_statement_line_form_reconcile_view" />
+            <field
+      name="inherit_id"
+      ref="account_reconcile_oca.bank_statement_line_form_reconcile_view"
+    />
             <field name="arch" type="xml">
 
             <!-- Filter out currency valuation move lines -->
             <field name="add_account_move_line_id" position="attributes">
-                <attribute name="domain">[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
+                <attribute
+          name="domain"
+        >[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
             </field>
 
             </field>

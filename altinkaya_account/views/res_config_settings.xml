@@ -5,10 +5,16 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='default_accounts']//div[@class='o_setting_right_pane']" position="inside">
+            <xpath
+        expr="//div[@id='default_accounts']//div[@class='o_setting_right_pane']"
+        position="inside"
+      >
                 <div class="row mt8">
-                    <label for="currency_diff_inv_account_id" class="col-lg-4 o_light_label"/>
-                    <field name="currency_diff_inv_account_id"/>
+                    <label
+            for="currency_diff_inv_account_id"
+            class="col-lg-4 o_light_label"
+          />
+                    <field name="currency_diff_inv_account_id" />
                 </div>
             </xpath>
         </field>

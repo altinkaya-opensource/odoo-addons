@@ -24,7 +24,9 @@
 
             <!-- Filter out currency valuation move lines -->
             <field name="add_account_move_line_id" position="attributes">
-                <attribute name="domain">[('parent_state', '=', 'posted'), ('amount_residual', '!=', 0), ('account_id', '=', account_id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
+                <attribute
+          name="domain"
+        >[('parent_state', '=', 'posted'), ('amount_residual', '!=', 0), ('account_id', '=', account_id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
             </field>
 
         </field>

@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
-from odoo import Command, api, fields, models, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -197,7 +197,6 @@ class ResPartner(models.Model):
                 inv_type = "out_invoice"
             if difference_amls:
                 # Get taxes
-                created_inv_lines = self.env["account.move.line"]
                 kdv_rates = [20, 10, 18, 8]
                 taxes_dict = {}
                 for kdv_rate in kdv_rates:
