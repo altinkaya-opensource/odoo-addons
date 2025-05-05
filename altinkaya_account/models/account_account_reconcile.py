@@ -28,7 +28,21 @@ class AccountAccountReconcile(models.Model):
         domain="[('rule_type', '=', 'writeoff_button')]",
     )
 
+    # date = fields.Date(
+    #     string="Date",
+    #     default=fields.Date.context_today,
+    #     required=True,
+    #     states={"draft": [("readonly", False)]},
+    # )
+
     can_reconcile = fields.Boolean(sparse="reconcile_data_info")
+
+    def _recompute_data(self, data):
+        """
+        Prevent onchange error on manual models' lines.
+        """
+        data["counterparts"] = list(filter(None, data["counterparts"]))
+        return super()._recompute_data(data)
 
     @api.onchange("manual_model_id")
     def _onchange_manual_model_id(self):

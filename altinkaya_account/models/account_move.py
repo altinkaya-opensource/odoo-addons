@@ -175,6 +175,28 @@ class AccountMove(models.Model):
                     }
                 )
 
+        # Currency difference invoice
+        for invoice in self:
+            aml_to_unreconcile = self.env["account.move.line"]
+            aml_to_reconcile = self.env["account.move.line"]
+            for inv_line in invoice.invoice_line_ids.filtered(
+                lambda x: x.difference_base_aml_id
+            ):
+                aml_to_unreconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids  # noqa
+                aml_to_reconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids.filtered(  # noqa
+                    lambda r: r.id != inv_line.difference_base_aml_id.id
+                )
+
+            if aml_to_unreconcile:
+                aml_to_unreconcile.remove_move_reconcile()
+
+            if aml_to_reconcile:
+                diff_aml = invoice.move_id.line_ids.filtered(
+                    lambda r: not r.reconciled
+                    and r.account_id.internal_type in ("payable", "receivable")
+                )
+                aml_to_reconcile._reconcile(diff_aml=diff_aml)
+
         return res
 
     def action_match_einvoice_lines_picking(self):

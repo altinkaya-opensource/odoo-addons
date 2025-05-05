@@ -215,105 +215,80 @@ class ResPartner(models.Model):
                             _("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate
                         )
 
-                comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
-                for diff_aml in difference_amls:
-                    inv_lines_to_create = []
-                    base_ail_dict = {
-                        "difference_base_aml_id": diff_aml.id,
-                        "name": _("Currency Difference"),
-                        "product_uom_id": 1,
-                        "account_id": self.env.company.currency_diff_inv_account_id.id,
-                    }
-                    amount_untaxed = diff_aml.debit or diff_aml.credit
-                    inv_ids = diff_aml.full_reconcile_id.reconciled_line_ids.filtered(
+                inv_ids = (
+                    difference_amls.full_reconcile_id.reconciled_line_ids.filtered(
                         lambda r: "invoice" in r.move_type
                     ).mapped("move_id")
-                    if len(inv_ids) > 0:
-                        comment_einvoice += ", ".join(
-                            inv_id.supplier_invoice_number
-                            if inv_id.supplier_invoice_number
-                            else inv_id.number
-                            for inv_id in inv_ids
+                )
+                total_difference = sum(difference_amls.mapped("balance"))
+
+                comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
+
+                inv_lines_to_create = []
+
+                if len(inv_ids) > 0:
+                    comment_einvoice += ", ".join(
+                        inv_id.supplier_invoice_number
+                        if inv_id.supplier_invoice_number
+                        else inv_id.number
+                        for inv_id in inv_ids
+                    )
+
+                    # Compute tax distribution
+                    tax_lines = inv_ids.mapped("tax_line_ids")
+                    distribution = {}
+
+                    for rate in kdv_rates:
+                        invoice_taxes = tax_lines.filtered(
+                            lambda txl: txl.tax_line_id.amount == rate
                         )
 
-                        # Calculate tax distribution
-                        total_amount = amount_untaxed
-                        for rate in kdv_rates:
-                            invoice_taxes = inv_ids.mapped("tax_line_ids").filtered(
-                                lambda txl: txl.tax_line_id.amount == rate
-                            )
-
-                            total_tax_amount = sum(
-                                abs(bal) for bal in invoice_taxes.mapped("balance")
-                            )
-
-                            tax_rate = round(
-                                100.0
-                                * (total_tax_amount / rate)
-                                / sum(inv_ids.mapped("amount_untaxed")),
-                                4,
-                            )
-                            if tax_rate > 0:
-                                tax_id = taxes_dict[rate]
-                                amount_untaxed = round(
-                                    total_amount
-                                    * tax_rate
-                                    / (1 + tax_id.amount / 100.0),
-                                    2,
-                                )
-                                tax_ids = [(6, False, [tax_id.id])]
-                                # else:
-                                #     tax_ids = [(6, False, [taxes_dict[20].id])]
-                                #     amount_untaxed = amount_untaxed / (
-                                #         1 + taxes_dict[20].amount / 100.0
-                                #     )
-
-                                if inv_type == "out_refund" and diff_aml.debit > 0:
-                                    amount_untaxed = -amount_untaxed
-
-                                if inv_type == "out_invoice" and diff_aml.credit > 0:
-                                    amount_untaxed = -amount_untaxed
-
-                                inv_lines_to_create.append(
-                                    dict(
-                                        **base_ail_dict,
-                                        **{
-                                            "price_unit": amount_untaxed,
-                                            "tax_ids": tax_ids,
-                                        },
-                                    )
-                                )
-                    else:
-                        # If there is no invoice, then it is a difference between
-                        # the exchange rate of the invoice and the payment
-                        # Set the tax rate to 20%
-                        comment_einvoice = ""
-                        amount_untaxed = amount_untaxed / (
-                            1 + taxes_dict[20].amount / 100.0
+                        total_tax_amount = sum(
+                            abs(bal) for bal in invoice_taxes.mapped("balance")
                         )
-                        tax_ids = [(6, False, [taxes_dict[20].id])]
 
-                        if inv_type == "out_refund" and diff_aml.debit > 0:
-                            amount_untaxed = -amount_untaxed
+                        tax_rate = round(
+                            (
+                                total_tax_amount
+                                / sum(inv_ids.mapped("amount_untaxed_signed"))
+                                * 100
+                                / rate
+                            ),
+                            4,
+                        )
+                        if tax_rate > 0:
+                            distribution[rate] = tax_rate
 
-                        if inv_type == "out_invoice" and diff_aml.credit > 0:
-                            amount_untaxed = -amount_untaxed
-
+                    for rate, tax_rate in distribution.items():
                         inv_lines_to_create.append(
-                            dict(
-                                **base_ail_dict,
-                                **{
-                                    "price_unit": amount_untaxed,
-                                    "tax_ids": tax_ids,
-                                },
-                            )
+                            {
+                                "name": _("Currency Difference"),
+                                "product_uom_id": 1,
+                                "account_id": self.env.company.currency_diff_inv_account_id.id,
+                                "price_unit": round(
+                                    total_difference * tax_rate / (1 + rate / 100.0), 2
+                                ),
+                                "tax_ids": [(6, False, [taxes_dict[rate].id])],
+                            }
                         )
 
-                    diff_aml.write({"difference_checked": True})
-
-                    # created_inv_lines |= self.env["account.move.line"].create(
-                    #     inv_lines_to_create
-                    # )
+                else:
+                    # If there is no invoice, then it is a difference between
+                    # the exchange rate of the invoice and the payment
+                    # Set the tax rate to 20%
+                    comment_einvoice = ""
+                    inv_lines_to_create.append(
+                        {
+                            "name": _("Currency Difference"),
+                            "product_uom_id": 1,
+                            "account_id": self.env.company.currency_diff_inv_account_id.id,
+                            "price_unit": round(
+                                total_difference / (1 + taxes_dict[20].amount / 100.0),
+                                2,
+                            ),
+                            "tax_ids": [(6, False, [taxes_dict[20].id])],
+                        }
+                    )
 
                 dif_inv = inv_obj.create(
                     {
@@ -329,9 +304,7 @@ class ResPartner(models.Model):
                     }
                 )
 
-                # dif_inv.invoice_line_ids = [
-                #     (6, False, [x.id for x in created_inv_lines])
-                # ]
+                difference_amls.write({"difference_checked": True})
                 dif_inv._onchange_invoice_line_ids()
                 return dif_inv
 
