@@ -234,7 +234,7 @@
 
                 <xpath expr="//page[@name='old_sales']" position="after">
                     <page string="Manufacturing Orders" name="manufacturing_orders">
-                        <field name="production_ids" nolabel="1">
+                        <field name="production_ids" nolabel="1" widget="one2many">
                             <tree>
                                 <field name="name" />
                                 <field name="priority" />
