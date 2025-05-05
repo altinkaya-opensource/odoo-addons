@@ -105,6 +105,10 @@
                 <field name="lot_ids" widget="many2many_tags" />
             </xpath>
 
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='price_unit']" position="after">
+                <field name="unit_discounted" />
+            </xpath>
+
             <xpath expr="//button[@name='button_cancel']" position="after">
                 <button
           name="action_match_einvoice_lines_picking"

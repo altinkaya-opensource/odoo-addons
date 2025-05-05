@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class AccountMoveLine(models.Model):
@@ -39,6 +39,25 @@ class AccountMoveLine(models.Model):
     difference_base_aml_id = fields.Many2one(
         comodel_name="account.move.line", string="Difference Base Move"
     )
+
+    unit_discounted = fields.Float(
+        string="Disc. Unit",
+        compute="_compute_unit_discounted",
+        digits="Product Price",
+        store=False,
+        readonly=True,
+    )
+
+    @api.depends("discount", "price_unit")
+    def _compute_unit_discounted(self):
+        """
+        Compute the unit discounted price
+        :return: None
+        """
+        for line in self:
+            line.unit_discounted = (
+                line.price_unit - line.discount / 100 * line.price_unit
+            )
 
     def _simulate_invoice_line_onchange(self):
         """
