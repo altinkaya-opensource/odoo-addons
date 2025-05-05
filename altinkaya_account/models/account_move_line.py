@@ -19,6 +19,7 @@ from odoo import fields, models
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
+    journal_code = fields.Char(related="move_id.journal_id.code", string="Journal Code")
     move_name = fields.Char(related="move_id.name", string="Move Number")
     move_ref = fields.Char(related="move_id.ref", string="Move Reference")
     lot_ids = fields.Many2many(
@@ -32,6 +33,11 @@ class AccountMoveLine(models.Model):
     partner_order_ref = fields.Char(string="Order Reference")
     purchase_line_amount = fields.Float(
         string="PO Unit", related="purchase_line_id.price_unit"
+    )
+
+    difference_checked = fields.Boolean(string="Currency Difference Checked")
+    difference_base_aml_id = fields.Many2one(
+        comodel_name="account.move.line", string="Difference Base Move"
     )
 
     def _simulate_invoice_line_onchange(self):

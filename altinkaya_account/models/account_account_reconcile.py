@@ -164,6 +164,20 @@ class AccountAccountReconcile(models.Model):
                     limit=1,
                 )
 
+                # Create 100.D Ara Devir Reverse Entry with wizard
+                if "100.D" in datum["account_id"][1]:
+                    wiz = self.env["account.move.reversal"].create(
+                        {
+                            "move_ids": [(6, 0, [move.id])],
+                            "journal_id": model_id.journal_id.id,
+                            "date_mode": "entry",
+                        }
+                    )
+                    wiz.reverse_moves()
+                    wiz.new_move_ids.filtered(
+                        lambda nm: nm.state == "draft"
+                    ).action_post()
+
                 reconciliation_data_copy["counterparts"].append(writeoff_line.id)
 
         self.reconcile_data_info = reconciliation_data_copy
