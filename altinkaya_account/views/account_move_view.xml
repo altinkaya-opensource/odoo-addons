@@ -8,6 +8,30 @@
         <field name="type">form</field>
         <field name="priority" eval="999" />
         <field name="arch" type="xml">
+
+            <xpath expr="//notebook" position="inside">
+                <page
+          name="reconcile_and_currency_difference"
+          string="Reconcile and Currency Difference"
+          attrs="{'invisible':[('journal_id','!=', 60)]}"
+        >
+                    <group
+            name="reconcile_info"
+            string="Reconcile"
+            attrs="{'invisible': [('full_reconcile_ids', '=', False)]}"
+          >
+                        <field name="full_reconcile_ids" nolabel="1" />
+
+                    </group>
+                    <group
+            name="other_invoices_in_reconciles"
+            string="Other invoices in reconciles"
+          >
+                        <field name="other_inv_in_reconciles" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+
             <field name="fiscal_position_id" position="after">
                 <field name="total_balance" string="Total Balance" />
             </field>

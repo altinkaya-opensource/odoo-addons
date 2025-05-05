@@ -11,7 +11,7 @@
         "sale",
         "account",
         "account_financial_risk",
-        "currency_difference_invoice",
+        "altinkaya_account",
     ],
     # always loaded
     "data": [

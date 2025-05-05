@@ -42,6 +42,25 @@
                 </button>
             </button>
 
+            <group name="banks" position="before">
+
+                <group string="Currency Difference" colspan="2" col="2">
+                    <group>
+                        <field name="currency_difference_checked" />
+                        <button
+              name="action_generate_currency_diff_invoice"
+              type="object"
+              string="Calculate Difference Invoice"
+              attrs="{'invisible': [('parent_id','!=',False)]}"
+              options="{}"
+            />
+                    </group>
+                    <field name="currency_difference_amls" />
+
+                </group>
+
+            </group>
+
         </field>
     </record>
 

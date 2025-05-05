@@ -47,6 +47,43 @@ class AccountMove(models.Model):
         compute="_compute_tax_line_ids",
     )
 
+    full_reconcile_ids = fields.Many2many(
+        "account.full.reconcile",
+        string="Full Reconciles",
+        compute="_compute_full_reconcile_ids",
+        help="Full reconciles linked to this invoice",
+    )
+
+    other_inv_in_reconciles = fields.Many2many(
+        "account.move",
+        string="Other invoices in reconciles",
+        compute="_compute_other_inv_in_reconciles",
+    )
+
+    @api.model
+    def _compute_full_reconcile_ids(self):
+        for invoice in self:
+            if invoice.state == "draft" and invoice.invoice_line_ids:
+                invoice.full_reconcile_ids = invoice.invoice_line_ids.mapped(
+                    "difference_base_aml_id"
+                ).mapped("full_reconcile_id")
+            elif (
+                invoice.state in ["open", "in_payment", "paid"]
+                and invoice.invoice_line_ids
+            ):
+                invoice.full_reconcile_ids = invoice.move_id.line_ids.mapped(
+                    "full_reconcile_id"
+                )
+            else:
+                invoice.full_reconcile_ids = False
+
+    @api.depends("full_reconcile_ids")
+    def _compute_other_inv_in_reconciles(self):
+        invoice_amls = self.full_reconcile_ids.mapped("reconciled_line_ids").filtered(
+            lambda x: x.move_id
+        )
+        self.other_inv_in_reconciles = invoice_amls.mapped("move_id")
+
     @api.depends("pricelist_id")
     def _compute_currency_id(self):
         """
@@ -193,3 +230,29 @@ class AccountMove(models.Model):
         # and supplier invoice numbers
         super()._must_check_constrains_date_sequence()
         return False
+
+    def button_cancel(self):
+        res = super().button_cancel()
+
+        if not self:
+            return res
+
+        for invoice in self:
+            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
+                for line in invoice.invoice_line_ids.filtered(
+                    lambda x: x.difference_base_aml_id
+                ):
+                    line.difference_base_aml_id.write({"difference_checked": False})
+
+    def unlink(self):
+        """
+        When unlinking a currency difference invoice, set the related move lines
+        difference_checked field to False
+        """
+        for invoice in self:
+            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
+                for line in invoice.invoice_line_ids.filtered(
+                    lambda x: x.difference_base_aml_id
+                ):
+                    line.difference_base_aml_id.write({"difference_checked": False})
+        return super().unlink()
