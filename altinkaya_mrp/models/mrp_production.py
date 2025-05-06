@@ -293,11 +293,13 @@ class MrpProduction(models.Model):
         """
         ongoing_productions = self.search(
             [
-                ("state", "in", ("confirmed", "planned", "progress")),
+                ("state", "in", ("confirmed", "progress")),
                 ("procurement_group_id.sale_id", "=", False),
             ]
         )
-        for production in ongoing_productions:
+        for production in ongoing_productions.filtered(
+            lambda x: x.priority in ["0", "1"]  # not urgent and normal
+        ):
             stock_rules = self.env["stock.warehouse.orderpoint"].search(
                 [("product_id", "=", production.product_id.id)]
             )
