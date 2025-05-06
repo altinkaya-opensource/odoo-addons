@@ -13,8 +13,7 @@
        						<button
           name="action_print_product_label"
           type="object"
-          string="Print Product Label"
-          icon="fa-print"
+          icon="fa-barcode"
         />
                   	</xpath>
           	</field>
