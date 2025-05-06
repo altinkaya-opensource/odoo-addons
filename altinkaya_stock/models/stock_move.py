@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class StockMove(models.Model):
@@ -134,3 +134,22 @@ class StockMove(models.Model):
             if orig_moves:
                 orig_moves._action_assign(force_qty=force_qty)
         return res
+
+    def action_open_detailed_form(self):
+        """
+        Open the detailed form view of the move lines of the current move.
+        """
+        self.ensure_one()
+
+        view = self.env.ref("stock.view_move_form")
+
+        return {
+            "name": _("Stock Move"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "stock.move",
+            "views": [(view.id, "form")],
+            "view_id": view.id,
+            "target": "new",
+            "res_id": self.id,
+        }

@@ -129,6 +129,11 @@
         expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
         position="after"
       >
+                                  <button
+          name="action_open_detailed_form"
+          type="object"
+          icon="fa-eye"
+        />
                 <button
           name="action_create_procurement"
           type="object"
