@@ -167,7 +167,7 @@ class MrpProduction(models.Model):
     def action_set_production_started(self):
         for production in self:
             production.write(
-                {"state": "progress", "date_start2": fields.Datetime.now()}
+                {"state": "progress", "date_start": fields.Datetime.now()}
             )
 
     def _action_cancel(self):

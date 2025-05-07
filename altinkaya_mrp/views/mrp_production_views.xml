@@ -55,8 +55,10 @@
                     <attribute name="class" />
                 </xpath>
 
-                <xpath expr="//field[@name='date_planned_start']" position="after">
+                <xpath expr="//field[@name='components_availability_state']" position="before">
+                <field name="date_start" />
                 <field name="date_finished" />
+                <field name="commitment_date" />
                 </xpath>
 
                 <xpath expr="//field[@name='process_id']" position="after">
@@ -66,16 +68,12 @@
           attrs="{'invisible': [('partner_id', '=', False)]}"
         />
                     <field name="priority" />
-                    <field name="date_planned" />
-                    <field name="date_start2" />
-                    <field name="date_finished2" invisible="1" />
                     <field name="x_note" />
                     <field name="sale_note" />
                 </xpath>
                 <xpath expr="//field[@name='components_availability']" position="after">
                     <field name="location_src_id" />
                     <field name="location_dest_id" />
-                    <field name="date_finished" />
                     <field name="sale_id" />
                     <field name="origin" />
                     <field name="procurement_group_id" />
@@ -231,7 +229,6 @@
                     <field name="message_needaction" invisible="1" />
                     <field name="name" />
                     <field name="date_planned_start" />
-                    <field name="date_finished" />
                     <field name="priority" />
                     <field name="product_id" />
                     <field name="origin" />
