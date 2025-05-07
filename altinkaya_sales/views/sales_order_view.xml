@@ -241,12 +241,13 @@
                                 <field name="process_id" />
                                 <field name="product_qty" />
                                 <field name="product_uom_id" />
+                                <field name="product_id" />
                                 <field name="components_availability_state" />
                                 <field name="state" />
-                                <field name="date_planned_start" />
-                                <field name="date_start" />
-                                <field name="date_finished" />
-                                <field name="commitment_date" />
+                                <field name="date_planned_start" widget="date"/>
+                                <field name="date_start" widget="date"/>
+                                <field name="date_finished" widget="date"/>
+                                <field name="commitment_date" widget="date"/>
                             </tree>
                         </field>
                     </page>
