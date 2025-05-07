@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import models, api
+from odoo import api, models
 
 
 class AccountBankStatementLine(models.Model):

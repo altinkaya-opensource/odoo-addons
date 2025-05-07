@@ -55,7 +55,10 @@
                     <attribute name="class" />
                 </xpath>
 
-                <xpath expr="//field[@name='components_availability_state']" position="before">
+                <xpath
+        expr="//field[@name='components_availability_state']"
+        position="before"
+      >
                 <field name="date_start" />
                 <field name="date_finished" />
                 <field name="commitment_date" />

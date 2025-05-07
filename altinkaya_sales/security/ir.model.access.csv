@@ -4,3 +4,4 @@ access_sale_order_line_altinkaya,sale.order.line,altinkaya_sales.model_sale_orde
 access_sale_order_manager_altinkaya,sale.order.manager,altinkaya_sales.model_sale_order,sales_team.group_sale_manager,True,True,True,True
 access_res_partner_segment_manager,res.partner.segment,model_res_partner_segment,sales_team.group_sale_manager,True,True,True,True
 access_res_partner_segment,res.partner.segment,model_res_partner_segment,sales_team.group_sale_salesman,True,True,True,True
+access_product_variant_copy_wizard,product_variant_copy_wizard,model_wizard_product_product_copy,sales_team.group_sale_salesman,1,1,1,1

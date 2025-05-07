@@ -58,6 +58,7 @@
         "views/res_country_view.xml",
         "views/res_bank_view.xml",
         "views/res_partner_email_check.xml",
+        "wizards/wizard_product_product_copy_views.xml",
     ],
     "demo": [],
     "license": "LGPL-3",

@@ -175,7 +175,7 @@ class AccountMove(models.Model):
                     }
                 )
 
-        # Currency difference invoice
+        # Currency difference invoice
         for invoice in self:
             aml_to_unreconcile = self.env["account.move.line"]
             aml_to_reconcile = self.env["account.move.line"]

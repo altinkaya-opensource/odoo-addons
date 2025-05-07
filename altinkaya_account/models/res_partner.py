@@ -264,7 +264,7 @@ class ResPartner(models.Model):
                             {
                                 "name": _("Currency Difference"),
                                 "product_uom_id": 1,
-                                "account_id": self.env.company.currency_diff_inv_account_id.id,
+                                "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
                                 "price_unit": round(
                                     total_difference * tax_rate / (1 + rate / 100.0), 2
                                 ),
@@ -281,7 +281,7 @@ class ResPartner(models.Model):
                         {
                             "name": _("Currency Difference"),
                             "product_uom_id": 1,
-                            "account_id": self.env.company.currency_diff_inv_account_id.id,
+                            "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
                             "price_unit": round(
                                 total_difference / (1 + taxes_dict[20].amount / 100.0),
                                 2,
