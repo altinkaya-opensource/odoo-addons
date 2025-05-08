@@ -5,11 +5,23 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
-            	<group name="purchase" position="inside">
+            	<field name="property_supplier_payment_term_id" position="after">
                     <field
           name="property_purchase_pricelist"
         /> <!-- domain="[('list_type_use', '=', 'purchase')]" -->
-                </group>
+                </field>
+                <field name="purchase_requires_second_approval" position="attributes">
+                        <attribute name="string">Satınalma Ikinci Onay</attribute>
+                </field>
+                <field name="purchase_incoterm_id" position="attributes">
+                        <attribute name="string">Teslim Şekli</attribute>
+                </field>
+                <field name="purchase_incoterm_address_id" position="attributes">
+                        <attribute name="string">Teslim Adresi</attribute>
+                </field>
+                <field name="purchase_transport_mode_id" position="attributes">
+                        <attribute name="string">Nakliye Yöntemi</attribute>
+                </field>
            </field>
       </record>
 </odoo>

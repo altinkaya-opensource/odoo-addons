@@ -552,7 +552,7 @@ msgstr "Fiyat Listesi"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__purchase_default_account_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__purchase_default_account_id
 msgid "Purchase Default Account"
-msgstr "Varsayılan Satınalma Hesabı"
+msgstr "Satınalma Masraf Hesabı"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__rate_inverse
@@ -654,7 +654,7 @@ msgstr "Vergi Dairesi"
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_company_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
 msgid "Tax Office Name"
-msgstr "Vergi Dairesi Ismi"
+msgstr "Vergi Dairesi Adı"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
