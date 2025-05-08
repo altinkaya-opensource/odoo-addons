@@ -93,15 +93,20 @@ class ResPartner(models.Model):
                 domain=difference_aml_domain, fields=["id"]
             )
             if len(difference_amls) > 0:
-                partner.write(
-                    {
-                        "currency_difference_amls": [
-                            Command.set([x["id"] for x in difference_amls])
-                        ]
-                    }
-                )
+                # partner.write(
+                #     {
+                #         "currency_difference_amls": [
+                #             Command.set([x["id"] for x in difference_amls])
+                #         ]
+                #     }
+                # )
+                partner.currency_difference_amls = [
+                    Command.set([x["id"] for x in difference_amls])
+                ]
+
             else:
-                partner.write({"currency_difference_amls": [Command.clear()]})
+                # partner.write({"currency_difference_amls": [Command.clear()]})
+                partner.currency_difference_amls = [Command.clear()]
 
     def _compute_difference_to_invoice(self):
         for partner in self:
