@@ -25,10 +25,10 @@
           name="accounting_contact"
           domain="[('parent_id', '=', active_id)]"
         />
-                <field name="purchase_default_account_id" />
+                <field name="purchase_default_account_id" string="Satınalma Masraf Hesabı"/>
                 <field name="z_payable_export" />
                 <field name="z_receivable_export" />
-                <field name="devir_yapildi" />
+                <!-- <field name="devir_yapildi" /> -->
             </xpath>
 
             <button name="action_view_partner_invoices" position="after">
@@ -42,7 +42,7 @@
                 </button>
             </button>
 
-            <group name="banks" position="before">
+            <!-- <group name="banks" position="before">
 
                 <group string="Currency Difference" colspan="2" col="2">
                     <group>
@@ -59,7 +59,7 @@
 
                 </group>
 
-            </group>
+            </group> -->
 
         </field>
     </record>

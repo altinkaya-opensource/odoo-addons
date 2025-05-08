@@ -21,71 +21,44 @@
 			<field name="arch" type="xml">
 
 				<xpath
-        expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']"
-        position="inside"
+        expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']/field[@name='company_registry']"
+        position="before"
       >
 						<field name="segment_id" />
 				</xpath>
-
-				<xpath expr="//group[@name='banks']" position="after">
-					<group
-          string="Credit Insurance"
-          name="credit_insurance"
-          attrs="{'invisible': [('country_id', '=', 224)]}"
-        >
-						<field name="credit_insurance" />
-						<field name="credit_insurance_validity" />
+				<xpath expr="//group[@name='currency_difference']" position="before">
+					<group>
+						<group>
+							<group string="Credit Insurance" name="credit_insurance" attrs="{'invisible': [('country_id', '=', 224)]}">
+								<field name="credit_insurance" />
+								<field name="credit_insurance_validity" />
+							</group>
+						</group>
+						<xpath expr="//group[@name='accounting_entries']" position="move"/>
 					</group>
-				</xpath>
-
-				<xpath expr="//button[@name='open_route_map']" position="replace">
-					<button
-          type="object"
-          name="action_view_v_cari_urun"
-          class="oe_stat_button"
-          icon="fa-code-fork"
-          attrs="{'invisible': [('v_cari_urun_count', '=', 0)]}"
-        >
-						<field name="v_cari_urun_count" widget="statinfo" string="Products" />
-					</button>
 				</xpath>
 
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name" />
 				</xpath>
-				<xpath expr="//field[@name='ref']" position="replace">
-					<field name="ref" />
-					<field name="barcode" />
-					<field name="z_tel_kampanya" />
-					<field name="z_kamp_2016A" />
-					<field name="z_kamp_2017A" />
-					<field name="z_kat_postala" />
-					<field name="z_kat_postalandi" />
-					<field name="z_kat_email" />
-
+				<xpath expr="//group[@name='container']" position="inside">
+					<group>
+						<field name="z_tel_kampanya" />
+						<field name="z_kat_postala" />
+						<field name="z_kat_postalandi" />
+						<field name="z_kat_email" />
+					</group>
+					<group colspan="4">
+						<field name="industry_id"/>
+						<field
+						name="secondary_industry_ids"
+						widget="many2many_tags"
+						attrs="{'invisible': [('is_company', '=', False),
+						('show_partner_industry_for_person', '=', False)]}"
+					/>
+						<field name="nace_product_categ_ids" widget="many2many_tags" string="Hedef Ürün Kategorisi"/>
+					</group>
 				</xpath>
-				<xpath expr="//notebook" position="inside">
-                    <page name="industry" string="Endüstri">
-                        <group string="Ana Sektör">
-                            <field name="industry_id" nolabel="1" colspan="2" />
-                        </group>
-                        <group string="Diğer Endüstri Iş Sektörleri">
-                            <field
-              name="secondary_industry_ids"
-              nolabel="1"
-              colspan="2"
-            />
-                        </group>
-                        <group string="Hedef Ürün Kategorisi">
-                            <field
-              name="nace_product_categ_ids"
-              readonly="1"
-              nolabel="1"
-              colspan="2"
-            />
-                        </group>
-                    </page>
-                </xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath>
@@ -149,7 +122,7 @@
 					</h3>
 				</xpath>
 				<xpath expr="/form/sheet/group/group" position="inside">
-					<field name="comment" />
+					<field name="comment" colspan="3"/>
 
 				</xpath>
 
