@@ -71,10 +71,27 @@ class StockMove(models.Model):
                         }
                     )
                     # create the MTO move, attached to same MO
-                    move.copy(
+                    new_mto_move = move.copy(
                         default={
                             "procure_method": mto_rule.procure_method,
                             "product_uom_qty": needed_qty,
                         }
                     )
+                    # Run rules for new MTO move
+                    if new_mto_move and new_mto_move.procure_method == "make_to_order":
+                        values = new_mto_move._prepare_procurement_values()
+                        origin = new_mto_move._prepare_procurement_origin()
+                        procurement = self.env["procurement.group"].Procurement(
+                            new_mto_move.product_id,
+                            needed_qty,
+                            new_mto_move.product_uom,
+                            new_mto_move.location_id,
+                            new_mto_move.name,
+                            origin,
+                            new_mto_move.company_id,
+                            values,
+                        )
+                        self.env["procurement.group"].run([procurement])
+                        new_mto_move.state = "waiting"
+
         return res
