@@ -25,7 +25,10 @@
           name="accounting_contact"
           domain="[('parent_id', '=', active_id)]"
         />
-                <field name="purchase_default_account_id" string="Satınalma Masraf Hesabı"/>
+                <field
+          name="purchase_default_account_id"
+          string="Satınalma Masraf Hesabı"
+        />
                 <field name="z_payable_export" />
                 <field name="z_receivable_export" />
                 <!-- <field name="devir_yapildi" /> -->

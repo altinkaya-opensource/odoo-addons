@@ -8,7 +8,12 @@
         <field name="arch" type="xml">
             <page name="einvoice" position="before">
 
-                <group name="currency_difference" string="Currency Difference" colspan="2" col="2">
+                <group
+          name="currency_difference"
+          string="Currency Difference"
+          colspan="2"
+          col="2"
+        >
                     <group>
                         <field name="currency_difference_checked" />
                         <button
@@ -28,8 +33,8 @@
                             <field name="account_id" />
                             <field name="partner_id" />
                             <field name="full_reconcile_id" />
-                            <field name="debit" sum="Toplam Borç"/>
-                            <field name="credit" sum="Toplam Alacak"/>
+                            <field name="debit" sum="Toplam Borç" />
+                            <field name="credit" sum="Toplam Alacak" />
                             <field name="amount_currency" />
                         </tree>
                     </field>

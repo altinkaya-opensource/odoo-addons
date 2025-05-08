@@ -29,12 +29,16 @@
 				<xpath expr="//group[@name='currency_difference']" position="before">
 					<group>
 						<group>
-							<group string="Credit Insurance" name="credit_insurance" attrs="{'invisible': [('country_id', '=', 224)]}">
+							<group
+              string="Credit Insurance"
+              name="credit_insurance"
+              attrs="{'invisible': [('country_id', '=', 224)]}"
+            >
 								<field name="credit_insurance" />
 								<field name="credit_insurance_validity" />
 							</group>
 						</group>
-						<xpath expr="//group[@name='accounting_entries']" position="move"/>
+						<xpath expr="//group[@name='accounting_entries']" position="move" />
 					</group>
 				</xpath>
 
@@ -49,14 +53,18 @@
 						<field name="z_kat_email" />
 					</group>
 					<group colspan="4">
-						<field name="industry_id"/>
+						<field name="industry_id" />
 						<field
-						name="secondary_industry_ids"
-						widget="many2many_tags"
-						attrs="{'invisible': [('is_company', '=', False),
+            name="secondary_industry_ids"
+            widget="many2many_tags"
+            attrs="{'invisible': [('is_company', '=', False),
 						('show_partner_industry_for_person', '=', False)]}"
-					/>
-						<field name="nace_product_categ_ids" widget="many2many_tags" string="Hedef Ürün Kategorisi"/>
+          />
+						<field
+            name="nace_product_categ_ids"
+            widget="many2many_tags"
+            string="Hedef Ürün Kategorisi"
+          />
 					</group>
 				</xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
@@ -122,7 +130,7 @@
 					</h3>
 				</xpath>
 				<xpath expr="/form/sheet/group/group" position="inside">
-					<field name="comment" colspan="3"/>
+					<field name="comment" colspan="3" />
 
 				</xpath>
 
