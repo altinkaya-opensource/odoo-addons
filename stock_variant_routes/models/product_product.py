@@ -34,4 +34,5 @@ class product_product(models.Model):
             else:
                 route_ids = product.product_tmpl_id.route_ids
 
-            product.write({"route_ids": [Command.set(route_ids.ids)]})
+            # product.write({"route_ids": [Command.set(route_ids.ids)]})
+            product.route_ids = [Command.set(route_ids.ids)]
