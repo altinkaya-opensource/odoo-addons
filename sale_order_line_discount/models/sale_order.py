@@ -6,7 +6,7 @@ class SaleOrderLine(models.Model):
 
     unit_discounted = fields.Float(
         "Disc. Unit",
-        digits=(16, 2),
+        digits=(16, 4),
         compute="_compute_unit_discounted",
         readonly=True,
         states={"draft": [("readonly", False)]},
