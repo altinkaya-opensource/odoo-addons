@@ -130,7 +130,7 @@ class CreateProcurementMove(models.TransientModel):
         if self.procure_move:
             self.create_procurement(
                 group_id=self.move_id.group_id,
-                location_id=self.move_id.location_id,
+                warehouse_id=self.move_id.warehouse_id,
                 qty=self.move_id.product_uom_qty,
             )
 
@@ -179,23 +179,22 @@ class CreateProcurementMove(models.TransientModel):
             ]
         )
 
-    def create_procurement(self, group_id, location_id, qty):
+    def create_procurement(self, group_id, warehouse_id, qty):
         """
         Create a procurement with current procurement group
         """
         self.ensure_one()
-        warehouse = location_id.warehouse_id
         if not group_id:
             group_id = self.env["procurement.group"].create(
                 {
-                    "name": warehouse.name + " Açan: " + self.env.user.name,
+                    "name": warehouse_id.name + " Açan: " + self.env.user.name,
                 }
             )
         values = {
             "date_planned": self.move_id.date_deadline
             or self.move_id.forecast_expected_date,
             "group_id": group_id,
-            "warehouse_id": warehouse,
+            "warehouse_id": warehouse_id,
             "move_dest_ids": self.move_id,
         }
         if not values["date_planned"]:
@@ -211,10 +210,10 @@ class CreateProcurementMove(models.TransientModel):
                     self.product_id,
                     product_qty,
                     product_uom,
-                    warehouse.lot_stock_id,  # Location
+                    self.move_id.location_id,  # Location
                     origin,  # Name
                     origin,  # Origin
-                    warehouse.company_id,
+                    warehouse_id.company_id,
                     values,  # Values
                 )
             ]
