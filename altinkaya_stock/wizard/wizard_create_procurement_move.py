@@ -198,6 +198,9 @@ class CreateProcurementMove(models.TransientModel):
             "warehouse_id": warehouse,
             "move_dest_ids": self.move_id,
         }
+        if not values["date_planned"]:
+            values.pop("date_planned")
+
         product_qty = qty
         product_uom = self.uom
         origin = self.move_id.origin or "/"
