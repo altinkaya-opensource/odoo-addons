@@ -112,9 +112,8 @@ class StockMove(models.Model):
         for move in self:
             mo = move.raw_material_production_id or move.production_id
             if mo:
-                production_qty = (
-                    mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
-                )
+                production_qty = (mo.product_qty - mo.qty_produced) or 1
+
                 split_mto_move = mo.move_raw_ids.filtered(
                     lambda m: m.bom_line_id == move.bom_line_id
                     and m.procure_method == "make_to_order"
@@ -126,6 +125,9 @@ class StockMove(models.Model):
                     and m.id != move.id
                 )
                 if split_mto_move:
+                    production_qty = (
+                        mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
+                    )
                     real_qty = split_mto_move.product_uom_qty + move.product_uom_qty
 
                     # If the move is a backorder, we need to take the original quantity
@@ -142,6 +144,9 @@ class StockMove(models.Model):
                         move.unit_factor = move.product_uom_qty / production_qty
 
                 elif split_mts_move:
+                    production_qty = (
+                        mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
+                    )
                     if (
                         float_compare(
                             split_mts_move.should_consume_qty,
