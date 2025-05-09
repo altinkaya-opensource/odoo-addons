@@ -287,7 +287,9 @@ class DeliveryCarrier(models.Model):
         """Update delivered fields"""
         self.ensure_one()
         return {
-            "date_delivered": datetime.fromisoformat(response["ISLEM_TARIHI"]),
+            "date_delivered": datetime.fromisoformat(response["ISLEM_TARIHI"]).replace(
+                tzinfo=None
+            ),
             "carrier_received_by": response.get("TESLIM_ALAN", ""),
         }
 
