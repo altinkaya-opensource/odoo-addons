@@ -36,6 +36,15 @@
         />
                 </xpath>
 
+                <xpath expr="//button[@name='action_assign']" position="after">
+                    <button
+          name="action_assign_reserved"
+          attrs="{'invisible': ['|', ('state', 'in', ('draft', 'done', 'cancel')), ('reserve_visible', '=', False)]}"
+          string="Assign Reserved"
+          type="object"
+        />
+                </xpath>
+
   <!-- <xpath expr="//button[@name='post_inventory']" position="replace">
 <button name="post_inventory" string="Post Inventory" type="object" attrs="{'invisible': [('post_visible', '=', False)]}" ></button>
 </xpath> -->

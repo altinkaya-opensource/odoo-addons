@@ -218,7 +218,7 @@ class MrpProduction(models.Model):
             production.state = "cancel"
 
     # TODO: this function changed to _update_raw_moves. Check the changes.
-    # def _update_raw_move(self, bom_line, line_data):
+    # def _update_raw_moves(self, factor):
     #     """Inherited to work with split procurements.
     #     If we found multiple moves that combined MTM and MTS,
     #     we need to change logic of this method.
@@ -230,7 +230,7 @@ class MrpProduction(models.Model):
     #     1) Eğer MTS hepsini karşılıyorsa MTO'yu iptal et, MTS'yi güncelle.
     #     2) Eğer MTS hepsini karşılamıyorsa, MTS'yi sabit tut, MTO'yu güncelle.
     #     """
-    #     new_qty = line_data["qty"]
+    #     # new_qty = line_data["qty"]
     #     self.ensure_one()
     #     move = self.move_raw_ids.filtered(
     #         lambda x: x.bom_line_id.id == bom_line.id
@@ -241,7 +241,7 @@ class MrpProduction(models.Model):
     #         mto_move = move.filtered(lambda x: x.procure_method == "make_to_order")
     #         # Handle the case where there is no split procurement but we have 2 moves
     #         if not mts_move or not mto_move:
-    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data) # noqa
+    #             return super()._update_raw_moves(factor)
     #         old_qty = sum(move.mapped("product_uom_qty"))
     #         if new_qty > old_qty:
     #             # Firstly, try to maximize MTS Move Qty
@@ -280,7 +280,7 @@ class MrpProduction(models.Model):
     #         # But we return it as the same anyway.
     #         return mts_move, old_qty, new_qty
     #     else:
-    #         return super(MrpProduction, self)._update_raw_move(bom_line, line_data)
+    #         return super()._update_raw_moves(factor)
 
     def _rearrange_procurement_priorities(self):
         """
@@ -310,4 +310,9 @@ class MrpProduction(models.Model):
                 # set urgent if available qty is less than 25% of minimum required qty
                 if total_available_qty < (total_minimum_qty * 0.25):
                     production.priority = "2"
+        return True
+
+    def action_assign_reserved(self):
+        for production in self:
+            production.move_raw_ids._action_assign_reserved()
         return True

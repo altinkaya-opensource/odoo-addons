@@ -1,4 +1,5 @@
 from odoo import _, fields, models
+from odoo.tools import float_compare, float_is_zero
 
 
 class StockMove(models.Model):
@@ -153,3 +154,55 @@ class StockMove(models.Model):
             "target": "new",
             "res_id": self.id,
         }
+
+    def _action_assign_reserved(self):
+        for move in self:
+            qty_to_assign = move.should_consume_qty
+            if (
+                (move.procure_method != "make_to_stock")
+                or not float_compare(
+                    move.quantity_done, qty_to_assign, move.product_uom.rounding
+                )
+                or not float_compare(
+                    move.forecast_availability, qty_to_assign, move.product_uom.rounding
+                )
+                or not move.move_line_ids
+            ):
+                continue
+
+            for line in move.move_line_ids.filtered(lambda ml: ml.lot_id):
+                # This line can fill up the move
+                if (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    == 0
+                ):
+                    line.qty_done = qty_to_assign
+                    qty_to_assign = 0.0
+                # This line can fill up the move partially
+                elif (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    < 0
+                ):
+                    qty_to_assign -= line.reserved_uom_qty
+                    line.qty_done = line.reserved_uom_qty
+                # This line has more reserved quantity than the move
+                # and can fill up the move completely
+                elif (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    > 0
+                ):
+                    line.qty_done = qty_to_assign
+                    qty_to_assign = 0.0
+
+                if float_is_zero(
+                    qty_to_assign, precision_rounding=move.product_uom.rounding
+                ):
+                    break
+
+        return True
