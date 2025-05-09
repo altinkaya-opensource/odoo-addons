@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import models
+from odoo import api, models
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -95,3 +95,76 @@ class StockMove(models.Model):
                         new_mto_move.state = "waiting"
 
         return res
+
+    @api.depends(
+        "product_uom_qty",
+        "raw_material_production_id",
+        "raw_material_production_id.product_qty",
+        "raw_material_production_id.qty_produced",
+        "production_id",
+        "production_id.product_qty",
+        "production_id.qty_produced",
+    )
+    def _compute_unit_factor(self):
+        """
+        Overriden to compute the unit factor for split procurement moves in MRP.
+        """
+        for move in self:
+            mo = move.raw_material_production_id or move.production_id
+            if mo:
+                production_qty = (
+                    mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
+                )
+                split_mto_move = mo.move_raw_ids.filtered(
+                    lambda m: m.bom_line_id == move.bom_line_id
+                    and m.procure_method == "make_to_order"
+                    and m.id != move.id
+                )
+                split_mts_move = mo.move_raw_ids.filtered(
+                    lambda m: m.bom_line_id == move.bom_line_id
+                    and m.procure_method == "make_to_stock"
+                    and m.id != move.id
+                )
+                if split_mto_move:
+                    real_qty = split_mto_move.product_uom_qty + move.product_uom_qty
+
+                    # If the move is a backorder, we need to take the original quantity
+                    if (
+                        float_compare(
+                            move.product_uom_qty,
+                            production_qty,
+                            precision_rounding=move.product_uom.rounding,
+                        )
+                        > 0
+                    ):
+                        move.unit_factor = 1.0
+                    else:
+                        move.unit_factor = move.product_uom_qty / production_qty
+
+                elif split_mts_move:
+                    if (
+                        float_compare(
+                            split_mts_move.should_consume_qty,
+                            production_qty,
+                            precision_rounding=move.product_uom.rounding,
+                        )
+                        < 0
+                    ):
+                        real_qty = production_qty - split_mts_move.should_consume_qty
+                    elif (
+                        float_compare(
+                            split_mts_move.should_consume_qty,
+                            production_qty,
+                            precision_rounding=move.product_uom.rounding,
+                        )
+                        == 0
+                    ):
+                        real_qty = 0.0
+                    else:  # This case should not happen
+                        real_qty = move.product_uom_qty - production_qty
+
+                    move.unit_factor = real_qty / production_qty
+                else:
+                    move.unit_factor = move.product_uom_qty / production_qty
+            else:
+                move.unit_factor = 1.0
