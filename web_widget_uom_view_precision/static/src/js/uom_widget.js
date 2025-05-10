@@ -1,81 +1,50 @@
-odoo.define('web_widget_precisions.uom_widget', function (require) {
-    "use strict";
+/** @odoo-module **/
 
-    var field_registry = require('web.field_registry');
-    var fields = require('web.basic_fields');
-    var field_utils = require('web.field_utils');
-    var rpc = require('web.rpc');
-    var uom_precisions = [];
-    rpc.query({
-        model: 'uom.view.precision.backend',
-        method: 'get_uom_view_precisions',
-    }).then(
-        function (precision_data) {
-            uom_precisions = precision_data;
-        }
-    );
+import { FloatField } from "@web/views/fields/float/float_field";
+import { registry } from "@web/core/registry";
+import { formatFloat } from "@web/views/fields/formatters";
+import rpc from "web.rpc";
 
-    var FieldUom = fields.InputField.extend({
-        className: 'o_field_uom o_field_number',
-        tagName: 'span',
-        supportedFieldTypes: ['float', 'integer'],
-        resetOnAnyFieldChange: true,
+const { useState } = owl;
 
-        init: function () {
-            this._super.apply(this, arguments);
+// Fetch the UOM precisions from the backend
+let backendUomPrecisions = {};
 
-            if (this.mode === 'edit') {
-                this.tagName = 'div';
-                this.className += ' o_input';
-            }
-        },
-
-        isSet: function () {
-            return this.value === 0 || this._super.apply(this, arguments);
-        },
-
-
-        /**
-         * @override
-         * @private
-         */
-        _formatValue: function () {
-            if (this.value === false) {
-                return "";
-            }
-            var UomField = this.nodeOptions.uom_field || 'uom_id';
-            var UomID = this.record.data[UomField] && this.record.data[UomField].res_id;
-            var UomPrecision = uom_precisions[UomID];
-            var digits = [16, 3]; // default precision
-            if (UomPrecision !== undefined) {
-                digits = [16, UomPrecision];
-            } else {
-                digits = this.field.digits || digits;
-            }
-            return field_utils.format.float(this.value, this.field,
-                _.extend({}, this.formatOptions, {digits: digits})
-            );
-        },
-
-        _renderEdit: function () {
-            this.$el.empty();
-
-            this._prepareInput(this.$input).appendTo(this.$el);
-
-        },
-
-        _renderReadonly: function () {
-            this.$el.empty().text(this._formatValue());
-        },
-
-        _reset: function () {
-            this._super.apply(this, arguments);
-        },
-    });
-
-    field_registry.add('uom', FieldUom);
-
-    return {
-        FieldUom: FieldUom,
-    };
+rpc.query({
+    model: "uom.view.precision.backend",
+    method: "get_uom_view_precisions",
+}).then((precision_data) => {
+    backendUomPrecisions = precision_data;
 });
+
+export class UomWidgetOwl extends FloatField {
+    setup() {
+        super.setup();
+        this.backendUomPrecisions = backendUomPrecisions;
+        this.record = useState(this.props.record);
+    }
+
+
+    get formattedValue() {
+        var field_data = this.record.activeFields[this.props.name];
+        let digits = this.props.digits;
+        if (field_data.widget === "uom") {
+            let uom_field = field_data.options.uom_field;
+
+            if (uom_field) {
+                let uom_id = this.record.data["product_uom"] && this.record.data["product_uom"][0];
+                let uom_precision = this.backendUomPrecisions[uom_id];
+                if (uom_precision !== undefined) {
+                    digits = [16, uom_precision];
+                }
+
+            }
+
+        }
+        return formatFloat(this.props.value, { digits: digits });
+    }
+}
+
+UomWidgetOwl.displayName = "UOM Widget Owl";
+
+registry.category("fields").add("uom", UomWidgetOwl);

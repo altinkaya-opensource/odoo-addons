@@ -23,7 +23,7 @@ UOM View Precision Widget
     :target: https://runbot.odoo-community.org/runbot/162/12.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module provides a widget for quantity fields. It formats the value according to the UOM of the product.
 
@@ -57,7 +57,7 @@ In the form view declaration, put widget='uom' attribute in the field tag::
 You can also specify the uom field with (default is "uom_id")::
 
     ...
-    <field name="mytimefieldname" widget="uom" options="{'uom_field': 'myUOMfield'}"/>
+    <field name="my_qty_field_name" widget="uom" options="{'uom_field': 'myUOMfield'}"/>
     ...
 
 
