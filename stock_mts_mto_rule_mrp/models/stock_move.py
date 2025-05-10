@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import api, models
+from odoo import api, fields, models
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -96,6 +96,69 @@ class StockMove(models.Model):
 
         return res
 
+    def _get_split_procurement_unit_factor(self, production_id, special_qty=0.0):
+        self.ensure_one()
+        factor = 1.0
+        mo = production_id
+        split_mto_move = fields.first(
+            mo.move_raw_ids.filtered(
+                lambda m: m.bom_line_id == self.bom_line_id
+                and m.procure_method == "make_to_order"
+                and m.id != self.id
+            )
+        )
+        split_mts_move = fields.first(
+            mo.move_raw_ids.filtered(
+                lambda m: m.bom_line_id == self.bom_line_id
+                and m.procure_method == "make_to_stock"
+                and m.id != self.id
+            )
+        )
+        production_qty = (
+            special_qty or mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
+        )
+        if split_mto_move:
+            real_qty = split_mto_move.product_uom_qty + self.product_uom_qty
+
+            if (
+                float_compare(
+                    self.product_uom_qty,
+                    production_qty,
+                    precision_rounding=self.product_uom.rounding,
+                )
+                > 0
+            ):
+                factor = 1.0
+            else:
+                factor = self.product_uom_qty / production_qty
+
+        elif split_mts_move:
+            if (
+                float_compare(
+                    split_mts_move.should_consume_qty,
+                    production_qty,
+                    precision_rounding=self.product_uom.rounding,
+                )
+                < 0
+            ):
+                real_qty = production_qty - split_mts_move.should_consume_qty
+            elif (
+                float_compare(
+                    split_mts_move.should_consume_qty,
+                    production_qty,
+                    precision_rounding=self.product_uom.rounding,
+                )
+                == 0
+            ):
+                real_qty = 0.0
+            else:  # This case should not happen
+                real_qty = self.product_uom_qty - production_qty
+
+            factor = real_qty / production_qty
+        else:
+            factor = self.product_uom_qty / production_qty
+        return factor
+
     @api.depends(
         "product_uom_qty",
         "raw_material_production_id",
@@ -106,14 +169,9 @@ class StockMove(models.Model):
         "production_id.qty_produced",
     )
     def _compute_unit_factor(self):
-        """
-        Overriden to compute the unit factor for split procurement moves in MRP.
-        """
         for move in self:
             mo = move.raw_material_production_id or move.production_id
             if mo:
-                production_qty = (mo.product_qty - mo.qty_produced) or 1
-
                 split_mto_move = mo.move_raw_ids.filtered(
                     lambda m: m.bom_line_id == move.bom_line_id
                     and m.procure_method == "make_to_order"
@@ -124,52 +182,11 @@ class StockMove(models.Model):
                     and m.procure_method == "make_to_stock"
                     and m.id != move.id
                 )
-                if split_mto_move:
-                    production_qty = (
-                        mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
-                    )
-                    real_qty = split_mto_move.product_uom_qty + move.product_uom_qty
-
-                    # If the move is a backorder, we need to take the original quantity
-                    if (
-                        float_compare(
-                            move.product_uom_qty,
-                            production_qty,
-                            precision_rounding=move.product_uom.rounding,
-                        )
-                        > 0
-                    ):
-                        move.unit_factor = 1.0
-                    else:
-                        move.unit_factor = move.product_uom_qty / production_qty
-
-                elif split_mts_move:
-                    production_qty = (
-                        mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
-                    )
-                    if (
-                        float_compare(
-                            split_mts_move.should_consume_qty,
-                            production_qty,
-                            precision_rounding=move.product_uom.rounding,
-                        )
-                        < 0
-                    ):
-                        real_qty = production_qty - split_mts_move.should_consume_qty
-                    elif (
-                        float_compare(
-                            split_mts_move.should_consume_qty,
-                            production_qty,
-                            precision_rounding=move.product_uom.rounding,
-                        )
-                        == 0
-                    ):
-                        real_qty = 0.0
-                    else:  # This case should not happen
-                        real_qty = move.product_uom_qty - production_qty
-
-                    move.unit_factor = real_qty / production_qty
+                if split_mts_move or split_mto_move:
+                    move.unit_factor = move._get_split_procurement_unit_factor(mo)
                 else:
-                    move.unit_factor = move.product_uom_qty / production_qty
+                    move.unit_factor = move.product_uom_qty / (
+                        (mo.product_qty - mo.qty_produced) or 1
+                    )
             else:
                 move.unit_factor = 1.0
