@@ -100,33 +100,29 @@ class StockMove(models.Model):
         self.ensure_one()
         factor = 1.0
         mo = production_id
-        split_mto_move = fields.first(
-            mo.move_raw_ids.filtered(
-                lambda m: m.bom_line_id == self.bom_line_id
-                and m.procure_method == "make_to_order"
-                and m.id != self.id
-            )
+        split_mto_move = mo.move_raw_ids.filtered(
+            lambda m: m.bom_line_id == self.bom_line_id
+            and m.procure_method == "make_to_order"
+            and m.id != self.id
         )
-        split_mts_move = fields.first(
-            mo.move_raw_ids.filtered(
-                lambda m: m.bom_line_id == self.bom_line_id
-                and m.procure_method == "make_to_stock"
-                and m.id != self.id
-            )
+
+        split_mts_move = mo.move_raw_ids.filtered(
+            lambda m: m.bom_line_id == self.bom_line_id
+            and m.procure_method == "make_to_stock"
+            and m.id != self.id
         )
+
         production_qty = (
             special_qty or mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
         )
         if split_mto_move:
-            real_qty = split_mto_move.product_uom_qty + self.product_uom_qty
-
             if (
                 float_compare(
                     self.product_uom_qty,
                     production_qty,
                     precision_rounding=self.product_uom.rounding,
                 )
-                > 0
+                >= 0
             ):
                 factor = 1.0
             else:
@@ -135,20 +131,20 @@ class StockMove(models.Model):
         elif split_mts_move:
             if (
                 float_compare(
-                    split_mts_move.should_consume_qty,
+                    split_mts_move.product_uom_qty,
                     production_qty,
                     precision_rounding=self.product_uom.rounding,
                 )
                 < 0
             ):
-                real_qty = production_qty - split_mts_move.should_consume_qty
+                real_qty = production_qty - split_mts_move.product_uom_qty
             elif (
                 float_compare(
-                    split_mts_move.should_consume_qty,
+                    split_mts_move.product_uom_qty,
                     production_qty,
                     precision_rounding=self.product_uom.rounding,
                 )
-                == 0
+                >= 0
             ):
                 real_qty = 0.0
             else:  # This case should not happen
@@ -169,7 +165,7 @@ class StockMove(models.Model):
         "production_id.qty_produced",
     )
     def _compute_unit_factor(self):
-        for move in self:
+        for move in sorted(self, key=lambda m: m.procure_method):
             mo = move.raw_material_production_id or move.production_id
             if mo:
                 split_mto_move = mo.move_raw_ids.filtered(
