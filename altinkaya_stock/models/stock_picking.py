@@ -80,14 +80,14 @@ class StockPicking(models.Model):
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
 
-    def force_assign(self):
-        for pick in self:
-            move_ids = [
-                x for x in pick.move_lines if x.state in ["confirmed", "waiting"]
-            ]
-            self.env["stock.move"].force_assign(moves=move_ids)
-            pick.button_validate()
-        return True
+    # def force_assign(self):
+    #     for pick in self:
+    #         move_ids = [
+    #             x for x in pick.move_lines if x.state in ["confirmed", "waiting"]
+    #         ]
+    #         self.env["stock.move"].force_assign(moves=move_ids)
+    #         pick.button_validate()
+    #     return True
 
     def _compute_trimmed_sale_note(self):
         """

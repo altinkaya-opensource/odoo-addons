@@ -12,22 +12,22 @@ class StockMove(models.Model):
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
 
-    def force_assign(self, moves):
-        for move in moves:
-            move.move_line_ids.create(
-                {
-                    "product_id": move.product_id.id,
-                    "location_id": move.location_id.id,
-                    "location_dest_id": move.location_dest_id.id,
-                    "product_uom_qty": 0.0,
-                    "qty_done": move.product_uom_qty,
-                    "product_uom_id": move.product_uom.id,
-                    "state": "confirmed",
-                    "picking_id": move.picking_id.id,
-                    "move_id": move.id,
-                }
-            )
-        return True
+    # def force_assign(self, moves):
+    #     for move in moves:
+    #         move.move_line_ids.create(
+    #             {
+    #                 "product_id": move.product_id.id,
+    #                 "location_id": move.location_id.id,
+    #                 "location_dest_id": move.location_dest_id.id,
+    #                 "product_uom_qty": 0.0,
+    #                 "qty_done": move.product_uom_qty,
+    #                 "product_uom_id": move.product_uom.id,
+    #                 "state": "confirmed",
+    #                 "picking_id": move.picking_id.id,
+    #                 "move_id": move.id,
+    #             }
+    #         )
+    #     return True
 
     def action_create_procurement(self):
         self.ensure_one()

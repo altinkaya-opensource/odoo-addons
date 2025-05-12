@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+
+    <record id="view_change_warehouse_wizard_form" model="ir.ui.view">
+        <field name="name">change.warehouse.wizard.form</field>
+        <field name="model">wizard.change.picking.warehouse</field>
+        <field name="arch" type="xml">
+            <form string="Change Warehouse">
+
+                <group>
+                    <field name="picking_id" invisible="1" />
+
+                    <field name="warehouse_id" />
+                </group>
+
+                <footer>
+                    <button string="Change Warehouse" name="action_change" type="object" default_focus="1" class="btn-primary" confirm="This action will cancel all moves for changing location. Do you want to continue?"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_change_picking_warehouse" model="ir.actions.act_window">
+        <field name="name">Change Warehouse</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.change.picking.warehouse</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_picking_id': active_id}</field>
+    </record>
+
+
+</odoo>
