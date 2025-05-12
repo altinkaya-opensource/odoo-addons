@@ -12,12 +12,6 @@
     "version": "16.0.1.0.0",
     "depends": ["excel_import_export", "purchase", "account"],
     "data": [
-        # Purchase
-        "export_purchase_order_xlsx/reports.xml",
-        "export_purchase_order_xlsx/temp_po_en.xml",
-        "export_purchase_order_xlsx/temp_po_tr.xml",
-        "export_purchase_order_xlsx/temp_rfq_en.xml",
-        "export_purchase_order_xlsx/temp_rfq_tr.xml",
         # Account
         "export_account_move_xlsx/temp_zirve_masraf_fatura.xml",
         "export_account_move_xlsx/temp_gelir_fatura.xml",
