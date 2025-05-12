@@ -22,6 +22,14 @@
                 <field name="purchase_transport_mode_id" position="attributes">
                         <attribute name="string">Nakliye Yöntemi</attribute>
                 </field>
+                <xpath
+        expr="//field[@name='property_supplier_payment_term_id']"
+        position="before"
+      >
+                    <field name="supplier" readonly="1" />
+               </xpath>
+               <xpath expr="//field[@name='purchase_user_id']" position="replace" />
+               <xpath expr="//field[@name='purchase_team_id']" position="replace" />
            </field>
       </record>
 </odoo>

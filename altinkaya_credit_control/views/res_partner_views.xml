@@ -1,0 +1,20 @@
+<odoo>
+
+    <record id="res_partner_form_view" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath
+        expr="//page[@name='credit_control']/group[@name='followup']"
+        position="before"
+      >
+                    <xpath expr="//page[@name='financial_risk']" position="move" />
+                </xpath>
+                <xpath expr="//group[@name='risk_limits']" position="attributes">
+                    <attribute name="string">Özel Limitler</attribute>
+                </xpath>
+            </field>
+    </record>
+</odoo>

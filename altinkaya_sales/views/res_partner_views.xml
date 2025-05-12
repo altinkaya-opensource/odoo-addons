@@ -26,7 +26,7 @@
       >
 						<field name="segment_id" />
 				</xpath>
-				<xpath expr="//group[@name='currency_difference']" position="before">
+				<!-- <xpath expr="//group[@name='currency_difference']" position="before">
 					<group>
 						<group>
 							<group string="Credit Insurance" name="credit_insurance" attrs="{'invisible': [('country_id', '=', 224)]}">
@@ -36,7 +36,7 @@
 						</group>
 						<xpath expr="//group[@name='accounting_entries']" position="move"/>
 					</group>
-				</xpath>
+				</xpath> -->
 
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name" />
@@ -49,6 +49,7 @@
 						<field name="z_kat_email" />
 					</group>
 					<group colspan="4">
+						<field name="show_partner_industry_for_person" invisible="1"/>
 						<field name="industry_id"/>
 						<field
 						name="secondary_industry_ids"
@@ -125,6 +126,17 @@
 					<field name="comment" colspan="3"/>
 
 				</xpath>
+				<xpath
+                expr="//field[@name='property_delivery_carrier_id']"
+                position="attributes"
+            >
+                    <attribute name="string">Nakliye Yöntemi</attribute>
+                </xpath>
+				<xpath expr="//field[@name='picking_policy']" position="attributes">
+                    <attribute name="string">Teslim Tercihi</attribute>
+                </xpath>
+				<field name="sale_incoterm_id" position="replace" />
+                <field name="sale_incoterm_address_id" position="replace" />
 
 			</field>
 		</record>
