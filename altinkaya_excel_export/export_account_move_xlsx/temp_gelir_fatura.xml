@@ -26,7 +26,7 @@
             'L2': '${"%.2f" % abs(sum(object.tax_line_ids.filtered(lambda txl: txl.tax_line_id.amount == 20).mapped("tax_base_amount"))) or 0.0}#{border=thin_border;align=left;style=number}',
             'M2': '${"%.2f" % abs(sum(object.tax_line_ids.filtered(lambda txl: txl.tax_line_id.amount == 20).mapped("balance"))) or 0.0}#{border=thin_border;align=left;style=number}',
                             'N2': 'amount_untaxed_signed${"%.2f" % abs(value) or ""}#{border=thin_border;align=left;style=number}',
-                            'O2': 'amount_total_signed${"%.2f" % abs(value) or ""}#{border=thin_border;align=left;style=number}',
+                            'O2': 'amount_tax_signed${"%.2f" % abs(value) or ""}#{border=thin_border;align=left;style=number}',
                             'P2': '${"%.f" % (object.amount_tax / object.amount_untaxed * 100) if object.amount_tax &gt; 0.0 else 0}#{border=thin_border;align=left;style=number}',
                             'Q2': 'partner_id.z_receivable_export${value or ""}#{border=thin_border;align=left;style=text}',
                             'R2': '${"EURO" if object.currency_id.name == "EUR" else object.currency_id.name or ""}#{border=thin_border;align=left;style=text}',
