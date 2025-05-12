@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import api, fields, models
+from odoo import api, models
 from odoo.tools import float_compare, float_is_zero
 
 
