@@ -15,7 +15,14 @@
                 </group>
 
                 <footer>
-                    <button string="Change Warehouse" name="action_change" type="object" default_focus="1" class="btn-primary" confirm="This action will cancel all moves for changing location. Do you want to continue?"/>
+                    <button
+            string="Change Warehouse"
+            name="action_change"
+            type="object"
+            default_focus="1"
+            class="btn-primary"
+            confirm="This action will cancel all moves for changing location. Do you want to continue?"
+          />
                     <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>
