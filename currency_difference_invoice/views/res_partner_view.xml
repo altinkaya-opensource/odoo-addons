@@ -6,9 +6,14 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <group name="banks" position="before">
+            <page name="einvoice" position="before">
 
-                <group string="Currency Difference" colspan="2" col="2">
+                <group
+          name="currency_difference"
+          string="Currency Difference"
+          colspan="2"
+          col="2"
+        >
                     <group>
                         <field name="currency_difference_checked" />
                         <button
@@ -19,11 +24,24 @@
               options="{}"
             />
                     </group>
-                    <field name="currency_difference_amls" />
+                    <field name="currency_difference_amls">
+                        <tree editable="bottom">
+                            <field name="date" />
+                            <field name="move_id" />
+                            <field name="journal_id" />
+                            <field name="name" />
+                            <field name="account_id" />
+                            <field name="partner_id" />
+                            <field name="full_reconcile_id" />
+                            <field name="debit" sum="Toplam Borç" />
+                            <field name="credit" sum="Toplam Alacak" />
+                            <field name="amount_currency" />
+                        </tree>
+                    </field>
 
                 </group>
 
-            </group>
+            </page>
         </field>
     </record>
 

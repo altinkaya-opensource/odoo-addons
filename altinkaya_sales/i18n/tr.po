@@ -1049,7 +1049,7 @@ msgstr ""
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
 msgid "Notes"
-msgstr "Notlar"
+msgstr "Uyarılar"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__sale_line_history
