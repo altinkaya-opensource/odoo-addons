@@ -90,5 +90,11 @@
     >{'search_default_type_company': 1, 'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
     </record>
 
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban,activity</field>
+            <field
+      name="context"
+    >{'search_default_type_company': 1,, 'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+    </record>
 
 </odoo>

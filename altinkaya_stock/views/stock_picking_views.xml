@@ -5,6 +5,18 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form" />
             <field name="arch" type="xml">
+
+            <button name="button_validate" position="after">
+
+                <button
+          name="%(action_change_picking_warehouse)d"
+          string="Change Warehouse"
+          attrs="{'invisible': ['&amp;',('state', 'not in', ('waiting', 'confirmed', 'assigned')), ('picking_type_code', '!=', 'outgoing')]}"
+          type="action"
+          groups="stock.group_stock_manager"
+        />
+
+            </button>
               <xpath
         expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
         position="attributes"
