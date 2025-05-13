@@ -90,7 +90,10 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     production_ids = fields.One2many(
-        string="Productions", comodel_name="mrp.production", inverse_name="sale_id"
+        string="Productions",
+        comodel_name="mrp.production",
+        inverse_name="sale_id",
+        readonly=True,
     )
     order_state = fields.Selection(
         [

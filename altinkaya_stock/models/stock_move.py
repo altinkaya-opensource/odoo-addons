@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import _, fields, models
+from odoo.tools import float_compare, float_is_zero
 
 
 class StockMove(models.Model):
@@ -11,22 +12,22 @@ class StockMove(models.Model):
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
 
-    def force_assign(self, moves):
-        for move in moves:
-            move.move_line_ids.create(
-                {
-                    "product_id": move.product_id.id,
-                    "location_id": move.location_id.id,
-                    "location_dest_id": move.location_dest_id.id,
-                    "product_uom_qty": 0.0,
-                    "qty_done": move.product_uom_qty,
-                    "product_uom_id": move.product_uom.id,
-                    "state": "confirmed",
-                    "picking_id": move.picking_id.id,
-                    "move_id": move.id,
-                }
-            )
-        return True
+    # def force_assign(self, moves):
+    #     for move in moves:
+    #         move.move_line_ids.create(
+    #             {
+    #                 "product_id": move.product_id.id,
+    #                 "location_id": move.location_id.id,
+    #                 "location_dest_id": move.location_dest_id.id,
+    #                 "product_uom_qty": 0.0,
+    #                 "qty_done": move.product_uom_qty,
+    #                 "product_uom_id": move.product_uom.id,
+    #                 "state": "confirmed",
+    #                 "picking_id": move.picking_id.id,
+    #                 "move_id": move.id,
+    #             }
+    #         )
+    #     return True
 
     def action_create_procurement(self):
         self.ensure_one()
@@ -134,3 +135,74 @@ class StockMove(models.Model):
             if orig_moves:
                 orig_moves._action_assign(force_qty=force_qty)
         return res
+
+    def action_open_detailed_form(self):
+        """
+        Open the detailed form view of the move lines of the current move.
+        """
+        self.ensure_one()
+
+        view = self.env.ref("stock.view_move_form")
+
+        return {
+            "name": _("Stock Move"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "stock.move",
+            "views": [(view.id, "form")],
+            "view_id": view.id,
+            "target": "new",
+            "res_id": self.id,
+        }
+
+    def _action_assign_reserved(self):
+        for move in self:
+            qty_to_assign = move.should_consume_qty
+            if (
+                (move.procure_method != "make_to_stock")
+                or not float_compare(
+                    move.quantity_done, qty_to_assign, move.product_uom.rounding
+                )
+                or not float_compare(
+                    move.forecast_availability, qty_to_assign, move.product_uom.rounding
+                )
+                or not move.move_line_ids
+            ):
+                continue
+
+            for line in move.move_line_ids.filtered(lambda ml: ml.lot_id):
+                # This line can fill up the move
+                if (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    == 0
+                ):
+                    line.qty_done = qty_to_assign
+                    qty_to_assign = 0.0
+                # This line can fill up the move partially
+                elif (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    < 0
+                ):
+                    qty_to_assign -= line.reserved_uom_qty
+                    line.qty_done = line.reserved_uom_qty
+                # This line has more reserved quantity than the move
+                # and can fill up the move completely
+                elif (
+                    float_compare(
+                        line.reserved_uom_qty, qty_to_assign, move.product_uom.rounding
+                    )
+                    > 0
+                ):
+                    line.qty_done = qty_to_assign
+                    qty_to_assign = 0.0
+
+                if float_is_zero(
+                    qty_to_assign, precision_rounding=move.product_uom.rounding
+                ):
+                    break
+
+        return True

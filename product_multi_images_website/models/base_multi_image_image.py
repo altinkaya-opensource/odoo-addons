@@ -14,22 +14,6 @@ class BaseMultiImageImage(models.AbstractModel):
         "restrict the availability of the image to those variants.",
     )
 
-    image_1920 = fields.Image(
-        string="1920", related="image_main", max_width=1920, max_height=1920
-    )
-    image_1024 = fields.Image(
-        string="1024", related="image_main", max_width=1024, max_height=1024
-    )
-    image_512 = fields.Image(
-        string="512", related="image_main", max_width=512, max_height=512
-    )
-    image_256 = fields.Image(
-        string="256", related="image_main", max_width=256, max_height=256
-    )
-    image_128 = fields.Image(
-        string="128", related="image_main", max_width=128, max_height=128
-    )
-
     can_image_1024_be_zoomed = fields.Boolean(
         "Can Image 1024 be zoomed",
         compute="_compute_can_image_1024_be_zoomed",

@@ -8,12 +8,7 @@
           	<field name="arch" type="xml">
 
                 	<xpath expr="//tree" position="inside">
-       						<button
-          name="action_print_label"
-          type="object"
-          string="Print Label"
-          icon="fa-barcode"
-        />
+       						<button name="action_print_label" type="object" icon="fa-barcode" />
                   	</xpath>
           	</field>
        </record>

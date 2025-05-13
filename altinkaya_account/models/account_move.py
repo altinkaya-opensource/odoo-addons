@@ -1,7 +1,7 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -47,6 +47,60 @@ class AccountMove(models.Model):
         compute="_compute_tax_line_ids",
     )
 
+    full_reconcile_ids = fields.Many2many(
+        "account.full.reconcile",
+        string="Full Reconciles",
+        compute="_compute_full_reconcile_ids",
+        help="Full reconciles linked to this invoice",
+    )
+
+    other_inv_in_reconciles = fields.Many2many(
+        "account.move",
+        string="Other invoices in reconciles",
+        compute="_compute_other_inv_in_reconciles",
+    )
+
+    @api.model
+    def _compute_full_reconcile_ids(self):
+        for invoice in self:
+            if invoice.state == "draft" and invoice.invoice_line_ids:
+                invoice.full_reconcile_ids = invoice.invoice_line_ids.mapped(
+                    "difference_base_aml_id"
+                ).mapped("full_reconcile_id")
+            elif (
+                invoice.state in ["open", "in_payment", "paid"]
+                and invoice.invoice_line_ids
+            ):
+                invoice.full_reconcile_ids = invoice.move_id.line_ids.mapped(
+                    "full_reconcile_id"
+                )
+            else:
+                invoice.full_reconcile_ids = False
+
+    @api.depends("full_reconcile_ids")
+    def _compute_other_inv_in_reconciles(self):
+        invoice_amls = self.full_reconcile_ids.mapped("reconciled_line_ids").filtered(
+            lambda x: x.move_id
+        )
+        self.other_inv_in_reconciles = invoice_amls.mapped("move_id")
+
+    @api.depends("pricelist_id")
+    def _compute_currency_id(self):
+        """
+        Override to use invoice_currency_id from pricelist when
+        computing invoice's currency_id.
+        """
+        res = super()._compute_currency_id()
+        for invoice in self:
+            if (
+                invoice.is_sale_document()
+                and invoice.pricelist_id
+                and invoice.pricelist_id.invoice_currency_id
+                and invoice.currency_id != invoice.pricelist_id.invoice_currency_id
+            ):
+                invoice.currency_id = self.pricelist_id.invoice_currency_id
+        return res
+
     def _compute_tax_line_ids(self):
         for move in self:
             move.tax_line_ids = move.line_ids.filtered("tax_repartition_line_id")
@@ -74,12 +128,13 @@ class AccountMove(models.Model):
 
     def _onchange_invoice_line_ids(self):
         """This method was removed in 16.0 but we've added a simulation of it here"""
-        for invoice in self:
-            invoice._onchange_partner_id()
-            invoice._onchange_date()
-            invoice._compute_currency_id()
-            invoice._compute_tax_totals()
-            invoice._compute_amount()
+        return True
+        # for invoice in self:
+        #     invoice._onchange_partner_id()
+        #     invoice._onchange_date()
+        #     invoice._compute_currency_id()
+        #     invoice._compute_tax_totals()
+        #     invoice._compute_amount()
 
     def action_post(self):
         res = super().action_post()
@@ -119,6 +174,28 @@ class AccountMove(models.Model):
                         ).account_id.id
                     }
                 )
+
+        # Currency difference invoice
+        for invoice in self:
+            aml_to_unreconcile = self.env["account.move.line"]
+            aml_to_reconcile = self.env["account.move.line"]
+            for inv_line in invoice.invoice_line_ids.filtered(
+                lambda x: x.difference_base_aml_id
+            ):
+                aml_to_unreconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids  # noqa
+                aml_to_reconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids.filtered(  # noqa
+                    lambda r: r.id != inv_line.difference_base_aml_id.id
+                )
+
+            if aml_to_unreconcile:
+                aml_to_unreconcile.remove_move_reconcile()
+
+            if aml_to_reconcile:
+                diff_aml = invoice.move_id.line_ids.filtered(
+                    lambda r: not r.reconciled
+                    and r.account_id.internal_type in ("payable", "receivable")
+                )
+                aml_to_reconcile._reconcile(diff_aml=diff_aml)
 
         return res
 
@@ -175,3 +252,29 @@ class AccountMove(models.Model):
         # and supplier invoice numbers
         super()._must_check_constrains_date_sequence()
         return False
+
+    def button_cancel(self):
+        res = super().button_cancel()
+
+        if not self:
+            return res
+
+        for invoice in self:
+            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
+                for line in invoice.invoice_line_ids.filtered(
+                    lambda x: x.difference_base_aml_id
+                ):
+                    line.difference_base_aml_id.write({"difference_checked": False})
+
+    def unlink(self):
+        """
+        When unlinking a currency difference invoice, set the related move lines
+        difference_checked field to False
+        """
+        for invoice in self:
+            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
+                for line in invoice.invoice_line_ids.filtered(
+                    lambda x: x.difference_base_aml_id
+                ):
+                    line.difference_base_aml_id.write({"difference_checked": False})
+        return super().unlink()

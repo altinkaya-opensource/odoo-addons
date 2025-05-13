@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import models
+from odoo import api, models
 
 
 class AccountBankStatementLine(models.Model):
@@ -36,3 +36,14 @@ class AccountBankStatementLine(models.Model):
                 )  # Recompute amount_currency
 
         return res
+
+    @api.onchange("manual_partner_id")
+    def _onchange_manual_partner_id(self):
+        """
+        Automatically set partner's account to manual account field.
+        """
+        for line in self:
+            if line.manual_partner_id:
+                line.manual_account_id = (
+                    line.manual_partner_id.property_account_receivable_id
+                )

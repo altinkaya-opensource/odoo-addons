@@ -19,8 +19,11 @@
         "purchase",
         "delivery",
         "base_partner_sequence",
+        "account_reconcile_oca",
     ],
     "data": [
+        "security/ir.model.access.csv",
+        "views/product_pricelist_view.xml",
         "views/account_move_view.xml",
         "views/partner_view.xml",
         "views/account_move_view.xml",
@@ -29,5 +32,17 @@
         "views/account_payment_term_view.xml",
         "views/res_currency_rate_view.xml",
         "views/account_bank_statement_line_view.xml",
+        "views/account_reconcile_model_view.xml",
+        "views/account_account_reconcile.xml",
+        "views/account_move_line_view.xml",
+        "views/res_config_settings.xml",
+        "wizards/create_currency_difference_invoice.xml",
+        "wizards/create_currency_valuation_move.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "altinkaya_account/static/src/js/widgets/patch_reconcile_widget.esm.js",
+            "altinkaya_account/static/src/xml/reconcile.xml",
+        ],
+    },
 }

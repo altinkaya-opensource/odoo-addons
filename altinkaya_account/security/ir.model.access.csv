@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_create_currency_difference_invoices,access_create_currency_difference_invoices,model_create_currency_difference_invoice,account.group_account_invoice,1,1,1,0

@@ -9,7 +9,7 @@
                 <field name="product_uom" position="after">
                     <button
           name="split_stock_move_picking.action_stock_split_picking_line"
-          states="draft,confirmed,assigned"
+          states="draft,confirmed,assigned,partially_available"
           string="Böl"
           type="action"
         />
