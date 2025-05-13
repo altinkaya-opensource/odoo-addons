@@ -179,7 +179,12 @@ class StockMove(models.Model):
                     and m.id != move.id
                 )
                 if split_mts_move or split_mto_move:
-                    move.unit_factor = move._get_split_procurement_unit_factor(mo)
+                    if len(split_mts_move) > 1 or len(split_mto_move) > 1:
+                        move.unit_factor = move.product_uom_qty / (
+                            (mo.product_qty - mo.qty_produced) or 1
+                        )
+                    else:
+                        move.unit_factor = move._get_split_procurement_unit_factor(mo)
                 else:
                     move.unit_factor = move.product_uom_qty / (
                         (mo.product_qty - mo.qty_produced) or 1
