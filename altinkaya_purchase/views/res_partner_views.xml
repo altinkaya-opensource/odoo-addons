@@ -4,6 +4,7 @@
             <field name="name">altinkaya.purchase.partner.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="100" />
             <field name="arch" type="xml">
             	<field name="property_supplier_payment_term_id" position="after">
                     <field

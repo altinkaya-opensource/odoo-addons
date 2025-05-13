@@ -49,15 +49,19 @@
 						<field name="z_kat_email" />
 					</group>
 					<group colspan="4">
-						<field name="show_partner_industry_for_person" invisible="1"/>
-						<field name="industry_id"/>
+						<field name="show_partner_industry_for_person" invisible="1" />
+						<field name="industry_id" />
 						<field
-						name="secondary_industry_ids"
-						widget="many2many_tags"
-						attrs="{'invisible': [('is_company', '=', False),
+            name="secondary_industry_ids"
+            widget="many2many_tags"
+            attrs="{'invisible': [('is_company', '=', False),
 						('show_partner_industry_for_person', '=', False)]}"
-					/>
-						<field name="nace_product_categ_ids" widget="many2many_tags" string="Hedef Ürün Kategorisi"/>
+          />
+						<field
+            name="nace_product_categ_ids"
+            widget="many2many_tags"
+            string="Hedef Ürün Kategorisi"
+          />
 					</group>
 				</xpath>
 				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
@@ -123,13 +127,10 @@
 					</h3>
 				</xpath>
 				<xpath expr="/form/sheet/group/group" position="inside">
-					<field name="comment" colspan="3"/>
+					<field name="comment" colspan="3" />
 
 				</xpath>
-				<xpath
-                expr="//field[@name='property_delivery_carrier_id']"
-                position="attributes"
-            >
+				<xpath expr="//field[@name='property_delivery_carrier_id']" position="attributes">
                     <attribute name="string">Nakliye Yöntemi</attribute>
                 </xpath>
 				<xpath expr="//field[@name='picking_policy']" position="attributes">
