@@ -67,6 +67,28 @@
         </field>
     </record>
 
+    <record id="account_res_partner_search_inherit" model="ir.ui.view">
+        <field name="name">account.res.partner.search.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.res_partner_view_search" />
+        <field name="arch" type="xml">
+            <filter name="customer" position="attributes">
+                <attribute name="string">Customers</attribute>
+            </filter>
+
+            <filter name="supplier" position="attributes">
+                <attribute name="string">Suppliers</attribute>
+            </filter>
+
+        </field>
+    </record>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban,activity</field>
+            <field
+      name="context"
+    >{'search_default_type_company': 1, 'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
+    </record>
 
 
 </odoo>

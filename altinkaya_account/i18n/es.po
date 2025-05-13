@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 06:15+0000\n"
-"PO-Revision-Date: 2025-05-05 06:15+0000\n"
+"POT-Creation-Date: 2025-05-13 12:22+0000\n"
+"PO-Revision-Date: 2025-05-13 12:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,11 +35,6 @@ msgstr "Línea de extracto bancario"
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__billing_point_id
 msgid "Billing Point"
-msgstr ""
-
-#. module: altinkaya_account
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
-msgid "Calculate Difference Invoice"
 msgstr ""
 
 #. module: altinkaya_account
@@ -230,7 +225,7 @@ msgstr "Moneda"
 #. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+#: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
 msgid "Currency Difference"
 msgstr ""
@@ -266,6 +261,11 @@ msgid "Currency Rate"
 msgstr "Tipo de Cambio"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
+msgid "Customers"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__delivery_ref_no
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__delivery_ref_no
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__delivery_ref_no
@@ -290,6 +290,11 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__difference_base_aml_id
 msgid "Difference Base Move"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__unit_discounted
+msgid "Disc. Unit"
 msgstr ""
 
 #. module: altinkaya_account
@@ -584,6 +589,11 @@ msgid "Satın alma işlemlerinde varsayılan muhasebe hesabı."
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Satınalma Masraf Hesabı"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__address_contact_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__address_contact_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__address_contact_id
@@ -629,6 +639,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__supplier_invoice_number
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__supplier_invoice_number
 msgid "Supplier Invoice Number"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
+msgid "Suppliers"
 msgstr ""
 
 #. module: altinkaya_account
