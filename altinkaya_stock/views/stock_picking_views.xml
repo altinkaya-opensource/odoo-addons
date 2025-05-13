@@ -5,11 +5,17 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form" />
             <field name="arch" type="xml">
-              <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="attributes">
+              <xpath
+        expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
+        position="attributes"
+      >
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
               </xpath>
-              <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']" position="attributes">
+              <xpath
+        expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
+        position="attributes"
+      >
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
               </xpath>

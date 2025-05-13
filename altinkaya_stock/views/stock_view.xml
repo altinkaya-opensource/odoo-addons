@@ -99,17 +99,25 @@
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='move_dest_ids']/tree/field[@name='product_uom_qty']" position="attributes">
+                <xpath
+          expr="//field[@name='move_dest_ids']/tree/field[@name='product_uom_qty']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='move_orig_ids']/tree/field[@name='product_uom_qty']" position="attributes">
+                <xpath
+          expr="//field[@name='move_orig_ids']/tree/field[@name='product_uom_qty']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='weight']" position="attributes">
                     <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+                    <attribute
+            name="options"
+          >{'uom_field': 'product_uom_id'}</attribute>
                 </xpath>
             </field>
         </record>
@@ -120,11 +128,17 @@
             <field name="inherit_id" ref="stock.view_picking_move_tree" />
             <field name="priority" eval="1000" />
             <field name="arch" type="xml">
-                <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                <xpath
+          expr="//tree/field[@name='product_uom_qty']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//tree/field[@name='reserved_availability']" position="attributes">
+                <xpath
+          expr="//tree/field[@name='reserved_availability']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
@@ -141,13 +155,20 @@
             <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree" />
             <field name="priority" eval="1000" />
             <field name="arch" type="xml">
-                <xpath expr="//tree/field[@name='reserved_uom_qty']" position="attributes">
+                <xpath
+          expr="//tree/field[@name='reserved_uom_qty']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+                    <attribute
+            name="options"
+          >{'uom_field': 'product_uom_id'}</attribute>
                 </xpath>
                 <xpath expr="//tree/field[@name='qty_done']" position="attributes">
                     <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+                    <attribute
+            name="options"
+          >{'uom_field': 'product_uom_id'}</attribute>
                 </xpath>
             </field>
         </record>
@@ -166,7 +187,10 @@
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <xpath
+          expr="//field[@name='reserved_availability']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
@@ -188,7 +212,10 @@
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <xpath
+          expr="//field[@name='reserved_availability']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
@@ -210,7 +237,10 @@
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <xpath
+          expr="//field[@name='reserved_availability']"
+          position="attributes"
+        >
                     <attribute name="widget">uom</attribute>
                     <attribute name="options">{'uom_field': 'product_uom'}</attribute>
                 </xpath>

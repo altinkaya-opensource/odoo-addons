@@ -6,11 +6,17 @@
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
 
-        <xpath expr="//field[@name='order_line']/form//field[@name='product_uom_qty']" position="attributes">
+        <xpath
+        expr="//field[@name='order_line']/form//field[@name='product_uom_qty']"
+        position="attributes"
+      >
             <attribute name="widget">uom</attribute>
             <attribute name="options">{'uom_field': 'product_uom'}</attribute>
         </xpath>
-        <xpath expr="//field[@name='order_line']/form//field[@name='customer_lead']" position="attributes">
+        <xpath
+        expr="//field[@name='order_line']/form//field[@name='customer_lead']"
+        position="attributes"
+      >
           <attribute name="widget">uom</attribute>
           <attribute name="options">{'uom_field': 'product_uom'}</attribute>
       </xpath>
@@ -18,8 +24,16 @@
         expr="//field[@name='order_line']/form//field[@name='unit_discounted']"
         position="after"
       >
-                    <field name="qty_unreserved_sincan" widget="uom" options="{'uom_field': 'product_uom'}"/>
-                    <field name="qty_unreserved_merkez" widget="uom" options="{'uom_field': 'product_uom'}"/>
+                    <field
+          name="qty_unreserved_sincan"
+          widget="uom"
+          options="{'uom_field': 'product_uom'}"
+        />
+                    <field
+          name="qty_unreserved_merkez"
+          widget="uom"
+          options="{'uom_field': 'product_uom'}"
+        />
         </xpath>
 
                 <xpath

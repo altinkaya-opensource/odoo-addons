@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_change_production_qty_wizard_inherit" model="ir.ui.view">
         <field name="name">change.production.qty.wizard.inherit</field>
         <field name="model">change.production.qty</field>
-        <field name="inherit_id" ref="mrp.view_change_production_qty_wizard"/>
+        <field name="inherit_id" ref="mrp.view_change_production_qty_wizard" />
         <field name="arch" type="xml">
             <xpath expr="//form/group/field[@name='product_qty']" position="attributes">
                 <attribute name="widget">uom</attribute>
@@ -11,4 +11,4 @@
             </xpath>
         </field>
     </record>
-</odoo>    
+</odoo>

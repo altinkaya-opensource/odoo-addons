@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 class ChangeProductionQty(models.TransientModel):
     _inherit = "change.production.qty"
-    
+
     mrp_uom_id = fields.Many2one(
         related="mo_id.product_uom_id",
         string="Ölçü Birimi",
