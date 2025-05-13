@@ -20,6 +20,7 @@
         "stock_available_unreserved",
     ],
     "data": [
+        "wizard/wizard_change_picking_warehouse.xml",
         "views/stock_quant_view.xml",
         "views/stock_picking_views.xml",
         "views/stock_view.xml",

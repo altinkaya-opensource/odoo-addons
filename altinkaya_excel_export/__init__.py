@@ -1,4 +1,3 @@
-from . import export_purchase_order_xlsx
 from . import export_account_move_xlsx
 from . import export_partner_currency_statement
 from . import export_partner_statement

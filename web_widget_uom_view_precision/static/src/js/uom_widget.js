@@ -32,7 +32,7 @@ export class UomWidgetOwl extends FloatField {
             let uom_field = field_data.options.uom_field;
 
             if (uom_field) {
-                let uom_id = this.record.data["product_uom"] && this.record.data["product_uom"][0];
+                let uom_id = this.record.data[uom_field] && this.record.data[uom_field][0];
                 let uom_precision = this.backendUomPrecisions[uom_id];
                 if (uom_precision !== undefined) {
                     digits = [16, uom_precision];

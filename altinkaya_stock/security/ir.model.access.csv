@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_create_procurement_move,access_create_procurement_move,model_create_procurement_move,base.group_user,1,1,1,1
 access_make_mts_move,access_make_mts_move,model_make_mts_move,base.group_user,1,1,1,1
 access_update_unreserved_quants,access_update_unreserved_quants,model_update_unreserved_quants,base.group_user,1,1,1,1
+access_change_picking_warehouse,access_change_picking_warehouse,model_wizard_change_picking_warehouse,stock.group_stock_manager,1,1,1,1
