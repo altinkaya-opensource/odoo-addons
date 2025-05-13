@@ -38,4 +38,30 @@
                 </xpath>
             </field>
         </record>
+        <record id="view_quant_inherit_tree_editable_inherit" model="ir.ui.view">
+            <field name="name">stock_quant_tree_editable_inherit</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_editable" />
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <xpath
+        expr="//tree/field[@name='inventory_quantity_auto_apply']"
+        position="attributes"
+      >
+                    <attribute name="widget">uom</attribute>
+                    <attribute
+          name="options"
+        >{'uom_field': 'product_uom_id'}</attribute>
+                </xpath>
+                <xpath
+        expr="//tree/field[@name='reserved_quantity']"
+        position="attributes"
+      >
+                    <attribute name="widget">uom</attribute>
+                    <attribute
+          name="options"
+        >{'uom_field': 'product_uom_id'}</attribute>
+                </xpath>
+            </field>
+        </record>
 </odoo>
