@@ -6,6 +6,11 @@
             <field name="inherit_id" ref="delivery.choose_delivery_package_view_form" />
             <field name="priority" eval="100" />
             <field name="arch" type="xml">
+                <xpath
+        expr="//field[@name='delivery_package_type_id']"
+        position="replace"
+      />
+                <xpath expr="//field[@name='shipping_weight']" position="replace" />
                 <xpath expr="//group" position="inside">
                     <field name="picking_id" invisible="1" />
                     <field name="allowed_move_line_ids" invisible="1" />

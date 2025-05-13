@@ -14,3 +14,4 @@ from . import product_category
 from . import product_template
 from . import sale_order
 from . import choose_delivery_package
+from . import stock_quant_package

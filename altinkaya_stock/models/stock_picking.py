@@ -73,14 +73,44 @@ class StockPicking(models.Model):
         compute="_compute_trimmed_sale_note",
         readonly=True,
     )
-    package_count = fields.Integer(
-        string="Packaging Count", compute="_compute_package_count"
+    package_ids = fields.One2many(
+        "stock.quant.package", "picking_id", string="Packages"
     )
+    package_count = fields.Integer(string="Packages", compute="_compute_package_count")
+    pallet_count = fields.Integer(string="Pallet", compute="_compute_pallet_count")
+    show_put_in_pack = fields.Boolean(compute="_compute_show_put_in_pack", store=False)
+
+    def action_see_packages(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_package_view")
+        move_line_packages = self.move_line_ids.mapped("result_package_id")
+        direct_packages = self.package_ids
+        packages = (move_line_packages | direct_packages).filtered(lambda p: p)
+        action["domain"] = [("id", "in", packages.ids)]
+        action["context"] = {"default_picking_id": self.id}
+        return action
+
+    @api.depends("move_line_ids.package_id")
+    def _compute_show_put_in_pack(self):
+        for picking in self:
+            pallet_packages = picking.move_line_ids.mapped("package_id").filtered(
+                lambda p: p.is_pallet
+            )
+            picking.show_put_in_pack = bool(pallet_packages)
 
     @api.depends("package_ids")
     def _compute_package_count(self):
         for record in self:
-            record.package_count = len(record.package_ids)
+            record.package_count = len(
+                record.package_ids.filtered(lambda p: not p.is_pallet)
+            )
+
+    @api.depends("package_ids")
+    def _compute_pallet_count(self):
+        for record in self:
+            record.pallet_count = len(
+                record.package_ids.filtered(lambda p: p.is_pallet)
+            )
 
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):

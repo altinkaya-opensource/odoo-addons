@@ -52,6 +52,10 @@
                 <xpath expr="//button[@name='action_see_packages']" position="inside">
                       <field name="package_count" widget="statinfo" string="Packages" />
                 </xpath>
+                <xpath expr="//field[@name='carrier_package_count']" position="after">
+                  <field name="package_count" />
+                  <field name="pallet_count" />
+                </xpath>
             </field>
         </record>
 
@@ -78,13 +82,13 @@
             <field name="inherit_id" ref="stock.view_picking_form" />
             <field name="arch" type="xml">
                 <button name="button_validate" position="after">
-                    <button
+                    <!-- <button
           name="force_assign"
           string="Uygunluğu Zorla"
           attrs="{'invisible':[('state', 'in', ['draft', 'assigned', 'done', 'cancel'])]}"
           groups="altinkaya_stock.stock_force_avail_button"
           type="object"
-        />
+        /> -->
                 </button>
             </field>
         </record>
