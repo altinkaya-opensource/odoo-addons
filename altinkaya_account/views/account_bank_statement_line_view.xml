@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <record id="account_bank_statement_line_tree" model="ir.ui.view">
-            <field name="name">account.bank.statement.line.tree</field>
-            <field name="model">account.bank.statement.line</field>
-            <field name="arch" type="xml">
-                <tree
-        create="false"
-        default_order="date desc, statement_id desc, sequence desc, id desc"
-      >
-                    <field name="sequence" readonly="1" invisible="1" />
-                    <field name="statement_id" />
-                    <field name="journal_id" invisible="1" />
-                    <field name="date" />
-                    <field name="name" />
-                    <field name="ref" />
-                    <field name="partner_id" />
-                    <field name="amount" />
-                    <field name="currency_id" invisible="1" />
-                    <field name="state" invisible="1" />
-                </tree>
-            </field>
-        </record>
+    <!-- This record used in db inherited actions. -->
+    <record id="account_bank_statement_line_tree" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.tree</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" default_order="date desc, statement_id desc, sequence desc, id desc">
+                <field name="sequence" readonly="1" invisible="1" />
+                <field name="statement_id" />
+                <field name="journal_id" invisible="1" />
+                <field name="date" />
+                <field name="name" />
+                <field name="payment_ref" />
+                <field name="order_ids" widget="many2many_tags" />
+                <field name="partner_id" />
+                <field name="amount" />
+                <field name="currency_id" invisible="1" />
+                <field name="state" invisible="1" />
+            </tree>
+        </field>
+    </record>
 
-        <record id="account_bank_statement_line_reconcile_view" model="ir.ui.view">
-            <field name="name">account.bank.statement.line.reconcile.view</field>
-            <field name="model">account.bank.statement.line</field>
-            <field
-      name="inherit_id"
-      ref="account_reconcile_oca.bank_statement_line_form_reconcile_view"
-    />
-            <field name="arch" type="xml">
+    <record id="account_bank_statement_line_reconcile_view" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.reconcile.view</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="inherit_id" ref="account_reconcile_oca.bank_statement_line_form_reconcile_view" />
+        <field name="arch" type="xml">
 
             <!-- Filter out currency valuation move lines -->
             <field name="add_account_move_line_id" position="attributes">
-                <attribute
-          name="domain"
-        >[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
+                <attribute name="domain">[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
             </field>
 
-            </field>
-        </record>
+        </field>
+    </record>
+
+    <record id="action_bank_payments" model="ir.actions.act_window">
+        <field name="name">Bank Payments</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="view_id" ref="account_bank_statement_line_tree"/>
+        <field name="domain">
+                [('is_reconciled', '=', True), ('partner_id', '!=', False), ("payment_ref", "!=", False)]
+        </field>
+    </record>
+
+    <menuitem id="menu_fbank_payments" parent="account.menu_finance_receivables" name="Bank Payments" action="action_bank_payments" sequence="16" />
+
 
 </odoo>
