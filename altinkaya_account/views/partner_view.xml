@@ -94,7 +94,7 @@
             <field name="view_mode">tree,form,kanban,activity</field>
             <field
       name="context"
-    >{'search_default_type_company': 1,, 'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+    >{'search_default_type_company': 1, 'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
     </record>
 
 </odoo>
