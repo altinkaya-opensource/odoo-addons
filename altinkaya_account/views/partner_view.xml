@@ -45,15 +45,15 @@
                 </button>
             </button>
 
-            <!-- <group name="banks" position="before">
+            <group name="einvoice" position="before">
 
-                <group string="Currency Difference" colspan="2" col="2">
+                <group string="Kur Farkı" colspan="2" col="2">
                     <group>
                         <field name="currency_difference_checked" />
                         <button
               name="action_generate_currency_diff_invoice"
               type="object"
-              string="Calculate Difference Invoice"
+              string="Kur Farkı Faturası Oluştur"
               attrs="{'invisible': [('parent_id','!=',False)]}"
               options="{}"
             />
@@ -62,7 +62,7 @@
 
                 </group>
 
-            </group> -->
+            </group>
 
         </field>
     </record>
@@ -95,6 +95,24 @@
             <field
       name="context"
     >{'search_default_type_company': 1,, 'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+    </record>
+
+    <record id="res_partner_form_view_cari" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.cari</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath
+        expr="//notebook/page[@name='credit_control']/group[@name='followup']"
+        position="before"
+      >
+                    <xpath expr="//notebook/page[@name='financial_risk']" position="move" />
+                </xpath>
+                <xpath expr="//group[@name='risk_limits']" position="attributes">
+                    <attribute name="string">Özel Limitler</attribute>
+                </xpath>
+            </field>
     </record>
 
 </odoo>
