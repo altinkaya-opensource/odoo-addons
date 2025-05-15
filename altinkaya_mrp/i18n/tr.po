@@ -902,7 +902,7 @@ msgstr ""
 #: code:addons/altinkaya_mrp/wizards/change_production_qty.py:0
 #, python-format
 msgid "You can only increase or decrease the quantity by 10%"
-msgstr ""
+msgstr "Miktarı sadece %10 artırabilir veya azaltabilirsiniz"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
