@@ -24,7 +24,6 @@ class Product(models.Model):
     attribute_value_ids = fields.Many2many(
         "product.attribute.value",
         compute="_compute_attribute_value_ids",
-        store=True,
     )  # This field is ported from v12 and is used in odoo2odoo connector.
 
     def _compute_domain_attribute_value_ids(self):
@@ -35,7 +34,6 @@ class Product(models.Model):
                 )
             )
 
-    @api.depends("product_template_attribute_value_ids")
     def _compute_attribute_value_ids(self):
         for product in self:
             product.attribute_value_ids = product.mapped(
