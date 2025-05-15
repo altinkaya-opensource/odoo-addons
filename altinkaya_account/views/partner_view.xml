@@ -107,7 +107,10 @@
         expr="//notebook/page[@name='credit_control']/group[@name='followup']"
         position="before"
       >
-                    <xpath expr="//notebook/page[@name='financial_risk']" position="move" />
+                    <xpath
+          expr="//notebook/page[@name='financial_risk']"
+          position="move"
+        />
                 </xpath>
                 <xpath expr="//group[@name='risk_limits']" position="attributes">
                     <attribute name="string">Özel Limitler</attribute>
