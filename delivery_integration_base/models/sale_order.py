@@ -52,7 +52,13 @@ class SaleOrder(models.Model):
         store=True,
     )
 
-    @api.depends("sale_volume", "sale_weight", "carrier_id")
+    @api.depends(
+        "order_line.weight",
+        "order_line.volume",
+        "sale_volume",
+        "sale_weight",
+        "carrier_id",
+    )
     def _compute_sale_deci(self):
         for order in self:
             carrier = order.carrier_id
