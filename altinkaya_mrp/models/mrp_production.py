@@ -1,9 +1,8 @@
 from collections import defaultdict
 
-from odoo import api, fields, models
-from odoo.tools.safe_eval import safe_eval
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo import _
+from odoo.tools.safe_eval import safe_eval
 
 
 class XMakine(models.Model):
