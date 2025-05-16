@@ -45,25 +45,6 @@
                 </button>
             </button>
 
-            <group name="einvoice" position="before">
-
-                <group string="Kur Farkı" colspan="2" col="2">
-                    <group>
-                        <field name="currency_difference_checked" />
-                        <button
-              name="action_generate_currency_diff_invoice"
-              type="object"
-              string="Kur Farkı Faturası Oluştur"
-              attrs="{'invisible': [('parent_id','!=',False)]}"
-              options="{}"
-            />
-                    </group>
-                    <field name="currency_difference_amls" />
-
-                </group>
-
-            </group>
-
         </field>
     </record>
 
