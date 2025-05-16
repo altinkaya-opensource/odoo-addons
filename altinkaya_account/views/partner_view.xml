@@ -45,7 +45,7 @@
                 </button>
             </button>
 
-            <group name="einvoice" position="before">
+            <page name="accounting" position="inside">
 
                 <group string="Kur Farkı" colspan="2" col="2">
                     <group>
@@ -62,7 +62,7 @@
 
                 </group>
 
-            </group>
+            </page>
 
         </field>
     </record>
