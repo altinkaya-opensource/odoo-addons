@@ -324,15 +324,11 @@ class MrpProduction(models.Model):
         for order in self:
             if (
                 order.qty_producing
-                and abs(order.qty_producing - order.product_qty) / order.product_qty
-                > 0.1
+                and (order.qty_producing - order.product_qty) / order.product_qty > 0.1
                 and not self.env.user.has_group("altinkaya_mrp.change_production_qty")
             ):
                 raise ValidationError(
-                    _(
-                        "You can only produce 10% more or less than "
-                        "the original quantity."
-                    )
+                    _("You can only produce 10% more than the original quantity.")
                 )
 
         return res
