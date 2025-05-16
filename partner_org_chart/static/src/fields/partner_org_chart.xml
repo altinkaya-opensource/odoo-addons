@@ -69,6 +69,7 @@
 <t t-name="partner_org_chart.partner_org_chart" owl="1">
     <!-- Render the current node -->
 
+    <t t-if="data">
     <t t-call="partner_org_chart.partner_org_chart_partner">
         <t t-set="data" t-value="data" />
         <t t-set="child_ids" t-value="child_ids" />
@@ -77,8 +78,8 @@
     <!-- Render child nodes recursively if any -->
     <t t-if="child_ids.length">
         <div
-        t-attf-class="o_org_chart_group_down position-relative #{child_ids.length &gt; 0 ? 'o_org_chart_has_managers' : ''}"
-      >
+          t-attf-class="o_org_chart_group_down position-relative #{child_ids.length &gt; 0 ? 'o_org_chart_has_managers' : ''}"
+        >
             <t t-foreach="child_ids" t-as="partner" t-key="partner['data']['id']">
                 <t t-call="partner_org_chart.partner_org_chart">
                     <t t-set="data" t-value="partner['data']" />
@@ -87,6 +88,9 @@
             </t>
         </div>
     </t>
+    </t>
+
+
 </t>
 
 

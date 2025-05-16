@@ -25,6 +25,7 @@
         "base",
         "sale",
         "stock",
+        "contacts",
         "sale_stock",
         "delivery",
         "partner_fax",

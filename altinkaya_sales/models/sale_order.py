@@ -169,9 +169,8 @@ class SaleOrder(models.Model):
             else:
                 pass
             # PRODUCTION
-            # TODO: planned state doesn't exist anymore
             ongoing_productions = sale.production_ids.filtered(
-                lambda p: p.state in ["confirmed", "planned", "progress"]
+                lambda p: p.state in ["confirmed", "progress"]
             )
             if ongoing_productions:
                 sale.order_state = _match_production_with_route(ongoing_productions)

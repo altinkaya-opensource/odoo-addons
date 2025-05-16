@@ -25,10 +25,13 @@
           name="accounting_contact"
           domain="[('parent_id', '=', active_id)]"
         />
-                <field name="purchase_default_account_id" />
+                <field
+          name="purchase_default_account_id"
+          string="Satınalma Masraf Hesabı"
+        />
                 <field name="z_payable_export" />
                 <field name="z_receivable_export" />
-                <field name="devir_yapildi" />
+                <!-- <field name="devir_yapildi" /> -->
             </xpath>
 
             <button name="action_view_partner_invoices" position="after">
@@ -42,15 +45,15 @@
                 </button>
             </button>
 
-            <group name="banks" position="before">
+            <group name="einvoice" position="before">
 
-                <group string="Currency Difference" colspan="2" col="2">
+                <group string="Kur Farkı" colspan="2" col="2">
                     <group>
                         <field name="currency_difference_checked" />
                         <button
               name="action_generate_currency_diff_invoice"
               type="object"
-              string="Calculate Difference Invoice"
+              string="Kur Farkı Faturası Oluştur"
               attrs="{'invisible': [('parent_id','!=',False)]}"
               options="{}"
             />
@@ -64,6 +67,55 @@
         </field>
     </record>
 
+    <record id="account_res_partner_search_inherit" model="ir.ui.view">
+        <field name="name">account.res.partner.search.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.res_partner_view_search" />
+        <field name="arch" type="xml">
+            <filter name="customer" position="attributes">
+                <attribute name="string">Customers</attribute>
+            </filter>
 
+            <filter name="supplier" position="attributes">
+                <attribute name="string">Suppliers</attribute>
+            </filter>
+
+        </field>
+    </record>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban,activity</field>
+            <field
+      name="context"
+    >{'search_default_type_company': 1, 'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
+    </record>
+
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban,activity</field>
+            <field
+      name="context"
+    >{'search_default_type_company': 1, 'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+    </record>
+
+    <record id="res_partner_form_view_cari" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.cari</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath
+        expr="//notebook/page[@name='credit_control']/group[@name='followup']"
+        position="before"
+      >
+                    <xpath
+          expr="//notebook/page[@name='financial_risk']"
+          position="move"
+        />
+                </xpath>
+                <xpath expr="//group[@name='risk_limits']" position="attributes">
+                    <attribute name="string">Özel Limitler</attribute>
+                </xpath>
+            </field>
+    </record>
 
 </odoo>

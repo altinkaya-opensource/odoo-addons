@@ -47,3 +47,13 @@ class AccountBankStatementLine(models.Model):
                 line.manual_account_id = (
                     line.manual_partner_id.property_account_receivable_id
                 )
+
+    def _reconcile_bank_line_edit(self, data):
+        """
+        Overriden to fill partner when bank line reconciliation done.
+        """
+        res = super()._reconcile_bank_line_edit(data)
+        partner = self.mapped("line_ids.partner_id")
+        if len(partner) == 1:
+            self.partner_id = partner
+        return res

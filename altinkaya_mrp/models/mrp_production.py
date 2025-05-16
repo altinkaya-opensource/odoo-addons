@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from odoo import _, api, fields, models
 from odoo.tools.safe_eval import safe_eval
+from odoo.exceptions import ValidationError
+from odoo import _
 
 
 class XMakine(models.Model):
@@ -316,3 +318,17 @@ class MrpProduction(models.Model):
         for production in self:
             production.move_raw_ids._action_assign_reserved()
         return True
+
+    def _button_mark_done_sanity_checks(self):
+        res = super()._button_mark_done_sanity_checks()
+        for order in self:
+            if (
+                order.qty_producing
+                and (order.qty_producing - order.product_qty) / order.product_qty > 0.1
+                and not self.env.user.has_group("altinkaya_mrp.change_production_qty")
+            ):
+                raise ValidationError(
+                    _("You can only produce 10% more than the original quantity.")
+                )
+
+        return res
