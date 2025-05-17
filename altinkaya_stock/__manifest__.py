@@ -18,6 +18,7 @@
         "partner_ranking",
         "stock_inventory",
         "stock_available_unreserved",
+        "stock_quant_package_dimension",
     ],
     "data": [
         "wizard/wizard_change_picking_warehouse.xml",
@@ -36,6 +37,8 @@
         "views/mrp_production_view.xml",
         "security/security_group.xml",
         "security/ir.model.access.csv",
+        "views/choose_delivery_package_views.xml",
+        "views/stock_quant_package_views.xml",
     ],
     "installable": True,
     "auto_install": False,

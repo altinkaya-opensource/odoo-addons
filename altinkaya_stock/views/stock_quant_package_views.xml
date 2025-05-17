@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_quant_package_form_inherit_pallet" model="ir.ui.view">
+        <field name="name">stock.quant.package.form.inherit.pallet</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_form" />
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button
+          name="action_convert_to_pallet"
+          type="object"
+          class="btn-primary"
+          string="Convert to Pallet"
+          attrs="{'invisible': [('is_pallet', '=', True)]}"
+        />
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="after">
+                <group>
+                    <field name="is_pallet" readonly="1" />
+                    <field name="picking_id" readonly="1" />
+                    <field
+            name="package_number"
+            readonly="1"
+            attrs="{'invisible': [('is_pallet', '=', True)]}"
+          />
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='quant_ids']" position="attributes">
+                <attribute
+          name="attrs"
+        >{'invisible': [('is_pallet', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//separator" position="replace">
+                <field
+          name="child_package_ids"
+          attrs="{'invisible': [('is_pallet', '=', False)]}"
+        >
+                    <tree editable="bottom">
+                        <field name="child_package_id" />
+                    </tree>
+                </field>
+            </xpath>
+            <xpath expr="//field[@name='package_type_id']" position="replace" />
+            <!-- <xpath expr="//div[@name='Shipping Weight']" position="replace" /> -->
+            <xpath expr="//field[@name='product_packaging_id']" position="replace" />
+            <xpath expr="//field[@name='location_id']" position="replace" />
+
+        </field>
+    </record>
+
+    <record id="view_pallet_confirmation_wizard_form" model="ir.ui.view">
+        <field name="name">pallet.confirmation.wizard.form</field>
+        <field name="model">pallet.confirmation.wizard</field>
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <form string="Confirm Pallet Conversion">
+                <group>
+                    <t t-if="has_content">
+                        <p
+            >Converting this package to a pallet will remove its contents.</p>
+                        <p />
+                        <p>Are you sure you want to proceed?</p>
+                    </t>
+                    <p>This package has no products.</p>
+                    <p />
+                    <p>Do you want to convert it to a pallet?</p>
+                </group>
+                <footer>
+                    <button
+            name="confirm"
+            string="Yes, convert"
+            type="object"
+            class="btn-primary"
+          />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_quant_package_tree_inherit_pallet" model="ir.ui.view">
+        <field name="name">stock.quant.package.tree.inherit.pallet</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_tree" />
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="is_pallet" />
+                <field
+          name="package_number"
+          readonly="1"
+          attrs="{'invisible': [('is_pallet', '=', True)]}"
+        />
+                <field name="pack_date" readonly="1" />
+            </xpath>
+            <xpath expr="//field[@name='package_type_id']" position="replace" />
+            <xpath expr="//field[@name='location_id']" position="replace" />
+        </field>
+    </record>
+
+    <record id="view_quant_package_kanban_inherit_pallet" model="ir.ui.view">
+        <field name="name">stock.quant.package.kanban.inherit.pallet</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_kanban" />
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <xpath
+        expr="//t[@t-name='kanban-box']/div[contains(@class, 'oe_kanban_global_click')]"
+        position="inside"
+      >
+                <div>
+                    <div>
+                        <label for="is_pallet" class="o_kanban_label">Pallet</label>
+                        <field name="is_pallet" />
+                        <field name="pack_date" readonly="1" />
+                    </div>
+                </div>
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
