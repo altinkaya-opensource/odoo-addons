@@ -211,7 +211,7 @@ class PaymentProvider(models.Model):
         # If we want to get payment with TRY currency,
         # we need to convert the amount to TRY
         if tx.partner_id.country_id.code == "TR":
-            amount = tx.sale_order_ids.amount_total_company_currency
+            amount = round(tx.sale_order_ids.amount_total_company_currency, 2)
             currency = self.env.ref("base.TRY").id
 
         connector = GarantiConnector(
