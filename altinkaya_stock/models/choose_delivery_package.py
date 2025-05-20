@@ -43,6 +43,14 @@ class ChooseDeliveryPackage(models.TransientModel):
         compute="_compute_allowed_move_line_ids",
     )
 
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        selected_ids = self.env.context.get("default_selected_move_line_ids")
+        if selected_ids:
+            res["selected_move_line_ids"] = [(6, 0, selected_ids)]
+        return res
+
     @api.depends("picking_id.move_line_ids_without_package")
     def _compute_move_lines(self):
         for rec in self:

@@ -118,6 +118,23 @@ class StockPicking(models.Model):
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
 
+    def action_put_in_pack(self):
+        self.ensure_one()
+        allowed_lines = self.move_line_ids_without_package.filtered(
+            lambda l: l.qty_done > 0 and not l.result_package_id
+        )
+        return {
+            "name": "Put in Pack",
+            "type": "ir.actions.act_window",
+            "res_model": "choose.delivery.package",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_picking_id": self.id,
+                "default_selected_move_line_ids": allowed_lines.ids,
+            },
+        }
+
     # def force_assign(self):
     #     for pick in self:
     #         move_ids = [
