@@ -17,7 +17,7 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='sale']" position="inside">
+                <xpath expr="//group[@name='sale']/field[@name='user_id']" position="before">
                     <field name="ranking" readonly="1" />
                 </xpath>
             </field>

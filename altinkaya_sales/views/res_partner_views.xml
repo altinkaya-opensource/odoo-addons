@@ -19,34 +19,17 @@
 			<field name="inherit_id" ref="base.view_partner_form" />
 			<field eval="12445" name="priority" />
 			<field name="arch" type="xml">
-
-				<xpath
-        expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']/field[@name='company_registry']"
-        position="before"
-      >
-						<field name="segment_id" />
-				</xpath>
-				<!-- <xpath expr="//group[@name='currency_difference']" position="before">
-					<group>
-						<group>
-							<group string="Credit Insurance" name="credit_insurance" attrs="{'invisible': [('country_id', '=', 224)]}">
-								<field name="credit_insurance" />
-								<field name="credit_insurance_validity" />
-							</group>
-						</group>
-						<xpath expr="//group[@name='accounting_entries']" position="move"/>
-					</group>
-				</xpath> -->
-
+				
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name" />
 				</xpath>
 				<xpath expr="//group[@name='container']" position="inside">
 					<group>
+						<field name="segment_id" />
 						<field name="z_tel_kampanya" />
-						<field name="z_kat_postala" />
+						<!-- <field name="z_kat_postala" />
 						<field name="z_kat_postalandi" />
-						<field name="z_kat_email" />
+						<field name="z_kat_email" /> -->
 					</group>
 					<group colspan="4">
 						<field name="show_partner_industry_for_person" invisible="1" />
