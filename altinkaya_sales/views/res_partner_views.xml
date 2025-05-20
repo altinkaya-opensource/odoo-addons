@@ -19,7 +19,7 @@
 			<field name="inherit_id" ref="base.view_partner_form" />
 			<field eval="12445" name="priority" />
 			<field name="arch" type="xml">
-				
+
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name" />
 				</xpath>

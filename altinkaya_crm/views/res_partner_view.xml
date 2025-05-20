@@ -12,7 +12,7 @@
             <xpath expr="//notebook" position="inside">
                 <page name="phonecall" string="Çağrılar">
                     <group>
-                        <field name="phonecall_ids" nolabel="1" colspan="2"/>
+                        <field name="phonecall_ids" nolabel="1" colspan="2" />
                     </group>
                 </page>
             </xpath>
