@@ -31,7 +31,7 @@
 						<field name="z_kat_postalandi" />
 						<field name="z_kat_email" /> -->
 					</group>
-					<group colspan="4">
+					<group colspan="4" string="Sektörler">
 						<field name="show_partner_industry_for_person" invisible="1" />
 						<field name="industry_id" />
 						<field
