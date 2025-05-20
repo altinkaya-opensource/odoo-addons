@@ -35,7 +35,12 @@
           widget="uom"
           options="{'uom_field': 'product_uom'}"
         />
-                <button name="action_open_detailed_form" type="object" icon="fa-eye" />
+                <button
+          name="action_open_detailed_form"
+          type="object"
+          icon="fa-eye"
+          title="Move Details"
+        />
                 <button
           name="action_create_procurement"
           type="object"
