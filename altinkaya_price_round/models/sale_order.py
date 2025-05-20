@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
     @api.depends(
         "order_line.price_subtotal", "order_line.price_tax", "order_line.price_total"
     )
-    def _compute_amounts(self):
+    def _compute_amounts(self):  # pylint: disable=W8110
         """
         Inherited to round price_total to 2 decimal places
         """

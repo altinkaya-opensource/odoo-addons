@@ -776,7 +776,7 @@ msgstr "Tedarikçi tarafından sağlanan fatura referansı"
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "This F.Year"
-msgstr "Yıla Göre Fatura"
+msgstr "Bu Yıl"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv

@@ -34,7 +34,7 @@ class AccountMove(models.Model):
         "line_ids.full_reconcile_id",
         "state",
     )
-    def _compute_amount(self):
+    def _compute_amount(self):  # pylint: disable=W8110
         super()._compute_amount()
         for move in self:
             move.amount_total = round(move.amount_total, 2)
