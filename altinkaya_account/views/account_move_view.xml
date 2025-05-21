@@ -127,6 +127,39 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="view_move_form_inherit">
+        <field name="name">account.move.delivery.purchase.requsition</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="type">form</field>
+        <field name="priority" eval="999" />
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button
+          name="action_create_delivery_requisition"
+          type="object"
+          string="Get Available Deliveries"
+        />
+            </header>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+          class="oe_stat_button"
+          name="action_view_purchase_requisition"
+          type="object"
+          icon="fa-list"
+          attrs="{'invisible': [('purchase_requisition_count', '=', 0)]}"
+        >
+                    <field
+            string="Purchase Requisitions"
+            name="purchase_requisition_count"
+            widget="statinfo"
+          />
+                </button>
+            </xpath>
+        </field>
+    </record>
+
     <record id="account_move_search_inherit" model="ir.ui.view">
         <field name="name">account.move.search.inherit</field>
         <field name="model">account.move</field>

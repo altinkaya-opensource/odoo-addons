@@ -60,6 +60,11 @@ class AccountMove(models.Model):
         compute="_compute_other_inv_in_reconciles",
     )
 
+    purchase_requisition_count = fields.Integer(
+        string="Purchase Requisition Count",
+        compute="_compute_purchase_requisition_count",
+    )
+
     @api.model
     def _compute_full_reconcile_ids(self):
         for invoice in self:
@@ -278,3 +283,71 @@ class AccountMove(models.Model):
                 ):
                     line.difference_base_aml_id.write({"difference_checked": False})
         return super().unlink()
+
+    def _compute_purchase_requisition_count(self):
+        """
+        Compute the purchase requisition count for the invoice.
+        """
+        for invoice in self:
+            invoice.purchase_requisition_count = len(
+                self.env["purchase.requisition"].search(
+                    [
+                        ("account_move_id", "=", invoice.id),
+                    ]
+                )
+            )
+
+    def action_view_purchase_requisition(self):
+        """
+        View the purchase requisition(s) related to the invoice.
+        """
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id(
+            "purchase_requisition.action_purchase_requisition"
+        )
+
+        action["domain"] = [
+            ("account_move_id", "=", self.id),
+        ]
+
+        action["context"] = {
+            "create": True,
+            "edit": True,
+            "form_view_initial_mode": "edit",
+        }
+        return action
+
+    def action_create_delivery_requisition(self):
+        self.ensure_one()
+        cargo_product_id = self.line_ids.filtered(
+            lambda ml: ml.sale_line_ids.is_delivery
+        ).product_id
+
+        if not cargo_product_id:
+            raise ValidationError(_("No cargo product found in the invoice lines."))
+
+        requisition = self.env["purchase.requisition"].create(
+            {
+                "origin": self.name,  # TODO: Ask for the best suiting origin name
+                "account_move_id": self.id,
+                "schedule_date": fields.Date.today(),
+            }
+        )
+
+        self.env["purchase.requisition.line"].create(
+            {
+                "product_id": cargo_product_id.id,
+                "product_qty": 1,
+                "product_uom_id": cargo_product_id.uom_id.id,
+                "price_unit": 0.0,
+                "schedule_date": fields.Date.today(),
+                "requisition_id": requisition.id,
+            }
+        )
+
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "purchase.requisition",
+            "view_mode": "form",
+            "res_id": requisition.id,
+        }
