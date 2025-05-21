@@ -73,12 +73,8 @@ class StockPicking(models.Model):
         compute="_compute_trimmed_sale_note",
         readonly=True,
     )
-    package_ids = fields.One2many(
-        "stock.quant.package", "picking_id", string="Packages"
-    )
-    package_count = fields.Integer(string="Packages", compute="_compute_package_count")
-    pallet_count = fields.Integer(string="Pallet", compute="_compute_pallet_count")
-    show_put_in_pack = fields.Boolean(compute="_compute_show_put_in_pack", store=False)
+
+    package_ids = fields.Many2many(readonly=False)
 
     def action_see_packages(self):
         self.ensure_one()
@@ -90,50 +86,24 @@ class StockPicking(models.Model):
         action["context"] = {"default_picking_id": self.id}
         return action
 
-    @api.depends("move_line_ids.package_id")
-    def _compute_show_put_in_pack(self):
-        for picking in self:
-            pallet_packages = picking.move_line_ids.mapped("package_id").filtered(
-                lambda p: p.is_pallet
-            )
-            picking.show_put_in_pack = bool(pallet_packages)
-
-    @api.depends("package_ids")
-    def _compute_package_count(self):
-        for record in self:
-            record.package_count = len(
-                record.package_ids.filtered(lambda p: not p.is_pallet)
-            )
-
-    @api.depends("package_ids")
-    def _compute_pallet_count(self):
-        for record in self:
-            record.pallet_count = len(
-                record.package_ids.filtered(lambda p: p.is_pallet)
-            )
-
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         source = self.sale_id or self.purchase_id
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
 
-    def action_put_in_pack(self):
-        self.ensure_one()
-        allowed_lines = self.move_line_ids_without_package.filtered(
-            lambda l: l.qty_done > 0 and not l.result_package_id
-        )
-        return {
-            "name": "Put in Pack",
-            "type": "ir.actions.act_window",
-            "res_model": "choose.delivery.package",
-            "view_mode": "form",
-            "target": "new",
-            "context": {
-                "default_picking_id": self.id,
-                "default_selected_move_line_ids": allowed_lines.ids,
-            },
-        }
+    # def action_put_in_pack(self):
+    #     self.ensure_one()
+    #     return {
+    #         "name": "Put in Pack",
+    #         "type": "ir.actions.act_window",
+    #         "res_model": "choose.delivery.package",
+    #         "view_mode": "form",
+    #         "target": "new",
+    #         "context": {
+    #             "default_picking_id": self.id,
+    #         },
+    #     }
 
     # def force_assign(self):
     #     for pick in self:
