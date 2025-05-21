@@ -74,11 +74,36 @@ class StockPicking(models.Model):
         readonly=True,
     )
 
+    package_ids = fields.Many2many(readonly=False)
+
+    def action_see_packages(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_package_view")
+        move_line_packages = self.move_line_ids.mapped("result_package_id")
+        direct_packages = self.package_ids
+        packages = (move_line_packages | direct_packages).filtered(lambda p: p)
+        action["domain"] = [("id", "in", packages.ids)]
+        action["context"] = {"default_picking_id": self.id}
+        return action
+
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         source = self.sale_id or self.purchase_id
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
+
+    # def action_put_in_pack(self):
+    #     self.ensure_one()
+    #     return {
+    #         "name": "Put in Pack",
+    #         "type": "ir.actions.act_window",
+    #         "res_model": "choose.delivery.package",
+    #         "view_mode": "form",
+    #         "target": "new",
+    #         "context": {
+    #             "default_picking_id": self.id,
+    #         },
+    #     }
 
     # def force_assign(self):
     #     for pick in self:
