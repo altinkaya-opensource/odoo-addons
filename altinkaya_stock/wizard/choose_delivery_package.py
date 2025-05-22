@@ -5,6 +5,8 @@ from odoo.exceptions import UserError
 class ChooseDeliveryPackage(models.TransientModel):
     _inherit = "choose.delivery.package"
 
+    delivery_package_type_id = fields.Many2one(required=True)
+
     selected_move_line_ids = fields.One2many(
         "choose.delivery.package.move.lines",
         "wizard_id",
@@ -102,9 +104,12 @@ class ChooseDeliveryPackage(models.TransientModel):
                     )
                 )
 
-        delivery_package = self.picking_id._put_in_pack(
-            selected_move_lines.mapped("move_line_id")
-        )
+        # Prepare values for put_in_pack function
+        move_lines_values = {}
+        for line in selected_move_lines:
+            move_lines_values[line.move_line_id] = line.product_uom_qty
+
+        delivery_package = self.picking_id._put_in_pack_altinkaya(move_lines_values)
 
         package_type_id = self.delivery_package_type_id
         delivery_package.package_type_id = package_type_id

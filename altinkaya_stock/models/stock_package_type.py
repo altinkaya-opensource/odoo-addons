@@ -18,6 +18,14 @@ from odoo import fields, models
 class StockPackageType(models.Model):
     _inherit = "stock.package.type"
 
+    name = fields.Char(translate=True)
+
     is_pallet = fields.Boolean(
         help="Check this box if the package type is a pallet.",
+    )
+
+    prefix_code = fields.Char(
+        string="Prefix Code",
+        help="Prefix code for the package type. This code will be used to generate "
+        "the barcode for the package type.",
     )

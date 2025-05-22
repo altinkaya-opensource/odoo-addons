@@ -3,5 +3,6 @@ access_create_procurement_move,access_create_procurement_move,model_create_procu
 access_make_mts_move,access_make_mts_move,model_make_mts_move,base.group_user,1,1,1,1
 access_update_unreserved_quants,access_update_unreserved_quants,model_update_unreserved_quants,base.group_user,1,1,1,1
 access_change_picking_warehouse,access_change_picking_warehouse,model_wizard_change_picking_warehouse,stock.group_stock_manager,1,1,1,1
-access_pallet_confirmation_wizard_user,access.pallet.confirmation.wizard.user,model_pallet_confirmation_wizard,base.group_user,1,1,1,1
 access_choose_delivery_package_lines_user,access.choose.delivery.package.lines.user,model_choose_delivery_package_move_lines,base.group_user,1,1,1,1
+access_create_packaging_pallet,access.create.packaging.pallet,model_wizard_create_packaging_pallet,base.group_user,1,1,1,1
+access_create_packaging_pallet_line,access.create.packaging.pallet.line,model_wizard_create_packaging_pallet_line,base.group_user,1,1,1,1

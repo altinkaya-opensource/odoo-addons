@@ -7,99 +7,50 @@
         <field name="arch" type="xml">
             <button name="button_validate" position="after">
 
-                <button
-          name="%(action_change_picking_warehouse)d"
-          string="Change Warehouse"
-          attrs="{'invisible': ['&amp;',('state', 'not in', ('waiting', 'confirmed', 'assigned')), ('picking_type_code', '!=', 'outgoing')]}"
-          type="action"
-          groups="stock.group_stock_manager"
-        />
+                <button name="%(action_change_picking_warehouse)d" string="Change Warehouse" attrs="{'invisible': ['&amp;',('state', 'not in', ('waiting', 'confirmed', 'assigned')), ('picking_type_code', '!=', 'outgoing')]}" type="action" groups="stock.group_stock_manager" />
 
             </button>
 
 
 
-            <xpath
-        expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
-        position="attributes"
-      >
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="attributes">
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
             </xpath>
-            <xpath
-        expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
-        position="attributes"
-      >
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']" position="attributes">
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
             </xpath>
 
-            <xpath
-        expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
-        position="after"
-      >
+            <xpath expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']" position="after">
 
-                <field
-          name="qty_available_merkez"
-          string="Merkez"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-                <field
-          name="qty_available_sincan"
-          string="Sincan"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-                <button
-          name="action_open_detailed_form"
-          type="object"
-          icon="fa-eye"
-          title="Move Details"
-        />
-                <button
-          name="action_create_procurement"
-          type="object"
-          string="Tedarik"
-          attrs="{'invisible':[('state','in',['waiting','done'])]}"
-        />
-                <button
-          name="action_make_mts"
-          type="object"
-          string="Stoktan Al"
-          attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
-        />
+                <field name="qty_available_merkez" string="Merkez" widget="uom" options="{'uom_field': 'product_uom'}" />
+                <field name="qty_available_sincan" string="Sincan" widget="uom" options="{'uom_field': 'product_uom'}" />
+                <button name="action_open_detailed_form" type="object" icon="fa-eye" title="Move Details" />
+                <button name="action_create_procurement" type="object" string="Tedarik" attrs="{'invisible':[('state','in',['waiting','done'])]}" />
+                <button name="action_make_mts" type="object" string="Stoktan Al" attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}" />
             </xpath>
 
 
             <xpath expr="//page[@name='operations']" position="after">
-                <page
-          name="packages"
-          string="Packages"
-          attrs="{'invisible': [('has_packages', '=', False)]}"
-          groups="stock.group_stock_user"
-        >
-                    <field name="package_ids" widget="one2many">
+                <page name="packages" string="Packages" attrs="{'invisible': [('has_packages', '=', False)]}" groups="stock.group_stock_user">
+                    <field name="package_ids" widget="one2many" attrs="{'readonly': [('state', 'not in', ['waiting', 'confirmed', 'assigned'])]}">
                         <tree>
                             <field name="sequence" widget="handle" />
+                            <field name="is_pallet" invisible="1" />
                             <field name="display_name" />
+                            <field name="number" />
                             <field name="package_type_id" />
                             <field name="shipping_weight" />
                             <field name="pack_length" />
                             <field name="width" />
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
-                            <button
-                name="action_dissolve"
-                type="object"
-                icon="fa-trash"
-                class="btn btn-secondary"
-                string="Dissolve"
-                confirm="This action will remove products from the package."
-              />
+                            <button name="action_dissolve" type="object" icon="fa-trash" class="btn btn-secondary" string="Dissolve" confirm="This action will remove products from the package." />
                         </tree>
                     </field>
 
+                    <button name="action_put_packs_in_pallet" type="object" string="Put in Pallet" class="btn btn-secondary" icon="fa-th-large" />
                 </page>
 
             </xpath>
@@ -143,62 +94,26 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='activities_upcoming_all']" position="after">
                 <separator />
-                <filter
-          string="Today's Deliveries"
-          name="todaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',context_today().strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
-        />
+                <filter string="Today's Deliveries" name="todaydel" domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',context_today().strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]" />
 
-                <filter
-          string="Yesterday's Deliveries"
-          name="yesterdaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"
-        />
+                <filter string="Yesterday's Deliveries" name="yesterdaydel" domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]" />
 
-                <filter
-          string="last 3 day's Deliveries"
-          name="threedaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
-        />
+                <filter string="last 3 day's Deliveries" name="threedaydel" domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]" />
 
-                <filter
-          string="Last Week's Deliveries"
-          name="lastweekdel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today() + relativedelta(weeks=-1, weekday=5)).strftime('%Y-%m-%d 23:59:59'))]"
-        />
+                <filter string="Last Week's Deliveries" name="lastweekdel" domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today() + relativedelta(weeks=-1, weekday=5)).strftime('%Y-%m-%d 23:59:59'))]" />
 
-                <filter
-          string="This Month's Deliveries"
-          name="thismonthdel"
-          domain="[('picking_type_code', '=', 'outgoing'), ('date_done','&gt;=',context_today().strftime('%Y-%m-01 00:00:00'))]"
-        />
+                <filter string="This Month's Deliveries" name="thismonthdel" domain="[('picking_type_code', '=', 'outgoing'), ('date_done','&gt;=',context_today().strftime('%Y-%m-01 00:00:00'))]" />
 
-                <filter
-          string="Last Month's Deliveries"
-          name="lastmonthdel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')),
-                                 ('date_done','&lt;',context_today().strftime('%Y-%m-01 00:00:00'))]"
-        />
+                <filter string="Last Month's Deliveries" name="lastmonthdel" domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')),
+                                 ('date_done','&lt;',context_today().strftime('%Y-%m-01 00:00:00'))]" />
 
-                <filter
-          string="Last Year Deliveries"
-          name="lastyeardeliveries"
-          domain="[('picking_type_code', '=', 'outgoing'), ('date_done', '&gt;=', (context_today() + relativedelta(years=-1)).strftime('%Y-01-01 00:00:00')),
-                                 ('date_done','&lt;', context_today().strftime('%Y-01-01 00:00:00'))]"
-        />
+                <filter string="Last Year Deliveries" name="lastyeardeliveries" domain="[('picking_type_code', '=', 'outgoing'), ('date_done', '&gt;=', (context_today() + relativedelta(years=-1)).strftime('%Y-01-01 00:00:00')),
+                                 ('date_done','&lt;', context_today().strftime('%Y-01-01 00:00:00'))]" />
 
                 <separator />
-                <filter
-          string="Two Weeks ago"
-          name="twoweeks"
-          domain="[('date','&lt;',(context_today()+relativedelta(weeks=-2)).strftime('%Y-%m-%d 00:00:00'))]"
-        />
+                <filter string="Two Weeks ago" name="twoweeks" domain="[('date','&lt;',(context_today()+relativedelta(weeks=-2)).strftime('%Y-%m-%d 00:00:00'))]" />
 
-                <filter
-          string="Four weeks ago"
-          name="fourweeks"
-          domain="[('date','&lt;',(context_today()+relativedelta(weeks=-4)).strftime('%Y-%m-%d 00:00:00'))]"
-        />
+                <filter string="Four weeks ago" name="fourweeks" domain="[('date','&lt;',(context_today()+relativedelta(weeks=-4)).strftime('%Y-%m-%d 00:00:00'))]" />
                 <separator />
 
             </xpath>

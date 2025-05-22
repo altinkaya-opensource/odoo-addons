@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo import api, fields, models
+from odoo.tools import float_compare, float_round, float_is_zero
 
 
 class StockPicking(models.Model):
@@ -74,45 +75,20 @@ class StockPicking(models.Model):
         readonly=True,
     )
 
-    package_ids = fields.Many2many(readonly=False)
-
-    def action_see_packages(self):
-        self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_package_view")
-        move_line_packages = self.move_line_ids.mapped("result_package_id")
-        direct_packages = self.package_ids
-        packages = (move_line_packages | direct_packages).filtered(lambda p: p)
-        action["domain"] = [("id", "in", packages.ids)]
-        action["context"] = {"default_picking_id": self.id}
-        return action
+    # Convert the package_ids field to a One2many field
+    package_ids = fields.One2many(
+        comodel_name="stock.quant.package",
+        inverse_name="picking_id",
+        string="Packages",
+        help="Packages related to this picking.",
+        copy=True,
+    )
 
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         source = self.sale_id or self.purchase_id
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
-
-    # def action_put_in_pack(self):
-    #     self.ensure_one()
-    #     return {
-    #         "name": "Put in Pack",
-    #         "type": "ir.actions.act_window",
-    #         "res_model": "choose.delivery.package",
-    #         "view_mode": "form",
-    #         "target": "new",
-    #         "context": {
-    #             "default_picking_id": self.id,
-    #         },
-    #     }
-
-    # def force_assign(self):
-    #     for pick in self:
-    #         move_ids = [
-    #             x for x in pick.move_lines if x.state in ["confirmed", "waiting"]
-    #         ]
-    #         self.env["stock.move"].force_assign(moves=move_ids)
-    #         pick.button_validate()
-    #     return True
 
     def _compute_trimmed_sale_note(self):
         """
@@ -126,3 +102,66 @@ class StockPicking(models.Model):
                 ].text_from_html(note, max_chars=50)
             else:
                 picking.trimmed_sale_note = ""
+
+    def _put_in_pack_altinkaya(self, move_lines_values):
+        package = False
+        package = self.env["stock.quant.package"].create({})
+        precision_digits = self.env["decimal.precision"].precision_get(
+            "Product Unit of Measure"
+        )
+
+        for move_line, qty in move_lines_values.items():
+            if float_is_zero(qty, precision_digits=precision_digits):
+                continue
+
+            qty_missing = float_round(
+                move_line.qty_done - qty,
+                precision_rounding=move_line.product_uom_id.rounding,
+                rounding_method="HALF-UP",
+            )
+
+            if float_is_zero(qty_missing, precision_digits=precision_digits):
+                move_line.result_package_id = package.id
+            else:  # Split the move line
+                move_line.write(
+                    {
+                        "qty_done": qty,
+                        "reserved_uom_qty": qty,
+                        "result_package_id": package.id,
+                    }
+                )
+                # Create a new move line with the remaining quantity
+                move_line.copy(
+                    default={
+                        "qty_done": qty_missing,
+                        "reserved_uom_qty": qty_missing,
+                        "result_package_id": False,
+                    }
+                )
+        return package
+
+    def action_put_packs_in_pallet(self):
+        """
+        This method is used to put packs in a pallet.
+        It creates a new stock.quant.package record and assigns it to the move lines.
+        """
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Create Pallet",
+            "res_model": "wizard.create.packaging.pallet",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_picking_id": self.id,
+            },
+        }
+
+    def action_see_packages(self):
+        """
+        Inherited to use our package_ids field instead of the Odoo's Compute
+        package_ids.
+        """
+        res = super().action_see_packages()
+        res["domain"] = [("id", "in", self.package_ids.ids)]
+        return res

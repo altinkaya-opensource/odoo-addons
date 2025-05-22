@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
 				<xpath expr="//field[@name='barcode']" position="after">
 					<field name="is_pallet" />
+                    <field name="prefix_code" />
 				</xpath>
 			</field>
 			</record>
