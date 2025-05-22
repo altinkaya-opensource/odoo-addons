@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 10:42+0000\n"
-"PO-Revision-Date: 2025-05-22 10:42+0000\n"
+"POT-Creation-Date: 2025-05-22 14:20+0000\n"
+"PO-Revision-Date: 2025-05-22 14:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -100,6 +100,11 @@ msgstr "Activo"
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__attribute_value_ids
 msgid "Attribute Value"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__available_package_ids
+msgid "Available Packages"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -424,11 +429,6 @@ msgid "Delivery Package Selection Wizard"
 msgstr "Asistente selección de empaquetado"
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__delivery_package_type_id
-msgid "Delivery Package Type"
-msgstr "Tipo de paquete de envío"
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__move_qty
 msgid "Demand Quantity"
 msgstr ""
@@ -501,6 +501,11 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__3
 msgid "Enjeksiyonda"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
+msgid "Exist package to bind the selected move lines to."
 msgstr ""
 
 #. module: altinkaya_stock
@@ -811,6 +816,7 @@ msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__move_line_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_quant_package_form
 msgid "Move Lines"
 msgstr ""
 
@@ -843,11 +849,17 @@ msgid "No packages found for the selected picking."
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__number
+msgid "Number"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__number
 msgid "Number for the pallet package."
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__package_id
 msgid "Package"
 msgstr ""
@@ -917,11 +929,6 @@ msgstr "Unidad de medida del volumen del envase"
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__pallet_id
 msgid "Pallet"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__number
-msgid "Pallet Number"
 msgstr ""
 
 #. module: altinkaya_stock

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 10:42+0000\n"
-"PO-Revision-Date: 2025-05-22 10:42+0000\n"
+"POT-Creation-Date: 2025-05-22 14:20+0000\n"
+"PO-Revision-Date: 2025-05-22 14:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -101,6 +101,11 @@ msgstr "Etkin"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__attribute_value_ids
 msgid "Attribute Value"
 msgstr "Nitelik Değeri"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__available_package_ids
+msgid "Available Packages"
+msgstr "Mevcut Paketler"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_create_procurement_move_form
@@ -424,11 +429,6 @@ msgid "Delivery Package Selection Wizard"
 msgstr "Teslimat Paketi Seçim Sihirbazı"
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__delivery_package_type_id
-msgid "Delivery Package Type"
-msgstr "Teslimat Paketi Türü"
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__move_qty
 msgid "Demand Quantity"
 msgstr "Talep Miktarı"
@@ -502,6 +502,11 @@ msgstr ""
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__3
 msgid "Enjeksiyonda"
 msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
+msgid "Exist package to bind the selected move lines to."
+msgstr "Hareket satırlarını bağlamak için mevcut paket."
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
@@ -680,18 +685,18 @@ msgstr "Geçen Yılın Teslimatları"
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__pack_length
 msgid "Length"
-msgstr "Uzunluk"
+msgstr "Boy"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__length_uom_id
 msgid "Length UoM"
-msgstr "Uzunluk Ölçü Birimi"
+msgstr "Boy Ölçü Birimi"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_length
 #: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_length
 msgid "Length of the package in cm."
-msgstr "Paketin cm cinsinden uzunluğu."
+msgstr "Paketin cm cinsinden boyu."
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__lot_id
@@ -811,6 +816,7 @@ msgstr "Hareket Satırı"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__move_line_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_quant_package_form
 msgid "Move Lines"
 msgstr "Hareket Satırları"
 
@@ -843,11 +849,17 @@ msgid "No packages found for the selected picking."
 msgstr "Seçilen sevk için paket bulunamadı."
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__number
+msgid "Number"
+msgstr "Numara"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__number
 msgid "Number for the pallet package."
 msgstr "Paketin numarası."
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__package_id
 msgid "Package"
 msgstr "Paket"
@@ -862,7 +874,7 @@ msgstr "Paket Yüksekliği"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_length
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_length
 msgid "Package Length"
-msgstr "Paket Uzunluğu"
+msgstr "Paket Boyu"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__name
@@ -918,11 +930,6 @@ msgstr "Paketleme hacim ölçü birimi"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__pallet_id
 msgid "Pallet"
 msgstr "Palet"
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__number
-msgid "Pallet Number"
-msgstr "Numara"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__pallet_id
@@ -1557,7 +1564,9 @@ msgstr "Ölçü Birimi"
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__length_uom_id
 msgid "UoM for pack length, height, width (based on lenght UoM)"
-msgstr "Paket uzunluğu, yüksekliği, genişliği için ölçü birimi (uzunluk ölçü birimine göre)"
+msgstr ""
+"Paket boyu, yüksekliği, genişliği için ölçü birimi (uzunluk ölçü birimine "
+"göre)"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_update_quant_wizard_form
@@ -1731,7 +1740,7 @@ msgstr "Son 3 günün Teslimatları"
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__pack_length
 msgid "length"
-msgstr "uzunluk"
+msgstr "boy"
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_make_mts_move

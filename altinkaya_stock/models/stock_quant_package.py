@@ -99,6 +99,9 @@ class StockQuantPackage(models.Model):
     )
     def _compute_name(self):
         for rec in self:
+            if not rec.id:
+                rec.name = rec.package_type_id.name
+                continue
             if rec.pallet_id:
                 rec.name = f"{rec.picking_id.name}/{rec.pallet_id.number}-{rec.number}"
             else:

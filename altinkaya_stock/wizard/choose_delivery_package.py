@@ -5,8 +5,6 @@ from odoo.exceptions import UserError
 class ChooseDeliveryPackage(models.TransientModel):
     _inherit = "choose.delivery.package"
 
-    delivery_package_type_id = fields.Many2one(required=True)
-
     selected_move_line_ids = fields.One2many(
         "choose.delivery.package.move.lines",
         "wizard_id",
@@ -42,6 +40,45 @@ class ChooseDeliveryPackage(models.TransientModel):
         help="Calculated weight of the package based on its dimensions.",
         compute="_compute_calculated_weight",
     )
+
+    package_id_to_bind = fields.Many2one(
+        "stock.quant.package",
+        string="Package",
+        help="Exist package to bind the selected move lines to.",
+    )
+
+    available_package_ids = fields.Many2many(
+        "stock.quant.package",
+        string="Available Packages",
+        compute="_compute_available_package_ids",
+    )
+
+    @api.depends("picking_id")
+    def _compute_available_package_ids(self):
+        """
+        Compute the available packages for the selected move lines.
+        This method filters the packages based on the selected move lines
+        and their respective product IDs.
+        """
+        for rec in self:
+            rec.available_package_ids = rec.picking_id.package_ids
+
+    @api.onchange("package_id_to_bind")
+    def _onchange_package_id_to_bind(self):
+        for rec in self:
+            if rec.package_id_to_bind:
+                rec.package_length = rec.package_id_to_bind.pack_length
+                rec.package_width = rec.package_id_to_bind.width
+                rec.package_height = rec.package_id_to_bind.height
+                rec.package_weight = rec.package_id_to_bind.shipping_weight
+                rec.package_weight_uom_id = (
+                    rec.package_id_to_bind.weight_uom_id.id
+                    or self.env.ref("uom.product_uom_kgm").id
+                )
+                rec.package_dimensions_uom_id = (
+                    rec.package_id_to_bind.length_uom_id.id
+                    or self.env.ref("uom.product_uom_cm").id
+                )
 
     @api.depends("selected_move_line_ids", "selected_move_line_ids.product_uom_qty")
     def _compute_calculated_weight(self):
@@ -109,10 +146,17 @@ class ChooseDeliveryPackage(models.TransientModel):
         for line in selected_move_lines:
             move_lines_values[line.move_line_id] = line.product_uom_qty
 
-        delivery_package = self.picking_id._put_in_pack_altinkaya(move_lines_values)
+        delivery_package = self.picking_id._put_in_pack_altinkaya(
+            move_lines_values, package_to_bind=self.package_id_to_bind
+        )
 
-        package_type_id = self.delivery_package_type_id
-        delivery_package.package_type_id = package_type_id
+        # Use the package_id_to_bind if available
+        if self.package_id_to_bind:
+            package_type = self.package_id_to_bind.package_type_id
+        else:
+            package_type = self.picking_id.package_type_id
+
+        delivery_package.package_type_id = package_type
         delivery_package.picking_id = self.picking_id
 
         if self.package_weight:

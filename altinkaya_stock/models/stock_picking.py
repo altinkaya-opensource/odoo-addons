@@ -103,9 +103,12 @@ class StockPicking(models.Model):
             else:
                 picking.trimmed_sale_note = ""
 
-    def _put_in_pack_altinkaya(self, move_lines_values):
+    def _put_in_pack_altinkaya(self, move_lines_values, package_to_bind=None):
         package = False
-        package = self.env["stock.quant.package"].create({})
+        if package_to_bind:
+            package = package_to_bind
+        else:
+            package = self.env["stock.quant.package"].create({})
         precision_digits = self.env["decimal.precision"].precision_get(
             "Product Unit of Measure"
         )

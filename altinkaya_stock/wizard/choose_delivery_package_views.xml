@@ -35,7 +35,9 @@
                         <field name="package_weight_uom_id" style="pointer-events:none;" />
                     </div>
                     <field name="company_id" invisible="1" />
-                    <field name="delivery_package_type_id" options="{'no_create_edit': True, 'no_create': True}" />
+                    <field name="delivery_package_type_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'required': [('package_id_to_bind', '=', False)]}" />
+                    <field name="available_package_ids" invisible="1"/>
+                    <field name="package_id_to_bind" attrs="{'invisible': [('available_package_ids', '=', False)]}" domain="[('id', 'in', available_package_ids)]"/>
                 </group>
 
             </xpath>
