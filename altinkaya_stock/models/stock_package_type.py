@@ -25,7 +25,6 @@ class StockPackageType(models.Model):
     )
 
     prefix_code = fields.Char(
-        string="Prefix Code",
         help="Prefix code for the package type. This code will be used to generate "
         "the barcode for the package type.",
     )
