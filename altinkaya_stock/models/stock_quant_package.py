@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -23,7 +23,6 @@ class StockQuantPackage(models.Model):
     name = fields.Char(compute="_compute_name", store=True)
 
     number = fields.Char(
-        string="Number",
         help="Number for the pallet package.",
         compute="_compute_number",
         store=True,
@@ -113,7 +112,7 @@ class StockQuantPackage(models.Model):
 
         if self.pallet_id:
             raise ValidationError(
-                "You cannot dissolve a package that is part of a pallet."
+                _("You cannot dissolve a package that is part of a pallet.")
             )
 
         move_lines = self.picking_id.move_line_ids.filtered(

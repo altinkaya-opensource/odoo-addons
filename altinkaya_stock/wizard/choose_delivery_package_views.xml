@@ -15,7 +15,11 @@
                     <field name="package_width" nolabel="1" />
                     <span class="oe_inline o_form_label mx-3 text-muted">x</span>
                     <field name="package_height" nolabel="1" />
-                    <field name="package_dimensions_uom_id" class="ms-3" style="pointer-events:none;" />
+                    <field
+            name="package_dimensions_uom_id"
+            class="ms-3"
+            style="pointer-events:none;"
+          />
 
                 </div>
 
@@ -26,13 +30,19 @@
                     <label for="package_weight" />
                     <div name="weight_div" class="d-flex">
                         <field name="package_weight" class="me-3 w-25" />
-                        <field name="package_weight_uom_id" style="pointer-events:none;" />
+                        <field
+              name="package_weight_uom_id"
+              style="pointer-events:none;"
+            />
                     </div>
 
                     <label for="calculated_weight" />
                     <div name="calculated_weight_div" class="d-flex">
                         <field name="calculated_weight" class="me-3 w-25" />
-                        <field name="package_weight_uom_id" style="pointer-events:none;" />
+                        <field
+              name="package_weight_uom_id"
+              style="pointer-events:none;"
+            />
                     </div>
                     <field name="company_id" invisible="1" />
                     <field name="delivery_package_type_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'required': [('package_id_to_bind', '=', False)]}" />
@@ -44,13 +54,30 @@
 
 
             <xpath expr="//footer" position="before">
-                <field name="selected_move_line_ids" context="{'default_wizard_id': id}" required="1">
+                <field
+          name="selected_move_line_ids"
+          context="{'default_wizard_id': id}"
+          required="1"
+        >
 
-                    <tree editable="bottom" decoration-success="product_uom_qty==qty_to_pack" decoration-danger="qty_to_pack &gt; product_uom_qty or product_uom_qty &gt; qty_to_pack or qty_to_pack == 0">
+                    <tree
+            editable="bottom"
+            decoration-success="product_uom_qty==qty_to_pack"
+            decoration-danger="qty_to_pack &gt; product_uom_qty or product_uom_qty &gt; qty_to_pack or qty_to_pack == 0"
+          >
                         <field name="move_line_id" readonly="1" />
                         <field name="lot_id" readonly="1" />
-                        <field name="qty_to_pack" widget="uom" options="{'uom_field': 'product_uom_id'}" readonly="1" />
-                        <field name="product_uom_qty" widget="uom" options="{'uom_field': 'product_uom_id'}" />
+                        <field
+              name="qty_to_pack"
+              widget="uom"
+              options="{'uom_field': 'product_uom_id'}"
+              readonly="1"
+            />
+                        <field
+              name="product_uom_qty"
+              widget="uom"
+              options="{'uom_field': 'product_uom_id'}"
+            />
                         <field name="product_uom_id" />
                     </tree>
                 </field>
