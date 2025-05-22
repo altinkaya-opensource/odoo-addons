@@ -19,7 +19,7 @@
 #
 ##############################################################################
 from odoo import api, fields, models
-from odoo.tools import float_compare, float_round, float_is_zero
+from odoo.tools import float_is_zero, float_round
 
 
 class StockPicking(models.Model):

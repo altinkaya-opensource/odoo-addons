@@ -24,18 +24,50 @@
                 <group>
                     <group string="Sincan Depo" class="oe_form">
                         <field name="qty_to_sincan" class="oe_inline" />
-                        <field name="qty_available_sincan" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_incoming_sincan" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_outgoing_sincan" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_virtual_sincan" widget="uom" options="{'uom_field': 'uom'}" />
+                        <field
+              name="qty_available_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_incoming_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_outgoing_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_virtual_sincan"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
                     </group>
 
                     <group string="Merkez Depo" class="oe_form">
                         <field name="qty_to_merkez" class="oe_inline" />
-                        <field name="qty_available_merkez" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_incoming_merkez" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_outgoing_merkez" widget="uom" options="{'uom_field': 'uom'}" />
-                        <field name="qty_virtual_merkez" widget="uom" options="{'uom_field': 'uom'}" />
+                        <field
+              name="qty_available_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_incoming_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_outgoing_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
+                        <field
+              name="qty_virtual_merkez"
+              widget="uom"
+              options="{'uom_field': 'uom'}"
+            />
                     </group>
                 </group>
 
@@ -61,7 +93,12 @@
                     </page>
                 </notebook>
                 <footer>
-                    <button name="action_create" string="Tedarik Oluştur" type="object" class="oe_highlight" />
+                    <button
+            name="action_create"
+            string="Tedarik Oluştur"
+            type="object"
+            class="oe_highlight"
+          />
                         or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
