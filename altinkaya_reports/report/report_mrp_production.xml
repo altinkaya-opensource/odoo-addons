@@ -168,7 +168,7 @@
                       t-if="o.bom_id.tool_product_id"
                     >Kalıp Konumu:
                                             <span
-                        t-field="o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal') and o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal')[0].location_id"
+                        t-field="o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal') and o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal')[0].location_id.name"
                       />
                                         </h6>
                                     </td>
