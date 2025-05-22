@@ -73,8 +73,17 @@
 
 
             <xpath expr="//page[@name='operations']" position="after">
-                <page name="packages" string="Packages" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}" groups="stock.group_stock_user">
-                    <field name="package_ids" widget="one2many" attrs="{'readonly': [('state', 'not in', ['waiting', 'confirmed', 'assigned'])]}">
+                <page
+          name="packages"
+          string="Packages"
+          attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"
+          groups="stock.group_stock_user"
+        >
+                    <field
+            name="package_ids"
+            widget="one2many"
+            attrs="{'readonly': [('state', 'not in', ['waiting', 'confirmed', 'assigned'])]}"
+          >
                         <tree>
                             <field name="sequence" widget="handle" />
                             <field name="is_pallet" invisible="1" />

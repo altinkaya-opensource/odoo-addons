@@ -10,7 +10,7 @@
         <field name="inherit_id" ref="stock.view_quant_package_form" />
         <field name="arch" type="xml">
             <separator position="before">
-                <separator string="Move Lines"/>
+                <separator string="Move Lines" />
                 <field name="move_line_ids" widget="one2many" readonly="1" />
             </separator>
 
