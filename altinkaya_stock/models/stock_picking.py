@@ -119,9 +119,10 @@ class StockPicking(models.Model):
         Trims the sale note to the first 50 characters.
         """
         for picking in self:
-            if picking.sale_note:
+            note = (picking.sale_note or "").strip()
+            if note:
                 picking.trimmed_sale_note = self.env[
                     "ir.fields.converter"
-                ].text_from_html(picking.sale_note, max_chars=50)
+                ].text_from_html(note, max_chars=50)
             else:
                 picking.trimmed_sale_note = ""
