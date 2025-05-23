@@ -125,8 +125,8 @@ class ChooseDeliveryPackage(models.TransientModel):
         self.ensure_one()
 
         selected_move_lines = self.selected_move_line_ids
-        if not selected_move_lines:
-            raise UserError(_("Please select product(s) to pack."))
+        # if not selected_move_lines:
+        #     raise UserError(_("Please select product(s) to pack."))
 
         for line in selected_move_lines:
             if line.move_line_id.picking_id != self.picking_id:
@@ -154,7 +154,7 @@ class ChooseDeliveryPackage(models.TransientModel):
         if self.package_id_to_bind:
             package_type = self.package_id_to_bind.package_type_id
         else:
-            package_type = self.picking_id.package_type_id
+            package_type = self.delivery_package_type_id
 
         delivery_package.package_type_id = package_type
         delivery_package.picking_id = self.picking_id

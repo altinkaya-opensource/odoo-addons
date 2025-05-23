@@ -143,6 +143,10 @@ class StockPicking(models.Model):
                 )
         return package
 
+    def action_put_in_pack(self):
+        self.ensure_one()
+        return self._set_delivery_package_type()
+
     def action_put_packs_in_pallet(self):
         """
         This method is used to put packs in a pallet.
