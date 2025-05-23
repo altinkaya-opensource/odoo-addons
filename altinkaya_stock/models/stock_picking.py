@@ -172,3 +172,25 @@ class StockPicking(models.Model):
         res = super().action_see_packages()
         res["domain"] = [("id", "in", self.package_ids.ids)]
         return res
+
+    def action_list_packed_products(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "stock.stock_move_line_action"
+        )
+        move_lines = self.move_line_ids
+        action["domain"] = [("id", "in", move_lines.ids)]
+
+        if move_lines.mapped("result_package_pallet_id"):
+            group_by = ["result_package_pallet_id", "result_package_id"]
+        else:
+            group_by = ["result_package_id"]
+
+        action["context"] = {"group_by": group_by}
+        action["views"] = [
+            (
+                self.env.ref("altinkaya_stock.view_stock_move_line_tree_packaged").id,
+                "tree",
+            )
+        ]
+        return action

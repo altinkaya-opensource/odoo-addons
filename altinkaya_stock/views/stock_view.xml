@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
+    <record id="view_stock_move_line_tree_packaged" model="ir.ui.view">
+        <field name="name">stock.move.line.tree.packaged</field>
+        <field name="model">stock.move.line</field>
+        <field name="arch" type="xml">
+            <tree
+        string="Move Lines"
+        create="0"
+        default_order="id desc"
+        action="action_open_reference"
+        type="object"
+      >
+                <field name="location_usage" invisible="1" />
+                <field name="location_dest_usage" invisible="1" />
+                <field name="date" optional="show" />
+                <field name="product_id" />
+                <field
+          name="lot_id"
+          optional="show"
+          groups="stock.group_production_lot"
+        />
+                <field
+          name="result_package_id"
+          optional="hide"
+          groups="stock.group_tracking_lot"
+        />
+                <field name="location_id" optional="show" />
+                <field name="location_dest_id" optional="show" />
+                <field name="company_id" invisible="1" />
+                <field
+          name="qty_done"
+          string="Quantity"
+          decoration-danger="(location_usage in ('internal','transit')) and (location_dest_usage not in ('internal','transit'))"
+          decoration-success="(location_usage not in ('internal','transit')) and (location_dest_usage in ('internal','transit'))"
+        />
+                <field
+          name="product_uom_id"
+          options="{'no_open': True, 'no_create': True}"
+          string="Unit"
+          groups="uom.group_uom"
+        />
+
+            </tree>
+        </field>
+
+    </record>
+
+
     <menuitem
     name="Product Categories"
     action="product.product_category_action_form"
@@ -57,17 +105,17 @@
           expr="//field[@name='move_ids_without_package']"
           position='after'
         >
-                    <group name="notes">
-                        <field name="sale_note" />
-                    </group>
-                </xpath>
+<group name="notes">
+                    <field name="sale_note" />
+                </group>
+            </xpath>
 
-                <xpath expr="//page[@name='note']" position='inside' />
+            <xpath expr="//page[@name='note']" position='inside' />
 
-                <field name="priority" position="replace" />
-                <field name="date_done" position="replace" />
+            <field name="priority" position="replace" />
+            <field name="date_done" position="replace" />
 
-                <!--
+            <!--
                 <xpath expr="//field[@name='date']" position="replace">
                     <field name="priority"/>
                     <field name="date_done"/>
@@ -75,177 +123,156 @@
                     <field name="date"/>
                 </xpath>
                 -->
-            </field>
-        </record>
+        </field>
+    </record>
 
-        <record id="view_stock_move_form" model="ir.ui.view">
-            <field name="name">stock.move.form</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_move_form" />
-            <field name="priority" eval="40" />
-            <field name="arch" type="xml">
-                <field name="procure_method" position="after">
-                    <field name="warehouse_id" />
-                    <field name="route_ids" />
-                    <field name="rule_id" />
-                    <field name="production_id" />
-                    <field name="picking_id" />
-                    <field name="created_production_id" />
-                    <field name="raw_material_production_id" />
-                    <field name="created_purchase_line_id" />
-                    <field name="move_line_ids" />
-                </field>
-                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
+    <record id="view_stock_move_form" model="ir.ui.view">
+        <field name="name">stock.move.form</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form" />
+        <field name="priority" eval="40" />
+        <field name="arch" type="xml">
+            <field name="procure_method" position="after">
+                <field name="warehouse_id" />
+                <field name="route_ids" />
+                <field name="rule_id" />
+                <field name="production_id" />
+                <field name="picking_id" />
+                <field name="created_production_id" />
+                <field name="raw_material_production_id" />
+                <field name="created_purchase_line_id" />
+                <field name="move_line_ids" />
+            </field>
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
           expr="//field[@name='move_dest_ids']/tree/field[@name='product_uom_qty']"
           position="attributes"
         >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
           expr="//field[@name='move_orig_ids']/tree/field[@name='product_uom_qty']"
           position="attributes"
         >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='weight']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute
-            name="options"
-          >{'uom_field': 'product_uom_id'}</attribute>
-                </xpath>
-            </field>
-        </record>
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='weight']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-        <record id="view_stock_move_tree_inherit" model="ir.ui.view">
-            <field name="name">stock.move.tree.inherit</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_picking_move_tree" />
-            <field name="priority" eval="1000" />
-            <field name="arch" type="xml">
-                <xpath
-          expr="//tree/field[@name='product_uom_qty']"
-          position="attributes"
-        >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
+    <record id="view_stock_move_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.move.tree.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_picking_move_tree" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
           expr="//tree/field[@name='reserved_availability']"
           position="attributes"
         >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath expr="//tree/field[@name='quantity_done']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-            </field>
-        </record>
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='quantity_done']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-        <record id="view_stock_move_line_operations_tree_inherit" model="ir.ui.view">
-            <field name="name">stock.move.line.operations.tree.inherit</field>
-            <field name="model">stock.move.line</field>
-            <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree" />
-            <field name="priority" eval="1000" />
-            <field name="arch" type="xml">
-                <xpath
-          expr="//tree/field[@name='reserved_uom_qty']"
-          position="attributes"
-        >
-                    <attribute name="widget">uom</attribute>
-                    <attribute
-            name="options"
-          >{'uom_field': 'product_uom_id'}</attribute>
-                </xpath>
-                <xpath expr="//tree/field[@name='qty_done']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute
-            name="options"
-          >{'uom_field': 'product_uom_id'}</attribute>
-                </xpath>
-            </field>
-        </record>
+    <record id="view_stock_move_line_operations_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.tree.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='reserved_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_done']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-        <record id="view_stock_move_nosuggest_operations_inherit" model="ir.ui.view">
-            <field name="name">stock.move.operations.nosuggest.form.inherit</field>
-            <field name="model">stock.move</field>
-            <field name="inherit_id" ref="stock.view_stock_move_nosuggest_operations" />
-            <field name="priority" eval="1000" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='quantity_done']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
-          expr="//field[@name='reserved_availability']"
-          position="attributes"
-        >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-            </field>
-        </record>
+    <record id="view_stock_move_nosuggest_operations_inherit" model="ir.ui.view">
+        <field name="name">stock.move.operations.nosuggest.form.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_stock_move_nosuggest_operations" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity_done']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-        <record id="stock_move_operations_raw_form_inherit" model="ir.ui.view">
-            <field name="inherit_id" ref="mrp.view_stock_move_operations_raw" />
-            <field name="name">stock.move.operations.raw.form.inherit</field>
-            <field name="type">form</field>
-            <field name="model">stock.move</field>
-            <field name="priority" eval="100" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='quantity_done']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
-          expr="//field[@name='reserved_availability']"
-          position="attributes"
-        >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-            </field>
-        </record>
+    <record id="stock_move_operations_raw_form_inherit" model="ir.ui.view">
+        <field name="inherit_id" ref="mrp.view_stock_move_operations_raw" />
+        <field name="name">stock.move.operations.raw.form.inherit</field>
+        <field name="type">form</field>
+        <field name="model">stock.move</field>
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity_done']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-        <record id="stock_move_operations_form_inherit" model="ir.ui.view">
-            <field name="inherit_id" ref="stock.view_stock_move_operations" />
-            <field name="name">stock.move.operations.form.inherit</field>
-            <field name="type">form</field>
-            <field name="model">stock.move</field>
-            <field name="priority" eval="100" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='quantity_done']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
-          expr="//field[@name='reserved_availability']"
-          position="attributes"
-        >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-            </field>
-        </record>
+    <record id="stock_move_operations_form_inherit" model="ir.ui.view">
+        <field name="inherit_id" ref="stock.view_stock_move_operations" />
+        <field name="name">stock.move.operations.form.inherit</field>
+        <field name="type">form</field>
+        <field name="model">stock.move</field>
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity_done']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
 
-    </data>
+</data>
 </odoo>

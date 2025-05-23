@@ -5,6 +5,19 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
+
+            <div name="button_box" position="inside">
+                <button
+          name="action_list_packed_products"
+          string="Packed Products"
+          type="object"
+          class="oe_stat_button"
+          icon="fa-cubes"
+          attrs="{'invisible': [('has_packages', '=', False)]}"
+        />
+            </div>
+
+
             <button name="button_validate" position="after">
 
                 <button
@@ -87,6 +100,7 @@
                         <tree>
                             <field name="sequence" widget="handle" />
                             <field name="is_pallet" invisible="1" />
+                            <field name="picking_state" invisible="1" />
                             <field name="display_name" />
                             <field name="number" />
                             <field name="package_type_id" />
@@ -96,6 +110,7 @@
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
                             <button
+                attrs="{'invisible': [('picking_state', 'in', ['done', 'cancel'])]}"
                 name="action_dissolve"
                 type="object"
                 icon="fa-trash"

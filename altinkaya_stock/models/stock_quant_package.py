@@ -41,6 +41,11 @@ class StockQuantPackage(models.Model):
         index=True,
         copy=False,
     )
+    picking_state = fields.Selection(
+        related="picking_id.state",
+        string="Picking State",
+    )
+
     is_pallet = fields.Boolean(
         string="Is Pallet",
         related="package_type_id.is_pallet",
