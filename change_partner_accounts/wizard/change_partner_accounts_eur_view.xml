@@ -32,7 +32,10 @@
                     res_model="change.partner.accounts.eur" src_model="res.partner"
                     view_mode="form" target="new" view_type="form"/> -->
 
-            <record id="action_res_partner_change_accounts_eur" model="ir.actions.act_window">
+            <record
+    id="action_res_partner_change_accounts_eur"
+    model="ir.actions.act_window"
+  >
         <field name="name">Change Accounts to EUR</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">change.partner.accounts.eur</field>

@@ -18,8 +18,7 @@ class ChangePartnerAccountsEUR(models.TransientModel):
                 record.change_accounts_to_eur()
                 record._compute_partner_currency()
                 self.env.cr.commit()  # pylint: disable=E8102
-            except Exception as e:  # noqa
-                raise e
+            except:  # noqa
                 errors.append(record.display_name)
         if len(errors) > 0:
             raise UserError(

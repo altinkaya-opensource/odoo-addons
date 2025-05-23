@@ -26,7 +26,10 @@
             </field>
         </record>
 
-            <record id="action_res_partner_change_accounts_try" model="ir.actions.act_window">
+            <record
+    id="action_res_partner_change_accounts_try"
+    model="ir.actions.act_window"
+  >
         <field name="name">Change Accounts to TRY</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">change.partner.accounts.try</field>
