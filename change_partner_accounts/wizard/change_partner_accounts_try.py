@@ -20,10 +20,11 @@ class ChangePartnerAccountsTRY(models.TransientModel):
         ):
             try:
                 record.change_accounts_to_try()
-                record._get_partner_currency()
+                record._compute_partner_currency()
                 self.env.cr.commit()  # pylint: disable=E8102
             except Exception as e:
                 # Log the error message for debugging
+                raise e
                 _logger.error(
                     "Error changing accounts for %s: %s", record.display_name, str(e)
                 )

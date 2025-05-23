@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 12:58+0000\n"
-"PO-Revision-Date: 2025-03-28 12:58+0000\n"
+"POT-Creation-Date: 2025-05-23 08:19+0000\n"
+"PO-Revision-Date: 2025-05-23 08:19+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Action is completed but there is an error happened for these partners\n"
-" %s\n"
+" %(errs)s"
 msgstr ""
 
 #. module: change_partner_accounts
@@ -54,6 +54,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
 msgid "Change Accounts"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_eur
+msgid "Change Accounts to EUR"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_try
+msgid "Change Accounts to TRY"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_usd
+msgid "Change Accounts to USD"
 msgstr ""
 
 #. module: change_partner_accounts
@@ -82,7 +97,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__changeset_change_ids
 #: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Αλλαγές σετ αλλαγών"
 
 #. module: change_partner_accounts
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__changeset_ids
@@ -103,11 +118,6 @@ msgid "Contact"
 msgstr "Επαφή"
 
 #. module: change_partner_accounts
-#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
-msgid "Contacts"
-msgstr ""
-
-#. module: change_partner_accounts
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__count_changesets
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_try__count_changesets
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_changesets
@@ -121,7 +131,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Μετρήστε τις αλλαγές που εκκρεμούν"
 
 #. module: change_partner_accounts
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changesets
@@ -129,7 +139,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Μετρήστε τα σύνολα αλλαγών που εκκρεμούν"
 
 #. module: change_partner_accounts
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
@@ -258,7 +268,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__smart_search
 #: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "Έξυπνη αναζήτηση"
 
 #. module: change_partner_accounts
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.view_partner_search_inherit
@@ -293,7 +303,7 @@ msgstr ""
 #: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Ο αριθμός των εκκρεμών αλλαγών αυτής της εγγραφής"
 
 #. module: change_partner_accounts
 #: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_eur__count_pending_changesets
@@ -301,7 +311,7 @@ msgstr ""
 #: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Ο αριθμός των εκκρεμών συνόλων αλλαγών αυτής της εγγραφής"
 
 #. module: change_partner_accounts
 #: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_eur__count_changesets
@@ -309,7 +319,7 @@ msgstr ""
 #: model:ir.model.fields,help:change_partner_accounts.field_change_partner_accounts_usd__count_changesets
 #: model:ir.model.fields,help:change_partner_accounts.field_res_partner__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Ο συνολικός αριθμός των αλλαγών αυτού του αρχείου"
 
 #. module: change_partner_accounts
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_eur_view
@@ -343,7 +353,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:change_partner_accounts.field_change_partner_accounts_usd__user_can_see_changeset
 #: model:ir.model.fields,field_description:change_partner_accounts.field_res_partner__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Ο χρήστης μπορεί να δει το σύνολο αλλαγών"
 
 #. module: change_partner_accounts
 #: model:ir.model,name:change_partner_accounts.model_change_partner_accounts_try

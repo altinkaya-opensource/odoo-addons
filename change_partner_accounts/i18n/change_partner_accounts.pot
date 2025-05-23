@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 12:58+0000\n"
-"PO-Revision-Date: 2025-03-28 12:58+0000\n"
+"POT-Creation-Date: 2025-05-23 08:18+0000\n"
+"PO-Revision-Date: 2025-05-23 08:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Action is completed but there is an error happened for these partners\n"
-" %s\n"
+" %(errs)s"
 msgstr ""
 
 #. module: change_partner_accounts
@@ -54,6 +54,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_try_view
 #: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_change_accounts_usd_view
 msgid "Change Accounts"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_eur
+msgid "Change Accounts to EUR"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_try
+msgid "Change Accounts to TRY"
+msgstr ""
+
+#. module: change_partner_accounts
+#: model:ir.actions.act_window,name:change_partner_accounts.action_res_partner_change_accounts_usd
+msgid "Change Accounts to USD"
 msgstr ""
 
 #. module: change_partner_accounts
@@ -100,11 +115,6 @@ msgstr ""
 #. module: change_partner_accounts
 #: model:ir.model,name:change_partner_accounts.model_res_partner
 msgid "Contact"
-msgstr ""
-
-#. module: change_partner_accounts
-#: model_terms:ir.ui.view,arch_db:change_partner_accounts.res_partner_balance_tree
-msgid "Contacts"
 msgstr ""
 
 #. module: change_partner_accounts
