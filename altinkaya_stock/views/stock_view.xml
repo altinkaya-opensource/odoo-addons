@@ -6,7 +6,6 @@
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
             <tree
-        string="Move Lines"
         create="0"
         default_order="id desc"
         action="action_open_reference"
