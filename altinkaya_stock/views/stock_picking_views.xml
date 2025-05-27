@@ -99,7 +99,7 @@
                     <field
             name="package_ids"
             widget="one2many"
-            attrs="{'readonly': [('state', 'not in', ['waiting', 'confirmed', 'assigned'])]}"
+            attrs="{'readonly': [('state', 'in', ['draft', 'cancel'])]}"
           >
                         <tree>
                             <field name="sequence" widget="handle" />
