@@ -126,10 +126,17 @@ class StockPicking(models.Model):
             if float_is_zero(qty_missing, precision_digits=precision_digits):
                 move_line.result_package_id = package.id
             else:  # Split the move line
+                # This added to work with done move lines also. Because there is
+                # a restriction that reserved_uom_qty should be 0.0 in done move lines.
+                if move_line.state == "done":
+                    skip_reserved = True
+                else:
+                    skip_reserved = False
+
                 move_line.write(
                     {
                         "qty_done": qty,
-                        "reserved_uom_qty": qty,
+                        "reserved_uom_qty": qty if not skip_reserved else 0.0,
                         "result_package_id": package.id,
                     }
                 )
@@ -137,7 +144,7 @@ class StockPicking(models.Model):
                 move_line.copy(
                     default={
                         "qty_done": qty_missing,
-                        "reserved_uom_qty": qty_missing,
+                        "reserved_uom_qty": qty_missing if not skip_reserved else 0.0,
                         "result_package_id": False,
                     }
                 )

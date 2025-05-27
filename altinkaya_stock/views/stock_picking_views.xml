@@ -114,7 +114,7 @@
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
                             <button
-                attrs="{'invisible': [('picking_state', 'in', ['done', 'cancel'])]}"
+                attrs="{'invisible': [('picking_state', 'in', ['draft', 'cancel'])]}"
                 name="action_dissolve"
                 type="object"
                 icon="fa-trash"
