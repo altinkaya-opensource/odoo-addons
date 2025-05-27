@@ -165,10 +165,10 @@
                                     <td>
                                         <h2>Üretilen Adet: </h2>
                                         <h6
-                      t-if="o.bom_id.tool_product_id"
+                      t-if="o.bom_id.tool_product_id and o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal' and sq.on_hand)"
                     >Kalıp Konumu:
                                             <span
-                        t-field="o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal') and o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal')[0].location_id.name"
+                        t-field="o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal' and sq.on_hand)[0].location_id"
                       />
                                         </h6>
                                     </td>
