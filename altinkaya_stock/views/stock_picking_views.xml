@@ -85,8 +85,13 @@
             </xpath>
 
 
-            <xpath expr="///page[@name='operations']/button[@name='action_put_in_pack']" position="attributes">
-                <attribute name="attrs">{'invisible': [('state', 'in', ('draft', 'cancel'))]}</attribute>
+            <xpath
+        expr="///page[@name='operations']/button[@name='action_put_in_pack']"
+        position="attributes"
+      >
+                <attribute
+          name="attrs"
+        >{'invisible': [('state', 'in', ('draft', 'cancel'))]}</attribute>
             </xpath>
 
             <xpath expr="//page[@name='operations']" position="after">
