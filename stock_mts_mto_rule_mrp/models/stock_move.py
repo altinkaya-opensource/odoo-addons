@@ -171,11 +171,13 @@ class StockMove(models.Model):
                 split_mto_move = mo.move_raw_ids.filtered(
                     lambda m: m.bom_line_id == move.bom_line_id
                     and m.procure_method == "make_to_order"
+                    and m.id
                     and m.id != move.id
                 )
                 split_mts_move = mo.move_raw_ids.filtered(
                     lambda m: m.bom_line_id == move.bom_line_id
                     and m.procure_method == "make_to_stock"
+                    and m.id
                     and m.id != move.id
                 )
                 if split_mts_move or split_mto_move:
