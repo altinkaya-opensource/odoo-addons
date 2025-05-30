@@ -87,5 +87,6 @@ class AccountMoveLine(models.Model):
             ):
                 line.currency_id = account_currency
                 line.invalidate_cache(["currency_rate"])
-                line.amount_currency = False
-                line._compute_amount_currency()
+                line.amount_currency = line.currency_id.round(
+                    line.balance * line.currency_rate
+                )
