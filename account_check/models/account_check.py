@@ -173,7 +173,7 @@ class AccountCheck(models.Model):
     def onchange_date(self):
         for rec in self:
             if (
-                -rec.issue_date
+                rec.issue_date
                 and rec.payment_date
                 and rec.issue_date > rec.payment_date
             ):
@@ -246,9 +246,10 @@ class AccountCheck(models.Model):
                             "Check Number (%(number)s) must be unique per "
                             "Owner and Bank!"
                             "\n* Check ids: %(ids)s"
-                        ),
-                        number=rec.number,
-                        ids=same_checks.ids,
+                        ) % {
+                            "number": rec.number,
+                            "ids": same_checks.ids,
+                        }
                     )
         return True
 
@@ -372,11 +373,19 @@ class AccountCheck(models.Model):
     def bank_debit(self):
         self.ensure_one()
         if self.state in ["holding"] and self.type == "third_check":
-            return self.action_create_debit_note(
+            receivable_account = self.first_partner_id.property_account_receivable_id
+            if not receivable_account:
+                raise ValidationError(_("Müşterinin bir alacak hesabı tanımlı değil."))
+
+            holding_account = self.company_id._get_check_account("holding")
+            return self.with_context(
+                debit_account_id=receivable_account.id,
+                credit_account_id=holding_account.id,
+            ).action_create_debit_note(
                 "debited",
                 "customer",
                 self.first_partner_id,
-                self.company_id._get_check_account("holding"),
+                account=holding_account,
             )
         # self.ensure_one()
         # if self.state in ['holding']:
@@ -393,11 +402,19 @@ class AccountCheck(models.Model):
     def bank_reject(self):
         self.ensure_one()
         if self.state in ["debited"] and self.type == "third_check":
-            return self.action_create_debit_note(
+            receivable_account = self.first_partner_id.property_account_receivable_id
+            if not receivable_account:
+                raise ValidationError(_("Müşterinin bir alacak hesabı tanımlı değil."))
+
+            rejected_account = self.company_id._get_check_account("rejected")
+            return self.with_context(
+                debit_account_id=receivable_account.id,
+                credit_account_id=rejected_account.id,
+            ).action_create_debit_note(
                 "bank_rejected",
                 "customer",
                 self.first_partner_id,
-                self.company_id._get_check_account("rejected"),
+                account=rejected_account,
             )
 
     @api.model
@@ -539,11 +556,18 @@ class AccountCheck(models.Model):
             self.state in ["holding", "bank_rejected", "rejected"]
             and self.type == "third_check"
         ):
-            return self.action_create_debit_note(
+            receivable_account = self.first_partner_id.property_account_receivable_id
+            if not receivable_account:
+                raise ValidationError(_("Müşterinin bir alacak hesabı (Receivable) tanımlı değil."))
+            
+            return self.with_context(
+                debit_account_id=receivable_account.id,
+                credit_account_id=self.company_id._get_check_account("rejected").id,
+            ).action_create_debit_note(
                 "customer_returned",
                 "customer",
                 self.first_partner_id,
-                self.company_id._get_check_account("rejected"),
+                account=None
             )
 
     @api.model
@@ -574,22 +598,29 @@ class AccountCheck(models.Model):
 
     def reject(self):
         self.ensure_one()
+        operation = self._get_operation(self.state, True)
+        partner = operation.partner_id
+
+        payable_account = partner.property_account_payable_id
+        if not payable_account:
+            raise ValidationError(_("Tedarikçinin borç hesabı tanımlı değil."))
+
         if self.state == "delivered":
-            operation = self._get_operation(self.state, True)
-            return self.action_create_debit_note(
-                "rejected",
-                "supplier",
-                operation.partner_id,
-                self.company_id._get_check_account("rejected"),
-            )
+            rejected_account = self.company_id._get_check_account("rejected")
         elif self.state == "handed":
-            operation = self._get_operation(self.state, True)
-            return self.action_create_debit_note(
-                "rejected",
-                "supplier",
-                operation.partner_id,
-                self.company_id._get_check_account("deferred"),
-            )
+            rejected_account = self.company_id._get_check_account("deferred")
+        else:
+            raise ValidationError(_("Geçersiz işlem durumu: %s" % self.state))
+
+        return self.with_context(
+            debit_account_id=payable_account.id,
+            credit_account_id=rejected_account.id,
+        ).action_create_debit_note(
+            "rejected",
+            "supplier",
+            partner,
+            account=rejected_account,
+        )
 
     def action_create_debit_note(self, operation, partner_type, partner, account):
         self.ensure_one()
@@ -597,6 +628,9 @@ class AccountCheck(models.Model):
         journal = self._context.get("journal_id")
         debit_account = self._context.get("debit_account_id")
         credit_account = self._context.get("credit_account_id")
+        
+        debit_account = self.env['account.account'].browse(debit_account)
+        credit_account = self.env['account.account'].browse(credit_account)
 
         if operation in ["rejected", "reclaimed"]:
             name = f'Rejected Check "{self.number}"'
@@ -618,7 +652,7 @@ class AccountCheck(models.Model):
         vals = self.prepare_new_operation_move_values(
             debit_account, credit_account, name, partner=partner
         )
-        vals["journal_id"] = journal.id or False
+        vals["journal_id"] = journal.id if journal else False
         vals["date"] = action_date
         move = self.env["account.move"].create(vals)
         move.action_post()
@@ -626,49 +660,48 @@ class AccountCheck(models.Model):
 
         return True
 
-    def prepare_new_operation_move_values(
-        self, debit_account, credit_account, name, partner=False
-    ):
+    def prepare_new_operation_move_values(self, debit_account, credit_account, name, partner=False):
         self.ensure_one()
         ref = name
         amount = self.amount
-        if self.currency_id == self.company_currency_id:
-            debit = amount if amount > 0.0 else 0.0
-            credit = -amount if amount < 0.0 else 0.0
-            amount_currency = 0.0
-            currency_id = False
-        else:
-            debit = amount > 0.0 and self.company_currency_id.round(amount) or 0.0
-            credit = amount < 0.0 and self.company_currency_id.round(-amount) or 0.0
-            amount_currency = amount
-            currency_id = self.currency_id.id
-        if self.company_currency_id != self.currency_id:
-            currency_id = self.currency_id.id
-        else:
-            currency_id = False
-            amount_currency = False
-        debit_line_vals = {
+        company_currency = self.company_currency_id
+        currency = self.currency_id
+
+        is_foreign_currency = currency != company_currency
+        amount_currency = amount if is_foreign_currency else 0.0
+        currency_id = currency.id  # ALWAYS SET – even if TRY
+
+        common_vals = {
             "date_maturity": self.payment_date,
             "name": name,
-            "debit": debit,
-            "credit": credit,
-            "partner_id": partner and partner.id or False,
-            "account_id": debit_account.id,
-            "amount_currency": amount_currency,
+            "partner_id": partner.id if partner else False,
             "currency_id": currency_id,
             "ref": ref,
         }
-        credit_line_vals = debit_line_vals.copy()
-        credit_line_vals["debit"] = debit_line_vals["credit"]
-        credit_line_vals["credit"] = debit_line_vals["debit"]
-        credit_line_vals["account_id"] = credit_account.id
-        credit_line_vals["amount_currency"] = -1 * debit_line_vals["amount_currency"]
+
+        debit_line_vals = common_vals.copy()
+        debit_line_vals.update({
+            "debit": float(amount),
+            "credit": 0.0,
+            "account_id": debit_account.id,
+            "amount_currency": amount_currency,
+        })
+
+        credit_line_vals = common_vals.copy()
+        credit_line_vals.update({
+            "debit": 0.0,
+            "credit": float(amount),
+            "account_id": credit_account.id,
+            "amount_currency": -amount_currency
+        })
 
         move_vals = {
-            "partner_id": partner and partner.id or False,
-            "ref": name,
-            "line_ids": [(0, False, debit_line_vals), (0, False, credit_line_vals)],
+            "partner_id": partner.id if partner else False,
+            "ref": ref,
+            "line_ids": [(0, 0, debit_line_vals), (0, 0, credit_line_vals)],
+            "move_type": "entry",
         }
+
         return move_vals
 
     def _recompute_operations_amount_currency(self):

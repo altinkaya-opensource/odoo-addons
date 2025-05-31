@@ -147,7 +147,7 @@
                     </group>
                 </group>
                 <group string="Operasyonlar">
-                    <field name="operation_ids" nolabel="1" readonly="1">
+                    <field name="operation_ids" nolabel="1" readonly="1" colspan="2">
                         <tree>
                             <field name="date" />
                             <field name="operation" />

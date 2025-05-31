@@ -16,7 +16,7 @@
         # account_payment_group
     ],
     "data": [
-        "data/account_payment_method_data.xml",
+        # "data/account_payment_method_data.xml",
         #'data/ir_actions_server_data.xml',
         "wizard/account_check_action_wizard_view.xml",
         "wizard/print_pre_numbered_checks_view.xml",

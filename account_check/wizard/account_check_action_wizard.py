@@ -30,12 +30,20 @@ class AccountCheckActionWizard(models.TransientModel):
     def onchange_journal_id(self):
         if self.journal_id:
             default_account = self.journal_id.default_account_id
-            if self.journal_id.type in ("bank", "cash"):
-                self.debit_account_id = default_account
-                self.credit_account_id = default_account
-            else:
-                self.debit_account_id = default_account
-                self.credit_account_id = default_account
+            self.debit_account_id = default_account
+
+        operation = self._context.get("action_type") or self.action_type
+
+        if operation in ("claim", "holding"):
+            self.credit_account_id = self.env.company._get_check_account("holding")
+        elif operation in ("reject", "customer_return"):
+            self.credit_account_id = self.env.company._get_check_account("rejected")
+        elif operation == "bank_debit":
+            self.credit_account_id = self.env.company._get_check_account("deferred")
+        elif operation == "bank_reject":
+            self.credit_account_id = self.env.company._get_check_account("rejected")
+        else:
+            self.credit_account_id = default_account
 
     def action_confirm(self):
         self.ensure_one()
