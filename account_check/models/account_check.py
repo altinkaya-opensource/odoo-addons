@@ -246,7 +246,8 @@ class AccountCheck(models.Model):
                             "Check Number (%(number)s) must be unique per "
                             "Owner and Bank!"
                             "\n* Check ids: %(ids)s"
-                        ) % {
+                        )
+                        % {
                             "number": rec.number,
                             "ids": same_checks.ids,
                         }
@@ -558,16 +559,15 @@ class AccountCheck(models.Model):
         ):
             receivable_account = self.first_partner_id.property_account_receivable_id
             if not receivable_account:
-                raise ValidationError(_("Müşterinin bir alacak hesabı (Receivable) tanımlı değil."))
-            
+                raise ValidationError(
+                    _("Müşterinin bir alacak hesabı (Receivable) tanımlı değil.")
+                )
+
             return self.with_context(
                 debit_account_id=receivable_account.id,
                 credit_account_id=self.company_id._get_check_account("rejected").id,
             ).action_create_debit_note(
-                "customer_returned",
-                "customer",
-                self.first_partner_id,
-                account=None
+                "customer_returned", "customer", self.first_partner_id, account=None
             )
 
     @api.model
@@ -610,7 +610,7 @@ class AccountCheck(models.Model):
         elif self.state == "handed":
             rejected_account = self.company_id._get_check_account("deferred")
         else:
-            raise ValidationError(_("Geçersiz işlem durumu: %s" % self.state))
+            raise ValidationError(_(f"Geçersiz işlem durumu: {self.state}"))
 
         return self.with_context(
             debit_account_id=payable_account.id,
@@ -628,9 +628,9 @@ class AccountCheck(models.Model):
         journal = self._context.get("journal_id")
         debit_account = self._context.get("debit_account_id")
         credit_account = self._context.get("credit_account_id")
-        
-        debit_account = self.env['account.account'].browse(debit_account)
-        credit_account = self.env['account.account'].browse(credit_account)
+
+        debit_account = self.env["account.account"].browse(debit_account)
+        credit_account = self.env["account.account"].browse(credit_account)
 
         if operation in ["rejected", "reclaimed"]:
             name = f'Rejected Check "{self.number}"'
@@ -660,7 +660,9 @@ class AccountCheck(models.Model):
 
         return True
 
-    def prepare_new_operation_move_values(self, debit_account, credit_account, name, partner=False):
+    def prepare_new_operation_move_values(
+        self, debit_account, credit_account, name, partner=False
+    ):
         self.ensure_one()
         ref = name
         amount = self.amount
@@ -680,20 +682,24 @@ class AccountCheck(models.Model):
         }
 
         debit_line_vals = common_vals.copy()
-        debit_line_vals.update({
-            "debit": float(amount),
-            "credit": 0.0,
-            "account_id": debit_account.id,
-            "amount_currency": amount_currency,
-        })
+        debit_line_vals.update(
+            {
+                "debit": float(amount),
+                "credit": 0.0,
+                "account_id": debit_account.id,
+                "amount_currency": amount_currency,
+            }
+        )
 
         credit_line_vals = common_vals.copy()
-        credit_line_vals.update({
-            "debit": 0.0,
-            "credit": float(amount),
-            "account_id": credit_account.id,
-            "amount_currency": -amount_currency
-        })
+        credit_line_vals.update(
+            {
+                "debit": 0.0,
+                "credit": float(amount),
+                "account_id": credit_account.id,
+                "amount_currency": -amount_currency,
+            }
+        )
 
         move_vals = {
             "partner_id": partner.id if partner else False,

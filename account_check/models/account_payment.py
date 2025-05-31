@@ -38,11 +38,11 @@ class AccountPayment(models.Model):
         " for when the bank credits all the checks in a single movement",
     )
     check_payment_type = fields.Selection(
-        [("received_third_check", "Received Third Check"),
-         ("delivered_third_check", "Delivered Third Check"),
-         ("issue_check", "Issue Check"),
+        [
+            ("received_third_check", "Received Third Check"),
+            ("delivered_third_check", "Delivered Third Check"),
+            ("issue_check", "Issue Check"),
         ],
-        string="Check Payment Type",
     )
     code = fields.Char(
         related="journal_id.code",
@@ -337,7 +337,7 @@ class AccountPayment(models.Model):
             _logger.info("Receive Check")
             check = self.create_check("third_check", operation, self.check_bank_id)
             vals["date_maturity"] = self.check_payment_date
-            vals["account_id"] = 314
+            vals["account_id"] = check.get_third_check_account().id
             vals["name"] = _("Receive check %s") % check.number
         elif (
             rec.check_payment_type == "delivered_third_check"
@@ -561,57 +561,71 @@ class AccountPayment(models.Model):
                 )
         else:
             return self.do_print_checks()
-    
+
     def _prepare_move_line_default_vals(self, write_off_line_vals=None):
         self.ensure_one()
         write_off_line_vals = write_off_line_vals or {}
         write_off_line_vals_list = write_off_line_vals or []
-        write_off_amount_currency = sum(x['amount_currency'] for x in write_off_line_vals_list)
-        write_off_balance = sum(x['balance'] for x in write_off_line_vals_list)
+        write_off_amount_currency = sum(
+            x["amount_currency"] for x in write_off_line_vals_list
+        )
+        write_off_balance = sum(x["balance"] for x in write_off_line_vals_list)
 
-        liquidity_amount_currency = self.amount if self.payment_type == 'inbound' else -self.amount
+        liquidity_amount_currency = (
+            self.amount if self.payment_type == "inbound" else -self.amount
+        )
         liquidity_balance = self.currency_id._convert(
             liquidity_amount_currency,
             self.company_id.currency_id,
             self.company_id,
             self.date,
         )
-        counterpart_amount_currency = -liquidity_amount_currency - write_off_amount_currency
+        counterpart_amount_currency = (
+            -liquidity_amount_currency - write_off_amount_currency
+        )
         counterpart_balance = -liquidity_balance - write_off_balance
         currency_id = self.currency_id.id
 
-        liquidity_line_name = ''.join(x[1] for x in self._get_liquidity_aml_display_name_list())
-        counterpart_line_name = ''.join(x[1] for x in self._get_counterpart_aml_display_name_list())
+        liquidity_line_name = "".join(
+            x[1] for x in self._get_liquidity_aml_display_name_list()
+        )
+        counterpart_line_name = "".join(
+            x[1] for x in self._get_counterpart_aml_display_name_list()
+        )
 
         liquidity_line_vals = {
-            'name': liquidity_line_name,
-            'date_maturity': self.date,
-            'amount_currency': liquidity_amount_currency,
-            'currency_id': currency_id,
-            'debit': liquidity_balance if liquidity_balance > 0 else 0.0,
-            'credit': -liquidity_balance if liquidity_balance < 0 else 0.0,
-            'partner_id': self.partner_id.id,
-            'account_id': self.journal_id.default_account_id.id,
+            "name": liquidity_line_name,
+            "date_maturity": self.date,
+            "amount_currency": liquidity_amount_currency,
+            "currency_id": currency_id,
+            "debit": liquidity_balance if liquidity_balance > 0 else 0.0,
+            "credit": -liquidity_balance if liquidity_balance < 0 else 0.0,
+            "partner_id": self.partner_id.id,
+            "account_id": self.journal_id.default_account_id.id,
         }
 
         counterpart_vals = {
-            'name': counterpart_line_name,
-            'date_maturity': self.date,
-            'amount_currency': counterpart_amount_currency,
-            'currency_id': currency_id,
-            'debit': counterpart_balance if counterpart_balance > 0 else 0.0,
-            'credit': -counterpart_balance if counterpart_balance < 0 else 0.0,
-            'partner_id': self.partner_id.id,
-            'account_id': self.destination_account_id.id,
+            "name": counterpart_line_name,
+            "date_maturity": self.date,
+            "amount_currency": counterpart_amount_currency,
+            "currency_id": currency_id,
+            "debit": counterpart_balance if counterpart_balance > 0 else 0.0,
+            "credit": -counterpart_balance if counterpart_balance < 0 else 0.0,
+            "partner_id": self.partner_id.id,
+            "account_id": self.destination_account_id.id,
         }
 
         check_vals = self.do_checks_operations(vals=counterpart_vals)
         if check_vals:
             counterpart_vals.update(check_vals)
 
-        check_payment_date = fields.first(self.check_ids).payment_date if self.check_ids else None
+        check_payment_date = (
+            fields.first(self.check_ids).payment_date if self.check_ids else None
+        )
         if self.check_type and (self.check_payment_date or check_payment_date):
-            counterpart_vals["date_maturity"] = self.check_payment_date or check_payment_date
+            counterpart_vals["date_maturity"] = (
+                self.check_payment_date or check_payment_date
+            )
 
         return [liquidity_line_vals, counterpart_vals] + write_off_line_vals_list
 
@@ -658,4 +672,3 @@ class AccountPayment(models.Model):
             )
         move.post()
         return res
-
