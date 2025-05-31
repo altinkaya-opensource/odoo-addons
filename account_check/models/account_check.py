@@ -173,7 +173,7 @@ class AccountCheck(models.Model):
     def onchange_date(self):
         for rec in self:
             if (
-                -rec.issue_date
+                rec.issue_date
                 and rec.payment_date
                 and rec.issue_date > rec.payment_date
             ):
@@ -326,6 +326,9 @@ class AccountCheck(models.Model):
         * value is 'from states'
         """
         self.ensure_one()
+        if self._context.get("skip_check_state_change"):
+            # si viene del contexto, no hacemos nada
+            return
         # if we do it from _add_operation only, not from a contraint of before
         # computing the value, we can just read it
         old_state = self.state
@@ -358,6 +361,8 @@ class AccountCheck(models.Model):
                     rec_id=self.id,
                 )
             )
+        else:
+            self = self.with_context(skip_check_state_change=True)
 
     def unlink(self):
         for rec in self:
