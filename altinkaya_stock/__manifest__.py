@@ -19,6 +19,7 @@
         "stock_inventory",
         "stock_available_unreserved",
         "stock_quant_package_dimension",
+        "product_harmonized_system",
     ],
     "data": [
         "wizard/wizard_change_picking_warehouse.xml",

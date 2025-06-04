@@ -59,6 +59,30 @@ class AccountMove(models.Model):
         string="Other invoices in reconciles",
         compute="_compute_other_inv_in_reconciles",
     )
+    
+    atr_number = fields.Integer(
+        string="ATR Number",
+        store=True,
+        copy=False,
+    )
+    
+    eur1_number = fields.Integer(
+        string="EUR1 Number",
+        store=True,
+        copy=False,
+    )
+    
+    origin_certf_number = fields.Integer(
+        string="Origin Number",
+        store=True,
+        copy=False,
+    )
+    
+    form_a_number = fields.Integer(
+        string="Form A Number",
+        store=True,
+        copy=False,
+    )
 
     @api.model
     def _compute_full_reconcile_ids(self):

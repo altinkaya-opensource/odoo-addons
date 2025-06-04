@@ -9,6 +9,9 @@
         <field name="priority" eval="999" />
         <field name="arch" type="xml">
 
+            <xpath expr="//notebook/page[@name='other_info']/group/group[@name='sale_info_group']" position="inside">
+                <field name="atr_code" attrs="{'invisible': [('atr_code', 'in', ['False','0',0])]}"/>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
           name="reconcile_and_currency_difference"

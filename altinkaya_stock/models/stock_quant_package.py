@@ -79,6 +79,28 @@ class StockQuantPackage(models.Model):
     volume_uom_id = fields.Many2one(
         default=lambda self: self.env.ref("uom.product_uom_cubic_meter")
     )
+    
+    hscode = fields.Char(
+        string="H.S. Code",
+        compute="_compute_hscode",
+        readonly=True,
+    )
+    
+    @api.depends("quant_ids", "quant_ids.product_id.categ_id.hs_code_id")
+    def _compute_hscode(self):
+        for record in self:
+            hs_codes = record.quant_ids.mapped("product_id.categ_id.hs_code_id")
+            hs_codes = [hs for hs in hs_codes if hs]
+            if not hs_codes:
+                record.hscode = False
+                continue
+            unique_hs_codes = set(hs_codes)
+            formatted = [
+                f"[{hs.hs_code}] {hs.description}"
+                for hs in unique_hs_codes
+            ]
+
+            record.hscode = " | ".join(formatted)
 
     @api.depends("picking_id", "picking_id.package_ids", "sequence")
     def _compute_number(self):
