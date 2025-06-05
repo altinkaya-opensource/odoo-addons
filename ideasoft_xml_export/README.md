@@ -22,7 +22,7 @@ Product Export, Stock Export, Price Export
 ## Installation
 
 1.  Add this module to your Odoo `addons` path.
-2.  Install dependencies: `sale`, `stock`, `product_logistics_uom`, `queue`.
+2.  Install dependencies: `sale`, `stock`, `product_logistics_uom`, `queue_job`.
 3.  Restart Odoo and install the "Ideasoft XML Export" module from the Apps menu.
 
 ## Configuration and Usage
