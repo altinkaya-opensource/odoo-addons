@@ -34,12 +34,7 @@ class AccountMoveLine(models.Model):
     purchase_line_amount = fields.Float(
         string="PO Unit", related="purchase_line_id.price_unit"
     )
-
     difference_checked = fields.Boolean(string="Currency Difference Checked")
-    difference_base_aml_id = fields.Many2one(
-        comodel_name="account.move.line", string="Difference Base Move"
-    )
-
     unit_discounted = fields.Float(
         string="Disc. Unit",
         compute="_compute_unit_discounted",

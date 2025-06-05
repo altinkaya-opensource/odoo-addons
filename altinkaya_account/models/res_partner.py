@@ -28,8 +28,8 @@ class ResPartner(models.Model):
                 "=",
                 self.env.company.currency_exchange_journal_id.id,
             ),
+            ("partner_id", "!=", False)
         ]
-
         result = [
             res["partner_id"][0]
             for res in AccountMoveLine.read_group(
@@ -270,9 +270,9 @@ class ResPartner(models.Model):
                                 "name": _("Currency Difference"),
                                 "product_uom_id": 1,
                                 "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
-                                "price_unit": round(
+                                "price_unit": abs(round(
                                     total_difference * tax_rate / (1 + rate / 100.0), 2
-                                ),
+                                )),
                                 "tax_ids": [(6, False, [taxes_dict[rate].id])],
                             }
                         )
@@ -287,9 +287,9 @@ class ResPartner(models.Model):
                             "name": _("Currency Difference"),
                             "product_uom_id": 1,
                             "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
-                            "price_unit": round(
+                            "price_unit": abs(round(
                                 total_difference / (1 + taxes_dict[20].amount / 100.0),
-                                2,
+                                2),
                             ),
                             "tax_ids": [(6, False, [taxes_dict[20].id])],
                         }
@@ -310,7 +310,11 @@ class ResPartner(models.Model):
                 )
 
                 difference_amls.write({"difference_checked": True})
-                dif_inv._onchange_invoice_line_ids()
+                dif_inv.write(
+                    {
+                        "currency_difference_line_ids": [(6, 0, difference_amls.ids)],
+                    }
+                )
                 return dif_inv
 
         return False
