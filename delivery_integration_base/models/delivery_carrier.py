@@ -333,5 +333,6 @@ class DeliveryCarrier(models.Model):
             )
             if today > deadline:
                 picking.delivery_state = "customer_delivered"
+                picking.date_delivered = fields.Datetime.now()
 
         return True
