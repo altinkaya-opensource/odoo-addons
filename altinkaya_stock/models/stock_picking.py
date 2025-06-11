@@ -133,6 +133,11 @@ class StockPicking(models.Model):
                 else:
                     skip_reserved = False
 
+                # Bypass the restriction of updating done move lines
+                move_line = move_line.with_context(
+                    bypass_stock_move_update_restriction=True
+                )
+
                 move_line.write(
                     {
                         "qty_done": qty,

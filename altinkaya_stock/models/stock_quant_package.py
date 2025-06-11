@@ -30,7 +30,7 @@ class StockQuantPackage(models.Model):
 
     sequence = fields.Integer(
         help="Sequence of the package in the picking.",
-        default=10,
+        default=100,
     )
 
     picking_id = fields.Many2one(
@@ -83,16 +83,12 @@ class StockQuantPackage(models.Model):
     @api.depends("picking_id", "picking_id.package_ids", "sequence")
     def _compute_number(self):
         for rec in self:
-            if rec.picking_id:
-                pick_packs = rec.picking_id.package_ids.filtered(
-                    lambda p: p.package_type_id == rec.package_type_id
-                )
-                position = list(pick_packs).index(rec)
-                position_in_picking = position + 1
-                rec.number = f"{rec.package_type_id.prefix_code}{position_in_picking}"
-
-            else:
-                rec.number = f"{rec.package_type_id.prefix_code}"
+            similar_packs = self.filtered(
+                lambda p: p.package_type_id == rec.package_type_id
+            )
+            position = list(similar_packs.sorted(key=lambda p: p.sequence)).index(rec)
+            position_in_picking = position + 1
+            rec.number = f"{rec.package_type_id.prefix_code}{position_in_picking}"
 
     @api.depends(
         "sequence",
