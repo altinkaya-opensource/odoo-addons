@@ -10,10 +10,17 @@
         <field name="arch" type="xml">
 
             <xpath expr="//notebook" position="inside">
-                <page name="reconcile_and_currency_difference" string="Reconcile and Currency Difference" attrs="{'invisible':[('journal_id','!=', 60)]}">
+                <page
+          name="reconcile_and_currency_difference"
+          string="Reconcile and Currency Difference"
+          attrs="{'invisible':[('journal_id','!=', 60)]}"
+        >
                     <label for="full_reconcile_ids" string="Reconciliations" />
                     <field name="full_reconcile_ids" nolabel="1" />
-                    <label for="other_inv_in_reconciles" string="Invoices in reconciliations" />
+                    <label
+            for="other_inv_in_reconciles"
+            string="Invoices in reconciliations"
+          />
                     <field name="other_inv_in_reconciles" nolabel="1" />
                 </page>
             </xpath>
@@ -27,7 +34,12 @@
             </field>
             <xpath expr="//label[@for='partner_id']" position="before">
                 <field name="carrier_id" />
-                <field name="address_contact_id" string="Teslimat Adresi" context="{'show_address': 1}" options="{'always_reload': True}" />
+                <field
+          name="address_contact_id"
+          string="Teslimat Adresi"
+          context="{'show_address': 1}"
+          options="{'always_reload': True}"
+        />
             </xpath>
 
             <xpath expr="//field[@name='narration']" position="replace">
@@ -38,7 +50,10 @@
             </xpath>
 
             <xpath expr="//field[@name='invoice_date']" position="after">
-                <field name="supplier_invoice_number" attrs="{'invisible': [('move_type','=','out_invoice')]}" />
+                <field
+          name="supplier_invoice_number"
+          attrs="{'invisible': [('move_type','=','out_invoice')]}"
+        />
             </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="after">
@@ -46,7 +61,10 @@
                 <field name="total_balance" string="Total Balance" />
             </xpath>
 
-            <xpath expr="/form/sheet/notebook/page[@name='other_info']" position="after">
+            <xpath
+        expr="/form/sheet/notebook/page[@name='other_info']"
+        position="after"
+      >
                 <page string="Payments">
                     <field name="payment_ids">
                         <tree>
@@ -62,24 +80,40 @@
                 </page>
             </xpath>
 
-            <xpath expr="//group[@name='sale_info_group']/field[@name='ref']" position="after">
+            <xpath
+        expr="//group[@name='sale_info_group']/field[@name='ref']"
+        position="after"
+      >
                 <field name="delivery_ref_no" />
             </xpath>
 
             <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
                 <field name="move_type" invisible="1" />
-                <field name="purchase_line_amount" attrs="{'invisible': [('move_type','not in',['in_invoice', 'in_refund'])]}" />
+                <field
+          name="purchase_line_amount"
+          attrs="{'invisible': [('move_type','not in',['in_invoice', 'in_refund'])]}"
+        />
                 <field name="partner_order_ref" />
                 <field name="moves_picking_ref" />
                 <field name="lot_ids" widget="many2many_tags" />
             </xpath>
 
-            <xpath expr="//field[@name='invoice_line_ids']//field[@name='price_unit']" position="after">
+            <xpath
+        expr="//field[@name='invoice_line_ids']//field[@name='price_unit']"
+        position="after"
+      >
                 <field name="unit_discounted" />
             </xpath>
 
             <xpath expr="//button[@name='button_cancel']" position="after">
-                <button name="action_match_einvoice_lines_picking" type="object" class="oe_highlight" string="Match Picking Lines" attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}" groups="account.group_account_invoice" />
+                <button
+          name="action_match_einvoice_lines_picking"
+          type="object"
+          class="oe_highlight"
+          string="Match Picking Lines"
+          attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}"
+          groups="account.group_account_invoice"
+        />
 
             </xpath>
 
@@ -94,14 +128,34 @@
 
             <xpath expr="//filter[@name='late']" position="after">
                 <separator />
-                <filter string="İhracat" name="Export" domain="['&amp;','&amp;',('state','!=','draft'),('state','!=','cancel'),('fiscal_position_id','ilike','İHRACAT')]" />
-                <filter string="Yurtiçi Normal TL" name="TRNormalTL" domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','=',31),('state','!=','draft'),('state','!=','cancel')]" />
-                <filter string="Yurtiçi Normal YP" name="TRNormalYP" domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','!=',31),('state','!=','draft'),('state','!=','cancel')]" />
-                <filter string="Yurtiçi Tevkifat" name="TRTevkifat" domain="['&amp;', '&amp;', ('fiscal_position_id', 'ilike', 'tevkifat'), ('state', '!=', 'draft'), ('state', '!=', 'cancel')]" />
+                <filter
+          string="İhracat"
+          name="Export"
+          domain="['&amp;','&amp;',('state','!=','draft'),('state','!=','cancel'),('fiscal_position_id','ilike','İHRACAT')]"
+        />
+                <filter
+          string="Yurtiçi Normal TL"
+          name="TRNormalTL"
+          domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','=',31),('state','!=','draft'),('state','!=','cancel')]"
+        />
+                <filter
+          string="Yurtiçi Normal YP"
+          name="TRNormalYP"
+          domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','!=',31),('state','!=','draft'),('state','!=','cancel')]"
+        />
+                <filter
+          string="Yurtiçi Tevkifat"
+          name="TRTevkifat"
+          domain="['&amp;', '&amp;', ('fiscal_position_id', 'ilike', 'tevkifat'), ('state', '!=', 'draft'), ('state', '!=', 'cancel')]"
+        />
             </xpath>
 
             <xpath expr="//filter[@name='duedate']" position="after">
-                <filter string="Mali Koşul" name="fiscal_pos" context="{'group_by':'fiscal_position_id'}" />
+                <filter
+          string="Mali Koşul"
+          name="fiscal_pos"
+          context="{'group_by':'fiscal_position_id'}"
+        />
             </xpath>
 
         </field>
