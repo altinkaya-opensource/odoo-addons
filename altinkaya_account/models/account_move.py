@@ -311,7 +311,9 @@ class AccountMove(models.Model):
     def _calculate_hs_code_distribution(self):
         self.ensure_one()
         uom_kg = self.env.ref("uom.product_uom_kgm")
-        package_ids = self.picking_ids.mapped("package_ids")
+        package_ids = self.picking_ids.mapped("package_ids").filtered(
+            lambda p: not p.is_pallet
+        )
         hs_code_distribution = {}
 
         total_calculated_weight = sum(package_ids.mapped("weight")) or 1.0
