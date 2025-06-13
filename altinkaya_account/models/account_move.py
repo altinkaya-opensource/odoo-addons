@@ -184,7 +184,9 @@ class AccountMove(models.Model):
                 reconciled_lines = invoice.mapped(
                     "currency_difference_line_ids.full_reconcile_id.reconciled_line_ids"
                 )
-                old_difference_lines = reconciled_lines.filtered(lambda aml: aml.journal_code == "KRFRK")
+                old_difference_lines = reconciled_lines.filtered(
+                    lambda aml: aml.journal_code == "KRFRK"
+                )
 
                 aml_to_reconcile = reconciled_lines - old_difference_lines
 
@@ -306,3 +308,46 @@ class AccountMove(models.Model):
                 for line in invoice.currency_difference_line_ids:
                     line.write({"difference_checked": False})
         return super().unlink()
+
+    def _calculate_hs_code_distribution(self):
+        
+        self.ensure_one()
+        uom_kg = self.env.ref("uom.product_uom_kgm")
+        package_ids = self.picking_ids.mapped("package_ids")
+        hs_code_distribution = {}
+
+        total_calculated_weight = sum(package_ids.mapped("weight")) or 1.0
+        total_gross_weight = sum(package_ids.mapped("shipping_weight")) or 1.0
+
+        hs_codes = package_ids.mapped("quant_ids.product_id.categ_id.hs_code_id")
+        index = 1
+
+        for hs_code in hs_codes:
+            hs_code_quants = package_ids.quant_ids.filtered(
+                lambda q: q.product_id.categ_id.hs_code_id == hs_code
+            )
+            quant_totals = 0.0
+            for quant in hs_code_quants:
+                quant_totals += quant.product_id.weight_uom_id._compute_quantity(
+                    qty=quant.quantity * quant.product_id.product_weight,
+                    to_unit=uom_kg,
+                    round=False,
+                )
+
+            percentage = (
+                (quant_totals / total_calculated_weight * 100)
+                if total_calculated_weight
+                else 0.0
+            )
+
+            gross_distribution = (
+                (quant_totals / total_gross_weight * 100) if total_gross_weight else 0.0
+            )
+
+            hs_code_distribution[hs_code] = {
+                "percentage": percentage,
+                "gross_distribution": gross_distribution,
+                "index": index,
+            }
+            index += 1
+        return hs_code_distribution
