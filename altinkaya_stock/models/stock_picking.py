@@ -83,6 +83,21 @@ class StockPicking(models.Model):
         help="Packages related to this picking.",
         copy=True,
     )
+    
+    def _compute_packing_string(self):
+        """
+        Computes the packing string based on the packages in the picking.
+        """
+        nc = len(self.package_ids.filtered(lambda p: not p.is_pallet))
+        np = len(self.package_ids.filtered(lambda p: p.is_pallet))
+        
+        if self.package_ids:
+            if np > 0:
+                return f"Total {nc} Cup(s) in {np} Pallet(s)"
+            return f"Total {nc} Cup(s)"
+        else:
+            return False
+            
 
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
