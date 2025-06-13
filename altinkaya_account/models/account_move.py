@@ -1,9 +1,8 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo import Command
 
 
 class AccountMove(models.Model):
@@ -310,7 +309,6 @@ class AccountMove(models.Model):
         return super().unlink()
 
     def _calculate_hs_code_distribution(self):
-        
         self.ensure_one()
         uom_kg = self.env.ref("uom.product_uom_kgm")
         package_ids = self.picking_ids.mapped("package_ids")
