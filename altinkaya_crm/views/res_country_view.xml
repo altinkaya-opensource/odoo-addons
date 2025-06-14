@@ -7,17 +7,10 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='state_ids']" position="after">
-                <group col="2">
+                <group col="2" name="sales_documents">
                     <group string="Sales">
                         <field name="sale_team_id" />
                         <field name="sale_person_ids" widget="many2many_tags" />
-                    </group>
-                    <group string="Documents">
-                        <field name="print_atr" />
-                        <field name="print_eur1" />
-                        <field name="print_origin" />
-                        <field name="print_uae" />
-                        <field name="print_form_a" />
                     </group>
                 </group>
             </xpath>
