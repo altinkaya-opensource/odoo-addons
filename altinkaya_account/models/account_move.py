@@ -334,14 +334,14 @@ class AccountMove(models.Model):
                     round=False,
                 )
 
-            percentage = (
+            percentage = round(
                 (quant_totals / total_calculated_weight * 100)
                 if total_calculated_weight
                 else 0.0
             )
 
             gross_distribution = (
-                (quant_totals / total_gross_weight * 100) if total_gross_weight else 0.0
+                total_gross_weight * (percentage / 100.0) if total_gross_weight else 0.0
             )
 
             hs_code_distribution[hs_code] = {
