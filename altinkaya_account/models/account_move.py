@@ -65,36 +65,6 @@ class AccountMove(models.Model):
         compute="_compute_other_inv_in_reconciles",
     )
 
-    atr_number = fields.Char(
-        string="ATR No.",
-        store=True,
-        copy=False,
-    )
-
-    eur1_number = fields.Char(
-        string="EUR1 No.",
-        store=True,
-        copy=False,
-    )
-
-    origin_number = fields.Char(
-        string="COO No.",
-        store=True,
-        copy=False,
-    )
-
-    uae_number = fields.Char(
-        string="UAE No.",
-        store=True,
-        copy=False,
-    )
-
-    form_a_number = fields.Char(
-        string="Form-A No.",
-        store=True,
-        copy=False,
-    )
-
     @api.model
     def _compute_full_reconcile_ids(self):
         for invoice in self:
