@@ -80,6 +80,16 @@
                 </page>
             </xpath>
 
+            <xpath expr="/form/sheet/notebook/page[@name='other_info']/group/group[@name='accounting_info_group']" position="after">
+                <group name="certificates" string="Certificates">
+                    <field name="atr_number"/>
+                    <field name="eur1_number"/>
+                    <field name="origin_number"/>
+                    <field name="uae_number"/>
+                    <field name="form_a_number"/>
+                </group>
+            </xpath>
+
             <xpath
         expr="//group[@name='sale_info_group']/field[@name='ref']"
         position="after"
