@@ -64,31 +64,31 @@ class AccountMove(models.Model):
         string="Other invoices in reconciles",
         compute="_compute_other_inv_in_reconciles",
     )
-    
+
     atr_number = fields.Char(
         string="ATR No.",
         store=True,
         copy=False,
     )
-    
+
     eur1_number = fields.Char(
         string="EUR1 No.",
         store=True,
         copy=False,
     )
-    
+
     origin_number = fields.Char(
         string="COO No.",
         store=True,
         copy=False,
     )
-    
+
     uae_number = fields.Char(
         string="UAE No.",
         store=True,
         copy=False,
     )
-    
+
     form_a_number = fields.Char(
         string="Form-A No.",
         store=True,

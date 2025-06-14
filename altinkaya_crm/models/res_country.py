@@ -15,29 +15,29 @@ class ResCountry(models.Model):
     sale_person_ids = fields.Many2many(
         "res.users",
         string="Sales Persons",
-        help="Sales Persons for this country", 
+        help="Sales Persons for this country",
     )
-    
+
     print_atr = fields.Boolean(
         string="ATR",
         store=True,
     )
-    
+
     print_eur1 = fields.Boolean(
         string="EUR1",
         store=True,
     )
-    
+
     print_origin = fields.Boolean(
         string="COO",
         store=True,
     )
-    
+
     print_uae = fields.Boolean(
         string="UAE",
         store=True,
     )
-    
+
     print_form_a = fields.Boolean(
         string="Form-A",
         store=True,
