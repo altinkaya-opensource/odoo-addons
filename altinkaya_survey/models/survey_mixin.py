@@ -5,8 +5,6 @@ import base64
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons.http_routing.models.ir_http import slug
-
 model_field_mapping = {
     "sale.order": "sale_id",
     "account.move": "invoice_id",
@@ -100,16 +98,15 @@ class SurveyMapping(models.AbstractModel):
             survey_user_input = self.env["survey.user_input"].create(vals)
 
         survey_url = (
-            f"{base_url}/{survey_user_input.partner_id.lang or 'tr_TR'}"
-            f"/survey/fill/{slug(survey)}/{survey_user_input.access_token}"
+            f"{base_url}/{survey_user_input.partner_id.lang or "tr_TR"}/survey/"
+            f"{survey.access_token}/{survey_user_input.access_token}"
         )
 
         # Read or create shortened url for user_input
         if survey.url_shortener_id and not survey_user_input.shortened_url:
             survey_user_input.write(
                 {
-                    "shortened_url": survey.url_shortener_id.shorten_url(survey_url)
-                    or survey_url,
+                    "shortened_url": survey.url_shortener_id.shorten_url(survey_url),
                 }
             )
             self.env.cr.commit()  # pylint: disable=E8102
@@ -121,7 +118,7 @@ class SurveyMapping(models.AbstractModel):
         for rec in self:
             barcode = self.env["ir.actions.report"].barcode(
                 "QR",
-                value=rec.sudo().survey_url,  # avoid access rights issues
+                value=rec.survey_url,
                 width=300,
                 height=300,
             )

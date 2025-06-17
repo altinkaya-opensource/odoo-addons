@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="survey_debranding" inherit_id="survey.layout" name="Survey Layout">
-        <xpath
-      expr="//div[@class='container mt16 mb8']/div[@class='float-right']"
-      position="replace"
-    />
 
-        <xpath
-      expr="//div[@class='container mt16 mb8']/div[@class='float-left text-muted']"
-      position="attributes"
-    >
-            <attribute name="class">text-muted text-center</attribute>
+        <xpath expr="//div[hasclass('o_survey_brand_message')]" position="attributes">
+            <attribute name="class">d-none</attribute>
         </xpath>
+
     </template>
 </odoo>

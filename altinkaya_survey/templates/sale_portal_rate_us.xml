@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="sale_portal_rate_us" inherit_id="sale.sale_order_portal_template" name="Sale Portal Rate Us">
+
+        <xpath expr="//li[@t-if='sale_order.user_id']" position="after">
+            <li t-if="sale_order.survey_url" class="list-group-item d-grid align-content-start">
+                <div class="btn-group flex-grow-1 me-2 mb-2">
+                    <a t-att-href="sale_order.survey_url" target="_blank" class="btn btn-success btn-block">
+                        <i class="fa fa-star"/>
+                        Rate your experience
+                    </a>
+                </div>
+            </li>
+        </xpath>
+
+    </template>
+</odoo>

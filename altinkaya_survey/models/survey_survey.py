@@ -19,7 +19,6 @@ class SurveySurvey(models.Model):
         string="Invoice Survey",
         help="If checked, this survey will be used as default survey for invoices.",
     )
-
     # default_lang_id = fields.Many2one(
     #     comodel_name="res.lang",
     #     string="Default Language",
@@ -58,58 +57,8 @@ class SurveySurvey(models.Model):
                 raise UserError(
                     _(
                         "There is already a survey with default sale survey "
-                        "checked (%(title)s). Please uncheck it before "
-                        "checking this survey.",
+                        "checked (%(title)s). Please uncheck it before checking "
+                        "this survey.",
                         title=exist_default.title,
                     )
                 )
-
-    @api.depends(
-        "user_input_ids.state",
-        "user_input_ids.test_entry",
-        "user_input_ids.scoring_percentage",
-        "user_input_ids.scoring_success",
-    )
-    def _compute_survey_statistic(self):
-        # super()._compute_survey_statistic()
-        default_vals = {
-            "answer_count": 0,
-            "answer_done_count": 0,
-            "success_count": 0,
-            "answer_score_avg": 0.0,
-            "success_ratio": 0.0,
-        }
-        stat = dict(
-            (cid, dict(default_vals, answer_score_avg_total=0.0)) for cid in self.ids
-        )
-        UserInput = self.env["survey.user_input"]
-        base_domain = [("survey_id", "in", self.ids)]
-
-        read_group_res = UserInput._read_group(
-            base_domain,
-            ["survey_id", "state"],
-            ["survey_id", "state", "scoring_percentage", "scoring_success"],
-            lazy=False,
-        )
-        for item in read_group_res:
-            stat[item["survey_id"][0]]["answer_count"] += item["__count"]
-            stat[item["survey_id"][0]]["answer_score_avg_total"] += item[
-                "scoring_percentage"
-            ]
-            if item["state"] == "done":
-                stat[item["survey_id"][0]]["answer_done_count"] += item["__count"]
-            if item["scoring_success"]:
-                stat[item["survey_id"][0]]["success_count"] += item["__count"]
-
-        for survey_stats in stat.values():
-            avg_total = survey_stats.pop("answer_score_avg_total")
-            survey_stats["answer_score_avg"] = avg_total / (
-                survey_stats["answer_done_count"] or 1
-            )
-            survey_stats["success_ratio"] = (
-                survey_stats["success_count"]
-                / (survey_stats["answer_done_count"] or 1.0)
-            ) * 100
-
-        for survey in self:
-            survey.update(stat.get(survey._origin.id, default_vals))

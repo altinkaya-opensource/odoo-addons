@@ -63,7 +63,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__answer_type
 msgid "Answer Type"
-msgstr ""
+msgstr "Тип ответа"
 
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_survey_mapping
@@ -80,7 +80,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Набор изменений Изменения"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__changeset_ids
@@ -92,13 +92,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Наборы изменений"
 
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_res_partner
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__partner_id
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_changesets
@@ -110,7 +110,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Наборы изменений"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_pending_changeset_changes
@@ -122,7 +122,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Подсчет ожидающих изменений набора изменений"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_pending_changesets
@@ -134,7 +134,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Подсчет ожидающих изменений"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__general_answer
@@ -180,7 +180,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "Запись журнала"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_question__star_count
@@ -207,7 +207,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__question_type
 msgid "Question Type"
-msgstr ""
+msgstr "Тип вопроса"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__reconciliation_replied
@@ -228,7 +228,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Заказ на продажу"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__shortened_url
@@ -250,7 +250,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__smart_search
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "Умный поиск"
 
 #. module: altinkaya_survey
 #: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
@@ -276,7 +276,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_survey_survey
 msgid "Survey"
-msgstr ""
+msgstr "Опрос"
 
 #. module: altinkaya_survey
 #: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_response_line_tree
@@ -303,7 +303,7 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_survey_question
 msgid "Survey Question"
-msgstr ""
+msgstr "Вопрос опроса"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_url
@@ -330,12 +330,12 @@ msgstr ""
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_survey_user_input
 msgid "Survey User Input"
-msgstr ""
+msgstr "Ввод данных пользователем опроса"
 
 #. module: altinkaya_survey
 #: model:ir.model,name:altinkaya_survey.model_survey_user_input_line
 msgid "Survey User Input Line"
-msgstr ""
+msgstr "Строка исходных данных пользователя опроса"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_ids
@@ -359,7 +359,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Количество ожидающих изменений этой записи"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,help:altinkaya_survey.field_account_move__count_pending_changesets
@@ -371,7 +371,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Количество ожидающих изменений этой записи"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,help:altinkaya_survey.field_account_move__count_changesets
@@ -383,7 +383,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_changesets
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Общее количество наборов изменений этой записи"
 
 #. module: altinkaya_survey
 #. odoo-python
@@ -416,7 +416,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Пользователь может видеть набор изменений"
 
 #. module: altinkaya_survey
 #: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
