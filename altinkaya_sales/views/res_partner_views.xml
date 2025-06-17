@@ -17,8 +17,20 @@
 			<field name="name">altinkaya_telfax.partner.form</field>
 			<field name="model">res.partner</field>
 			<field name="inherit_id" ref="base.view_partner_form" />
-			<field eval="12445" name="priority" />
+			<field eval="100" name="priority" />
 			<field name="arch" type="xml">
+
+				<xpath expr="//button[@name='open_route_map']" position="replace">
+					<button
+          type="object"
+          name="action_view_v_cari_urun"
+          class="oe_stat_button"
+          icon="fa-code-fork"
+          attrs="{'invisible': [('v_cari_urun_count', '=', 0)]}"
+        >
+						<field name="v_cari_urun_count" widget="statinfo" string="Products" />
+					</button>
+				</xpath>
 
 				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
 					<field name="z_contact_name" />
