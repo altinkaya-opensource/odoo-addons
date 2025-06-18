@@ -2,11 +2,11 @@
 <odoo>
     <record id="sale_view_order_form_fedex" model="ir.ui.view">
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="inherit_id" ref="delivery.view_order_form_with_carrier" />
         <field name="arch" type="xml">
-            <field name="state" position="after">
-                <field name="customs_value" invisible="1" />
-                <field name="customs_value_currency_id" invisible="1" />
+            <field name="incoterm" position="after">
+                <field name="fedex_shipment_purpose" />
+                <field name="fedex_customer_number" />
             </field>
         </field>
     </record>

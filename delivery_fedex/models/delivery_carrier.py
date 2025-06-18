@@ -29,19 +29,6 @@ FEDEX_CARRIER_CODE = [
     ("FXCC", "FedEx Custom Critical"),
 ]
 
-FEDEX_SHIPMENT_PURPOSES = [
-    ("SOLD", "Sold"),
-    ("NOT_SOLD", "Not Sold"),
-    ("PERSONAL_EFFECTS", "Personal Effects"),
-    ("GIFT", "Gift"),
-    ("SAMPLE", "Sample"),
-    ("REPAIR_AND_RETURN", "Repair and Return"),
-    ("RETURN_AND_REPAIR", "Return and Repair"),
-    ("COMMERCIAL", "Commercial"),
-    ("PERSONAL_USE", "Personal Use"),
-]
-
-
 FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
@@ -63,18 +50,8 @@ class DeliveryCarrier(models.Model):
 
     service_type = fields.Selection(selection=FEDEX_SERVICES)
     pickup_type = fields.Selection(selection=FEDEX_PICKUP_TYPES)
-    payment_type = fields.Selection(
-        selection=FEDEX_PAYMENT_TYPES,
-    )
-    document_shipment = fields.Boolean()
-    shipment_purpose = fields.Selection(
-        selection=FEDEX_SHIPMENT_PURPOSES,
-    )
     customs_payment_type = fields.Selection(
         selection=FEDEX_PAYMENT_TYPES,
-    )
-    customer_fedex_number = fields.Integer(
-        selection=FEDEX_PAYMENT_TYPES, string="Customer FedEx Number"
     )
 
     carrier_code = fields.Selection(selection=FEDEX_CARRIER_CODE)
@@ -100,25 +77,26 @@ class DeliveryCarrier(models.Model):
 
         return contact
 
-    def _prepare_fedex_packages_data(self, pickings, dummy_dimensions=False):
+    def _prepare_fedex_packages_data(self, order):
         packages = []
 
-        dummy_dimensions = {"length": 10, "width": 10, "height": 10, "units": "CM"}
+        if order.picking_ids:
+            pass
 
-        for pack in pickings:
-            packages.append(
-                {
-                    "weight": {"units": "KG", "value": pack._get_estimated_weight()},
-                    "dimensions": dummy_dimensions
-                    if dummy_dimensions
-                    else {
-                        "length": pack.package_type_id.packaging_length / 10,
-                        "width": pack.package_type_id.width / 10,
-                        "height": pack.package_type_id.height / 10,
-                        "units": "CM",
-                    },
-                }
-            )
+        else:
+            # Create dummy pickings with order's deci
+            deci = order.sale_deci
+            average_pack_weight = 30
+            package_count = (
+                int(deci // average_pack_weight) or 1
+            )  # At least one package
+
+            for _ in range(package_count):
+                packages.append(
+                    {
+                        "weight": {"units": "KG", "value": average_pack_weight},
+                    }
+                )
 
         return packages
 
@@ -229,28 +207,27 @@ class DeliveryCarrier(models.Model):
                 "shipper": {"address": self._prepare_fedex_address(company_id)},
                 "recipient": {"address": self._prepare_fedex_address(partner_id)},
                 "serviceType": self.service_type,
-                "preferredCurrency": company_id.currency_id.display_name,
+                "preferredCurrency": self.currency_id.name,
                 "rateRequestType": ["PREFERRED"],
                 "pickupType": self.pickup_type,
                 "packagingType": "YOUR_PACKAGING",
                 "shipDateStamp": delivery_date.strftime("%Y-%m-%d"),
-                "documentShipment": self.document_shipment,
                 "requestedPackageLineItems": [],
             },
             "carrierCodes": [self.carrier_code],
         }
 
-    def _prepare_sales_rate_data(self, pickings):
+    def _prepare_sales_rate_data(self, order):
         data = self._prepare_base_rate_data(
-            pickings.company_id, pickings.partner_id, pickings.expected_date
+            order.company_id, order.partner_id, order.expected_date
         )
 
         data["requestedShipment"]["requestedPackageLineItems"] = (
-            self._prepare_fedex_packages_data(pickings, dummy_dimensions=True)
+            self._prepare_fedex_packages_data(order)
         )
-        data["requestedShipment"]["customsClearanceDetail"] = (
-            self._prepare_sales_customs_data(pickings)
-        )
+        # data["requestedShipment"]["customsClearanceDetail"] = (
+        #     self._prepare_sales_customs_data(pickings)
+        # )
 
         return data
 
@@ -365,11 +342,13 @@ class DeliveryCarrier(models.Model):
 
         return base_data
 
-    def fedex_rate_shipment(self, account_move):
+    def fedex_rate_shipment(self, order):
         fedex_request = FedExRequest(
-            client_id=self.fedex_client_id, client_secret=self.fedex_client_secret
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            prod=self.prod_environment,
         )
-        payload = self._prepare_sales_rate_data(account_move)
+        payload = self._prepare_sales_rate_data(order)
         rate_data = fedex_request.get_rates(payload)
 
         result = {
@@ -383,7 +362,9 @@ class DeliveryCarrier(models.Model):
 
     def fedex_account_rate_shipment(self, account_move):
         fedex_request = FedExRequest(
-            client_id=self.fedex_client_id, client_secret=self.fedex_client_secret
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            prod=self.prod_environment,
         )
         payload = self._prepare_account_rate_data(account_move)
         rate_data = fedex_request.get_rates(payload)
@@ -400,7 +381,9 @@ class DeliveryCarrier(models.Model):
 
     def fedex_account_send_shipment(self, pickings):
         fedex_request = FedExRequest(
-            client_id=self.fedex_client_id, client_secret=self.fedex_client_secret
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            prod=self.prod_environment,
         )
         payload = self._prepare_shipment_data(pickings)
         shipment_data = fedex_request.create_shipment(payload)["output"][
