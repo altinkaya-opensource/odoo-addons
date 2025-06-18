@@ -88,14 +88,14 @@
     name="altinkaya_reports.report_picking_altinkayaH"
     file="altinkaya_reports.report_picking_altinkayaH"
   />
-            <report
+            <!-- <report
     id="list_mrp_report"
     string="Üretim Listesi"
     model="mrp.production"
     report_type="qweb-pdf"
     file="altinkaya_reports.report_list_mrp_report_data"
     name="altinkaya_reports.report_list_mrp_report_data"
-  />
+  /> -->
             <report
     id="list_carrier_report"
     string="Kargo Teslim"
