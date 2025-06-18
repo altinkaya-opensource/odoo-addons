@@ -162,6 +162,11 @@ class Partner(models.Model):
             .search([("code", "in", skip_journal_codes)])
             .mapped("id")
         )
+        currency_diff_invoice_journal = (
+            self.env["account.journal"]
+            .search([("code", "=", "KFARK")], limit=1)
+            .id
+        )
         self.env.cr.execute(
             query,
             (
@@ -188,7 +193,10 @@ class Partner(models.Model):
                 ## pass move line if item in currency difference journal
                 continue
             seq += 1
-            if sl["account_id"] in currency_difference_accounts:
+            if (
+                sl["account_id"] in currency_difference_accounts
+                or sl["journal_id"] == currency_diff_invoice_journal
+            ):
                 # if line is currency difference currency values shall be cleared
                 sl["currency_rate"] = 0.0
                 sl["debit_currency"] = 0.0
