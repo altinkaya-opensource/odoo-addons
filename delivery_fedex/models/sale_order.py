@@ -36,7 +36,3 @@ class SaleOrder(models.Model):
         string="FedEx Shipment Purpose",
         help="The purpose of the shipment (FedEx)",
     )
-
-    fedex_customer_number = fields.Char(
-        string="FedEx Customer Number",
-    )

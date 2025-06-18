@@ -1,3 +1,6 @@
+# Copyright 2025 Erol Develi (https://github.com/erlinberg)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
 import json
 
 import requests
@@ -7,13 +10,14 @@ from odoo.exceptions import UserError
 
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
-    "prod": "https://apis.fedex.com",
+    "prod": "",
 }
 
 FEDEX_SERVICES_URL = {
     "rates": "rate/v1/rates/quotes",
     "auth": "oauth/token",
     "shipment": "ship/v1/shipments",
+    "cancel": "ship/v1/shipments/cancel",
 }
 
 
@@ -82,9 +86,11 @@ class FedExRequest:
                 data = json.dumps(data)
 
             if request_type == "GET":
-                res = requests.get(url=url, headers=headers, data=data, timeout=60)
+                res = requests.get(url=url, headers=headers, data=data, timeout=5)
             elif request_type == "POST":
-                res = requests.post(url=url, headers=headers, data=data, timeout=60)
+                res = requests.post(url=url, headers=headers, data=data, timeout=5)
+            elif request_type == "PUT":
+                res = requests.put(url=url, headers=headers, data=data, timeout=5)
             else:
                 raise UserError(
                     _("Unsupported request type, please only use 'GET' or 'POST'")
@@ -104,14 +110,18 @@ class FedExRequest:
         return res
 
     def _format_rate_data(self, data):
-        price = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "totalNetChargeWithDutiesAndTaxes"
-        ]
-        currency = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "currency"
-        ]
+        rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
 
-        return {"price": price, "currency": currency}
+        if len(rate_details) < 2:
+            return {
+                "price": rate_details[0]["totalNetChargeWithDutiesAndTaxes"],
+                "currency": rate_details[0]["currency"],
+            }
+
+        return {
+            "price": rate_details[1]["totalNetChargeWithDutiesAndTaxes"],
+            "currency": rate_details[1]["currency"],
+        }
 
     def get_rates(self, data):
         res = self._send_api_request("POST", "rates", data=data)
@@ -119,4 +129,8 @@ class FedExRequest:
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)
+        return res.json()
+
+    def cancel_shipment(self, data):
+        res = self._send_api_request("PUT", "cancel", data=data)
         return res.json()

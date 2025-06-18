@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <field name="incoterm" position="after">
                 <field name="fedex_shipment_purpose" />
-                <field name="fedex_customer_number" />
             </field>
         </field>
     </record>

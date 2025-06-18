@@ -9,6 +9,7 @@
     "application": False,
     "installable": True,
     "depends": [
+        "base",
         "account",
         "sale",
         "delivery",
@@ -21,6 +22,7 @@
         "views/delivery_fedex_view.xml",
         # "views/stock_picking_views.xml",
         "views/sale_order_view.xml",
+        "views/res_partner_view.xml",
         # "views/account_move_view.xml",
         # "wizard/choose_delivery_carrier.xml",
     ],
