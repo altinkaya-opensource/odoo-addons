@@ -1,7 +1,6 @@
 # Copyright 2025 Erol Develi (https://github.com/erlinberg)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import json
 
 import requests
 
@@ -10,7 +9,7 @@ from odoo.exceptions import UserError
 
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
-    "prod": "",
+    "prod": "https://apis.fedex.com",
 }
 
 FEDEX_SERVICES_URL = {
@@ -19,6 +18,8 @@ FEDEX_SERVICES_URL = {
     "shipment": "ship/v1/shipments",
     "cancel": "ship/v1/shipments/cancel",
 }
+
+REQUEST_TIMEOUT = 20  # seconds, used in requests
 
 
 class FedExRequest:
@@ -74,6 +75,7 @@ class FedExRequest:
         result = {}
         url = self._get_service_url(service_type)
 
+        request_data = {}
         try:
             headers = {
                 "Content-Type": content_type,
@@ -83,22 +85,35 @@ class FedExRequest:
                 headers["Authorization"] = "Bearer " + self.access_token
 
             if content_type == "application/json":
-                data = json.dumps(data)
+                request_data["json"] = data
+            else:
+                request_data["data"] = data
 
             if request_type == "GET":
-                res = requests.get(url=url, headers=headers, data=data, timeout=5)
+                res = requests.get(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             elif request_type == "POST":
-                res = requests.post(url=url, headers=headers, data=data, timeout=5)
+                res = requests.post(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             elif request_type == "PUT":
-                res = requests.put(url=url, headers=headers, data=data, timeout=5)
+                res = requests.put(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             else:
                 raise UserError(
-                    _("Unsupported request type, please only use 'GET' or 'POST'")
+                    _("Unsupported request type, only use 'GET', 'POST' or 'PUT'")
                 )
             result = res.json()
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
-            raise UserError(_("Timeout: the server did not reply within 60s")) from tmo
+            raise UserError(
+                _(
+                    "Timeout: the FedEx server did not reply within %(timeout)s",
+                    timeout=REQUEST_TIMEOUT,
+                ),
+            ) from tmo
         except Exception as e:
             raise UserError(
                 _("{error}\n{result}".format(error=e, result=result if result else ""))
