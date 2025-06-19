@@ -431,7 +431,7 @@ class DeliveryCarrier(models.Model):
         for pack in picking.package_ids:
             packages.append(
                 {
-                    "sequenceNumber": pack.sequence,
+                    "sequenceNumber": len(packages) + 1,
                     "weight": {"units": "KG", "value": pack.shipping_weight},
                     "dimensions": {
                         "length": pack.pack_length,
@@ -442,6 +442,7 @@ class DeliveryCarrier(models.Model):
                 }
             )
             total_weight += pack.shipping_weight
+            pack.sequence = len(packages)
 
         data["requestedShipment"]["customsClearanceDetail"] = (
             self._prepare_fedex_customs_data(picking, total_weight)
@@ -552,27 +553,34 @@ class DeliveryCarrier(models.Model):
 
             master_tracking_number = shipment_data["masterTrackingNumber"]
 
-            attachments = []
-            for package in shipment_data["pieceResponses"]:
-                attachments.append(
-                    (
-                        _(
-                            "fedex_barcode_package_%(seq_number)s.zpl",
-                            seq_number=package["packageSequenceNumber"],
-                        ),
-                        # Decode the base64 encoded label as bytes, then decode to str
-                        # and prepare it for GoDEX printer
-                        self._prepare_fedex_zpl_godex(
-                            base64.b64decode(
-                                package["packageDocuments"][0]["encodedLabel"]
-                            )
-                        ),
+            packs_with_labels = []
+            for pack_label_data in shipment_data["pieceResponses"]:
+                pack = picking.package_ids.filtered(
+                    lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
+                )
+                pack.label_filename = _(
+                    "fedex_label_%(seq_number)s.zpl",
+                    seq_number=pack_label_data["packageSequenceNumber"],
+                )
+
+                # Decode the base64 encoded label as bytes, then decode to str
+                # and prepare it for GoDEX printer
+                pack.label = base64.b64encode(
+                    self._prepare_fedex_zpl_godex(
+                        base64.b64decode(
+                            pack_label_data["packageDocuments"][0]["encodedLabel"]
+                        )
                     )
                 )
 
-            if attachments:
-                body = _("Fedex Shipping barcode documents")
-                picking.message_post(body=body, attachments=attachments)
+                packs_with_labels.append(pack.number)
+
+            picking.message_post(
+                body=_(
+                    "FedEx label(s) succsesfully added for packs: %(packs)s",
+                    packs=", ".join(packs_with_labels),
+                )
+            )
 
             result.append(
                 {

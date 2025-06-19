@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_quant_package_form" model="ir.ui.view">
+        <field name="name">stock.quant.package.form</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_form" />
+        <field name="arch" type="xml">
+
+            <field name="package_type_id" position="before">
+                <field name="label_filename" invisible="1" />
+                <field name="label" filename="label_filename" />
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_stock_quant_package_tree" model="ir.ui.view">
+        <field name="name">stock.quant.package.tree</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_tree" />
+        <field name="arch" type="xml">
+
+            <field name="package_type_id" position="before">
+                <field name="label_filename" invisible="1" />
+                <field name="label" filename="label_filename" />
+            </field>
+
+        </field>
+    </record>
+</odoo>

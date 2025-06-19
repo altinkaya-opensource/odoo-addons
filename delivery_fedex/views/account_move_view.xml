@@ -13,7 +13,7 @@
           name="get_fedex_rates"
           string="Get FedEx Rates"
           type="object"
-          attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
+          attrs="{'invisible': [('delivery_type', '!=', 'fedex'), ('picking_ids', '=', [])]}"
         />
             </xpath>
         </field>
