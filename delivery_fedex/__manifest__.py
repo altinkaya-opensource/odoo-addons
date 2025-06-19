@@ -14,7 +14,6 @@
         "sale",
         "delivery",
         "delivery_state",
-        "altinkaya_stock",
         # "delivery_package_number",
         # "delivery_price_method",
     ],
