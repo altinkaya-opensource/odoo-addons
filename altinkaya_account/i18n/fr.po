@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 09:02+0000\n"
-"PO-Revision-Date: 2025-05-14 09:02+0000\n"
+"POT-Creation-Date: 2025-06-19 10:57+0000\n"
+"PO-Revision-Date: 2025-06-19 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.actions.act_window,name:altinkaya_account.action_bank_payments
-#: model:ir.ui.menu,name:altinkaya_account.menu_fbank_payments
+#: model:ir.ui.menu,name:altinkaya_account.menu_bank_payments
 msgid "Bank Payments"
 msgstr ""
 
@@ -71,6 +71,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_change_ids
@@ -91,6 +92,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_ids
@@ -131,6 +133,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_changesets
@@ -151,6 +154,7 @@ msgstr "Comptez les modifications"
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changeset_changes
@@ -171,6 +175,7 @@ msgstr "Comptez les modifications en cours du jeu de modifications"
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changesets
@@ -193,6 +198,11 @@ msgstr "Comptez les jeux de modifications en attente"
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
 msgid "Create Currency Difference Invoice"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_create_currency_invoices
+msgid "Create Currency Difference Invoices"
 msgstr ""
 
 #. module: altinkaya_account
@@ -250,6 +260,13 @@ msgid "Currency Difference Invoice Account"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__currency_difference_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__currency_difference_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__currency_difference_line_ids
+msgid "Currency Difference Lines"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_amls
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_amls
 msgid "Currency Difference Move Lines"
@@ -294,11 +311,6 @@ msgid "Devir Yapıldı"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__difference_base_aml_id
-msgid "Difference Base Move"
-msgstr ""
-
-#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__unit_discounted
 msgid "Disc. Unit"
 msgstr ""
@@ -337,6 +349,11 @@ msgid "Fatura No"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_full_reconcile
+msgid "Full Reconcile"
+msgstr "Lettrage intégral"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__full_reconcile_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__full_reconcile_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__full_reconcile_ids
@@ -364,6 +381,11 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__invoice_date
 msgid "Invoice Date"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Invoices in reconciliations"
 msgstr ""
 
 #. module: altinkaya_account
@@ -402,6 +424,16 @@ msgstr "Nom du journal"
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
 msgid "KDV %s oranlı vergi tanımlanmamış!"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Kur Farkı"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Kur Farkı Faturası Oluştur"
 msgstr ""
 
 #. module: altinkaya_account
@@ -496,7 +528,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__other_inv_in_reconciles
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__other_inv_in_reconciles
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__other_inv_in_reconciles
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Other invoices in reconciles"
 msgstr ""
 
@@ -581,12 +612,12 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
-msgid "Reconcile"
+msgid "Reconcile and Currency Difference"
 msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
-msgid "Reconcile and Currency Difference"
+msgid "Reconciliations"
 msgstr ""
 
 #. module: altinkaya_account
@@ -617,6 +648,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__smart_search
@@ -705,6 +737,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changeset_changes
@@ -725,6 +758,7 @@ msgstr "Le nombre de modifications en attente de cet enregistrement"
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changesets
@@ -745,6 +779,7 @@ msgstr "Le nombre de jeux de modifications en attente pour cet enregistrement"
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_changesets
@@ -817,6 +852,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__user_can_see_changeset
@@ -878,6 +914,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__x_comment_export
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__x_comment_export
 msgid "ihracat fatura notu"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_form_view_cari
+msgid "Özel Limitler"
 msgstr ""
 
 #. module: altinkaya_account
