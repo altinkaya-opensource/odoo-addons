@@ -31,7 +31,10 @@
             </field>
         </record>
 
-        <record id="action_res_partner_create_currency_invoices" model="ir.actions.act_window">
+        <record
+    id="action_res_partner_create_currency_invoices"
+    model="ir.actions.act_window"
+  >
             <field name="name">Create Currency Difference Invoices</field>
             <field name="res_model">create.currency.difference.invoice</field>
             <field name="view_mode">form</field>

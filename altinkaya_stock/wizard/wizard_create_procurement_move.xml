@@ -16,11 +16,11 @@
                     </div>
                     <field name="procure_move" />
                 </group>
-                <!-- <group string="Satışlar">
-							<field name="sale_qty30days" widget="uom" options="{'uom_field': 'uom'}"/>
-							<field name="sale_qty180days" widget="uom" options="{'uom_field': 'uom'}"/>
-							<field name="sale_qty360days" widget="uom" options="{'uom_field': 'uom'}"/>
-					</group> -->
+                <group string="Satışlar">
+							<field name="sale_qty30days" />
+							<field name="sale_qty180days" />
+							<field name="sale_qty360days" />
+					</group>
                 <group>
                     <group string="Sincan Depo" class="oe_form">
                         <field name="qty_to_sincan" class="oe_inline" />

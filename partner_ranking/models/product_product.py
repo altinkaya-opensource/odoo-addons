@@ -35,18 +35,11 @@ class Product(models.Model):
             report_lines = self.env["account.invoice.report"].read_group(
                 domain=[
                     ("invoice_date", ">=", prev_date),
-                    ("state", "not in", ["draft", "cancel", "proforma", "proforma2"]),
+                    ("state", "not in", ["draft", "cancel"]),
                     ("move_type", "in", ["out_refund", "out_invoice"]),
                     ("product_id", "in", list(product_sales.keys())),
                 ],
-                fields=[
-                    "account_id",
-                    "commercial_partner_id",
-                    "price_total_usd",
-                    "move_type",
-                    "state",
-                    "invoice_date",
-                ],
+                fields=["quantity"],
                 groupby="product_id",
                 orderby="price_total_usd desc",
             )
@@ -54,7 +47,7 @@ class Product(models.Model):
             for line in report_lines:
                 product_id = line["product_id"][0]
                 product_sales[product_id][f"sale_qty{date_range}days"] = line[
-                    "price_total_usd"
+                    "quantity"
                 ]
 
         for product_id, sales in product_sales.items():

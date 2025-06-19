@@ -163,9 +163,7 @@ class Partner(models.Model):
             .mapped("id")
         )
         currency_diff_invoice_journal = (
-            self.env["account.journal"]
-            .search([("code", "=", "KFARK")], limit=1)
-            .id
+            self.env["account.journal"].search([("code", "=", "KFARK")], limit=1).id
         )
         self.env.cr.execute(
             query,
