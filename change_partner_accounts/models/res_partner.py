@@ -58,7 +58,7 @@ class ResPartner(models.Model):
               aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2022-01-01'
-              AND aml.date_maturity <= CURRENT_DATE
+              AND (aml.date_maturity <= CURRENT_DATE OR aml.date_maturity IS NULL)
               AND aml.partner_id IN %s
               AND am.state = 'posted'
               AND am.date >= '2022-01-01'
