@@ -138,6 +138,10 @@ class StockPicking(models.Model):
                     bypass_stock_move_update_restriction=True
                 )
 
+                # Elevate move_line environment to allow invoiced
+                # move lines to be updated
+                move_line = move_line.sudo()
+
                 move_line.write(
                     {
                         "qty_done": qty,
