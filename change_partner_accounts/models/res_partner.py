@@ -43,16 +43,25 @@ class ResPartner(models.Model):
             SELECT
               aml.partner_id AS partner_id,
               SUM(aml.debit) - SUM(aml.credit) AS due_balance,
-              SUM(aml.amount_currency) AS due_amount_currency
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS due_amount_currency
             FROM
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
             WHERE
               aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2022-01-01'
               AND aml.date_maturity <= CURRENT_DATE
               AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
             GROUP BY
               aml.partner_id
           ) AS due_balance_table,
@@ -60,15 +69,24 @@ class ResPartner(models.Model):
             SELECT
               aml.partner_id AS partner_id,
               SUM(aml.debit) - SUM(aml.credit) AS balance,
-              SUM(aml.amount_currency) AS amount_currency
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS amount_currency
             FROM
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
             WHERE
               aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2022-01-01'
               AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
             GROUP BY
               aml.partner_id
           ) AS balance_table
