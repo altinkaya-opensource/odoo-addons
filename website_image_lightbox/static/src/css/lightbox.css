@@ -148,7 +148,7 @@ body.lb-disable-scrolling {
 
 .lb-dataContainer:after {
   content: "";
-  display: table;ƒg
+  display: table;
   clear: both;
 }
 
