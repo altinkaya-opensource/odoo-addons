@@ -9,8 +9,7 @@
                 <sheet>
                     <p>When selecting pickings for merging,
                         <br />
-                        * Merging is not allowed in a single picking and Done
-                        state picking
+                        * Merging is not allowed in a single picking
                         <br />
                         * Pickings should be of the same partners, same types,
                         same states

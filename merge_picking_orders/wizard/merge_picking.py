@@ -77,16 +77,16 @@ class MergePicking(models.TransientModel):
                     " please choose same type"
                 )
             )
-        if any(
-            state in ["done", "cancel"]
-            for state in self.merge_picking_ids.mapped("state")
-        ):
-            raise AccessError(
-                _(
-                    "Merging is not allowed on Done/Cancelled "
-                    "pickings, so please remove them and continue"
-                )
-            )
+        # if any(
+        #     state in ["done", "cancel"]
+        #     for state in self.merge_picking_ids.mapped("state")
+        # ):
+        #     raise AccessError(
+        #         _(
+        #             "Merging is not allowed on Done/Cancelled "
+        #             "pickings, so please remove them and continue"
+        #         )
+        #     )
         # if len(list(set(self.merge_picking_ids.mapped("state")))) > 1:
         #     raise AccessError(
         #         _(
@@ -124,3 +124,12 @@ class MergePicking(models.TransientModel):
             },
         )
         main_pick.action_confirm()
+
+        return {
+            "name": main_pick.name or _("Merged Picking"),
+            "type": "ir.actions.act_window",
+            "res_model": "stock.picking",
+            "view_mode": "form",
+            "res_id": main_pick.id,
+            "target": "current",
+        }

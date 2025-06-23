@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 13:08+0000\n"
-"PO-Revision-Date: 2025-05-29 13:08+0000\n"
+"POT-Creation-Date: 2025-06-23 11:58+0000\n"
+"PO-Revision-Date: 2025-06-23 11:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -128,10 +128,18 @@ msgstr "Birleştirildi (%(pickings)s)"
 #. odoo-python
 #: code:addons/merge_picking_orders/wizard/merge_picking.py:0
 #, python-format
+msgid "Merged Picking"
+msgstr "Birleştirilmiş Sevk"
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
 msgid ""
 "Merging is not allowed on Different partners, please add same partner's "
 "orders"
-msgstr "Farklı müşterilerin sevklerini birleştirmek mümkün değil, lütfen aynı "
+msgstr ""
+"Farklı müşterilerin sevklerini birleştirmek mümkün değil, lütfen aynı "
 "müşterinin siparişlerini ekleyin"
 
 #. module: merge_picking_orders
@@ -141,16 +149,6 @@ msgstr "Farklı müşterilerin sevklerini birleştirmek mümkün değil, lütfen
 msgid ""
 "Merging is not allowed on Different picking type, please choose same type"
 msgstr "Farklı operasyon türlerini birleştirilemez. Lütfen aynı türü seçin"
-
-#. module: merge_picking_orders
-#. odoo-python
-#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
-#, python-format
-msgid ""
-"Merging is not allowed on Done/Cancelled pickings, so please remove them and"
-" continue"
-msgstr "İptal edilmiş veya tamamlanmış sevkler birleştirilemez, lütfen "
-"bunları kaldırın ve devam edin"
 
 #. module: merge_picking_orders
 #. odoo-python
@@ -169,8 +167,9 @@ msgstr "Sevkler"
 msgid ""
 "Select a pick if you want to merge pickings to a existing picking else leave"
 " it as empty"
-msgstr "Mevcut bir sevkiyata sevkleri birleştirmek istiyorsanız, lütfen "
-"mevcut bir sevkiyat seçin, aksi takdirde boş bırakın"
+msgstr ""
+"Mevcut bir sevkiyata sevkleri birleştirmek istiyorsanız, lütfen mevcut bir "
+"sevkiyat seçin, aksi takdirde boş bırakın"
 
 #. module: merge_picking_orders
 #: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__merge_picking_ids
@@ -225,9 +224,6 @@ msgid ""
 msgstr ""
 "Sevkleri birleştirmek için seçerken,\n"
 "                        <br/>\n"
-"                        * Tek bir sevk ve Tamamlandı durumundaki sevkler "
-"birleştirilemez\n"
+"                        * Tek bir sevk ve Tamamlandı durumundaki sevkler birleştirilemez\n"
 "                        <br/>\n"
-"                        * Sevkler aynı müşterilere, aynı türlere, aynı "
-"durumlara sahip olmalıdır"
-
+"                        * Sevkler aynı müşterilere, aynı türlere, aynı durumlara sahip olmalıdır"
