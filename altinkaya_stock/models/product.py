@@ -26,6 +26,18 @@ class Product(models.Model):
         compute="_compute_attribute_value_ids",
     )  # This field is ported from v12 and is used in odoo2odoo connector.
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+
+        for record in records:
+            if record and record.categ_id and not record.barcode:
+                record.barcode_rule_id = record.categ_id.barcode_rule_id
+                record.generate_base()
+                record.generate_barcode()
+
+        return records
+
     def _compute_domain_attribute_value_ids(self):
         for product in self:
             product.domain_attribute_value_ids = (
