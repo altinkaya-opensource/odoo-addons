@@ -108,7 +108,14 @@ class MergePicking(models.TransientModel):
             orders = self.merge_picking_ids
             main_pick = orders[0].copy({"move_ids": None})
         for record in orders:
-            for line in record.move_ids:
+            for move in record.move_ids:
+                move.write(
+                    {
+                        "picking_id": main_pick.id,
+                    }
+                )
+
+            for line in record.move_line_ids:
                 line.write(
                     {
                         "picking_id": main_pick.id,
