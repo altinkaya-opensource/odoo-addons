@@ -627,7 +627,7 @@ class DeliveryCarrier(models.Model):
             "trackingInfo": [
                 {
                     "trackingNumberInfo": {
-                        "trackingNumber": 882287670951,  # picking.carrier_tracking_ref,
+                        "trackingNumber": picking.carrier_tracking_ref,
                         "carrierCode": self.carrier_code,
                     },
                 }
