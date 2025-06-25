@@ -13,3 +13,5 @@ from . import stock_inventory
 from . import product_category
 from . import product_template
 from . import sale_order
+from . import stock_package_type
+from . import stock_quant_package

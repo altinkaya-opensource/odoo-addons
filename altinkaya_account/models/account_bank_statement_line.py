@@ -18,24 +18,24 @@ from odoo import api, models
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
-    def _synchronize_from_moves(self, changed_fields):
-        """
-        Convert payments amount_currency and currency_id fields related
-        to the partner currency. This function is the same as the one
-        in account_payment.
-        """
-        res = super()._synchronize_from_moves(changed_fields)
-        self = self.with_context(skip_account_move_synchronization=True)
-        for line in self.mapped("line_ids"):
-            account_currency = line.account_id.currency_id
-            if account_currency and line.currency_id != account_currency:
-                line.currency_id = account_currency
-                line.invalidate_cache(["currency_rate"])  # Recompute currency rate
-                line.amount_currency = line.currency_id.round(
-                    line.balance * line.currency_rate
-                )  # Recompute amount_currency
+    # def _synchronize_from_moves(self, changed_fields):
+    #     """
+    #     Convert payments amount_currency and currency_id fields related
+    #     to the partner currency. This function is the same as the one
+    #     in account_payment.
+    #     """
+    #     res = super()._synchronize_from_moves(changed_fields)
+    #     self = self.with_context(skip_account_move_synchronization=True)
+    #     for line in self.mapped("line_ids"):
+    #         account_currency = line.account_id.currency_id
+    #         if account_currency and line.currency_id != account_currency:
+    #             line.currency_id = account_currency
+    #             line.invalidate_cache(["currency_rate"])  # Recompute currency rate
+    #             line.amount_currency = line.currency_id.round(
+    #                 line.balance * line.currency_rate
+    #             )  # Recompute amount_currency
 
-        return res
+    #     return res
 
     @api.onchange("manual_partner_id")
     def _onchange_manual_partner_id(self):

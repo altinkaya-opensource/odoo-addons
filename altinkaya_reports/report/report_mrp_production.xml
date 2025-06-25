@@ -163,9 +163,14 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h2
-                    >Üretilen Adet: <!-- TODO: product_qty? --> </h2>
-
+                                        <h2>Üretilen Adet: </h2>
+                                        <h6
+                      t-if="o.bom_id.tool_product_id and o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal' and sq.quantity &gt; 0)"
+                    >Kalıp Konumu:
+                                            <span
+                        t-field="o.bom_id.tool_product_id.stock_quant_ids.filtered(lambda sq: sq.location_id.usage == 'internal' and sq.quantity &gt; 0)[0].location_id"
+                      />
+                                        </h6>
                                     </td>
 
                                     <td class="text-center">

@@ -21,7 +21,7 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
     "summary": "",
-    "depends": ["mail_tracking"],
+    "depends": ["mail_tracking", "queue_job"],
     "external_dependencies": {
         "python": [
             "postmarker",

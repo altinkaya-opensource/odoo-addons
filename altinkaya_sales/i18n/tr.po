@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-07 14:07+0000\n"
-"PO-Revision-Date: 2025-05-07 14:07+0000\n"
+"POT-Creation-Date: 2025-05-26 08:33+0000\n"
+"PO-Revision-Date: 2025-05-26 08:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -536,11 +536,6 @@ msgid "Altinkaya Sales Order: Send by email"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Ana Sektör"
-msgstr ""
-
-#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__18_assembly
 msgid "Assembly"
 msgstr "Montajda"
@@ -763,7 +758,6 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__credit_insurance
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__credit_insurance
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
 msgid "Credit Insurance"
 msgstr "Alacak Sigortası"
 
@@ -808,11 +802,6 @@ msgstr "Açıklama"
 #: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Diğer Endüstri Iş Sektörleri"
-msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_dolar
@@ -866,11 +855,6 @@ msgstr "Eposta Hatalı"
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_iscilik_fiy
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template__v_min_iscilik_fiy
 msgid "En Az Toplam işçilik Fiyatı USD"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Endüstri"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1030,6 +1014,11 @@ msgid "Nace Product Categ"
 msgstr "NACE Hedef Ürün Kategorisi"
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Nakliye Yöntemi"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__name
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_email_check_tree_view
 msgid "Name"
@@ -1161,11 +1150,6 @@ msgid "Productions"
 msgstr "Üretimler"
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Products"
-msgstr "Ürünler"
-
-#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__20_cutting
 msgid "Profile Cutting"
 msgstr "Profil Kesimde"
@@ -1206,6 +1190,11 @@ msgstr ""
 #: model:ir.ui.menu,name:altinkaya_sales.res_partner_segment_menu
 msgid "Segments"
 msgstr "Segmentler"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Sektörler"
+msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__set_product
@@ -1270,6 +1259,11 @@ msgstr "Etiketler..."
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_partner_form
 msgid "Tax Office Name"
 msgstr "Veri Dairesi Adı"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Teslim Tercihi"
+msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_pending_changeset_changes
@@ -1411,6 +1405,11 @@ msgstr "Varyant Adı"
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
 msgid "Variant Values"
 msgstr "Varyant Değerleri"
+
+#. module: altinkaya_sales
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__025_approved
+msgid "Waiting Salesperson"
+msgstr "Satışçı Bekliyor"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__21_at_warehouse

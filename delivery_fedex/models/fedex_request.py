@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
-    "prod": "",  # TODO: Add production URL
+    "prod": "https://apis.fedex.com",
 }
 
 FEDEX_SERVICES_URL = {
@@ -22,6 +22,7 @@ class FedExRequest:
         self.client_id = client_id
         self.client_secret = client_secret
         self.api_env = "prod" if prod else "sandbox"
+        self.access_token = self._get_oauth_key()
 
     def _get_service_url(self, service):
         return FEDEX_API_URL[self.api_env] + "/" + FEDEX_SERVICES_URL[service]
@@ -75,7 +76,7 @@ class FedExRequest:
                 "X-locale": "en_US",
             }
             if auth:
-                headers["Authorization"] = "Bearer " + self._get_oauth_key()
+                headers["Authorization"] = "Bearer " + self.access_token
 
             if content_type == "application/json":
                 data = json.dumps(data)

@@ -43,16 +43,25 @@ class ResPartner(models.Model):
             SELECT
               aml.partner_id AS partner_id,
               SUM(aml.debit) - SUM(aml.credit) AS due_balance,
-              SUM(aml.amount_currency) AS due_amount_currency
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS due_amount_currency
             FROM
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
             WHERE
               aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2022-01-01'
-              AND aml.date_maturity <= CURRENT_DATE
+              AND (aml.date_maturity <= CURRENT_DATE OR aml.date_maturity IS NULL)
               AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
             GROUP BY
               aml.partner_id
           ) AS due_balance_table,
@@ -60,15 +69,24 @@ class ResPartner(models.Model):
             SELECT
               aml.partner_id AS partner_id,
               SUM(aml.debit) - SUM(aml.credit) AS balance,
-              SUM(aml.amount_currency) AS amount_currency
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS amount_currency
             FROM
               account_move_line aml
               LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
             WHERE
               aa.account_type IN ('asset_receivable', 'liability_payable')
               AND NOT aa.deprecated
               AND aml.date >= '2022-01-01'
               AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
             GROUP BY
               aml.partner_id
           ) AS balance_table
@@ -229,14 +247,14 @@ class ResPartner(models.Model):
 
         cr = self.env.cr
         cr.execute(
-            """update account_move_line set account_id = %s "
-            "where partner_id = %s and account_id = %s""",
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s""",
             (receivable_usd.id, self.id, old_receivable.id),
         )
         cr.execute(
-            """update account_move_line set account_id = %s "
-            "where partner_id = %s and account_id = %s""",
-            (payable_usd, self.id, old_payable.id),
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s""",
+            (payable_usd.id, self.id, old_payable.id),
         )
 
         self.write(
@@ -298,13 +316,13 @@ class ResPartner(models.Model):
         cr = self.env.cr
 
         cr.execute(
-            """update account_move_line set account_id = %s "
-            "where partner_id = %s and account_id = %s""",
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s""",
             (receivable_eur.id, self.id, old_receivable.id),
         )
         cr.execute(
-            """update account_move_line set account_id = %s "
-            "where partner_id = %s and account_id = %s""",
+            """update account_move_line set account_id = %s
+            where partner_id = %s and account_id = %s""",
             (payable_eur.id, self.id, old_payable.id),
         )
 
@@ -356,6 +374,8 @@ class ResPartner(models.Model):
         payable_try = self.env["account.account"].search(
             [("code", "=", "320.TRY")], limit=1
         )
+        company_currency = self.env.company.currency_id
+        currency_id = company_currency
         old_receivable = self.property_account_receivable_id
         old_payable = self.property_account_payable_id
 
@@ -381,3 +401,29 @@ class ResPartner(models.Model):
                 "property_account_payable_id": payable_try.id,
             }
         )
+        partner_amls = self.env["account.move.line"].search(
+            [
+                "|",
+                ("currency_id", "not in", [currency_id.id]),
+                ("amount_currency", "=", 0),
+                ("partner_id", "=", self.id),
+                ("account_id", "in", [payable_try.id, receivable_try.id]),
+            ]
+        )
+        for aml in partner_amls:
+            amount_currency = company_currency._convert(
+                aml.debit - aml.credit, currency_id, self.env.company, aml.date
+            )
+
+            amount_residual_currency = company_currency._convert(
+                aml.amount_residual, currency_id, self.env.company, aml.date
+            )
+            cr.execute(
+                """ update account_move_line
+                 SET
+                  amount_currency = %s,
+                  currency_id = %s,
+                  amount_residual_currency = %s
+                where id = %s""",
+                (amount_currency, currency_id.id, amount_residual_currency, aml.id),
+            )

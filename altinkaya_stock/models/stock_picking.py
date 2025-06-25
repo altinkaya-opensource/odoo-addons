@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo import api, fields, models
+from odoo.tools import float_is_zero, float_round
 
 
 class StockPicking(models.Model):
@@ -74,29 +75,138 @@ class StockPicking(models.Model):
         readonly=True,
     )
 
+    # Convert the package_ids field to a One2many field
+    package_ids = fields.One2many(
+        comodel_name="stock.quant.package",
+        inverse_name="picking_id",
+        string="Packages",
+        help="Packages related to this picking.",
+        copy=True,
+    )
+
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         source = self.sale_id or self.purchase_id
         if self.carrier_id and source:
             source.write({"carrier_id": self.carrier_id.id})
 
-    # def force_assign(self):
-    #     for pick in self:
-    #         move_ids = [
-    #             x for x in pick.move_lines if x.state in ["confirmed", "waiting"]
-    #         ]
-    #         self.env["stock.move"].force_assign(moves=move_ids)
-    #         pick.button_validate()
-    #     return True
-
     def _compute_trimmed_sale_note(self):
         """
         Trims the sale note to the first 50 characters.
         """
         for picking in self:
-            if picking.sale_note:
+            note = (picking.sale_note or "").strip()
+            if note:
                 picking.trimmed_sale_note = self.env[
                     "ir.fields.converter"
-                ].text_from_html(picking.sale_note, max_chars=50)
+                ].text_from_html(note, max_chars=50)
             else:
                 picking.trimmed_sale_note = ""
+
+    def _put_in_pack_altinkaya(self, move_lines_values, package_to_bind=None):
+        package = False
+        if package_to_bind:
+            package = package_to_bind
+        else:
+            package = self.env["stock.quant.package"].create({})
+        precision_digits = self.env["decimal.precision"].precision_get(
+            "Product Unit of Measure"
+        )
+
+        for move_line, qty in move_lines_values.items():
+            if float_is_zero(qty, precision_digits=precision_digits):
+                continue
+
+            qty_missing = float_round(
+                move_line.qty_done - qty,
+                precision_rounding=move_line.product_uom_id.rounding,
+                rounding_method="HALF-UP",
+            )
+
+            if float_is_zero(qty_missing, precision_digits=precision_digits):
+                move_line.result_package_id = package.id
+            else:  # Split the move line
+                # This added to work with done move lines also. Because there is
+                # a restriction that reserved_uom_qty should be 0.0 in done move lines.
+                if move_line.state == "done":
+                    skip_reserved = True
+                else:
+                    skip_reserved = False
+
+                # Bypass the restriction of updating done move lines
+                move_line = move_line.with_context(
+                    bypass_stock_move_update_restriction=True
+                )
+
+                # Elevate move_line environment to allow invoiced
+                # move lines to be updated
+                move_line = move_line.sudo()
+
+                move_line.write(
+                    {
+                        "qty_done": qty,
+                        "reserved_uom_qty": qty if not skip_reserved else 0.0,
+                        "result_package_id": package.id,
+                    }
+                )
+                # Create a new move line with the remaining quantity
+                move_line.copy(
+                    default={
+                        "qty_done": qty_missing,
+                        "reserved_uom_qty": qty_missing if not skip_reserved else 0.0,
+                        "result_package_id": False,
+                    }
+                )
+        return package
+
+    def action_put_in_pack(self):
+        self.ensure_one()
+        return self._set_delivery_package_type()
+
+    def action_put_packs_in_pallet(self):
+        """
+        This method is used to put packs in a pallet.
+        It creates a new stock.quant.package record and assigns it to the move lines.
+        """
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Create Pallet",
+            "res_model": "wizard.create.packaging.pallet",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_picking_id": self.id,
+            },
+        }
+
+    def action_see_packages(self):
+        """
+        Inherited to use our package_ids field instead of the Odoo's Compute
+        package_ids.
+        """
+        res = super().action_see_packages()
+        res["domain"] = [("id", "in", self.package_ids.ids)]
+        return res
+
+    def action_list_packed_products(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "stock.stock_move_line_action"
+        )
+        move_lines = self.move_line_ids
+        action["domain"] = [("id", "in", move_lines.ids)]
+
+        if move_lines.mapped("result_package_pallet_id"):
+            group_by = ["result_package_pallet_id", "result_package_id"]
+        else:
+            group_by = ["result_package_id"]
+
+        action["context"] = {"group_by": group_by}
+        action["views"] = [
+            (
+                self.env.ref("altinkaya_stock.view_stock_move_line_tree_packaged").id,
+                "tree",
+            )
+        ]
+        return action

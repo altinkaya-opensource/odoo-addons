@@ -31,21 +31,10 @@
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
                             <field
-                name="payment_type"
-                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-              />
-                            <field
                 name="customs_payment_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-                            <field
-                name="shipment_purpose"
-                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-              />
-                            <field
-                name="customer_fedex_number"
-                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-              />
+
                             <field
                 name="pickup_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"

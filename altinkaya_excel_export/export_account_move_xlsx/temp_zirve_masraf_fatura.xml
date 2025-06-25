@@ -29,8 +29,8 @@
 
             'N2': '${"".join("\'%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=text}',
             'O2': '${"".join("%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=text}',
-            'P2': '${"".join("\'%.2f" % tax.tax_base_amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
-            'Q2': '${"".join("%.2f" % tax.tax_base_amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
+            'P2': '${"".join("\'%.2f" % tax.tax_base_amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or "\'%.2f" % object.amount_untaxed or ""}#{border=thin_border;align=left;style=number}',
+            'Q2': '${"".join("%.2f" % tax.tax_base_amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or "%.2f" % object.amount_untaxed or ""}#{border=thin_border;align=left;style=number}',
             'R2': '${"".join("\'%.2f" % tax.amount_currency for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
             'S2': '${"".join("%.2f" % tax.amount_currency for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
 

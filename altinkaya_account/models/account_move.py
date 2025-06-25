@@ -1,7 +1,7 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -47,6 +47,11 @@ class AccountMove(models.Model):
         compute="_compute_tax_line_ids",
     )
 
+    currency_difference_line_ids = fields.Many2many(
+        "account.move.line",
+        string="Currency Difference Lines",
+    )
+
     full_reconcile_ids = fields.Many2many(
         "account.full.reconcile",
         string="Full Reconciles",
@@ -68,15 +73,12 @@ class AccountMove(models.Model):
     @api.model
     def _compute_full_reconcile_ids(self):
         for invoice in self:
-            if invoice.state == "draft" and invoice.invoice_line_ids:
-                invoice.full_reconcile_ids = invoice.invoice_line_ids.mapped(
-                    "difference_base_aml_id"
-                ).mapped("full_reconcile_id")
-            elif (
-                invoice.state in ["open", "in_payment", "paid"]
-                and invoice.invoice_line_ids
-            ):
-                invoice.full_reconcile_ids = invoice.move_id.line_ids.mapped(
+            if invoice.state == "draft" and invoice.currency_difference_line_ids:
+                invoice.full_reconcile_ids = (
+                    invoice.currency_difference_line_ids.mapped("full_reconcile_id")
+                )
+            elif invoice.state == "posted" and invoice.invoice_line_ids:
+                invoice.full_reconcile_ids = invoice.line_ids.mapped(
                     "full_reconcile_id"
                 )
             else:
@@ -85,7 +87,7 @@ class AccountMove(models.Model):
     @api.depends("full_reconcile_ids")
     def _compute_other_inv_in_reconciles(self):
         invoice_amls = self.full_reconcile_ids.mapped("reconciled_line_ids").filtered(
-            lambda x: x.move_id
+            lambda x: x.move_id and x.move_id.is_invoice()
         )
         self.other_inv_in_reconciles = invoice_amls.mapped("move_id")
 
@@ -180,27 +182,52 @@ class AccountMove(models.Model):
                     }
                 )
 
-        # Currency difference invoice
-        for invoice in self:
-            aml_to_unreconcile = self.env["account.move.line"]
-            aml_to_reconcile = self.env["account.move.line"]
-            for inv_line in invoice.invoice_line_ids.filtered(
-                lambda x: x.difference_base_aml_id
-            ):
-                aml_to_unreconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids  # noqa
-                aml_to_reconcile |= inv_line.difference_base_aml_id.full_reconcile_id.reconciled_line_ids.filtered(  # noqa
-                    lambda r: r.id != inv_line.difference_base_aml_id.id
+        if not res:  # This means post was successful
+            # Currency difference invoice
+            for invoice in self.filtered(lambda x: x.currency_difference_line_ids):
+                reconciled_lines = invoice.mapped(
+                    "currency_difference_line_ids.full_reconcile_id.reconciled_line_ids"
+                )
+                old_difference_lines = reconciled_lines.filtered(
+                    lambda aml: aml.journal_code == "KRFRK"
                 )
 
-            if aml_to_unreconcile:
-                aml_to_unreconcile.remove_move_reconcile()
+                aml_to_reconcile = reconciled_lines - old_difference_lines
 
-            if aml_to_reconcile:
-                diff_aml = invoice.move_id.line_ids.filtered(
-                    lambda r: not r.reconciled
-                    and r.account_id.internal_type in ("payable", "receivable")
+                new_currency_diff_line = invoice.line_ids.filtered(
+                    lambda ml: ml.account_id
+                    in (
+                        self.partner_id.property_account_payable_id,
+                        self.partner_id.property_account_receivable_id,
+                    )
                 )
-                aml_to_reconcile._reconcile(diff_aml=diff_aml)
+
+                full_to_unlink = reconciled_lines.mapped("full_reconcile_id")
+                partials = full_to_unlink.mapped("partial_reconcile_ids")
+                full_to_unlink.unlink()
+
+                new_currency_diff_line.amount_residual = 0.0
+                new_currency_diff_line.amount_residual_currency = 0.0
+                new_currency_diff_line.reconciled = True
+
+                # Create new full with our new line
+                self.env["account.full.reconcile"].with_context(
+                    skip_invoice_sync=True,
+                    skip_invoice_line_sync=True,
+                    skip_account_move_synchronization=True,
+                    check_move_validity=False,
+                ).create(
+                    {
+                        "partial_reconcile_ids": [Command.set(partials.ids)],
+                        "reconciled_line_ids": [
+                            Command.set((aml_to_reconcile + new_currency_diff_line).ids)
+                        ],
+                    }
+                )
+
+                moves_to_cancel = old_difference_lines.mapped("move_id")
+                for move in moves_to_cancel:
+                    move.button_cancel()
 
         return res
 
@@ -265,11 +292,12 @@ class AccountMove(models.Model):
             return res
 
         for invoice in self:
-            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
-                for line in invoice.invoice_line_ids.filtered(
-                    lambda x: x.difference_base_aml_id
-                ):
-                    line.difference_base_aml_id.write({"difference_checked": False})
+            if (
+                invoice.currency_difference_line_ids
+                and invoice.journal_id.code == "KFARK"
+            ):
+                for line in invoice.currency_difference_line_ids:
+                    line.write({"difference_checked": False})
 
     def unlink(self):
         """
@@ -277,11 +305,12 @@ class AccountMove(models.Model):
         difference_checked field to False
         """
         for invoice in self:
-            if invoice.invoice_line_ids and invoice.journal_id.code == "KFARK":
-                for line in invoice.invoice_line_ids.filtered(
-                    lambda x: x.difference_base_aml_id
-                ):
-                    line.difference_base_aml_id.write({"difference_checked": False})
+            if (
+                invoice.currency_difference_line_ids
+                and invoice.journal_id.code == "KFARK"
+            ):
+                for line in invoice.currency_difference_line_ids:
+                    line.write({"difference_checked": False})
         return super().unlink()
 
     def _compute_purchase_requisition_count(self):
@@ -351,3 +380,47 @@ class AccountMove(models.Model):
             "view_mode": "form",
             "res_id": requisition.id,
         }
+
+    def _calculate_hs_code_distribution(self):
+        self.ensure_one()
+        uom_kg = self.env.ref("uom.product_uom_kgm")
+        package_ids = self.picking_ids.mapped("package_ids").filtered(
+            lambda p: not p.is_pallet
+        )
+        hs_code_distribution = {}
+
+        total_calculated_weight = sum(package_ids.mapped("weight")) or 1.0
+        total_gross_weight = sum(package_ids.mapped("shipping_weight")) or 1.0
+
+        hs_codes = package_ids.mapped("quant_ids.product_id.categ_id.hs_code_id")
+        index = 1
+
+        for hs_code in hs_codes:
+            hs_code_quants = package_ids.quant_ids.filtered(
+                lambda q: q.product_id.categ_id.hs_code_id == hs_code
+            )
+            quant_totals = 0.0
+            for quant in hs_code_quants:
+                quant_totals += quant.product_id.weight_uom_id._compute_quantity(
+                    qty=quant.quantity * quant.product_id.product_weight,
+                    to_unit=uom_kg,
+                    round=False,
+                )
+
+            percentage = round(
+                (quant_totals / total_calculated_weight * 100)
+                if total_calculated_weight
+                else 0.0
+            )
+
+            gross_distribution = (
+                total_gross_weight * (percentage / 100.0) if total_gross_weight else 0.0
+            )
+
+            hs_code_distribution[hs_code] = {
+                "percentage": percentage,
+                "gross_distribution": gross_distribution,
+                "index": index,
+            }
+            index += 1
+        return hs_code_distribution

@@ -11,6 +11,11 @@ from odoo.tools.misc import formatLang
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
+    check_journal = fields.Boolean(
+        help="Check this box if this journal is used for checks.",
+        default=False,
+    )
+
     checkbook_ids = fields.One2many(
         "account.checkbook",
         "journal_id",

@@ -15,20 +15,13 @@
           string="Reconcile and Currency Difference"
           attrs="{'invisible':[('journal_id','!=', 60)]}"
         >
-                    <group
-            name="reconcile_info"
-            string="Reconcile"
-            attrs="{'invisible': [('full_reconcile_ids', '=', False)]}"
-          >
-                        <field name="full_reconcile_ids" nolabel="1" />
-
-                    </group>
-                    <group
-            name="other_invoices_in_reconciles"
-            string="Other invoices in reconciles"
-          >
-                        <field name="other_inv_in_reconciles" nolabel="1" />
-                    </group>
+                    <label for="full_reconcile_ids" string="Reconciliations" />
+                    <field name="full_reconcile_ids" nolabel="1" />
+                    <label
+            for="other_inv_in_reconciles"
+            string="Invoices in reconciliations"
+          />
+                    <field name="other_inv_in_reconciles" nolabel="1" />
                 </page>
             </xpath>
 

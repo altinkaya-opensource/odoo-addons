@@ -28,19 +28,19 @@ class CreateCurrencyDifferenceInvoice(models.TransientModel):
 
         if not invoices:
             raise UserError(_("No invoice created!"))
-        # action = self.env.ref("account.view_out_invoice_tree")
-        # action_dict = action.read()[0]
+        action = self.env.ref("account.action_move_out_invoice_type")
+        action_dict = action.read()[0]
 
-        # if len(invoices) > 1:
-        #     action_dict["domain"] = [("id", "in", invoices.ids)]
-        # elif len(invoices) == 1:
-        #     form_view = [(self.env.ref("account.view_move_form").id, "form")]
-        #     if "views" in action_dict:
-        #         action_dict["views"] = form_view + [
-        #             (state, view) for state, view in action["views"] if view != "form"
-        #         ]
-        #     else:
-        #         action_dict["views"] = form_view
-        #     action_dict["res_id"] = invoices.id
+        if len(invoices) > 1:
+            action_dict["domain"] = [("id", "in", invoices.ids)]
+        elif len(invoices) == 1:
+            form_view = [(self.env.ref("account.view_move_form").id, "form")]
+            if "views" in action_dict:
+                action_dict["views"] = form_view + [
+                    (state, view) for state, view in action["views"] if view != "form"
+                ]
+            else:
+                action_dict["views"] = form_view
+            action_dict["res_id"] = invoices.id
 
-        # return action_dict
+        return action_dict

@@ -34,12 +34,7 @@ class AccountMoveLine(models.Model):
     purchase_line_amount = fields.Float(
         string="PO Unit", related="purchase_line_id.price_unit"
     )
-
     difference_checked = fields.Boolean(string="Currency Difference Checked")
-    difference_base_aml_id = fields.Many2one(
-        comodel_name="account.move.line", string="Difference Base Move"
-    )
-
     unit_discounted = fields.Float(
         string="Disc. Unit",
         compute="_compute_unit_discounted",
@@ -70,3 +65,23 @@ class AccountMoveLine(models.Model):
             line._inverse_product_id()
             line._inverse_account_id()
             line._inverse_amount_currency()
+
+    @api.depends("move_id.currency_id")
+    def _compute_currency_id(self):  # pylint: disable=W8110
+        """
+        Inherited to set the currency_id based on the account currency
+        """
+        super()._compute_currency_id()
+        for line in self:
+            # We've added this condition to use account's currency if it exists
+            account_currency = line.account_id.currency_id
+            if (
+                line.account_id
+                and account_currency
+                and line.currency_id != account_currency
+            ):
+                line.currency_id = account_currency
+                line.invalidate_cache(["currency_rate"])
+                line.amount_currency = line.currency_id.round(
+                    line.balance * line.currency_rate
+                )

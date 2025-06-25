@@ -15,7 +15,7 @@
 
 from datetime import datetime
 
-from odoo import models
+from odoo import models, tools
 
 
 class ResCurrency(models.Model):
@@ -34,3 +34,7 @@ class ResCurrency(models.Model):
                 True,
             ),
         ]
+
+    def is_zero(self, amount):
+        self.ensure_one()
+        return tools.float_is_zero(amount, precision_rounding=0.01)

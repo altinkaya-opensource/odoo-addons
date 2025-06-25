@@ -20,8 +20,8 @@ class update_discount(models.TransientModel):
             )
         return res
 
-    unit_discounted = fields.Float("Discount Price", digits=(16, 2))
-    price_unit = fields.Float("Unit Price", digits=(16, 2))
+    unit_discounted = fields.Float("Discount Price", digits=(16, 4))
+    price_unit = fields.Float("Unit Price", digits=(16, 4))
 
     def update_discount_price(self):
         context = dict(self._context)

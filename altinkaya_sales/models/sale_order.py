@@ -100,6 +100,7 @@ class SaleOrder(models.Model):
             # satış
             ("01_draft", "Draft"),
             ("02_sent", "Quotation"),
+            ("025_approved", "Waiting Salesperson"),
             ("03_sale", "Confirmed Sale Order"),
             ("04_molding_waiting", "Tool Shop Queue"),
             # üretim
@@ -161,6 +162,8 @@ class SaleOrder(models.Model):
                 sale.order_state = "01_draft"
             elif sale.state == "sent":
                 sale.order_state = "02_sent"
+            elif sale.state == "approved":
+                sale.order_state = "025_approved"
             elif sale.state == "sale":
                 sale.order_state = "03_sale"
             elif sale.state == "cancel":

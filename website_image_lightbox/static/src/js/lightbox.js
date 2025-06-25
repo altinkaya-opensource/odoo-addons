@@ -43,13 +43,13 @@
   Lightbox.defaults = {
     albumLabel: 'Image %1 of %2',
     alwaysShowNavOnTouchDevices: false,
-    fadeDuration: 600,
+    fadeDuration: 200,
     fitImagesInViewport: true,
-    imageFadeDuration: 600,
+    imageFadeDuration: 200,
     // maxWidth: 800,
     // maxHeight: 600,
     positionFromTop: 50,
-    resizeDuration: 700,
+    resizeDuration: 300,
     showImageNumberLabel: true,
     wrapAround: false,
     disableScrolling: false,
@@ -455,7 +455,7 @@
     this.$lightbox.find('.lb-nav').show();
 
     if (this.album.length > 1) {
-      if (this.options.wrapAround) {
+      if (true) {
         if (alwaysShowNav) {
           this.$lightbox.find('.lb-prev, .lb-next').css('opacity', '1');
         }

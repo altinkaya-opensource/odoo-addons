@@ -10,17 +10,13 @@ class AddressDistrict(models.Model):
 
     @api.model
     def _name_search(
-        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+        self, name="", args=None, operator="ilike", limit=100, name_get_uid=None
     ):
         if self._context.get("state_id"):
             args = args or []
             args.append(("state_id", "=", self._context["state_id"]))
         return super()._name_search(
-            name=name,
-            args=args,
-            operator=operator,
-            limit=limit,
-            name_get_uid=name_get_uid,
+            name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
         )
         # if args is None:
         #     args = []
@@ -43,10 +39,15 @@ class AddressRegion(models.Model):
     )
 
     @api.model
-    def _name_search(self, name, args=None, operator="ilike", limit=80):
+    def _name_search(
+        self, name="", args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
         if self.env.context.get("district_id"):
-            args += [("district_id", "=", self.env.context.get("district_id"))]
-        return super()._name_search(name, args=args, operator=operator, limit=limit)
+            args = args or []
+            args.append(("district_id", "=", self.env.context["district_id"]))
+        return super()._name_search(
+            name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
+        )
         # if args is None:
         #     args = []
         # if name:
@@ -81,7 +82,7 @@ class AddressNeighbour(models.Model):
         return res
 
     @api.model
-    def name_search(self, name, args=None, operator="ilike", limit=80):
+    def name_search(self, name="", args=None, operator="ilike", limit=100):
         if args is None:
             args = []
         if name:

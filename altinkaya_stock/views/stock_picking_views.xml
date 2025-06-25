@@ -1,10 +1,22 @@
 <?xml version="1.0" ?>
 <odoo>
-        <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
-            <field name="name">stock.picking.form.inherit_altinkaya</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form" />
-            <field name="arch" type="xml">
+    <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit_altinkaya</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+
+            <div name="button_box" position="inside">
+                <button
+          name="action_list_packed_products"
+          string="Packed Products"
+          type="object"
+          class="oe_stat_button"
+          icon="fa-cubes"
+          attrs="{'invisible': [('has_packages', '=', False)]}"
+        />
+            </div>
+
 
             <button name="button_validate" position="after">
 
@@ -17,25 +29,28 @@
         />
 
             </button>
-              <xpath
+
+
+
+            <xpath
         expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
         position="attributes"
       >
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-              </xpath>
-              <xpath
+            </xpath>
+            <xpath
         expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
         position="attributes"
       >
                 <attribute name="widget">uom</attribute>
                 <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-              </xpath>
-                <xpath
+            </xpath>
+
+            <xpath
         expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
         position="after"
       >
-
 
                 <field
           name="qty_available_merkez"
@@ -67,8 +82,65 @@
           string="Stoktan Al"
           attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
         />
+            </xpath>
+
+
+            <xpath
+        expr="///page[@name='operations']/button[@name='action_put_in_pack']"
+        position="attributes"
+      >
+                <attribute
+          name="attrs"
+        >{'invisible': [('state', 'in', ('draft', 'cancel'))]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='operations']" position="after">
+                <page
+          name="packages"
+          string="Packages"
+          attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"
+          groups="stock.group_stock_user"
+        >
+                    <field
+            name="package_ids"
+            widget="one2many"
+            attrs="{'readonly': [('state', 'in', ['draft', 'cancel'])]}"
+          >
+                        <tree>
+                            <field name="sequence" widget="handle" />
+                            <field name="is_pallet" invisible="1" />
+                            <field name="picking_state" invisible="1" />
+                            <field name="display_name" />
+                            <field name="number" />
+                            <field name="package_type_id" />
+                            <field name="shipping_weight" />
+                            <field name="pack_length" />
+                            <field name="width" />
+                            <field name="height" />
+                            <field name="length_uom_id" nolabel="1" />
+                            <button
+                attrs="{'invisible': [('picking_state', 'in', ['draft', 'cancel'])]}"
+                name="action_dissolve"
+                type="object"
+                icon="fa-trash"
+                class="btn btn-secondary"
+                string="Dissolve"
+                confirm="This action will remove products from the package."
+              />
+                        </tree>
+                    </field>
+
+                    <button
+            name="action_put_packs_in_pallet"
+            type="object"
+            string="Put in Pallet"
+            class="btn btn-secondary"
+            icon="fa-th-large"
+          />
+                </page>
 
             </xpath>
+
         </field>
     </record>
 
@@ -88,6 +160,17 @@
         </field>
     </record>
 
+
+    <record id="view_picking_force_assign" model="ir.ui.view">
+        <field name="name">Stock picking force assign</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <button name="button_validate" position="after">
+                <!-- <button name="force_assign" string="Uygunluğu Zorla" attrs="{'invisible':[('state', 'in', ['draft', 'assigned', 'done', 'cancel'])]}" groups="altinkaya_stock.stock_force_avail_button" type="object" /> -->
+            </button>
+        </field>
+    </record>
 
 
     <record id="view_picking_internal_search_day_filters" model="ir.ui.view">

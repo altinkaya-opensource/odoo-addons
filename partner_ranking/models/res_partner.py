@@ -39,7 +39,7 @@ class Partner(models.Model):
                 ("partner_id", "in", list(partner_sales_dict.keys())),
                 ("invoice_date", ">=", end_date.strftime("%Y-%m-%d")),
                 ("invoice_date", "<=", start_date.strftime("%Y-%m-%d")),
-                ("state", "not in", ["draft", "cancel", "proforma", "proforma2"]),
+                ("state", "not in", ["draft", "cancel"]),
                 ("move_type", "in", ["out_refund", "out_invoice"]),
             ],
             fields=[

@@ -48,5 +48,5 @@ class PostmarkController(http.Controller):
         if not (mail_message and mail_message.mail_tracking_ids and odoo_event_type):
             return False
 
-        mail_message.mail_tracking_ids.event_create(odoo_event_type, data)
+        mail_message.mail_tracking_ids.with_delay().event_create(odoo_event_type, data)
         return True

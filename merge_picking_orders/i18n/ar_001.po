@@ -1,0 +1,220 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* merge_picking_orders
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-23 11:58+0000\n"
+"PO-Revision-Date: 2025-06-23 11:58+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: merge_picking_orders
+#: model_terms:ir.ui.view,arch_db:merge_picking_orders.merge_picking_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__changeset_change_ids
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "تغييرات مجموعة التغييرات"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__changeset_ids
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr "مجموعات التغييرات"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__count_changesets
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr "عدد التغييرات"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "عدد تغييرات مجموعة التغييرات المعلقة"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__count_pending_changesets
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "عدد مجموعات التغييرات المعلقة"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__id
+msgid "ID"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model_terms:ir.ui.view,arch_db:merge_picking_orders.merge_picking_view_form
+msgid "Merge"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/models/stock_picking.py:0
+#, python-format
+msgid "Merge Picking Orders"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model,name:merge_picking_orders.model_merge_picking
+msgid "Merge Picking Wizard"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model_terms:ir.ui.view,arch_db:merge_picking_orders.merge_picking_view_form
+msgid "Merge Pickings"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.actions.server,name:merge_picking_orders.merge_picking_action
+msgid "Merge Records"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__existing_pick_id
+msgid "Merge to existing"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
+msgid "Merged (%(pickings)s)"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
+msgid "Merged Picking"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
+msgid ""
+"Merging is not allowed on Different partners, please add same partner's "
+"orders"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
+msgid ""
+"Merging is not allowed on Different picking type, please choose same type"
+msgstr ""
+
+#. module: merge_picking_orders
+#. odoo-python
+#: code:addons/merge_picking_orders/wizard/merge_picking.py:0
+#, python-format
+msgid "Merging is not allowed on Single picking, please add minimum Two"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__merge_picking_ids
+msgid "Orders"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__existing_pick_id
+msgid ""
+"Select a pick if you want to merge pickings to a existing picking else leave"
+" it as empty"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__merge_picking_ids
+msgid "Selected orders"
+msgstr ""
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__smart_search
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "البحث الذكي"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__count_pending_changeset_changes
+#: model:ir.model.fields,help:merge_picking_orders.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "عدد التغييرات المعلقة لهذا السجل"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__count_pending_changesets
+#: model:ir.model.fields,help:merge_picking_orders.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "عدد مجموعات التغييرات المعلقة لهذا السجل"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,help:merge_picking_orders.field_merge_picking__count_changesets
+#: model:ir.model.fields,help:merge_picking_orders.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "العدد الإجمالي للتغييرات في هذا السجل"
+
+#. module: merge_picking_orders
+#: model:ir.model,name:merge_picking_orders.model_stock_picking
+msgid "Transfer"
+msgstr "الشحنة"
+
+#. module: merge_picking_orders
+#: model:ir.model.fields,field_description:merge_picking_orders.field_merge_picking__user_can_see_changeset
+#: model:ir.model.fields,field_description:merge_picking_orders.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "يمكن للمستخدم الاطلاع على مجموعة التغييرات"
+
+#. module: merge_picking_orders
+#: model_terms:ir.ui.view,arch_db:merge_picking_orders.merge_picking_view_form
+msgid ""
+"When selecting pickings for merging,\n"
+"                        <br/>\n"
+"                        * Merging is not allowed in a single picking and Done\n"
+"                        state picking\n"
+"                        <br/>\n"
+"                        * Pickings should be of the same partners, same types,\n"
+"                        same states"
+msgstr ""

@@ -3,35 +3,38 @@
 
 {
     "name": "Altinkaya Survey Extensions",
-    "summary": """
-    - Hide odoo branding from survey pages
-    - Add star rating question type
-    - Add default_sale_survey field to survey.survey model
-    - Auto compute survey url on sale order
-    - Easy access to survey user input from sale order
-    """,
     "version": "16.0.1.0.0",
     "category": "Marketing",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "author": "Yiğit Budak, Altinkaya Enclosures",
+    "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["survey", "sale", "crm", "account"],
+    "depends": [
+        "survey",
+        "sale",
+        "crm",
+        "crm_claim",
+        "account",
+        "portal",
+        "altinkaya_reports",
+        "short_url_yourls",
+    ],
     "data": [
-        "templates/star_rating.xml",
-        "templates/clean_survey_fill.xml",
-        "templates/clean_survey_print.xml",
-        "templates/question_seperator.xml",
-        "views/survey_survey_views.xml",
-        "views/survey_question_views.xml",
-        "views/survey_user_input_views.xml",
         "views/sale_order_views.xml",
+        "views/survey_question_views.xml",
+        "views/survey_survey_views.xml",
+        "views/survey_user_input_views.xml",
+        "views/survey_crm_views.xml",
+        "templates/disable_odoo_branding.xml",
+        "templates/star_rating.xml",
+        "templates/sale_portal_rate_us.xml",
     ],
     "assets": {
-        "web.assets_frontend": [
-            "/altinkaya_survey/static/src/star.css",
-            "/altinkaya_survey/static/src/star.js",
-        ],
+        "survey.survey_assets": [
+            "altinkaya_survey/static/src/star.css",
+            "altinkaya_survey/static/src/survey_form.js",
+            "altinkaya_survey/static/src/survey_print.js",
+        ]
     },
 }

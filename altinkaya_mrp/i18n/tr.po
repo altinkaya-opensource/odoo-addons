@@ -346,7 +346,7 @@ msgstr "Niteliklerin sayısal değerleri ile çarpılacak faktör"
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
 msgid "Finished Products"
-msgstr ""
+msgstr "Bitmiş Ürünler"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
