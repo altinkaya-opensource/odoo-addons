@@ -30,6 +30,13 @@
 
             </button>
 
+            <button name="action_open_label_type" position="after">
+                  <button
+          name="action_print_all_labels"
+          type="object"
+          string="Print All Labels"
+        />
+            </button>
 
 
             <xpath
@@ -119,6 +126,13 @@
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
                             <button
+                name="action_print_label"
+                type="object"
+                string="Print Label"
+                class="btn btn-secondary"
+                attrs="{'readonly': [('label', '=', False)]}"
+              />
+                            <button
                 attrs="{'invisible': [('picking_state', 'in', ['draft', 'cancel'])]}"
                 name="action_dissolve"
                 type="object"
@@ -127,6 +141,7 @@
                 string="Dissolve"
                 confirm="This action will remove products from the package."
               />
+
                         </tree>
                     </field>
 

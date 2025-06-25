@@ -17,6 +17,7 @@
         "sale",
         "delivery",
         "delivery_state",
+        "altinkaya_stock",
     ],
     "external_dependencies": {"python": ["requests", "phonenumbers"]},
     "data": [
@@ -24,6 +25,5 @@
         "views/sale_order_view.xml",
         "views/res_partner_view.xml",
         "views/account_move_view.xml",
-        "views/stock_quant_package_view.xml",
     ],
 }

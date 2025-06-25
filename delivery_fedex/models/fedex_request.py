@@ -17,6 +17,7 @@ FEDEX_SERVICES_URL = {
     "auth": "oauth/token",
     "shipment": "ship/v1/shipments",
     "cancel": "ship/v1/shipments/cancel",
+    "tracking": "track/v1/trackingnumbers",
 }
 
 REQUEST_TIMEOUT = 20  # seconds, used in requests
@@ -148,4 +149,8 @@ class FedExRequest:
 
     def cancel_shipment(self, data):
         res = self._send_api_request("PUT", "cancel", data=data)
+        return res.json()
+
+    def tracking_state_update(self, data):
+        res = self._send_api_request("POST", "tracking", data=data)
         return res.json()

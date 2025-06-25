@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
+from datetime import datetime
 
 import phonenumbers
 
@@ -553,19 +554,17 @@ class DeliveryCarrier(models.Model):
 
             master_tracking_number = shipment_data["masterTrackingNumber"]
 
-            packs_with_labels = []
+            packs_label_data = []
             for pack_label_data in shipment_data["pieceResponses"]:
                 pack = picking.package_ids.filtered(
                     lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
                 )
-                pack.label_filename = _(
+
+                label_filename = _(
                     "fedex_label_%(seq_number)s.zpl",
                     seq_number=pack_label_data["packageSequenceNumber"],
                 )
-
-                # Decode the base64 encoded label as bytes, then decode to str
-                # and prepare it for GoDEX printer
-                pack.label = base64.b64encode(
+                label_binary = base64.b64encode(
                     self._prepare_fedex_zpl_godex(
                         base64.b64decode(
                             pack_label_data["packageDocuments"][0]["encodedLabel"]
@@ -573,14 +572,9 @@ class DeliveryCarrier(models.Model):
                     )
                 )
 
-                packs_with_labels.append(pack.number)
+                packs_label_data[pack] = (label_filename, label_binary)
 
-            picking.message_post(
-                body=_(
-                    "FedEx label(s) succsesfully added for packs: %(packs)s",
-                    packs=", ".join(packs_with_labels),
-                )
-            )
+            picking._add_label_data(packs_label_data, self.name)
 
             result.append(
                 {
@@ -615,3 +609,99 @@ class DeliveryCarrier(models.Model):
             )
 
         return res
+
+    def fedex_tracking_state_update(self, picking):
+        """Tracking state update"""
+        self.ensure_one()
+        if not picking.carrier_tracking_ref:
+            return
+
+        fedex_request = FedExRequest(
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            prod=self.prod_environment,
+        )
+
+        payload = {
+            "includeDetailedScans": True,
+            "trackingInfo": [
+                {
+                    "trackingNumberInfo": {
+                        "trackingNumber": 882287670951,  # picking.carrier_tracking_ref,
+                        "carrierCode": self.carrier_code,
+                    },
+                }
+            ],
+        }
+
+        response = fedex_request.tracking_state_update(payload)["output"][
+            "completeTrackResults"
+        ][0]
+
+        if response["trackingNumber"] != picking.carrier_tracking_ref:
+            raise UserError(
+                _(
+                    "Tracking number mismatch: %(incoming_track)s != %(picking_track)s",
+                    incoming_track=response["trackingNumberInfo"]["trackingNumber"],
+                    picking_track=picking.carrier_tracking_ref,
+                )
+            )
+
+        tracking_events = response["trackResults"][0]["scanEvents"]
+
+        picking.shipping_number = response["trackingNumberInfo"]["trackingNumber"]
+
+        picking.tracking_state_history = [
+            _(
+                "%(time)s %(date)s - [%(status_code)s] %(event)s\n"
+                "Location       : %(city)s, %(state)s, %(country)s\n"
+                "Address        : %(address)s, %(postal)s\n"
+                "Location ID    : %(location_id)s\n"
+                "Location Type  : %(location_type)s\n"
+                "Status         : %(status)s (%(event_type)s)\n"
+                "Exception      : %(exception)s (Code: %(exception_code)s)\n"
+                "Delay          : %(delay_status)s due to "
+                "%(delay_type)s (%(delay_sube)s)",
+                time=datetime.fromisoformat(e["date"]).strftime("%H:%M:%S"),
+                date=datetime.fromisoformat(e["date"]).strftime("%d/%m/%Y"),
+                status_code=e["derivedStatusCode"],
+                event=e["eventDescription"],
+                city=e["scanLocation"]["city"],
+                state=e["scanLocation"]["stateOrProvinceCode"],
+                country=e["scanLocation"]["countryName"],
+                address=", ".join(e["scanLocation"]["streetLines"]),
+                postal=e["scanLocation"]["postalCode"],
+                location_id=e["locationId"],
+                location_type=e["locationType"],
+                status=e["derivedStatus"],
+                event_type=e["eventType"],
+                exception=e["exceptionDescription"],
+                exception_code=e["exceptionCode"],
+                delay_status=e["delayDetail"]["status"],
+                delay_type=e["delayDetail"]["type"],
+                delay_sube=e["delayDetail"]["subType"],
+            )
+            for e in tracking_events
+        ]
+
+        carrier_received_by = response["trackResults"][0]["deliveryDetails"][
+            "signedByName"
+        ]
+
+        date_delivered = next(
+            (
+                d["dateTime"]
+                for d in response["trackResults"][0]["dateAndTimes"]
+                if d["type"] == "ACTUAL_DELIVERY"
+            ),
+            None,
+        )
+
+        picking.carrier_received_by = carrier_received_by or picking.partner_id.name
+        picking.date_delivered = (
+            datetime.fromisoformat(date_delivered).strftime("%Y-%m-%d %H:%M:%S")
+            if date_delivered
+            else False
+        )
+
+        return True
