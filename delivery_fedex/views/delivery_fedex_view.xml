@@ -1,56 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-  <record id="view_delivery_carrier_form" model="ir.ui.view">
-    <field name="model">delivery.carrier</field>
-    <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
-    <field name="arch" type="xml">
-      <xpath expr="//notebook" position='inside'>
-        <page
+    <record id="view_delivery_carrier_form" model="ir.ui.view">
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position='before'>
+                <page
           string="FedEx Configuration"
           attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
         >
-          <group>
-            <group string="Connection">
-              <field
+                    <group>
+                        <group string="Connection">
+                            <field
                 name="fedex_client_id"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-              <field
+                            <field
                 name="fedex_client_secret"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
                 password="True"
               />
-              <field
+                            <field
                 name="fedex_account_number"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-            </group>
-            <group string="Delivery Information">
-              <field
+                        </group>
+                        <group string="Delivery Information">
+                            <field
                 name="service_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-              <field
+                            <field
                 name="customs_payment_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
 
-              <field
+                            <field
                 name="pickup_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-              <field
+                            <field
                 name="carrier_code"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
-              <field
-                name="stock_height"
-                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-              />
-            </group>
-          </group>
-        </page>
-      </xpath>
-    </field>
-  </record>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
 </odoo>

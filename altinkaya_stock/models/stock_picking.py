@@ -18,9 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import base64
-
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
 
 
@@ -212,46 +210,3 @@ class StockPicking(models.Model):
             )
         ]
         return action
-
-    def _add_label_data(self, label_data, carrier_name):
-        """
-        Add label data to the packages in the picking.
-        """
-        self.ensure_one()
-        for pack, label in label_data.items():
-            pack.write(
-                {
-                    "label_filename": label[0],
-                    "label": label[1],
-                }
-            )
-
-        self.message_post(
-            body=_(
-                "%(carrier_name)s label(s) succsesfully added for packs: %(packs)s",
-                carrier_name=carrier_name,
-                packs=", ".join([p.number for p in label_data.keys()]),
-            )
-        )
-
-    def action_print_all_labels(self):
-        """
-        Print all labels of the packages in the picking.
-        This method uses the default printer of the carrier to print the labels.
-        """
-        self.ensure_one()
-
-        printer = self.carrier_id.default_printer_id
-        if not printer:
-            raise Warning(_("Please define a default printer for the carrier."))
-
-        for pack in self.package_ids:
-            if not pack.label:
-                continue
-
-            printer.print_document(
-                report=None,
-                content=base64.b64decode(pack.label),
-            )
-
-        return True

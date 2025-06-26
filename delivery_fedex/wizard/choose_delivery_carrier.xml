@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="choose_delivery_carrier_view_form_fedex" model="ir.ui.view">
+        <field name="model">choose.delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form" />
+        <field name="arch" type="xml">
+            <field name="delivery_price" position="before">
+                <field
+          name="customs_value_currency_id"
+          attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
+        />
+                <field
+          name="customs_value"
+          attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
+        />
+            </field>
+        </field>
+    </record>
+</odoo>
