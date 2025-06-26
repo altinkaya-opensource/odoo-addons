@@ -43,10 +43,13 @@ FEDEX_UOM_CODES = {
 }
 
 
-# Normalize Turkish characters to their English equivalents
-# This is necessary because FedEx API does not support Turkish characters
-# and we need to ensure that the addresses are correctly formatted.
+
 def normalize_turkish(text):
+    """
+    Normalize Turkish characters to their English equivalents.
+    This is necessary because FedEx API's labels does not support Turkish
+    characters and we need to ensure that the addresses are correctly formatted.
+    """
     turkish_map = {
         "ç": "c",
         "Ç": "C",
@@ -102,7 +105,7 @@ class DeliveryCarrier(models.Model):
             "city": normalize_turkish(partner.city),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
-            "residential": False,
+            "residential": False, # TODO: Maybe this need to be dynamic?
         }
 
     def _prepare_fedex_contact(self, partner):
@@ -110,14 +113,14 @@ class DeliveryCarrier(models.Model):
         Prepare FedEx contact data from partner.
         """
         contact = {
-            "personName": normalize_turkish(partner.name + "çışüğİÜÇĞŞ"),
+            "personName": normalize_turkish(partner.name),
             "emailAddress": partner.email,
             "companyName": normalize_turkish(partner.commercial_partner_id.name),
         }
 
         if partner.phone or partner.mobile:
             # Use phonenumbers library to format the phone number
-            # because FedEx API requires raw format
+            # for FedEx API
             raw_number = phonenumbers.format_number(
                 phonenumbers.parse(
                     partner.phone or partner.mobile, partner.country_id.code
@@ -369,12 +372,10 @@ class DeliveryCarrier(models.Model):
                     ),
                 },
                 "soldTo": {
-                    # TODO: Set the correct partner (shipping partner)
                     "address": self._prepare_fedex_address(picking.partner_id),
                     "contact": self._prepare_fedex_contact(picking.partner_id),
                 },
                 "recipients": [
-                    # TODO: Set the correct partner (shipping partner)
                     {
                         "address": self._prepare_fedex_address(picking.partner_id),
                         "contact": self._prepare_fedex_contact(picking.partner_id),
@@ -408,6 +409,7 @@ class DeliveryCarrier(models.Model):
                 },
                 "customsClearanceDetail": {},
                 "labelSpecification": {
+                    # TODO: Make these values configurable
                     "labelFormatType": "COMMON2D",
                     "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
                     "imageType": "ZPLII",
@@ -455,6 +457,10 @@ class DeliveryCarrier(models.Model):
         return data
 
     def _prepare_fedex_zpl_godex(self, binary_zpl):
+        """
+        Prepare FedEx API's ZPL for GoDEX printer.
+        This method modifies the ZPL to fit the GoDEX printer requirements.
+        """
         res = binary_zpl.decode("utf-8").replace(
             "^CF,0,0,0^PR12^MD30^PW1200^POI^CI13^LH0,20", ""
         )
