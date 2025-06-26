@@ -4,7 +4,8 @@ Integration module for ZKTeco biometric attendance devices with Odoo HR Attendan
 
 ## What is this for?
 
-Automatically synchronize employee attendance data from ZKTeco devices to Odoo, eliminating manual data entry.
+Automatically synchronize employee attendance data from ZKTeco devices to Odoo,
+eliminating manual data entry.
 
 ## Dependencies
 
@@ -14,6 +15,7 @@ Automatically synchronize employee attendance data from ZKTeco devices to Odoo, 
 ## Installation
 
 1. Install Python dependency:
+
    ```bash
    pip install pyzk
    ```
@@ -22,7 +24,8 @@ Automatically synchronize employee attendance data from ZKTeco devices to Odoo, 
 
 ## How to use
 
-1. **Configure Device**: Go to HR > Configuration > ZKTeco Devices, add your device IP and port
+1. **Configure Device**: Go to HR > Configuration > ZKTeco Devices, add your device IP
+   and port
 2. **Test Connection**: Click "Test Connection" button
 3. **Map Employees**: Set ZKTeco User ID in employee records
 4. **Sync Attendance**: Click "Get Attendance" to fetch records from device
@@ -30,7 +33,8 @@ Automatically synchronize employee attendance data from ZKTeco devices to Odoo, 
 ## Contributors
 
 - **Ahmet Yiğit Budak** - [@yibudak](https://github.com/yibudak)
-- **Altinkaya Enclosures** - [altinkaya-opensource](https://github.com/altinkaya-opensource/odoo-addons)
+- **Altinkaya Enclosures** -
+  [altinkaya-opensource](https://github.com/altinkaya-opensource/odoo-addons)
 
 ## License
 

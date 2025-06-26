@@ -43,7 +43,6 @@ FEDEX_UOM_CODES = {
 }
 
 
-
 def normalize_turkish(text):
     """
     Normalize Turkish characters to their English equivalents.
@@ -105,7 +104,7 @@ class DeliveryCarrier(models.Model):
             "city": normalize_turkish(partner.city),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
-            "residential": False, # TODO: Maybe this need to be dynamic?
+            "residential": False,  # TODO: Maybe this need to be dynamic?
         }
 
     def _prepare_fedex_contact(self, partner):

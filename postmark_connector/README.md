@@ -1,6 +1,7 @@
 # Postmark Connector
 
-Integrates Postmark transactional email service with Odoo's mail system for reliable email delivery and tracking.
+Integrates Postmark transactional email service with Odoo's mail system for reliable
+email delivery and tracking.
 
 ## Features
 
@@ -18,6 +19,7 @@ Integrates Postmark transactional email service with Odoo's mail system for reli
 ## Installation
 
 1. Install Python dependency:
+
    ```bash
    pip install postmarker
    ```
@@ -32,12 +34,15 @@ Integrates Postmark transactional email service with Odoo's mail system for reli
 ## Configuration
 
 ### Postmark Setup
+
 1. Create a Postmark account at [postmarkapp.com](https://postmarkapp.com)
 2. Create a server and get your Server Token
 3. Add the token to your Odoo configuration
 
 ### Webhook Setup (Optional)
+
 Configure webhook URL in Postmark server settings:
+
 ```
 https://your-odoo-domain.com/mail/postmark/webhook
 ```
@@ -46,8 +51,8 @@ Enable events: Delivery, Bounce, Open, Click, Spam Complaint
 
 ## Usage
 
-Once configured, all outgoing emails are automatically sent via Postmark. Email tracking information is available in:
-**Settings > Technical > Email > Mail Tracking**
+Once configured, all outgoing emails are automatically sent via Postmark. Email tracking
+information is available in: **Settings > Technical > Email > Mail Tracking**
 
 ## License
 
