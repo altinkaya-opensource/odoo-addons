@@ -18,6 +18,8 @@
                 <field name="picking_id" readonly="1" />
                 <field name="number" />
                 <field name="is_pallet" />
+                <field name="label_filename" invisible="1" />
+                <field name="label" filename="label_filename" />
             </field>
 
         </field>
@@ -37,7 +39,6 @@
                 <field name="width" />
                 <field name="shipping_weight" />
             </field>
-
         </field>
     </record>
 

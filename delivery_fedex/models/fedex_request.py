@@ -1,4 +1,6 @@
-import json
+# Copyright 2025 Erol Develi (https://github.com/erlinberg)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
 
 import requests
 
@@ -14,7 +16,11 @@ FEDEX_SERVICES_URL = {
     "rates": "rate/v1/rates/quotes",
     "auth": "oauth/token",
     "shipment": "ship/v1/shipments",
+    "cancel": "ship/v1/shipments/cancel",
+    "tracking": "track/v1/trackingnumbers",
 }
+
+REQUEST_TIMEOUT = 20  # seconds, used in requests
 
 
 class FedExRequest:
@@ -70,6 +76,7 @@ class FedExRequest:
         result = {}
         url = self._get_service_url(service_type)
 
+        request_data = {}
         try:
             headers = {
                 "Content-Type": content_type,
@@ -79,20 +86,35 @@ class FedExRequest:
                 headers["Authorization"] = "Bearer " + self.access_token
 
             if content_type == "application/json":
-                data = json.dumps(data)
+                request_data["json"] = data
+            else:
+                request_data["data"] = data
 
             if request_type == "GET":
-                res = requests.get(url=url, headers=headers, data=data, timeout=60)
+                res = requests.get(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             elif request_type == "POST":
-                res = requests.post(url=url, headers=headers, data=data, timeout=60)
+                res = requests.post(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
+            elif request_type == "PUT":
+                res = requests.put(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             else:
                 raise UserError(
-                    _("Unsupported request type, please only use 'GET' or 'POST'")
+                    _("Unsupported request type, only use 'GET', 'POST' or 'PUT'")
                 )
             result = res.json()
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
-            raise UserError(_("Timeout: the server did not reply within 60s")) from tmo
+            raise UserError(
+                _(
+                    "Timeout: the FedEx server did not reply within %(timeout)s",
+                    timeout=REQUEST_TIMEOUT,
+                ),
+            ) from tmo
         except Exception as e:
             raise UserError(
                 _("{error}\n{result}".format(error=e, result=result if result else ""))
@@ -104,14 +126,18 @@ class FedExRequest:
         return res
 
     def _format_rate_data(self, data):
-        price = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "totalNetChargeWithDutiesAndTaxes"
-        ]
-        currency = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "currency"
-        ]
+        rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
 
-        return {"price": price, "currency": currency}
+        if len(rate_details) < 2:
+            return {
+                "price": rate_details[0]["totalNetChargeWithDutiesAndTaxes"],
+                "currency": rate_details[0]["currency"],
+            }
+
+        return {
+            "price": rate_details[1]["totalNetChargeWithDutiesAndTaxes"],
+            "currency": rate_details[1]["currency"],
+        }
 
     def get_rates(self, data):
         res = self._send_api_request("POST", "rates", data=data)
@@ -119,4 +145,12 @@ class FedExRequest:
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)
+        return res.json()
+
+    def cancel_shipment(self, data):
+        res = self._send_api_request("PUT", "cancel", data=data)
+        return res.json()
+
+    def tracking_state_update(self, data):
+        res = self._send_api_request("POST", "tracking", data=data)
         return res.json()
