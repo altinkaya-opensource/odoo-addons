@@ -21,6 +21,15 @@
                 password="True"
               />
               <field
+                name="fedex_tracking_client_id"
+                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
+              />
+              <field
+                name="fedex_tracking_client_secret"
+                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
+                password="True"
+              />
+              <field
                 name="fedex_account_number"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
