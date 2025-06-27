@@ -11,6 +11,7 @@
     "depends": ["hr", "hr_attendance"],
     "external_dependencies": {"python": ["pyzk"]},
     "data": [
+        "data/cron.xml",
         "security/ir.model.access.csv",
         "views/hr_employee_view.xml",
         "views/hr_attendance_view.xml",

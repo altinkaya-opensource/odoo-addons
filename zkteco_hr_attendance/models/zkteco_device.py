@@ -39,6 +39,19 @@ class ZKTecoDevice(models.Model):
         default="draft",
     )
 
+    def action_open_log(self):
+        self.ensure_one()
+        # TODO:
+        # action = self.env["ir.actions.actions"]._for_xml_id(
+        #     "zkteco_hr_attendance.action_zkteco_device_log"
+        # )
+        # action["domain"] = [("device_id", "=", self.id)]
+        # action["context"] = {
+        #     "default_device_id": self.id,
+        #     "search_default_device_id": self.id,
+        # }
+        # return action
+
     def action_test_connection(self):
         self.ensure_one()
 
@@ -84,9 +97,16 @@ class ZKTecoDevice(models.Model):
                 },
             )
 
+    def get_all_device_attendance(self):
+        devices = self.search([("state", "=", "connected")])
+        for device in devices:
+            device.action_get_attendance()
+        return True
+
     def action_get_attendance(self):
         self.ensure_one()
         HrAttandance = self.env["hr.attendance"]
+        ZKTecoDeviceLog = self.env["zkteco.device.log"]
         try:
             # Create a ZK instance with the device's IP address and port
             zk = ZK(
@@ -108,6 +128,9 @@ class ZKTecoDevice(models.Model):
 
             # Process attendance records
             for record in attendance_records:
+                ZKTecoDeviceLog.create_log_record(data=record, device_id=self)
+
+                # Add the difference to the record's timestamp
                 record.timestamp = record.timestamp + timedelta(seconds=difference)
                 HrAttandance._process_zkteco_attendance_data(self, record)
 

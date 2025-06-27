@@ -23,6 +23,15 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button
+              name="action_open_log"
+              string="Logs"
+              type="object"
+              class="oe_stat_button"
+              icon="fa-bars"
+            />
+                    </div>
                     <group>
                         <group>
                             <field name="name" />
