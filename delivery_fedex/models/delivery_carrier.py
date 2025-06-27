@@ -72,8 +72,15 @@ class DeliveryCarrier(models.Model):
         selection_add=[("fedex", "FedEx")],
         ondelete={"fedex": "set default"},
     )
+
+    # FedEx uses different client IDs and secrets for different services
+    # and tracking, so we need to store them separately.
     fedex_client_id = fields.Char(string="Client ID", help="FedEx Client ID")
     fedex_client_secret = fields.Char(help="FedEx Client Secret")
+
+    fedex_tracking_client_id = fields.Char(help="FedEx Tracking Client ID")
+    fedex_tracking_client_secret = fields.Char(help="FedEx Tracking Client Secret")
+
     fedex_account_number = fields.Integer(help="FedEx Account Number")
 
     service_type = fields.Selection(selection=FEDEX_SERVICES)
@@ -559,6 +566,20 @@ class DeliveryCarrier(models.Model):
 
             master_tracking_number = shipment_data["masterTrackingNumber"]
 
+            picking.carrier_shipping_cost = shipment_data["completedShipmentDetail"][
+                "shipmentRating"
+            ]["shipmentRateDetails"][1]["totalBaseCharge"]
+            picking.carrier_shipping_vat = shipment_data["completedShipmentDetail"][
+                "shipmentRating"
+            ]["shipmentRateDetails"][1]["totalTaxes"]
+            picking.carrier_shipping_total = shipment_data["completedShipmentDetail"][
+                "shipmentRating"
+            ]["shipmentRateDetails"][1]["totalNetChargeWithDutiesAndTaxes"]
+
+            picking.carrier_total_deci = shipment_data["completedShipmentDetail"][
+                "shipmentRating"
+            ]["shipmentRateDetails"][1]["totalBillingWeight"]["value"]
+
             packs_label_data = []
             for pack_label_data in shipment_data["pieceResponses"]:
                 pack = picking.package_ids.filtered(
@@ -622,8 +643,8 @@ class DeliveryCarrier(models.Model):
             return
 
         fedex_request = FedExRequest(
-            client_id=self.fedex_client_id,
-            client_secret=self.fedex_client_secret,
+            client_id=self.fedex_tracking_client_id,
+            client_secret=self.fedex_tracking_client_secret,
             prod=self.prod_environment,
         )
 
@@ -633,7 +654,6 @@ class DeliveryCarrier(models.Model):
                 {
                     "trackingNumberInfo": {
                         "trackingNumber": picking.carrier_tracking_ref,
-                        "carrierCode": self.carrier_code,
                     },
                 }
             ],
@@ -643,57 +663,36 @@ class DeliveryCarrier(models.Model):
             "completeTrackResults"
         ][0]
 
-        if response["trackingNumber"] != picking.carrier_tracking_ref:
-            raise UserError(
-                _(
-                    "Tracking number mismatch: %(incoming_track)s != %(picking_track)s",
-                    incoming_track=response["trackingNumberInfo"]["trackingNumber"],
-                    picking_track=picking.carrier_tracking_ref,
-                )
-            )
+        picking.carrier_tracking_ref = response["trackingNumber"]
+        picking.shipping_number = response["trackingNumber"]
 
         tracking_events = response["trackResults"][0]["scanEvents"]
 
-        picking.shipping_number = response["trackingNumberInfo"]["trackingNumber"]
+        picking.tracking_state_history = "\n".join(
+            [
+                _(
+                    "%(time)s %(date)s - [%(status_code)s] %(event)s",
+                    time=datetime.fromisoformat(e.get("date", "")).strftime("%H:%M:%S")
+                    if e.get("date")
+                    else "",
+                    date=datetime.fromisoformat(e.get("date", "")).strftime("%d/%m/%Y")
+                    if e.get("date")
+                    else "",
+                    status_code=e.get("derivedStatusCode", ""),
+                    event=e.get("eventDescription", ""),
+                )
+                for e in tracking_events
+            ]
+        )
 
-        picking.tracking_state_history = [
-            _(
-                "%(time)s %(date)s - [%(status_code)s] %(event)s\n"
-                "Location       : %(city)s, %(state)s, %(country)s\n"
-                "Address        : %(address)s, %(postal)s\n"
-                "Location ID    : %(location_id)s\n"
-                "Location Type  : %(location_type)s\n"
-                "Status         : %(status)s (%(event_type)s)\n"
-                "Exception      : %(exception)s (Code: %(exception_code)s)\n"
-                "Delay          : %(delay_status)s due to "
-                "%(delay_type)s (%(delay_sube)s)",
-                time=datetime.fromisoformat(e["date"]).strftime("%H:%M:%S"),
-                date=datetime.fromisoformat(e["date"]).strftime("%d/%m/%Y"),
-                status_code=e["derivedStatusCode"],
-                event=e["eventDescription"],
-                city=e["scanLocation"]["city"],
-                state=e["scanLocation"]["stateOrProvinceCode"],
-                country=e["scanLocation"]["countryName"],
-                address=", ".join(e["scanLocation"]["streetLines"]),
-                postal=e["scanLocation"]["postalCode"],
-                location_id=e["locationId"],
-                location_type=e["locationType"],
-                status=e["derivedStatus"],
-                event_type=e["eventType"],
-                exception=e["exceptionDescription"],
-                exception_code=e["exceptionCode"],
-                delay_status=e["delayDetail"]["status"],
-                delay_type=e["delayDetail"]["type"],
-                delay_sube=e["delayDetail"]["subType"],
-            )
-            for e in tracking_events
-        ]
+        carrier_received_by = response["trackResults"][0]["deliveryDetails"].get(
+            "receivedByName"
+        )
 
-        carrier_received_by = response["trackResults"][0]["deliveryDetails"][
-            "signedByName"
-        ]
+        if carrier_received_by:
+            picking.carrier_received_by = carrier_received_by
 
-        date_delivered = next(
+        date_delivered_iter = next(
             (
                 d["dateTime"]
                 for d in response["trackResults"][0]["dateAndTimes"]
@@ -702,11 +701,15 @@ class DeliveryCarrier(models.Model):
             None,
         )
 
-        picking.carrier_received_by = carrier_received_by or picking.partner_id.name
-        picking.date_delivered = (
-            datetime.fromisoformat(date_delivered).strftime("%Y-%m-%d %H:%M:%S")
-            if date_delivered
+        date_delivered = (
+            datetime.fromisoformat(date_delivered_iter).strftime("%Y-%m-%d %H:%M:%S")
+            if date_delivered_iter
             else False
         )
+
+        if date_delivered:
+            picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
 
         return True

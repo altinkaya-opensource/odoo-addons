@@ -125,9 +125,11 @@
                             <field name="width" />
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
+                            <field name="label" invisible="1" />
                             <button
                 name="action_print_label"
                 type="object"
+                icon="fa-barcode"
                 string="Print Label"
                 class="btn btn-secondary"
                 attrs="{'readonly': [('label', '=', False)]}"
