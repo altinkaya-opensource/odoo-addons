@@ -2,6 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
+import json
+
 import requests
 
 from odoo import _
@@ -24,10 +26,17 @@ REQUEST_TIMEOUT = 20  # seconds, used in requests
 
 
 class FedExRequest:
-    def __init__(self, prod=False, client_id=None, client_secret=None):
+    def __init__(
+        self,
+        prod=False,
+        client_id=None,
+        client_secret=None,
+        delivery_carrier=None,
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.api_env = "prod" if prod else "sandbox"
+        self.delivery_carrier = delivery_carrier
         self.access_token = self._get_oauth_key()
 
     def _get_service_url(self, service):
@@ -107,6 +116,13 @@ class FedExRequest:
                     _("Unsupported request type, only use 'GET', 'POST' or 'PUT'")
                 )
             result = res.json()
+            self.delivery_carrier.log_xml(
+                "---Request:\n"
+                + json.dumps(request_data, indent=4)
+                + "\n\n---Response:\n"
+                + json.dumps(result, indent=4),
+                func=service_type,
+            )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
             raise UserError(
@@ -125,23 +141,9 @@ class FedExRequest:
             raise UserError(_(self._format_errors(errors)))
         return res
 
-    def _format_rate_data(self, data):
-        rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
-
-        if len(rate_details) < 2:
-            return {
-                "price": rate_details[0]["totalNetChargeWithDutiesAndTaxes"],
-                "currency": rate_details[0]["currency"],
-            }
-
-        return {
-            "price": rate_details[1]["totalNetChargeWithDutiesAndTaxes"],
-            "currency": rate_details[1]["currency"],
-        }
-
     def get_rates(self, data):
         res = self._send_api_request("POST", "rates", data=data)
-        return self._format_rate_data(res.json())
+        return res.json()
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)

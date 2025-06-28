@@ -2,13 +2,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
-import json
 import logging
 from datetime import datetime
 
 import phonenumbers
 
-from odoo import SUPERUSER_ID, _, api, fields, models, registry
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 from .fedex_request import FedExRequest
@@ -99,53 +98,6 @@ class DeliveryCarrier(models.Model):
         help="Height of the stock in inches for GoDEX printer",
         default=6.0,
     )
-
-    def _log_fedex_request(
-        self, request_json, response_json, func="_log_fedex_request"
-    ):
-        """
-        Log JSON request and response using ir.logging, safely and clearly.
-        This method mirrors log_xml but is adapted for JSON logging.
-        """
-        self.ensure_one()
-
-        if self.debug_logging:
-            self.env.flush_all()
-            db_name = self._cr.dbname
-
-            try:
-                db_registry = registry(db_name)
-                with db_registry.cursor() as cr:
-                    env = api.Environment(cr, SUPERUSER_ID, {})
-                    IrLogging = env["ir.logging"]
-
-                    if isinstance(request_json, dict):
-                        request_json = json.dumps(request_json, indent=2)
-
-                    message = (
-                        "---Request:\n"
-                        f"{json.dumps(request_json, indent=2)}\n\n"
-                        "---Response:\n"
-                        f"{json.dumps(response_json, indent=2)}"
-                    )
-
-                    IrLogging.sudo().create(
-                        {
-                            "name": "delivery.carrier",
-                            "type": "server",
-                            "dbname": db_name,
-                            "level": "DEBUG",
-                            "message": message,
-                            "path": self.delivery_type,
-                            "func": func,
-                            "line": 1,
-                        }
-                    )
-
-            except Exception as e:
-                _logger.warning(
-                    "Failed to log FedEx request/response: %s", e, exc_info=True
-                )
 
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
@@ -527,6 +479,20 @@ class DeliveryCarrier(models.Model):
 
         return res.encode("utf-8")
 
+    def _format_rate_data(self, data):
+        rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
+
+        if len(rate_details) < 2:
+            return {
+                "price": rate_details[0]["totalNetChargeWithDutiesAndTaxes"],
+                "currency": rate_details[0]["currency"],
+            }
+
+        return {
+            "price": rate_details[1]["totalNetChargeWithDutiesAndTaxes"],
+            "currency": rate_details[1]["currency"],
+        }
+
     def fedex_rate_shipment(self, order):
         """
         Get FedEx rate for the given sale order.
@@ -534,10 +500,13 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_sale_rate_data(order)
-        rate_data = fedex_request.get_rates(payload)
+        response = fedex_request.get_rates(payload)
+
+        rate_data = self._format_rate_data(response)
         price = rate_data.get("price")
 
         # If needed, convert the price to the order's currency
@@ -553,11 +522,6 @@ class DeliveryCarrier(models.Model):
                 fields.Date.today(),
             )
 
-        self._log_fedex_request(
-            request_json=payload,
-            response_json=rate_data,
-            func="get_rates",
-        )
         return {
             "success": True,
             "price": price,
@@ -576,11 +540,13 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_account_rate_data(account_move)
-        rate_data = fedex_request.get_rates(payload)
+        response = fedex_request.get_rates(payload)
 
+        rate_data = self._format_rate_data(response)
         price = rate_data.get("price")
 
         # If needed, convert the price to the order's currency
@@ -596,11 +562,6 @@ class DeliveryCarrier(models.Model):
                 fields.Date.today(),
             )
 
-        self._log_fedex_request(
-            request_json=payload,
-            response_json=rate_data,
-            func="get_rates",
-        )
         return price
 
     def fedex_send_shipping(self, pickings):
@@ -610,6 +571,7 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
@@ -669,12 +631,6 @@ class DeliveryCarrier(models.Model):
                 }
             )
 
-            self._log_fedex_request(
-                request_json=payload,
-                response_json=response,
-                func="create_shipment",
-            )
-
         return result
 
     def fedex_cancel_shipment(self, pickings):
@@ -684,6 +640,7 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
@@ -700,12 +657,6 @@ class DeliveryCarrier(models.Model):
 
             res = res and response["output"].get("cancelledShipment", False)
 
-            self._log_fedex_request(
-                request_json=payload,
-                response_json=response,
-                func="cancel_shipment",
-            )
-
         return res
 
     def fedex_tracking_state_update(self, picking):
@@ -717,6 +668,7 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_tracking_client_id,
             client_secret=self.fedex_tracking_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
@@ -783,11 +735,5 @@ class DeliveryCarrier(models.Model):
             picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
                 "%Y-%m-%d %H:%M:%S"
             )
-
-        self._log_fedex_request(
-            request_json=payload,
-            response_json=response,
-            func="tracking_state_update",
-        )
 
         return True
