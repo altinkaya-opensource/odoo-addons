@@ -185,29 +185,23 @@ class DeliveryCarrier(models.Model):
         """
         Prepare base customs data for FedEx shipments.
         """
-        return {
+        data = {
             "dutiesPayment": {
                 "paymentType": self.customs_payment_type,
-                "payor": {
-                    "responsibleParty": {
-                        "accountNumber": {
-                            "value": str(self.fedex_account_number)
-                            if self.customs_payment_type == "SENDER"
-                            else str(
-                                partner_id.commercial_partner_id.fedex_customer_number
-                            )
-                        },
-                        "contact": self._prepare_fedex_contact(company_id.partner_id)
-                        if self.customs_payment_type == "SENDER"
-                        else self._prepare_fedex_contact(partner_id),
-                        "address": self._prepare_fedex_address(company_id.partner_id)
-                        if self.customs_payment_type == "SENDER"
-                        else self._prepare_fedex_address(partner_id),
-                    }
-                },
             },
             "commodities": [],
         }
+
+        if self.customs_payment_type == "SENDER":
+            data["dutiesPayment"]["payor"] = {
+                "responsibleParty": {
+                    "address": self._prepare_fedex_address(company_id.partner_id),
+                    "accountNumber": {"value": str(self.fedex_account_number)},
+                    "contact": self._prepare_fedex_contact(company_id.partner_id),
+                },
+            }
+
+        return data
 
     def _prepare_fedex_commodities_entry(
         self, product, quantity, customs_value, customs_currency, weight
@@ -348,11 +342,7 @@ class DeliveryCarrier(models.Model):
             )
             total_weight += pack.shipping_weight
 
-        data["requestedShipment"]["customsClearanceDetail"] = (
-            self._prepare_fedex_customs_data(account_move.picking_ids, total_weight)
-        )
         data["requestedShipment"]["requestedPackageLineItems"] = packages
-
         data["requestedShipment"]["totalPackageCount"] = len(packages)
 
         return data
@@ -409,7 +399,7 @@ class DeliveryCarrier(models.Model):
                             "accountNumber": {
                                 "value": str(self.fedex_account_number)
                                 if self.payment_type == "sender_pays"
-                                else str(
+                                else (
                                     picking.partner_id.commercial_partner_id.fedex_customer_number
                                 )
                             },
@@ -547,17 +537,6 @@ class DeliveryCarrier(models.Model):
                 )
             )
 
-        if (
-            self.customs_payment_type == "RECIPIENT"
-            and not account_move.partner_id.fedex_customer_number
-        ):
-            raise UserError(
-                _(
-                    "FedEx customer number is required for the recipient when "
-                    "the customs payment type is set to 'Recipient'."
-                )
-            )
-
         if not account_move.picking_ids:
             raise UserError(_("Cannot get rates for an invoice without pickings."))
 
@@ -600,17 +579,6 @@ class DeliveryCarrier(models.Model):
                 _(
                     "FedEx customer number is required for the recipient when "
                     "the payment type is set to 'Customer Pays'."
-                )
-            )
-
-        if (
-            self.customs_payment_type == "RECIPIENT"
-            and not pickings.partner_id.fedex_customer_number
-        ):
-            raise UserError(
-                _(
-                    "FedEx customer number is required for the recipient when "
-                    "the customs payment type is set to 'Recipient'."
                 )
             )
 
