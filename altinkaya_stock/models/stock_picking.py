@@ -86,11 +86,12 @@ class StockPicking(models.Model):
         copy=True,
     )
 
-    @api.onchange("carrier_id")
+    @api.depends("carrier_id")
     def _onchange_carrier_id(self):
-        source = self.sale_id or self.purchase_id
-        if self.carrier_id and source:
-            source.write({"carrier_id": self.carrier_id.id})
+        for record in self:
+            source = record.sale_id or record.purchase_id
+            if record.carrier_id and source:
+                source.write({"carrier_id": record.carrier_id.id})
 
     def _compute_trimmed_sale_note(self):
         """
