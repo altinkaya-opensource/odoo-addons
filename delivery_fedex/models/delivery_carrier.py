@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
+import logging
 from datetime import datetime
 
 import phonenumbers
@@ -41,6 +42,8 @@ FEDEX_CARRIER_CODE = [
 FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
+
+_logger = logging.getLogger(__name__)
 
 
 def normalize_turkish(text):
@@ -108,7 +111,7 @@ class DeliveryCarrier(models.Model):
                 normalize_turkish(partner.street or ""),
                 normalize_turkish(partner.street2 or ""),
             ],
-            "city": normalize_turkish(partner.city),
+            "city": normalize_turkish(partner.city or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
@@ -119,9 +122,9 @@ class DeliveryCarrier(models.Model):
         Prepare FedEx contact data from partner.
         """
         contact = {
-            "personName": normalize_turkish(partner.name),
+            "personName": normalize_turkish(partner.name or ""),
             "emailAddress": partner.email,
-            "companyName": normalize_turkish(partner.commercial_partner_id.name),
+            "companyName": normalize_turkish(partner.commercial_partner_id.name or ""),
         }
 
         if partner.phone or partner.mobile:
@@ -182,27 +185,23 @@ class DeliveryCarrier(models.Model):
         """
         Prepare base customs data for FedEx shipments.
         """
-        return {
+        data = {
             "dutiesPayment": {
                 "paymentType": self.customs_payment_type,
-                "payor": {
-                    "responsibleParty": {
-                        "accountNumber": {
-                            "value": str(self.fedex_account_number)
-                            if self.customs_payment_type == "SENDER"
-                            else str(partner_id.fedex_customer_number or "")
-                        },
-                        "contact": self._prepare_fedex_contact(company_id.partner_id)
-                        if self.customs_payment_type == "SENDER"
-                        else self._prepare_fedex_contact(partner_id),
-                        "address": self._prepare_fedex_address(company_id.partner_id)
-                        if self.customs_payment_type == "SENDER"
-                        else self._prepare_fedex_address(partner_id),
-                    }
-                },
             },
             "commodities": [],
         }
+
+        if self.customs_payment_type == "SENDER":
+            data["dutiesPayment"]["payor"] = {
+                "responsibleParty": {
+                    "address": self._prepare_fedex_address(company_id.partner_id),
+                    "accountNumber": {"value": str(self.fedex_account_number)},
+                    "contact": self._prepare_fedex_contact(company_id.partner_id),
+                },
+            }
+
+        return data
 
     def _prepare_fedex_commodities_entry(
         self, product, quantity, customs_value, customs_currency, weight
@@ -287,7 +286,7 @@ class DeliveryCarrier(models.Model):
                 "recipient": {"address": self._prepare_fedex_address(partner_id)},
                 "serviceType": self.service_type,
                 "preferredCurrency": self.currency_id.name,
-                "rateRequestType": ["PREFERRED"],
+                "rateRequestType": ["ACCOUNT"],
                 "pickupType": self.pickup_type,
                 "packagingType": "YOUR_PACKAGING",
                 "shipDateStamp": delivery_date.strftime("%Y-%m-%d"),
@@ -302,7 +301,7 @@ class DeliveryCarrier(models.Model):
         based on the sale order.
         """
         data = self._prepare_fedex_base_rate_data(
-            order.company_id, order.partner_id, order.expected_date
+            order.company_id, order.partner_id, fields.Date.today()
         )
 
         # We use dummy packages because when getting rates
@@ -323,7 +322,7 @@ class DeliveryCarrier(models.Model):
         data = self._prepare_fedex_base_rate_data(
             account_move.company_id,
             account_move.partner_shipping_id,
-            account_move.invoice_date or fields.Date.today(),
+            fields.Date.today(),
         )
 
         packages = []
@@ -343,11 +342,7 @@ class DeliveryCarrier(models.Model):
             )
             total_weight += pack.shipping_weight
 
-        data["requestedShipment"]["customsClearanceDetail"] = (
-            self._prepare_fedex_customs_data(account_move.picking_ids, total_weight)
-        )
         data["requestedShipment"]["requestedPackageLineItems"] = packages
-
         data["requestedShipment"]["totalPackageCount"] = len(packages)
 
         return data
@@ -390,11 +385,12 @@ class DeliveryCarrier(models.Model):
                 "serviceType": self.service_type,
                 "preferredCurrency": picking.sale_id.currency_id.name,
                 "shipDatestamp": picking.date.strftime("%Y-%m-%d"),
-                "rateRequestType": ["ACCOUNT", "PREFERRED"],
                 "pickupType": self.pickup_type,
                 "packagingType": "YOUR_PACKAGING",
                 "shippingChargesPayment": {
-                    "paymentType": "SENDER" if self.payment_type else "RECIPIENT",
+                    "paymentType": "SENDER"
+                    if self.payment_type == "sender_pays"
+                    else "RECIPIENT",
                     "payor": {
                         "responsibleParty": {
                             "address": self._prepare_fedex_address(picking.company_id)
@@ -403,7 +399,9 @@ class DeliveryCarrier(models.Model):
                             "accountNumber": {
                                 "value": str(self.fedex_account_number)
                                 if self.payment_type == "sender_pays"
-                                else str(picking.partner_id.fedex_customer_number or "")
+                                else (
+                                    picking.partner_id.commercial_partner_id.fedex_customer_number
+                                )
                             },
                             "contact": self._prepare_fedex_contact(
                                 picking.company_id.partner_id
@@ -476,6 +474,21 @@ class DeliveryCarrier(models.Model):
 
         return res.encode("utf-8")
 
+    def _format_rate_data(self, data):
+        rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
+
+        account_rate_detail = next(
+            (rd for rd in rate_details if rd.get("rateType") == "ACCOUNT"),
+            None,
+        )
+        if not account_rate_detail:
+            raise UserError(_("FedEx rate data does not contain account rate details."))
+
+        return {
+            "price": account_rate_detail["totalNetChargeWithDutiesAndTaxes"],
+            "currency": account_rate_detail["currency"],
+        }
+
     def fedex_rate_shipment(self, order):
         """
         Get FedEx rate for the given sale order.
@@ -483,11 +496,13 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_sale_rate_data(order)
-        rate_data = fedex_request.get_rates(payload)
+        response = fedex_request.get_rates(payload)
 
+        rate_data = self._format_rate_data(response)
         price = rate_data.get("price")
 
         # If needed, convert the price to the order's currency
@@ -514,6 +529,13 @@ class DeliveryCarrier(models.Model):
         """
         Get FedEx rate for the given account move (invoice).
         """
+        if self.payment_type == "customer_pays":
+            raise UserError(
+                _(
+                    "You cannot get rates for an invoice with 'Customer Pays' "
+                    "payment type."
+                )
+            )
 
         if not account_move.picking_ids:
             raise UserError(_("Cannot get rates for an invoice without pickings."))
@@ -521,11 +543,13 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_account_rate_data(account_move)
-        rate_data = fedex_request.get_rates(payload)
+        response = fedex_request.get_rates(payload)
 
+        rate_data = self._format_rate_data(response)
         price = rate_data.get("price")
 
         # If needed, convert the price to the order's currency
@@ -547,48 +571,77 @@ class DeliveryCarrier(models.Model):
         """
         Send FedEx shipment request for the given pickings.
         """
+        if (
+            self.payment_type == "customer_pays"
+            and not pickings.partner_id.fedex_customer_number
+        ):
+            raise UserError(
+                _(
+                    "FedEx customer number is required for the recipient when "
+                    "the payment type is set to 'Customer Pays'."
+                )
+            )
+
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
         result = []
         for picking in pickings:
             payload = self._prepare_fedex_shipment_data(picking)
-            shipment_data = fedex_request.create_shipment(payload)["output"][
-                "transactionShipments"
-            ][0]
+            response = fedex_request.create_shipment(payload)
 
-            price = shipment_data["completedShipmentDetail"]["shipmentRating"][
-                "shipmentRateDetails"
-            ][1]["totalNetChargeWithDutiesAndTaxes"]
+            shipment_data = response["output"]["transactionShipments"][0]
 
-            master_tracking_number = shipment_data["masterTrackingNumber"]
+            if self.payment_type != "customer_pays":
+                shipment_rate_details = shipment_data["completedShipmentDetail"][
+                    "shipmentRating"
+                ]["shipmentRateDetails"][0]
 
-            picking.carrier_shipping_cost = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalBaseCharge"]
-            picking.carrier_shipping_vat = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalTaxes"]
-            picking.carrier_shipping_total = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalNetChargeWithDutiesAndTaxes"]
+                price = shipment_rate_details["totalNetChargeWithDutiesAndTaxes"]
 
-            picking.carrier_total_deci = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalBillingWeight"]["value"]
+                master_tracking_number = shipment_data["masterTrackingNumber"]
 
-            packs_label_data = []
-            for pack_label_data in shipment_data["pieceResponses"]:
-                pack = picking.package_ids.filtered(
-                    lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
-                )
+                picking.carrier_shipping_cost = shipment_rate_details["totalBaseCharge"]
+                picking.carrier_shipping_vat = shipment_rate_details["totalTaxes"]
+                picking.carrier_shipping_total = shipment_rate_details[
+                    "totalNetChargeWithDutiesAndTaxes"
+                ]
+
+                picking.carrier_total_deci = shipment_rate_details[
+                    "totalBillingWeight"
+                ]["value"]
+
+            packs_label_data = {}
+            if not len(shipment_data["pieceResponses"]) == 1:
+                for pack_label_data in shipment_data["pieceResponses"]:
+                    pack = picking.package_ids.filtered(
+                        lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
+                    )
+
+                    label_filename = _(
+                        "fedex_label_%(seq_number)s.zpl",
+                        seq_number=pack_label_data["packageSequenceNumber"],
+                    )
+                    label_binary = base64.b64encode(
+                        self._prepare_fedex_zpl_godex(
+                            base64.b64decode(
+                                pack_label_data["packageDocuments"][0]["encodedLabel"]
+                            )
+                        )
+                    )
+
+                    packs_label_data[pack] = (label_filename, label_binary)
+            else:
+                pack_label_data = shipment_data["pieceResponses"][0]
+                pack = picking.package_ids
 
                 label_filename = _(
                     "fedex_label_%(seq_number)s.zpl",
-                    seq_number=pack_label_data["packageSequenceNumber"],
+                    seq_number=pack.sequence,
                 )
                 label_binary = base64.b64encode(
                     self._prepare_fedex_zpl_godex(
@@ -618,6 +671,7 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
@@ -630,9 +684,9 @@ class DeliveryCarrier(models.Model):
                 "trackingNumber": picking.carrier_tracking_ref,
                 "carrierCode": self.carrier_code,
             }
-            res = res and fedex_request.cancel_shipment(payload)["output"].get(
-                "cancelledShipment", False
-            )
+            response = fedex_request.cancel_shipment(payload)
+
+            res = res and response["output"].get("cancelledShipment", False)
 
         return res
 
@@ -645,6 +699,7 @@ class DeliveryCarrier(models.Model):
         fedex_request = FedExRequest(
             client_id=self.fedex_tracking_client_id,
             client_secret=self.fedex_tracking_client_secret,
+            delivery_carrier=self,
             prod=self.prod_environment,
         )
 
