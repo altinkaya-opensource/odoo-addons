@@ -145,10 +145,6 @@
 			<field name="model">res.partner</field>
 			<field name="type">tree</field>
 			<field name="arch" type="xml">
-				<xpath expr="///field[@name='display_name']" position="after">
-					<field name="state_id" />
-					<field name="country_id" />
-				</xpath>
 				<xpath expr="//field[@name='email']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath>
