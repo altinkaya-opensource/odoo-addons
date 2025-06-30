@@ -400,7 +400,7 @@ class DeliveryCarrier(models.Model):
                     }
                 ],
                 "serviceType": self.service_type,
-                "preferredCurrency": picking.sale_id.currency_id.name,
+                "preferredCurrency": self.currency_id.name,
                 "shipDatestamp": picking.date.strftime("%Y-%m-%d"),
                 "pickupType": self.pickup_type,
                 "packagingType": "YOUR_PACKAGING",
@@ -433,7 +433,7 @@ class DeliveryCarrier(models.Model):
                     # TODO: Make these values configurable
                     "labelFormatType": "COMMON2D",
                     "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
-                    "imageType": "ZPLII",
+                    "imageType": "PDF",
                     "labelOrder": "SHIPPING_LABEL_FIRST",
                     "labelRotation": "NONE",
                     "labelStockType": "STOCK_4X6",
@@ -767,6 +767,10 @@ class DeliveryCarrier(models.Model):
 
         if carrier_received_by:
             picking.carrier_received_by = carrier_received_by
+
+        if not response["trackResults"][0].get("dateAndTimes"):
+            picking.date_delivered = False
+            return True
 
         date_delivered_iter = next(
             (
