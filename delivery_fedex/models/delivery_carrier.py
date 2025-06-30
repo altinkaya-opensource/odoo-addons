@@ -106,11 +106,26 @@ class DeliveryCarrier(models.Model):
         """
         Prepare FedEx address data from partner.
         """
+        street_lines = []
+        address_lines = normalize_turkish(
+            f"{partner.street or ''} {partner.street2 or ''}"
+        )
+
+        # Split address spaces into lines which have a maximum length of 35 characters
+        address_words = address_lines.split()
+        text_line = ""
+        for word in address_words:
+            if len(text_line + " " + word) <= 35:
+                text_line += " " + word
+            else:
+                street_lines.append(text_line.strip())
+                text_line = word
+
+        if text_line:
+            street_lines.append(text_line.strip())
+
         return {
-            "streetLines": [
-                normalize_turkish(partner.street or ""),
-                normalize_turkish(partner.street2 or ""),
-            ],
+            "streetLines": street_lines,
             "city": normalize_turkish(partner.city or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
@@ -268,7 +283,9 @@ class DeliveryCarrier(models.Model):
 
         data["totalCustomsValue"] = {
             "currency": picking.sale_id.currency_id.name,
-            "amount": sum(lines_to_ship.mapped("price_subtotal")),
+            "amount": max(
+                sum(lines_to_ship.mapped("price_subtotal")), 1.0
+            ),  # Some countries require a minimum customs value
         }
 
         return data
@@ -500,23 +517,27 @@ class DeliveryCarrier(models.Model):
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_sale_rate_data(order)
-        response = fedex_request.get_rates(payload)
 
-        rate_data = self._format_rate_data(response)
-        price = rate_data.get("price")
+        try:
+            response = fedex_request.get_rates(payload)
 
-        # If needed, convert the price to the order's currency
-        if rate_data.get("currency") != order.currency_id.name:
-            currency = self.env["res.currency"].search(
-                [("name", "=", rate_data.get("currency"))], limit=1
-            )
+            rate_data = self._format_rate_data(response)
+            price = rate_data.get("price")
 
-            price = currency._convert(
-                price,
-                order.currency_id,
-                order.company_id,
-                fields.Date.today(),
-            )
+            # If needed, convert the price to the order's currency
+            if rate_data.get("currency") != order.currency_id.name:
+                currency = self.env["res.currency"].search(
+                    [("name", "=", rate_data.get("currency"))], limit=1
+                )
+
+                price = currency._convert(
+                    price,
+                    order.currency_id,
+                    order.company_id,
+                    fields.Date.today(),
+                )
+        except UserError:  # This means there is no rate or the request failed
+            price = 0.0
 
         return {
             "success": True,

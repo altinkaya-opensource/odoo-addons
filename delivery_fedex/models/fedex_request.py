@@ -22,7 +22,7 @@ FEDEX_SERVICES_URL = {
     "tracking": "track/v1/trackingnumbers",
 }
 
-REQUEST_TIMEOUT = 20  # seconds, used in requests
+REQUEST_TIMEOUT = 10  # seconds, used in requests
 
 
 class FedExRequest:
