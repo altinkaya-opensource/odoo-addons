@@ -298,9 +298,7 @@ class DeliveryCarrier(models.Model):
         Aras Kargo doesn't provide label for shipments.
         They are not implemented common label on their systems.
         """
-        raise NotImplementedError(
-            _("Aras Kargo API doesn't provide methods to print label.")
-        )
+        return True
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

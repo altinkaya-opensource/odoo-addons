@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <template id="carrier_label">
+            <t t-foreach="docs" t-as="o">
+                <t t-translation="off">
+^XA
+^XSET,UNICODE,2
+^CI28
+^PW1180
+^LL1770
+^LH0,0
+
+^CF0,57
+<t t-set="delivery_type_label" t-value="delivery_type_label"/>
+^FO10,50^FB1180,1,0,L,0^FD<t t-esc="delivery_type_label"/><t t-if="o.carrier_id.payment_type=='sender_pays'"> Gönderici Ödemeli</t><t t-elif="o.carrier_id.payment_type=='customer_pays'"> Alıcı Ödemeli</t>^FS
+
+^FO700,150^A0N,180,180^FB400,1,0,L,0^FD<t t-esc="package_label_info"/>^FS
+
+^FO10,140^FB1180,1,0,L,0^FDSevk # <t t-esc="o.carrier_tracking_ref"/>^FS
+<t t-if="o.invoice_ids">
+    ^FO10,200^FB1180,1,0,L,0^FDFatura # <t t-esc="', '.join(o.invoice_ids.mapped('number')"/>^FS
+</t>
+<t t-set="formatted_deci" t-value="round(o.picking_total_deci)"/>
+^FO10,260^FB1180,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count"/> Paket ve <t t-esc="formatted_deci"/> Desi^FS
+
+^BY4,4,220
+^FO10,320^BCN,220,Y,N,N
+^FD<t t-esc="o.carrier_tracking_ref"/>^FS
+
+^FO10,590^GB1100,3,3^FS
+
+^FO10,630^FB1180,1,0,L,0^FDALICI^FS
+
+<t t-set="street_parts" t-value="[
+    o.partner_id.street,
+    o.partner_id.district_id.name if o.partner_id.district_id else '',
+    o.partner_id.zip or ''
+]"/>
+<t t-set="street" t-value="' '.join([part for part in street_parts if part])"/>
+<t t-set="line1" t-value="street[0:40]"/>
+<t t-set="line2" t-value="street[40:80]"/>
+
+^FO10,700^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.name"/>^FS
+^FO10,760^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.neighbour_id.name"/>^FS
+^FO10,820^FB1180,1,0,L,0^FD<t t-esc="line1"/>^FS
+<t t-if="line2">
+    ^FO10,880^FB1180,1,0,L,0^FD<t t-esc="line2"/>^FS
+    ^FO10,940^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name"/> / <t t-esc="o.partner_id.country_id.name"/>^FS
+    ^FO10,1000^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.phone"/>^FS
+
+    ^FO10,1060^GB1100,3,3^FS
+    ^FO10,1100^FB1180,1,0,L,0^FDGÖNDEREN^FS
+    ^FO10,1150^FB1180,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları^FS
+
+    ^XZ
+</t>
+<t t-else="">
+    ^FO10,880^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name"/> / <t t-esc="o.partner_id.country_id.name"/>^FS
+    ^FO10,940^FB1180,1,0,L,0^FD<t t-esc="o.partner_id.phone"/>^FS
+
+    ^FO10,1000^GB1100,3,3^FS
+    ^FO10,1040^FB1180,1,0,L,0^FDGÖNDEREN^FS
+    ^FO10,1110^FB1180,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları San. Tic. A.Ş.^FS
+
+    ^XZ
+</t>
+                </t>
+            </t>
+    </template>
+</odoo>
