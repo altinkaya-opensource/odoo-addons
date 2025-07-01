@@ -27,7 +27,7 @@
           />^FS
 </t>
 <t t-set="formatted_deci" t-value="round(o.picking_total_deci)" />
-^FO10,260^FB1180,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count" /> Paket ve <t
+^FO10,260^FB1180,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count" /> Paket <t
           t-esc="formatted_deci"
         /> Desi^FS
 

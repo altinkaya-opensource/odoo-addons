@@ -154,7 +154,6 @@ class DeliveryCarrier(models.Model):
             if not response:
                 result.append(vals)
                 continue
-
             vals["tracking_number"] = response.cargoKey
             vals["exact_price"] = 0.0
             result.append(vals)
@@ -294,7 +293,7 @@ class DeliveryCarrier(models.Model):
 
     def yurtici_carrier_get_label(self, picking):
         """
-        Yurtici Kargo doesn't provide label for shipments.
+        Yurtiçi Kargo doesn't provide label for shipments.
         They are not implemented common label on their systems.
         """
         return True
