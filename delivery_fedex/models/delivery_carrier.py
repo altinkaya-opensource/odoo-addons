@@ -433,7 +433,7 @@ class DeliveryCarrier(models.Model):
                     # TODO: Make these values configurable
                     "labelFormatType": "COMMON2D",
                     "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
-                    "imageType": "PDF",
+                    "imageType": "ZPLII",
                     "labelOrder": "SHIPPING_LABEL_FIRST",
                     "labelRotation": "NONE",
                     "labelStockType": "STOCK_4X6",
