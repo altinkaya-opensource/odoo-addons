@@ -8,7 +8,6 @@ from datetime import datetime
 
 import phonenumbers
 from lxml import etree
-import base64
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -155,7 +154,7 @@ class DeliveryCarrier(models.Model):
             if not response:
                 result.append(vals)
                 continue
-            
+
             vals["tracking_number"] = response.cargoKey
             vals["exact_price"] = 0.0
             result.append(vals)
