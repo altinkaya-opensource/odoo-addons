@@ -200,13 +200,24 @@ class StockPicking(models.Model):
         """
         carrier = self.carrier_id
         printer = carrier.default_printer_id
-        report_name = (
-            f"delivery_{carrier.delivery_type}.{carrier.delivery_type}_carrier_label"
-        )
-        qweb_text = self.env.ref(report_name).render_qweb_text(
-            [carrier.id], data={"zpl_raw": data}
-        )[0]
-        printer.print_document(report_name, qweb_text, doc_form="txt")
+        report_name = "delivery_integration_base.carrier_label"
+        delivery_type_label = dict(
+            self.fields_get(allfields=["delivery_type"])["delivery_type"]["selection"]
+        ).get(self.delivery_type)
+        package_count = self.carrier_package_count or 1
+        for i in range(package_count):
+            current_label = f"{i+1}/{package_count}"
+            qweb_bytes = self.env["ir.actions.report"]._render_template(
+                report_name,
+                {
+                    "docs": [self],
+                    "zpl_raw": data,
+                    "delivery_type_label": delivery_type_label,
+                    "package_label_info": current_label,
+                },
+            )
+            qweb_text = qweb_bytes.decode("utf-8")
+            printer.print_document(report_name, qweb_text, doc_form="txt")
         return True
 
     def button_mail_send(self):
