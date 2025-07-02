@@ -3,6 +3,7 @@
         <template id="product_molding_label">
             <t t-foreach="docs" t-as="o">
                 <t t-translation="off">
+                    <t t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX300'">
                     <t
           t-set="name_first_line"
           t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
@@ -37,6 +38,43 @@ AE,44,212,1,1,0,0E,<t t-esc="name_first_line[:38]" />
 AE,382,170,1,1,0,0E,<t t-esc="o.responsible_employee_id.name" />
 <t t-if="name_second_line">AE,43,255,1,1,0,0E,<t t-esc="name_second_line" /></t>
 E
+                    </t>
+                    <t t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX'">
+                    <t
+          t-set="name_first_line"
+          t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
+        />
+                    <t
+          t-set="name_second_line"
+          t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
+        />
+^XSETCUT,DOUBLECUT,0
+^Q25,1
+^W60
+^H10
+^P1
+^S4
+^AT
+^C1
+^R0
+~Q+0
+^O0
+^D0
+^E12
+~R255
+^L
+Dy2-me-dd
+Th:m:s
+Y8,15,cicek_7052
+Dy2-me-dd
+Th:m:s
+BE,119,15,3,8,80,0,1,<t t-esc="o.barcode" />
+AC,8,114,1,1,0,0E,[<t t-esc="o.default_code" />]
+AB,158,120,1,1,0,0E,<t t-esc="o.responsible_employee_id.name" />
+AC,8,155,1,1,0,0E,<t t-esc="name_first_line[:38]" />
+<t t-if="name_second_line">AB,8,255,1,1,0,0E,<t t-esc="name_second_line" /></t>
+E
+                    </t>
                 </t>
             </t>
         </template>
