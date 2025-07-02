@@ -3,15 +3,17 @@
         <template id="product_molding_label">
             <t t-foreach="docs" t-as="o">
                 <t t-translation="off">
-                    <t t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX300'">
                     <t
-          t-set="name_first_line"
-          t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
-        />
+          t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX300'"
+        >
                     <t
-          t-set="name_second_line"
-          t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
-        />
+            t-set="name_first_line"
+            t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
+          />
+                    <t
+            t-set="name_second_line"
+            t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
+          />
 ^XSETCUT,DOUBLECUT,0
 ^Q25,1
 ^W60
@@ -39,15 +41,17 @@ AE,382,170,1,1,0,0E,<t t-esc="o.responsible_employee_id.name" />
 <t t-if="name_second_line">AE,43,255,1,1,0,0E,<t t-esc="name_second_line" /></t>
 E
                     </t>
-                    <t t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX'">
                     <t
-          t-set="name_first_line"
-          t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
-        />
+          t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX'"
+        >
                     <t
-          t-set="name_second_line"
-          t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
-        />
+            t-set="name_first_line"
+            t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
+          />
+                    <t
+            t-set="name_second_line"
+            t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
+          />
 ^XSETCUT,DOUBLECUT,0
 ^Q25,1
 ^W60
