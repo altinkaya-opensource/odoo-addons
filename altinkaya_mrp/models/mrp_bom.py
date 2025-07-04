@@ -186,17 +186,44 @@ class MRPBoM(models.Model):
                 line_quantity = float_round(
                     line_quantity, precision_rounding=rounding, rounding_method="UP"
                 )
-                lines_done.append(
-                    (
-                        current_line,
-                        {
-                            "target_product": line_product,
-                            "qty": line_quantity,
-                            "product": current_product,
-                            "original_qty": quantity,
-                            "parent_line": parent_line,
-                        },
+                if line_type == "bom_line":
+                    lines_done.append(
+                        (
+                            current_line,
+                            {
+                                "target_product": line_product,
+                                "qty": line_quantity,
+                                "product": current_product,
+                                "original_qty": quantity,
+                                "parent_line": parent_line,
+                            },
+                        )
                     )
-                )
+                else:
+                    # Create a new temporary bom_line
+                    # if matched by _match_possible_variant
+                    bom_line_values = self.env["mrp.bom.line"].new(
+                        {
+                            "product_id": line_product.id,
+                            "product_uom_id": current_line.product_uom_id.id,
+                            "product_qty": current_line.product_qty,
+                            "sequence": current_line.sequence,
+                            # if operation_id exists:
+                            "operation_id": getattr(current_line, "operation_id", False)
+                            and current_line.operation_id.id
+                            or False,
+                        }
+                    )
+                    lines_done.append(
+                        (
+                            bom_line_values,
+                            {
+                                "target_product": line_product,
+                                "qty": line_quantity,
+                                "product": current_product,
+                                "original_qty": quantity,
+                            },
+                        )
+                    )
 
         return boms_done, lines_done
