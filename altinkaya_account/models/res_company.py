@@ -8,3 +8,6 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     tax_office_name = fields.Char("Tax Office", related="partner_id.tax_office_name")
+    currency_diff_inv_account_id = fields.Many2one(
+        "account.account", string="Currency Difference Invoice Account"
+    )

@@ -1,3 +1,7 @@
+# Copyright 2025 Erol Develi (https://github.com/erlinberg)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+
 import json
 
 import requests
@@ -7,21 +11,33 @@ from odoo.exceptions import UserError
 
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
-    "prod": "",  # TODO: Add production URL
+    "prod": "https://apis.fedex.com",
 }
 
 FEDEX_SERVICES_URL = {
     "rates": "rate/v1/rates/quotes",
     "auth": "oauth/token",
     "shipment": "ship/v1/shipments",
+    "cancel": "ship/v1/shipments/cancel",
+    "tracking": "track/v1/trackingnumbers",
 }
+
+REQUEST_TIMEOUT = 10  # seconds, used in requests
 
 
 class FedExRequest:
-    def __init__(self, prod=False, client_id=None, client_secret=None):
+    def __init__(
+        self,
+        prod=False,
+        client_id=None,
+        client_secret=None,
+        delivery_carrier=None,
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.api_env = "prod" if prod else "sandbox"
+        self.delivery_carrier = delivery_carrier
+        self.access_token = self._get_oauth_key()
 
     def _get_service_url(self, service):
         return FEDEX_API_URL[self.api_env] + "/" + FEDEX_SERVICES_URL[service]
@@ -69,29 +85,52 @@ class FedExRequest:
         result = {}
         url = self._get_service_url(service_type)
 
+        request_data = {}
         try:
             headers = {
                 "Content-Type": content_type,
                 "X-locale": "en_US",
             }
             if auth:
-                headers["Authorization"] = "Bearer " + self._get_oauth_key()
+                headers["Authorization"] = "Bearer " + self.access_token
 
             if content_type == "application/json":
-                data = json.dumps(data)
+                request_data["json"] = data
+            else:
+                request_data["data"] = data
 
             if request_type == "GET":
-                res = requests.get(url=url, headers=headers, data=data, timeout=60)
+                res = requests.get(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             elif request_type == "POST":
-                res = requests.post(url=url, headers=headers, data=data, timeout=60)
+                res = requests.post(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
+            elif request_type == "PUT":
+                res = requests.put(
+                    url=url, headers=headers, timeout=REQUEST_TIMEOUT, **request_data
+                )
             else:
                 raise UserError(
-                    _("Unsupported request type, please only use 'GET' or 'POST'")
+                    _("Unsupported request type, only use 'GET', 'POST' or 'PUT'")
                 )
             result = res.json()
+            self.delivery_carrier.log_xml(
+                "---Request:\n"
+                + json.dumps(request_data, indent=4)
+                + "\n\n---Response:\n"
+                + json.dumps(result, indent=4),
+                func=service_type,
+            )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
-            raise UserError(_("Timeout: the server did not reply within 60s")) from tmo
+            raise UserError(
+                _(
+                    "Timeout: the FedEx server did not reply within %(timeout)s",
+                    timeout=REQUEST_TIMEOUT,
+                ),
+            ) from tmo
         except Exception as e:
             raise UserError(
                 _("{error}\n{result}".format(error=e, result=result if result else ""))
@@ -102,20 +141,18 @@ class FedExRequest:
             raise UserError(_(self._format_errors(errors)))
         return res
 
-    def _format_rate_data(self, data):
-        price = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "totalNetChargeWithDutiesAndTaxes"
-        ]
-        currency = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
-            "currency"
-        ]
-
-        return {"price": price, "currency": currency}
-
     def get_rates(self, data):
         res = self._send_api_request("POST", "rates", data=data)
-        return self._format_rate_data(res.json())
+        return res.json()
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)
+        return res.json()
+
+    def cancel_shipment(self, data):
+        res = self._send_api_request("PUT", "cancel", data=data)
+        return res.json()
+
+    def tracking_state_update(self, data):
+        res = self._send_api_request("POST", "tracking", data=data)
         return res.json()

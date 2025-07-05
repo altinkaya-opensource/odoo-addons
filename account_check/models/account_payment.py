@@ -38,13 +38,27 @@ class AccountPayment(models.Model):
         " for when the bank credits all the checks in a single movement",
     )
 
+    check_payment_type = fields.Selection(
+        [
+            ("received_third_check", "Received Third Check"),
+            ("delivered_third_check", "Delivered Third Check"),
+            ("issue_check", "Issue Check"),
+        ],
+    )
+    is_check_payment = fields.Boolean(
+        related="journal_id.check_journal",
+        help="This field is used to determine if the payment is a check payment.",
+    )
+
+    check_operation_done = fields.Boolean()
+
     @api.depends("check_ids")
     def _compute_check(self):
         for rec in self:
             # we only show checks for issue checks or received thid checks
             # if len of checks is 1
             if (
-                rec.payment_method_code
+                rec.check_payment_type
                 in (
                     "received_third_check",
                     "issue_check",
@@ -120,12 +134,12 @@ class AccountPayment(models.Model):
     #     readonly=True,
     # )
 
-    @api.depends("payment_method_code")
+    @api.depends("check_payment_type")
     def _compute_check_type(self):
         for rec in self:
-            if rec.payment_method_code == "issue_check":
+            if rec.check_payment_type == "issue_check":
                 rec.check_type = "issue_check"
-            elif rec.payment_method_code in [
+            elif rec.check_payment_type in [
                 "received_third_check",
                 "delivered_third_check",
             ]:
@@ -135,7 +149,7 @@ class AccountPayment(models.Model):
 
     def _compute_payment_method_description(self):
         check_payments = self.filtered(
-            lambda x: x.payment_method_code
+            lambda x: x.check_payment_type
             in ["issue_check", "received_third_check", "delivered_third_check"]
         )
         for rec in check_payments:
@@ -152,11 +166,11 @@ class AccountPayment(models.Model):
     # on change methods
 
     @api.constrains("check_ids")
-    @api.onchange("check_ids", "payment_method_code")
+    @api.onchange("check_ids", "check_payment_type")
     def onchange_checks(self):
         for rec in self:
             # we only overwrite if payment method is delivered
-            if rec.payment_method_code == "delivered_third_check":
+            if rec.check_payment_type == "delivered_third_check":
                 rec.amount = sum(rec.check_ids.mapped("amount"))
                 currency = rec.check_ids.mapped("currency_id")
 
@@ -191,7 +205,7 @@ class AccountPayment(models.Model):
             return "%%0%sd" % padding % number  # noqa
 
         for rec in self:
-            if rec.payment_method_code in ["issue_check"]:
+            if rec.check_payment_type in ["issue_check"]:
                 sequence = rec.checkbook_id.sequence_id
                 if sequence:
                     if rec.check_number != sequence.number_next_actual:
@@ -223,10 +237,10 @@ class AccountPayment(models.Model):
             [("check_owner_vat", "=", self.check_owner_vat)], limit=1
         ).check_owner_name
 
-    @api.onchange("partner_id", "payment_method_code")
+    @api.onchange("partner_id", "check_payment_type")
     def onchange_partner_check(self):
         commercial_partner = self.partner_id.commercial_partner_id
-        if self.payment_method_code == "received_third_check":
+        if self.check_payment_type == "received_third_check":
             self.check_bank_id = (
                 commercial_partner.bank_ids
                 and commercial_partner.bank_ids[0].bank_id
@@ -241,16 +255,17 @@ class AccountPayment(models.Model):
             # if l10n_ar cuit field is available
             if "cuit" in commercial_partner._fields:
                 vat_field = "cuit"
+            self.check_owner_name = commercial_partner.name or False
             self.check_owner_vat = commercial_partner[vat_field]
-        elif self.payment_method_code == "issue_check":
+        elif self.check_payment_type == "issue_check":
             self.check_bank_id = self.journal_id.bank_id
             self.check_owner_name = False
             self.check_owner_vat = False
         # no hace falta else porque no se usa en otros casos
 
-    @api.onchange("payment_method_code")
-    def _onchange_payment_method_code(self):
-        if self.payment_method_code == "issue_check":
+    @api.onchange("check_payment_type")
+    def _onchange_check_payment_type(self):
+        if self.check_payment_type == "issue_check":
             checkbook = self.env["account.checkbook"].search(
                 [("state", "=", "active"), ("journal_id", "=", self.journal_id.id)],
                 limit=1,
@@ -295,7 +310,7 @@ class AccountPayment(models.Model):
             "type": self.check_type,
             "journal_id": self.journal_id.id,
             "amount": self.amount,
-            "date": self.check_payment_date,
+            "payment_date": self.check_payment_date,
             "currency_id": self.currency_id.id,
         }
 
@@ -310,7 +325,7 @@ class AccountPayment(models.Model):
         if not rec.check_type:
             return vals
         if (
-            rec.payment_method_code == "received_third_check"
+            rec.check_payment_type == "received_third_check"
             and rec.payment_type == "inbound"
             # el chequeo de partner type no seria necesario
             # un proveedor nos podria devolver plata con un cheque
@@ -325,69 +340,15 @@ class AccountPayment(models.Model):
 
             _logger.info("Receive Check")
             check = self.create_check("third_check", operation, self.check_bank_id)
-            vals["date_maturity"] = self.check_payment_date
+
+            if self.check_payment_date:
+                vals["date_maturity"] = self.check_payment_date
+
             vals["account_id"] = check.get_third_check_account().id
             vals["name"] = _("Receive check %s") % check.number
+
         elif (
-            rec.payment_method_code == "delivered_third_check"
-            and rec.payment_type == "transfer"
-        ):
-            # si el cheque es entregado en una transferencia tenemos tres
-            # opciones
-            # TODO we should make this method selectable for transfers
-            inbound_method = rec.destination_journal_id.inbound_payment_method_line_ids
-            # si un solo inbound method y es received third check
-            # entonces consideramos que se esta moviendo el cheque de un diario
-            # al otro
-            if len(inbound_method) == 1 and (
-                inbound_method.code == "received_third_check"
-            ):
-                if cancel:
-                    _logger.info("Cancelled Transfered Check")
-                    for check in rec.check_ids:
-                        check._del_operation(self)
-                        check._del_operation(self)
-                        receive_op = check._get_operation("holding")
-                        if receive_op.origin._name == "account.payment":
-                            check.journal_id = receive_op.origin.journal_id.id
-                    return None
-
-                _logger.info("Transfered Check")
-                # get the account before changing the journal on the check
-                vals["account_id"] = rec.check_ids.get_third_check_account().id
-                rec.check_ids._add_operation("transfered", rec, False, date=rec.date)
-                rec.check_ids._add_operation("holding", rec, False, date=rec.date)
-                rec.check_ids.write({"journal_id": rec.destination_journal_id.id})
-                vals["name"] = _("Transfer checks %s") % ", ".join(
-                    rec.check_ids.mapped("name")
-                )
-            elif rec.destination_journal_id.type == "cash":
-                if cancel:
-                    _logger.info("Cancelled Sold Check")
-                    rec.check_ids._del_operation(self)
-                    return None
-
-                _logger.info("Sold Check")
-                rec.check_ids._add_operation("sold", rec, False, date=rec.date)
-                vals["account_id"] = rec.check_ids.get_third_check_account().id
-                vals["name"] = _("Sell check %s") % ", ".join(
-                    rec.check_ids.mapped("name")
-                )
-            # bank
-            else:
-                if cancel:
-                    _logger.info("Cancelled Deposited Check")
-                    rec.check_ids._del_operation(self)
-                    return None
-
-                _logger.info("Deposited Check")
-                rec.check_ids._add_operation("deposited", rec, False, date=rec.date)
-                vals["account_id"] = rec.check_ids.get_third_check_account().id
-                vals["name"] = _("Deposit checks %s") % ", ".join(
-                    rec.check_ids.mapped("name")
-                )
-        elif (
-            rec.payment_method_code == "delivered_third_check"
+            rec.check_payment_type == "delivered_third_check"
             and rec.payment_type == "outbound"
             # el chequeo del partner type no es necesario
             # podriamos entregarlo a un cliente
@@ -407,7 +368,7 @@ class AccountPayment(models.Model):
                 rec.check_ids.mapped("number")
             )
         elif (
-            rec.payment_method_code == "issue_check" and rec.payment_type == "outbound"
+            rec.check_payment_type == "issue_check" and rec.payment_type == "outbound"
             # el chequeo del partner type no es necesario
             # podriamos entregarlo a un cliente
             # and rec.partner_type == 'supplier'
@@ -429,30 +390,12 @@ class AccountPayment(models.Model):
             vals["account_id"] = self.company_id._get_check_account("deferred").id
             operation = "handed"
             check = self.create_check("issue_check", operation, self.check_bank_id)
-            vals["date_maturity"] = self.check_payment_date
-            vals["name"] = _("Hand check %s") % str(check.number)
-        elif (
-            rec.payment_method_code == "issue_check"
-            and rec.payment_type == "transfer"
-            and rec.destination_journal_id.type == "cash"
-        ):
-            if cancel:
-                _logger.info("Cancelled Withdrawn Check")
-                rec.check_ids._del_operation(self)
-                rec.check_ids.unlink()
-                return None
 
-            _logger.info("Withdrawn Check")
-            self.create_check("issue_check", "withdrawed", self.check_bank_id)
-            vals["name"] = _("Withdraw with checks %s") % ", ".join(
-                rec.check_ids.mapped("name")
-            )
-            vals["date_maturity"] = self.check_payment_date
-            # if check is deferred, change account
-            # si retiramos por caja directamente lo sacamos de banco
-            # if self.check_subtype == 'deferred':
-            #     vals['account_id'] = self.company_id._get_check_account(
-            #         'deferred').id
+            if self.check_payment_date:
+                vals["date_maturity"] = self.check_payment_date
+
+            vals["name"] = _("Hand check %s") % str(check.number)
+
         else:
             raise UserError(
                 _(
@@ -463,13 +406,15 @@ class AccountPayment(models.Model):
                     "* Destination journal: %(dest)s\n",
                     payment_type=rec.payment_type,
                     partner_type=rec.partner_type,
-                    method=rec.payment_method_code,
+                    method=rec.check_payment_type,
                     dest=rec.destination_journal_id.type,
                 )
             )
+
+        self.check_operation_done = True
         return vals
 
-    def post(self):
+    def action_post(self):
         for rec in self:
             if rec.check_ids and not rec.currency_id.is_zero(
                 sum(rec.check_ids.mapped("amount")) - rec.amount
@@ -480,7 +425,7 @@ class AccountPayment(models.Model):
                         "the selected checks. Please try deleting or re-adding a check."
                     )
                 )
-            if rec.payment_method_code == "issue_check" and (not rec.check_number):
+            if rec.check_payment_type == "issue_check" and (not rec.check_number):
                 raise UserError(
                     _("Please be sure that check number or name is filled!")
                 )
@@ -488,9 +433,21 @@ class AccountPayment(models.Model):
         res = super().action_post()
         return res
 
-    def _get_liquidity_move_line_vals(self, amount):
-        vals = super()._get_liquidity_move_line_vals(amount)
-        vals = self.do_checks_operations(vals=vals)
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None):
+        vals = super()._prepare_move_line_default_vals(write_off_line_vals)
+
+        if self.is_check_payment and not self.check_operation_done:
+            new_vals = []
+            counterpart_account_ids = (
+                self.partner_id.property_account_payable_id.id,
+                self.partner_id.property_account_receivable_id.id,
+            )
+            for line in vals:
+                if line.get("account_id") in counterpart_account_ids:
+                    new_vals.append(line)
+                else:
+                    new_vals.append(self.do_checks_operations(vals=line))
+            vals = new_vals
         return vals
 
     def do_print_checks(self):
@@ -611,7 +568,7 @@ class AccountPayment(models.Model):
         move = super()._create_payment_entry(amount)
         if self.filtered(
             lambda x: x.payment_type == "transfer"
-            and x.payment_method_code == "delivered_third_check"
+            and x.check_payment_type == "delivered_third_check"
             and x.check_deposit_type == "detailed"
         ):
             self._split_aml_line_per_check(move)
@@ -621,7 +578,7 @@ class AccountPayment(models.Model):
         transfer_debit_aml = super()._create_transfer_entry(amount)
         if self.filtered(
             lambda x: x.payment_type == "transfer"
-            and x.payment_method_code == "delivered_third_check"
+            and x.check_payment_type == "delivered_third_check"
             and x.check_deposit_type == "detailed"
         ):
             self._split_aml_line_per_check(transfer_debit_aml.move_id)

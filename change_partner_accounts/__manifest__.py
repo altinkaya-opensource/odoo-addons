@@ -11,11 +11,11 @@
         "sale",
         "account",
         "account_financial_risk",
-        "currency_difference_invoice",
+        "altinkaya_account",
     ],
     # always loaded
     "data": [
-        # 'security/ir.model.access.csv',
+        "security/ir.model.access.csv",
         "views/res_partner_view.xml",
         "wizard/change_partner_accounts_usd_view.xml",
         "wizard/change_partner_accounts_try_view.xml",

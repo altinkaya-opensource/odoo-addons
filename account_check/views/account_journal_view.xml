@@ -5,6 +5,11 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
+
+            <field name="currency_id" position="after">
+                <field name="check_journal" widget="boolean_toggle" />
+            </field>
+
             <page name="bank_account">
                 <label for="checkbook_ids" />
                 <field

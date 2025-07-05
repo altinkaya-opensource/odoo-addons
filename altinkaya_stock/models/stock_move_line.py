@@ -8,6 +8,12 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     product_type = fields.Selection(related="product_id.type", string="Product Type")
+    result_package_pallet_id = fields.Many2one(
+        "stock.quant.package",
+        string="Result Package Pallet",
+        related="result_package_id.pallet_id",
+        store=True,
+    )
 
     def action_scrap_button(self):
         self.ensure_one()

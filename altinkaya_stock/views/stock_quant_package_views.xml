@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock.action_package_view" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <record id="view_stock_quant_package_form" model="ir.ui.view">
+        <field name="name">stock.quant.package.form</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_form" />
+        <field name="arch" type="xml">
+            <separator position="before">
+                <separator string="Move Lines" />
+                <field name="move_line_ids" widget="one2many" readonly="1" />
+            </separator>
+
+            <field name="package_type_id" position="before">
+                <field name="picking_id" readonly="1" />
+                <field name="number" />
+                <field name="is_pallet" />
+                <field name="label_filename" invisible="1" />
+                <field name="label" filename="label_filename" />
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_stock_quant_package_tree" model="ir.ui.view">
+        <field name="name">stock.quant.package.tree</field>
+        <field name="model">stock.quant.package</field>
+        <field name="inherit_id" ref="stock.view_quant_package_tree" />
+        <field name="arch" type="xml">
+
+            <field name="package_type_id" position="after">
+                <field name="number" />
+                <field name="is_pallet" />
+                <field name="pack_length" />
+                <field name="height" />
+                <field name="width" />
+                <field name="shipping_weight" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,424 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* altinkaya_survey
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-17 06:50+0000\n"
+"PO-Revision-Date: 2025-06-17 06:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/survey_question.py:0
+#: code:addons/altinkaya_survey/models/survey_user_input_line.py:0
+#: code:addons/altinkaya_survey/models/survey_user_input_line.py:0
+#, python-format
+msgid "%s Star"
+msgstr ""
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/survey_question.py:0
+#, python-format
+msgid "%s Votes"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid ""
+"<i class=\"fa fa-list-alt me-1\"/>\n"
+"Data"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_question_star_rating_form
+msgid ""
+"<i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>\n"
+"                    <i class=\"fa fa-star fa-2x\" role=\"img\" aria-label=\"Star Rating\" title=\"Star Rating\"/>"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.sale_portal_rate_us
+msgid ""
+"<i class=\"fa fa-star\"/>\n"
+"                        Rate your experience"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid "Answer"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__answer_type
+msgid "Answer Type"
+msgstr "Antwoordsoort"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_mapping
+msgid "Base model for Survey - Odoo models integration"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Wijzigingen Wijzigingen"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__changeset_ids
+msgid "Changesets"
+msgstr "Wijzigingssets"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_res_partner
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__partner_id
+msgid "Contact"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_changesets
+msgid "Count Changesets"
+msgstr "Tel Wijzigingen"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "In afwachting van wijzigingen tellen"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Aantal Wijzigingen"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__general_answer
+msgid "General Answer"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid "Graph"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__default_invoice_survey
+msgid "If checked, this survey will be used as default survey for invoices."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__default_partner_survey
+msgid "If checked, this survey will be used as default survey for partner."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__default_sale_survey
+msgid ""
+"If checked, this survey will be used as default survey for sale orders."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__url_shortener_id
+msgid "If set, survey url will be shortened using this shortener."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__invoice_id
+msgid "Invoice"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__default_invoice_survey
+msgid "Invoice Survey"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_account_move
+msgid "Journal Entry"
+msgstr "Boeking"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_question__star_count
+msgid "Number of stars to be displayed in the survey."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__default_partner_survey
+msgid "Partner Survey"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid "Pie Graph"
+msgstr ""
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/survey_question.py:0
+#, python-format
+msgid "Please select at least one star to proceed."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__question_type
+msgid "Question Type"
+msgstr "Soort vraag"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__reconciliation_replied
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_users__reconciliation_replied
+msgid "Reconciliation Replied"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__sale_id
+msgid "Sale Order"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__default_sale_survey
+msgid "Sale Survey"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_sale_order
+msgid "Sales Order"
+msgstr "Verkooporder"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__shortened_url
+msgid "Shortened URL for survey"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__shortened_url
+msgid "Shortened Url"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__smart_search
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__smart_search
+msgid "Smart Search"
+msgstr "Slim zoeken"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid "Star"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__star_count
+msgid "Star Count"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields.selection,name:altinkaya_survey.selection__survey_question__question_type__star_rating
+#: model:ir.model.fields.selection,name:altinkaya_survey.selection__survey_user_input_line__answer_type__star_rating
+msgid "Star Rating"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__value_star_rating
+msgid "Star Rating Value"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_survey
+msgid "Survey"
+msgstr "Enquête"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_response_line_tree
+msgid "Survey Answer Line"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.actions.act_window,name:altinkaya_survey.action_survey_response_line
+#: model:ir.ui.menu,name:altinkaya_survey.survey_response_line_menu
+msgid "Survey Answer Lines"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_payment__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_users__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_count
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__survey_count
+msgid "Survey Count"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_question
+msgid "Survey Question"
+msgstr "Enquêtevraag"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_payment__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_users__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_url
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__survey_url
+msgid "Survey URL"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_payment__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_users__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_url_qr
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__survey_url_qr
+msgid "Survey URL QR"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_user_input
+msgid "Survey User Input"
+msgstr "Enquête gebruikersinvoer"
+
+#. module: altinkaya_survey
+#: model:ir.model,name:altinkaya_survey.model_survey_user_input_line
+msgid "Survey User Input Line"
+msgstr "Enquête gebruikers invoerregel"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_bank_statement_line__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_payment__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_users__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__survey_ids
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__survey_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.view_order_form_survey
+msgid "Surveys"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_question__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Het aantal lopende wijzigingen van deze record"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_account_move__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_mapping__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_question__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Het aantal hangende wijzigingssets van deze record"
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,help:altinkaya_survey.field_account_move__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_res_partner__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_sale_order__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_mapping__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_question__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_survey__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__count_changesets
+#: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input_line__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Het totale aantal wijzigingen van deze record"
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/survey_survey.py:0
+#, python-format
+msgid ""
+"There is already a survey with default sale survey checked (%s).Please "
+"uncheck it before checking this survey."
+msgstr ""
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/survey_mixin.py:0
+#, python-format
+msgid "There is no default survey for partners."
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__url_shortener_id
+msgid "URL Shortener"
+msgstr ""
+
+#. module: altinkaya_survey
+#: model:ir.model.fields,field_description:altinkaya_survey.field_account_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_mapping__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_question__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Gebruiker kan wijzigingen zien"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
+msgid "User Choice"
+msgstr ""

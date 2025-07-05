@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 06:47+0000\n"
-"PO-Revision-Date: 2025-03-28 06:47+0000\n"
+"POT-Creation-Date: 2025-06-19 10:57+0000\n"
+"PO-Revision-Date: 2025-06-19 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,43 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_account_reconcile
+msgid "Account Account Reconcile"
+msgstr "Hesap Hesap Mutabakatı"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__accounting_contact
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__accounting_contact
 msgid "Accounting Contact"
 msgstr "Muhasebe Sorumlusu"
 
 #. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_bank_payments
+#: model:ir.ui.menu,name:altinkaya_account.menu_bank_payments
+msgid "Bank Payments"
+msgstr "Banka Ödemeleri"
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_bank_statement_line
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__statement_line_id
 msgid "Bank Statement Line"
-msgstr "Hesap Ekstresi Satırı"
+msgstr "Banka Ekstresi Satırları"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__billing_point_id
+msgid "Billing Point"
+msgstr "Faturalama Noktası"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__can_reconcile
+msgid "Can Reconcile"
+msgstr "Uzlaşabilir"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
+msgid "Cancel"
+msgstr "İptal"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__carrier_id
@@ -38,15 +66,25 @@ msgstr "Nakliyeci"
 #: code:addons/altinkaya_account/models/account_move.py:0
 #, python-format
 msgid "Carrier changed from %(frm)s to %(to)s through invoice by %(user)s"
-msgstr "Nakliyeci %(user)s tarafından fatura yoluyla %(frm)s iken %(to)s olarak değiştirildi"
+msgstr ""
+"Nakliyeci %(user)s tarafından fatura yoluyla %(frm)s iken %(to)s olarak "
+"değiştirildi"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__changeset_change_ids
@@ -54,12 +92,20 @@ msgid "Changeset Changes"
 msgstr "Değişiklikler"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__changeset_ids
@@ -72,6 +118,11 @@ msgid "Companies"
 msgstr "Firmalar"
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_res_config_settings
+msgid "Config Settings"
+msgstr "Yapılandırma Ayarları"
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_partner
 msgid "Contact"
 msgstr "İletişim"
@@ -82,12 +133,20 @@ msgid "Convert Invoice to TRY"
 msgstr "Faturayı TRY'ye çevir"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_changesets
@@ -95,12 +154,20 @@ msgid "Count Changesets"
 msgstr "Değişiklik Sayısı"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_pending_changeset_changes
@@ -108,12 +175,20 @@ msgid "Count Pending Changeset Changes"
 msgstr "Bekleyen Değişiklik Sayısı"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_pending_changesets
@@ -121,14 +196,99 @@ msgid "Count Pending Changesets"
 msgstr "Bekleyen Değişiklikler Sayısı"
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Create Currency Difference Invoice"
+msgstr "Kur Farkı Faturası Oluştur"
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_create_currency_invoices
+msgid "Create Currency Difference Invoices"
+msgstr "Kur Farkı Faturaları Oluştur"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
+msgid "Create Difference Invoices"
+msgstr "Fark Faturaları Oluştur"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
+msgid "Create Invoices"
+msgstr "Faturalar Oluştur"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
+msgid "Create Move"
+msgstr "Yevmiye Oluştur"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_currency
 msgid "Currency"
 msgstr "Para Birimi"
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Currency Difference"
+msgstr "Kur Farkı"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__difference_checked
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_checked
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_checked
+msgid "Currency Difference Checked"
+msgstr "Kur Farkı Kontrol edildi"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_diff_inv_account_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_diff_inv_account_id
+msgid "Currency Difference Invoice Account"
+msgstr "Kur Farkı Fatura Hesabı"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__currency_difference_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__currency_difference_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__currency_difference_line_ids
+msgid "Currency Difference Lines"
+msgstr "Kur Farkı Kalemleri"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_amls
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_amls
+msgid "Currency Difference Move Lines"
+msgstr "Kur Farkı Yevmiye Kayıtları"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_to_invoice
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_to_invoice
+msgid "Currency Difference to invoice"
+msgstr "Faturalanacak Kur Farkı"
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_currency_rate
 msgid "Currency Rate"
 msgstr "Döviz Kuru"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
+msgid "Customers"
+msgstr "Müşteriler"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__delivery_ref_no
@@ -145,14 +305,25 @@ msgid ""
 "Delivery carrier reference number before the shipment is sent to the "
 "carrier."
 msgstr ""
-"Gönderinin nakliyeciye gönderilmeden önceki teslimat yöntemi "
-"referans numarası"
+"Gönderinin nakliyeciye gönderilmeden önceki teslimat yöntemi referans "
+"numarası"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__devir_yapildi
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__devir_yapildi
 msgid "Devir Yapıldı"
-msgstr "Devir Yapıldı"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__unit_discounted
+msgid "Disc. Unit"
+msgstr "İnd. Birim Fiyatı"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__display_name
+msgid "Display Name"
+msgstr "Görünüm Adı"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
@@ -173,20 +344,64 @@ msgid ""
 "Eger fatura tevkifatli fatura ise bu alan secilmeli Sadece zirve programi "
 "transferinde kullanilmaktadir."
 msgstr ""
-"Eger fatura tevkifatli fatura ise bu alan secilmeli Sadece zirve programi "
-"transferinde kullanilmaktadir."
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__x_serino
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__x_serino
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__x_serino
 msgid "Fatura No"
-msgstr "Fatura No"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_full_reconcile
+msgid "Full Reconcile"
+msgstr "Tam Denkleştirme"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__full_reconcile_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__full_reconcile_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__full_reconcile_ids
+msgid "Full Reconciles"
+msgstr "Tam Uzlaşmalar"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__full_reconcile_ids
+#: model:ir.model.fields,help:altinkaya_account.field_account_move__full_reconcile_ids
+#: model:ir.model.fields,help:altinkaya_account.field_account_payment__full_reconcile_ids
+msgid "Full reconciles linked to this invoice"
+msgstr "Bu faturaya bağlı tam uzlaşmalar"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__id
+msgid "ID"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__invoice_currency_id
+msgid "Invoice Currency"
+msgstr "Fatura Para Birimi"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__invoice_date
+msgid "Invoice Date"
+msgstr "Fatura Tarihi"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Invoices in reconciliations"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_journal
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__journal_id
 msgid "Journal"
 msgstr "Yevmiye"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__journal_code
+msgid "Journal Code"
+msgstr "Yevmiye Kodu"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
@@ -209,6 +424,41 @@ msgid "Journal Name"
 msgstr "Yevmiye Adı"
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "KDV %s oranlı vergi tanımlanmamış!"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Kur Farkı"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Kur Farkı Faturası Oluştur"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move____last_update
+msgid "Last Modified on"
+msgstr "Son Güncelleme"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Last Year"
 msgstr "Geçen Yıl"
@@ -219,9 +469,30 @@ msgid "Lots/Serial Numbers"
 msgstr "Lot/Seri Numarası"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
+msgid "Mali Koşul"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__manual_model_id
+msgid "Manual Model"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_res_partner__currency_difference_checked
+#: model:ir.model.fields,help:altinkaya_account.field_res_users__currency_difference_checked
+msgid "Manual check for currency difference"
+msgstr "El ile Kur farkı kotrolü Yapıldı"
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Match Picking Lines"
 msgstr "Sevk Satırlarını Eşleştir"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__move_date
+msgid "Move Date"
+msgstr "Yevmiye Tarihi"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__move_name
@@ -232,6 +503,13 @@ msgstr "Numara"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__move_ref
 msgid "Move Reference"
 msgstr "Referans"
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/create_currency_difference_invoice.py:0
+#, python-format
+msgid "No invoice created!"
+msgstr "Herhangi bir fatura oluşturulmadı!"
 
 #. module: altinkaya_account
 #. odoo-python
@@ -249,6 +527,13 @@ msgstr "Notlar"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__partner_order_ref
 msgid "Order Reference"
 msgstr "Sipariş Referansı"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__other_inv_in_reconciles
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__other_inv_in_reconciles
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__other_inv_in_reconciles
+msgid "Other invoices in reconciles"
+msgstr "Uzlaşmadaki diğer faturalar"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__purchase_line_amount
@@ -272,6 +557,11 @@ msgid "Payment Date"
 msgstr "Ödeme Tarihi"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__payment_term_id
+msgid "Payment Term"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_payment_term
 msgid "Payment Terms"
 msgstr "Ödeme Koşulları"
@@ -288,10 +578,23 @@ msgid "Picking Ref"
 msgstr "Sevk Referansı"
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_reconcile_model
+msgid ""
+"Preset to create journal entries during a invoices and payments matching"
+msgstr ""
+"Fatura ve ödemeler eşleştirilirken yevmiye girişleri oluşturmak üzere "
+"önceden ayarlanmış"
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_product_pricelist
+msgid "Pricelist"
+msgstr "Fiyat Listesi"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__purchase_default_account_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__purchase_default_account_id
 msgid "Purchase Default Account"
-msgstr "Varsayılan Satınalma Hesabı"
+msgstr "Satınalma Masraf Hesabı"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__rate_inverse
@@ -312,10 +615,25 @@ msgid "Reciever"
 msgstr "Alıcı"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Reconcile and Currency Difference"
+msgstr "Uzlaştır ve Kur Farkı"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Reconciliations"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__purchase_default_account_id
 #: model:ir.model.fields,help:altinkaya_account.field_res_users__purchase_default_account_id
 msgid "Satın alma işlemlerinde varsayılan muhasebe hesabı."
-msgstr "Satın alma işlemlerinde varsayılan muhasebe hesabı."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
+msgid "Satınalma Masraf Hesabı"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__address_contact_id
@@ -325,12 +643,27 @@ msgid "Shipping Address"
 msgstr "Teslimat Adresi"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_move_line__journal_code
+msgid ""
+"Shorter name used for display. The journal entries of this journal will also"
+" be named using this prefix by default."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__smart_search
@@ -338,9 +671,11 @@ msgid "Smart Search"
 msgstr "Akıllı Arama"
 
 #. module: altinkaya_account
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_bank_statement_line_tree
-msgid "Statement lines"
-msgstr "Ekstre satırları"
+#. odoo-javascript
+#: code:addons/altinkaya_account/static/src/xml/reconcile.xml:0
+#, python-format
+msgid "Sum:"
+msgstr "Toplam:"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__supplier_invoice_number
@@ -348,6 +683,18 @@ msgstr "Ekstre satırları"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__supplier_invoice_number
 msgid "Supplier Invoice Number"
 msgstr "Tedarikçi Fatura Numarası"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
+msgid "Suppliers"
+msgstr "Tedarikçiler"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__tax_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__tax_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__tax_line_ids
+msgid "Tax Lines"
+msgstr "Vergi Satırları"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__tax_office_name
@@ -360,26 +707,31 @@ msgstr "Vergi Dairesi"
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_company_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
 msgid "Tax Office Name"
-msgstr "Vergi Dairesi Ismi"
+msgstr "Vergi Dairesi Adı"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Teslimat Adresi"
-msgstr "Teslimat Adresi"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__x_teslimat
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__x_teslimat
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__x_teslimat
 msgid "Teslimat Kisaltmasi"
-msgstr "Teslimat Kisaltmasi"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__z_tevkifatli_mi
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__z_tevkifatli_mi
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__z_tevkifatli_mi
 msgid "Tevkifatlı"
-msgstr "Tevkifatlı"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__invoice_currency_id
+msgid "The currency in which the invoice will be converted."
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__rate_inverse
@@ -387,12 +739,20 @@ msgid "The inverse rate of the currency"
 msgstr "Para birimi ters kur"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_pending_changeset_changes
@@ -400,12 +760,20 @@ msgid "The number of pending changes of this record"
 msgstr "Bu kayıt için bekleyen değişiklikler"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_pending_changesets
@@ -413,12 +781,20 @@ msgid "The number of pending changesets of this record"
 msgstr "Bu kayıt için bekleyen değişiklik sayısı"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_full_reconcile__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_journal__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_changesets
@@ -430,12 +806,29 @@ msgstr "Bu kayıt için bekleyen genel değişiklik sayısı"
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__supplier_invoice_number
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__supplier_invoice_number
 msgid "The reference of this invoice as provided by the supplier."
-msgstr "Tedarikçi tarafından sağlanan fatura referansı."
+msgstr "Tedarikçi tarafından sağlanan fatura referansı"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "This F.Year"
-msgstr "Yıla Göre Fatura"
+msgstr "Bu Yıl"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
+msgid "This action will create an invoice for every selected partner."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
+msgid "This action will currency valuation move for selected partners."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__journal_id
+msgid ""
+"This journal will be used on the write-off entries created by the "
+"reconciliation."
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__total_balance
@@ -446,17 +839,35 @@ msgid "Total Balance"
 msgstr "Toplam Miktar"
 
 #. module: altinkaya_account
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
-msgid "Türkiye"
-msgstr "Türkiye"
+#: model:ir.model,name:altinkaya_account.model_create_currency_difference_invoice
+msgid "Transient Model For Currency Difference Invoice"
+msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_create_currency_valuation_move
+msgid "Transient Model For Currency Valuation Move"
+msgstr "Kur Değerleme Hareketi için Geçici Model"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
+msgid "Türkiye"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_full_reconcile__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__user_can_see_changeset
@@ -474,22 +885,47 @@ msgstr "Bekleyen Sevkler"
 #: model:ir.actions.act_window,name:altinkaya_account.act_res_partner_2_account_move_line
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
 msgid "Yevmiye Kalemleri"
-msgstr "Yevmiye Kalemleri"
+msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Yurtdışı"
-msgstr "Yurtdışı"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
+msgid "Yurtiçi Normal TL"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
+msgid "Yurtiçi Normal YP"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
+msgid "Yurtiçi Tevkifat"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__z_muhasebe_kodu
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__z_muhasebe_kodu
 msgid "Zirve Muhasebe kodu"
-msgstr "Zirve Muhasebe kodu"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__x_comment_export
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__x_comment_export
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__x_comment_export
 msgid "ihracat fatura notu"
-msgstr "ihracat fatura notu"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_form_view_cari
+msgid "Özel Limitler"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
+msgid "İhracat"
+msgstr ""

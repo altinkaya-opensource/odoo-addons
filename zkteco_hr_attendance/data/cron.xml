@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record forcecreate="True" id="ir_cron_zkteco_hr_attendance_update" model="ir.cron">
+        <field name="name">ZKTeco HR Attendance Update</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">5</field>
+        <field name="model_id" ref="zkteco_hr_attendance.model_zkteco_device" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+        <field name="code">model.get_all_device_attendance()</field>
+        <field eval="True" name="active" />
+        <field name="state">code</field>
+    </record>
+
+</odoo>

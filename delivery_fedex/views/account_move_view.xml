@@ -13,15 +13,7 @@
           name="get_fedex_rates"
           string="Get FedEx Rates"
           type="object"
-          attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
-        />
-            </xpath>
-            <xpath expr="//button[@name='button_set_checked']" position="after">
-                <button
-          name="send_fedex_shipping"
-          string="Send w/ FedEx Shipping"
-          type="object"
-          attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
+          attrs="{'invisible': [('delivery_type', '!=', 'fedex'), ('picking_ids', '=', [])]}"
         />
             </xpath>
         </field>

@@ -1,0 +1,455 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_fedex
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-25 13:52+0000\n"
+"PO-Revision-Date: 2025-06-25 13:52+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"%(time)s %(date)s - [%(status_code)s] %(event)s\n"
+"Location       : %(city)s, %(state)s, %(country)s\n"
+"Address        : %(address)s, %(postal)s\n"
+"Location ID    : %(location_id)s\n"
+"Location Type  : %(location_type)s\n"
+"Status         : %(status)s (%(event_type)s)\n"
+"Exception      : %(exception)s (Code: %(exception_code)s)\n"
+"Delay          : %(delay_status)s due to %(delay_type)s (%(delay_sube)s)"
+msgstr ""
+"%(time)s %(date)s - [%(status_code)s] %(event)s\n"
+"Konum          : %(city)s, %(state)s, %(country)s\n"
+"Adres          : %(address)s, %(postal)s\n"
+"Konum Kimliği  : %(location_id)s\n"
+"Konum Türü     : %(location_type)s\n"
+"Durum          : %(status)s (%(event_type)s)\n"
+"İstisna        : %(exception)s (Code: %(exception_code)s)\n"
+"Gecikme        : %(delay_status)s due to %(delay_type)s (%(delay_sube)s)"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Cannot get rates for an invoice without pickings."
+msgstr "Sevkiyatları olmayan bir fatura için teslimat fiyatı alınamaz."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Cannot get rates for an order with existing pickings."
+msgstr "Sevkiyatları olan bir sipariş için teslimat fiyatı alınamaz."
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_bank_statement_line__carrier_id
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__carrier_id
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_payment__carrier_id
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__package_carrier_type
+msgid "Carrier"
+msgstr "Nakliyeci"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__carrier_code
+msgid "Carrier Code"
+msgstr "Nakliyeci Kodu"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Değişiklikler"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__changeset_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklikler"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_client_id
+msgid "Müşteri ID"
+msgstr "Müşteri ID"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__customs_payment_type__collect
+msgid "Collect"
+msgstr "Topla"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__commercial
+msgid "Commercial"
+msgstr "Ticari"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form
+msgid "Connection"
+msgstr "Bağlantı"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_res_partner
+msgid "Contact"
+msgstr "İletişim"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__pickup_type__contact_fedex_to_schedule
+msgid "Contact FedEx to Schedule"
+msgstr "Planlamak için FedEx ile İletişime Geç"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__count_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_changesets
+msgid "Count Changesets"
+msgstr "Değişiklik Sayısı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Sayısı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklikler Sayısı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__customs_payment_type
+msgid "Customs Payment Type"
+msgstr "Gümrük Ödeme Şekli"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form
+msgid "Delivery Information"
+msgstr "Teslimat Bilgileri"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_bank_statement_line__delivery_type
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__delivery_type
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_payment__delivery_type
+msgid "Delivery Type"
+msgstr "Teslimat Türü"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__pickup_type__dropoff_at_fedex_location
+msgid "Dropoff at FedEx Location"
+msgstr "FedEx Şubesine Teslim"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__delivery_type__fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__stock_package_type__package_carrier_type__fedex
+msgid "FedEx"
+msgstr "FedEx"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_account_number
+msgid "FedEx Account Number"
+msgstr "FedEx Hesap Numarası"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_client_id
+msgid "FedEx Client ID"
+msgstr "FedEx Müşteri ID"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_client_secret
+msgid "FedEx Client Secret"
+msgstr "FedEx Müşteri Gizli Anahtarı"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form
+msgid "FedEx Configuration"
+msgstr "FedEx Yapılandırması"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__carrier_code__fxcc
+msgid "FedEx Custom Critical"
+msgstr "FedEx Custom Critical"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__carrier_code__fdxe
+msgid "FedEx Express"
+msgstr "FedEx Express"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__carrier_code__fdxg
+msgid "FedEx Ground"
+msgstr "FedEx Ground"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__fedex_shipment_purpose
+msgid "FedEx Shipment Purpose"
+msgstr "FedEx Gönderi Amacı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__carrier_code__fxsp
+msgid "FedEx SmartPost"
+msgstr "FedEx SmartPost"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_account_number
+msgid "Fedex Account Number"
+msgstr "FedEx Hesap Numarası"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_client_secret
+msgid "Fedex Client Secret"
+msgstr "FedEx Müşteri Gizli Anahtarı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__fedex_customer_number
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_users__fedex_customer_number
+msgid "Fedex Customer Number"
+msgstr "FedEx Müşteri Numarası"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.account_view_move_form_fedex
+msgid "Get FedEx Rates"
+msgstr "FedEx Fiyatlarını Alın"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__gift
+msgid "Gift"
+msgstr "Hediye"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__stock_height
+msgid "Height of the stock in inches for GoDEX printer"
+msgstr "GoDEX yazıcısı için kağıdın inç cinsinden yüksekliği"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_economy
+msgid "International Economy"
+msgstr "International Economy"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_first
+msgid "International First"
+msgstr "International First"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_priority
+msgid "International Priority"
+msgstr "International Priority"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_priority_express
+msgid "International Priority Express"
+msgstr "International Priority Express"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_account_move
+msgid "Journal Entry"
+msgstr "Yevmiye Kaydı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__not_sold
+msgid "Not Sold"
+msgstr "Satılmadı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__personal_effects
+msgid "Personal Effects"
+msgstr "Kişisel Eşya"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__personal_use
+msgid "Personal Use"
+msgstr "Kişisel Kullanım"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__pickup_type
+msgid "Pickup Type"
+msgstr "Teslim Alma Türü"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__customs_payment_type__recipient
+msgid "Recipient"
+msgstr "Alıcı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__repair_and_return
+msgid "Repair and Return"
+msgstr "Onarım ve İade"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__return_and_repair
+msgid "Return and Repair"
+msgstr "İade ve Onarım"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_sale_order
+msgid "Sales Order"
+msgstr "Satış Siparişi"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__sample
+msgid "Sample"
+msgstr "Numune"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__customs_payment_type__sender
+msgid "Sender"
+msgstr "Gönderen"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__service_type
+msgid "Service Type"
+msgstr "Servis Türü"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Teslimat Yöntemleri"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__smart_search
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__sold
+msgid "Sold"
+msgstr "Satıldı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__stock_height
+msgid "Stock Height"
+msgstr "Kağıt Yüksekliği"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_stock_package_type
+msgid "Stock package type"
+msgstr "Stok Paket Türü"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_res_partner__fedex_customer_number
+#: model:ir.model.fields,help:delivery_fedex.field_res_users__fedex_customer_number
+msgid "The FedEx customer number associated with this partner."
+msgstr "Bu iş ortağıyla ilişkili FedEx müşteri numarası."
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_account_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kayıt için bekleyen değişiklikler"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_account_move__count_pending_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kayıt için bekleyen değişiklik sayısı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_account_move__count_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kayıt için bekleyen genel değişiklik sayısı"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_sale_order__fedex_shipment_purpose
+msgid "The purpose of the shipment (FedEx)"
+msgstr "Gönderinin amacı (FedEx)"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__customs_payment_type__third_party
+msgid "Third Party"
+msgstr "Üçüncü Şahıs"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/fedex_request.py:0
+#, python-format
+msgid "Timeout: the FedEx server did not reply within %(timeout)s"
+msgstr "Zaman aşımı: FedEx sunucusu %(timeout)s saniye içinde yanıt vermedi"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Tracking number mismatch: %(incoming_track)s != %(picking_track)s"
+msgstr "Takip numarası uyuşmazlığı: %(incoming_track)s != %(picking_track)s"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/fedex_request.py:0
+#, python-format
+msgid "Unsupported request type, only use 'GET', 'POST' or 'PUT'"
+msgstr "Desteklenmeyen istek türü, yalnızca ‘GET’, ‘POST’ veya ‘PUT’ kullanın"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__pickup_type__use_scheduled_pickup
+msgid "Use Scheduled Pickup"
+msgstr "Planlanmış Teslim Almayı Kullan"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_account_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "fedex_label_%(seq_number)s.zpl"
+msgstr "fedex_label_%(seq_number)s.zpl"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/fedex_request.py:0
+#, python-format
+msgid ""
+"{error}\n"
+"{result}"
+msgstr ""
+"{error}\n"
+"{result}"

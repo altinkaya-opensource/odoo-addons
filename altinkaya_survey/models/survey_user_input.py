@@ -16,16 +16,33 @@ class SurveyUserInput(models.Model):
         string="Invoice",
     )
 
-    shortened_url = fields.Text(
-        string="Shortened URL",
+    shortened_url = fields.Char(
         help="Shortened URL for survey",
         default="",
     )
 
     def save_lines(self, question, answer, comment=None):
-        if question.question_type == "star_rating":
-            self._save_line_simple_answer(
-                question, self.mapped("user_input_line_ids"), answer
-            )
+        try:
+            super().save_lines(question, answer, comment)
+        except AttributeError as e:
+            if question.question_type == "star_rating":
+                old_answers = self.env["survey.user_input.line"].search(
+                    [("user_input_id", "=", self.id), ("question_id", "=", question.id)]
+                )
+                self._save_line_star_rating(question, old_answers, answer)
+                return
+            raise e
+
+    def _save_line_star_rating(self, question, old_answers, answer):
+        vals = {
+            "user_input_id": self.id,
+            "question_id": question.id,
+            "skipped": False,
+            "answer_type": question.question_type,
+            "value_star_rating": int(answer),
+        }
+        if old_answers:
+            old_answers.write(vals)
+            return old_answers
         else:
-            return super().save_lines(question, answer, comment)
+            return self.env["survey.user_input.line"].create(vals)

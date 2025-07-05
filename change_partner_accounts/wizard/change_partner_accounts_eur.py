@@ -16,7 +16,7 @@ class ChangePartnerAccountsEUR(models.TransientModel):
         ):
             try:
                 record.change_accounts_to_eur()
-                record._get_partner_currency()
+                record._compute_partner_currency()
                 self.env.cr.commit()  # pylint: disable=E8102
             except:  # noqa
                 errors.append(record.display_name)

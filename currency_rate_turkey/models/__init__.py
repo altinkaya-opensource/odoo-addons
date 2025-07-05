@@ -8,7 +8,6 @@ from . import res_currency
 from . import res_currency_rate
 from . import res_currency_rate_provider
 from . import res_currency_rate_provider_altinkaynak
-from . import account_payment
 from . import sale_order
 from . import account_move
 from . import altinkaynak_connector

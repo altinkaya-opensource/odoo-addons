@@ -85,7 +85,16 @@ class ChooseDeliveryCarrier(models.TransientModel):
         carrier_obj = self.env["delivery.carrier"]
         carrier_ids = carrier_obj.search([("show_in_price_table", "=", True)])
         order = self.order_id
+        shipping_address_country = order.partner_shipping_id.country_id
+        shipping_address_state = order.partner_shipping_id.state_id
         for carrier in carrier_ids:
+            # Filter out carriers that are not available for the shipping address
+            if (
+                shipping_address_country not in carrier.country_ids
+                and shipping_address_state not in carrier.state_ids
+            ):
+                continue
+
             data = carrier.rate_shipment(order)
             if not data:
                 continue

@@ -21,3 +21,7 @@ class ProductTemplate(models.Model):
     currency_id = fields.Many2one(
         string="Currency", readonly=False, comodel_name="res.currency"
     )
+
+    barcode_rule_id = fields.Many2one(
+        string="Barcode Rule", readonly=False, comodel_name="barcode.rule"
+    )

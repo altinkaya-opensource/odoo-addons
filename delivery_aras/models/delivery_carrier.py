@@ -287,7 +287,9 @@ class DeliveryCarrier(models.Model):
         """Update delivered fields"""
         self.ensure_one()
         return {
-            "date_delivered": datetime.fromisoformat(response["ISLEM_TARIHI"]),
+            "date_delivered": datetime.fromisoformat(response["ISLEM_TARIHI"]).replace(
+                tzinfo=None
+            ),
             "carrier_received_by": response.get("TESLIM_ALAN", ""),
         }
 
@@ -296,9 +298,7 @@ class DeliveryCarrier(models.Model):
         Aras Kargo doesn't provide label for shipments.
         They are not implemented common label on their systems.
         """
-        raise NotImplementedError(
-            _("Aras Kargo API doesn't provide methods to print label.")
-        )
+        return True
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

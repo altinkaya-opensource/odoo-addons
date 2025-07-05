@@ -90,13 +90,17 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     production_ids = fields.One2many(
-        string="Productions", comodel_name="mrp.production", inverse_name="sale_id"
+        string="Productions",
+        comodel_name="mrp.production",
+        inverse_name="sale_id",
+        readonly=True,
     )
     order_state = fields.Selection(
         [
             # satış
             ("01_draft", "Draft"),
             ("02_sent", "Quotation"),
+            ("025_approved", "Waiting Salesperson"),
             ("03_sale", "Confirmed Sale Order"),
             ("04_molding_waiting", "Tool Shop Queue"),
             # üretim
@@ -158,6 +162,8 @@ class SaleOrder(models.Model):
                 sale.order_state = "01_draft"
             elif sale.state == "sent":
                 sale.order_state = "02_sent"
+            elif sale.state == "approved":
+                sale.order_state = "025_approved"
             elif sale.state == "sale":
                 sale.order_state = "03_sale"
             elif sale.state == "cancel":
@@ -166,9 +172,8 @@ class SaleOrder(models.Model):
             else:
                 pass
             # PRODUCTION
-            # TODO: planned state doesn't exist anymore
             ongoing_productions = sale.production_ids.filtered(
-                lambda p: p.state in ["confirmed", "planned", "progress"]
+                lambda p: p.state in ["confirmed", "progress"]
             )
             if ongoing_productions:
                 sale.order_state = _match_production_with_route(ongoing_productions)

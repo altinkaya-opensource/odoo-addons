@@ -9,6 +9,13 @@
             <xpath expr="//field[@name='vat']" position="after">
                 <field name="vat_status" string="VAT Status" class="text-muted" />
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="phonecall" string="Çağrılar">
+                    <group>
+                        <field name="phonecall_ids" nolabel="1" colspan="2" />
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
 </odoo>

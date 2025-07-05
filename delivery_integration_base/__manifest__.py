@@ -31,6 +31,7 @@
         "views/delivery_region_views.xml",
         "report/delivery_mail_template.xml",
         "views/dispatched_deliveries_views.xml",
+        "report/carrier_label.xml",
     ],
     "installable": True,
 }

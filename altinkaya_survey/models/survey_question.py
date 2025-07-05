@@ -1,6 +1,8 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import _, fields, models, tools
+from collections import Counter
+
+from odoo import _, fields, models
 
 
 class SurveyQuestion(models.Model):
@@ -16,30 +18,44 @@ class SurveyQuestion(models.Model):
         help="Number of stars to be displayed in the survey.",
     )
 
-    def validate_star_rating(self, post, answer_tag):
-        self.ensure_one()
-        errors = {}
-        answer = post[answer_tag].strip()
-        # Empty answer to mandatory question
-        if self.constr_mandatory and not answer:
-            errors.update({answer_tag: self.constr_error_msg})
-        # Checks if user input is a number
-        if answer:
-            try:
-                floatanswer = float(answer)
-            except ValueError:
-                errors.update({answer_tag: _("This is not a number")})
-        # Answer validation (if properly defined)
-        if answer and self.validation_required:
+    def validate_question(self, answer, comment=None):
+        res = super().validate_question(answer, comment)
+        if self.question_type == "star_rating":
+            return self._validate_star_rating(answer=answer)
+        return res
+
+    def _validate_star_rating(self, answer):
+        if self.validation_required:
             # Answer is not in the right range
-            with tools.ignore(Exception):
-                floatanswer = float(
-                    answer
-                )  # check that it is a float has been done hereunder
-                if not (
-                    self.validation_min_float_value
-                    <= floatanswer
-                    <= self.validation_max_float_value
-                ):
-                    errors.update({answer_tag: self.validation_error_msg})
-        return errors
+            intanswer = int(answer)
+            if not (0 <= intanswer <= self.star_count):
+                return {self.id: _("Please select at least one star to proceed.")}
+        return {}
+
+    def _get_stats_data(self, user_input_lines):
+        user_input_lines = user_input_lines.filtered(lambda line: not line.skipped)
+        table_data, graph_data = super()._get_stats_data(user_input_lines)
+        if self.question_type == "star_rating":
+            star_variations = list(set(user_input_lines.mapped("value_star_rating")))
+            star_variations.sort()
+
+            # Precompute counts for each star value
+            star_counts = Counter(user_input_lines.mapped("value_star_rating"))
+
+            table_data = [
+                {
+                    "value": star,
+                    "count": star_counts[star],
+                    "count_text": _("%s Votes") % star_counts[star],
+                }
+                for star in star_variations
+            ]
+
+            graph_data = [
+                {
+                    "text": _("%s Star") % star,
+                    "count": star_counts[star],
+                }
+                for star in star_variations
+            ]
+        return table_data, graph_data

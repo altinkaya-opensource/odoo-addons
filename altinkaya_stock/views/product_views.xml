@@ -158,6 +158,7 @@
         <field name="arch" type="xml">
             <field name="parent_id" position="after">
                 <field name="currency_id" />
+                <field name="barcode_rule_id" />
             </field>
         </field>
     </record>

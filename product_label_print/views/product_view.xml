@@ -11,8 +11,8 @@
        						<button
           name="action_print_label"
           type="object"
-          string="Print Label"
           icon="fa-barcode"
+          title="Print Barcode"
         />
                   	</xpath>
           	</field>

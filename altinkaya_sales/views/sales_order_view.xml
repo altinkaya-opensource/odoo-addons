@@ -33,6 +33,50 @@
             </field>
         </record>
 
+        <record id="view_sale_order_line_tree_inherit" model="ir.ui.view">
+          <field name="name">sale.order.line.tree.inherit.uom</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_order_form" />
+          <field name="arch" type="xml">
+              <xpath
+        expr="//field[@name='order_line']//tree/field[@name='product_uom_qty']"
+        position="attributes"
+      >
+                  <attribute name="widget">uom</attribute>
+                  <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+              </xpath>
+          </field>
+        </record>
+
+        <record id="sale_order_line_view_form_readonly_inherit" model="ir.ui.view">
+          <field name="name">sale.order.line.view.form.readonly.inherit</field>
+          <field name="model">sale.order.line</field>
+          <field name="inherit_id" ref="sale.sale_order_line_view_form_readonly" />
+          <field name="arch" type="xml">
+              <xpath
+        expr="//form/sheet/group/group/field[@name='product_uom_qty']"
+        position="attributes"
+      >
+                  <attribute name="widget">uom</attribute>
+                  <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+              </xpath>
+              <xpath
+        expr="//form/sheet/group/group/field[@name='qty_delivered']"
+        position="attributes"
+      >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+        expr="//form/sheet/group/group/field[@name='qty_invoiced']"
+        position="attributes"
+      >
+              <attribute name="widget">uom</attribute>
+              <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+          </xpath>
+          </field>
+        </record>
+
         <record model="ir.ui.view" id="view_sales_order_form_modifications">
             <field name="name">sales order form</field>
             <field name="model">sale.order</field>
@@ -136,6 +180,20 @@
       />
 
                 <xpath
+        expr="//field[@name='order_line']/tree//field[@name='product_packaging_qty']"
+        position="attributes"
+      >
+        <attribute name="invisible">1</attribute>
+      </xpath>
+
+                <xpath
+        expr="//field[@name='order_line']/tree//field[@name='product_packaging_id']"
+        position="attributes"
+      >
+        <attribute name="invisible">1</attribute>
+      </xpath>
+
+                <xpath
         expr="//field[@name='order_line']/form/group/group"
         position="before"
       >
@@ -223,7 +281,12 @@
                                 <field name="order_id" />
                                 <field name="name" />
                                 <field name="salesman_id" />
-                                <field name="product_uom_qty" />
+                                <field
+                name="product_uom_qty"
+                widget="uom"
+                options="{'uom_field': 'product_uom'}"
+              />
+                                <field name="product_uom" invisible="1" />
                                 <field name="price_unit" />
                                 <field name="discount" />
                                 <field name="price_total" />
@@ -234,19 +297,56 @@
 
                 <xpath expr="//page[@name='old_sales']" position="after">
                     <page string="Manufacturing Orders" name="manufacturing_orders">
-                        <field name="production_ids" nolabel="1">
+                        <field name="production_ids" nolabel="1" widget="one2many">
                             <tree>
                                 <field name="name" />
-                                <field name="priority" />
+                                <field name="product_id" />
                                 <field name="process_id" />
-                                <field name="product_qty" />
-                                <field name="product_uom_id" />
-                                <field name="components_availability_state" />
+                                <field
+                name="product_qty"
+                widget="uom"
+                options="{'uom_field': 'product_uom_id'}"
+              />
+                                <field name="product_uom_id" optional="hide" />
+                                <field name="reservation_state" invisible="1" />
+                                <field
+                name="components_availability_state"
+                invisible="1"
+              />
+                                <field
+                name="components_availability"
+                options="{'lazy': true}"
+                attrs="{'invisible': [('state', 'not in', ['confirmed', 'progress'])]}"
+                optional="show"
+                decoration-success="reservation_state == 'assigned' or components_availability_state == 'available'"
+                decoration-warning="reservation_state != 'assigned' and components_availability_state in ('expected', 'available')"
+                decoration-danger="reservation_state != 'assigned' and components_availability_state == 'late'"
+              />
+                                <field name="priority" optional="hide" />
                                 <field name="state" />
-                                <field name="date_start" />
-                                <field name="date_finished" />
+                                <field
+                name="date_planned_start"
+                optional="hide"
+                widget="date"
+              />
+                                <field
+                name="date_start"
+                optional="hide"
+                widget="date"
+              />
+                                <field
+                name="date_finished"
+                optional="hide"
+                widget="date"
+              />
+                                <field
+                name="commitment_date"
+                optional="hide"
+                widget="date"
+              />
                             </tree>
                         </field>
+
                     </page>
                 </xpath>
 

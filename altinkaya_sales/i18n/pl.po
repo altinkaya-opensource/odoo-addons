@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 08:34+0000\n"
-"PO-Revision-Date: 2025-03-28 08:34+0000\n"
+"POT-Creation-Date: 2025-05-26 08:33+0000\n"
+"PO-Revision-Date: 2025-05-26 08:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,156 +40,6 @@ msgid "2017 Temmuz Adres günceleme için arandı."
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:mail.template,body_html:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid ""
-"<html>\n"
-"  <body><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\">\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Hello, <t t-out=\"object.partner_id.name\"></t></p>\n"
-"    \n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Here is your <t t-out=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;) and &#x27;quotation&#x27; or &#x27;order confirmation&#x27;\"></t> from Altinkaya Enclosures For Electronics: </p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;\">\n"
-"         <strong style=\"font-weight:bolder;\">REFERENCES</strong><br/>\n"
-"         Order number: <strong style=\"font-weight:bolder;\"><t t-out=\"object.name\"></t></strong><br/>\n"
-"         Order total: <strong style=\"font-weight:bolder;\"><t t-out=\" &quot;{0:,.4f\"></t>\".format(object.amount_total).replace(\".\",\"%\").replace(\",\",\" \").replace(\"%\",\",\")} <t t-out=\"object.pricelist_id.currency_id.name\"></t></strong><br/>\n"
-"         Order date: <t t-out=\"object.date_order\"></t><br/>\n"
-"       <t t-if=\"object.client_order_ref\">\n"
-"         Your reference: <t t-out=\"object.client_order_ref\"></t><br/>\n"
-"       </t>\n"
-"       <t t-if=\"object.user_id\">\n"
-"         Prepared By: <a t-attf-href=\"mailto:{{object.user_id.email or ''}}?subject=Order%20{{object.name}}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\"><t t-out=\"object.user_id.name\"></t></a>\n"
-"       </t>\n"
-"    </p><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"\n"
-" <t t-if=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;)\">\n"
-"    </span></font><br/>\n"
-"        <a style=\"text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\" t-attf-href=\"{{object.get_portal_url()}}\">\n"
-"            <img src=\"https://www.altinkaya.com.tr/web/content/604751?paynow=1\" style=\"border-style:none;vertical-align:middle;\"/>\n"
-"        </a><br/><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">It is also possible to make your payment by clicking \"Pay Now\" button above. <br/>Our web page will open and you will be able to make your payment securely and easily.</p>\n"
-"    <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">NEW: If you mention your order number </span></font><span style=\"color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\"><t t-out=\"object.name\"></t></span><span style=\"font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"> in the wire transfer/TT description, our system will automatically confirm the order.</span></div><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\"><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"    </t>\n"
-"    </span></font><br/>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">If you have any question, do not hesitate to contact us.</p>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\"><strong style=\"font-weight:bolder;\">You can reply this email to contact us.</strong></p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Thank you for choosing Altinkaya!</p>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
-"        <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
-"            <strong style=\"font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong></h3>\n"
-"    </div>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);\">\n"
-"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
-"        <t t-if=\"object.company_id.street\">\n"
-"            <t t-out=\"object.company_id.street\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.street2\">\n"
-"            <t t-out=\"object.company_id.street2\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.city or object.company_id.zip\">\n"
-"            <t t-out=\"object.company_id.zip\"></t> <t t-out=\"object.company_id.city\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.country_id\">\n"
-"            <t t-out=\"object.company_id.state_id and (&#x27;%s, &#x27; % object.company_id.state_id.name) or &#x27;&#x27;\"></t> Turkey<br/>\n"
-"        </t>\n"
-"        </span>\n"
-"        <t t-if=\"object.company_id.phone\">\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
-"                Phone:  <t t-out=\"object.company_id.phone\"></t><br/>Fax  :  <t t-out=\"object.company_id.fax\"></t>\n"
-"\n"
-"            </div>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.website\">\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
-"                Web : <a href=\"http://www.altinkaya.com\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">www.altinkaya.com</a>\n"
-"            </div>\n"
-"        </t>\n"
-"        <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"/>\n"
-"    </div>\n"
-"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">You can rate your customer experience at the following link.</p>\n"
-"            <a t-attf-href=\"{{object.survey_url}}\" style=\"text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;\">\n"
-"                Rate the Experience\n"
-" </a>\n"
-"</div>\n"
-"            </body>\n"
-"</html>\n"
-msgstr ""
-"<html>\n"
-"  <body><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\">\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Hello, <t t-out=\"object.partner_id.name\"></t></p>\n"
-"    \n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Here is your <t t-out=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;) and &#x27;quotation&#x27; or &#x27;order confirmation&#x27;\"></t> from Altinkaya Enclosures For Electronics: </p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid rgb(142, 0, 0); margin-left: 30px;\">\n"
-"         <strong style=\"font-weight:bolder;\">REFERENCES</strong><br/>\n"
-"         Order number: <strong style=\"font-weight:bolder;\"><t t-out=\"object.name\"></t></strong><br/>\n"
-"         Order total: <strong style=\"font-weight:bolder;\"><t t-out=\" &quot;{0:,.4f\"></t>\".format(object.amount_total).replace(\".\",\"%\").replace(\",\",\" \").replace(\"%\",\",\")} <t t-out=\"object.pricelist_id.currency_id.name\"></t></strong><br/>\n"
-"         Order date: <t t-out=\"object.date_order\"></t><br/>\n"
-"       <t t-if=\"object.origin\">\n"
-"         Order reference: <t t-out=\"object.origin\"></t><br/>\n"
-"       </t>\n"
-"       <t t-if=\"object.client_order_ref\">\n"
-"         Your reference: <t t-out=\"object.client_order_ref\"></t><br/>\n"
-"       </t>\n"
-"       <t t-if=\"object.user_id\">\n"
-"         Prepared By: <a t-attf-href=\"mailto:{{object.user_id.email or ''}}?subject=Order%20{{object.name}}\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\"><t t-out=\"object.user_id.name\"></t></a>\n"
-"       </t>\n"
-"    </p><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"\n"
-" <t t-if=\"object.state in (&#x27;draft&#x27;, &#x27;sent&#x27;)\">\n"
-"    </span></font><br/>\n"
-"        <a style=\"text-decoration:none;background-color:transparent;color: rgb(124, 123, 173); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\" t-attf-href=\"{{object.get_portal_url()}}\">\n"
-"            <img src=\"https://pay.altinkaya.com.tr/pay/images/pay_now.gif\" style=\"border-style:none;vertical-align:middle;\"/>\n"
-"        </a><br/><p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">It is also possible to make your payment by clicking \"Pay Now\" button above. <br/>Our web page will open and you will be able to make your payment securely and easily.</p>\n"
-"    <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">NEW: If you mention your order number </span></font><span style=\"color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\"><t t-out=\"object.name\"></t></span><span style=\"font-size: 12px; color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"> in the wire transfer/TT description, our system will automatically confirm the order.</span></div><div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;background-color: rgb(255, 255, 255);\"><font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\"><span style=\"font-size: 12px;\">\n"
-"    </t>\n"
-"    </span></font><br/>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">If you have any question, do not hesitate to contact us.</p>\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\"><strong style=\"font-weight:bolder;\">You can reply this email to contact us.</strong></p>\n"
-"\n"
-"    <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Thank you for choosing Altinkaya!</p>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: rgb(142, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
-"        <h3 style=\"font-size:1.40833rem;color:inherit;line-height:1.2;font-weight:bold;font-family:inherit;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
-"            <strong style=\"font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong></h3>\n"
-"    </div>\n"
-"    <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: rgb(242, 242, 242);\">\n"
-"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
-"        <t t-if=\"object.company_id.street\">\n"
-"            <t t-out=\"object.company_id.street\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.street2\">\n"
-"            <t t-out=\"object.company_id.street2\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.city or object.company_id.zip\">\n"
-"            <t t-out=\"object.company_id.zip\"></t> <t t-out=\"object.company_id.city\"></t><br/>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.country_id\">\n"
-"            <t t-out=\"object.company_id.state_id and (&#x27;%s, &#x27; % object.company_id.state_id.name) or &#x27;&#x27;\"></t> Turkey<br/>\n"
-"        </t>\n"
-"        </span>\n"
-"        <t t-if=\"object.company_id.phone\">\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
-"                Phone:  <t t-out=\"object.company_id.phone\"></t><br/>Fax  :  <t t-out=\"object.company_id.fax\"></t>\n"
-"\n"
-"            </div>\n"
-"        </t>\n"
-"        <t t-if=\"object.company_id.website\">\n"
-"            <div style=\"font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\">\n"
-"                Web : <a href=\"http://www.altinkaya.eu\" style=\"background-color:transparent;text-decoration-thickness:auto;color:rgb(124, 123, 173);\">www.altinkaya.eu</a>\n"
-"            </div>\n"
-"        </t>\n"
-"        <p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;\"/>\n"
-"    </div>\n"
-"<p style=\"margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;color: rgb(34, 34, 34); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">You can rate your customer experience at the following link.</p>\n"
-"            <a t-attf-href=\"{{object.survey_url}}\" style=\"text-decoration:none;background-color:transparent;color: rgb(255, 255, 255); font-family: &quot;Lucica Grande&quot;, Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: rgb(135, 90, 123); padding: 8px 16px; border-radius: 5px;\">\n"
-"                Rate the Experience\n"
-" </a>\n"
-"</div>\n"
-"            </body>\n"
-"</html>\n"
-
-#. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\" aria-label=\"Rating OK\" "
@@ -204,6 +54,242 @@ msgid "<span>Desi: </span>"
 msgstr ""
 
 #. module: altinkaya_sales
+#: model:mail.template,body_html:altinkaya_sales.email_template_edi_sale_altinkaya1
+msgid ""
+"<t t-if=\"object.partner_id.lang == 'tr_TR'\">\n"
+"                    <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: #ffffff;\">\n"
+"\n"
+"                        <p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Sayın <t t-out=\"object.partner_id.name\"></t>\n"
+",</p>\n"
+"\n"
+"                        <p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"                            <t t-out=\"object.state in ('draft', 'sent') and 'Öncelikle ürünlerimizle ilgilendiğiniz için teşekkür ederiz. İstemiş olduğunuz ürünlerle ilgili fiyat teklifimizi ekte bulabilirsiniz.' or 'Ekte işleme aldığımız siparişinize ait bilgileri içeren sipariş emrini bulabilirsiniz.'\"></t>\n"
+"                        </p>\n"
+"                        <p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"                            <t t-out=\"object.state in ('draft', 'sent') and 'Teklifimizi işleme alabilmemiz için bu e-postaya teklifimizi onayladığınızı belirten bir cevap gönderebilir ya da teklifimizi onaylayıp bize geri gönderebilirsiniz.' or 'Siparişinizi en kısa sürede hazırlamak için çalışıyoruz.'\"></t>\n"
+"                        </p>\n"
+"                        <p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"                            <t t-out=\"object.state in ('draft', 'sent') and 'Teklifimizle ' or 'Siparişinizle '\"></t>\n"
+"ilgili sormak istediğiniz soruları bu mesaja cevap vererek ya da <strong style=\"box-sizing:border-box;font-weight:bolder;\">0312 3952768</strong> nolu telefonumuzdan bizi arayarak sorabilirsiniz.</p>\n"
+"\n"
+"                        <p style=\"border-style:none none none solid;box-sizing:border-box;border-left-color:#8e0000;border-left-width:1px;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"                            <strong style=\"box-sizing:border-box;font-weight:bolder;\">\n"
+"                                <t t-out=\"object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'\"></t>\n"
+" Detayları</strong>\n"
+"                            <br>\n"
+"                            <t t-out=\"object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'\"></t>\n"
+" Numarası: <strong style=\"box-sizing:border-box;font-weight:bolder;\">\n"
+"                            <t t-out=\"object.name\"></t>\n"
+"                        </strong>\n"
+"                        <br>\n"
+"                        <t t-out=\"object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'\"></t>\n"
+" Toplamı: <strong style=\"box-sizing:border-box;font-weight:bolder;\">\n"
+"                        <t t-out=\"object.pricelist_id.currency_id.symbol\"></t>\n"
+"                        <t t-out=\" '{0:,.2f}'.format(object.amount_total).replace('.','%').replace(',',' ').replace('%',',')\"></t>\n"
+"                    </strong>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.state in ('draft', 'sent') and 'Teklif' or 'Sipariş'\"></t>\n"
+" Tarihi: <t t-out=\"'{:%d.%m.%Y %H.%M}'.format(object.date_order)\"></t>\n"
+"                <br>\n"
+"                <t t-if=\"object.client_order_ref\">\n"
+"         Sizin Referansınız: <t t-out=\"object.client_order_ref\"></t>\n"
+"                <br>\n"
+"            </t>\n"
+"            <t t-if=\"object.user_id\">\n"
+"                <t t-out=\"object.state in ('draft', 'sent') and 'Teklifi' or 'Siparişi'\"></t>\n"
+" Hazırlayan : <a t-attf-href=\"mailto:satis@altinkaya.com?subject=Siparis #{object.name}\" t-esc=\"object.user_id.name\"></a>\n"
+"        </t>\n"
+"    </p>\n"
+"    <t t-if=\"object.state in ('draft', 'sent')\">\n"
+"\n"
+"\n"
+"        <br>\n"
+"        <a style=\"margin:0 0 0 120px;box-sizing:border-box;text-decoration:none;background-color:transparent;color: #7c7bad; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: initial; margin-left: 120px;\" t-attf-href=\"#{object.get_portal_url()}\">\n"
+"            <img src=\"https://www.altinkaya.com/web/content/604752?simdiode=1\" class=\"o_we_selected_image\" data-original-title=\"\" style=\"outline-width:3px;outline-style:solid;outline-color:#dfdff4;box-sizing: border-box; outline: #dfdff4 solid 3px; border-style: none; vertical-align: middle; width: 151px; height: 64px;\" width=\"151\" height=\"64\">\n"
+"        </a>\n"
+"        <br>\n"
+"        <p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Dilerseniz yukarıdaki şimdi öde butonuna tıklayarak ödemenizi web sitemiz üzerinden kredi kartınızla kolay ve güvenli bir şekide yapabilirsiniz:</p>\n"
+"        <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\">\n"
+"            <span style=\"font-size: 12px;\">YENİ: Havale/EFT açıklamasında </span>\n"
+"        </font>\n"
+"        <span style=\"color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\">\n"
+"            <t t-out=\"object.name\"></t>\n"
+"        </span>\n"
+"        <span style=\"font-size: 12px; color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\"> sipariş numaranızı belirtirseniz sistemimiz siparişi otomatik onaylar.</span>\n"
+"        <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;background-color: #ffffff;\">\n"
+"            <font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\">\n"
+"                <span style=\"font-size: 12px;\"></span>\n"
+"            </font>\n"
+"            <br>\n"
+"        </div>\n"
+"    </t>\n"
+"    <br>\n"
+"    <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 0px; background-color: #ab0000; border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
+"        <h3 style=\"box-sizing: border-box; line-height: 1.2; font-weight: bold; font-family: 'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; margin: 0px; padding: 2px 14px; font-size: 12px; color: #dddddd;\">\n"
+"            <strong style=\"box-sizing:border-box;font-weight:bolder;text-transform:uppercase;\">\n"
+"                <t t-out=\"object.company_id.name\"></t>\n"
+"            </strong>\n"
+"        </h3>\n"
+"    </div>\n"
+"    <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 450px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #f2f2f2;\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"            <t t-if=\"object.company_id.partner_id\">\n"
+"                <t t-out=\"object.company_id.partner_id.contact_address\"></t>\n"
+"                <br>\n"
+"            </t>\n"
+"        </span>\n"
+"        <t t-if=\"object.company_id.phone\">\n"
+"            <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                Telefon:  <t t-out=\"object.company_id.phone\"></t>\n"
+"   Faks:  <t t-out=\"object.company_id.partner_id.fax\"></t>\n"
+"        </div>\n"
+"    </t>\n"
+"    <t t-if=\"object.company_id.website\">\n"
+"        <div style=\"font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                Web : \n"
+"        <br>\n"
+"E-posta : <a t-attf-href=\"mailto:satis@altinkaya.com?subject=Siparis%20#{object.name}\" style=\"text-decoration:none;box-sizing:border-box;background-color:transparent;text-decoration-thickness:initial;color:#7c7bad;\">satis@altinkaya.com</a>\n"
+"    </div>\n"
+"</t>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;\"></p>\n"
+"</div>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"<t t-out=\"object.state in ('draft', 'sent') and 'Değerli siparişlerinizi bekler iyi çalışmalar dileriz.' or 'Siparişiniz için teşekkür eder hayırlı işler dileriz.'\"></t>\n"
+"</p>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family: 'Lucida Grande ', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">Aşağıdaki bağlantıdan müşteri deneyiminizi puanlayabilirsiniz.</p>\n"
+"<a t-attf-href=\"#{object.survey_url}\" style=\"box-sizing:border-box;text-decoration:none;background-color:transparent;color: #ffffff; font-family:  'Lucica Grande ', Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: #875a7b; padding: 8px 16px; border-radius: 5px;\">\n"
+"                Deneyimi Puanla\n"
+"</a>\n"
+"\n"
+"</div>\n"
+"</t>\n"
+"\n"
+"<t t-else=\"\">\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;background-color: #ffffff;\">\n"
+"\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"        Hello, <t t-out=\"object.partner_id.name\"></t>\n"
+"</p>\n"
+"\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"        Here is your <t t-out=\"object.state in ('draft', 'sent') and 'quotation' or 'order confirmation'\"></t>\n"
+" from Altinkaya Enclosures For Electronics:\n"
+"</p>\n"
+"\n"
+"<p style=\"border-style:none none none solid;box-sizing:border-box;border-left-color:#8e0000;border-left-width:1px;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"<strong style=\"box-sizing:border-box;font-weight:bolder;\">REFERENCES</strong>\n"
+"<br>\n"
+"         Order number: <strong style=\"box-sizing:border-box;font-weight:bolder;\">\n"
+"<t t-out=\"object.name\"></t>\n"
+"</strong>\n"
+"<br>\n"
+"         Order total: <strong style=\"box-sizing:border-box;font-weight:bolder;\">\n"
+"<t t-out=\"'{0:,.4f}'.format(object.amount_total).replace('.', '%').replace(',', ' ').replace('%', ',')\"></t>\n"
+"<t t-out=\"object.pricelist_id.currency_id.name\"></t>\n"
+"</strong>\n"
+"<br>\n"
+"         Order date: <t t-out=\"object.date_order\"></t>\n"
+"<br>\n"
+"<t t-if=\"object.client_order_ref\">\n"
+"            Your reference: <t t-out=\"object.client_order_ref\"></t>\n"
+"<br>\n"
+"</t>\n"
+"<t t-if=\"object.user_id\">\n"
+"         Prepared By: <a t-attf-href=\"mailto:sales@altinkaya.com?subject=Order #{object.name}\" t-esc=\"object.user_id.name\"></a>\n"
+"</t>\n"
+"</p>\n"
+"<t t-if=\"object.state in ('draft', 'sent')\">\n"
+"<a t-attf-href=\"#{object.get_portal_url()}\" style=\"margin:0 0 0 120px;box-sizing:border-box;text-decoration:none;background-color:transparent;color: #7c7bad; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; text-decoration-thickness: auto; margin-left: 120px;\">\n"
+"<img src=\"https://www.altinkaya.com.tr/web/content/604751?paynow=1\" style=\"box-sizing: border-box; border-style: none; vertical-align: middle; width: 151px; height: 64px;\" width=\"151\" height=\"64\">\n"
+"</a>\n"
+"<br>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"            It is also possible to make your payment by clicking \"Pay Now\" button above.  <br>\n"
+"Our web page will open and you will be able to make your payment securely and easily.\n"
+"</p>\n"
+"<font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\">\n"
+"<span style=\"font-size: 12px;\">NEW: If you mention your order number </span>\n"
+"</font>\n"
+"<span style=\"color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; font-weight: bolder; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; text-align: inherit;\">\n"
+"<t t-out=\"object.name\"></t>\n"
+"</span>\n"
+"<span style=\"font-size: 12px; color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; font-weight: initial; text-align: inherit;\">\n"
+"            in the wire transfer/TT description, our system will automatically confirm the order.\n"
+"</span>\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;background-color: #ffffff;\">\n"
+"<font color=\"#222222\" face=\"Lucica Grande, Ubuntu, Arial, Verdana, sans-serif\">\n"
+"<span style=\"font-size: 12px;\">\n"
+"</span>\n"
+"</font>\n"
+"</div>\n"
+"</t>\n"
+"\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"            If you have any question, do not hesitate to contact us.\n"
+"</p>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"<strong style=\"box-sizing:border-box;font-weight:bolder;\">You can reply this email to contact us.</strong>\n"
+"</p>\n"
+"\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px;\">\n"
+"            Thank you for choosing Altinkaya!\n"
+"</p>\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 375px; margin: 0px; padding: 0px; background-color: #8e0000; border-top-left-radius: 5px; border-top-right-radius: 5px; background-repeat: repeat-x;\">\n"
+"<h3 style=\"box-sizing: border-box; line-height: 1.2; font-weight: bold; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; margin: 0px; padding: 2px 14px; font-size: 12px; color: #dddddd;\">\n"
+"<strong style=\"box-sizing:border-box;font-weight:bolder;text-transform:uppercase;\">ALTINKAYA ENCLOSURES FOR ELECTRONICS</strong>\n"
+"</h3>\n"
+"</div>\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #f2f2f2;\">\n"
+"<t t-if=\"object.company_id.street\">\n"
+"<t t-out=\"object.company_id.street\"></t>\n"
+"<br>\n"
+"</t>\n"
+"<t t-if=\"object.company_id.street2\">\n"
+"<t t-out=\"object.company_id.street2\"></t>\n"
+"<br>\n"
+"</t>\n"
+"<t t-if=\"object.company_id.city or object.company_id.zip\">\n"
+"<t t-out=\"object.company_id.zip\"></t>\n"
+"<t t-out=\"object.company_id.city\"></t>\n"
+"<br>\n"
+"</t>\n"
+"<t t-if=\"object.company_id.country_id\">\n"
+"<t t-out=\"object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''\"></t>\n"
+" Turkey <br>\n"
+"</t>\n"
+"<t t-if=\"object.company_id.phone\">\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                    Phone:  <t t-out=\"object.company_id.phone\"></t>\n"
+"<br>\n"
+"Fax  :  <t t-out=\"object.company_id.partner_id.fax\"></t>\n"
+"</div>\n"
+"</t>\n"
+"<t t-if=\"object.company_id.website\">\n"
+"<div style=\"font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;\">\n"
+"                    Web : <a href=\"http://www.altinkaya.com\" style=\"text-decoration:none;box-sizing:border-box;background-color:transparent;text-decoration-thickness:auto;color:#7c7bad;\">www.altinkaya.com</a>\n"
+"</div>\n"
+"</t>\n"
+"</div>\n"
+"<p style=\"box-sizing:border-box;margin:0px 0 12px 0;font-size:13px;font-family:'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;color: #222222; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; margin-top: 15px;\">\n"
+"            You can rate your customer experience at the following link.\n"
+"</p>\n"
+"<a t-attf-href=\"#{object.survey_url}\" style=\"box-sizing:border-box;text-decoration:none;background-color:transparent;color: #ffffff; font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 13px; background-color: #875a7b; padding: 8px 16px; border-radius: 5px;\">\n"
+"            Rate the Experience\n"
+"</a>\n"
+"</div>\n"
+"</t>\n"
+msgstr ""
+
+#. module: altinkaya_sales
+#. odoo-python
+#: code:addons/altinkaya_sales/wizards/wizard_product_product_copy.py:0
+#, python-format
+msgid ""
+"A product with the same attributes already exists. Please select different "
+"attributes. %(product_name)s"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_country_view_form_inherit_altinkaya_sales
 msgid "Accounting"
 msgstr ""
@@ -214,20 +300,15 @@ msgid "Active"
 msgstr "Aktywne"
 
 #. module: altinkaya_sales
-#: model:mail.template,subject:altinkaya_sales.email_template_edi_sale_altinkaya
+#: model:mail.template,subject:altinkaya_sales.email_template_edi_sale_altinkaya1
 msgid ""
 "Altinkaya Enclosure For Electronics {{object.state in ('draft', 'sent') and "
 "'Quotation' or 'Order'}} (Ref {{object.name or 'n/a' }})"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:mail.template,name:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid "Altinkaya Sales Order: Send by email1"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Ana Sektör"
+#: model:mail.template,name:altinkaya_sales.email_template_edi_sale_altinkaya1
+msgid "Altinkaya Sales Order: Send by email"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -293,6 +374,11 @@ msgid "CNC Cutting Queue"
 msgstr ""
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__27_cancel
 msgid "Canceled"
 msgstr ""
@@ -315,8 +401,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Zmiany w zestawie zmian"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__changeset_ids
@@ -330,6 +417,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__changeset_ids
 msgid "Changesets"
 msgstr ""
 
@@ -349,8 +437,14 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_email_check_tree_view
-msgid "Contacts"
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
+msgid "Copy Product"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.actions.act_window,name:altinkaya_sales.action_product_copy_variant
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
+msgid "Copy Product Variant"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -370,8 +464,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Proszę liczyć zestawy zmian"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_pending_changeset_changes
@@ -385,8 +480,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Proszę policzyć oczekujące zmiany w zestawie zmian"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_portal_mixin__count_pending_changesets
@@ -400,8 +496,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Proszę policzyć oczekujące zestawy zmian"
 
 #. module: altinkaya_sales
 #: model:ir.model,name:altinkaya_sales.model_res_country
@@ -412,11 +509,13 @@ msgstr "Kraj"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__create_uid
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__create_uid
 msgid "Created by"
 msgstr "Utworzona przez"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__create_date
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__create_date
 msgid "Created on"
 msgstr "Data utworzenia"
 
@@ -430,7 +529,6 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__credit_insurance
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__credit_insurance
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
 msgid "Credit Insurance"
 msgstr ""
 
@@ -472,13 +570,9 @@ msgstr "Opis"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__display_name
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__display_name
 msgid "Display Name"
 msgstr "Nazwa wyświetlana"
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Diğer Endüstri Iş Sektörleri"
-msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_fiyat_dolar
@@ -490,6 +584,11 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_fiyat_dolar
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template__v_fiyat_dolar
 msgid "Dolarla satılan ürünlerin fiyatı"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__domain_attribute_value_ids
+msgid "Domain Attribute Value"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -527,11 +626,6 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__v_min_iscilik_fiy
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template__v_min_iscilik_fiy
 msgid "En Az Toplam işçilik Fiyatı USD"
-msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Endüstri"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -579,6 +673,7 @@ msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__id
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__id
 msgid "ID"
 msgstr ""
 
@@ -636,16 +731,19 @@ msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment____last_update
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy____last_update
 msgid "Last Modified on"
 msgstr "Data ostatniej modyfikacji"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__write_uid
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__write_uid
 msgid "Last Updated by"
 msgstr "Ostatnio aktualizowane przez"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__write_date
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__write_date
 msgid "Last Updated on"
 msgstr "Data ostatniej aktualizacji"
 
@@ -684,6 +782,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__nace_product_categ_ids
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__nace_product_categ_ids
 msgid "Nace Product Categ"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Nakliye Yöntemi"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -796,6 +899,16 @@ msgid "Product Variant"
 msgstr "Produkt"
 
 #. module: altinkaya_sales
+#: model:ir.model,name:altinkaya_sales.model_wizard_product_product_copy
+msgid "Product Variant Copy Wizard"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
+msgid "Product to Copy"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__05_production
 msgid "Production"
 msgstr ""
@@ -804,11 +917,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__production_ids
 msgid "Productions"
 msgstr ""
-
-#. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
-msgid "Products"
-msgstr "Produkty"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__20_cutting
@@ -853,6 +961,11 @@ msgid "Segments"
 msgstr ""
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Sektörler"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__set_product
 msgid "Set product?"
 msgstr ""
@@ -880,7 +993,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__smart_search
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__smart_search
 msgid "Smart Search"
+msgstr "Inteligentne wyszukiwanie"
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__source_product_id
+msgid "Source Product"
+msgstr ""
+
+#. module: altinkaya_sales
+#. odoo-python
+#: code:addons/altinkaya_sales/wizards/wizard_product_product_copy.py:0
+#, python-format
+msgid "Source product must be set"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -904,6 +1030,11 @@ msgid "Tax Office Name"
 msgstr ""
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Teslim Tercihi"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_sales.field_product_category__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_sales.field_product_product__count_pending_changeset_changes
@@ -915,8 +1046,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_sales.field_wizard_product_product_copy__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Liczba oczekujących zmian tego rekordu"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_pending_changesets
@@ -930,8 +1062,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_wizard_product_product_copy__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Liczba oczekujących zestawów zmian tego rekordu"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_portal_mixin__count_changesets
@@ -945,8 +1078,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner_segment__count_changesets
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order__count_changesets
 #: model:ir.model.fields,help:altinkaya_sales.field_sale_order_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_sales.field_wizard_product_product_copy__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Ogólna liczba zestawów zmian tego rekordu"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_res_partner__property_product_pricelist
@@ -1021,8 +1155,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner_segment__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_sales.field_sale_order_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Użytkownik może zobaczyć zestaw zmian"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_template_attribute_line__attr_val_price_coef
@@ -1032,6 +1167,17 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__name_variant
 msgid "Variant Name"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_wizard_product_product_copy__variant_value_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_product_product_copy_wizard_form
+msgid "Variant Values"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__025_approved
+msgid "Waiting Salesperson"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -1060,14 +1206,36 @@ msgid "Warning on the Sales Order"
 msgstr "Ostrzeżenie przy zamówieniu sprzedaży"
 
 #. module: altinkaya_sales
+#. odoo-python
+#: code:addons/altinkaya_sales/wizards/wizard_product_product_copy.py:0
+#, python-format
+msgid ""
+"You can only select attribute values from template's attribute values. "
+msgstr ""
+
+#. module: altinkaya_sales
+#. odoo-python
+#: code:addons/altinkaya_sales/wizards/wizard_product_product_copy.py:0
+#, python-format
+msgid "You can only select one attribute value per attribute."
+msgstr ""
+
+#. module: altinkaya_sales
+#. odoo-python
+#: code:addons/altinkaya_sales/wizards/wizard_product_product_copy.py:0
+#, python-format
+msgid "You need to select all attributes of the product template."
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__v_iscilik_fiyat
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__v_iscilik_fiyat
 msgid "işçilik Fiyatı USD"
 msgstr ""
 
 #. module: altinkaya_sales
-#: model:mail.template,report_name:altinkaya_sales.email_template_edi_sale_altinkaya
-msgid "{{(object.name or '').replace('/','_')}}"
+#: model:mail.template,report_name:altinkaya_sales.email_template_edi_sale_altinkaya1
+msgid "{{ (object.name or '').replace('/','_') }}"
 msgstr ""
 
 #. module: altinkaya_sales

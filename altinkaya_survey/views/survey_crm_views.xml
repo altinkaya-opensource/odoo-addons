@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="survey_response_line_tree" model="ir.ui.view">
+        <field name="name">survey.response.line.tree</field>
+        <field name="model">survey.user_input.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" default_order="create_date desc">
+                <field name="create_date" />
+                <field name="partner_id" />
+                <field name="question_id" />
+                <field name="general_answer" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_survey_response_line" model="ir.actions.act_window">
+        <field name="name">Survey Answer Lines</field>
+        <field name="res_model">survey.user_input.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="survey_response_line_tree" />
+        <field name="search_view_id" ref="survey.survey_user_input_line_view_search" />
+        <field name="domain">[('skipped', '=', False)]</field>
+        <field
+      name="context"
+    >{'create': False, 'search_default_group_by_survey': True}</field>
+    </record>
+
+    <menuitem
+    id="survey_response_line_menu"
+    name="Survey Answer Lines"
+    parent="crm_claim.menu_aftersale"
+    action="action_survey_response_line"
+    sequence="10"
+  />
+
+</odoo>

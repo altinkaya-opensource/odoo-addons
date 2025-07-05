@@ -6,14 +6,101 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-23 12:02+0000\n"
-"PO-Revision-Date: 2025-04-23 12:02+0000\n"
+"POT-Creation-Date: 2025-05-23 09:36+0000\n"
+"PO-Revision-Date: 2025-05-23 09:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__picking_state
+msgid ""
+" * Draft: The transfer is not confirmed yet. Reservation doesn't apply.\n"
+" * Waiting another operation: This transfer is waiting for another operation before being ready.\n"
+" * Waiting: The transfer is waiting for the availability of some products.\n"
+"(a) The shipping policy is \"As soon as possible\": no product could be reserved.\n"
+"(b) The shipping policy is \"When all products are ready\": not all the products could be reserved.\n"
+" * Ready: The transfer is ready to be processed.\n"
+"(a) The shipping policy is \"As soon as possible\": at least one product has been reserved.\n"
+"(b) The shipping policy is \"When all products are ready\": all product have been reserved.\n"
+" * Done: The transfer has been processed.\n"
+" * Cancelled: The transfer has been cancelled."
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<span class=\"mx-2\">/</span>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.inherit_choose_delivery_package_view_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_create_packaging_pallet_form
+msgid "<span class=\"oe_inline o_form_label me-3\">Package Dimensions</span>"
+msgstr "<span class=\"oe_inline o_form_label me-3\">Paket Boyutları</span>"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.inherit_choose_delivery_package_view_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_create_packaging_pallet_form
+msgid "<span class=\"oe_inline o_form_label mx-3 text-muted\">x</span>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<span class=\"text-muted\">Mevcut / Tahmini:</span>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Baskı:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Boya:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">CNC:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Enjeksiyon:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Kaplama:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Merkez:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Metal:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Montaj:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Sincan:</strong>"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "<strong class=\"me-2\">Torna:</strong>"
+msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__6
@@ -31,6 +118,11 @@ msgid "Attribute Value"
 msgstr "Nitelik Değeri"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__available_package_ids
+msgid "Available Packages"
+msgstr "Mevcut Paketler"
+
+#. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_create_procurement_move_form
 msgid "Açık Üretim Emirleri"
 msgstr ""
@@ -41,8 +133,9 @@ msgid "Baski Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Baskı"
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_baski
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_baski
+msgid "Baski Depo Tahmini"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -51,14 +144,15 @@ msgid "Baskı Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Boya"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_boya
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_boya
 msgid "Boya Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_boya
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_boya
+msgid "Boya Depo Tahmini"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -77,14 +171,15 @@ msgid "Bu ürün için yapılacak hareketleri yok."
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "CNC"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_cnc
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_cnc
 msgid "CNC Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_cnc
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_cnc
+msgid "CNC Depo Tahmini"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -93,6 +188,20 @@ msgid "CNC Kesimde"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__calculated_weight
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__calculated_weight
+msgid "Calculated Weight"
+msgstr "Hesaplanan Ağırlık"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__calculated_weight
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__calculated_weight
+msgid "Calculated weight of the package based on its dimensions."
+msgstr "Boyutlarına göre paketin hesaplanan ağırlığı."
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_change_warehouse_wizard_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_create_packaging_pallet_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_update_quant_wizard_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_create_procurement_move_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_make_mts_move_form
@@ -105,6 +214,15 @@ msgid "Category"
 msgstr "Kategori"
 
 #. module: altinkaya_stock
+#: model:ir.actions.act_window,name:altinkaya_stock.action_change_picking_warehouse
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_change_warehouse_wizard_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Change Warehouse"
+msgstr "Depo Değiştir"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__changeset_change_ids
@@ -119,16 +237,23 @@ msgstr "Kategori"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__changeset_change_ids
 msgid "Changeset Changes"
 msgstr "Changeset Değişiklikleri"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__changeset_ids
@@ -143,14 +268,34 @@ msgstr "Changeset Değişiklikleri"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__changeset_ids
 msgid "Changesets"
 msgstr "Değişiklikler"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_package_type__is_pallet
+msgid "Check this box if the package type is a pallet."
+msgstr "Eğer paket türü bir palet ise bu kutucuğu işaretleyin."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__wizard_id
+msgid "Choose Delivery Package"
+msgstr "Teslimat Paketi Seç"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_choose_delivery_package_move_lines
+msgid "Choose Delivery Package Move Lines"
+msgstr "Teslimat Paketi Seç Hareket Satırları"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_make_mts_move_form
@@ -158,6 +303,8 @@ msgid "Confirm"
 msgstr "Onayla"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_changesets
@@ -172,16 +319,23 @@ msgstr "Onayla"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_changesets
 msgid "Count Changesets"
 msgstr "Sayım Değişiklik Setleri"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_pending_changeset_changes
@@ -196,16 +350,23 @@ msgstr "Sayım Değişiklik Setleri"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
 msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_pending_changesets
@@ -220,12 +381,17 @@ msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_pending_changesets
 msgid "Count Pending Changesets"
 msgstr "Bekleyen Değişiklik Setlerini Say"
 
@@ -235,21 +401,35 @@ msgid "Country"
 msgstr "Ülke"
 
 #. module: altinkaya_stock
+#: model:ir.actions.act_window,name:altinkaya_stock.action_create_packaging_pallet
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_create_packaging_pallet_form
+msgid "Create Pallet"
+msgstr "Palet Oluştur"
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_create_procurement_move
 msgid "Create procurement move"
 msgstr "Tedarik hareketi oluştur"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__create_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__create_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__create_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__create_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__create_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__create_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__create_uid
 msgid "Created by"
 msgstr "Oluşturan"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__create_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__create_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__create_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__create_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__create_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__create_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__create_date
 msgid "Created on"
 msgstr "Oluşturulma"
 
@@ -257,6 +437,11 @@ msgstr "Oluşturulma"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__currency_id
 msgid "Currency"
 msgstr "Para Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_choose_delivery_package
+msgid "Delivery Package Selection Wizard"
+msgstr "Teslimat Paketi Seçim Sihirbazı"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__move_qty
@@ -274,11 +459,26 @@ msgid "Description for routes"
 msgstr "Rota açıklaması"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_dimensions_uom_id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_dimensions_uom_id
+msgid "Dimensions Unit of Measure"
+msgstr "Boyutlar Ölçü Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__display_name
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__display_name
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__display_name
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__display_name
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__display_name
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__display_name
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Dissolve"
+msgstr "Çöz"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__domain_attribute_value_ids
@@ -292,13 +492,13 @@ msgid "Done Orders"
 msgstr "Biten Siparişler"
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__x_durum
-msgid "Durumu"
-msgstr ""
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__qty_to_pack
+msgid "Done Quantity"
+msgstr "Tamamlanan Miktar"
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Enjeksiyon"
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__x_durum
+msgid "Durumu"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -308,9 +508,20 @@ msgid "Enjeksiyon Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_enjek
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_enjeksiyon
+msgid "Enjeksiyon Depo Tahmini"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__3
 msgid "Enjeksiyonda"
 msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
+msgid "Exist package to bind the selected move lines to."
+msgstr "Hareket satırlarını bağlamak için mevcut paket."
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
@@ -353,9 +564,24 @@ msgid "Harekete Tedarik Oluştur"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__height
+msgid "Height"
+msgstr "Yükseklik"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_height
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_height
+msgid "Height of the package in cm."
+msgstr "Paketin cm cinsinden yüksekliği."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__id
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__id
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__id
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__id
 msgid "ID"
 msgstr ""
 
@@ -374,6 +600,11 @@ msgid "Included Locations"
 msgstr "Dahil Edilen Konumlar"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__is_pallet
+msgid "Indicates if this package is a pallet."
+msgstr "Paketin palet olup olmadığını gösterir."
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__default_code
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__default_code
 msgid "Internal Reference"
@@ -383,8 +614,7 @@ msgstr "İç Referans"
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__sale_note
 msgid ""
 "Internal note for the order. This field is not visible to the customer."
-msgstr ""
-"Sipariş için dahili not. Bu alan müşteri tarafından görünmez."
+msgstr "Sipariş için dahili not. Bu alan müşteri tarafından görünmez."
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_inventory
@@ -402,9 +632,10 @@ msgid "Invoice Address"
 msgstr "Fatura Adresi"
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Kaplama"
-msgstr ""
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
+msgid "Is Pallet"
+msgstr "Palet mi"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_kaplama
@@ -413,9 +644,19 @@ msgid "Kaplama Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_kaplama
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_kaplama
+msgid "Kaplama Depo Tahmini"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines____last_update
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move____last_update
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move____last_update
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants____last_update
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse____last_update
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet____last_update
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
 
@@ -425,16 +666,24 @@ msgid "Last Month's Deliveries"
 msgstr "Geçen Ayın Teslimatları"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__write_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__write_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__write_uid
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__write_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__write_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__write_uid
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__write_uid
 msgid "Last Updated by"
 msgstr "Son Güncelleyen"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__write_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__write_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__write_date
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__write_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__write_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__write_date
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__write_date
 msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
@@ -447,6 +696,27 @@ msgstr "Geçen Haftanın Teslimatları"
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_internal_search_day_filters
 msgid "Last Year Deliveries"
 msgstr "Geçen Yılın Teslimatları"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__pack_length
+msgid "Length"
+msgstr "Boy"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__length_uom_id
+msgid "Length UoM"
+msgstr "Boy Ölçü Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_length
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_length
+msgid "Length of the package in cm."
+msgstr "Paketin cm cinsinden boyu."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__lot_id
+msgid "Lot/Serial Number"
+msgstr "Lot/Seri Numarası"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__production_ids
@@ -463,7 +733,6 @@ msgstr ""
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_sale_order_form_inherit_qty
 msgid "Merkez"
 msgstr ""
@@ -499,6 +768,7 @@ msgid "Merkez Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_merkez
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_merkez
 msgid "Merkez Depo Tahmini"
 msgstr ""
@@ -509,14 +779,15 @@ msgid "Merkez Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Metal"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_metal
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_metal
 msgid "Metal Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_metal
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_metal
+msgid "Metal Depo Tahmini"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -525,14 +796,15 @@ msgid "Minimum Inventory Rule"
 msgstr "Min. Envanter Kuralı"
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Montaj"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_montaj
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_montaj
 msgid "Montaj Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_montaj
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_montaj
+msgid "Montaj Depo Tahmini"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -547,6 +819,29 @@ msgid "Move"
 msgstr "Hareket"
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "Move Details"
+msgstr "Hareket Detayları"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__move_line_id
+msgid "Move Line"
+msgstr "Hareket Satırı"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__move_line_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_move_line_tree_packaged
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_quant_package_form
+msgid "Move Lines"
+msgstr "Hareket Satırları"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__move_line_ids
+msgid "Move lines related to this package."
+msgstr ""
+
+#. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_normal_form_view_altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_variant_button_altinkaya_stock
 msgid "Muhasebe"
@@ -558,14 +853,110 @@ msgid "Müsteriyi Bekliyor"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_product_product_shipment_dimensions_tree
-msgid "Nakliye Ağırlıkları"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_inventory__product_selection__negative_qty
 msgid "Negative Quantities"
 msgstr ""
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/wizard_create_packaging_pallet.py:0
+#, python-format
+msgid "No packages found for the selected picking."
+msgstr "Seçilen sevk için paket bulunamadı."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__number
+msgid "Number"
+msgstr "Numara"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__number
+msgid "Number for the pallet package."
+msgstr "Paketin numarası."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__package_id
+msgid "Package"
+msgstr "Paket"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_height
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_height
+msgid "Package Height"
+msgstr "Paket Yüksekliği"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_length
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_length
+msgid "Package Length"
+msgstr "Paket Boyu"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__name
+msgid "Package Reference"
+msgstr "Paket Referansı"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__name
+msgid "Package Type"
+msgstr "Paket Türü"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_weight
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_weight
+msgid "Package Weight"
+msgstr "Paket Ağırlığı"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_width
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_width
+msgid "Package Width"
+msgstr "Paket Genişliği"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_stock_quant_package
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__package_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__package_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Packages"
+msgstr "Paketler"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__package_ids
+msgid "Packages related to this pallet."
+msgstr "Bu palete ait paketler."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__package_ids
+msgid "Packages related to this picking."
+msgstr "Bu sevke ait paketler."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__packaging_line_ids
+msgid "Packaging Lines"
+msgstr "Paket Satırları"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__volume_uom_id
+msgid "Packaging volume unit of measure"
+msgstr "Paketleme hacim ölçü birimi"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Packed Products"
+msgstr "Paketlenmiş Ürünler"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__pallet_id
+msgid "Pallet"
+msgstr "Palet"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_move_line__result_package_pallet_id
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__pallet_id
+msgid "Pallet related to this package."
+msgstr "Bu pakete ait palet."
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__pending_orderline_ids
@@ -573,8 +964,51 @@ msgid "Pending Orders"
 msgstr "Bekleyen Siparişler"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__picking_id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__picking_id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__picking_id
+msgid "Picking"
+msgstr "Sevk"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__picking_state
+msgid "Picking State"
+msgstr "Sevk Durumu"
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/wizard_change_picking_warehouse.py:0
+#, python-format
+msgid "Picking not found"
+msgstr "Sevk bulunamadı"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__picking_id
+msgid "Picking related to this package."
+msgstr "Bu pakete ait sevk."
+
+#. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__b
 msgid "Piyasadan Teminde"
+msgstr ""
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/wizard_create_packaging_pallet.py:0
+#, python-format
+msgid "Please select at least one package line."
+msgstr "Lütfen en az bir paket satırı seçin."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__prefix_code
+msgid "Prefix Code"
+msgstr "Önek Kodu"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_package_type__prefix_code
+msgid ""
+"Prefix code for the package type. This code will be used to generate the "
+"barcode for the package type."
 msgstr ""
 
 #. module: altinkaya_stock
@@ -651,9 +1085,20 @@ msgid "Profil Kesimde"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Put in Pallet"
+msgstr "Palete Koy"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__product_uom_qty
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_move_line_tree_packaged
+msgid "Quantity"
+msgstr "Miktar"
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_quant
 msgid "Quants"
-msgstr "Adet"
+msgstr "Stok Parçaları"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__priority
@@ -676,6 +1121,11 @@ msgstr "Rezerve Hareketler"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__responsible_employee_id
 msgid "Responsible Employee"
 msgstr "Sorumlu Personel"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__result_package_pallet_id
+msgid "Result Package Pallet"
+msgstr "Hedef Paket Paleti"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__name
@@ -726,6 +1176,7 @@ msgstr ""
 #. module: altinkaya_stock
 #. odoo-python
 #: code:addons/altinkaya_stock/models/stock_move_line.py:0
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_form_scrap_move_line
 #, python-format
 msgid "Scrap"
 msgstr "Hurda"
@@ -736,9 +1187,27 @@ msgid "Selectable on procurement wizard"
 msgstr "Tedarik sihirbazında seçilebilir"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__selected_move_line_ids
+msgid "Selected for Packaging"
+msgstr "Paketleme için Seçildi"
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/choose_delivery_package.py:0
+#, python-format
+msgid "Selected lines must belong to the same picking."
+msgstr "Seçilen satırlar aynı sevke ait olmalıdır."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__sequence
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__sequence
 msgid "Sequence"
 msgstr "Sıra"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__sequence
+msgid "Sequence of the package in the picking."
+msgstr "Sevkteki paketin sırası."
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__hazirlayan
@@ -746,8 +1215,12 @@ msgid "Sevki Hazırlayan"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__shipping_weight
+msgid "Shipping Weight"
+msgstr "Teslimat Ağırlığı"
+
+#. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_sale_order_form_inherit_qty
 msgid "Sincan"
 msgstr ""
@@ -783,6 +1256,7 @@ msgid "Sincan Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_sincan
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_sincan
 msgid "Sincan Depo Tahmini"
 msgstr ""
@@ -793,6 +1267,8 @@ msgid "Sincan Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__smart_search
@@ -807,12 +1283,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__smart_search
 msgid "Smart Search"
 msgstr "Akıllı Arama"
 
@@ -837,9 +1318,17 @@ msgid "Stock Location"
 msgstr "Stok Konumu"
 
 #. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/models/stock_move.py:0
 #: model:ir.model,name:altinkaya_stock.model_stock_move
+#, python-format
 msgid "Stock Move"
 msgstr "Stok Hareketi"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_stock_package_type
+msgid "Stock package type"
+msgstr "Stok Paket Türü"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
@@ -893,6 +1382,8 @@ msgid "The default code must be unique."
 msgstr "Varsayılan kod benzersiz olmalı."
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package_move_lines__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_pending_changeset_changes
@@ -907,16 +1398,23 @@ msgstr "Varsayılan kod benzersiz olmalı."
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_package_type__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_change_picking_warehouse__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
 msgstr "Bu kaydın bekleyen değişiklik sayısı"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package_move_lines__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_pending_changesets
@@ -931,16 +1429,23 @@ msgstr "Bu kaydın bekleyen değişiklik sayısı"
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_package_type__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_change_picking_warehouse__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_pending_changesets
 msgid "The number of pending changesets of this record"
 msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package_move_lines__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_changesets
@@ -955,12 +1460,17 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_move_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_package_type__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_change_picking_warehouse__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "Bu kaydın toplam değişiklik seti sayısı"
 
@@ -968,6 +1478,19 @@ msgstr "Bu kaydın toplam değişiklik seti sayısı"
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_internal_search_day_filters
 msgid "This Month's Deliveries"
 msgstr "Bu ayın Teslimatları"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_change_warehouse_wizard_form
+msgid ""
+"This action will cancel all moves for changing location. Do you want to "
+"continue?"
+msgstr ""
+"Bu işlem yapılacak hareketleri iptal edecektir. Devam etmek istiyormusunuz?"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "This action will remove products from the package."
+msgstr "Bu işlem paketten ürünleri kaldıracaktır."
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_create_procurement_move__move_qty
@@ -999,15 +1522,21 @@ msgid "Today's Deliveries"
 msgstr "Bugünün Teslimatları"
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Torna"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_torna
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_torna
 msgid "Torna Depo Mevcut"
 msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_torna
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_torna
+msgid "Torna Depo Tahmini"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__shipping_weight
+msgid "Total weight of the package."
+msgstr "Paketin toplam ağırlığı."
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_picking
@@ -1037,9 +1566,38 @@ msgid "Two Weeks ago"
 msgstr "2 Hafta Önce"
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_stock_move_line_tree_packaged
+msgid "Unit"
+msgstr "Birim"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__product_uom_id
+msgid "Unit of Measure"
+msgstr "Ölçü Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_dimensions_uom_id
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_dimensions_uom_id
+msgid "Unit of measure for the package dimensions."
+msgstr "Paket boyutları için ölçü birimi."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_weight_uom_id
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_weight_uom_id
+msgid "Unit of measure for the package weight."
+msgstr "Paket ağırlığı için ölçü birimi."
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__uom
 msgid "UoM"
 msgstr "Ölçü Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__length_uom_id
+msgid "UoM for pack length, height, width (based on lenght UoM)"
+msgstr ""
+"Paket boyu, yüksekliği, genişliği için ölçü birimi (uzunluk ölçü birimine "
+"göre)"
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_update_quant_wizard_form
@@ -1059,6 +1617,8 @@ msgid "Update Unreserved Quants"
 msgstr "Rezerve edilmemiş miktarı güncelle"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__user_can_see_changeset
@@ -1073,19 +1633,19 @@ msgstr "Rezerve edilmemiş miktarı güncelle"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_move_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__user_can_see_changeset
 msgid "User Can See Changeset"
 msgstr "Kullanıcı Değişiklikleri Görebilir"
-
-#. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_force_assign
-msgid "Uygunluğu Zorla"
-msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__product_template_variant_value_ids
@@ -1093,9 +1653,65 @@ msgid "Variant Values"
 msgstr "Varyant Değerleri"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__volume_uom_id
+msgid "Volume Units of Measure"
+msgstr "Hacim Ölçü Birimleri"
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_warehouse
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__warehouse_id
 msgid "Warehouse"
 msgstr "Depo"
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/wizard_change_picking_warehouse.py:0
+#, python-format
+msgid "Warehouse changed from %(old)s to %(new)s"
+msgstr "Depo değiştirildi: %(old)s'den %(new)s'ye"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_weight_uom_id
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_weight_uom_id
+msgid "Weight Unit of Measure"
+msgstr "Ağırlık Ölçü Birimi"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_weight
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_weight
+msgid "Weight of the package in kg."
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__width
+msgid "Width"
+msgstr "Genişlik"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_width
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet__package_width
+msgid "Width of the package in cm."
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__wizard_id
+msgid "Wizard"
+msgstr "Sihirbaz"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_wizard_change_picking_warehouse
+msgid "Wizard Change Picking Warehouse"
+msgstr "Depo Değiştirme Sihirbazı"
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_wizard_create_packaging_pallet
+msgid "Wizard Create Packaging Pallet"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_wizard_create_packaging_pallet_line
+msgid "Wizard Create Packaging Pallet Line"
+msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.actions.act_window,name:altinkaya_stock.stock_move_line_action
@@ -1118,6 +1734,33 @@ msgstr ""
 "ayırabilirsiniz."
 
 #. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/wizard_change_picking_warehouse.py:0
+#, python-format
+msgid "You cannot change the warehouse of a done or canceled move."
+msgstr ""
+"İptal edilmiş veya tamamlanmış bir hareketin deposunu değiştiremezsiniz."
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/models/stock_quant_package.py:0
+#, python-format
+msgid "You cannot dissolve a package that is part of a pallet."
+msgstr "Paletin parçası olan bir paketi çözemezsiniz."
+
+#. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/wizard/choose_delivery_package.py:0
+#, python-format
+msgid "You cannot pack more than the available quantity for %(name)s."
+msgstr "Mevcut miktardan daha fazlasını paketleyemezsiniz: %(name)s."
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__height
+msgid "height"
+msgstr "yükseklik"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_location__priority
 msgid "high priority locations will be reserved first"
 msgstr "yüksek öncelikli konumlar ilk önce rezerve edilecek"
@@ -1133,6 +1776,11 @@ msgid "last 3 day's Deliveries"
 msgstr "Son 3 günün Teslimatları"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__pack_length
+msgid "length"
+msgstr "boy"
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_make_mts_move
 msgid "make MTS Move"
 msgstr "MTS hareketi oluştur"
@@ -1142,6 +1790,11 @@ msgstr "MTS hareketi oluştur"
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_make_mts_move_form
 msgid "or"
 msgstr "yada"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,help:altinkaya_stock.field_wizard_create_packaging_pallet_line__width
+msgid "width"
+msgstr "genişlik"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__5

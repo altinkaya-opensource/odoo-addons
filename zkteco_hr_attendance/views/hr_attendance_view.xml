@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="hr_attendance_zkteco_tree" model="ir.ui.view">
+        <field name="name">hr.attendance.zkteco.tree</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+        <field name="arch" type="xml">
+            <field name="employee_id" position="after">
+                <field name="zkteco_entry_device_id" />
+                <field name="zkteco_exit_device_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

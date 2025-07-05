@@ -14,9 +14,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from ast import literal_eval
 
 from odoo import _, fields, models
-from odoo.tools import config, safe_eval
+from odoo.tools import config
 
 _logger = logging.getLogger(__name__)
 
@@ -106,7 +107,7 @@ class MailMail(models.Model):
         headers = {"Message-Id": self.message_id}
         if self.headers:
             try:
-                headers.update(safe_eval(self.headers))
+                headers.update(literal_eval(self.headers))
             except Exception as exc:
                 _logger.error(
                     "Error while parsing headers for email %s: %s", self.id, exc

@@ -224,8 +224,8 @@ class DeliveryCarrier(models.Model):
 
         if deci < 0.5:
             deci = 0.5
-        factor = self.factor_a - (self.factor_b * math.log10(deci))
-        return abs(factor)
+        factor = self.factor_a - (self.factor_b * min(math.log10(deci), 2.0))
+        return max(abs(factor), 1.0)
 
     def _get_price_available(self, order):
         self.ensure_one()
@@ -333,5 +333,6 @@ class DeliveryCarrier(models.Model):
             )
             if today > deadline:
                 picking.delivery_state = "customer_delivered"
+                picking.date_delivered = fields.Datetime.now()
 
         return True

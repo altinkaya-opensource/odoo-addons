@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record
+    forcecreate="True"
+    id="ir_cron_generate_ideasoft_xml_export"
+    model="ir.cron"
+  >
+        <field name="name">Generate Ideasoft XML Files</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">2</field>
+        <field name="model_id" ref="ideasoft_xml_export.model_ideasoft_backend" />
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+        <field name="code">model.regenerate_all_records()</field>
+        <field eval="True" name="active" />
+        <field name="state">code</field>
+    </record>
+
+</odoo>

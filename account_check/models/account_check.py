@@ -173,7 +173,7 @@ class AccountCheck(models.Model):
     def onchange_date(self):
         for rec in self:
             if (
-                -rec.issue_date
+                rec.issue_date
                 and rec.payment_date
                 and rec.issue_date > rec.payment_date
             ):
@@ -326,6 +326,9 @@ class AccountCheck(models.Model):
         * value is 'from states'
         """
         self.ensure_one()
+        if self._context.get("skip_check_state_change"):
+            # si viene del contexto, no hacemos nada
+            return
         # if we do it from _add_operation only, not from a contraint of before
         # computing the value, we can just read it
         old_state = self.state
@@ -358,6 +361,8 @@ class AccountCheck(models.Model):
                     rec_id=self.id,
                 )
             )
+        else:
+            self = self.with_context(skip_check_state_change=True)
 
     def unlink(self):
         for rec in self:
@@ -683,21 +688,10 @@ class AccountCheck(models.Model):
             else:
                 last_valid_date = today
             for op in rec.operation_ids.sudo().filtered(lambda o: o.origin):
-                if op.origin._name == "account.payment":
-                    move_lines = op.origin.move_line_ids
-                    # partner_id = op.origin.partner_id
-                elif op.origin._name == "account.move":
-                    # partner_id = op.origin.partner_id
+                if op.origin._name in ("account.payment", "account.move"):
                     move_lines = op.origin.line_ids
                 else:
                     continue
-
-                # if partner_id.partner_currency_id == rec.company_currency_id:
-                #     continue
-
-                # If operation is reconciled, we don't recompute
-                # if move_lines.filtered(lambda m: m.full_reconcile_id):
-                #     continue
 
                 for ml in move_lines.filtered(
                     lambda m: m.account_id.currency_id
@@ -712,10 +706,16 @@ class AccountCheck(models.Model):
                         rec.company_id,
                         last_valid_date,
                     )
-                    # We need to use Administrator account because of
-                    # odoo-server/addons/account/models/account_move.py:1342
-                    ml.sudo(2).write(
-                        {
-                            "amount_currency": sign * amount_currency,
-                        }
+
+                    new_amount_currency = sign * amount_currency
+
+                    # Use raw SQL to avoid re-writing balance field (check inverse
+                    # method of amount_currency)
+                    ml._cr.execute(
+                        """
+                        UPDATE account_move_line
+                        SET amount_currency = %s
+                        WHERE id = %s
+                        """,
+                        (new_amount_currency, ml.id),
                     )

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-<!--     <record id="view_account_payment2_form_inherited" model="ir.ui.view"> -->
-<!--         <field name="name">account.payment.form.inherited</field> -->
-<!--         <field name="model">account.payment</field> -->
-<!--         <field name="inherit_id" ref="account_payment_group.view_account_payment_form" /> -->
-<!--         <field name="arch" type="xml"> -->
-<!--             <label for="amount_company_currency" position="attributes"> -->
-<!--                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('payment_method_code', '=', 'delivered_third_check')]}</attribute> -->
-<!--             </label> -->
-<!--             <div name="amount_company_currency" position="attributes"> -->
-<!--                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('payment_method_code', '=', 'delivered_third_check')]}</attribute> -->
-<!--             </div> -->
-<!--         </field> -->
-<!--     </record> -->
+    <!--     <record id="view_account_payment2_form_inherited" model="ir.ui.view"> -->
+    <!--         <field name="name">account.payment.form.inherited</field> -->
+    <!--         <field name="model">account.payment</field> -->
+    <!--         <field name="inherit_id" ref="account_payment_group.view_account_payment_form" /> -->
+    <!--         <field name="arch" type="xml"> -->
+    <!--             <label for="amount_company_currency" position="attributes"> -->
+    <!--                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('check_payment_type', '=', 'delivered_third_check')]}</attribute> -->
+    <!--             </label> -->
+    <!--             <div name="amount_company_currency" position="attributes"> -->
+    <!--                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('check_payment_type', '=', 'delivered_third_check')]}</attribute> -->
+    <!--             </div> -->
+    <!--         </field> -->
+    <!--     </record> -->
 
     <!-- TODO inherit other form views also (like check printing module) -->
     <record id="view_account_payment_form_inherited" model="ir.ui.view">
@@ -27,117 +27,125 @@
                 <!-- <field name="checkbook_block_manual_number" invisible="1"/> -->
                 <field name="checkbook_numerate_on_printing" invisible="1" />
             </form>
-            <!-- TODO ver si para una v10 implementamos algo parecido a los batch deposit y tal vez directamente hacemos que los pagos sean uno a uno con los cheques total se pueden agregar varios pagosen un payment group, tal vez para transfers usamos tambien payments groups -->
+
+            <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                <field name="is_check_payment" invisible="1" />
+                <field
+          name="check_payment_type"
+          widget="radio"
+          attrs="{'invisible': [('is_check_payment', '=', False)], 'readonly': [('state', '!=', 'draft')]}"
+        />
+            </xpath>
             <xpath expr="//sheet/group" position="inside">
-	            <group
+                <group
           name="checks"
-          attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check', 'delivered_third_check', 'issue_check'])]}"
+          attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'delivered_third_check', 'issue_check'])]}"
         >
-	                <field
+                    <field
             name="check_id"
             attrs="{'invisible': [('check_id', '=', False)]}"
           />
-	                <!-- no usamos el widget many2many_tags porque les interesa filtrar y buscar por montos y demas -->
-	                <!-- creamos un campo copy por compatibilidad con mig de v8 donde se podia mas de un cheque por payment, igualmente se podria unir todo en chekc_ids pero era medio complicada la consulta -->
-	                <field
+                    <!-- no usamos el widget many2many_tags porque les interesa filtrar y buscar por montos y demas -->
+                    <!-- creamos un campo copy por compatibilidad con mig de v8 donde se podia mas de un cheque por payment, igualmente se podria unir todo en chekc_ids pero era medio complicada la consulta -->
+                    <field
             name="check_ids"
-            attrs="{'invisible': ['|',  '|', ('check_ids', '=', []), ('check_id', '!=', False), ('payment_method_code', 'not in', ['received_third_check', 'issue_check'])]}"
+            attrs="{'invisible': ['|',  '|', ('check_ids', '=', []), ('check_id', '!=', False), ('check_payment_type', 'not in', ['received_third_check', 'issue_check'])]}"
           >
-	                    <tree edit="false" create="false">
-	                        <field name="number" />
-	                        <field name="payment_date" />
-	                        <field name="amount" sum="Total" />
-	                        <field name="state" invisible="1" />
-	                        <field name="currency_id" invisible="1" />
-	                    </tree>
-	                </field>
-	                <label
+                        <tree edit="false" create="false">
+                            <field name="number" />
+                            <field name="payment_date" />
+                            <field name="amount" sum="Total" />
+                            <field name="state" invisible="1" />
+                            <field name="currency_id" invisible="1" />
+                        </tree>
+                    </field>
+                    <label
             for="check_ids"
             colspan="2"
-            attrs="{'invisible': ['|', ('payment_method_code', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])]}"
+            attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])]}"
           />
-	                <field
+                    <field
             name="check_ids"
             nolabel="1"
             colspan="2"
             options="{'no_create': True}"
             domain="[('journal_id', '=', journal_id), ('state', '=', 'holding'), ('type', '=', 'third_check')]"
-            attrs="{'invisible': ['|', ('payment_method_code', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])], 'required': [('state','=','draft'),('payment_method_code', '=', 'delivered_third_check'), ('payment_type', 'in', ['transfer', 'outbound']),  ('state', '!=', 'cancelled')]}"
+            attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])], 'required': [('state','=','draft'),('check_payment_type', '=', 'delivered_third_check'), ('payment_type', 'in', ['transfer', 'outbound']),  ('state', '!=', 'cancelled')]}"
           >
-	                    <tree edit="false">
-	                        <field name="number" />
-	                        <field name="payment_date" />
-	                        <field name="amount" sum="Total" />
-	                        <field name="state" invisible="1" />
-	                        <field name="currency_id" invisible="1" />
-	                    </tree>
-	                </field>
-	            </group>
-	            <group name="check_data" states='draft'>
-	                <field
+                        <tree edit="false">
+                            <field name="number" />
+                            <field name="payment_date" />
+                            <field name="amount" sum="Total" />
+                            <field name="state" invisible="1" />
+                            <field name="currency_id" invisible="1" />
+                        </tree>
+                    </field>
+                </group>
+                <group name="check_data" states='draft'>
+                    <field
             name="checkbook_id"
             options="{'no_create': True, 'no_open': True}"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['issue_check'])], 'required': [('state','=','draft'),('payment_method_code', 'in', ['issue_check'])]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['issue_check'])]}"
             domain="[('journal_id', '=', journal_id), ('state', '=', 'active')]"
           />
-	                <field
+                    <field
             name="check_number"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),'|', ('payment_method_code', '=', 'received_third_check'), '&amp;', ('payment_method_code', '=', 'issue_check'), ('checkbook_numerate_on_printing', '=', False)]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),'|', ('check_payment_type', '=', 'received_third_check'), '&amp;', ('check_payment_type', '=', 'issue_check'), ('checkbook_numerate_on_printing', '=', False)]}"
           />
-	                <field
+                    <field
             name="check_issue_date"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('payment_method_code', 'in', ['received_third_check', 'issue_check'])]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check', 'issue_check'])]}"
           />
-	                <field
+                    <field
             name="check_payment_date"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_subtype', '=', 'deferred')]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_subtype', '=', 'deferred')]}"
           />
-	                <field
+                    <field
             name="check_bank_id"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('payment_method_code', 'in', ['received_third_check'])], 'required': [('state','=','draft'),('payment_method_code', 'in', ['received_third_check'])]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
           />
-	                <field
+                    <field
             name="check_owner_vat"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('payment_method_code', 'in', ['received_third_check'])]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
           />
-	                <field
+                    <field
             name="check_owner_name"
-            attrs="{'invisible': [('payment_method_code', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('payment_method_code', 'in', ['received_third_check'])]}"
+            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
           />
-	            </group>
+                </group>
             </xpath>
-<!--            <xpath expr="//div[@name='amount_div']/field[@name='amount']" position="attributes">-->
-<!--                <attribute name="attrs">{'readonly': ['|',('state','!=','draft'),('payment_method_code', '=', 'delivered_third_check')]}</attribute>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//div[@name='amount_div']/field[@name='amount']" position="attributes">-->
+            <!--                <attribute name="attrs">{'readonly': ['|',('state','!=','draft'),('check_payment_type', '=', 'delivered_third_check')]}</attribute>-->
+            <!--            </xpath>-->
             <field name="currency_id" position="attributes">
                 <attribute
           name="attrs"
-        >{'readonly': ['|',('state','!=','draft'),('payment_method_code', '=', 'delivered_third_check')]}</attribute>
+        >{'readonly': ['|',('state','!=','draft'),('check_payment_type', '=', 'delivered_third_check')]}</attribute>
             </field>
             <!--<label for="amount" position="before">
-                <label for="amount" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}"/>
-                <div name="readonly_amount_div" class="o_row" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}">
+                <label for="amount" attrs="{'invisible': [('check_payment_type', '!=', 'delivered_third_check')]}"/>
+                <div name="readonly_amount_div" class="o_row" attrs="{'invisible': [('check_payment_type', '!=', 'delivered_third_check')]}">
                     <field name="amount" readonly="True"/>
                     <field name="currency_id" readonly="True" groups="base.group_multi_currency" attrs="{'invisible': [('other_currency', '=', False)]}"/>
                 </div>
             </label>
             <label for="amount" position="attributes">
-                <attribute name="attrs">{'invisible': [('payment_method_code', '=', 'delivered_third_check')]}</attribute>
+                <attribute name="attrs">{'invisible': [('check_payment_type', '=', 'delivered_third_check')]}</attribute>
             </label>
             <div name="amount_div" position="attributes">
-                <attribute name="attrs">{'invisible': [('payment_method_code', '=', 'delivered_third_check')]}</attribute>
+                <attribute name="attrs">{'invisible': [('check_payment_type', '=', 'delivered_third_check')]}</attribute>
             </div>-->
             <field name="payment_method_line_id" position="after">
                 <field
           name="check_deposit_type"
           widget="radio"
-          attrs="{'invisible': ['|', ('payment_type', '!=', 'transfer'), ('payment_method_code', '!=', 'delivered_third_check')]}"
+          attrs="{'invisible': ['|', ('payment_type', '!=', 'transfer'), ('check_payment_type', '!=', 'delivered_third_check')]}"
         />
             </field>
         </field>
     </record>
 
-<!--  Checks search view -->
+    <!--  Checks search view -->
     <!-- TODO: Enable this -->
     <record id="view_account_payment_search" model="ir.ui.view">
         <field name="name">account.payment.check.search</field>

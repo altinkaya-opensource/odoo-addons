@@ -1,151 +1,262 @@
 <?xml version="1.0" ?>
 <odoo>
-        <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
-            <field name="name">stock.picking.form.inherit_altinkaya</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form" />
-            <field name="arch" type="xml">
-                <xpath
+    <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit_altinkaya</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+
+            <div name="button_box" position="inside">
+                <button
+          name="action_list_packed_products"
+          string="Packed Products"
+          type="object"
+          class="oe_stat_button"
+          icon="fa-cubes"
+          attrs="{'invisible': [('has_packages', '=', False)]}"
+        />
+            </div>
+
+
+            <button name="button_validate" position="after">
+
+                <button
+          name="%(action_change_picking_warehouse)d"
+          string="Change Warehouse"
+          attrs="{'invisible': ['&amp;',('state', 'not in', ('waiting', 'confirmed', 'assigned')), ('picking_type_code', '!=', 'outgoing')]}"
+          type="action"
+          groups="stock.group_stock_manager"
+        />
+
+            </button>
+
+            <button name="action_open_label_type" position="after">
+                  <button
+          name="action_print_all_labels"
+          type="object"
+          string="Print All Labels"
+        />
+            </button>
+
+
+            <xpath
+        expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
+        position="attributes"
+      >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+        expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
+        position="attributes"
+      >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+
+            <xpath
         expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
         position="after"
       >
-                    <field
+
+                <field
           name="qty_available_merkez"
           string="Merkez"
           widget="uom"
           options="{'uom_field': 'product_uom'}"
         />
-                    <field
+                <field
           name="qty_available_sincan"
           string="Sincan"
           widget="uom"
           options="{'uom_field': 'product_uom'}"
         />
-                    <button
+                <button
+          name="action_open_detailed_form"
+          type="object"
+          icon="fa-eye"
+          title="Move Details"
+        />
+                <button
           name="action_create_procurement"
           type="object"
           string="Tedarik"
           attrs="{'invisible':[('state','in',['waiting','done'])]}"
         />
-                    <button
+                <button
           name="action_make_mts"
           type="object"
           string="Stoktan Al"
           attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
         />
-                </xpath>
-            </field>
-        </record>
-
-        <record id="view_picking_form_inherit_carrier" model="ir.ui.view">
-            <field name="name">stock.picking.form.inherit.carrier</field>
-            <field name="model">stock.picking</field>
-            <field name="priority">100</field>
-            <field name="inherit_id" ref="stock.view_picking_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='carrier_id']" position="replace">
-                </xpath>
-
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="carrier_id" />
-
-                </xpath>
-            </field>
-        </record>
+            </xpath>
 
 
-        <record id="view_picking_force_assign" model="ir.ui.view">
-            <field name="name">Stock picking force assign</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form" />
-            <field name="arch" type="xml">
-                <button name="button_validate" position="after">
-                    <button
-          name="force_assign"
-          string="Uygunluğu Zorla"
-          attrs="{'invisible':[('state', 'in', ['draft', 'assigned', 'done', 'cancel'])]}"
-          groups="altinkaya_stock.stock_force_avail_button"
-          type="object"
-        />
-                </button>
-            </field>
-        </record>
-
-
-        <record id="view_picking_internal_search_day_filters" model="ir.ui.view">
-            <field name="name">stock.picking.filter.days.view</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_internal_search" />
-            <field name="arch" type="xml">
-                <xpath
-        expr="//filter[@name='activities_upcoming_all']"
-        position="after"
+            <xpath
+        expr="///page[@name='operations']/button[@name='action_put_in_pack']"
+        position="attributes"
       >
-                    <separator />
-                    <filter
+                <attribute
+          name="attrs"
+        >{'invisible': [('state', 'in', ('draft', 'cancel'))]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='operations']" position="after">
+                <page
+          name="packages"
+          string="Packages"
+          attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"
+          groups="stock.group_stock_user"
+        >
+                    <field
+            name="package_ids"
+            widget="one2many"
+            attrs="{'readonly': [('state', 'in', ['draft', 'cancel'])]}"
+          >
+                        <tree>
+                            <field name="sequence" widget="handle" />
+                            <field name="is_pallet" invisible="1" />
+                            <field name="picking_state" invisible="1" />
+                            <field name="display_name" />
+                            <field name="number" />
+                            <field name="package_type_id" />
+                            <field name="shipping_weight" />
+                            <field name="pack_length" />
+                            <field name="width" />
+                            <field name="height" />
+                            <field name="length_uom_id" nolabel="1" />
+                            <field name="label" invisible="1" />
+                            <button
+                name="action_print_label"
+                type="object"
+                icon="fa-barcode"
+                string="Print Label"
+                class="btn btn-secondary"
+                attrs="{'readonly': [('label', '=', False)]}"
+              />
+                            <button
+                attrs="{'invisible': [('picking_state', 'in', ['draft', 'cancel'])]}"
+                name="action_dissolve"
+                type="object"
+                icon="fa-trash"
+                class="btn btn-secondary"
+                string="Dissolve"
+                confirm="This action will remove products from the package."
+              />
+
+                        </tree>
+                    </field>
+
+                    <button
+            name="action_put_packs_in_pallet"
+            type="object"
+            string="Put in Pallet"
+            class="btn btn-secondary"
+            icon="fa-th-large"
+          />
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_picking_form_inherit_carrier" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.carrier</field>
+        <field name="model">stock.picking</field>
+        <field name="priority">100</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='carrier_id']" position="replace">
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="carrier_id" />
+
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_picking_force_assign" model="ir.ui.view">
+        <field name="name">Stock picking force assign</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <button name="button_validate" position="after">
+                <!-- <button name="force_assign" string="Uygunluğu Zorla" attrs="{'invisible':[('state', 'in', ['draft', 'assigned', 'done', 'cancel'])]}" groups="altinkaya_stock.stock_force_avail_button" type="object" /> -->
+            </button>
+        </field>
+    </record>
+
+
+    <record id="view_picking_internal_search_day_filters" model="ir.ui.view">
+        <field name="name">stock.picking.filter.days.view</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_upcoming_all']" position="after">
+                <separator />
+                <filter
           string="Today's Deliveries"
           name="todaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',context_today().strftime('%Y-%m-%d 00:00:00')),
-                                  ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
+          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',context_today().strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
         />
 
-                    <filter
+                <filter
           string="Yesterday's Deliveries"
           name="yesterdaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')),
-                               ('date_done','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"
+          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today()+relativedelta(days=-1)).strftime('%Y-%m-%d 23:59:59'))]"
         />
 
-                    <filter
+                <filter
           string="last 3 day's Deliveries"
           name="threedaydel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')),
-                                ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
+          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today()+relativedelta(days=-2)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',context_today().strftime('%Y-%m-%d 23:59:59'))]"
         />
 
-                    <filter
+                <filter
           string="Last Week's Deliveries"
           name="lastweekdel"
-          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d 00:00:00')),
-                               ('date_done','&lt;=',(context_today() + relativedelta(weeks=-1, weekday=5)).strftime('%Y-%m-%d 23:59:59'))]"
+          domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d 00:00:00')), ('date_done','&lt;=',(context_today() + relativedelta(weeks=-1, weekday=5)).strftime('%Y-%m-%d 23:59:59'))]"
         />
 
-                    <filter
+                <filter
           string="This Month's Deliveries"
           name="thismonthdel"
           domain="[('picking_type_code', '=', 'outgoing'), ('date_done','&gt;=',context_today().strftime('%Y-%m-01 00:00:00'))]"
         />
 
-                    <filter
+                <filter
           string="Last Month's Deliveries"
           name="lastmonthdel"
           domain="[('picking_type_code', '=', 'outgoing'), '&amp;', ('date_done','&gt;=',(context_today() + relativedelta(months=-1)).strftime('%Y-%m-01 00:00:00')),
                                  ('date_done','&lt;',context_today().strftime('%Y-%m-01 00:00:00'))]"
         />
 
-                    <filter
+                <filter
           string="Last Year Deliveries"
           name="lastyeardeliveries"
           domain="[('picking_type_code', '=', 'outgoing'), ('date_done', '&gt;=', (context_today() + relativedelta(years=-1)).strftime('%Y-01-01 00:00:00')),
                                  ('date_done','&lt;', context_today().strftime('%Y-01-01 00:00:00'))]"
         />
 
-                    <separator />
-                    <filter
+                <separator />
+                <filter
           string="Two Weeks ago"
           name="twoweeks"
           domain="[('date','&lt;',(context_today()+relativedelta(weeks=-2)).strftime('%Y-%m-%d 00:00:00'))]"
         />
 
-                    <filter
+                <filter
           string="Four weeks ago"
           name="fourweeks"
           domain="[('date','&lt;',(context_today()+relativedelta(weeks=-4)).strftime('%Y-%m-%d 00:00:00'))]"
         />
-                    <separator />
+                <separator />
 
-                </xpath>
-            </field>
-        </record>
+            </xpath>
+        </field>
+    </record>
 
 </odoo>

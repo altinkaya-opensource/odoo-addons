@@ -1,4 +1,7 @@
-from odoo import api, fields, models
+from collections import defaultdict
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
 
@@ -101,13 +104,6 @@ class MrpProduction(models.Model):
             else:
                 mo.id = False
 
-    # @api.model
-    # def name_search(self, name="", args=None, operator="ilike", limit=100):
-    #     if name:
-    #         args += [("move_finished_ids[0].group_id.name", operator, name)]
-    #     ids = self.search(args, limit=limit)
-    #     return ids.name_get()
-
     @api.onchange("process_id")
     def onchange_routing_id(self):
         if self.process_id.location_id:
@@ -171,12 +167,59 @@ class MrpProduction(models.Model):
 
     def action_set_production_started(self):
         for production in self:
-            production.write(
-                {"state": "progress", "date_start2": fields.Datetime.now()}
+            production.write({"state": "progress", "date_start": fields.Datetime.now()})
+
+    def _action_cancel(self):
+        """
+        Overriden prevent destination move and picking cancellation
+        """
+        documents_by_production = {}
+        for production in self:
+            documents = defaultdict(list)
+            for move_raw_id in self.move_raw_ids.filtered(
+                lambda m: m.state not in ("done", "cancel")
+            ):
+                iterate_key = self._get_document_iterate_key(move_raw_id)
+                if iterate_key:
+                    document = self.env["stock.picking"]._log_activity_get_documents(
+                        {move_raw_id: (move_raw_id.product_uom_qty, 0)},
+                        iterate_key,
+                        "UP",
+                    )
+                    for key, value in document.items():
+                        documents[key] += [value]
+            if documents:
+                documents_by_production[production] = documents
+            # log an activity on Parent MO if child MO is cancelled.
+            finish_moves = production.move_finished_ids.filtered(
+                lambda x: x.state not in ("done", "cancel")
             )
+            if finish_moves:
+                production._log_downside_manufactured_quantity(
+                    {
+                        finish_move: (production.product_uom_qty, 0.0)
+                        for finish_move in finish_moves
+                    },
+                    cancel=True,
+                )
+
+        self.workorder_ids.filtered(
+            lambda x: x.state not in ["done", "cancel"]
+        ).action_cancel()
+
+        finish_moves = self.move_finished_ids.filtered(
+            lambda x: x.state not in ("done", "cancel")
+        )
+        raw_moves = self.move_raw_ids.filtered(
+            lambda x: x.state not in ("done", "cancel")
+        )
+        (finish_moves | raw_moves)._action_cancel()
+
+        for production in self:
+            production.state = "cancel"
 
     # TODO: this function changed to _update_raw_moves. Check the changes.
-    # def _update_raw_move(self, bom_line, line_data):
+    # def _update_raw_moves(self, factor):
     #     """Inherited to work with split procurements.
     #     If we found multiple moves that combined MTM and MTS,
     #     we need to change logic of this method.
@@ -188,7 +231,7 @@ class MrpProduction(models.Model):
     #     1) Eğer MTS hepsini karşılıyorsa MTO'yu iptal et, MTS'yi güncelle.
     #     2) Eğer MTS hepsini karşılamıyorsa, MTS'yi sabit tut, MTO'yu güncelle.
     #     """
-    #     new_qty = line_data["qty"]
+    #     # new_qty = line_data["qty"]
     #     self.ensure_one()
     #     move = self.move_raw_ids.filtered(
     #         lambda x: x.bom_line_id.id == bom_line.id
@@ -199,7 +242,7 @@ class MrpProduction(models.Model):
     #         mto_move = move.filtered(lambda x: x.procure_method == "make_to_order")
     #         # Handle the case where there is no split procurement but we have 2 moves
     #         if not mts_move or not mto_move:
-    #             return super(MrpProduction, self)._update_raw_move(bom_line, line_data) # noqa
+    #             return super()._update_raw_moves(factor)
     #         old_qty = sum(move.mapped("product_uom_qty"))
     #         if new_qty > old_qty:
     #             # Firstly, try to maximize MTS Move Qty
@@ -238,7 +281,7 @@ class MrpProduction(models.Model):
     #         # But we return it as the same anyway.
     #         return mts_move, old_qty, new_qty
     #     else:
-    #         return super(MrpProduction, self)._update_raw_move(bom_line, line_data)
+    #         return super()._update_raw_moves(factor)
 
     def _rearrange_procurement_priorities(self):
         """
@@ -252,11 +295,13 @@ class MrpProduction(models.Model):
         """
         ongoing_productions = self.search(
             [
-                ("state", "in", ("confirmed", "planned", "progress")),
+                ("state", "in", ("confirmed", "progress")),
                 ("procurement_group_id.sale_id", "=", False),
             ]
         )
-        for production in ongoing_productions:
+        for production in ongoing_productions.filtered(
+            lambda x: x.priority in ["0", "1"]  # not urgent and normal
+        ):
             stock_rules = self.env["stock.warehouse.orderpoint"].search(
                 [("product_id", "=", production.product_id.id)]
             )
@@ -267,3 +312,22 @@ class MrpProduction(models.Model):
                 if total_available_qty < (total_minimum_qty * 0.25):
                     production.priority = "2"
         return True
+
+    def action_assign_reserved(self):
+        for production in self:
+            production.move_raw_ids._action_assign_reserved()
+        return True
+
+    def _button_mark_done_sanity_checks(self):
+        res = super()._button_mark_done_sanity_checks()
+        for order in self:
+            if (
+                order.qty_producing
+                and (order.qty_producing - order.product_qty) / order.product_qty > 0.1
+                and not self.env.user.has_group("altinkaya_mrp.change_production_qty")
+            ):
+                raise ValidationError(
+                    _("You can only produce 10% more than the original quantity.")
+                )
+
+        return res
