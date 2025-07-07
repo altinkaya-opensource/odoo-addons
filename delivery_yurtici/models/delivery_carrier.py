@@ -296,9 +296,7 @@ class DeliveryCarrier(models.Model):
         Yurtiçi Kargo doesn't provide label for shipments.
         They are not implemented common label on their systems.
         """
-        raise NotImplementedError(
-            _("Yurtiçi API doesn't provide methods to print label.")
-        )
+        return True
 
     def yurtici_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""
