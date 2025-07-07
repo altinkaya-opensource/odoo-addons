@@ -75,6 +75,33 @@ class MrpBomTemplateLine(models.Model):
     attribute_factor = fields.Float(
         string="Factor", help="Factor to multiply by the numeric value of attribute"
     )
+    child_bom_id = fields.Many2one(
+        "mrp.bom",
+        "Sub BoM",
+        help="Dummy field to make this model compatible with BoM lines",
+    )
+
+    operation_id = fields.Many2one(
+        "mrp.routing.workcenter",
+        string="Operation",
+        help="Dummy field to make this model compatible with BoM lines",
+    )
+
+    product_id = fields.Many2one(
+        "product.product",
+        string="Product",
+        compute="_compute_product_id",
+        help="Dummy field to make this model compatible with BoM lines",
+    )
+
+    def _compute_product_id(self):
+        """
+        Dummy compute method to make this model compatible with BoM lines.
+        We assign this field in _match_possible_variant because we can't
+        have target product_id in the context of this function.
+        """
+        for line in self:
+            line.product_id = False
 
     @api.onchange("product_tmpl_id", "bom_product_id")
     def _product_onchange_domain(self):
@@ -175,4 +202,9 @@ class MrpBomTemplateLine(models.Model):
             matched_products = match_products(matched_products, additional_attr_vals)
 
         # return single product if possible
-        return fields.first(matched_products) or False
+        product = fields.first(matched_products)
+
+        # On the fly assign product to the line for further processing and
+        # Odoo MRP compatibility
+        self.product_id = product
+        return product or False
