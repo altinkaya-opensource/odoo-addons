@@ -11,7 +11,9 @@ class PurchaseOrderLine(models.Model):
     @api.depends("product_qty", "product_uom", "company_id", "order_id.pricelist_id")
     def _compute_price_unit_and_date_planned_and_name(self):
         res = super()._compute_price_unit_and_date_planned_and_name()
-        for line in self.filtered(lambda ln: ln.order_id.pricelist_id):
+        for line in self.filtered(
+            lambda ln: ln.order_id.pricelist_id and ln.product_id
+        ):
             po_line_uom = line.product_uom or line.product_id.uom_po_id
             price_unit = line.env["account.tax"]._fix_tax_included_price_company(
                 line.product_id.uom_id._compute_price(
