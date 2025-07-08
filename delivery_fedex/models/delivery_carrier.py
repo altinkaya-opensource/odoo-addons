@@ -13,10 +13,11 @@ from odoo.exceptions import UserError
 from .fedex_request import FedExRequest
 
 FEDEX_SERVICES = [
-    ("INTERNATIONAL_ECONOMY", "International Economy"),
-    ("INTERNATIONAL_FIRST", "International First"),
-    ("INTERNATIONAL_PRIORITY", "International Priority"),
-    ("INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
+    ("FEDEX_REGIONAL_ECONOMY", "Regional Economy"),
+    ("FEDEX_INTERNATIONAL_ECONOMY", "International Economy"),
+    ("FEDEX_INTERNATIONAL_FIRST", "International First"),
+    ("FEDEX_INTERNATIONAL_PRIORITY", "International Priority"),
+    ("FEDEX_INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
 ]
 
 FEDEX_PICKUP_TYPES = [
