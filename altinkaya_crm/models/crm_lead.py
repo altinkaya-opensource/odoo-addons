@@ -10,7 +10,7 @@ class CRMLead(models.Model):
         string="Gmail Thread ID",
         help="The ID of the Gmail thread associated with this lead.",
     )
-    
+
     def _get_mail_thread_data(self, request_list):
         res = super()._get_mail_thread_data(request_list)
         if "x_gmail_thread_id" not in res:

@@ -1,14 +1,14 @@
-from odoo import models, fields, api, _
+from odoo import fields, models
 
 
 class MailMessage(models.Model):
     _inherit = "mail.message"
-    
+
     gmail_unique_id = fields.Char(
         string="Gmail Unique ID",
         help="Unique ID for the message in Gmail, used to track messages.",
     )
-    
+
     def message_format(self, format_reply=True):
         """Preare values to be used by the chatter widget"""
         res = super().message_format(format_reply)

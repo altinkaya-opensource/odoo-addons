@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="altinkaya_crm.ChatterTopbarExtension"
-       t-inherit="mail.ChatterTopbar"
-       t-inherit-mode="extension"
-       owl="1">
-        <xpath expr="//div[hasclass('o_ChatterTopbar_rightSection') and not(@id='mobileChatterTopbar')]" position="inside">
-            <button type="button"
-            class="o_ChatterTopbar_button btn btn-light btn-primary"
-            style="margin-left: 8px;"
-            t-on-click="() => window.open('https://mail.google.com/mail/u/0/#all/' + chatterTopbar.chatter.GmailThreadID, '_blank')">
-                <i class="fa fa-envelope-o me-1" role="img" aria-label="Gmail"/>
-                Gmail <t t-esc="chatterTopbar.chatter.GmailThreadID"/>
+    <t
+    t-name="altinkaya_crm.ChatterTopbarExtension"
+    t-inherit="mail.ChatterTopbar"
+    t-inherit-mode="extension"
+    owl="1"
+  >
+        <xpath
+      expr="//div[hasclass('o_ChatterTopbar_rightSection') and not(@id='mobileChatterTopbar')]"
+      position="inside"
+    >
+            <button
+        type="button"
+        class="o_ChatterTopbar_button btn btn-light btn-primary"
+        style="margin-left: 8px;"
+        t-on-click="() => window.open('https://mail.google.com/mail/u/0/#all/' + chatterTopbar.chatter.GmailThreadID, '_blank')"
+      >
+                <i class="fa fa-envelope-o me-1" role="img" aria-label="Gmail" />
+                Gmail <t t-esc="chatterTopbar.chatter.GmailThreadID" />
             </button>
 <!-- <button
     type="button"
