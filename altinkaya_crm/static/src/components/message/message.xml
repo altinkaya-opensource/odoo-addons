@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t
+        t-name="altinkaya_crm.GmailButton"
+        t-inherit="mail.Message"
+        t-inherit-mode="extension"
+    >
+
+        <xpath expr="//div[hasclass('o_Message_header')]" position="inside">
+            <button
+            type="button"
+            class="o_ChatterTopbar_button btn btn-light btn-primary"
+            style="margin-left: 8px;"
+            t-if="messageView.message.hasGmailUniqueId()"
+            t-on-click="() => window.open('https://mail.google.com/mail/u/0/#all/' + messageView.message.getGmailUniqueId(), '_blank')"
+            >
+                <i class="fa fa-envelope-o me-1" role="img" aria-label="Gmail"/>
+                Gmail
+            </button>
+        </xpath>
+    </t>
+
+</templates>

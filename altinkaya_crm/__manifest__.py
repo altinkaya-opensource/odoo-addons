@@ -16,6 +16,7 @@
         "sale",
         "partner_industry_secondary",
         "crm_phonecall",
+        "mail",
     ],
     "data": [
         "views/crm_lead_view.xml",
@@ -25,4 +26,11 @@
         "views/crm_phonecall_view.xml",
         "views/res_partner_industry_view.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "altinkaya_crm/static/src/components/message/message.xml",
+            "altinkaya_crm/static/src/components/message/message.esm.js",
+            "altinkaya_crm/static/src/components/message/message.scss",
+        ],
+    },
 }
