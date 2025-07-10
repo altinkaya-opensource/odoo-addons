@@ -43,6 +43,3 @@ class ResUsersRole(models.Model):
         self.view_access = False
         for g in self.group_id:
             self.view_access |= g.view_access
-
-
-   
