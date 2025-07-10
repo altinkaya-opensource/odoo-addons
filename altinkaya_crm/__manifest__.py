@@ -30,7 +30,6 @@
         "web.assets_backend": [
             "altinkaya_crm/static/src/components/message/message.xml",
             "altinkaya_crm/static/src/components/message/message.esm.js",
-            "altinkaya_crm/static/src/components/message/message.scss",
         ],
     },
 }

@@ -32,7 +32,7 @@
                 <field name="linkedin" widget="url" />
             </xpath>
             <xpath expr="//field[@name='message_bounce']" position="after">
-                <field name="x_gmail_thread_id" readonly="1" />
+                <field name="gmail_thread_id" readonly="1" />
             </xpath>
         </field>
     </record>

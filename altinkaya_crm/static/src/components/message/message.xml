@@ -13,7 +13,7 @@
         class="btn btn-light btn-sm"
         style="margin-left: 8px;"
         t-if="messageView.message.hasGmailUniqueId()"
-        t-on-click="() => window.open('https://mail.google.com/mail/u/0/#all/' + messageView.message.getGmailUniqueId(), '_blank')"
+        t-on-click="() => window.open('https://mail.google.com/mail/u/0/#all/' + messageView.message.getGmailThreadId() + '/' + messageView.message.getGmailUniqueId() ,'_blank')"
       >
                 <i class="fa fa-envelope me-1" role="img" aria-label="Gmail" />
             </button>

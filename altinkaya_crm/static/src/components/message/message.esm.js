@@ -10,6 +10,9 @@ registerPatch({
             if ("gmail_unique_id" in data) {
                 data2.gmail_unique_id = data.gmail_unique_id;
             }
+            if ("gmail_thread_id" in data) {
+                data2.gmail_thread_id = data.gmail_thread_id;
+            }
             return data2;
         },
     },
@@ -24,8 +27,20 @@ registerPatch({
             }
             return this.__values.get("gmail_unique_id");
         },
+
+        hasGmailThreadId() {
+            return _.some(this.__values.get("gmail_thread_id"));
+        },
+
+        getGmailThreadId() {
+            if (!this.hasGmailThreadId()) {
+                return false;
+            }
+            return this.__values.get("gmail_thread_id");
+        },
     },
     fields: {
         gmail_unique_id: attr(),
+        gmail_thread_id: attr(),
     },
 });
