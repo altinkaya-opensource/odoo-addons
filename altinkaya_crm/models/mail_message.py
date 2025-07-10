@@ -1,3 +1,6 @@
+# Copyright 2025 Ismail Çağan Yılmaz <github.com/milleniumkid>
+# License AGPL-3.0 or later <http://www.gnu.org/licenses/agpl.html>.
+
 from odoo import fields, models
 
 
@@ -8,24 +11,24 @@ class MailMessage(models.Model):
         string="Gmail Unique ID",
         help="Unique ID for the message in Gmail, used to track messages.",
     )
-    
+
     lead_id = fields.Many2one(
-        'crm.lead',
-        compute='_compute_lead_id',
+        "crm.lead",
+        compute="_compute_lead_id",
         store=False,
     )
-    
+
     gmail_thread_id = fields.Char(
-        compute='_compute_gmail_thread_id',
+        compute="_compute_gmail_thread_id",
         store=False,
-        string='Gmail Thread ID',
+        string="Gmail Thread ID",
     )
-    
+
     def _compute_lead_id(self):
         for msg in self:
             msg.lead_id = False
-            if msg.model == 'crm.lead' and msg.res_id:
-                msg.lead_id = self.env['crm.lead'].browse(msg.res_id)
+            if msg.model == "crm.lead" and msg.res_id:
+                msg.lead_id = self.env["crm.lead"].browse(msg.res_id)
 
     def _compute_gmail_thread_id(self):
         for msg in self:
