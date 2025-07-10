@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_res_users_role_security_form">
+        <field name="name">res.users.role.security</field>
+        <field name="model">res.users.role</field>
+        <field name="inherit_id" ref="base_user_role.view_res_users_role_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="User Access Menu">
+                    <!--  <label for="menu_access"/> -->
+                    <field name="menu_access">
+                        <tree>
+                            <field name="groups_id" wizard="many2many_tags" />
+                            <field name="name" />
+                        </tree>
+
+                    </field>
+
+                </page>
+                <page string="User Access Views">
+                    <field name="view_access" edit="false" create="false">
+                        <tree>
+
+                            <field name="groups_id" wizard="many2many_tags" />
+                            <field name="name" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="User Access Model">
+                    <!-- <label for="model_access"/> -->
+                    <field name="model_access">
+                        <tree edit="false" create="false">
+                            <field name="group_id" />
+                            <field name="name" />
+                            <field name="model_id" />
+                            <field name="perm_read" />
+                            <field name="perm_write" />
+                            <field name="perm_create" />
+                            <field name="perm_unlink" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="User Rules">
+                    <!-- <label for="rule_groups"/> -->
+                    <field name="rule_groups">
+                        <tree edit="false" create="false">
+                            <field name="groups" wizard="many2many_tags" />
+                            <field name="name" />
+                            <field name="model_id" />
+                            <field name="domain_force" />
+                            <field name="perm_read" />
+                            <field name="perm_write" />
+                            <field name="perm_create" />
+                            <field name="perm_unlink" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="User Groups">
+                    <!-- <label for="rule_groups"/> -->
+                    <field name="group_id">
+                        <tree edit="false" create="false">
+                            <field name="category_id" />
+                            <field name="display_name" />
+
+                        </tree>
+                    </field>
+                </page>
+
+            </xpath>
+
+        </field>
+
+    </record>
+
+</odoo>
