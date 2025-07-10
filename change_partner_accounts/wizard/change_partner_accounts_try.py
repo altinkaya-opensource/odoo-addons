@@ -15,9 +15,7 @@ class ChangePartnerAccountsTRY(models.TransientModel):
         active_ids = context.get("active_ids", []) or []
         partners = self.env["res.partner"].browse(active_ids)
         errors = []
-        for record in self.web_progress_iter(
-            partners, msg="Müşterilerin hesapları değiştiriliyor..."
-        ):
+        for record in partners:
             try:
                 record.change_accounts_to_try()
                 record._compute_partner_currency()

@@ -19,9 +19,7 @@ class CreateCurrencyDifferenceInvoices(models.TransientModel):
         active_ids = context.get("active_ids", []) or []
         partners = self.env["res.partner"].browse(active_ids)
         invoices = self.env["account.invoice"]
-        for record in self.web_progress_iter(
-            partners, msg="Müşterilerin kur farkı faturaları oluşturuluyor..."
-        ):
+        for record in partners:
             inv_id = record.calc_difference_invoice(
                 self.invoice_date, self.payment_term_id, self.billing_point_id
             )
