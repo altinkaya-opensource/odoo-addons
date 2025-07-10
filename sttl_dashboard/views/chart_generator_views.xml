@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_chart_generator_form" model="ir.ui.view">
+        <field name="name">chart.generator.form</field>
+        <field name="model">chart.generator</field>
+        <field name="arch" type="xml">
+            <form string="Chart Generator">
+                <sheet>
+                    <group>
+                        <field name="dashboard_name" />
+                        <field name="dashboard_chart_type" />
+                        <field name="dashboard_model_id" />
+                        <field name="dashboard_field_id" options="{'no_open': True}" />
+                        <field name="dashboard_aggregate" />
+                        <field name="dashboard_sequence_number" />
+                        <field
+              name="dashboard_field_aggregate"
+              attrs="{'invisible': ['|', ('dashboard_aggregate', '=', 'count'),('dashboard_aggregate', '=', False)]}"
+            />
+                        <field name="dashboard_limit_value" />
+                        <field name="dashboard_domain" />
+                        <field name="dashboard_sort_by" />
+                    </group>
+                    <footer>
+                        <button
+              string="Generate Chart"
+              type="object"
+              name="action_generate_chart"
+              class="oe_highlight"
+            />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_chart_menu_generator" model="ir.ui.view">
+        <field name="name">chart.menu.generator</field>
+        <field name="model">chart.menu.generator</field>
+        <field name="arch" type="xml">
+            <form string="Menu Generator">
+                <sheet>
+                    <group>
+<!--                        attrs="{'readonly': [(True, '=', True)]}"-->
+                        <field
+              name="menu_name"
+              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+            />/>
+                        <field
+              name="dashboard_top_menu_id"
+              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+            />
+                        <field
+              name="dashboard_group_access"
+              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+            />
+                        <field
+              name="dashboard_column_type"
+              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+            />
+                        <field
+              name="dashboard_height_selection"
+              attrs="{'readonly': [('dashboard_check_box', '=', True)],'invisible':[('dashboard_column_type','!=',False)]}"
+            />
+                        <field name="dashboard_check_box" invisible="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_chart_list_generator" model="ir.ui.view">
+        <field name="name">chart.menu.generator</field>
+        <field name="model">chart.menu.generator</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="menu_name" />
+                <field name="dashboard_group_access" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_chart_generator" model="ir.actions.act_window">
+        <field name="name">Chart Generator</field>
+        <field name="res_model">chart.generator</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_chart_generator_form" />
+    </record>
+
+<!--    <menuitem id="menu_chart_generator" name="Chart Generator" parent="user_dashboard_view" action="action_chart_generator"/>-->
+</odoo>

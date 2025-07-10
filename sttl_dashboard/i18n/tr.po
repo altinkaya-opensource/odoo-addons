@@ -1,0 +1,501 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sttl_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-09 13:39+0000\n"
+"PO-Revision-Date: 2025-07-09 13:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_chart_menu_generator
+msgid "/&gt;"
+msgstr "/&gt;"
+
+#. module: sttl_dashboard
+#: model:ir.actions.act_window,name:sttl_dashboard.dashboard_menu_item_generate
+msgid "Activities"
+msgstr "Faaliyetler"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_aggregate
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_aggregate
+msgid "Aggregate"
+msgstr "Toplama"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_field_aggregate
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_field_aggregate
+msgid "Aggregate field"
+msgstr "Toplanılan Alan"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_sort_by__asc
+msgid "Ascending"
+msgstr "Yükselen"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_aggregate__avg
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__kpi_card_generator__kpi_aggregate__avg
+msgid "Avg"
+msgstr "Ort."
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__bar
+msgid "Bar"
+msgstr "Bar"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__bubble
+msgid "Bubble"
+msgstr "Bubble"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_card_name
+msgid "Card Name"
+msgstr "Kart Adı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__changeset_change_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__changeset_change_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__changeset_change_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__changeset_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__changeset_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__changeset_ids
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__changeset_ids
+msgid "Changesets"
+msgstr "Changesets"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_chart_type
+msgid "Chart"
+msgstr "Grafik"
+
+#. module: sttl_dashboard
+#: model:ir.actions.act_window,name:sttl_dashboard.action_chart_generator
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_chart_generator_form
+msgid "Chart Generator"
+msgstr "Grafik Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_name
+msgid "Chart Name"
+msgstr "Grafik Adı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_sort_by
+msgid "Chart Sort By"
+msgstr "Grafik Sıralama Ölçütü"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_check_box
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/user_dashboard.xml:0
+#, python-format
+msgid "Close Menu"
+msgstr "Yakın Menü"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_color
+msgid "Color"
+msgstr "Renk"
+
+#. module: sttl_dashboard
+#: model:ir.ui.menu,name:sttl_dashboard.menu_generator
+msgid "Configuration"
+msgstr "Konfigürasyon"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_aggregate__count
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__kpi_card_generator__kpi_aggregate__count
+msgid "Count"
+msgstr "Adet"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__count_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__count_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__count_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__count_pending_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__count_pending_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__count_pending_changesets
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/user_dashboard.xml:0
+#, python-format
+msgid "Create Chart"
+msgstr "Grafik Oluştur"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/user_dashboard.xml:0
+#, python-format
+msgid "Create KPI Card"
+msgstr "KPI Kartı Oluşturun"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__create_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__create_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__create_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__create_uid
+msgid "Created by"
+msgstr "Tarafından oluşturuldu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__create_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__create_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__create_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__create_date
+msgid "Created on"
+msgstr "Üzerinde oluşturuldu"
+
+#. module: sttl_dashboard
+#: model:ir.ui.menu,name:sttl_dashboard.user_dashboard_view
+msgid "Dashboard"
+msgstr "Veri Paneli"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_client_action_id
+msgid "Dashboard Client Action"
+msgstr "Veri Paneli İşlemi"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_column_type
+msgid "Dashboard Column Type"
+msgstr "Veri Paneli Sütun Türü"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_menu_id
+msgid "Dashboard Menu"
+msgstr "Veri Paneli Menüsü"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/kpi_card/kpi_card.xml:0
+#, python-format
+msgid "Delete"
+msgstr "Sil"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_sort_by__desc
+msgid "Descending"
+msgstr "Azalan"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__display_name
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__display_name
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__display_name
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__display_name
+msgid "Display Name"
+msgstr "Ekran Adı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_domain
+msgid "Domain"
+msgstr "Etki Alanı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__doughnut
+msgid "Doughnut"
+msgstr "Donut"
+
+#. module: sttl_dashboard
+#: model:ir.model,name:sttl_dashboard.model_chart_generator
+msgid "Dynamic Chart Generator"
+msgstr "Dinamik Grafik Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model,name:sttl_dashboard.model_kpi_card_generator
+msgid "Dynamic Kpi-Card Generator"
+msgstr "Dinamik Kpi-Kart Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model,name:sttl_dashboard.model_chart_menu_generator
+msgid "Dynamic Menu for Charts"
+msgstr "Grafikler için Dinamik Menü"
+
+#. module: sttl_dashboard
+#: model:ir.model,name:sttl_dashboard.model_table_generator
+msgid "Dynamic Table Generator"
+msgstr "Dinamik Tablo Oluşturucu"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/kpi_card/kpi_card.xml:0
+#, python-format
+msgid "Edit"
+msgstr "Düzenle"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__table_field_id
+msgid "Fields of table"
+msgstr "Tablo alanları"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__kpi_card_generator__kpi_size__fit
+msgid "Fit"
+msgstr ""
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_chart_generator_form
+msgid "Generate Chart"
+msgstr "Grafik Oluştur"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_kpi_card_generator_form
+msgid "Generate Kpi"
+msgstr "Kpi Oluştur"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_table_generator_form
+msgid "Generate Table"
+msgstr "Tablo Oluştur"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_group_access
+msgid "Group Access"
+msgstr "Grup Erişimi"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_field_id
+msgid "Group By Field"
+msgstr "Alana Göre Gruplandırma"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__kpi_card_generator__kpi_size__half
+msgid "Half"
+msgstr "Yarım"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_height_selection
+msgid "Height"
+msgstr "Yükseklik"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_kpi_card_generator_form
+msgid "Kpi Card Generator"
+msgstr "Kpi Kart Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator____last_update
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator____last_update
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator____last_update
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator____last_update
+msgid "Last Modified on"
+msgstr "Son Değişiklik Tarihi"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__write_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__write_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__write_uid
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleme"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__write_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__write_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__write_date
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme Tarihi"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_limit_value
+msgid "Limit"
+msgstr "Limit"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__line
+msgid "Line"
+msgstr "Çizgi"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_menu_generator__dashboard_height_selection__medium
+msgid "Medium"
+msgstr "Orta"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_chart_list_generator
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_chart_menu_generator
+msgid "Menu Generator"
+msgstr "Menü Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__menu_name
+msgid "Menu Name"
+msgstr "Menü Adı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_model_id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_model_id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__table_model_id
+msgid "Model"
+msgstr "Model"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/user_dashboard.xml:0
+#, python-format
+msgid "Open Menu"
+msgstr "Menüyü Aç"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__pie
+msgid "Pie"
+msgstr "Pasta"
+
+#. module: sttl_dashboard
+#. odoo-javascript
+#: code:addons/sttl_dashboard/static/src/components/kpi_card/kpi_card.xml:0
+#, python-format
+msgid "Redirect"
+msgstr "Yönlendirme"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__dashboard_sequence_number
+msgid "Sequence"
+msgstr "Sıra"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_sequence_number
+msgid "Sequence of chart"
+msgstr "Grafik sırası"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__dashboard_top_menu_id
+msgid "Show Under Menu"
+msgstr "Menü Altında Göster"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_description
+msgid "Small descrption"
+msgstr "Küçük açıklama"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__smart_search
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__smart_search
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__smart_search
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_aggregate__sum
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__kpi_card_generator__kpi_aggregate__sum
+msgid "Sum"
+msgstr "Toplam"
+
+#. module: sttl_dashboard
+#: model_terms:ir.ui.view,arch_db:sttl_dashboard.view_table_generator_form
+msgid "Table Generator"
+msgstr "Tablo Oluşturucu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__table_name
+msgid "Table Name"
+msgstr "Tablo Adı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_generator__count_pending_changeset_changes
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_menu_generator__count_pending_changeset_changes
+#: model:ir.model.fields,help:sttl_dashboard.field_kpi_card_generator__count_pending_changeset_changes
+#: model:ir.model.fields,help:sttl_dashboard.field_table_generator__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_generator__count_pending_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_menu_generator__count_pending_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_kpi_card_generator__count_pending_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_table_generator__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_generator__count_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_chart_menu_generator__count_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_kpi_card_generator__count_changesets
+#: model:ir.model.fields,help:sttl_dashboard.field_table_generator__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_menu_generator__dashboard_column_type__three
+msgid "Three-Column"
+msgstr "Üç Sütunlu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_title_description
+msgid "Title description"
+msgstr "Başlık açıklaması"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__dashboard_unique_id
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_unique_id
+msgid "Unique Id"
+msgstr "Benzersiz Kimlik"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_generator__user_can_see_changeset
+#: model:ir.model.fields,field_description:sttl_dashboard.field_chart_menu_generator__user_can_see_changeset
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__user_can_see_changeset
+#: model:ir.model.fields,field_description:sttl_dashboard.field_table_generator__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: sttl_dashboard
+#: model:ir.actions.client,name:sttl_dashboard.action_owl_user_dashboard
+msgid "User Dashboard"
+msgstr "Kullanıcı Veri Paneli"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields,field_description:sttl_dashboard.field_kpi_card_generator__kpi_size
+msgid "kpi size"
+msgstr "kpi boyutu"
+
+#. module: sttl_dashboard
+#: model:ir.model.fields.selection,name:sttl_dashboard.selection__chart_generator__dashboard_chart_type__polararea
+msgid "polar area"
+msgstr "polar alan"

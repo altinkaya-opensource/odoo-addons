@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_table_generator_form" model="ir.ui.view">
+        <field name="name">table.generator.form</field>
+        <field name="model">table.generator</field>
+        <field name="arch" type="xml">
+            <form string="Table Generator">
+                <sheet>
+                    <group>
+                        <field name="table_name" />
+                        <field name="table_model_id" />
+                        <field name="table_field_id" />
+                    </group>
+                    <footer>
+                        <button
+              string="Generate Table"
+              type="object"
+              name="action_generate_table"
+              class="oe_highlight"
+            />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

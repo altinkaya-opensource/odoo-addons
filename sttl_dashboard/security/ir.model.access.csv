@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sttl_dashboard.access_chart_generator,access_chart_generator,sttl_dashboard.model_chart_generator,,1,1,1,1
+
+sttl_dashboard.access_table_generator,access_table_generator,sttl_dashboard.model_table_generator,,1,1,1,1
+sttl_dashboard.access_chart_menu_generator,access_chart_menu_generator,sttl_dashboard.model_chart_menu_generator,,1,1,1,1
+access_ir_model_read,access_ir_model_read,base.model_ir_model,,1,0,0,0
+access_ir_model_fields,access_ir_model_fields,base.model_ir_model_fields,,1,0,0,0
+sttl_dashboard.access_kpi_card_generator,access_kpi_card_generator,sttl_dashboard.model_kpi_card_generator,,1,1,1,1

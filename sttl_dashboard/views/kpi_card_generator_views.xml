@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_kpi_card_generator_form" model="ir.ui.view">
+        <field name="name">kpi.card.generator.form</field>
+        <field name="model">kpi.card.generator</field>
+        <field name="arch" type="xml">
+        <form string="Kpi Card Generator">
+            <sheet>
+                <group>
+                        <field name="kpi_card_name" />
+                        <field name="kpi_color" widget="color" />
+                        <field name="kpi_title_description" />
+                        <field name="kpi_description" />
+                        <field name="kpi_model_id" />
+                        <field name="kpi_aggregate" />
+                        <field
+              name="kpi_field_aggregate"
+              attrs="{'invisible': ['|', ('kpi_aggregate', '=', 'count'),('kpi_aggregate', '=', False)]}"
+            />
+                        <field name="kpi_size" />
+                        <field name="dashboard_sequence_number" />
+                </group>
+                <footer>
+                        <button
+              string="Generate Kpi"
+              type="object"
+              name="action_generate_kpi"
+              class="oe_highlight"
+            />
+                </footer>
+            </sheet>
+        </form>
+        </field>
+    </record>
+
+
+</odoo>

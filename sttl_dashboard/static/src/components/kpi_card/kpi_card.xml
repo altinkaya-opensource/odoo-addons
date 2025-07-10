@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.KpiCard" owl="1">
+        <div
+      t-attf-style="background-color: #{props.color}"
+      t-attf-class="#{props.size == 'fit' ? 'heightfull' : props.size == 'half'?'heighthalf':''} card  kpi-card shadow-sm rounded"
+    >
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0" style="font-size: 1.2rem; font-weight: 600;">
+                    <t t-esc="props.title" />
+                </h5>
+                <div class="icon-buttons">
+                    <t t-if="props.isadmin">
+                        <button
+              t-on-click="editKpi"
+              class="btn btn-sm text-muted"
+              title="Edit"
+            >
+                            <span class="fa fa-pencil" />
+                        </button>
+                        <button
+              t-on-click="deleteKpi"
+              class="btn btn-sm text-muted"
+              title="Delete"
+            >
+                            <i class="fa fa-trash" />
+                        </button>
+                    </t>
+                    <button
+            t-on-click="redirectToModel"
+            class="btn btn-sm text-muted  cursor-pointer"
+            title="Redirect"
+          >
+                         <span class="fa fa-arrow-right text-black" />
+                    </button>
+                </div>
+            </div>
+            <div
+        t-attf-class="#{props.size == 'fit' ? 'center-aligned' : props.size == 'half'?'center-aligned':''} card-body"
+      >
+                <p
+          class="card-text text-muted"
+          t-attf-class="#{props.size == 'fit' ? 'fullsize-p1' : props.size == 'half'?'halfsize-p1':'normal-p1'}"
+        >
+                    <t t-esc="props.description" />
+                </p>
+                <h4
+          t-attf-class="#{props.size == 'fit' ? 'fullsize-h4' : props.size == 'half'?'halfsize-h4':'normal-h4'} kpi-value"
+          style="color: #007bff;"
+        >
+                    <t t-if="props.aggregate">
+                        <t t-esc="props.aggregate" />
+                    </t>
+                    <t t-else="">
+                        <t t-esc="'N.A'" />
+                    </t>
+                </h4>
+                <p
+          class="kpi-unit text-muted"
+          style="font-size: 1rem; font-weight: 500;"
+        >
+                    <t t-esc="props.titledescription" />
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>

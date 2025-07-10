@@ -1,0 +1,33 @@
+{
+    "name": "Dashboard Samurai",
+    "version": "16.0.1.0.0",
+    "summary": "Dashboard Samurai",
+    "category": "Dashboard",
+    "depends": ["base", "web", "base_setup", "bus", "base_geolocalize"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/dashboard_view.xml",
+        "views/chart_generator_views.xml",
+        "views/kpi_card_generator_views.xml",
+        "views/table_generator_view.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "assets": {
+        "web.assets_backend": [
+            "sttl_dashboard/static/src/css/dashboard.css",
+            "sttl_dashboard/static/src/components/kpi_card/kpi_card.js",
+            "sttl_dashboard/static/src/components/arrow_button/arrow_button.js",
+            "sttl_dashboard/static/src/components/arrow_button/arrow_button.xml",
+            "sttl_dashboard/static/src/components/chart_renderer/chart_renderer.js",
+            "sttl_dashboard/static/src/components/chart_renderer/chart_renderer.xml",
+            "sttl_dashboard/static/src/components/kpi_card/kpi_card.xml",
+            "sttl_dashboard/static/src/components/user_dashboard.js",
+            "sttl_dashboard/static/src/components/user_dashboard.xml",
+        ],
+    },
+    "author": "Silver Touch Technologies Limited, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "images": ["static/description/banner.png"],
+    "license": "LGPL-3",
+}

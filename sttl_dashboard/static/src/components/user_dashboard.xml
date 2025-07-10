@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+ <t t-name="owl.UserDashboard" owl="1">
+   <div style="height:calc(100vh - 60px);overflow:auto">
+      <t t-if="isadmin">
+       <button
+          style="margin-top: 2px; margin-left: 5px"
+          t-on-click="toggleToolbar"
+          class="btn btn-primary"
+        >
+        <t t-if="showToolbar.visible">
+            Close Menu
+        </t>
+        <t t-else="">
+            Open Menu
+        </t>
+       </button>
+      </t>
+       <t t-if="showToolbar.visible">
+         <div style="margin-top: 10px;display:flex;flex-direction:column;width:10vw">
+            <button class="btn btn-secondary" t-on-click="openChartGeneratorForm">
+                Create Chart
+            </button>
+<!--            <button class="btn btn-secondary" t-on-click="openTableGeneratorForm">-->
+<!--                Create Table-->
+<!--            </button>-->
+            <button
+            class="btn btn-secondary"
+            t-on-click="createKpiCard"
+            style="margin-left: 10px;"
+          >
+                Create KPI Card
+            </button>
+         </div>
+       </t>
+
+
+
+       <div class="container">
+         <div
+          class="row"
+          t-attf-style="width:#{props.action.params.Size == 'medium'? '80%':'100%'}"
+        >
+          <t t-foreach="charts_data['data']" t-as="chart" t-key="chart.count">
+            <t t-if="chart.type=='chart'">
+                <div
+                class="col-12  m-0 p-0 mt-4"
+                t-attf-class="#{props.action.params.column_type == 'three' ? 'col-md-4' : props.action.params.column_type == 'four' ? 'col-md-3' : 'col-md-5'}"
+              >
+                    <div
+                  class="shadow-sm border m-2 p-4 bg-white"
+                  style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;"
+                >
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h3 class="text-primary fw-bold">
+                                <t t-esc="chart.chart_name" />
+                            </h3>
+                            <ArrowButton chartdata="chart" />
+                        </div>
+                        <ChartRenderer
+                    isadmin="isadmin"
+                    onDelete.bind="onDeleteChart"
+                    type="chart.chart_type"
+                    title="chart.chart_name"
+                    config="chart"
+                  />
+                    </div>
+                </div>
+            </t>
+            <t t-else="">
+                <div
+                class="col-12 m-0 pt-0 mt-5 mt-md-9"
+                t-attf-class="#{props.action.params.column_type == 'three' ? 'col-md-4' : props.action.params.column_type == 'four' ? 'col-md-3' : 'col-md-5'}"
+              >
+                    <KpiCard
+                  color="chart.kpi_color"
+                  isadmin="isadmin"
+                  count="chart.count"
+                  type="chart.type"
+                  description="chart.description"
+                  onDelete.bind="onDeleteChart"
+                  titledescription="chart.title_description"
+                  size="chart.size"
+                  model="chart.model"
+                  title="chart.name"
+                  aggregate="chart.aggregate"
+                  id="chart.id"
+                />
+                </div>
+            </t>
+          </t>
+         </div>
+       </div>
+<!--       <div class="container" style="margin-top:22px">-->
+<!--              <div style="display:flex;flex-wrap: wrap; gap: 2rem;padding:10px">-->
+<!--                <t t-foreach="kpi_cards['data']" t-as="card" t-key="card.id">-->
+<!--                    <KpiCard title="card.name" aggregate="card.aggregate"/>-->
+<!--                </t>-->
+<!--              </div>-->
+<!--       </div>-->
+   </div>
+  </t>
+</templates>

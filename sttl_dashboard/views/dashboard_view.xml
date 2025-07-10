@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <record id="action_owl_user_dashboard" model="ir.actions.client">
+            <field name="name">User Dashboard</field>
+            <field name="tag">owl.user_dashboard</field>
+        </record>
+        <record id="dashboard_menu_item_generate" model="ir.actions.act_window">
+           <field name="name">Activities</field>
+           <field name="res_model">chart.menu.generator</field>
+           <field name="view_mode">tree,form</field>
+       </record>
+
+        <menuitem
+    name="Dashboard"
+    id="user_dashboard_view"
+    sequence="10"
+    action="action_owl_user_dashboard"
+    web_icon="sttl_dashboard,static/src/img/menu_icon.png"
+  >
+            <menuitem
+      groups="base.group_erp_manager"
+      name="Configuration"
+      id="menu_generator"
+      sequence="100"
+      action="dashboard_menu_item_generate"
+    />
+        </menuitem>
+</odoo>

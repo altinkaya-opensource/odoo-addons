@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="owl.ChartRenderer" owl="1">
+        <canvas t-ref="chart" style="width: 100%;" />
+        <div class="d-flex justify-content-start mt-3">
+           <t t-if="props.isadmin">
+            <button class="btn btn-danger me-2" t-on-click="deleteItem">
+                <span class="fa fa-trash" />
+            </button>
+            <button t-on-click="editChart" class="btn btn-secondary">
+                <span class="fa fa-pencil" />
+            </button>
+            </t>
+
+        </div>
+    </t>
+</templates>
