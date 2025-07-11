@@ -64,6 +64,18 @@
             <xpath expr="//field[@name='shipping_weight']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
+
+        </field>
+    </record>
+
+    <record id="view_stock_picking_form_inherit_delivery_integration" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <!-- Remove Send To Shipper Button -->
+            <!-- Because alternative is used in account_move -->
+            <xpath expr="//button[@name='send_to_shipper']" position="replace"></xpath>
         </field>
     </record>
 </odoo>

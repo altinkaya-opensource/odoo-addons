@@ -56,6 +56,10 @@
                 name="stock_height"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
+              <field
+                name="fedex_commercial_invoice"
+                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
+              />
             </group>
           </group>
         </page>

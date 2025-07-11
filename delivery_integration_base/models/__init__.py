@@ -6,3 +6,4 @@ from . import delivery_price_rule
 from . import delivery_region
 from . import sale_order
 from . import sale_order_line
+from . import account_move
