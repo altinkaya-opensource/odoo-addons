@@ -18,7 +18,7 @@ FEDEX_API_URL = {
 FEDEX_SERVICES_BASE_URL = {
     "upload_documents": {
         "sandbox": "https://documentapitest.prod.fedex.com/sandbox",
-        "prod": "https://documentapitest.prod.fedex.com",
+        "prod": "https://documentapi.prod.fedex.com",
     }
 }
 
