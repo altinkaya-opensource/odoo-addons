@@ -96,9 +96,15 @@ class DeliveryCarrier(models.Model):
         self.ensure_one()
         # Calculate the number of packages only once
         num_packages = max(picking.carrier_package_count, 1)
+        deci = picking.picking_total_weight = 1.0
         # Use list comprehension to build the piece_details list
         piece_details = [
-            {"BarcodeNumber": self._get_ref_number()} for _ in range(num_packages)
+            {
+                "BarcodeNumber": self._get_ref_number(),
+                "VolumetricWeight": deci / num_packages,
+                "Weight": deci / num_packages,
+            }
+            for _ in range(num_packages)
         ]
 
         return {"PieceDetail": piece_details}
@@ -135,11 +141,11 @@ class DeliveryCarrier(models.Model):
                 ),  # 1 = Sender, 2 = Receiver pays
                 "IsWorldWide": 0,
                 "VolumetricWeight": max(picking.picking_total_weight, 1),
-                # "PieceCount": max(picking.carrier_package_count, 1),
+                "PieceCount": max(picking.carrier_package_count, 1),
             }
         )
-        # piece_details = self._prepare_aras_piece_details(picking)
-        # vals.update({"PieceDetails": piece_details})
+        piece_details = self._prepare_aras_piece_details(picking)
+        vals.update({"PieceDetails": piece_details})
         return vals
 
     def aras_send_shipping(self, pickings):
@@ -298,7 +304,18 @@ class DeliveryCarrier(models.Model):
         Aras Kargo doesn't provide label for shipments.
         They are not implemented common label on their systems.
         """
-        return True
+        aras_request = ArasRequest(**self._get_aras_credentials())
+        zebra_zpl = aras_request._get_barcode(picking.carrier_tracking_ref)
+
+        if zebra_zpl is None:
+            raise ValidationError(
+                _(
+                    "Aras Kargo doesn't provide label for shipments. "
+                    "Please contact with Aras Kargo support."
+                )
+            )
+
+        return zebra_zpl.string[0]
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""
