@@ -19,15 +19,11 @@ class AccountMove(models.Model):
 
             try:
                 for picking in move.picking_ids:
-                    picking.with_context(
-                        send_from_account_move=True
-                    ).send_to_shipper()
+                    picking.with_context(send_from_account_move=True).send_to_shipper()
                     picking.shipping_number = picking.carrier_tracking_ref
                     move.delivery_ref_no = picking.carrier_tracking_ref
             except Exception as e:
-                raise UserError(
-                    _("Error sending shipment from invoice: %s", e)
-                ) from e
+                raise UserError(_("Error sending shipment from invoice: %s", e)) from e
 
         return True
 
@@ -36,8 +32,12 @@ class AccountMove(models.Model):
         Override the action_post method to ensure shipments are sent.
         """
         res = super().action_post()
-        for move in self.filtered(lambda m:m.state == 'posted'):
-            move.send_to_shipper()
+        for move in self.filtered(lambda m: m.state == "posted"):
+            if move.carrier_id and move.carrier_id.delivery_type not in [
+                "fixed",
+                "base_on_rule",
+            ]:
+                move.send_to_shipper()
         return res
 
     def button_draft(self):
@@ -47,6 +47,11 @@ class AccountMove(models.Model):
         res = super().button_draft()
         for move in self:
             for picking in move.picking_ids:
+                if not move.carrier_id or move.carrier_id.delivery_type in [
+                    "fixed",
+                    "base_on_rule",
+                ]:
+                    continue
                 if picking.delivery_state != "shipping_recorded_in_carrier":
                     continue
                 picking.cancel_shipment()
