@@ -37,8 +37,7 @@ class AccountMove(models.Model):
         """
         res = super().action_post()
         for move in self.filtered(lambda m:m.state == 'posted'):
-            if move.picking_ids:
-                move.send_to_shipper()
+            move.send_to_shipper()
         return res
 
     def button_draft(self):
