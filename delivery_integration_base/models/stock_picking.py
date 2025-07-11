@@ -73,6 +73,14 @@ class StockPicking(models.Model):
         readonly=True,
     )
 
+    def send_to_shipper(self):
+        """ Only send the picking to the shipper if the send
+        request is from the account move.
+        """
+        if not self._context.get("send_from_account_move", False):
+            return False
+        return super().send_to_shipper()
+
     def _compute_shipping_cost_try(self):
         for picking in self:
             try_currency = picking.shipping_currency_id._convert(

@@ -9,9 +9,17 @@ import requests
 from odoo import _
 from odoo.exceptions import UserError
 
+# TODO: Find better way to handle URLs or use better names
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
     "prod": "https://apis.fedex.com",
+}
+
+FEDEX_SERVICES_BASE_URL = {
+    "upload_documents": {
+        "sandbox": "https://documentapitest.prod.fedex.com/sandbox",
+        "prod": "https://documentapitest.prod.fedex.com",
+    }
 }
 
 FEDEX_SERVICES_URL = {
@@ -20,6 +28,9 @@ FEDEX_SERVICES_URL = {
     "shipment": "ship/v1/shipments",
     "cancel": "ship/v1/shipments/cancel",
     "tracking": "track/v1/trackingnumbers",
+    "upload_documents": "documents/v1/etds/encodedmultiupload",
+    "pickup_availability": "pickup/v1/pickups/availabilities",
+    "pickup_request": "pickup/v1/pickups",
 }
 
 REQUEST_TIMEOUT = 10  # seconds, used in requests
@@ -40,7 +51,11 @@ class FedExRequest:
         self.access_token = self._get_oauth_key()
 
     def _get_service_url(self, service):
-        return FEDEX_API_URL[self.api_env] + "/" + FEDEX_SERVICES_URL[service]
+        return (
+            (FEDEX_SERVICES_BASE_URL.get(service) or FEDEX_API_URL)[self.api_env]
+            + "/"
+            + FEDEX_SERVICES_URL[service]
+        )
 
     def _check_for_errors(self, response):
         errors = None
@@ -155,4 +170,22 @@ class FedExRequest:
 
     def tracking_state_update(self, data):
         res = self._send_api_request("POST", "tracking", data=data)
+        return res.json()
+
+    def upload_documents(self, data):
+        res = self._send_api_request("POST", "upload_documents", data=data)
+        return res.json()
+
+    def check_pickup_availability(self, data):
+        """
+        Check FedEx pickup availability for the given data.
+        """
+        res = self._send_api_request("POST", "pickup_availability", data=data)
+        return res.json()
+
+    def request_pickup(self, data):
+        """
+        Request a pickup from FedEx with the given data.
+        """
+        res = self._send_api_request("POST", "pickup_request", data=data)
         return res.json()

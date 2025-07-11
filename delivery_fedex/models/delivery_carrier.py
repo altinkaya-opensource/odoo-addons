@@ -1,6 +1,7 @@
 # Copyright 2025 Erol Develi (https://github.com/erlinberg)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from datetime import datetime
 import base64
 import logging
 from datetime import datetime
@@ -43,6 +44,62 @@ FEDEX_CARRIER_CODE = [
 FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
+
+FEDEX_TO_ODOO_STATUS = {
+    # Shipping recorded in carrier
+    "OC": "shipping_recorded_in_carrier",
+    "OX": "shipping_recorded_in_carrier",
+    "DO": "shipping_recorded_in_carrier",
+    "PU": "shipping_recorded_in_carrier",
+    "IP": "shipping_recorded_in_carrier",
+    "HP": "shipping_recorded_in_carrier",
+    "MD": "shipping_recorded_in_carrier",
+    # In transit
+    "IT": "in_transit",
+    "AR": "in_transit",
+    "AF": "in_transit",
+    "AC": "in_transit",
+    "PM": "in_transit",
+    "DP": "in_transit",
+    "CP": "in_transit",
+    "EA": "in_transit",
+    "TR": "in_transit",
+    "CC": "in_transit",
+    "CH": "in_transit",
+    "IN": "in_transit",
+    # Canceled shipment
+    "CA": "canceled_shipment",
+    "LC": "canceled_shipment",
+    "RC": "canceled_shipment",
+    # Incident / Exceptions
+    "DD": "incident",
+    "DE": "incident",
+    "SE": "incident",
+    "CD": "incident",
+    "DY": "incident",
+    "DR": "incident",
+    "PD": "incident",
+    "RD": "incident",
+    "RG": "incident",
+    # Customer delivered
+    "DL": "customer_delivered",
+    "OD": "customer_delivered",
+    # No more updates from carrier
+    "RS": "no_update",
+    "RP": "no_update",
+    "DS": "no_update",
+    "US": "no_update",
+    "AE": "no_update",
+    "AO": "no_update",
+    "RR": "no_update",
+    "RM": "no_update",
+    "HA": "no_update",
+    "RT": "no_update",
+    "RA": "no_update",
+    "PR": "no_update",
+    "AS": "no_update",
+}
+
 
 _logger = logging.getLogger(__name__)
 
@@ -87,6 +144,12 @@ class DeliveryCarrier(models.Model):
 
     fedex_account_number = fields.Integer(help="FedEx Account Number")
 
+    fedex_commercial_invoice = fields.Many2one(
+        "ir.actions.report",
+        string="FedEx Commercial Invoice",
+        help="FedEx Commercial Invoice report to be used for shipments.",
+    )
+
     service_type = fields.Selection(selection=FEDEX_SERVICES)
     pickup_type = fields.Selection(selection=FEDEX_PICKUP_TYPES)
     customs_payment_type = fields.Selection(
@@ -127,7 +190,7 @@ class DeliveryCarrier(models.Model):
 
         return {
             "streetLines": street_lines,
-            "city": normalize_turkish(partner.city or ""),
+            "city": normalize_turkish(partner.state_id.name or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
@@ -197,7 +260,7 @@ class DeliveryCarrier(models.Model):
 
         return packages
 
-    def _prepare_fedex_base_customs_data(self, company_id, partner_id):
+    def _prepare_fedex_base_customs_data(self, warehouse_id, partner_id):
         """
         Prepare base customs data for FedEx shipments.
         """
@@ -211,9 +274,9 @@ class DeliveryCarrier(models.Model):
         if self.customs_payment_type == "SENDER":
             data["dutiesPayment"]["payor"] = {
                 "responsibleParty": {
-                    "address": self._prepare_fedex_address(company_id.partner_id),
+                    "address": self._prepare_fedex_address(warehouse_id.partner_id),
                     "accountNumber": {"value": str(self.fedex_account_number)},
-                    "contact": self._prepare_fedex_contact(company_id.partner_id),
+                    "contact": self._prepare_fedex_contact(warehouse_id.partner_id),
                 },
             }
 
@@ -254,7 +317,7 @@ class DeliveryCarrier(models.Model):
         shipments on the picking and shipping weight.
         """
         data = self._prepare_fedex_base_customs_data(
-            picking.company_id, picking.partner_id
+            picking.location_id.warehouse_id, picking.partner_id
         )
 
         data["commercialInvoice"] = {
@@ -291,7 +354,7 @@ class DeliveryCarrier(models.Model):
 
         return data
 
-    def _prepare_fedex_base_rate_data(self, company_id, partner_id, delivery_date):
+    def _prepare_fedex_base_rate_data(self, warehouse_id, partner_id, delivery_date):
         """
         Prepare base rate data for FedEx API requests.
         """
@@ -299,7 +362,7 @@ class DeliveryCarrier(models.Model):
             "accountNumber": {"value": str(self.fedex_account_number)},
             "requestedShipment": {
                 "shipper": {
-                    "address": self._prepare_fedex_address(company_id.partner_id)
+                    "address": self._prepare_fedex_address(warehouse_id.partner_id)
                 },
                 "recipient": {"address": self._prepare_fedex_address(partner_id)},
                 "serviceType": self.service_type,
@@ -319,7 +382,7 @@ class DeliveryCarrier(models.Model):
         based on the sale order.
         """
         data = self._prepare_fedex_base_rate_data(
-            order.company_id, order.partner_id, fields.Date.today()
+            order.warehouse_id, order.partner_id, fields.Date.today()
         )
 
         # We use dummy packages because when getting rates
@@ -338,7 +401,7 @@ class DeliveryCarrier(models.Model):
         account_move.picking_ids.ensure_one()
 
         data = self._prepare_fedex_base_rate_data(
-            account_move.company_id,
+            account_move.picking_ids.warehouse_id,
             account_move.partner_shipping_id,
             fields.Date.today(),
         )
@@ -365,29 +428,96 @@ class DeliveryCarrier(models.Model):
 
         return data
 
+    def _upload_fedex_commercial_invoice(self, picking):
+        data = {
+            "workflowName": "ETDPreshipment",
+            "carrierCode": self.carrier_code,
+            "originCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
+            "destinationCountryCode": picking.partner_id.country_id.code,
+            "metaData": [
+                {
+                    "shipDocumentType": "COMMERCIAL_INVOICE",
+                    "contentType": "application/pdf",
+                }
+            ],
+        }
+
+        if not self.fedex_commercial_invoice:
+            raise UserError(
+                _("FedEx Commercial Invoice report is not configured for this carrier.")
+            )
+
+        if self.fedex_commercial_invoice.report_type == "py3o":
+            data["metaData"][0]["fileContentBase64"] = base64.b64encode(
+                self.env["ir.actions.report"]._render_py3o(
+                    self.fedex_commercial_invoice.report_name,
+                    res_ids=picking.invoice_ids.ids,
+                )[0]
+            ).decode("utf-8")
+        else:
+            data["metaData"][0]["fileContentBase64"] = base64.b64encode(
+                self.env["ir.actions.report"]._render_qweb_pdf(
+                    self.fedex_commercial_invoice.report_name,
+                    res_ids=picking.invoice_ids.ids,
+                )[0]
+            ).decode("utf-8")
+
+        fedex_request = FedExRequest(
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
+            prod=self.prod_environment,
+        )
+
+        document_id = None
+        try:
+            response = fedex_request.upload_documents(data=data)
+            document_id = response["output"]["documentResponses"]["metaData"]["docId"]
+        except Exception as e:
+            raise UserError(
+                _(
+                    "Failed to upload the Electronic"
+                    " Trade Document for FedEx shipment: %s{error_message}",
+                    error_message=e,
+                )
+            ) from e
+
+        return document_id
+
     def _prepare_fedex_shipment_data(self, picking):
         """
         Prepare shipment data for FedEx API requests
         based on the stock picking.
         """
+
+        # Prepare the commercial invoice
+        document_id = self._upload_fedex_commercial_invoice(picking)
+        if document_id is None:
+            raise UserError(
+                _(
+                    "Failed to prepare and upload the Electronic Trade Document "
+                    "for FedEx shipment."
+                )
+            )
+
         data = {
             "accountNumber": {"value": str(self.fedex_account_number)},
             "shipAction": "CONFIRM",
             "requestedShipment": {
                 "shipper": {
                     "address": self._prepare_fedex_address(
-                        picking.company_id.partner_id
+                        picking.location_id.warehouse_id.partner_id
                     ),
                     "contact": self._prepare_fedex_contact(
-                        picking.company_id.partner_id
+                        picking.location_id.warehouse_id.partner_id
                     ),
                 },
                 "origin": {
                     "address": self._prepare_fedex_address(
-                        picking.company_id.partner_id
+                        picking.location_id.warehouse_id.partner_id
                     ),
                     "contact": self._prepare_fedex_contact(
-                        picking.company_id.partner_id
+                        picking.location_id.warehouse_id.partner_id
                     ),
                 },
                 "soldTo": {
@@ -411,9 +541,13 @@ class DeliveryCarrier(models.Model):
                     else "RECIPIENT",
                     "payor": {
                         "responsibleParty": {
-                            "address": self._prepare_fedex_address(picking.company_id)
+                            "address": self._prepare_fedex_address(
+                                picking.location_id.warehouse_id.partner_id
+                            )
                             if self.payment_type == "sender_pays"
-                            else self._prepare_fedex_address(picking.partner_id),
+                            else self._prepare_fedex_address(
+                                picking.location_id.warehouse_id.partner_id
+                            ),
                             "accountNumber": {
                                 "value": str(self.fedex_account_number)
                                 if self.payment_type == "sender_pays"
@@ -422,7 +556,7 @@ class DeliveryCarrier(models.Model):
                                 )
                             },
                             "contact": self._prepare_fedex_contact(
-                                picking.company_id.partner_id
+                                picking.location_id.warehouse_id.partner_id
                             )
                             if self.payment_type == "sender_pays"
                             else self._prepare_fedex_contact(picking.partner_id),
@@ -434,20 +568,32 @@ class DeliveryCarrier(models.Model):
                     # TODO: Make these values configurable
                     "labelFormatType": "COMMON2D",
                     "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
-                    "imageType": "ZPLII",
+                    "imageType": "PDF",
                     "labelOrder": "SHIPPING_LABEL_FIRST",
                     "labelRotation": "NONE",
-                    "labelStockType": "STOCK_4X6",
-                    "resolution": 300,
-                    "customerSpecifiedDetail": {
-                        "docTabContent": {
-                            "docTabContentType": "MINIMUM",
-                        },
-                    },
+                    "labelStockType": "PAPER_85X11_TOP_HALF_LABEL",
+                    "resolution": 203,
+                    # "customerSpecifiedDetail": {
+                    #     "docTabContent": {
+                    #         "docTabContentType": "MINIMUM",
+                    #     },
+                    # },
                 },
                 "requestedPackageLineItems": [],
+                "shipmentSpecialServices": {
+                    "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
+                    "etdDetail": {
+                        "attachedDocuments": [
+                            {
+                                "documentType": "COMMERCIAL_INVOICE",
+                                "documentId": document_id,
+                            }
+                        ]
+                    },
+                },
             },
             "labelResponseOptions": "LABEL",
+            # Add the commercial invoice details
         }
 
         packages = []
@@ -537,7 +683,7 @@ class DeliveryCarrier(models.Model):
                     order.company_id,
                     fields.Date.today(),
                 )
-        except UserError:  # This means there is no rate or the request failed
+        except Exception as __:  # This means there is no rate or the request failed
             price = 0.0
 
         return {
@@ -618,14 +764,20 @@ class DeliveryCarrier(models.Model):
 
             shipment_data = response["output"]["transactionShipments"][0]
 
+            master_tracking_number = shipment_data["masterTrackingNumber"]
+
+            self.fedex_request_pickup(
+                picking,
+                sum(pack.shipping_weight for pack in picking.package_ids),
+                master_tracking_number,
+            )
+
             if self.payment_type != "customer_pays":
                 shipment_rate_details = shipment_data["completedShipmentDetail"][
                     "shipmentRating"
                 ]["shipmentRateDetails"][0]
 
                 price = shipment_rate_details["totalNetChargeWithDutiesAndTaxes"]
-
-                master_tracking_number = shipment_data["masterTrackingNumber"]
 
                 picking.carrier_shipping_cost = shipment_rate_details["totalBaseCharge"]
                 picking.carrier_shipping_vat = shipment_rate_details["totalTaxes"]
@@ -644,10 +796,43 @@ class DeliveryCarrier(models.Model):
                         lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
                     )
 
-                    label_filename = _(
-                        "fedex_label_%(seq_number)s.zpl",
-                        seq_number=pack_label_data["packageSequenceNumber"],
+                    label_filename = (
+                        _(
+                            "fedex_label_%(seq_number)s.",
+                            seq_number=pack.sequence,
+                        )
+                        + self.carrier_barcode_type
                     )
+
+                    if self.carrier_barcode_type == "zpl":
+                        label_binary = base64.b64encode(
+                            self._prepare_fedex_zpl_godex(
+                                base64.b64decode(
+                                    pack_label_data["packageDocuments"][0][
+                                        "encodedLabel"
+                                    ]
+                                )
+                            )
+                        )
+                    else:
+                        label_binary = pack_label_data["packageDocuments"][0][
+                            "encodedLabel"
+                        ]
+
+                    packs_label_data[pack] = (label_filename, label_binary)
+            else:
+                pack_label_data = shipment_data["pieceResponses"][0]
+                pack = picking.package_ids
+
+                label_filename = (
+                    _(
+                        "fedex_label_%(seq_number)s.",
+                        seq_number=pack.sequence,
+                    )
+                    + self.carrier_barcode_type
+                )
+
+                if self.carrier_barcode_type == "zpl":
                     label_binary = base64.b64encode(
                         self._prepare_fedex_zpl_godex(
                             base64.b64decode(
@@ -655,23 +840,10 @@ class DeliveryCarrier(models.Model):
                             )
                         )
                     )
-
-                    packs_label_data[pack] = (label_filename, label_binary)
-            else:
-                pack_label_data = shipment_data["pieceResponses"][0]
-                pack = picking.package_ids
-
-                label_filename = _(
-                    "fedex_label_%(seq_number)s.zpl",
-                    seq_number=pack.sequence,
-                )
-                label_binary = base64.b64encode(
-                    self._prepare_fedex_zpl_godex(
-                        base64.b64decode(
-                            pack_label_data["packageDocuments"][0]["encodedLabel"]
-                        )
-                    )
-                )
+                else:
+                    label_binary = pack_label_data["packageDocuments"][0][
+                        "encodedLabel"
+                    ]
 
                 packs_label_data[pack] = (label_filename, label_binary)
 
@@ -686,6 +858,31 @@ class DeliveryCarrier(models.Model):
 
         return result
 
+    def _fedex_reset_shipping_data(self, picking):
+        """
+        Reset FedEx shipping data on the picking.
+        This is used when the shipment is canceled or reset.
+        """
+        picking.carrier_tracking_ref = False
+        picking.shipping_number = False
+        picking.delivery_state = "canceled_shipment"
+        picking.tracking_state_history = ""
+        picking.carrier_received_by = False
+        picking.date_delivered = False
+
+        # Set all changed fields to False after reset
+        picking.carrier_shipping_cost = False
+        picking.carrier_shipping_vat = False
+        picking.carrier_shipping_total = False
+        picking.carrier_total_deci = False
+
+        # Reset package's labels
+        for pack in picking.package_ids:
+            pack.label_filename = False
+            pack.label = False
+
+        return True
+
     def fedex_cancel_shipment(self, pickings):
         """
         Cancel FedEx shipments for the given pickings.
@@ -699,16 +896,29 @@ class DeliveryCarrier(models.Model):
 
         res = True
         for picking in pickings.filtered("carrier_tracking_ref"):
+            if picking.delivery_state != "shipping_recorded_in_carrier":
+                _logger.warning(
+                    "Cannot cancel FedEx shipment for picking %s with state %s.",
+                    picking.name,
+                    picking.delivery_state,
+                )
+                continue  # TODO: Maybe raise an error instead?
+
             payload = {
                 "accountNumber": {"value": str(self.fedex_account_number)},
-                "senderCountryCode": picking.company_id.partner_id.country_id.code,
+                "senderCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
                 "deletionControl": "DELETE_ALL_PACKAGES",
                 "trackingNumber": picking.carrier_tracking_ref,
                 "carrierCode": self.carrier_code,
             }
             response = fedex_request.cancel_shipment(payload)
 
-            res = res and response["output"].get("cancelledShipment", False)
+            canceled = response["output"].get("cancelledShipment", False)
+
+            if canceled:
+                self._fedex_reset_shipping_data(picking)
+
+            res = res and canceled
 
         return res
 
@@ -744,6 +954,12 @@ class DeliveryCarrier(models.Model):
         picking.shipping_number = response["trackingNumber"]
 
         tracking_events = response["trackResults"][0]["scanEvents"]
+
+        last_event = tracking_events[-1] if tracking_events else {}
+
+        picking.delivery_state = FEDEX_TO_ODOO_STATUS.get(
+            last_event.get("derivedStatusCode"), "shipping_recorded_in_carrier"
+        )
 
         picking.tracking_state_history = "\n".join(
             [
@@ -792,5 +1008,117 @@ class DeliveryCarrier(models.Model):
             picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
                 "%Y-%m-%d %H:%M:%S"
             )
+
+        return True
+
+    def _prepare_fedex_pickup_data(
+        self, picking, nearest_pickup, total_weight, tracking_number
+    ):
+        """
+        Prepare FedEx pickup payload for the given picking.
+        """
+        warehouse_partner = picking.location_id.warehouse_id.partner_id
+
+        return {
+            "associatedAccountNumber": {"value": self.fedex_account_number},
+            "carrierCode": self.carrier_code,
+            "originDetail": {
+                "pickupLocation": {
+                    "contact": self._prepare_fedex_contact(warehouse_partner),
+                    "address": self._prepare_fedex_address(warehouse_partner),
+                },
+                "readyDateTimestamp": nearest_pickup["date"]
+                + "T"
+                + nearest_pickup["time"],
+                "customerCloseTime": "18:00:00",
+                "pickupDateType": nearest_pickup["pickup_date_type"],
+                "buildingType": "BUILDING",
+            },
+            "totalWeight": {
+                "units": "KG",
+                "value": total_weight,
+            },
+            "packageCount": len(picking.package_ids),
+            # TODO: Make this configurable in the future.
+            "countryRelationship": "INTERNATIONAL",
+            "trackingNumber": tracking_number,
+        }
+
+    def _prepare_fedex_pickup_check_data(self, picking):
+        """
+        Prepare FedEx pickup check data for the given picking.
+        """
+        return {
+            "carriers": [self.carrier_code],
+            "pickupAddress": self._prepare_fedex_address(
+                picking.location_id.warehouse_id.partner_id
+            ),
+            "pickupRequestType": ["FUTURE_DAY"],
+            "shipmentAttributes": {
+                "serviceType": self.service_type,
+            },
+            "countryRelationship": "INTERNATIONAL",  # TODO: Make this configurable in the future.
+        }
+
+    def get_nearest_available_fedex_pickup(self, picking):
+        """
+        Get nearest available pickup for the given pickings.
+        """
+        fedex_request = FedExRequest(
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
+            prod=self.prod_environment,
+        )
+
+        payload = self._prepare_fedex_pickup_check_data(picking)
+        response = fedex_request.check_pickup_availability(payload)
+
+        options = response["output"]["options"]
+
+        if not options:
+            raise UserError(_("No available pickups found for the given pickings."))
+
+        nearest_pickup = next(
+            (opt for opt in options if opt.get("available")), options[0]
+        )
+
+        return {
+            "date": nearest_pickup["pickupDate"],
+            "time": nearest_pickup["readyTimeOptions"][0],
+            "pickup_date_type": nearest_pickup["scheduleDay"],
+        }
+
+    def fedex_request_pickup(self, picking, total_weight, tracking_number):
+        """
+        Request a FedEx pickup for the given picking.
+        """
+        fedex_request = FedExRequest(
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
+            prod=self.prod_environment,
+        )
+
+        nearest_pickup = self.get_nearest_available_fedex_pickup(picking=picking)
+
+        payload = self._prepare_fedex_pickup_data(
+            picking, nearest_pickup, total_weight, tracking_number
+        )
+        response = fedex_request.request_pickup(payload)
+
+        if not response.get("output"):
+            raise UserError(_("Failed to request FedEx pickup."))
+
+        picking.invoice_ids.message_post(
+            body=_(
+                "FedEx pickup requested successfully on"
+                "%(date)s at %(time)s. "
+                "Pickup Confirmation Number: %(pickupNo)s",
+                date=nearest_pickup["date"],
+                time=nearest_pickup["time"],
+                pickupNo=response["output"]["pickupConfirmationCode"],
+            )
+        )
 
         return True
