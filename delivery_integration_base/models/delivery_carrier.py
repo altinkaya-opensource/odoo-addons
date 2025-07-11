@@ -16,6 +16,13 @@ class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
     partner_id = fields.Many2one("res.partner", "Carrier")
+    shipment_level = fields.Selection(
+        selection=[
+            ("send_shipment", "Send Shipment"),
+            ("send_shipment_and_barcode", "Send Shipment and Barcode"),
+        ],
+        default="send_shipment",
+    )
     carrier_barcode_type = fields.Selection(
         string="Barcode Type",
         selection=[
