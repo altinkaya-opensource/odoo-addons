@@ -60,6 +60,14 @@
                 name="fedex_commercial_invoice"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
+              <field
+                name="label_paper_type"
+                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
+              />
+              <field
+                name="label_resolution"
+                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
+              />
             </group>
           </group>
         </page>
