@@ -11,7 +11,7 @@
                     <field name="menu_access">
                         <tree>
                             <field name="groups_id" wizard="many2many_tags" />
-                            <field name="name" />
+                            <field name="complete_name" />
                         </tree>
 
                     </field>

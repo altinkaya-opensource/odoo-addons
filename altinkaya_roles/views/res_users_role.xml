@@ -7,29 +7,24 @@
         <field name="arch" type="xml">
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page string="User Access Menu">
-                    <!--  <label for="menu_access"/> -->
-                    <field name="menu_access">
+                    <field name="menu_ids" readonly="1">
                         <tree>
-                            <field name="groups_id" wizard="many2many_tags" />
-                            <field name="name" />
+                            <field name="groups_id" />
+                            <field name="complete_name" />
                         </tree>
-
                     </field>
-
                 </page>
                 <page string="User Access Views">
-                    <field name="view_access" edit="false" create="false">
+                    <field name="view_ids" readonly="1">
                         <tree>
-
-                            <field name="groups_id" wizard="many2many_tags" />
+                            <field name="groups_id" />
                             <field name="name" />
                         </tree>
                     </field>
                 </page>
                 <page string="User Access Model">
-                    <!-- <label for="model_access"/> -->
-                    <field name="model_access">
-                        <tree edit="false" create="false">
+                    <field name="model_access_ids" readonly="1">
+                        <tree>
                             <field name="group_id" />
                             <field name="name" />
                             <field name="model_id" />
@@ -41,10 +36,9 @@
                     </field>
                 </page>
                 <page string="User Rules">
-                    <!-- <label for="rule_groups"/> -->
-                    <field name="rule_groups">
-                        <tree edit="false" create="false">
-                            <field name="groups" wizard="many2many_tags" />
+                    <field name="rule_ids" readonly="1">
+                        <tree>
+                            <field name="groups" />
                             <field name="name" />
                             <field name="model_id" />
                             <field name="domain_force" />
@@ -55,17 +49,6 @@
                         </tree>
                     </field>
                 </page>
-                <page string="User Groups">
-                    <!-- <label for="rule_groups"/> -->
-                    <field name="group_id">
-                        <tree edit="false" create="false">
-                            <field name="category_id" />
-                            <field name="display_name" />
-
-                        </tree>
-                    </field>
-                </page>
-
             </xpath>
 
         </field>
