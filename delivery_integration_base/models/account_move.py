@@ -14,9 +14,6 @@ class AccountMove(models.Model):
         Action to send the shipment to the shipper.
         """
         for move in self:
-            if not move.picking_ids:
-                continue
-
             try:
                 for picking in move.picking_ids:
                     picking.with_context(send_from_account_move=True).send_to_shipper()
@@ -32,12 +29,13 @@ class AccountMove(models.Model):
         Override the action_post method to ensure shipments are sent.
         """
         res = super().action_post()
-        for move in self.filtered(lambda m: m.state == "posted"):
-            if move.carrier_id and move.carrier_id.delivery_type not in [
-                "fixed",
-                "base_on_rule",
-            ]:
-                move.send_to_shipper()
+        for move in self.filtered(
+            lambda m: m.state == "posted"
+            and m.picking_ids
+            and m.carrier_id
+            and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+        ):
+            move.send_to_shipper()
         return res
 
     def button_draft(self):
@@ -45,15 +43,15 @@ class AccountMove(models.Model):
         Override the button_draft method to cancel shipment.
         """
         res = super().button_draft()
-        for move in self:
+        for move in self.filtered(
+            lambda m: m.picking_ids
+            and m.carrier_id
+            and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+        ):
             for picking in move.picking_ids:
-                if not move.carrier_id or move.carrier_id.delivery_type in [
-                    "fixed",
-                    "base_on_rule",
-                ]:
-                    continue
                 if picking.delivery_state != "shipping_recorded_in_carrier":
                     continue
+
                 picking.cancel_shipment()
 
         return res
