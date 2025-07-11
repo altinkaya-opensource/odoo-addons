@@ -100,6 +100,27 @@ FEDEX_TO_ODOO_STATUS = {
     "AS": "no_update",
 }
 
+FEDEX_LABEL_STOCK_SELECTION = [
+    ("PAPER_4X6", "PAPER_4X6"),
+    ("STOCK_4X675", "STOCK_4X675"),
+    ("PAPER_4X675", "PAPER_4X675"),
+    ("PAPER_4X8", "PAPER_4X8"),
+    ("PAPER_4X9", "PAPER_4X9"),
+    ("PAPER_7X475", "PAPER_7X475"),
+    ("PAPER_85X11_BOTTOM_HALF_LABEL", "PAPER_85X11_BOTTOM_HALF_LABEL"),
+    ("PAPER_85X11_TOP_HALF_LABEL", "PAPER_85X11_TOP_HALF_LABEL"),
+    ("PAPER_LETTER", "PAPER_LETTER"),
+    ("STOCK_4X675_LEADING_DOC_TAB", "STOCK_4X675_LEADING_DOC_TAB"),
+    ("STOCK_4X8", "STOCK_4X8"),
+    ("STOCK_4X9_LEADING_DOC_TAB", "STOCK_4X9_LEADING_DOC_TAB"),
+    ("STOCK_4X6", "STOCK_4X6"),
+    ("STOCK_4X675_TRAILING_DOC_TAB", "STOCK_4X675_TRAILING_DOC_TAB"),
+    ("STOCK_4X9_TRAILING_DOC_TAB", "STOCK_4X9_TRAILING_DOC_TAB"),
+    ("STOCK_4X9", "STOCK_4X9"),
+    ("STOCK_4X85_TRAILING_DOC_TAB", "STOCK_4X85_TRAILING_DOC_TAB"),
+    ("STOCK_4X105_TRAILING_DOC_TAB", "STOCK_4X105_TRAILING_DOC_TAB"),
+]
+
 
 _logger = logging.getLogger(__name__)
 
@@ -158,6 +179,18 @@ class DeliveryCarrier(models.Model):
 
     carrier_code = fields.Selection(selection=FEDEX_CARRIER_CODE)
 
+    label_paper_type = fields.Selection(
+        selection=FEDEX_LABEL_STOCK_SELECTION,
+        default="PAPER_85X11_TOP_HALF_LABEL",
+        help="Label paper type for FedEx shipments.",
+    )
+
+    label_resolution = fields.Integer(
+        default=203,
+        help="Label resolution in DPI for FedEx shipments. "
+        "This is used only for ZPL labels.",
+    )
+
     stock_height = fields.Float(
         help="Height of the stock in inches for GoDEX printer",
         default=6.0,
@@ -190,7 +223,7 @@ class DeliveryCarrier(models.Model):
 
         return {
             "streetLines": street_lines,
-            "city": normalize_turkish(partner.state_id.name or ""),
+            "city": normalize_turkish(partner.city or partner.state_id.name or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
@@ -217,7 +250,7 @@ class DeliveryCarrier(models.Model):
             )
 
             # FedEx API requires the number and extension to be separated
-            contact["phoneNumber"] = raw_number[len(raw_number) - 10 :]
+            contact["phoneNumber"] = raw_number[len(raw_number) - 10:]
             contact["phoneExtension"] = raw_number[: len(raw_number) - 10]
 
         return contact
@@ -434,8 +467,10 @@ class DeliveryCarrier(models.Model):
             "carrierCode": self.carrier_code,
             "originCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
             "destinationCountryCode": picking.partner_id.country_id.code,
+            "shipmentDate": fields.Date.today().strftime("%Y-%m-%d") + "T12:00:00",
             "metaData": [
                 {
+                    "fileReferenceId": picking.name + "commercial_invoice",
                     "shipDocumentType": "COMMERCIAL_INVOICE",
                     "contentType": "application/pdf",
                 }
@@ -565,19 +600,14 @@ class DeliveryCarrier(models.Model):
                 },
                 "customsClearanceDetail": {},
                 "labelSpecification": {
-                    # TODO: Make these values configurable
                     "labelFormatType": "COMMON2D",
-                    "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
-                    "imageType": "PDF",
-                    "labelOrder": "SHIPPING_LABEL_FIRST",
-                    "labelRotation": "NONE",
-                    "labelStockType": "PAPER_85X11_TOP_HALF_LABEL",
-                    "resolution": 203,
-                    # "customerSpecifiedDetail": {
-                    #     "docTabContent": {
-                    #         "docTabContentType": "MINIMUM",
-                    #     },
-                    # },
+                    "imageType": "PDF"
+                    if self.carrier_barcode_type == "pdf"
+                    else "ZPLII",
+                    "labelStockType": self.label_paper_type,
+                    "resolution": self.label_resolution
+                    if self.carrier_barcode_type == "zpl"
+                    else 203,
                 },
                 "requestedPackageLineItems": [],
                 "shipmentSpecialServices": {
@@ -1053,11 +1083,12 @@ class DeliveryCarrier(models.Model):
             "pickupAddress": self._prepare_fedex_address(
                 picking.location_id.warehouse_id.partner_id
             ),
-            "pickupRequestType": ["FUTURE_DAY"],
+            "pickupRequestType": ["SAME_DAY", "FUTURE_DAY"],
             "shipmentAttributes": {
                 "serviceType": self.service_type,
             },
-            "countryRelationship": "INTERNATIONAL",  # TODO: Make this configurable in the future.
+            # TODO: Make this configurable in the future.
+            "countryRelationship": "INTERNATIONAL",
         }
 
     def get_nearest_available_fedex_pickup(self, picking):
