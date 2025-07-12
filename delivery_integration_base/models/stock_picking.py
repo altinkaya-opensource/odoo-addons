@@ -1,7 +1,8 @@
 # # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _, fields, models
-from odoo.exceptions import ValidationError
+import base64
+
+from odoo import fields, models
 
 
 class StockPicking(models.Model):
@@ -74,7 +75,7 @@ class StockPicking(models.Model):
     )
 
     def send_to_shipper(self):
-        """ Only send the picking to the shipper if the send
+        """Only send the picking to the shipper if the send
         request is from the account move.
         """
         if not self._context.get("send_from_account_move", False):
@@ -163,69 +164,25 @@ class StockPicking(models.Model):
                 self._tracking_status_notification()
         return super().write(vals)
 
-    def carrier_get_label(self):
-        """Call to the service provider API which should have the method
-        defined in the model as:
-            <my_provider>_carrier_get_label
-        It can be triggered manually or by the cron."""
+    def action_print_label(self):
+        """
+        Print the delivery barcode labels for the picking
+        """
         for picking in self.filtered("carrier_id"):
-            method = f"{picking.delivery_type}_carrier_get_label"
-            carrier = picking.carrier_id
-            if hasattr(carrier, method) and carrier.default_printer_id:
-                data = getattr(carrier, method)(picking)
-                if carrier.attach_barcode:
-                    self._attach_barcode(data)
-                else:
-                    self._print_barcode(data)
-            else:
-                raise ValidationError(
-                    _("No default printer defined for the carrier %s") % carrier.name
-                )
-
-    def _attach_barcode(self, data):
-        """
-        Attach the barcode to the picking as PDF
-        :param data:
-        :return: boolean
-        """
-        label_name = (
-            f"{self.carrier_id.delivery_type}_etiket_"
-            f"{self.carrier_tracking_ref}.{self.carrier_id.carrier_barcode_type}"
-        )
-        self.message_post(
-            body=(_("%s etiket") % self.carrier_id.display_name),
-            attachments=[(label_name, data)],
-        )
-        return True
-
-    def _print_barcode(self, data):
-        """
-        Print the barcode on the picking as ZPL format.
-        It uses the carrier's qweb template.
-        :param data:
-        :return: boolean
-        """
-        carrier = self.carrier_id
-        printer = carrier.default_printer_id
-        report_name = "delivery_integration_base.carrier_label"
-        delivery_type_label = dict(
-            self.fields_get(allfields=["delivery_type"])["delivery_type"]["selection"]
-        ).get(self.delivery_type)
-        package_count = self.carrier_package_count or 1
-        for i in range(package_count):
-            current_label = f"{i+1}/{package_count}"
-            qweb_bytes = self.env["ir.actions.report"]._render_template(
-                report_name,
-                {
-                    "docs": [self],
-                    "zpl_raw": data,
-                    "delivery_type_label": delivery_type_label,
-                    "package_label_info": current_label,
-                },
+            picking_lables = self.env["ir.attachment"].search(
+                [
+                    ("res_model", "=", "stock.picking"),
+                    ("res_id", "=", picking.id),
+                    ("is_delivery_barcode", "=", True),
+                ]
             )
-            qweb_text = qweb_bytes.decode("utf-8")
-            printer.print_document(report_name, qweb_text, doc_form="txt")
-        return True
+
+            if picking_lables:
+                for pl in picking_lables:
+                    self.carrier_id.default_printer_id.print_document(
+                        report=None,
+                        content=base64.b64decode(pl.datas),
+                    )
 
     def button_mail_send(self):
         """
