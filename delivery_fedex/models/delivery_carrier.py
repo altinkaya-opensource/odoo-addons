@@ -1,7 +1,6 @@
 # Copyright 2025 Erol Develi (https://github.com/erlinberg)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from datetime import datetime
 import base64
 import logging
 from datetime import datetime
@@ -465,7 +464,9 @@ class DeliveryCarrier(models.Model):
         data = {
             "workflowName": "ETDPreshipment",
             "carrierCode": self.carrier_code,
-            "originCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
+            "originCountryCode": (
+                picking.location_id.warehouse_id.partner_id.country_id.code
+            ),
             "destinationCountryCode": picking.partner_id.country_id.code,
             "shipmentDate": fields.Date.today().strftime("%Y-%m-%d") + "T12:00:00",
             "metaData": [
@@ -856,35 +857,6 @@ class DeliveryCarrier(models.Model):
 
         return result
 
-    def _fedex_reset_shipping_data(self, picking):
-        """
-        Reset FedEx shipping data on the picking.
-        This is used when the shipment is canceled or reset.
-        """
-        picking.carrier_tracking_ref = False
-        picking.shipping_number = False
-        picking.delivery_state = "canceled_shipment"
-        picking.tracking_state_history = ""
-        picking.carrier_received_by = False
-        picking.date_delivered = False
-
-        # Set all changed fields to False after reset
-        picking.carrier_shipping_cost = False
-        picking.carrier_shipping_vat = False
-        picking.carrier_shipping_total = False
-        picking.carrier_total_deci = False
-
-        # Remove all FedEx Label attachments related to the picking
-        self.env["ir.attachment"].search(
-            [
-                ("res_model", "=", "stock.picking"),
-                ("res_id", "=", picking.id),
-                ("is_delivery_barcode", "=", True),
-            ]
-        ).unlink()
-
-        return True
-
     def fedex_cancel_shipment(self, pickings):
         """
         Cancel FedEx shipments for the given pickings.
@@ -908,7 +880,9 @@ class DeliveryCarrier(models.Model):
 
             payload = {
                 "accountNumber": {"value": str(self.fedex_account_number)},
-                "senderCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
+                "senderCountryCode": (
+                    picking.location_id.warehouse_id.partner_id.country_id.code
+                ),
                 "deletionControl": "DELETE_ALL_PACKAGES",
                 "trackingNumber": picking.carrier_tracking_ref,
                 "carrierCode": self.carrier_code,
@@ -916,9 +890,6 @@ class DeliveryCarrier(models.Model):
             response = fedex_request.cancel_shipment(payload)
 
             canceled = response["output"].get("cancelledShipment", False)
-
-            if canceled:
-                self._fedex_reset_shipping_data(picking)
 
             res = res and canceled
 

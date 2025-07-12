@@ -343,3 +343,38 @@ class DeliveryCarrier(models.Model):
                 picking.date_delivered = fields.Datetime.now()
 
         return True
+
+    def _clear_delivery_data(self, pickings):
+        """
+        Clear delivery fields for pickings
+        :param pickings: recordset of stock.picking
+        :return:
+        """
+        for picking in pickings:
+            # Clear the barcodes
+            self.env["ir.attachment"].search(
+                [
+                    ("res_model", "=", "stock.picking"),
+                    ("res_id", "=", picking.id),
+                    ("is_delivery_barcode", "=", True),
+                ]
+            ).unlink()
+
+            # Clear the delivery fields
+            picking.carrier_tracking_ref = False
+            picking.shipping_number = False
+            picking.tracking_state_history = False
+            picking.carrier_received_by = False
+            picking.date_delivered = False
+            picking.carrier_shipping_cost = False
+            picking.carrier_shipping_vat = False
+            picking.carrier_shipping_total = False
+            picking.carrier_total_deci = False
+
+    def cancel_shipment(self, pickings):
+        res = super().cancel_shipment(pickings)
+        for picking in pickings:
+            if picking.delivery_state != "canceled_shipment":
+                continue
+            self._clear_delivery_data(picking)
+        return res

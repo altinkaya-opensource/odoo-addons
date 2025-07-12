@@ -18,9 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import base64
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
 
 
