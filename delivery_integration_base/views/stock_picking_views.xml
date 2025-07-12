@@ -8,8 +8,8 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position='inside'>
                 <button
-          name="carrier_get_label"
-          string="Cargo Label"
+          name="action_print_label"
+          string="Print Cargo Label"
           type="object"
           attrs="{
                         'invisible':[

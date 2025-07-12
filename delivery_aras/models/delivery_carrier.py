@@ -4,6 +4,7 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import base64
 from datetime import datetime
 
 import phonenumbers
@@ -178,6 +179,29 @@ class DeliveryCarrier(models.Model):
                 continue
             vals["tracking_number"] = response.OrgReceiverCustId
             vals["exact_price"] = 0.0
+
+            zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+
+            if zebra_zpl is None:
+                raise ValidationError(
+                    _(
+                        "Aras Kargo haven't provided any label for shipments. "
+                        "Please contact Aras Kargo support."
+                    )
+                )
+
+            self.env["ir.attachment"].create(
+                {
+                    "name": f"{picking.name}_aras_label.zpl",
+                    "datas": base64.b64encode(zebra_zpl.string[0].encode("utf-8")).decode(
+                        "utf-8"
+                    ),
+                    "res_model": "stock.picking",
+                    "res_id": picking.id,
+                    "is_delivery_barcode": True,
+                }
+            )
+
             result.append(vals)
         return result
 
@@ -228,7 +252,14 @@ class DeliveryCarrier(models.Model):
                 )
 
             try:
-                aras_request._cancel_shipment(picking.carrier_tracking_ref)
+                if aras_request._cancel_shipment(picking.carrier_tracking_ref):
+                    self.env["ir.attachment"].search(
+                        [
+                            ("res_model", "=", "stock.picking"),
+                            ("res_id", "=", picking.id),
+                            ("is_delivery_barcode", "=", True),
+                        ]
+                    ).unlink()
             except Exception as e:
                 raise e
             finally:
@@ -303,23 +334,6 @@ class DeliveryCarrier(models.Model):
             "carrier_received_by": response.get("TESLIM_ALAN", ""),
         }
 
-    def aras_carrier_get_label(self, picking):
-        """
-        Aras Kargo doesn't provide label for shipments.
-        They are not implemented common label on their systems.
-        """
-        aras_request = ArasRequest(**self._get_aras_credentials())
-        zebra_zpl = aras_request._get_barcode(picking.carrier_tracking_ref)
-
-        if zebra_zpl is None:
-            raise ValidationError(
-                _(
-                    "Aras Kargo doesn't provide label for shipments. "
-                    "Please contact with Aras Kargo support."
-                )
-            )
-
-        return zebra_zpl.string[0]
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

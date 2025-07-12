@@ -15,8 +15,8 @@ from .fedex_request import FedExRequest
 
 FEDEX_SERVICES = [
     ("FEDEX_REGIONAL_ECONOMY", "Regional Economy"),
-    ("FEDEX_INTERNATIONAL_ECONOMY", "International Economy"),
-    ("FEDEX_INTERNATIONAL_FIRST", "International First"),
+    ("INTERNATIONAL_ECONOMY", "International Economy"),
+    ("INTERNATIONAL_FIRST", "International First"),
     ("FEDEX_INTERNATIONAL_PRIORITY", "International Priority"),
     ("FEDEX_INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
 ]
@@ -250,7 +250,7 @@ class DeliveryCarrier(models.Model):
             )
 
             # FedEx API requires the number and extension to be separated
-            contact["phoneNumber"] = raw_number[len(raw_number) - 10:]
+            contact["phoneNumber"] = raw_number[len(raw_number) - 10 :]
             contact["phoneExtension"] = raw_number[: len(raw_number) - 10]
 
         return contact
@@ -819,51 +819,13 @@ class DeliveryCarrier(models.Model):
                     "totalBillingWeight"
                 ]["value"]
 
-            packs_label_data = {}
-            if not len(shipment_data["pieceResponses"]) == 1:
-                for pack_label_data in shipment_data["pieceResponses"]:
-                    pack = picking.package_ids.filtered(
-                        lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
-                    )
-
-                    label_filename = (
-                        _(
-                            "fedex_label_%(seq_number)s.",
-                            seq_number=pack.sequence,
-                        )
-                        + self.carrier_barcode_type
-                    )
-
-                    if self.carrier_barcode_type == "zpl":
-                        label_binary = base64.b64encode(
-                            self._prepare_fedex_zpl_godex(
-                                base64.b64decode(
-                                    pack_label_data["packageDocuments"][0][
-                                        "encodedLabel"
-                                    ]
-                                )
-                            )
-                        )
-                    else:
-                        label_binary = pack_label_data["packageDocuments"][0][
-                            "encodedLabel"
-                        ]
-
-                    packs_label_data[pack] = (label_filename, label_binary)
-            else:
-                pack_label_data = shipment_data["pieceResponses"][0]
-                pack = picking.package_ids
-
+            for sequence, pack_label_data in enumerate(shipment_data["pieceResponses"]):
                 label_filename = (
-                    _(
-                        "fedex_label_%(seq_number)s.",
-                        seq_number=pack.sequence,
-                    )
-                    + self.carrier_barcode_type
+                    f"fedex_label_{picking.name}_{sequence}.{self.carrier_barcode_type}"
                 )
 
                 if self.carrier_barcode_type == "zpl":
-                    label_binary = base64.b64encode(
+                    label_content = base64.b64encode(
                         self._prepare_fedex_zpl_godex(
                             base64.b64decode(
                                 pack_label_data["packageDocuments"][0]["encodedLabel"]
@@ -871,13 +833,19 @@ class DeliveryCarrier(models.Model):
                         )
                     )
                 else:
-                    label_binary = pack_label_data["packageDocuments"][0][
+                    label_content = pack_label_data["packageDocuments"][0][
                         "encodedLabel"
                     ]
 
-                packs_label_data[pack] = (label_filename, label_binary)
-
-            picking._add_label_data(packs_label_data, self.name)
+                self.env["ir.attachment"].create(
+                    {
+                        "name": label_filename,
+                        "datas": label_content,
+                        "res_model": "stock.picking",
+                        "res_id": picking.id,
+                        "is_delivery_barcode": True,
+                    }
+                )
 
             result.append(
                 {
@@ -906,10 +874,14 @@ class DeliveryCarrier(models.Model):
         picking.carrier_shipping_total = False
         picking.carrier_total_deci = False
 
-        # Reset package's labels
-        for pack in picking.package_ids:
-            pack.label_filename = False
-            pack.label = False
+        # Remove all FedEx Label attachments related to the picking
+        self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", "stock.picking"),
+                ("res_id", "=", picking.id),
+                ("is_delivery_barcode", "=", True),
+            ]
+        ).unlink()
 
         return True
 
@@ -1143,8 +1115,8 @@ class DeliveryCarrier(models.Model):
 
         picking.invoice_ids.message_post(
             body=_(
-                "FedEx pickup requested successfully on"
-                "%(date)s at %(time)s. "
+                "FedEx pickup requested successfully on "
+                "%(date)s at %(time)s.\n"
                 "Pickup Confirmation Number: %(pickupNo)s",
                 date=nearest_pickup["date"],
                 time=nearest_pickup["time"],

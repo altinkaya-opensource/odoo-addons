@@ -291,12 +291,6 @@ class DeliveryCarrier(models.Model):
 
         return vals
 
-    def yurtici_carrier_get_label(self, picking):
-        """
-        Yurtiçi Kargo doesn't provide label for shipments.
-        They are not implemented common label on their systems.
-        """
-        return True
 
     def yurtici_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""
