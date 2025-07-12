@@ -30,15 +30,6 @@
 
             </button>
 
-            <button name="action_open_label_type" position="after">
-                  <button
-          name="action_print_all_labels"
-          type="object"
-          string="Print All Labels"
-        />
-            </button>
-
-
             <xpath
         expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
         position="attributes"
@@ -125,15 +116,6 @@
                             <field name="width" />
                             <field name="height" />
                             <field name="length_uom_id" nolabel="1" />
-                            <field name="label" invisible="1" />
-                            <button
-                name="action_print_label"
-                type="object"
-                icon="fa-barcode"
-                string="Print Label"
-                class="btn btn-secondary"
-                attrs="{'readonly': [('label', '=', False)]}"
-              />
                             <button
                 attrs="{'invisible': [('picking_state', 'in', ['draft', 'cancel'])]}"
                 name="action_dissolve"

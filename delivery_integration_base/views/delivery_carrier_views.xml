@@ -7,6 +7,10 @@
         <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
         <field name="arch" type="xml">
         <field name="integration_level" position="after">
+            <field
+          name="shipment_level"
+          attrs="{'invisible': [('delivery_type', 'in', ['fixed', 'base_on_rule'])]}"
+        />
             <field name="carrier_barcode_type" />
             <field name="barcode_text_1" />
             <field name="attach_barcode" />

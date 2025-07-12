@@ -125,8 +125,12 @@ class ArasRequest:
         if type(response) is list:
             response = response[0]
 
-        if response.ResultCode != "0":
-            raise ValidationError(f"{response.ResultCode}: {response.ResultMessage}")
+        if int(response.ResultCode) != 0:
+            raise ValidationError(
+                f"{response.ResultCode}: "
+                f"{hasattr(response, 'ResultMessage')
+                and response.ResultMessage or response.Message}"
+            )
 
         return response
 
@@ -158,6 +162,19 @@ class ArasRequest:
         }
         response = self._process_reply(self.client.service.SetOrder, final_vals)
         return response
+
+    def _get_barcode(self, cargo_keys):
+        """Get the barcode for the given ref
+        :param str picking_name -- reference (picking name)
+        :returns: str with barcode
+        """
+        vals = {
+            "Username": self.username,
+            "Password": self.password,
+            "integrationCode": cargo_keys,
+        }
+        response = self._process_reply(self.client.service.GetBarcode, vals)
+        return response.ZebraZpl
 
     def _cancel_shipment(self, cargo_keys):
         """Cancel the expedition for the given ref

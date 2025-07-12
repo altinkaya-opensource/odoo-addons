@@ -17,7 +17,7 @@
         "sale",
         "delivery",
         "delivery_state",
-        "altinkaya_stock",
+        "delivery_integration_base",
     ],
     "external_dependencies": {"python": ["requests", "phonenumbers"]},
     "data": [

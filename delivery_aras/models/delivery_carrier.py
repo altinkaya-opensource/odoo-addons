@@ -4,6 +4,7 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import base64
 from datetime import datetime
 
 import phonenumbers
@@ -96,9 +97,15 @@ class DeliveryCarrier(models.Model):
         self.ensure_one()
         # Calculate the number of packages only once
         num_packages = max(picking.carrier_package_count, 1)
+        deci = picking.picking_total_weight = 1.0
         # Use list comprehension to build the piece_details list
         piece_details = [
-            {"BarcodeNumber": self._get_ref_number()} for _ in range(num_packages)
+            {
+                "BarcodeNumber": self._get_ref_number(),
+                "VolumetricWeight": deci / num_packages,
+                "Weight": deci / num_packages,
+            }
+            for _ in range(num_packages)
         ]
 
         return {"PieceDetail": piece_details}
@@ -135,11 +142,15 @@ class DeliveryCarrier(models.Model):
                 ),  # 1 = Sender, 2 = Receiver pays
                 "IsWorldWide": 0,
                 "VolumetricWeight": max(picking.picking_total_weight, 1),
-                # "PieceCount": max(picking.carrier_package_count, 1),
             }
         )
-        # piece_details = self._prepare_aras_piece_details(picking)
-        # vals.update({"PieceDetails": piece_details})
+
+        # If users integration level has barcode printing, add additional fields
+        if self.shipment_level == "send_shipment_and_barcode":
+            vals["PieceCount"] = max(picking.carrier_package_count, 1)
+            piece_details = self._prepare_aras_piece_details(picking)
+            vals.update({"PieceDetails": piece_details})
+
         return vals
 
     def aras_send_shipping(self, pickings):
@@ -168,6 +179,29 @@ class DeliveryCarrier(models.Model):
                 continue
             vals["tracking_number"] = response.OrgReceiverCustId
             vals["exact_price"] = 0.0
+
+            zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+
+            if zebra_zpl is None:
+                raise ValidationError(
+                    _(
+                        "Aras Kargo haven't provided any label for shipments. "
+                        "Please contact Aras Kargo support."
+                    )
+                )
+
+            self.env["ir.attachment"].create(
+                {
+                    "name": f"{picking.name}_aras_label.zpl",
+                    "datas": base64.b64encode(
+                        zebra_zpl.string[0].encode("utf-8")
+                    ).decode("utf-8"),
+                    "res_model": "stock.picking",
+                    "res_id": picking.id,
+                    "is_delivery_barcode": True,
+                }
+            )
+
             result.append(vals)
         return result
 
@@ -292,13 +326,6 @@ class DeliveryCarrier(models.Model):
             ),
             "carrier_received_by": response.get("TESLIM_ALAN", ""),
         }
-
-    def aras_carrier_get_label(self, picking):
-        """
-        Aras Kargo doesn't provide label for shipments.
-        They are not implemented common label on their systems.
-        """
-        return True
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

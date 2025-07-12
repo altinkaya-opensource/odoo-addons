@@ -142,14 +142,18 @@ class YurticiRequest:
                 vals[field] = xsd.SkipValue
         return vals
 
-    def _send_shipping(self, picking_vals):
+    def _send_shipping(self, shipment_array):
         """Create new shipment
         :params vals dict of needed values
         :returns dict with Yurtici response containing the shipping code and label
         """
         vals = self._shipping_api_credentials()
-        filled_fields = self._fill_empty_fields(picking_vals)
-        vals.update({"ShippingOrderVO": filled_fields})
+        filled_array = []
+
+        for shipment in shipment_array:
+            filled_array.append(self._fill_empty_fields(shipment))
+
+        vals.update({"ShippingOrderVO": filled_array})
         response = self._process_reply(
             self.client.service.createShipment, vals, send_as_kw=True
         )
