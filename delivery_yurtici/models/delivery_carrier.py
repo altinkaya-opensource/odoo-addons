@@ -82,22 +82,26 @@ class DeliveryCarrier(models.Model):
                 )
             )
 
-    def _prepare_yurtici_pack_info(self, picking):
-        """Prepare pack info for Yurtiçi, no need to send deci and kg fields.
-        They are calculated by Yurtiçi Kargo."""
-        if picking.carrier_package_count < 1:
-            raise ValidationError(
-                _("%s\nPackage count must be greater than 0.") % picking.name
-            )
-
-        # TODO: implement stock.quant.package
-
-        vals = {
-            "desi": 1,
-            "kg": 1,
-            "cargoCount": picking.carrier_package_count,
+    def _prepare_yurtici_base_vals(self, picking):
+        """Prepare base values for Yurtiçi Kargo api
+        :param picking record with picking to send
+        :returns dict values for the connector
+        """
+        return {
+            "cargoKey": self._get_ref_number(),
+            "invoiceKey": picking.name,  # TODO: implement invoice key
+            "receiverCustName": picking.partner_id.display_name,
+            "receiverAddress": self._yurtici_address(picking.partner_id),
+            "receiverPhone1": self._yurtici_phone_number(
+                picking.partner_id, priority="mobile"
+            ),
+            "receiverPhone2": self._yurtici_phone_number(
+                picking.partner_id, priority="phone"
+            ),
+            "cityName": picking.partner_id.state_id.name,
+            "townName": picking.partner_id.district_id.name,
+            "waybillNo": picking.name,  # TODO: implement waybill number
         }
-        return vals
 
     def _prepare_yurtici_shipping(self, picking):
         """Convert picking values for Yurtiçi Kargo api
@@ -105,30 +109,45 @@ class DeliveryCarrier(models.Model):
         :returns dict values for the connector
         """
         self.ensure_one()
+
+        if picking.carrier_package_count < 1:
+            raise ValidationError(
+                _("%s\nPackage count must be greater than 0.") % picking.name
+            )
+
+        if picking.picking_total_weight <= 0:
+            raise ValidationError(
+                _("%s\nTotal weight must be greater than 0.") % picking.name
+            )
+
+        shipment_array = []
         # We'll compose the request via some diferenced parts, like label settings,
         # address options, incoterms and so. There are lots of thing to take into
         # account to acomplish a properly formed request.
-        vals = {}
-        vals.update(
-            {
-                "cargoKey": self._get_ref_number(),
-                "invoiceKey": picking.name,  # TODO: implement invoice key
-                "receiverCustName": picking.partner_id.display_name,
-                "receiverAddress": self._yurtici_address(picking.partner_id),
-                "receiverPhone1": self._yurtici_phone_number(
-                    picking.partner_id, priority="mobile"
-                ),
-                "receiverPhone2": self._yurtici_phone_number(
-                    picking.partner_id, priority="phone"
-                ),
-                "cityName": picking.partner_id.state_id.name,
-                "townName": picking.partner_id.district_id.name,
-                "waybillNo": picking.name,  # TODO: implement waybill number
-            }
-        )
-        pack_info = self._prepare_yurtici_pack_info(picking)
-        vals.update(pack_info)
-        return vals
+        if self.shipment_level == "send_shipment_and_barcode":
+            for _ in range(picking.carrier_package_count):
+                pack_vals = self._prepare_yurtici_base_vals(picking)
+                pack_vals.update(
+                    {
+                        "desi": picking.picking_total_weight
+                        / picking.carrier_package_count,
+                        "kg": picking.picking_total_weight
+                        / picking.carrier_package_count,
+                        "cargoCount": 1,
+                    }
+                )
+                shipment_array.append(pack_vals)
+        else:
+            vals = self._prepare_yurtici_base_vals(picking)
+            vals.update(
+                {
+                    "desi": 1,
+                    "kg": 1,
+                    "cargoCount": picking.carrier_package_count,
+                }
+            )
+            shipment_array.append(vals)
+        return shipment_array
 
     def yurtici_send_shipping(self, pickings):
         """Send booking request to Yurtiçi
