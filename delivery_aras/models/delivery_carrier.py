@@ -252,14 +252,7 @@ class DeliveryCarrier(models.Model):
                 )
 
             try:
-                if aras_request._cancel_shipment(picking.carrier_tracking_ref):
-                    self.env["ir.attachment"].search(
-                        [
-                            ("res_model", "=", "stock.picking"),
-                            ("res_id", "=", picking.id),
-                            ("is_delivery_barcode", "=", True),
-                        ]
-                    ).unlink()
+                aras_request._cancel_shipment(picking.carrier_tracking_ref)
             except Exception as e:
                 raise e
             finally:

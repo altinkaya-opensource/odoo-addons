@@ -856,35 +856,6 @@ class DeliveryCarrier(models.Model):
 
         return result
 
-    def _fedex_reset_shipping_data(self, picking):
-        """
-        Reset FedEx shipping data on the picking.
-        This is used when the shipment is canceled or reset.
-        """
-        picking.carrier_tracking_ref = False
-        picking.shipping_number = False
-        picking.delivery_state = "canceled_shipment"
-        picking.tracking_state_history = ""
-        picking.carrier_received_by = False
-        picking.date_delivered = False
-
-        # Set all changed fields to False after reset
-        picking.carrier_shipping_cost = False
-        picking.carrier_shipping_vat = False
-        picking.carrier_shipping_total = False
-        picking.carrier_total_deci = False
-
-        # Remove all FedEx Label attachments related to the picking
-        self.env["ir.attachment"].search(
-            [
-                ("res_model", "=", "stock.picking"),
-                ("res_id", "=", picking.id),
-                ("is_delivery_barcode", "=", True),
-            ]
-        ).unlink()
-
-        return True
-
     def fedex_cancel_shipment(self, pickings):
         """
         Cancel FedEx shipments for the given pickings.
@@ -916,9 +887,6 @@ class DeliveryCarrier(models.Model):
             response = fedex_request.cancel_shipment(payload)
 
             canceled = response["output"].get("cancelledShipment", False)
-
-            if canceled:
-                self._fedex_reset_shipping_data(picking)
 
             res = res and canceled
 
