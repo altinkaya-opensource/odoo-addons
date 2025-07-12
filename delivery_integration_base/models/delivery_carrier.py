@@ -353,12 +353,12 @@ class DeliveryCarrier(models.Model):
         for picking in pickings:
             # Clear the barcodes
             self.env["ir.attachment"].search(
-                    [
-                        ("res_model", "=", "stock.picking"),
-                        ("res_id", "=", picking.id),
-                        ("is_delivery_barcode", "=", True),
-                    ]
-                ).unlink()
+                [
+                    ("res_model", "=", "stock.picking"),
+                    ("res_id", "=", picking.id),
+                    ("is_delivery_barcode", "=", True),
+                ]
+            ).unlink()
 
             # Clear the delivery fields
             picking.carrier_tracking_ref = False

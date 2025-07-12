@@ -193,9 +193,9 @@ class DeliveryCarrier(models.Model):
             self.env["ir.attachment"].create(
                 {
                     "name": f"{picking.name}_aras_label.zpl",
-                    "datas": base64.b64encode(zebra_zpl.string[0].encode("utf-8")).decode(
-                        "utf-8"
-                    ),
+                    "datas": base64.b64encode(
+                        zebra_zpl.string[0].encode("utf-8")
+                    ).decode("utf-8"),
                     "res_model": "stock.picking",
                     "res_id": picking.id,
                     "is_delivery_barcode": True,
@@ -326,7 +326,6 @@ class DeliveryCarrier(models.Model):
             ),
             "carrier_received_by": response.get("TESLIM_ALAN", ""),
         }
-
 
     def aras_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

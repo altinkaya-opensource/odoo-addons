@@ -125,7 +125,7 @@ class DeliveryCarrier(models.Model):
         # address options, incoterms and so. There are lots of thing to take into
         # account to acomplish a properly formed request.
         if self.shipment_level == "send_shipment_and_barcode":
-            for _ in range(picking.carrier_package_count):
+            for __ in range(picking.carrier_package_count):
                 pack_vals = self._prepare_yurtici_base_vals(picking)
                 pack_vals.update(
                     {
@@ -309,7 +309,6 @@ class DeliveryCarrier(models.Model):
             )
 
         return vals
-
 
     def yurtici_rate_shipment(self, order):
         """There's no public API so use rules for calculation."""

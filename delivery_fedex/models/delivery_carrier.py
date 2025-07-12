@@ -1,7 +1,6 @@
 # Copyright 2025 Erol Develi (https://github.com/erlinberg)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from datetime import datetime
 import base64
 import logging
 from datetime import datetime
@@ -465,7 +464,9 @@ class DeliveryCarrier(models.Model):
         data = {
             "workflowName": "ETDPreshipment",
             "carrierCode": self.carrier_code,
-            "originCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
+            "originCountryCode": (
+                picking.location_id.warehouse_id.partner_id.country_id.code
+            ),
             "destinationCountryCode": picking.partner_id.country_id.code,
             "shipmentDate": fields.Date.today().strftime("%Y-%m-%d") + "T12:00:00",
             "metaData": [
@@ -879,7 +880,9 @@ class DeliveryCarrier(models.Model):
 
             payload = {
                 "accountNumber": {"value": str(self.fedex_account_number)},
-                "senderCountryCode": picking.location_id.warehouse_id.partner_id.country_id.code,
+                "senderCountryCode": (
+                    picking.location_id.warehouse_id.partner_id.country_id.code
+                ),
                 "deletionControl": "DELETE_ALL_PACKAGES",
                 "trackingNumber": picking.carrier_tracking_ref,
                 "carrierCode": self.carrier_code,
