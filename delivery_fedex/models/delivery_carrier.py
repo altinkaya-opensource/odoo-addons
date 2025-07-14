@@ -433,7 +433,7 @@ class DeliveryCarrier(models.Model):
         account_move.picking_ids.ensure_one()
 
         data = self._prepare_fedex_base_rate_data(
-            account_move.picking_ids.warehouse_id,
+            account_move.picking_ids.location_id.warehouse_id,
             account_move.partner_shipping_id,
             fields.Date.today(),
         )
@@ -807,7 +807,11 @@ class DeliveryCarrier(models.Model):
                 master_tracking_number,
             )
 
-            if self.payment_type != "customer_pays":
+            price = 0.0
+
+            if self.payment_type != "customer_pays" and shipment_data[
+                "completedShipmentDetail"
+            ].get("shipmentRating"):
                 shipment_rate_details = shipment_data["completedShipmentDetail"][
                     "shipmentRating"
                 ]["shipmentRateDetails"][0]
@@ -823,6 +827,18 @@ class DeliveryCarrier(models.Model):
                 picking.carrier_total_deci = shipment_rate_details[
                     "totalBillingWeight"
                 ]["value"]
+            elif self.payment_type != "customer_pays" and not shipment_data[
+                "completedShipmentDetail"
+            ].get("shipmentRating"):
+                _logger.error(
+                    "FedEx shipment %s does not have shipment rating "
+                    "information. Shipping cost will be set to 0.",
+                    picking.name,
+                )
+                picking.carrier_shipping_cost = 0.0
+                picking.carrier_shipping_vat = 0.0
+                picking.carrier_shipping_total = 0.0
+                picking.carrier_total_deci = 0.0
 
             for sequence, pack_label_data in enumerate(shipment_data["pieceResponses"]):
                 label_filename = (
@@ -894,6 +910,9 @@ class DeliveryCarrier(models.Model):
             response = fedex_request.cancel_shipment(payload)
 
             canceled = response["output"].get("cancelledShipment", False)
+
+            if canceled:
+                self.fedex_cancel_pickup(picking)
 
             res = res and canceled
 
@@ -1099,4 +1118,61 @@ class DeliveryCarrier(models.Model):
             )
         )
 
+        picking.fedex_pickup_confirmation_code = response["output"][
+            "pickupConfirmationCode"
+        ]
+        picking.fedex_pickup_date = datetime.strptime(
+            nearest_pickup["date"], "%Y-%m-%d"
+        )
+        picking.fedex_pickup_location = response["output"].get("location", False)
+
         return True
+
+    def fedex_cancel_pickup(self, picking):
+        """
+        Cancel a FedEx pickup for the given picking.
+        """
+        fedex_request = FedExRequest(
+            client_id=self.fedex_client_id,
+            client_secret=self.fedex_client_secret,
+            delivery_carrier=self,
+            prod=self.prod_environment,
+        )
+
+        if not picking.fedex_pickup_confirmation_code:
+            return True  # Nothing to cancel
+
+        payload = {
+            "associatedAccountNumber": {"value": str(self.fedex_account_number)},
+            "carrierCode": self.carrier_code,
+            "pickupConfirmationCode": picking.fedex_pickup_confirmation_code,
+            "scheduledDate": picking.fedex_pickup_date.strftime("%Y-%m-%d"),
+        }
+
+        if self.carrier_code == "FDXE":
+            payload["location"] = picking.fedex_pickup_location
+
+        response = fedex_request.cancel_pickup(payload)
+
+        if not response.get("output"):
+            raise UserError(_("Failed to cancel FedEx pickup."))
+
+        picking.invoice_ids[0].message_post(
+            body=_(
+                "FedEx pickup canceled successfully.\n"
+                "Pickup Confirmation Number: %(pickupNo)s",
+                pickupNo=response["output"]["pickupConfirmationCode"],
+            )
+        )
+
+        return True
+
+    def clear_delivery_data(self, picking):
+        res = super().clear_delivery_data(picking)
+
+        # Clear FedEx Pickup data
+        picking.fedex_pickup_confirmation_code = False
+        picking.fedex_pickup_date = False
+        picking.fedex_pickup_location = False
+
+        return res

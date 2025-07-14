@@ -31,6 +31,7 @@ FEDEX_SERVICES_URL = {
     "upload_documents": "documents/v1/etds/encodedmultiupload",
     "pickup_availability": "pickup/v1/pickups/availabilities",
     "pickup_request": "pickup/v1/pickups",
+    "pickup_cancel": "pickup/v1/pickups/cancel",
 }
 
 REQUEST_TIMEOUT = 10  # seconds, used in requests
@@ -188,4 +189,11 @@ class FedExRequest:
         Request a pickup from FedEx with the given data.
         """
         res = self._send_api_request("POST", "pickup_request", data=data)
+        return res.json()
+
+    def cancel_pickup(self, data):
+        """
+        Cancel a FedEx pickup with the given data.
+        """
+        res = self._send_api_request("PUT", "pickup_cancel", data=data)
         return res.json()
