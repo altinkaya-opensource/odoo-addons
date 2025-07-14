@@ -180,27 +180,28 @@ class DeliveryCarrier(models.Model):
             vals["tracking_number"] = response.OrgReceiverCustId
             vals["exact_price"] = 0.0
 
-            zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+            if self.shipment_level == "send_shipment_and_barcode":
+                zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
 
-            if zebra_zpl is None:
-                raise ValidationError(
-                    _(
-                        "Aras Kargo haven't provided any label for shipments. "
-                        "Please contact Aras Kargo support."
+                if zebra_zpl is None:
+                    raise ValidationError(
+                        _(
+                            "Aras Kargo haven't provided any label for shipments. "
+                            "Please contact Aras Kargo support."
+                        )
                     )
-                )
 
-            self.env["ir.attachment"].create(
-                {
-                    "name": f"{picking.name}_aras_label.zpl",
-                    "datas": base64.b64encode(
-                        zebra_zpl.string[0].encode("utf-8")
-                    ).decode("utf-8"),
-                    "res_model": "stock.picking",
-                    "res_id": picking.id,
-                    "is_delivery_barcode": True,
-                }
-            )
+                self.env["ir.attachment"].create(
+                    {
+                        "name": f"{picking.name}_aras_label.zpl",
+                        "datas": base64.b64encode(
+                            zebra_zpl.string[0].encode("utf-8")
+                        ).decode("utf-8"),
+                        "res_model": "stock.picking",
+                        "res_id": picking.id,
+                        "is_delivery_barcode": True,
+                    }
+                )
 
             result.append(vals)
         return result
