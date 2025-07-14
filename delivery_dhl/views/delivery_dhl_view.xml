@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <record id="view_delivery_carrier_form" model="ir.ui.view">
+    <field name="model">delivery.carrier</field>
+    <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//notebook" position='inside'>
+      <page
+        string="DHL Configuration"
+        attrs="{'invisible': [('delivery_type', '!=', 'dhl')]}"
+      >
+        <group>
+        <group string="Connection">
+          <field
+          name="dhl_username"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+          <field
+          name="dhl_password"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          password="True"
+          />
+          <field
+          name="dhl_account_number"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+        </group>
+        <group string="Delivery Information">
+          <field
+          name="service_type"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+          <field
+          name="customs_payment_type"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+          <field
+          name="pickup_type"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+          <field
+          name="pickup_location"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+          <field
+          name="pickup_close_time"
+          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+          />
+        </group>
+        </group>
+      </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>
