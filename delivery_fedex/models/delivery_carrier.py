@@ -527,14 +527,14 @@ class DeliveryCarrier(models.Model):
         """
 
         # Prepare the commercial invoice
-        document_id = self._upload_fedex_commercial_invoice(picking)
-        if document_id is None:
-            raise UserError(
-                _(
-                    "Failed to prepare and upload the Electronic Trade Document "
-                    "for FedEx shipment."
-                )
-            )
+        # document_id = self._upload_fedex_commercial_invoice(picking)
+        # if document_id is None:
+        #     raise UserError(
+        #         _(
+        #             "Failed to prepare and upload the Electronic Trade Document "
+        #             "for FedEx shipment."
+        #         )
+        #     )
 
         data = {
             "accountNumber": {"value": str(self.fedex_account_number)},
@@ -611,17 +611,17 @@ class DeliveryCarrier(models.Model):
                     else 203,
                 },
                 "requestedPackageLineItems": [],
-                "shipmentSpecialServices": {
-                    "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
-                    "etdDetail": {
-                        "attachedDocuments": [
-                            {
-                                "documentType": "COMMERCIAL_INVOICE",
-                                "documentId": document_id,
-                            }
-                        ]
-                    },
-                },
+                # "shipmentSpecialServices": {
+                #     "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
+                #     "etdDetail": {
+                #         "attachedDocuments": [
+                #             {
+                #                 "documentType": "COMMERCIAL_INVOICE",
+                #                 "documentId": document_id,
+                #             }
+                #         ]
+                #     },
+                # },
             },
             "labelResponseOptions": "LABEL",
             # Add the commercial invoice details
