@@ -350,6 +350,8 @@ class DeliveryCarrier(models.Model):
         :param picking: record of stock.picking
         :return:
         """
+        picking.ensure_one()
+
         # Clear the barcodes
         self.env["ir.attachment"].search(
             [
