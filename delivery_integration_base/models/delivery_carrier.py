@@ -344,37 +344,45 @@ class DeliveryCarrier(models.Model):
 
         return True
 
-    def _clear_delivery_data(self, pickings):
+    def clear_delivery_data(self, picking):
         """
         Clear delivery fields for pickings
-        :param pickings: recordset of stock.picking
+        :param picking: record of stock.picking
         :return:
         """
-        for picking in pickings:
-            # Clear the barcodes
-            self.env["ir.attachment"].search(
-                [
-                    ("res_model", "=", "stock.picking"),
-                    ("res_id", "=", picking.id),
-                    ("is_delivery_barcode", "=", True),
-                ]
-            ).unlink()
+        picking.ensure_one()
 
-            # Clear the delivery fields
-            picking.carrier_tracking_ref = False
-            picking.shipping_number = False
-            picking.tracking_state_history = False
-            picking.carrier_received_by = False
-            picking.date_delivered = False
-            picking.carrier_shipping_cost = False
-            picking.carrier_shipping_vat = False
-            picking.carrier_shipping_total = False
-            picking.carrier_total_deci = False
+        # Clear the barcodes
+        self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", "stock.picking"),
+                ("res_id", "=", picking.id),
+                ("is_delivery_barcode", "=", True),
+            ]
+        ).unlink()
+
+        # Clear the delivery fields
+        picking.carrier_tracking_ref = False
+        picking.shipping_number = False
+        picking.tracking_state_history = False
+        picking.carrier_received_by = False
+        picking.date_delivered = False
+        picking.carrier_shipping_cost = False
+        picking.carrier_shipping_vat = False
+        picking.carrier_shipping_total = False
+        picking.carrier_total_deci = False
+
+        # Clear the invoice delivery reference
+        picking.invoice_ids.write(
+            {
+                "delivery_ref_no": False,
+            }
+        )
 
     def cancel_shipment(self, pickings):
         res = super().cancel_shipment(pickings)
         for picking in pickings:
             if picking.delivery_state != "canceled_shipment":
                 continue
-            self._clear_delivery_data(picking)
+            self.clear_delivery_data(picking)
         return res

@@ -20,7 +20,12 @@ class AccountMove(models.Model):
                     picking.shipping_number = picking.carrier_tracking_ref
                     move.delivery_ref_no = picking.carrier_tracking_ref
             except Exception as e:
-                _logger.error("Error sending shipment from invoice: %s", e)
+                _logger.error(
+                    "Error sending shipment from invoice for move %s: %s",
+                    move.id,
+                    e,
+                    exc_info=True,
+                )
                 raise UserError(_("Error sending shipment from invoice: %s", e)) from e
 
         return True
