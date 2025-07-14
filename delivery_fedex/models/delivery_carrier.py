@@ -487,14 +487,18 @@ class DeliveryCarrier(models.Model):
             data["metaData"][0]["fileContentBase64"] = base64.b64encode(
                 self.env["ir.actions.report"]._render_py3o(
                     self.fedex_commercial_invoice.report_name,
-                    res_ids=picking.invoice_ids.ids,
+                    res_ids=picking.invoice_ids.filtered(lambda m: m.state == "posted")[
+                        0
+                    ].ids,
                 )[0]
             ).decode("utf-8")
         else:
             data["metaData"][0]["fileContentBase64"] = base64.b64encode(
                 self.env["ir.actions.report"]._render_qweb_pdf(
                     self.fedex_commercial_invoice.report_name,
-                    res_ids=picking.invoice_ids.ids,
+                    res_ids=picking.invoice_ids.filtered(lambda m: m.state == "posted")[
+                        0
+                    ].ids,
                 )[0]
             ).decode("utf-8")
 
@@ -1084,7 +1088,7 @@ class DeliveryCarrier(models.Model):
         if not response.get("output"):
             raise UserError(_("Failed to request FedEx pickup."))
 
-        picking.invoice_ids.message_post(
+        picking.invoice_ids.filtered(lambda m: m.state == "posted")[0].message_post(
             body=_(
                 "FedEx pickup requested successfully on "
                 "%(date)s at %(time)s.\n"
