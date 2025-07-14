@@ -173,8 +173,7 @@ class DeliveryCarrier(models.Model):
             if not response:
                 result.append(vals)
                 continue
-            vals["tracking_number"] = response.cargoKey
-            vals["exact_price"] = 0.0
+            result.append({"tracking_number": response.cargoKey, "exact_price": 0.0})
             result.append(vals)
         return result
 
