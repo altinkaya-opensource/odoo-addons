@@ -19,8 +19,12 @@
 #
 ##############################################################################
 
+import logging
+
 from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
+
+_logger = logging.getLogger(__name__)
 
 
 class StockPicking(models.Model):
@@ -212,3 +216,55 @@ class StockPicking(models.Model):
             )
         ]
         return action
+
+    def button_validate(self):
+        """
+        Picking Auto Invoicing
+        """
+        res = super().button_validate()
+        partner_location = self.env.ref("stock.stock_location_customers")
+
+        for picking in self.filtered(
+            lambda p: p.state == "done"
+            and p.picking_type_id.code == "outgoing"
+            and p.sale_id
+            and p.location_dest_id == partner_location
+        ):
+            commercial_partner = picking.partner_id.commercial_partner_id
+            sale_id = picking.sale_id
+            warehouse_id = picking.picking_type_id.warehouse_id
+            warehouse_name_suffix = warehouse_id.name.lower()
+
+            if commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing:
+                continue
+
+            if sale_id.partner_id.country_id.code == "TR":
+                journal_id = 1  # Satış Faturası
+
+            else:
+                if sale_id.currency_id.name == "EUR":
+                    journal_id = 19  # Export Invoice (EUR)
+                else:
+                    journal_id = 48  # USD Invoice
+
+            invoicing_wizard = self.env["stock.invoice.onshipping"].create(
+                {"sale_journal": journal_id}
+            )
+            invoice_action = invoicing_wizard.action_generate()
+            invoice = self.env["account.move"].browse(invoice_action.get("res_id"))
+            if invoice:
+                try:
+                    invoice.action_post()
+                    report = self.env.ref(
+                        f"l10n_tr_account_einvoice_base.action_report_einvoice_{warehouse_name_suffix}"
+                    )
+                    report.print_document(record_ids=invoice.ids)
+
+                except Exception as e:
+                    _logger.warning(
+                        "Failed to post invoice for picking %s: %s",
+                        picking.name,
+                        e,
+                    )
+
+        return res

@@ -8,6 +8,7 @@
 
             <field name="partner_shipping_id" position="after">
                 <field name="packed" />
+                <field name="block_autoinvoicing" />
             </field>
 
         <xpath
