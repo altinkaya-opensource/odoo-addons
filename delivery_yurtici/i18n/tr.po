@@ -29,7 +29,8 @@ msgstr "Çıkış yapmak için gerekli bir alandır."
 msgid ""
 "%s\n"
 "Package count must be greater than 0."
-msgstr ""%s\n"
+msgstr ""
+"%s\n"
 "Pakete sayısı 0'dan büyük olmalıdır. Lütfen paket bilgisinizi giriniz."
 
 #. module: delivery_yurtici
@@ -39,7 +40,8 @@ msgstr ""%s\n"
 msgid ""
 "%s\n"
 "Total weight must be greater than 0."
-msgstr ""%s\n"
+msgstr ""
+"%s\n"
 "Toplam ağırlık 0'dan büyük olmalıdır. Lütfen paket bilgisinizi giriniz."
 
 #. module: delivery_yurtici
