@@ -542,7 +542,7 @@ msgstr "Sevk Teslimat Durumu Güncelle"
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__picking_total_deci
 msgid "Picking Total Deci"
-msgstr "Sevk Toplam Desi"
+msgstr "Hesaplanan Sistem Desi"
 
 #. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_stock_picking__picking_total_weight
