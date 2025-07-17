@@ -6,46 +6,54 @@
     <field name="arch" type="xml">
       <xpath expr="//notebook" position='inside'>
       <page
-        string="DHL Configuration"
-        attrs="{'invisible': [('delivery_type', '!=', 'dhl')]}"
-      >
+          string="DHL Configuration"
+          attrs="{'invisible': [('delivery_type', '!=', 'dhl')]}"
+        >
         <group>
         <group string="Connection">
           <field
-          name="dhl_username"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
+                name="dhl_api_key"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
           <field
-          name="dhl_password"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          password="True"
-          />
+                name="dhl_api_secret"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+                password="True"
+              />
           <field
-          name="dhl_account_number"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
+                name="dhl_account_number"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
         </group>
         <group string="Delivery Information">
           <field
-          name="service_type"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
+                name="dhl_service_type"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
           <field
-          name="customs_payment_type"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
+                name="dhl_pickup_location"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
           <field
-          name="pickup_type"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
-          <field
-          name="pickup_location"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
-          <field
-          name="pickup_close_time"
-          attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-          />
+                name="dhl_pickup_close_time"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
+            <field
+                name="dhl_label_dpi"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
+            <field
+                name="dhl_label_type"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
+            <field
+                name="dhl_commercial_invoice"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
+            <field
+                name="dhl_is_customs_declarable"
+                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
+              />
         </group>
         </group>
       </page>

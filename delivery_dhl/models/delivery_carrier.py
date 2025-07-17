@@ -2,70 +2,38 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
-from datetime import datetime
+import logging
+from datetime import timedelta
 
-import phonenumbers
+import pytz
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 from .dhl_request import DHLRequest
 
-FEDEX_SERVICES = [
-    ("INTERNATIONAL_ECONOMY", "International Economy"),
-    ("INTERNATIONAL_FIRST", "International First"),
-    ("INTERNATIONAL_PRIORITY", "International Priority"),
-    ("INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
+DHL_SERVICES = [
+    ("E", "Express 9:00"),
+    ("Y", "Express 12:00"),
+    ("P", "Express Worldwide"),
 ]
 
-FEDEX_PICKUP_TYPES = [
-    ("CONTACT_FEDEX_TO_SCHEDULE", "Contact DHL to Schedule"),
-    ("DROPOFF_AT_FEDEX_LOCATION", "Dropoff at DHL Location"),
-    ("USE_SCHEDULED_PICKUP", "Use Scheduled Pickup"),
-]
-
-FEDEX_PAYMENT_TYPES = [
-    ("SENDER", "Sender"),
-    ("RECIPIENT", "Recipient"),
-    ("THIRD_PARTY", "Third Party"),
-    ("COLLECT", "Collect"),
-]
-
-FEDEX_CARRIER_CODE = [
-    ("FDXE", "DHL Express"),
-    ("FDXG", "DHL Ground"),
-    ("FXSP", "DHL SmartPost"),
-    ("FXCC", "DHL Custom Critical"),
-]
-
-FEDEX_UOM_CODES = {
-    "Units": "Ea",
+DHL_STATUS_CODE_MAP = {
+    "PU": "in_transit",
+    "PL": "in_transit",
+    "AF": "in_transit",
+    "DF": "in_transit",
+    "AR": "in_transit",
+    "WC": "in_transit",
+    "CR": "in_transit",
+    "RR": "in_transit",
+    "OK": "customer_delivered",
 }
 
-
-def normalize_turkish(text):
-    """
-    Normalize Turkish characters to their English equivalents.
-    This is necessary because DHL API's labels does not support Turkish
-    characters and we need to ensure that the addresses are correctly formatted.
-    """
-    turkish_map = {
-        "ç": "c",
-        "Ç": "C",
-        "ğ": "g",
-        "Ğ": "G",
-        "ı": "i",
-        "İ": "I",
-        "ö": "o",
-        "Ö": "O",
-        "ş": "s",
-        "Ş": "S",
-        "ü": "u",
-        "Ü": "U",
-    }
-    return "".join(turkish_map.get(char, char) for char in text)
+_logger = logging.getLogger(__name__)
 
 
+# TODO: Check if customer payment is needed
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
     delivery_type = fields.Selection(
@@ -75,28 +43,40 @@ class DeliveryCarrier(models.Model):
 
     # DHL uses different client IDs and secrets for different services
     # and tracking, so we need to store them separately.
-    dhl_username = fields.Char()
-    dhl_password = fields.Char()
+    dhl_api_key = fields.Char()
+    dhl_api_secret = fields.Char()
 
     dhl_account_number = fields.Char(help="DHL Account Number")
 
-    service_type = fields.Selection(selection=FEDEX_SERVICES)
+    dhl_service_type = fields.Selection(selection=DHL_SERVICES)
 
-    pickup_type = fields.Selection(selection=FEDEX_PICKUP_TYPES)
-    pickup_location = fields.Char()
-    pickup_close_time = fields.Char()
+    dhl_pickup_location = fields.Char()
+    dhl_pickup_close_time = fields.Char()
 
-    # Special instructions can be added to pickup
-
-    customs_payment_type = fields.Selection(
-        selection=FEDEX_PAYMENT_TYPES,
+    dhl_label_dpi = fields.Selection(
+        selection=[("200", "200 DPI"), ("300", "300 DPI")],
+        string="Label DPI",
+        default="300",
+        help="DPI for the ZPL DHL label.",
     )
 
-    carrier_code = fields.Selection(selection=FEDEX_CARRIER_CODE)
+    dhl_label_type = fields.Selection(
+        selection=[
+            ("pdf", "PDF"),
+            ("zpl", "ZPL"),
+        ],
+        default="pdf",
+        help="Label type for the DHL label.",
+    )
 
-    stock_height = fields.Float(
-        help="Height of the stock in inches for GoDEX printer",
-        default=6.0,
+    dhl_commercial_invoice = fields.Many2one(
+        "ir.actions.report",
+        help="DHL Commercial Invoice report to be used for shipments.",
+    )
+
+    dhl_is_customs_declarable = fields.Boolean(
+        default=True,
+        help="Whether the shipment is customs declarable or not.",
     )
 
     def _get_estimated_weight_from_order_line(self, order_line):
@@ -106,23 +86,27 @@ class DeliveryCarrier(models.Model):
         """
         Prepare DHL address data from partner.
         """
-        return {
+        address_data = {
             "postalCode": partner.zip or "",
-            "cityName": normalize_turkish(partner.city or ""),
+            "cityName": partner.city or partner.state_id.name or "",
             "countryCode": partner.country_id.code or "TR",
-            "addressLine1": normalize_turkish(partner.street or "-"),
-            "addressLine2": normalize_turkish(partner.street2 or "-"),
+            "addressLine1": partner.street,
         }
+
+        if partner.street2:
+            address_data["addressLine2"] = partner.street2
+
+        return address_data
 
     def _prepare_dhl_contact(self, partner):
         """
         Prepare DHL contact data from partner.
         """
         return {
-            "fullName": normalize_turkish(partner.name),
+            "fullName": partner.name,
             "email": partner.email,
             "phone": partner.phone or partner.mobile or "",
-            "companyName": normalize_turkish(partner.commercial_partner_id.name),
+            "companyName": partner.commercial_partner_id.name,
         }
 
     def _prepare_dhl_dummy_packages(self, order):
@@ -149,9 +133,9 @@ class DeliveryCarrier(models.Model):
             {
                 "weight": average_pack_weight,
                 "dimensions": {
-                    "length": 0.1,
-                    "width": 0.1,
-                    "height": 0.1,
+                    "length": 1,
+                    "width": 1,
+                    "height": 1,
                 },
             }
             for __ in range(avg_weighted_package_count)
@@ -176,104 +160,56 @@ class DeliveryCarrier(models.Model):
 
         return packages
 
-    # TODO: Prepare base customs data for DHL shipments.
-    # def _prepare_dhl_base_customs_data(self, company_id, partner_id):
-    #     """
-    #     Prepare base customs data for DHL shipments.
-    #     """
-    #     return {
-    #         "dutiesPayment": {
-    #             "paymentType": self.customs_payment_type,
-    #             "payor": {
-    #                 "responsibleParty": {
-    #                     "accountNumber": {
-    #                         "value": str(self.dhl_account_number)
-    #                         if self.customs_payment_type == "SENDER"
-    #                         else str(partner_id.dhl_customer_number or "")
-    #                     },
-    #                     "contact": self._prepare_dhl_contact(company_id.partner_id)
-    #                     if self.customs_payment_type == "SENDER"
-    #                     else self._prepare_dhl_contact(partner_id),
-    #                     "address": self._prepare_dhl_address(company_id.partner_id)
-    #                     if self.customs_payment_type == "SENDER"
-    #                     else self._prepare_dhl_address(partner_id),
-    #                 }
-    #             },
-    #         },
-    #         "commodities": [],
-    #     }
+    def _prepare_dhl_customs_data(self, picking, shipping_weight):
+        """
+        Prepare estimated customs data for DHL
+        shipments on the picking and shipping weight.
+        """
+        lineItems = []
 
-    # def _prepare_dhl_commodities_entry(
-    #     self, product, quantity, customs_value, customs_currency, weight
-    # ):
-    #     """
-    #     Prepare a single commodity entry for DHL customs data.
-    #     """
-    #     return {
-    #         "customsValue": {
-    #             "currency": customs_currency,
-    #             "amount": customs_value,
-    #         },
-    #         "unitPrice": {
-    #             "currency": customs_currency,
-    #             "amount": customs_value / quantity,
-    #         },
-    #         "description": product.categ_id.hs_code_id.with_context(
-    #             lang="en_US"
-    #         ).description,
-    #         "name": product.with_context(lang="en_US").name,
-    #         "countryOfManufacture": product.country_of_origin.code or "TR",
-    #         "quantity": quantity,
-    #         "harmonizedCode": product.categ_id.hs_code_id.hs_code,
-    #         "quantityUnits": "Ea",
-    #         "weight": {
-    #             "units": "KG",
-    #             "value": weight,
-    #         },
-    #     }
+        # Get non-delivery lines from the sale order
+        lines_to_ship = picking.sale_id.order_line.filtered(
+            lambda l: l.product_id.type in ["product", "consu"]
+            and not l.is_delivery
+            and not l.display_type
+            and l.product_uom_qty > 0
+        )
 
-    # def _prepare_dhl_customs_data(self, picking, shipping_weight):
-    #     """
-    #     Prepare estimated customs data for DHL
-    #     shipments on the picking and shipping weight.
-    #     """
-    #     data = self._prepare_dhl_base_customs_data(
-    #         picking.company_id, picking.partner_id
-    #     )
+        average_line_weight = (
+            shipping_weight / len(lines_to_ship) if lines_to_ship else 0.1
+        )
 
-    #     data["commercialInvoice"] = {
-    #         "purpose": picking.sale_id.dhl_shipment_purpose,
-    #     }
+        for lts in lines_to_ship:
+            lineItems.append(
+                {
+                    "number": lts.sequence or 1,
+                    "description": lts.product_id.categ_id.hs_code_id.with_context(
+                        lang="en_US"
+                    ).description
+                    or lts.product_id.name,
+                    "price": round(lts.price_subtotal / lts.product_uom_qty, 3),
+                    "quantity": {
+                        "value": int(lts.product_uom_qty),
+                        "unitOfMeasurement": "PCS",  # TODO: Make configurable
+                    },
+                    "weight": {
+                        "netValue": max(0.1, average_line_weight),
+                        "grossValue": max(0.1, average_line_weight),
+                    },
+                    "manufacturerCountry": lts.product_id.country_of_origin.code
+                    or "TR",
+                    "commodityCodes": [
+                        {
+                            "value": lts.product_id.categ_id.hs_code_id.hs_code,
+                            "typeCode": "outbound",
+                        }
+                    ],
+                }
+            )
 
-    #     # Get non-delivery lines from the sale order
-    #     lines_to_ship = picking.sale_id.order_line.filtered(
-    #         lambda l: l.product_id.type in ["product", "consu"]
-    #         and not l.is_delivery
-    #         and not l.display_type
-    #         and l.product_uom_qty > 0
-    #     )
+        return max(sum(lines_to_ship.mapped("price_subtotal")), 1.0), lineItems
 
-    #     # Estimate the customs value and weight
-    #     # based on the order lines
-    #     data["commodities"] = [
-    #         self._prepare_dhl_commodities_entry(
-    #             ol.product_id,
-    #             ol.product_uom_qty,
-    #             ol.price_subtotal,
-    #             picking.sale_id.currency_id.name,
-    #             shipping_weight / len(lines_to_ship),
-    #         )
-    #         for ol in lines_to_ship
-    #     ]
-
-    #     data["totalCustomsValue"] = {
-    #         "currency": picking.sale_id.currency_id.name,
-    #         "amount": sum(lines_to_ship.mapped("price_subtotal")),
-    #     }
-
-    #     return data
-
-    def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date):
+    def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date_str):
         """
         Prepare base rate data for DHL API requests.
         """
@@ -285,10 +221,15 @@ class DeliveryCarrier(models.Model):
             "accounts": [
                 {
                     "typeCode": "shipper",
-                    "accountNumber": {"value": str(self.dhl_account_number)},
+                    "number": self.dhl_account_number,
                 }
             ],
-            "plannedShippingDateAndTime": delivery_date.strftime("%Y-%m-%dT%H:%M:%S"),
+            "productsAndServices": [
+                {
+                    "productCode": self.dhl_service_type,
+                }
+            ],
+            "plannedShippingDateAndTime": delivery_date_str,
             "unitOfMeasurement": "metric",
             "isCustomsDeclarable": True,
         }
@@ -299,7 +240,9 @@ class DeliveryCarrier(models.Model):
         based on the sale order.
         """
         data = self._prepare_dhl_base_rate_data(
-            order.company_id, order.partner_id, order.expected_date
+            order.company_id,
+            order.partner_id,
+            self._prepare_dhl_estimated_pickup_date(),
         )
 
         # We use dummy packages because when getting rates
@@ -308,165 +251,174 @@ class DeliveryCarrier(models.Model):
 
         return data
 
-    def _prepare_dhl_account_rate_data(self, account_move):
+    def _prepare_dhl_estimated_pickup_date(self, cutoff_hour=14):
         """
-        Prepare rate data for DHL API requests
-        based on the account move (invoice).
+        Prepare estimated pickup date based on the current time.
+        If the current time is before `cutoff_hour`, add 30 minutes to the current time.
+        Otherwise, set the pickup time to the next day at `next_day_hour`.
         """
-        account_move.picking_ids.ensure_one()
+        now_utc = fields.Datetime.now()
 
-        data = self._prepare_dhl_base_rate_data(
-            account_move.company_id,
-            account_move.partner_shipping_id,
-            account_move.invoice_date or fields.Date.today(),
+        tz = pytz.timezone(self.env.user.tz or "UTC")
+        now_local = pytz.utc.localize(now_utc).astimezone(tz)
+        if now_local.hour < cutoff_hour:
+            estimated_datetime = now_local + timedelta(minutes=30)
+        else:
+            estimated_datetime = (now_local + timedelta(days=1)).replace(
+                hour=cutoff_hour, minute=0, second=0, microsecond=0
+            )
+
+        tz_str = estimated_datetime.strftime("%z")
+
+        return estimated_datetime.strftime(
+            f"%Y-%m-%dT%H:%M:%SGMT{tz_str[:3]}:{tz_str[3:]}"
         )
 
+    def _prepare_dhl_commercial_invoice_data(self, invoices):
+        """
+        Prepare commercial invoice data for DHL API requests
+        based on the invoice.
+        """
+        if self.dhl_commercial_invoice.report_type == "py3o":
+            return base64.b64encode(
+                self.env["ir.actions.report"]._render_py3o(
+                    self.dhl_commercial_invoice.report_name,
+                    res_ids=invoices.ids,
+                )[0]
+            ).decode("utf-8")
+        else:
+            return base64.b64encode(
+                self.env["ir.actions.report"]._render_qweb_pdf(
+                    self.dhl_commercial_invoice.report_name,
+                    res_ids=invoices.ids,
+                )[0]
+            ).decode("utf-8")
+
+    def _prepare_dhl_packing_data(self, picking):
+        """
+        Get packing data for DHL API requests
+        based on the stock picking.
+        """
         packages = []
 
-        for pack in account_move.picking_ids.package_ids:
-            # TODO: Use Odoo's UOM conversion tools to convert all dimensions to meters
-            length_m = pack.pack_length / 100.0
-            width_m = pack.width / 100.0
-            height_m = pack.height / 100.0
+        for pack in picking.package_ids:
             packages.append(
                 {
-                    "weight": pack.shipping_weight,
+                    "referenceNumber": len(packages) + 1,
+                    "weight": round(pack.shipping_weight, 3),
                     "dimensions": {
-                        "length": length_m,
-                        "width": width_m,
-                        "height": height_m,
+                        "length": round(pack.pack_length, 3),
+                        "width": round(pack.width, 3),
+                        "height": round(pack.height, 3),
                     },
                 }
             )
+            pack.sequence = len(packages)
 
-        data["packages"] = packages
-
-        return data
+        return packages
 
     def _prepare_dhl_shipment_data(self, picking):
         """
         Prepare shipment data for DHL API requests
         based on the stock picking.
         """
-        data = {
-            "accountNumber": {"value": str(self.dhl_account_number)},
-            "shipAction": "CONFIRM",
-            "requestedShipment": {
-                "shipper": {
-                    "address": self._prepare_dhl_address(picking.company_id.partner_id),
-                    "contact": self._prepare_dhl_contact(picking.company_id.partner_id),
+
+        warehouse_id = picking.location_id.warehouse_id
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
+
+        totalDeclaredValue, lineItems = self._prepare_dhl_customs_data(
+            picking, picking.shipping_weight
+        )
+
+        return {
+            "accounts": [{"typeCode": "shipper", "number": self.dhl_account_number}],
+            "customerDetails": {
+                "shipperDetails": {
+                    "postalAddress": self._prepare_dhl_address(warehouse_id.partner_id),
+                    "contactInformation": self._prepare_dhl_contact(
+                        warehouse_id.partner_id
+                    ),
                 },
-                "origin": {
-                    "address": self._prepare_dhl_address(picking.company_id.partner_id),
-                    "contact": self._prepare_dhl_contact(picking.company_id.partner_id),
+                "receiverDetails": {
+                    "postalAddress": self._prepare_dhl_address(picking.partner_id),
+                    "contactInformation": self._prepare_dhl_contact(picking.partner_id),
                 },
-                "soldTo": {
-                    "address": self._prepare_dhl_address(picking.partner_id),
-                    "contact": self._prepare_dhl_contact(picking.partner_id),
-                },
-                "recipients": [
-                    {
-                        "address": self._prepare_dhl_address(picking.partner_id),
-                        "contact": self._prepare_dhl_contact(picking.partner_id),
-                    }
-                ],
-                "serviceType": self.service_type,
-                "preferredCurrency": picking.sale_id.currency_id.name,
-                "shipDatestamp": picking.date.strftime("%Y-%m-%d"),
-                "rateRequestType": ["ACCOUNT", "PREFERRED"],
-                "pickupType": self.pickup_type,
-                "packagingType": "YOUR_PACKAGING",
-                "shippingChargesPayment": {
-                    "paymentType": "SENDER" if self.payment_type else "RECIPIENT",
-                    "payor": {
-                        "responsibleParty": {
-                            "address": self._prepare_dhl_address(picking.company_id)
-                            if self.payment_type == "sender_pays"
-                            else self._prepare_dhl_address(picking.partner_id),
-                            "accountNumber": {
-                                "value": str(self.dhl_account_number)
-                                if self.payment_type == "sender_pays"
-                                else str(picking.partner_id.dhl_customer_number or "")
-                            },
-                            "contact": self._prepare_dhl_contact(
-                                picking.company_id.partner_id
-                            )
-                            if self.payment_type == "sender_pays"
-                            else self._prepare_dhl_contact(picking.partner_id),
-                        }
-                    },
-                },
-                "customsClearanceDetail": {},
-                "labelSpecification": {
-                    # TODO: Make these values configurable
-                    "labelFormatType": "COMMON2D",
-                    "labelPrintingOrientation": "TOP_EDGE_OF_TEXT_FIRST",
-                    "imageType": "ZPLII",
-                    "labelOrder": "SHIPPING_LABEL_FIRST",
-                    "labelRotation": "NONE",
-                    "labelStockType": "STOCK_4X6",
-                    "resolution": 300,
-                    "customerSpecifiedDetail": {
-                        "docTabContent": {
-                            "docTabContentType": "MINIMUM",
-                        },
-                    },
-                },
-                "requestedPackageLineItems": [],
             },
-            "labelResponseOptions": "LABEL",
-        }
-
-        packages = []
-        total_weight = 0
-
-        for pack in picking.package_ids:
-            packages.append(
-                {
-                    "sequenceNumber": len(packages) + 1,
-                    "weight": {"units": "KG", "value": pack.shipping_weight},
-                    "dimensions": {
-                        "length": pack.pack_length,
-                        "width": pack.width,
-                        "height": pack.height,
-                        "units": pack.length_uom_id.name.upper(),
+            "productCode": self.dhl_service_type,
+            "getRateEstimates": True,
+            "plannedShippingDateAndTime": self._prepare_dhl_estimated_pickup_date(),
+            "pickup": {
+                "isRequested": True,
+                "closeTime": self.dhl_pickup_close_time,
+                "location": self.dhl_pickup_location,
+                "pickupDetails": {
+                    "postalAddress": self._prepare_dhl_address(warehouse_id.partner_id),
+                    "contactInformation": self._prepare_dhl_contact(
+                        warehouse_id.partner_id
+                    ),
+                },
+            },
+            "outputImageProperties": {
+                "encodingFormat": self.dhl_label_type,
+                "printerDPI": int(self.dhl_label_dpi),
+                "imageOptions": [
+                    {
+                        "typeCode": "label",
+                        "templateName": "ECOM26_84_A4_001",
                     },
+                    {
+                        "typeCode": "waybillDoc",
+                        "templateName": "ARCH_8X4_A4_002",
+                        "isRequested": True,
+                    },
+                ],
+            },
+            "documentImages": [
+                {
+                    "typeCode": "CIN",
+                    "imageFormat": "PDF",
+                    "content": self._prepare_dhl_commercial_invoice_data(invoice),
                 }
-            )
-            total_weight += pack.shipping_weight
-            pack.sequence = len(packages)
-
-        data["requestedShipment"]["customsClearanceDetail"] = (
-            self._prepare_dhl_customs_data(picking, total_weight)
-        )
-        data["requestedShipment"]["requestedPackageLineItems"] = packages
-
-        data["requestedShipment"]["totalPackageCount"] = len(packages)
-
-        return data
-
-    def _prepare_dhl_zpl_godex(self, binary_zpl):
-        """
-        Prepare DHL API's ZPL for GoDEX printer.
-        This method modifies the ZPL to fit the GoDEX printer requirements.
-        """
-        res = binary_zpl.decode("utf-8").replace(
-            "^CF,0,0,0^PR12^MD30^PW1200^POI^CI13^LH0,20", ""
-        )
-
-        # height = real size in inches * DPI (300)
-        res = res.replace("^XA", f"^XA^LL{int(self.stock_height * 300)}")
-
-        return res.encode("utf-8")
+            ],
+            "getAdditionalInformation": [
+                {
+                    "typeCode": "pickupDetails",
+                    "isRequested": True,
+                },
+                {
+                    "typeCode": "optionalShipmentData",
+                    "isRequested": True,
+                },
+            ],
+            "content": {
+                "packages": self._prepare_dhl_packing_data(picking),
+                "isCustomsDeclarable": self.dhl_is_customs_declarable,
+                "incoterm": picking.sale_id.incoterm.code,
+                "description": picking.sale_id.name,  # TODO what to write here?
+                "declaredValue": totalDeclaredValue,
+                "declaredValueCurrency": picking.sale_id.currency_id.name,
+                "exportDeclaration": {
+                    "lineItems": lineItems,
+                    "invoice": {
+                        "number": invoice.name,
+                        "date": (invoice.invoice_date or fields.Date.today()).strftime(
+                            "%Y-%m-%d"
+                        ),
+                    },
+                },
+                "unitOfMeasurement": "metric",
+            },
+        }
 
     def dhl_rate_shipment(self, order):
         """
         Get DHL rate for the given sale order.
         """
         dhl_request = DHLRequest(
-            username=self.dhl_username,
-            password=self.dhl_password,
+            api_key=self.dhl_api_key,
+            api_secret=self.dhl_api_secret,
             prod=self.prod_environment,
+            delivery_carrier=self,
         )
         payload = self._prepare_dhl_sale_rate_data(order)
         response = dhl_request.get_rate(payload)
@@ -474,11 +426,12 @@ class DeliveryCarrier(models.Model):
         currency_name = response["exchangeRates"][0]["baseCurrency"]
 
         price = next(
-            [
+            (
                 price_data["price"]
                 for price_data in response["products"][0]["totalPrice"]
-                if price_data["currency"] == currency_name
-            ]
+                if price_data["priceCurrency"] == currency_name
+            ),
+            None,
         )
 
         # If needed, convert the price to the order's currency
@@ -501,97 +454,78 @@ class DeliveryCarrier(models.Model):
             "warning_message": False,
         }
 
-    def dhl_account_rate_shipment(self, account_move):
-        """
-        Get DHL rate for the given account move (invoice).
-        """
-
-        if not account_move.picking_ids:
-            raise UserError(_("Cannot get rates for an invoice without pickings."))
-
-        dhl_request = DHLRequest(
-            client_id=self.dhl_client_id,
-            client_secret=self.dhl_client_secret,
-            prod=self.prod_environment,
-        )
-        payload = self._prepare_dhl_account_rate_data(account_move)
-        rate_data = dhl_request.get_rates(payload)
-
-        price = rate_data.get("price")
-
-        # If needed, convert the price to the order's currency
-        if rate_data.get("currency") != account_move.currency_id.name:
-            currency = self.env["res.currency"].search(
-                [("name", "=", rate_data.get("currency"))], limit=1
-            )
-
-            price = currency._convert(
-                price,
-                account_move.currency_id,
-                account_move.company_id,
-                fields.Date.today(),
-            )
-
-        return price
+    # def dhl_account_rate_shipment(self, account_move):
 
     def dhl_send_shipping(self, pickings):
         """
         Send DHL shipment request for the given pickings.
         """
         dhl_request = DHLRequest(
-            client_id=self.dhl_client_id,
-            client_secret=self.dhl_client_secret,
+            api_key=self.dhl_api_key,
+            api_secret=self.dhl_api_secret,
             prod=self.prod_environment,
+            delivery_carrier=self,
         )
 
         result = []
         for picking in pickings:
             payload = self._prepare_dhl_shipment_data(picking)
-            shipment_data = dhl_request.create_shipment(payload)["output"][
-                "transactionShipments"
-            ][0]
+            shipment_data = dhl_request.create_shipment(payload)
 
-            price = shipment_data["completedShipmentDetail"]["shipmentRating"][
-                "shipmentRateDetails"
-            ][1]["totalNetChargeWithDutiesAndTaxes"]
+            master_tracking_number = shipment_data["shipmentTrackingNumber"]
 
-            master_tracking_number = shipment_data["masterTrackingNumber"]
+            #  TODO: add checks if customer pays
+            price = shipment_data["shipmentCharges"][0]["price"]
+            currency = shipment_data["shipmentCharges"][0]["priceCurrency"]
 
-            picking.carrier_shipping_cost = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalBaseCharge"]
-            picking.carrier_shipping_vat = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalTaxes"]
-            picking.carrier_shipping_total = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalNetChargeWithDutiesAndTaxes"]
-
-            picking.carrier_total_deci = shipment_data["completedShipmentDetail"][
-                "shipmentRating"
-            ]["shipmentRateDetails"][1]["totalBillingWeight"]["value"]
-
-            packs_label_data = []
-            for pack_label_data in shipment_data["pieceResponses"]:
-                pack = picking.package_ids.filtered(
-                    lambda p: p.sequence == pack_label_data["packageSequenceNumber"]
+            # If needed, convert the price to the order's currency
+            if currency != picking.sale_id.currency_id.name:
+                currency = self.env["res.currency"].search(
+                    [("name", "=", currency)], limit=1
                 )
 
-                label_filename = _(
-                    "dhl_label_%(seq_number)s.zpl",
-                    seq_number=pack_label_data["packageSequenceNumber"],
-                )
-                label_binary = base64.b64encode(
-                    self._prepare_dhl_zpl_godex(
-                        base64.b64decode(
-                            pack_label_data["packageDocuments"][0]["encodedLabel"]
-                        )
-                    )
+                price = currency._convert(
+                    price,
+                    picking.sale_id.currency_id,
+                    picking.sale_id.company_id,
+                    fields.Date.today(),
                 )
 
-                packs_label_data[pack] = (label_filename, label_binary)
+            # Set all service-related fields to False for now.
+            picking.carrier_shipping_cost = False
+            picking.carrier_shipping_vat = False
+            picking.carrier_shipping_total = False
+            picking.carrier_total_deci = shipment_data["shipmentDetails"][0][
+                "volumetricWeight"
+            ]
+            picking.carrier_tracking_ref = master_tracking_number
+            picking.shipping_number = master_tracking_number
+            picking.dhl_dispatch_confirmation_number = shipment_data[
+                "dispatchConfirmationNumber"
+            ]
 
-            picking._add_label_data(packs_label_data, self.name)
+            # Save all delivery documents
+            for seq, document_data in enumerate(shipment_data["documents"]):
+                filename = f"dhl_label_{picking.name}_{seq}.{self.carrier_barcode_type}"
+
+                encoded_content = document_data["content"]
+
+                self.env["ir.attachment"].create(
+                    {
+                        "name": filename,
+                        "datas": encoded_content,
+                        "res_model": "stock.picking",
+                        "res_id": picking.id,
+                        "is_delivery_document": True,
+                    }
+                )
+
+            picking.invoice_ids.filtered(lambda m: m.state == "posted")[0].message_post(
+                body=_(
+                    "DHL Pickup scheduled for <strong>%(pickup_date)s</strong>.",
+                    pickup_date=self._prepare_dhl_estimated_pickup_date(),
+                )
+            )
 
             result.append(
                 {
@@ -607,23 +541,45 @@ class DeliveryCarrier(models.Model):
         Cancel DHL shipments for the given pickings.
         """
         dhl_request = DHLRequest(
-            client_id=self.dhl_client_id,
-            client_secret=self.dhl_client_secret,
+            api_key=self.dhl_api_key,
+            api_secret=self.dhl_api_secret,
             prod=self.prod_environment,
+            delivery_carrier=self,
         )
 
-        res = True
-        for picking in pickings.filtered("carrier_tracking_ref"):
+        for picking in pickings:
+            if not picking.dhl_dispatch_confirmation_number:
+                continue
+
             payload = {
-                "accountNumber": {"value": str(self.dhl_account_number)},
-                "senderCountryCode": picking.company_id.partner_id.country_id.code,
-                "deletionControl": "DELETE_ALL_PACKAGES",
-                "trackingNumber": picking.carrier_tracking_ref,
-                "carrierCode": self.carrier_code,
+                "requestorName": self.env.user.name,
+                "reason": "Cancelled by user",
+                "dispatchConfirmationNumber": picking.dhl_dispatch_confirmation_number,
             }
-            res = res and dhl_request.cancel_shipment(payload)["output"].get(
-                "cancelledShipment", False
+
+            success, error_data = dhl_request.cancel_pickup(payload)
+
+            if not success:
+                _logger.error(
+                    "Failed to cancel DHL shipment for picking %s: %s",
+                    picking.name,
+                    error_data,
+                )
+                raise UserError(
+                    _("Failed to cancel DHL shipment: %(data)s", data=error_data)
+                )
+
+            picking.invoice_ids[0].message_post(
+                body=_("DHL pickup has been successfully cancelled.")
             )
+
+        return True
+
+    def clear_delivery_data(self, picking):
+        res = super().clear_delivery_data(picking)
+
+        picking.dhl_dispatch_confirmation_number = False
+        picking.dhl_tracking_url = False
 
         return res
 
@@ -634,73 +590,65 @@ class DeliveryCarrier(models.Model):
             return
 
         dhl_request = DHLRequest(
-            client_id=self.dhl_tracking_client_id,
-            client_secret=self.dhl_tracking_client_secret,
+            api_key=self.dhl_api_key,
+            api_secret=self.dhl_api_secret,
             prod=self.prod_environment,
+            delivery_carrier=self,
         )
 
         payload = {
-            "includeDetailedScans": True,
-            "trackingInfo": [
-                {
-                    "trackingNumberInfo": {
-                        "trackingNumber": picking.carrier_tracking_ref,
-                    },
-                }
-            ],
+            "shipmentTrackingNumber": picking.carrier_tracking_ref,
+            "trackingView": "shipment-details-only",
+            "levelOfDetail": "shipment",
+            "requestControlledAccessDataCodes": True,
         }
 
-        response = dhl_request.tracking_state_update(payload)["output"][
-            "completeTrackResults"
-        ][0]
+        response = dhl_request.tracking_state_update(payload)
 
-        picking.carrier_tracking_ref = response["trackingNumber"]
-        picking.shipping_number = response["trackingNumber"]
+        shipment = response["shipments"][0]
 
-        tracking_events = response["trackResults"][0]["scanEvents"]
+        # Build tracking event history
+        events = shipment.get("events", [])
+        tracking_history_lines = []
 
-        picking.tracking_state_history = "\n".join(
-            [
-                _(
-                    "%(time)s %(date)s - [%(status_code)s] %(event)s",
-                    time=datetime.fromisoformat(e.get("date", "")).strftime("%H:%M:%S")
-                    if e.get("date")
-                    else "",
-                    date=datetime.fromisoformat(e.get("date", "")).strftime("%d/%m/%Y")
-                    if e.get("date")
-                    else "",
-                    status_code=e.get("derivedStatusCode", ""),
-                    event=e.get("eventDescription", ""),
-                )
-                for e in tracking_events
-            ]
-        )
+        for event in events:
+            event_date = event.get("date", "")
+            event_time = event.get("time", "")
+            event_description = event.get("description", "")
+            event_code = event.get("typeCode", "")
 
-        carrier_received_by = response["trackResults"][0]["deliveryDetails"].get(
-            "receivedByName"
-        )
+            # Truncate the description if it's too long
+            # to avoid cluttering the history.
+            if len(event_description) > 65:
+                event_description = event_description[:65] + "..."
 
-        if carrier_received_by:
-            picking.carrier_received_by = carrier_received_by
-
-        date_delivered_iter = next(
-            (
-                d["dateTime"]
-                for d in response["trackResults"][0]["dateAndTimes"]
-                if d["type"] == "ACTUAL_DELIVERY"
-            ),
-            None,
-        )
-
-        date_delivered = (
-            datetime.fromisoformat(date_delivered_iter).strftime("%Y-%m-%d %H:%M:%S")
-            if date_delivered_iter
-            else False
-        )
-
-        if date_delivered:
-            picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
-                "%Y-%m-%d %H:%M:%S"
+            tracking_history_lines.append(
+                f"{event_time} {event_date} - [{event_code}] {event_description}"
             )
 
+        # Save tracking history
+        picking.tracking_state_history = "\n".join(tracking_history_lines)
+
+        last_event = events[-1] if events else None
+
+        if last_event:
+            picking.delivery_state = DHL_STATUS_CODE_MAP.get(
+                last_event.get("typeCode"), "in_transit"
+            )
+            # TODO: Do we need to set the recived_by?
+
+            if last_event.get("typeCode") == "OK":
+                picking.date_delivered = fields.Datetime.to_string(
+                    fields.Datetime.from_string(
+                        # TODO: Check if timezone is an issue hereb
+                        f"{last_event.get("date", "")} {last_event.get("time", "")}"
+                    )
+                )
+
         return True
+
+    def get_tracking_link(self, picking):
+        if picking.carrier_id.delivery_type == "dhl":
+            return picking.dhl_tracking_url
+
+        return super().get_tracking_link(picking)

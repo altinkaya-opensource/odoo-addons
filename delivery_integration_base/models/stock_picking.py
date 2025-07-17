@@ -164,24 +164,24 @@ class StockPicking(models.Model):
                 self._tracking_status_notification()
         return super().write(vals)
 
-    def action_print_label(self):
+    def action_print_delivery_documents(self):
         """
-        Print the delivery barcode labels for the picking
+        Print the delivery documents for the picking.
         """
         for picking in self.filtered("carrier_id"):
-            picking_lables = self.env["ir.attachment"].search(
+            delivery_documents = self.env["ir.attachment"].search(
                 [
                     ("res_model", "=", "stock.picking"),
                     ("res_id", "=", picking.id),
-                    ("is_delivery_barcode", "=", True),
+                    ("is_delivery_document", "=", True),
                 ]
             )
 
-            if picking_lables:
-                for pl in picking_lables:
+            if delivery_documents:
+                for doc in delivery_documents:
                     self.carrier_id.default_printer_id.print_document(
                         report=None,
-                        content=base64.b64decode(pl.datas),
+                        content=base64.b64decode(doc.datas),
                     )
 
     def button_mail_send(self):

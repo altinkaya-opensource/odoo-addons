@@ -2,10 +2,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
+import json
+import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-import requests, base64
+import requests
 
 from odoo import _
 from odoo.exceptions import UserError
@@ -17,20 +19,25 @@ _DHL_API_URL = {
 
 _DHL_SERVICES_URL = {
     "rate": "rates",
-    # "auth": "oauth/token",
     "shipment": "shipments",
-    # "cancel": "ship/v1/shipments/cancel",
-    "tracking": "tracking",
+    "cancel": "pickups/%(dispatchConfirmationNumber)s",
+    "tracking": "shipments/%(shipmentTrackingNumber)s/tracking",
 }
 
 REQUEST_TIMEOUT = 20  # seconds, used in requests
 
+_logger = logging.getLogger(__name__)
+
 
 class DHLRequest:
-    def __init__(self, prod=False, api_key=None, api_secret=None):
+    def __init__(
+        self, prod=False, api_key=None, api_secret=None, delivery_carrier=None
+    ):
         self.api_key = api_key
         self.api_secret = api_secret
         self.api_env = "prod" if prod else "sandbox"
+
+        self.delivery_carrier = delivery_carrier
 
     def _get_service_url(self, service):
         if service not in _DHL_SERVICES_URL:
@@ -38,21 +45,11 @@ class DHLRequest:
 
         return _DHL_API_URL[self.api_env] + "/" + _DHL_SERVICES_URL[service]
 
-    # TODO:
-    # def _check_for_errors(self, response):
-    #     errors = None
-    #     if response.get("errors"):
-    #         errors = [(error["code"], error["message"]) for error in response["errors"]]
+    def _check_for_error(self, response):
+        return response.get("status")
 
-    #     return errors
-
-    # TODO:
-    # def _format_errors(self, errors):
-    #     formatted_result = ""
-    #     for code, message in errors:
-    #         formatted_result += f"Error {code}: {message}\n"
-
-    #     return formatted_result
+    def _format_error(self, response):
+        return f"{response['title']}: {response["message"]} - {response["detail"]}"
 
     def _send_api_request(
         self,
@@ -60,20 +57,24 @@ class DHLRequest:
         service_type,
         content_type="application/json",
         data=None,
+        url_format_params=None,
     ):
         if data is None:
             data = {}
         result = {}
         url = self._get_service_url(service_type)
 
+        if url_format_params is not None:
+            url = url % url_format_params
+
         request_data = {}
         try:
             headers = {
                 "Message-Reference": str(uuid.uuid4()),
-                "Message-Reference-Date": datetime.now(timezone.utc)
+                "Message-Reference-Date": datetime.now(UTC)
                 .isoformat(timespec="seconds")
                 .replace("+00:00", "Z"),  # ISO 8601 in UTC
-                "Plugin-Name": "odoo_delivery_dhl",
+                "Plugin-Name": "altinkaya_odoo_dhl",
                 "Plugin-Version": "16.0.1.0.0",
                 "Shipping-System-Platform-Name": "Odoo",
                 "Shipping-System-Platform-Version": "16.0",
@@ -103,11 +104,37 @@ class DHLRequest:
                     auth=(self.api_key, self.api_secret),
                     **request_data,
                 )
+            elif request_type == "DELETE":
+                res = requests.delete(
+                    url=url,
+                    headers=headers,
+                    timeout=REQUEST_TIMEOUT,
+                    auth=(self.api_key, self.api_secret),
+                    **request_data,
+                )
             else:
-                raise UserError(_("Unsupported request type, only use 'GET', 'POST'"))
+                _logger.error(
+                    "Unsupported request type: %s. Only 'GET', 'POST',"
+                    " and 'DELETE' are supported.",
+                    request_type,
+                )
+                raise UserError(
+                    _("Unsupported request type, only use 'GET', 'POST', 'DELETE'")
+                )
             result = res.json()
+            self.delivery_carrier.log_xml(
+                "---Request:\n"
+                + json.dumps(request_data, indent=4)
+                + "\n\n---Response:\n"
+                + json.dumps(result, indent=4),
+                func=f"DHL - {service_type}",
+            )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
+            _logger.error(
+                "Timeout: the DHL servers did not reply within %s seconds",
+                REQUEST_TIMEOUT,
+            )
             raise UserError(
                 _(
                     "Timeout: the DHL servers did not reply within %(timeout)s seconds",
@@ -115,13 +142,19 @@ class DHLRequest:
                 ),
             ) from tmo
         except Exception as e:
+            _logger.error(
+                f"Error while sending DHL request: {e} - {result if result else ""}"
+            )
             raise UserError(
-                "{error}\n{result}".format(error=e, result=result if result else "")
+                _(
+                    "DHL Error: %(error)s - %(result)s",
+                    error=e,
+                    result=result if result else "",
+                )
             ) from e
 
-        # errors = self._check_for_errors(result)
-        # if errors:
-        #     raise UserError(_(self._format_errors(errors)))
+        if self._check_for_error(result):
+            raise UserError(_(self._format_error(response=result)))
         return res
 
     def get_rate(self, data):
@@ -132,10 +165,14 @@ class DHLRequest:
         res = self._send_api_request("POST", "shipment", data=data)
         return res.json()
 
-    def cancel_shipment(self, data):
-        res = self._send_api_request("PUT", "cancel", data=data)
-        return res.json()
+    def cancel_pickup(self, data):
+        res = self._send_api_request(
+            "DELETE", "cancel", data=data, content_type=None, url_format_params=data
+        )
+        return res.status_code == 200, res.json()
 
     def tracking_state_update(self, data):
-        res = self._send_api_request("POST", "tracking", data=data)
+        res = self._send_api_request(
+            "GET", "tracking", data=data, url_format_params=data
+        )
         return res.json()
