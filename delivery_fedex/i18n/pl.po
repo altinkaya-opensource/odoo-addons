@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-25 13:52+0000\n"
-"PO-Revision-Date: 2025-06-25 13:52+0000\n"
+"POT-Creation-Date: 2025-07-16 13:02+0000\n"
+"PO-Revision-Date: 2025-07-16 13:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_fedex/models/delivery_carrier.py:0
 #, python-format
-msgid ""
-"%(time)s %(date)s - [%(status_code)s] %(event)s\n"
-"Location       : %(city)s, %(state)s, %(country)s\n"
-"Address        : %(address)s, %(postal)s\n"
-"Location ID    : %(location_id)s\n"
-"Location Type  : %(location_type)s\n"
-"Status         : %(status)s (%(event_type)s)\n"
-"Exception      : %(exception)s (Code: %(exception_code)s)\n"
-"Delay          : %(delay_status)s due to %(delay_type)s (%(delay_sube)s)"
+msgid "%(time)s %(date)s - [%(status_code)s] %(event)s"
 msgstr ""
 
 #. module: delivery_fedex
@@ -63,6 +55,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__changeset_change_ids
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__changeset_change_ids
 msgid "Changeset Changes"
 msgstr "Zmiany w zestawie zmian"
 
@@ -72,6 +65,7 @@ msgstr "Zmiany w zestawie zmian"
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__changeset_ids
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__changeset_ids
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__changeset_ids
 msgid "Changesets"
 msgstr ""
 
@@ -88,6 +82,12 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__commercial
 msgid "Commercial"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__fedex_pickup_confirmation_code
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__fedex_pickup_location
+msgid "Confirmation code for the FedEx pickup."
 msgstr ""
 
 #. module: delivery_fedex
@@ -111,6 +111,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_changesets
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__count_changesets
 msgid "Count Changesets"
 msgstr "Proszę liczyć zestawy zmian"
 
@@ -120,6 +121,7 @@ msgstr "Proszę liczyć zestawy zmian"
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
 msgstr "Proszę policzyć oczekujące zmiany w zestawie zmian"
 
@@ -129,6 +131,7 @@ msgstr "Proszę policzyć oczekujące zmiany w zestawie zmian"
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__count_pending_changesets
 msgid "Count Pending Changesets"
 msgstr "Proszę policzyć oczekujące zestawy zmian"
 
@@ -155,6 +158,29 @@ msgid "Dropoff at FedEx Location"
 msgstr ""
 
 #. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Failed to cancel FedEx pickup."
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Failed to request FedEx pickup."
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"Failed to upload the Electronic Trade Document for FedEx shipment: "
+"%s{error_message}"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__delivery_type__fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__stock_package_type__package_carrier_type__fedex
 msgid "FedEx"
@@ -173,6 +199,23 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_client_secret
 msgid "FedEx Client Secret"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_commercial_invoice
+msgid "FedEx Commercial Invoice"
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "FedEx Commercial Invoice report is not configured for this carrier."
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_commercial_invoice
+msgid "FedEx Commercial Invoice report to be used for shipments."
 msgstr ""
 
 #. module: delivery_fedex
@@ -196,6 +239,17 @@ msgid "FedEx Ground"
 msgstr ""
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__fedex_pickup_confirmation_code
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__fedex_pickup_location
+msgid "FedEx Pickup Confirmation Code"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__fedex_pickup_date
+msgid "FedEx Pickup Date"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__fedex_shipment_purpose
 msgid "FedEx Shipment Purpose"
 msgstr ""
@@ -203,6 +257,50 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__carrier_code__fxsp
 msgid "FedEx SmartPost"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_tracking_client_id
+msgid "FedEx Tracking Client ID"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_tracking_client_secret
+msgid "FedEx Tracking Client Secret"
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"FedEx customer number is required for the recipient when the payment type is"
+" set to 'Customer Pays'."
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"FedEx pickup canceled successfully.\n"
+"Pickup Confirmation Number: %(pickupNo)s"
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"FedEx pickup requested successfully on %(date)s at %(time)s.\n"
+"Pickup Confirmation Number: %(pickupNo)s"
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "FedEx rate data does not contain account rate details."
 msgstr ""
 
 #. module: delivery_fedex
@@ -219,6 +317,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__fedex_customer_number
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_users__fedex_customer_number
 msgid "Fedex Customer Number"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_tracking_client_id
+msgid "Fedex Tracking Client"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_tracking_client_secret
+msgid "Fedex Tracking Client Secret"
 msgstr ""
 
 #. module: delivery_fedex
@@ -247,12 +355,12 @@ msgid "International First"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_priority
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__fedex_international_priority
 msgid "International Priority"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__international_priority_express
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__fedex_international_priority_express
 msgid "International Priority Express"
 msgstr ""
 
@@ -262,8 +370,77 @@ msgid "Journal Entry"
 msgstr "Zapis dziennika"
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__label_paper_type
+msgid "Label Paper Type"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__label_resolution
+msgid "Label Resolution"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__label_paper_type
+msgid "Label paper type for FedEx shipments."
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__label_resolution
+msgid ""
+"Label resolution in DPI for FedEx shipments. This is used only for ZPL "
+"labels."
+msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "No available pickups found for the given pickings."
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__not_sold
 msgid "Not Sold"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_4x6
+msgid "PAPER_4X6"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_4x675
+msgid "PAPER_4X675"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_4x8
+msgid "PAPER_4X8"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_4x9
+msgid "PAPER_4X9"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_7x475
+msgid "PAPER_7X475"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_85x11_bottom_half_label
+msgid "PAPER_85X11_BOTTOM_HALF_LABEL"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_85x11_top_half_label
+msgid "PAPER_85X11_TOP_HALF_LABEL"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__paper_letter
+msgid "PAPER_LETTER"
 msgstr ""
 
 #. module: delivery_fedex
@@ -292,6 +469,11 @@ msgid "Recipient"
 msgstr ""
 
 #. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__service_type__fedex_regional_economy
+msgid "Regional Economy"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__repair_and_return
 msgid "Repair and Return"
 msgstr ""
@@ -299,6 +481,56 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__sale_order__fedex_shipment_purpose__return_and_repair
 msgid "Return and Repair"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x105_trailing_doc_tab
+msgid "STOCK_4X105_TRAILING_DOC_TAB"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x6
+msgid "STOCK_4X6"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x675
+msgid "STOCK_4X675"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x675_leading_doc_tab
+msgid "STOCK_4X675_LEADING_DOC_TAB"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x675_trailing_doc_tab
+msgid "STOCK_4X675_TRAILING_DOC_TAB"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x8
+msgid "STOCK_4X8"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x85_trailing_doc_tab
+msgid "STOCK_4X85_TRAILING_DOC_TAB"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x9
+msgid "STOCK_4X9"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x9_leading_doc_tab
+msgid "STOCK_4X9_LEADING_DOC_TAB"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__label_paper_type__stock_4x9_trailing_doc_tab
+msgid "STOCK_4X9_TRAILING_DOC_TAB"
 msgstr ""
 
 #. module: delivery_fedex
@@ -332,6 +564,7 @@ msgstr "Sposoby dostawy"
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__smart_search
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__smart_search
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__smart_search
 msgid "Smart Search"
 msgstr "Inteligentne wyszukiwanie"
 
@@ -357,11 +590,17 @@ msgid "The FedEx customer number associated with this partner."
 msgstr ""
 
 #. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__fedex_pickup_date
+msgid "The date and time when the FedEx pickup is scheduled."
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
 msgstr "Liczba oczekujących zmian tego rekordu"
 
@@ -371,6 +610,7 @@ msgstr "Liczba oczekujących zmian tego rekordu"
 #: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_pending_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__count_pending_changesets
 msgid "The number of pending changesets of this record"
 msgstr "Liczba oczekujących zestawów zmian tego rekordu"
 
@@ -380,6 +620,7 @@ msgstr "Liczba oczekujących zestawów zmian tego rekordu"
 #: model:ir.model.fields,help:delivery_fedex.field_res_partner__count_changesets
 #: model:ir.model.fields,help:delivery_fedex.field_sale_order__count_changesets
 #: model:ir.model.fields,help:delivery_fedex.field_stock_package_type__count_changesets
+#: model:ir.model.fields,help:delivery_fedex.field_stock_picking__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "Ogólna liczba zestawów zmian tego rekordu"
 
@@ -401,11 +642,9 @@ msgid "Timeout: the FedEx server did not reply within %(timeout)s"
 msgstr ""
 
 #. module: delivery_fedex
-#. odoo-python
-#: code:addons/delivery_fedex/models/delivery_carrier.py:0
-#, python-format
-msgid "Tracking number mismatch: %(incoming_track)s != %(picking_track)s"
-msgstr ""
+#: model:ir.model,name:delivery_fedex.model_stock_picking
+msgid "Transfer"
+msgstr "Przekaz"
 
 #. module: delivery_fedex
 #. odoo-python
@@ -425,6 +664,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_fedex.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:delivery_fedex.field_sale_order__user_can_see_changeset
 #: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_picking__user_can_see_changeset
 msgid "User Can See Changeset"
 msgstr "Użytkownik może zobaczyć zestaw zmian"
 
@@ -432,7 +672,7 @@ msgstr "Użytkownik może zobaczyć zestaw zmian"
 #. odoo-python
 #: code:addons/delivery_fedex/models/delivery_carrier.py:0
 #, python-format
-msgid "fedex_label_%(seq_number)s.zpl"
+msgid "You cannot get rates for an invoice with 'Customer Pays' payment type."
 msgstr ""
 
 #. module: delivery_fedex
