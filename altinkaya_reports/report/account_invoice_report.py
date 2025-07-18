@@ -41,7 +41,11 @@ class AccountInvoiceReport(models.Model):
         "product.template", string="Product Template", readonly=True
     )
     sale_commission_line = fields.Many2one(
-        "sale.commission.line", string="Sale Commission", readonly=True, store=True, group_operator="count"
+        "sale.commission.line",
+        string="Sale Commission",
+        readonly=True,
+        store=True,
+        group_operator="count",
     )
     acquisition_commission_line = fields.Many2one(
         "sale.commission.line", string="Acquisition Commission", readonly=True
@@ -55,7 +59,9 @@ class AccountInvoiceReport(models.Model):
     paint_price = fields.Float(string="CP Paint Price", readonly=True)
     laser_marking_price = fields.Float(string="CP Laser Marking Price", readonly=True)
     lasercut_price = fields.Float(string="CP Laser Cut Price", readonly=True)
-    insert_installation_price = fields.Float(string="CP Insert Installation Price", readonly=True)
+    insert_installation_price = fields.Float(
+        string="CP Insert Installation Price", readonly=True
+    )
 
     def _select(self):
         return (
