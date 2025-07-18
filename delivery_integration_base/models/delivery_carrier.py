@@ -357,7 +357,7 @@ class DeliveryCarrier(models.Model):
             [
                 ("res_model", "=", "stock.picking"),
                 ("res_id", "=", picking.id),
-                ("is_delivery_barcode", "=", True),
+                ("is_delivery_document", "=", True),
             ]
         ).unlink()
 
