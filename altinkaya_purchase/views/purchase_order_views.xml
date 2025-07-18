@@ -11,7 +11,7 @@
       >
                     <attribute
           name="attrs"
-        >{'invisible': [('state','not in', ('draft','approved','to approve','purchase'))]}</attribute>
+        >{'invisible': [('state','not in', ('draft','approved','to approve','purchase', 'done'))]}</attribute>
                 </xpath>
                 <xpath
         expr="//field[@name='order_line']/tree//field[@name='product_qty']"
