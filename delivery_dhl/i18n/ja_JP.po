@@ -1,0 +1,304 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_dhl
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-18 08:11+0000\n"
+"PO-Revision-Date: 2025-07-18 08:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_dpi__200
+msgid "200 DPI"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_dpi__300
+msgid "300 DPI"
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "Cannot get rates for an order with existing pickings."
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "チェンジセットの変更"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr "チェンジセット"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_stock_picking__dhl_dispatch_confirmation_number
+msgid "Confirmation number returned by DHL upon dispatch."
+msgstr ""
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form
+msgid "Connection"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr "チェンジセット数"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "保留中のチェンジセットの変更をカウント"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "保留中のチェンジセットをカウント"
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
+msgid "DHL"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_account_number
+msgid "DHL Account Number"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_commercial_invoice
+msgid "DHL Commercial Invoice report to be used for shipments."
+msgstr ""
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form
+msgid "DHL Configuration"
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL Error: %(error)s - %(result)s"
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "DHL Pickup scheduled for <strong>%(pickup_date)s</strong>."
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "DHL customer pays is not implemented yet."
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "DHL pickup has been successfully cancelled."
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_label_dpi
+msgid "DPI for the ZPL DHL label."
+msgstr ""
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form
+msgid "Delivery Information"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_account_number
+msgid "Dhl Account Number"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_api_key
+msgid "Dhl Api Key"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_api_secret
+msgid "Dhl Api Secret"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_commercial_invoice
+msgid "Dhl Commercial Invoice"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__dhl_dispatch_confirmation_number
+msgid "Dhl Dispatch Confirmation Number"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_is_customs_declarable
+msgid "Dhl Is Customs Declarable"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_type
+msgid "Dhl Label Type"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_pickup_close_time
+msgid "Dhl Pickup Close Time"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_pickup_location
+msgid "Dhl Pickup Location"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_service_type
+msgid "Dhl Service Type"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__dhl_tracking_url
+msgid "Dhl Tracking Url"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_service_type__y
+msgid "Express 12:00"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_service_type__e
+msgid "Express 9:00"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_service_type__p
+msgid "Express Worldwide"
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "Failed to cancel DHL shipment: %(data)s"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_dpi
+msgid "Label DPI"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_label_type
+msgid "Label type for the DHL label."
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_type__pdf
+msgid "PDF"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "プロバイダ"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "配送方法"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "スマート検索"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_dhl.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "このレコードの保留中の変更数"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_dhl.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "このレコードの保留中のチェンジセットの数"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_dhl.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "このレコードの全体のチェンジセット数"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "Timeout: the DHL servers did not reply within %(timeout)s seconds"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_stock_picking
+msgid "Transfer"
+msgstr "運送"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_stock_picking__dhl_tracking_url
+msgid "URL to track the shipment on DHL's website."
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "Unsupported DHL service: %s"
+msgstr ""
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "Unsupported request type, only use 'GET', 'POST', 'DELETE'"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "ユーザーは変更セットを見ることができます"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_is_customs_declarable
+msgid "Whether the shipment is customs declarable or not."
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_type__zpl
+msgid "ZPL"
+msgstr ""
