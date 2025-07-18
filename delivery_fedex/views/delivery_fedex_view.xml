@@ -36,24 +36,24 @@
             </group>
             <group string="Delivery Information">
               <field
-                name="service_type"
+                name="fedex_service_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
-                name="customs_payment_type"
+                name="fedex_customs_payment_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
 
               <field
-                name="pickup_type"
+                name="fedex_pickup_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
-                name="carrier_code"
+                name="fedex_carrier_code"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
-                name="stock_height"
+                name="fedex_stock_height"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
@@ -61,11 +61,11 @@
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
-                name="label_paper_type"
+                name="fedex_label_paper_type"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
               <field
-                name="label_resolution"
+                name="fedex_label_resolution"
                 attrs="{'required': [('delivery_type', '=', 'fedex')]}"
               />
             </group>
