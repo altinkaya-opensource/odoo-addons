@@ -3,7 +3,7 @@
 
 import base64
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pytz
 
@@ -30,10 +30,17 @@ DHL_STATUS_CODE_MAP = {
     "OK": "customer_delivered",
 }
 
+UNECE_TO_DHL_UOM = {
+    "KGM": "KG",
+    "GRM": "GM",
+    "CMT": "CM",
+    "MTR": "M",
+    "C62": "PCS",
+}
+
 _logger = logging.getLogger(__name__)
 
 
-# TODO: Check if customer payment is needed
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
     delivery_type = fields.Selection(
@@ -179,22 +186,26 @@ class DeliveryCarrier(models.Model):
             shipping_weight / len(lines_to_ship) if lines_to_ship else 0.1
         )
 
-        for lts in lines_to_ship:
+        for seq, lts in enumerate(lines_to_ship):
             lineItems.append(
                 {
-                    "number": lts.sequence or 1,
+                    # DHL requires number to be a positive integer
+                    "number": seq + 1,
                     "description": lts.product_id.categ_id.hs_code_id.with_context(
                         lang="en_US"
                     ).description
                     or lts.product_id.name,
+                    # DHL requires values to be a multiple of 0.001
                     "price": round(lts.price_subtotal / lts.product_uom_qty, 3),
                     "quantity": {
                         "value": int(lts.product_uom_qty),
-                        "unitOfMeasurement": "PCS",  # TODO: Make configurable
+                        "unitOfMeasurement": UNECE_TO_DHL_UOM.get(
+                            lts.product_uom.unece_code, "PCS"
+                        ),
                     },
                     "weight": {
-                        "netValue": max(0.1, average_line_weight),
-                        "grossValue": max(0.1, average_line_weight),
+                        "netValue": round(max(0.1, average_line_weight), 3),
+                        "grossValue": round(max(0.1, average_line_weight), 3),
                     },
                     "manufacturerCountry": lts.product_id.country_of_origin.code
                     or "TR",
@@ -304,6 +315,7 @@ class DeliveryCarrier(models.Model):
         for pack in picking.package_ids:
             packages.append(
                 {
+                    # DHL requires values to be a multiple of 0.001
                     "referenceNumber": len(packages) + 1,
                     "weight": round(pack.shipping_weight, 3),
                     "dimensions": {
@@ -394,8 +406,16 @@ class DeliveryCarrier(models.Model):
                 "packages": self._prepare_dhl_packing_data(picking),
                 "isCustomsDeclarable": self.dhl_is_customs_declarable,
                 "incoterm": picking.sale_id.incoterm.code,
-                "description": picking.sale_id.name,  # TODO what to write here?
-                "declaredValue": totalDeclaredValue,
+                "description": ", ".join(
+                    [
+                        f"HS: {hs.hs_code}"
+                        for hs in picking.mapped(
+                            "sale_id.order_line.product_id.categ_id.hs_code_id"
+                        )
+                    ]
+                ),
+                # DHL requires value to be a multiple of 0.001
+                "declaredValue": round(totalDeclaredValue, 3),
                 "declaredValueCurrency": picking.sale_id.currency_id.name,
                 "exportDeclaration": {
                     "lineItems": lineItems,
@@ -460,6 +480,10 @@ class DeliveryCarrier(models.Model):
         """
         Send DHL shipment request for the given pickings.
         """
+
+        if self.payment_type == "customer_pays":
+            raise NotImplementedError(_("DHL customer pays is not implemented yet."))
+
         dhl_request = DHLRequest(
             api_key=self.dhl_api_key,
             api_secret=self.dhl_api_secret,
@@ -474,7 +498,6 @@ class DeliveryCarrier(models.Model):
 
             master_tracking_number = shipment_data["shipmentTrackingNumber"]
 
-            #  TODO: add checks if customer pays
             price = shipment_data["shipmentCharges"][0]["price"]
             currency = shipment_data["shipmentCharges"][0]["priceCurrency"]
 
@@ -491,10 +514,11 @@ class DeliveryCarrier(models.Model):
                     fields.Date.today(),
                 )
 
-            # Set all service-related fields to False for now.
-            picking.carrier_shipping_cost = False
+            # We don't get the VAT from DHL API,
+            # so we set it to False.
+            picking.carrier_shipping_cost = price
             picking.carrier_shipping_vat = False
-            picking.carrier_shipping_total = False
+            picking.carrier_shipping_total = price
             picking.carrier_total_deci = shipment_data["shipmentDetails"][0][
                 "volumetricWeight"
             ]
@@ -635,14 +659,15 @@ class DeliveryCarrier(models.Model):
             picking.delivery_state = DHL_STATUS_CODE_MAP.get(
                 last_event.get("typeCode"), "in_transit"
             )
-            # TODO: Do we need to set the recived_by?
-
             if last_event.get("typeCode") == "OK":
-                picking.date_delivered = fields.Datetime.to_string(
-                    fields.Datetime.from_string(
-                        # TODO: Check if timezone is an issue hereb
-                        f"{last_event.get("date", "")} {last_event.get("time", "")}"
-                    )
+                # GMT offset is optional
+                dd_local = datetime.fromisoformat(
+                    f"{last_event['date']}T{last_event['time']}"
+                    f"{last_event.get('GMTOffset', '')}"
+                )
+
+                picking.date_delivered = dd_local.astimezone(pytz.UTC).replace(
+                    tzinfo=None
                 )
 
         return True
