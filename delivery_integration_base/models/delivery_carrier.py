@@ -150,7 +150,7 @@ class DeliveryCarrier(models.Model):
                     [False, "fixed", "base_on_rule"],
                 ),
                 ("carrier_tracking_ref", "!=", False),
-                ("date_done", ">", fields.Date.today() - timedelta(days=5)),
+                ("date_done", ">", fields.Date.today() - timedelta(days=30)),
                 (
                     "delivery_state",
                     "in",
