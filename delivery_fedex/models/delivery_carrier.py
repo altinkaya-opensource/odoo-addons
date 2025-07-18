@@ -195,6 +195,13 @@ class DeliveryCarrier(models.Model):
         default=6.0,
     )
 
+    fedex_upload_documents = fields.Boolean(
+        string="Upload Documents",
+        help="If checked, the carrier will upload "
+        "electronic trade documents to FedEx.",
+        default=True,
+    )
+
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
 
@@ -529,17 +536,6 @@ class DeliveryCarrier(models.Model):
         Prepare shipment data for FedEx API requests
         based on the stock picking.
         """
-
-        # Prepare the commercial invoice
-        # document_id = self._upload_fedex_commercial_invoice(picking)
-        # if document_id is None:
-        #     raise UserError(
-        #         _(
-        #             "Failed to prepare and upload the Electronic Trade Document "
-        #             "for FedEx shipment."
-        #         )
-        #     )
-
         data = {
             "accountNumber": {"value": str(self.fedex_account_number)},
             "shipAction": "CONFIRM",
@@ -615,17 +611,6 @@ class DeliveryCarrier(models.Model):
                     else 203,
                 },
                 "requestedPackageLineItems": [],
-                # "shipmentSpecialServices": {
-                #     "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
-                #     "etdDetail": {
-                #         "attachedDocuments": [
-                #             {
-                #                 "documentType": "COMMERCIAL_INVOICE",
-                #                 "documentId": document_id,
-                #             }
-                #         ]
-                #     },
-                # },
             },
             "labelResponseOptions": "LABEL",
             # Add the commercial invoice details
@@ -656,6 +641,30 @@ class DeliveryCarrier(models.Model):
         data["requestedShipment"]["requestedPackageLineItems"] = packages
 
         data["requestedShipment"]["totalPackageCount"] = len(packages)
+
+        # If the carrier is configured to upload documents,
+        # we prepare and upload the commercial invoice.
+        if self.fedex_upload_documents:
+            document_id = self._upload_fedex_commercial_invoice(picking)
+            if document_id is None:
+                raise UserError(
+                    _(
+                        "Failed to prepare and upload the Electronic Trade Document "
+                        "for FedEx shipment."
+                    )
+                )
+
+            data["requestedShipment"]["shipmentSpecialServices"] = {
+                "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
+                "etdDetail": {
+                    "attachedDocuments": [
+                        {
+                            "documentType": "COMMERCIAL_INVOICE",
+                            "documentId": document_id,
+                        }
+                    ]
+                },
+            }
 
         return data
 
