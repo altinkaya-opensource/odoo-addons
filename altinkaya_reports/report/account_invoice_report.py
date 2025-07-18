@@ -36,9 +36,26 @@ class AccountInvoiceReport(models.Model):
         "utm.medium", string="S. Marketing Medium", readonly=True
     )
     month_nr = fields.Char("Ay No", readonly=True)
+    week_nr = fields.Char("Hafta No", readonly=True)
     product_tmpl_id = fields.Many2one(
         "product.template", string="Product Template", readonly=True
     )
+    sale_commission_line = fields.Many2one(
+        "sale.commission.line", string="Sale Commission", readonly=True, store=True, group_operator="count"
+    )
+    acquisition_commission_line = fields.Many2one(
+        "sale.commission.line", string="Acquisition Commission", readonly=True
+    )
+    manager_commission_line = fields.Many2one(
+        "sale.commission.line", string="Manager Commission", readonly=True
+    )
+    cnc_price = fields.Float(string="CP CNC Price", readonly=True)
+    print_price = fields.Float(string="CP Print Price", readonly=True)
+    assembly_price = fields.Float(string="CP Assembly Price", readonly=True)
+    paint_price = fields.Float(string="CP Paint Price", readonly=True)
+    laser_marking_price = fields.Float(string="CP Laser Marking Price", readonly=True)
+    lasercut_price = fields.Float(string="CP Laser Cut Price", readonly=True)
+    insert_installation_price = fields.Float(string="CP Insert Installation Price", readonly=True)
 
     def _select(self):
         return (
@@ -51,6 +68,7 @@ class AccountInvoiceReport(models.Model):
             partner.campaign_id as partner_campaign_id,
             partner.medium_id as partner_medium_id,
             to_char(move.invoice_date, 'MM') AS month_nr,
+            to_char(move.invoice_date, 'IW') AS week_nr,
             so.source_id as sale_source_id,
             so.campaign_id as sale_campaign_id,
             so.medium_id as sale_medium_id,
@@ -66,7 +84,17 @@ class AccountInvoiceReport(models.Model):
                -- convert to template uom
                * (NULLIF(COALESCE(uom_line.factor, 1), 0.0)
                / NULLIF(COALESCE(uom_template.factor, 1), 0.0)),
-               0.0) * move.usd_rate                               AS price_average_usd
+               0.0) * move.usd_rate                               AS price_average_usd,
+               line.sale_commission_line as sale_commission_line,
+               line.acquisition_commission_line as acquisition_commission_line,
+               line.manager_commission_line as manager_commission_line,
+               line.cnc_price as cnc_price,
+               line.print_price as print_price,
+               line.assembly_price as assembly_price,
+               line.paint_price as paint_price,
+               line.laser_marking_price as laser_marking_price,
+               line.lasercut_price as lasercut_price,
+               line.insert_installation_price as insert_installation_price
             """
         )
 
