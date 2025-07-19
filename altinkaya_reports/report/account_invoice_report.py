@@ -50,28 +50,32 @@ class AccountInvoiceReport(models.Model):
         string="Price Insert Installation", readonly=True
     )
     sale_commission_type = fields.Selection(
-        selection=[("sale", "Sale"), ("acquisition", "Acquisition"), ("manager", "Manager")],
+        selection=[
+            ("sale", "Sale"),
+            ("acquisition", "Acquisition"),
+            ("manager", "Manager"),
+        ],
         string="Commission Type",
-        readonly=True
+        readonly=True,
     )
     sale_commission_rule_type = fields.Selection(
         selection=[("type_a", "Type A"), ("type_b", "Type B")],
         string="Commission Rule Type",
-        readonly=True
+        readonly=True,
     )
-    sale_commission_amount = fields.Float(
-        string="Commission Amount",
-        readonly=True
-    )
-    sale_commission_rate = fields.Float(
-        string="Commission Rate",
-        readonly=True
-    )
+    sale_commission_amount = fields.Float(string="Commission Amount", readonly=True)
+    sale_commission_rate = fields.Float(string="Commission Rate", readonly=True)
     sale_commission_state = fields.Selection(
-        selection=[("draft", "Draft"), ("concluded", "Concluded"), ("paid", "Paid"), ("cancelled", "Cancelled")],
+        selection=[
+            ("draft", "Draft"),
+            ("concluded", "Concluded"),
+            ("paid", "Paid"),
+            ("cancelled", "Cancelled"),
+        ],
         string="Commission Status",
-        readonly=True
+        readonly=True,
     )
+
     def _select(self):
         return (
             super()._select()
