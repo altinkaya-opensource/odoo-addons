@@ -47,10 +47,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     def create(self, vals_list):
         res = super().create(vals_list)
         for r in res:
-            if not r.picking_id:
+            if not r.picking_ids:
                 raise UserError(_("Please scan a barcode to find the picking."))
             if not r.name:
-                r.name = r.picking_id.name or "" + _(" - PACK BARCODE")
+                r.name = fields.first(r.picking_ids).name or "" + _(" - PACK BARCODE")
         return res
 
     def button_save(self):
@@ -130,6 +130,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         return True
 
     def _proceed_autoinvoicing(self, picking):
+        self = self.sudo()  # Elevate to superuser to bypass restrictions
         commercial_partner = picking.partner_id.commercial_partner_id
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
