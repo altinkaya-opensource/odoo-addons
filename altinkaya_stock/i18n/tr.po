@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-09 13:57+0000\n"
-"PO-Revision-Date: 2025-07-09 13:57+0000\n"
+"POT-Creation-Date: 2025-07-16 12:54+0000\n"
+"PO-Revision-Date: 2025-07-16 12:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,13 +28,6 @@ msgid ""
 "(b) The shipping policy is \"When all products are ready\": all product have been reserved.\n"
 " * Done: The transfer has been processed.\n"
 " * Cancelled: The transfer has been cancelled."
-msgstr ""
-
-#. module: altinkaya_stock
-#. odoo-python
-#: code:addons/altinkaya_stock/models/stock_picking.py:0
-#, python-format
-msgid "%(carrier_name)s label(s) succsesfully added for packs: %(packs)s"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -156,6 +149,13 @@ msgid "Baskı Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__block_autoinvoicing
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_users__block_autoinvoicing
+#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__block_autoinvoicing
+msgid "Block Autoinvoicing"
+msgstr "Oto-faturalamayı Engelle"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_boya
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_boya
 msgid "Boya Depo Mevcut"
@@ -243,6 +243,7 @@ msgstr "Depo Değiştir"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_change_ids
@@ -274,6 +275,7 @@ msgstr "Changeset Değişiklikleri"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_ids
@@ -315,6 +317,11 @@ msgid "Confirm"
 msgstr "Onayla"
 
 #. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_res_partner
+msgid "Contact"
+msgstr "İletişim"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_changesets
@@ -325,6 +332,7 @@ msgstr "Onayla"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_changesets
@@ -356,6 +364,7 @@ msgstr "Sayım Değişiklik Setleri"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
@@ -387,6 +396,7 @@ msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changesets
@@ -664,21 +674,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_kaplama
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_kaplama
 msgid "Kaplama Depo Tahmini"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__label
-msgid "Label"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__label_filename
-msgid "Label Filename"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__label
-msgid "Label of the package, generated by FedEx"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1030,14 +1025,6 @@ msgstr ""
 
 #. module: altinkaya_stock
 #. odoo-python
-#: code:addons/altinkaya_stock/models/stock_picking.py:0
-#: code:addons/altinkaya_stock/models/stock_quant_package.py:0
-#, python-format
-msgid "Please define a default printer for the carrier."
-msgstr ""
-
-#. module: altinkaya_stock
-#. odoo-python
 #: code:addons/altinkaya_stock/wizard/wizard_create_packaging_pallet.py:0
 #, python-format
 msgid "Please select at least one package line."
@@ -1060,16 +1047,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint_template__done_purchaseline_ids
 msgid "Previous Purchases"
 msgstr "Önceki Satınalımlar"
-
-#. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
-msgid "Print All Labels"
-msgstr "Etiketleri Yazdır"
-
-#. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
-msgid "Print Label"
-msgstr "Etiketi Yazdır"
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_product_template
@@ -1336,6 +1313,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__smart_search
@@ -1451,6 +1429,7 @@ msgstr "Varsayılan kod benzersiz olmalı."
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
@@ -1482,6 +1461,7 @@ msgstr "Bu kaydın bekleyen değişiklik sayısı"
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changesets
@@ -1513,6 +1493,7 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_changesets
@@ -1567,13 +1548,6 @@ msgstr ""
 "miktarın azaltılması bir ön teslimat oluşturmaz. Atandığı hareketlerde bu "
 "miktarı değiştirmek ürün rezervasyonunu etkileyeceğinden çok dikkatli "
 "yapılmalıdır."
-
-#. module: altinkaya_stock
-#. odoo-python
-#: code:addons/altinkaya_stock/models/stock_quant_package.py:0
-#, python-format
-msgid "This package does not have a label."
-msgstr "Bu paketin etiketi yok."
 
 #. module: altinkaya_stock
 #. odoo-python
@@ -1693,6 +1667,7 @@ msgstr "Rezerve edilmemiş miktarı güncelle"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__user_can_see_changeset
