@@ -19,7 +19,7 @@
                 <div class="text-center">
                     <div class="alert alert-success" role="status" attrs="{'invisible': [('message_type', '!=', 'success')]}">
                         <field name="message" />
-                        <field name="picking_ids" nolabel="1" readonly="1"/>
+                        <field name="picking_ids" nolabel="1"/>
                     </div>
                     <div class="alert alert-info" role="status" attrs="{'invisible': [('message_type', '!=', 'info')]}">
                         <field name="message" />
