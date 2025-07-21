@@ -131,6 +131,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
     def _proceed_autoinvoicing(self, picking):
         self = self.sudo()  # Elevate to superuser to bypass restrictions
+        self = self.with_context(active_ids=picking.ids)
         commercial_partner = picking.partner_id.commercial_partner_id
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
@@ -163,7 +164,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 picking.invoice_state = "invoiced"
 
             except Exception as e:
-                _logger.warning(
+                _logger.error(
                     "Failed to post invoice for picking %s: %s",
                     picking.name,
                     e,
