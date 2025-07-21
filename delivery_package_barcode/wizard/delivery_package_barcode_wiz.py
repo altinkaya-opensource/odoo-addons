@@ -2,6 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+import logging
+
+
+_logger = logging.getLogger(__name__)
 
 
 class DeliveryPackageBarcodeWiz(models.TransientModel):
@@ -17,25 +21,27 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         [("success", "Success"), ("error", "Error"), ("info", "Info")], default="info"
     )
     barcode = fields.Char()
-    picking_id = fields.Many2one(
-        comodel_name="stock.picking",
+    picking_ids = fields.Many2many(
+        "stock.picking",
+        rel="delivery_package_barcode_wiz_picking_rel",
+        string="Pickings",
     )
     picking_line_ids = fields.One2many(
         "stock.move",
         string="Picking Lines",
-        related="picking_id.move_ids_without_package",
+        related="picking_ids.move_ids",
     )
     package_count = fields.Integer(default=0)
     package_weight = fields.Float(default=0.0)
 
-    @api.onchange("picking_id")
-    def onchange_picking_id(self):
-        self.update(
-            {
-                "package_count": self.picking_id.carrier_package_count,
-                "package_weight": self.picking_id.picking_total_weight,
-            }
-        )
+    # @api.onchange("picking_ids")
+    # def onchange_picking_id(self):
+    #     self.update(
+    #         {
+    #             "package_count": self.picking_ids.carrier_package_count,
+    #             "package_weight": self.picking_ids.picking_total_weight,
+    #         }
+    #     )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -48,12 +54,25 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         return res
 
     def button_save(self):
+        if len(self.picking_ids) > 1:  # Merge before processing
+            wizard_obj = self.env["merge.picking"].create(
+                {
+                    "merge_picking_ids": [(6, 0, self.picking_ids.ids)],
+                }
+            )
+            res = wizard_obj.action_merge()
+            picking = self.env["stock.picking"].browse(res.get("picking_id"))
+
+        else:
+            picking = self.picking_ids
+
         vals = {
             "carrier_package_count": self.package_count,
             "picking_total_weight": self.package_weight,
             "is_packaged": True,
         }
-        self.picking_id.write(vals)
+        picking.write(vals)
+        self._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
@@ -62,10 +81,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         if barcode and self.env.user.has_group("stock.group_stock_user"):
             domain = self._barcode_domain(barcode)
             picking = pick_obj.search(domain, limit=1)
-            if picking:
+            if picking and self._check_pickings_similarity(picking):
                 self.update(
                     {
-                        "picking_id": picking.id,
+                        "picking_ids": [(4, picking.id)],
                         "message": _("Picking found:"),
                         "message_type": "success",
                     }
@@ -91,3 +110,63 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     def on_barcode_scanned(self, barcode):
         self.barcode = barcode
         self.process_barcode(self.barcode)
+
+    def _check_pickings_similarity(self, picking):
+        """Check if the picking is similar to the one in the context."""
+        if self.picking_ids:
+            partner_id = self.picking_ids.partner_id
+            picking_type_id = self.picking_ids.picking_type_id
+            location_dest_id = self.picking_ids.location_dest_id
+            carrier_id = self.picking_ids.carrier_id
+            if (
+                partner_id != picking.partner_id
+                or picking_type_id != picking.picking_type_id
+                or location_dest_id != picking.location_dest_id
+                or carrier_id != picking.carrier_id
+            ):
+                raise UserError(
+                    _("The scanned picking is not similar to the one in the context.")
+                )
+        return True
+
+    def _proceed_autoinvoicing(self, picking):
+        commercial_partner = picking.partner_id.commercial_partner_id
+        sale_id = picking.sale_id
+        warehouse_id = picking.picking_type_id.warehouse_id
+        warehouse_name_suffix = warehouse_id.name.lower()
+
+        if commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing:
+            return
+
+        if sale_id.partner_id.country_id.code == "TR":
+            journal_id = 1  # Satış Faturası
+
+        else:
+            if sale_id.currency_id.name == "EUR":
+                journal_id = 19  # Export Invoice (EUR)
+            else:
+                journal_id = 48  # USD Invoice
+
+        invoicing_wizard = self.env["stock.invoice.onshipping"].create(
+            {"sale_journal": journal_id}
+        )
+        invoice_action = invoicing_wizard.action_generate()
+        invoice = self.env["account.move"].browse(invoice_action.get("res_id"))
+        if invoice:
+            try:
+                invoice.action_post()
+                report = self.env.ref(
+                    f"l10n_tr_account_einvoice_base.action_report_einvoice_{warehouse_name_suffix}"
+                )
+                report.print_document(record_ids=invoice.ids)
+                picking.invoice_state = "invoiced"
+
+            except Exception as e:
+                _logger.warning(
+                    "Failed to post invoice for picking %s: %s",
+                    picking.name,
+                    e,
+                )
+                picking.invoice_state = "invoicing_error"
+
+        return True

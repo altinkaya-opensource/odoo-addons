@@ -8,10 +8,22 @@
     "license": "AGPL-3",
     "category": "Delivery",
     "version": "16.0.1.1.0",
-    "depends": ["barcodes", "stock", "delivery_integration_base"],
+    "depends": [
+        "base",
+        "barcodes",
+        "sale",
+        "stock",
+        "account",
+        "delivery_integration_base",
+        "stock_picking_invoice_link",
+        "merge_picking_orders",
+        "stock_picking_invoicing",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "wizard/delivery_package_barcode_wiz_views.xml",
+        "views/res_partner_views.xml",
+        "views/sale_order_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

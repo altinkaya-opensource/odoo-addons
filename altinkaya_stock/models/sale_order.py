@@ -25,10 +25,6 @@ class SaleOrder(models.Model):
         store=True,
     )
 
-    block_autoinvoicing = fields.Boolean(
-        default=lambda self: self.partner_id.block_autoinvoicing,
-    )
-
     @api.depends("picking_ids.package_ids")
     def _compute_packed(self):
         """
