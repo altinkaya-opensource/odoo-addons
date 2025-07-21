@@ -97,7 +97,7 @@ class DeliveryCarrier(models.Model):
         self.ensure_one()
         # Calculate the number of packages only once
         num_packages = max(picking.carrier_package_count, 1)
-        deci = picking.picking_total_weight = 1.0
+        deci = picking.picking_total_weight
         # Use list comprehension to build the piece_details list
         piece_details = [
             {

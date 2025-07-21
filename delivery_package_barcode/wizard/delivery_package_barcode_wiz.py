@@ -72,7 +72,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             "is_packaged": True,
         }
         picking.write(vals)
-        self._proceed_autoinvoicing(picking)
+        self.with_delay()._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
