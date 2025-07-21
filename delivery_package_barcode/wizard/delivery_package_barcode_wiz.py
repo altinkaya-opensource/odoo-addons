@@ -161,8 +161,15 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 report = self.env.ref(
                     f"l10n_tr_account_einvoice_base.action_report_einvoice_{warehouse_name_suffix}"
                 )
+                # Print invoice paper
                 for __ in range(2):
                     report.print_document(record_ids=invoice.ids)
+                # Print cargo label
+                if (
+                    picking.carrier_id
+                    and picking.carrier_id.shipment_level == "send_shipment_and_barcode"
+                ):
+                    picking.action_print_delivery_documents()
                 picking.invoice_state = "invoiced"
 
             except Exception as e:
