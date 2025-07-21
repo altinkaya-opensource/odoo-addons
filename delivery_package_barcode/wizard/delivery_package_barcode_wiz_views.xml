@@ -9,22 +9,44 @@
                     <div class="col-8">
                         <h2 style="margin-bottom:25px;">Delivery Package Barcode</h2>
                     </div>
-                    <div class="col-4" attrs="{'invisible': [('message_type', '!=', 'success')]}">
-                        <button name="button_save" width="100" string="Update" type="object" class="oe_highlight" confirm="This process will create an invoice automatically. Do you want to continue?" />
+                    <div
+            class="col-4"
+            attrs="{'invisible': [('message_type', '!=', 'success')]}"
+          >
+                        <button
+              name="button_save"
+              width="100"
+              string="Update"
+              type="object"
+              class="oe_highlight"
+              confirm="This process will create an invoice automatically. Do you want to continue?"
+            />
                     </div>
                 </div>
 
                 <field name="_barcode_scanned" widget="barcode_handler" invisible="0" />
                 <field name="message_type" invisible="1" />
                 <div class="text-center">
-                    <div class="alert alert-success" role="status" attrs="{'invisible': [('message_type', '!=', 'success')]}">
+                    <div
+            class="alert alert-success"
+            role="status"
+            attrs="{'invisible': [('message_type', '!=', 'success')]}"
+          >
                         <field name="message" />
-                        <field name="picking_ids" nolabel="1"/>
+                        <field name="picking_ids" nolabel="1" />
                     </div>
-                    <div class="alert alert-info" role="status" attrs="{'invisible': [('message_type', '!=', 'info')]}">
+                    <div
+            class="alert alert-info"
+            role="status"
+            attrs="{'invisible': [('message_type', '!=', 'info')]}"
+          >
                         <field name="message" />
                     </div>
-                    <div class="alert alert-danger" role="status" attrs="{'invisible': [('message_type', '!=', 'error')]}">
+                    <div
+            class="alert alert-danger"
+            role="status"
+            attrs="{'invisible': [('message_type', '!=', 'error')]}"
+          >
                         <field name="message" />
                     </div>
                 </div>
@@ -32,8 +54,18 @@
 
                     <field name="package_count" widget="char" />
                     <field name="package_weight" widget="char" />
-                    <field name="picking_line_ids" options="{'no_open': True}" nolabel="1" mode="kanban">
-                        <kanban quick_create="false" create="false" delete="false" class="o_kanban_mobile">
+                    <field
+            name="picking_line_ids"
+            options="{'no_open': True}"
+            nolabel="1"
+            mode="kanban"
+          >
+                        <kanban
+              quick_create="false"
+              create="false"
+              delete="false"
+              class="o_kanban_mobile"
+            >
                             <field name="state" />
                             <field name="product_id" />
                             <field name="product_uom_qty" />
@@ -44,7 +76,9 @@
                                             <div class="col-8">
                                                 <strong>
                                                     <span>
-                                                        <t t-esc="record.product_id.value" />
+                                                        <t
+                              t-esc="record.product_id.value"
+                            />
                                                     </span>
                                                 </strong>
                                             </div>
@@ -59,7 +93,9 @@
                                             <div class="col-6">
                                                 <strong>
                                                     <span class="pull-right text-right">
-                                                        <t t-esc="record.product_uom_qty.value" />
+                                                        <t
+                              t-esc="record.product_uom_qty.value"
+                            />
                                                     </span>
                                                 </strong>
                                             </div>
@@ -83,5 +119,10 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="delivery_region_menu" action="action_delivery_package_barcode" parent="stock.menu_stock_root" sequence="1" />
+    <menuitem
+    id="delivery_region_menu"
+    action="action_delivery_package_barcode"
+    parent="stock.menu_stock_root"
+    sequence="1"
+  />
 </odoo>

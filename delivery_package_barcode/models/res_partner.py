@@ -19,6 +19,5 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     block_autoinvoicing = fields.Boolean(
-        string="Block Autoinvoicing",
         default=False,
     )

@@ -213,4 +213,3 @@ class StockPicking(models.Model):
             )
         ]
         return action
-
