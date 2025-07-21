@@ -100,6 +100,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
     def _barcode_domain(self, barcode):
         return [
+            ("invoice_state", "!=", "invoiced"),
             "|",
             "|",
             ("name", "=", barcode),
@@ -160,7 +161,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 report = self.env.ref(
                     f"l10n_tr_account_einvoice_base.action_report_einvoice_{warehouse_name_suffix}"
                 )
-                report.print_document(record_ids=invoice.ids)
+                for __ in range(2):
+                    report.print_document(record_ids=invoice.ids)
                 picking.invoice_state = "invoiced"
 
             except Exception as e:
