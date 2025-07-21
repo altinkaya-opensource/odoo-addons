@@ -195,7 +195,7 @@ class DeliveryCarrier(models.Model):
                     {
                         "name": f"{picking.name}_aras_label.zpl",
                         "datas": base64.b64encode(
-                            zebra_zpl.string[0].encode("utf-8")
+                            "\n".join(response.ZebraZpl.string).encode("utf-8")
                         ).decode("utf-8"),
                         "res_model": "stock.picking",
                         "res_id": picking.id,
