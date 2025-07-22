@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-21 05:14+0000\n"
-"PO-Revision-Date: 2025-07-21 05:14+0000\n"
+"POT-Creation-Date: 2025-07-22 12:10+0000\n"
+"PO-Revision-Date: 2025-07-22 12:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,13 @@ msgstr ""
 #: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
 #, python-format
 msgid " - PACK BARCODE"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
+msgid ""
+"<span>Auto-invoicing is disabled for this picking. The invoice will be "
+"created maunally.</span>"
 msgstr ""
 
 #. module: delivery_package_barcode
@@ -39,9 +46,11 @@ msgid "Barcodes Read"
 msgstr ""
 
 #. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__block_autoinvoicing
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_res_partner__block_autoinvoicing
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_res_users__block_autoinvoicing
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_sale_order__block_autoinvoicing
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__block_autoinvoicing
 msgid "Block Autoinvoicing"
 msgstr ""
 
@@ -135,6 +144,11 @@ msgstr ""
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__id
 msgid "ID"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_stock_picking__block_autoinvoicing
+msgid "If True, the autoinvoicing will be blocked for this picking."
 msgstr ""
 
 #. module: delivery_package_barcode
@@ -315,6 +329,13 @@ msgstr ""
 #: model:ir.model,name:delivery_package_barcode.model_stock_picking
 msgid "Transfer"
 msgstr "Trasferimento"
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/models/stock_picking.py:0
+#, python-format
+msgid "Unsupported operator for Block Autoinvoicing search"
+msgstr ""
 
 #. module: delivery_package_barcode
 #: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form

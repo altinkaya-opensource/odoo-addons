@@ -34,7 +34,7 @@
             attrs="{'invisible': ['|', ('picking_ids', '=', False), ('block_autoinvoicing', '=', False)]}"
           >
                         <span
-            >Otomatik faturalama kapalı. Bu sevkte fatura manuel oluşturulacak.</span>
+            >Auto-invoicing is disabled for this picking. The invoice will be created maunally.</span>
                     </div>
                     <div
             class="alert alert-success"
