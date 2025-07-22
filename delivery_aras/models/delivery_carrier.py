@@ -6,6 +6,7 @@
 
 import base64
 import logging
+import time
 from datetime import datetime
 
 import phonenumbers
@@ -185,6 +186,10 @@ class DeliveryCarrier(models.Model):
 
             if self.shipment_level == "send_shipment_and_barcode":
                 try:
+                    # Aras claims that waiting for a while after sending
+                    # the request helps to get the barcode without issues.
+                    # TODO: check and find a better way to handle this.
+                    time.sleep(5)
                     zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
                 except Exception as e:
                     _logger.error(
