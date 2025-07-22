@@ -40,12 +40,9 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     @api.depends("picking_ids")
     def _compute_block_autoinvoicing(self):
         for record in self:
-            commercial_partner = record.picking_ids.partner_id.commercial_partner_id
-            sale_id = record.picking_ids.sale_id
-            if commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing:
-                record.block_autoinvoicing = True
-            else:
-                record.block_autoinvoicing = False
+            record.block_autoinvoicing = any(
+                record.picking_ids.mapped("block_autoinvoicing")
+            )
 
     @api.onchange("picking_ids")
     def onchange_picking_id(self):
@@ -85,7 +82,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             "is_packaged": True,
         }
         picking.write(vals)
-        self.with_delay()._proceed_autoinvoicing(picking)
+        if not picking.block_autoinvoicing:
+            self.with_delay()._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
@@ -152,13 +150,9 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             )
             return
 
-        commercial_partner = picking.partner_id.commercial_partner_id
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
         warehouse_name_suffix = warehouse_id.name.lower()
-
-        if self._is_autoinvoicing_blocked(commercial_partner, sale_id):
-            return
 
         # Reset waybill_id for every picking
         picking.ewaybill_id = False
@@ -181,9 +175,6 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 picking.invoice_state = "invoicing_error"
         return True
 
-    def _is_autoinvoicing_blocked(self, commercial_partner, sale_id):
-        return commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing
-
     def _get_journal_id(self, sale_id):
         if sale_id.partner_id.country_id.code == "TR":
             return 1  # Satış Faturası
@@ -205,6 +196,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         self, picking, sale_id, warehouse_name_suffix, invoice
     ):
         if sale_id.create_ewaybill_within_invoice and picking.ewaybill_id:
+            # Invalidate cache for picking
+            picking.invalidate_recordset()
             # E-waybill needs more permissions to be generated
             picking.ewaybill_id.sudo().action_generate_ewaybill_files()
             report_ref = (
