@@ -5,6 +5,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import base64
+import logging
 from datetime import datetime
 
 import phonenumbers
@@ -14,6 +15,8 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 from .aras_request import ArasRequest
+
+_logger = logging.getLogger(__name__)
 
 ARAS_OPERATION_CODES = {
     1: ("Çıkış Şubesinde", "in_transit"),
@@ -181,7 +184,17 @@ class DeliveryCarrier(models.Model):
             vals["exact_price"] = 0.0
 
             if self.shipment_level == "send_shipment_and_barcode":
-                zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+                try:
+                    zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+                except Exception as e:
+                    _logger.error(
+                        "Error while getting barcode for picking %s: %s",
+                        picking.name,
+                        e,
+                    )
+                    zebra_zpl = None
+                finally:
+                    self._aras_log_request(aras_request)
 
                 if zebra_zpl is None:
                     raise ValidationError(
@@ -195,7 +208,7 @@ class DeliveryCarrier(models.Model):
                     {
                         "name": f"{picking.name}_aras_label.zpl",
                         "datas": base64.b64encode(
-                            "\n".join(response.ZebraZpl.string).encode("utf-8")
+                            "\n".join(zebra_zpl.string).encode("utf-8")
                         ).decode("utf-8"),
                         "res_model": "stock.picking",
                         "res_id": picking.id,

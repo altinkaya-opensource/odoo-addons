@@ -72,7 +72,9 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             "is_packaged": True,
         }
         picking.write(vals)
-        self.with_delay()._proceed_autoinvoicing(picking)
+        # This process requires sudo to avoid access rights issues
+        # when the user does not have access to the picking.
+        self.sudo().with_delay()._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
@@ -131,8 +133,14 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         return True
 
     def _proceed_autoinvoicing(self, picking):
-        self = self.sudo()
-        self = self.with_context(active_ids=picking.ids)
+        # Prevent duplicate invoicing in the beginning
+        if picking.invoice_state == "invoiced":
+            _logger.info(
+                "Picking %s is already invoiced, skipping autoinvoicing.",
+                picking.name,
+            )
+            return
+
         commercial_partner = picking.partner_id.commercial_partner_id
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
@@ -141,8 +149,11 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         if self._is_autoinvoicing_blocked(commercial_partner, sale_id):
             return
 
+        # Reset waybill_id for every picking
+        picking.ewaybill_id = False
+
         journal_id = self._get_journal_id(sale_id)
-        invoice = self._create_invoice(journal_id)
+        invoice = self._create_invoice(picking, journal_id)
         if invoice:
             try:
                 invoice.action_post()
@@ -169,7 +180,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             return 19  # Export Invoice (EUR)
         return 48  # USD Invoice
 
-    def _create_invoice(self, journal_id):
+    def _create_invoice(self, picking_id, journal_id):
+        self = self.with_context(active_ids=picking_id.ids)
         invoicing_wizard = self.env["stock.invoice.onshipping"].create(
             {"sale_journal": journal_id}
         )
@@ -180,11 +192,11 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     def _handle_ewaybill_and_invoice_report(
         self, picking, sale_id, warehouse_name_suffix, invoice
     ):
-        if sale_id.create_ewaybill_within_invoice:
+        if sale_id.create_ewaybill_within_invoice and picking.ewaybill_id:
             picking.ewaybill_id.action_generate_ewaybill_files()
             report_ref = (
                 "l10n_tr_account_ewaybill."
-                f"ewaybill_pdf_report_{warehouse_name_suffix}"
+                f"action_report_ewaybill_{warehouse_name_suffix}"
             )
         else:
             report_ref = (
