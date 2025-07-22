@@ -26,7 +26,16 @@
 
                 <field name="_barcode_scanned" widget="barcode_handler" invisible="0" />
                 <field name="message_type" invisible="1" />
+                <field name="block_autoinvoicing" invisible="1" />
                 <div class="text-center">
+                    <div
+            class="alert alert-warning"
+            role="status"
+            attrs="{'invisible': ['|', ('picking_ids', '=', False), ('block_autoinvoicing', '=', False)]}"
+          >
+                        <span
+            >Otomatik faturalama kapalı. Bu sevkte fatura manuel oluşturulacak.</span>
+                    </div>
                     <div
             class="alert alert-success"
             role="status"

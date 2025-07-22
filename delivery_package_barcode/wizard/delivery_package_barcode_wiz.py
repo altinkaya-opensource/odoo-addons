@@ -33,15 +33,28 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     )
     package_count = fields.Integer(default=0)
     package_weight = fields.Float(default=0.0)
+    block_autoinvoicing = fields.Boolean(
+        compute="_compute_block_autoinvoicing",
+    )
 
-    # @api.onchange("picking_ids")
-    # def onchange_picking_id(self):
-    #     self.update(
-    #         {
-    #             "package_count": self.picking_ids.carrier_package_count,
-    #             "package_weight": self.picking_ids.picking_total_weight,
-    #         }
-    #     )
+    @api.depends("picking_ids")
+    def _compute_block_autoinvoicing(self):
+        for record in self:
+            commercial_partner = record.picking_ids.partner_id.commercial_partner_id
+            sale_id = record.picking_ids.sale_id
+            if commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing:
+                record.block_autoinvoicing = True
+            else:
+                record.block_autoinvoicing = False
+
+    @api.onchange("picking_ids")
+    def onchange_picking_id(self):
+        self.update(
+            {
+                "package_count": fields.first(self.picking_ids).carrier_package_count,
+                "package_weight": fields.first(self.picking_ids).picking_total_weight,
+            }
+        )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -72,9 +85,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             "is_packaged": True,
         }
         picking.write(vals)
-        # This process requires sudo to avoid access rights issues
-        # when the user does not have access to the picking.
-        self.sudo().with_delay()._proceed_autoinvoicing(picking)
+        self.with_delay()._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
@@ -181,6 +192,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         return 48  # USD Invoice
 
     def _create_invoice(self, picking_id, journal_id):
+        self = self.sudo()  # Invoicing requires more permissions
         self = self.with_context(active_ids=picking_id.ids)
         invoicing_wizard = self.env["stock.invoice.onshipping"].create(
             {"sale_journal": journal_id}
@@ -193,7 +205,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         self, picking, sale_id, warehouse_name_suffix, invoice
     ):
         if sale_id.create_ewaybill_within_invoice and picking.ewaybill_id:
-            picking.ewaybill_id.action_generate_ewaybill_files()
+            # E-waybill needs more permissions to be generated
+            picking.ewaybill_id.sudo().action_generate_ewaybill_files()
             report_ref = (
                 "l10n_tr_account_ewaybill."
                 f"action_report_ewaybill_{warehouse_name_suffix}"
