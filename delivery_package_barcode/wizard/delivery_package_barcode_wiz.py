@@ -131,47 +131,25 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         return True
 
     def _proceed_autoinvoicing(self, picking):
-        self = self.sudo()  # Elevate to superuser to bypass restrictions
+        self = self.sudo()
         self = self.with_context(active_ids=picking.ids)
         commercial_partner = picking.partner_id.commercial_partner_id
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
         warehouse_name_suffix = warehouse_id.name.lower()
 
-        if commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing:
+        if self._is_autoinvoicing_blocked(commercial_partner, sale_id):
             return
 
-        if sale_id.partner_id.country_id.code == "TR":
-            journal_id = 1  # Satış Faturası
-
-        else:
-            if sale_id.currency_id.name == "EUR":
-                journal_id = 19  # Export Invoice (EUR)
-            else:
-                journal_id = 48  # USD Invoice
-
-        invoicing_wizard = self.env["stock.invoice.onshipping"].create(
-            {"sale_journal": journal_id}
-        )
-        invoice_action = invoicing_wizard.action_generate()
-        invoice = self.env["account.move"].browse(invoice_action.get("res_id"))
+        journal_id = self._get_journal_id(sale_id)
+        invoice = self._create_invoice(journal_id)
         if invoice:
             try:
                 invoice.action_post()
-                report = self.env.ref(
-                    f"l10n_tr_account_einvoice_base.action_report_einvoice_{warehouse_name_suffix}"
+                self._handle_ewaybill_and_invoice_report(
+                    picking, sale_id, warehouse_name_suffix, invoice
                 )
-                # Print invoice paper
-                for __ in range(2):
-                    report.print_document(record_ids=invoice.ids)
-                # Print cargo label
-                if (
-                    picking.carrier_id
-                    and picking.carrier_id.shipment_level == "send_shipment_and_barcode"
-                ):
-                    picking.action_print_delivery_documents()
                 picking.invoice_state = "invoiced"
-
             except Exception as e:
                 _logger.error(
                     "Failed to post invoice for picking %s: %s",
@@ -179,5 +157,47 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                     e,
                 )
                 picking.invoice_state = "invoicing_error"
-
         return True
+
+    def _is_autoinvoicing_blocked(self, commercial_partner, sale_id):
+        return commercial_partner.block_autoinvoicing or sale_id.block_autoinvoicing
+
+    def _get_journal_id(self, sale_id):
+        if sale_id.partner_id.country_id.code == "TR":
+            return 1  # Satış Faturası
+        if sale_id.currency_id.name == "EUR":
+            return 19  # Export Invoice (EUR)
+        return 48  # USD Invoice
+
+    def _create_invoice(self, journal_id):
+        invoicing_wizard = self.env["stock.invoice.onshipping"].create(
+            {"sale_journal": journal_id}
+        )
+        invoice_action = invoicing_wizard.action_generate()
+        invoice = self.env["account.move"].browse(invoice_action.get("res_id"))
+        return invoice
+
+    def _handle_ewaybill_and_invoice_report(
+        self, picking, sale_id, warehouse_name_suffix, invoice
+    ):
+        if sale_id.create_ewaybill_within_invoice:
+            picking.ewaybill_id.action_generate_ewaybill_files()
+            report_ref = (
+                "l10n_tr_account_ewaybill."
+                f"ewaybill_pdf_report_{warehouse_name_suffix}"
+            )
+        else:
+            report_ref = (
+                "l10n_tr_account_einvoice_base."
+                f"action_report_einvoice_{warehouse_name_suffix}"
+            )
+
+        if picking.carrier_id.shipment_level == "send_shipment_and_barcode":
+            picking.action_print_delivery_documents()
+            paper_count = 1
+        else:
+            paper_count = 2
+
+        report = self.env.ref(report_ref)
+        for __ in range(paper_count):
+            report.print_document(record_ids=invoice.ids)
