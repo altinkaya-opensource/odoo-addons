@@ -65,8 +65,16 @@ class AccountInvoiceReport(models.Model):
         readonly=True,
         groups="altinkaya_sale_commission.group_sale_commission_user",
     )
-    sale_commission_amount = fields.Float(string="Commission Amount", readonly=True, groups="altinkaya_sale_commission.group_sale_commission_user")
-    sale_commission_rate = fields.Float(string="Commission Rate", readonly=True, groups="altinkaya_sale_commission.group_sale_commission_user")
+    sale_commission_amount = fields.Float(
+        string="Commission Amount",
+        readonly=True,
+        groups="altinkaya_sale_commission.group_sale_commission_user",
+    )
+    sale_commission_rate = fields.Float(
+        string="Commission Rate",
+        readonly=True,
+        groups="altinkaya_sale_commission.group_sale_commission_user",
+    )
     sale_commission_state = fields.Selection(
         selection=[
             ("draft", "Draft"),
