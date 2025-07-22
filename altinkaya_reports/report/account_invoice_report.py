@@ -57,14 +57,16 @@ class AccountInvoiceReport(models.Model):
         ],
         string="Commission Type",
         readonly=True,
+        groups="altinkaya_sale_commission.group_sale_commission_user",
     )
     sale_commission_rule_type = fields.Selection(
         selection=[("type_a", "Type A"), ("type_b", "Type B")],
         string="Commission Rule Type",
         readonly=True,
+        groups="altinkaya_sale_commission.group_sale_commission_user",
     )
-    sale_commission_amount = fields.Float(string="Commission Amount", readonly=True)
-    sale_commission_rate = fields.Float(string="Commission Rate", readonly=True)
+    sale_commission_amount = fields.Float(string="Commission Amount", readonly=True, groups="altinkaya_sale_commission.group_sale_commission_user")
+    sale_commission_rate = fields.Float(string="Commission Rate", readonly=True, groups="altinkaya_sale_commission.group_sale_commission_user")
     sale_commission_state = fields.Selection(
         selection=[
             ("draft", "Draft"),
@@ -74,6 +76,7 @@ class AccountInvoiceReport(models.Model):
         ],
         string="Commission Status",
         readonly=True,
+        groups="altinkaya_sale_commission.group_sale_commission_user",
     )
 
     def _select(self):
