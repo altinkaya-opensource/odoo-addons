@@ -206,7 +206,9 @@ class DeliveryCarrier(models.Model):
                     self._aras_log_request(aras_request)
 
                 if zebra_zpls is None:
-                    zebra_zpls = self._generate_zpl_barcode_string(picking)
+                    zebra_zpls = self._generate_zpl_barcode_string(
+                        picking, vals["tracking_number"]
+                    )
 
                 self.env["ir.attachment"].create(
                     {
