@@ -386,3 +386,31 @@ class DeliveryCarrier(models.Model):
                 continue
             self.clear_delivery_data(picking)
         return res
+
+    def _generate_zpl_barcode_string(self, picking):
+        """
+        Generate ZPL barcode string for the given picking.
+        """
+        picking.ensure_one()
+
+        delivery_type_label = dict(
+            picking.fields_get(allfields=["delivery_type"])["delivery_type"][
+                "selection"
+            ]
+        ).get(picking.delivery_type)
+        package_count = max(picking.carrier_package_count, 1)
+
+        zpl_files = []
+        for i in range(package_count):
+            qweb_bytes = self.env["ir.actions.report"]._render_template(
+                "delivery_integration_base.carrier_label",
+                {
+                    "docs": [picking],
+                    "delivery_type_label": delivery_type_label,
+                    "package_label_info": f"{i + 1}/{package_count}",
+                },
+            )
+
+            zpl_files.append(qweb_bytes.decode("utf-8"))
+
+        return zpl_files

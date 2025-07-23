@@ -185,35 +185,34 @@ class DeliveryCarrier(models.Model):
             vals["exact_price"] = 0.0
 
             if self.shipment_level == "send_shipment_and_barcode":
+                zebra_zpls = None
                 try:
                     # Aras claims that waiting for a while after sending
                     # the request helps to get the barcode without issues.
                     # TODO: check and find a better way to handle this.
-                    time.sleep(5)
-                    zebra_zpl = aras_request._get_barcode(response.OrgReceiverCustId)
+                    time.sleep(3)
+                    if aras_response := aras_request._get_barcode(
+                        response.OrgReceiverCustId
+                    ):
+                        zebra_zpls = aras_response.string
+
                 except Exception as e:
                     _logger.error(
                         "Error while getting barcode for picking %s: %s",
                         picking.name,
                         e,
                     )
-                    zebra_zpl = None
                 finally:
                     self._aras_log_request(aras_request)
 
-                if zebra_zpl is None:
-                    raise ValidationError(
-                        _(
-                            "Aras Kargo haven't provided any label for shipments. "
-                            "Please contact Aras Kargo support."
-                        )
-                    )
+                if zebra_zpls is None:
+                    zebra_zpls = self._generate_zpl_barcode_string(picking)
 
                 self.env["ir.attachment"].create(
                     {
                         "name": f"{picking.name}_aras_label.zpl",
                         "datas": base64.b64encode(
-                            "\n".join(zebra_zpl.string).encode("utf-8")
+                            "\n".join(zebra_zpls).encode("utf-8")
                         ).decode("utf-8"),
                         "res_model": "stock.picking",
                         "res_id": picking.id,
