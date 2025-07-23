@@ -38,15 +38,32 @@ class DeliveryCarrier(models.Model):
         "UserLanguage", help="UserLanguage field for Yurtiçi"
     )
 
-    def _get_yurtici_credentials(self):
-        """Access key is mandatory for every request while group and user are
-        optional"""
-        credentials = {
-            "prod": self.prod_environment,
-            "username": self.yurtici_username,
-            "password": self.yurtici_password,
-            "user_language": self.yurtici_user_lang,
-        }
+    # Extended API credentials
+    yurtici_barcodeservice_username = fields.Char()
+    yurtici_barcodeservice_password = fields.Char()
+    yurtici_barcodeservice_customer_code = fields.Char()
+    # yurtici_barcodeservice_customer_address = fields.Char(
+    # )
+    # yurtici_barcodeservice_customer_adress_code = fields.Char(
+    # )
+
+    def _get_yurtici_credentials(self, service_type="basic"):
+        if service_type == "basic":
+            credentials = {
+                "prod": self.prod_environment,
+                "username": self.yurtici_username,
+                "password": self.yurtici_password,
+                "user_language": self.yurtici_user_lang,
+            }
+        else:
+            credentials = {
+                "prod": self.prod_environment,
+                "username": self.yurtici_barcodeservice_username,
+                "password": self.yurtici_barcodeservice_password,
+                "customer_code": self.yurtici_barcodeservice_customer_code,
+                # "customer_address": self.yurtici_barcodeservice_customer_address,
+                # "customer_address_code": self.yurtici_barcodeservice_customer_adress_code
+            }
         return credentials
 
     def _yurtici_address(self, partner):
@@ -152,6 +169,22 @@ class DeliveryCarrier(models.Model):
     def yurtici_send_shipping(self, pickings):
         """Send booking request to Yurtiçi
         :param pickings: A recordset of pickings
+        :return list: A list of dictionaries although in practice it's
+        called one by one and only the first item in the dict is taken. Due
+        to this design, we have to inject vals in the context to be able to
+        add them to the message.
+        """
+        if self.shipment_level == "send_shipment_and_barcode":
+            return self._yk_send_shipping_with_barcode(pickings)
+        else:
+            return self._yk_send_shipping(pickings)
+
+    def _yk_send_shipping_with_barcode(self, pickings):
+        pass
+
+    def _yk_send_shipping(self, pickings):
+        """Send booking request to Yurtiçi
+        :param picking: A recordset of pickings
         :return list: A list of dictionaries although in practice it's
         called one by one and only the first item in the dict is taken. Due
         to this design, we have to inject vals in the context to be able to
