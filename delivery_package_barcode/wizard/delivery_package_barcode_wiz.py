@@ -171,6 +171,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                     "Failed to post invoice for picking %s: %s",
                     picking.name,
                     e,
+                    exc_info=True
                 )
                 picking.invoice_state = "invoicing_error"
         return True
