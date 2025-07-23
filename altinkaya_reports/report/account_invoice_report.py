@@ -75,7 +75,7 @@ class AccountInvoiceReport(models.Model):
         string="Commission Status",
         readonly=True,
     )
-    invoice_count = fields.Integer(string="Invoice Count", readonly=True)
+    invoice_count = fields.Integer(string="Partner Invoice Count", readonly=True)
 
     def _select(self):
         return (
