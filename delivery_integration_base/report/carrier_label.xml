@@ -20,7 +20,8 @@
 
 ^FO490,102^A0N,122,122^FB260,1,0,L,0^FD<t t-esc="package_label_info" />^FS
 
-^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="o.carrier_tracking_ref" />^FS
+<t t-set="carrier_ref" t-value="carrier_ref" />
+^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="carrier_ref" />^FS
 <t t-if="o.invoice_ids.filtered(lambda inv: inv.state == 'posted')">
     ^FO25,116^FB740,1,0,L,0^FDFatura # <t
             t-esc="', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number'))"
@@ -34,7 +35,7 @@
 
 ^BY3,3,149
 ^FO190,218^BCN,149,Y,N,N
-^FD<t t-esc="o.carrier_tracking_ref" />^FS
+^FD<t t-esc="carrier_ref" />^FS
 
 ^FO25,400^GB700,2,2^FS
 

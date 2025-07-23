@@ -387,7 +387,7 @@ class DeliveryCarrier(models.Model):
             self.clear_delivery_data(picking)
         return res
 
-    def _generate_zpl_barcode_string(self, picking):
+    def _generate_zpl_barcode_string(self, picking, carrier_ref=None):
         """
         Generate ZPL barcode string for the given picking.
         """
@@ -408,6 +408,7 @@ class DeliveryCarrier(models.Model):
                     "docs": [picking],
                     "delivery_type_label": delivery_type_label,
                     "package_label_info": f"{i + 1}/{package_count}",
+                    "carrier_ref": carrier_ref or picking.carrier_tracking_ref,
                 },
             )
 
