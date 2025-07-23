@@ -1053,7 +1053,11 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__invoice_count
 msgid "Invoice Count"
+<<<<<<< HEAD
 msgstr "Fatura Sayısı"
+=======
+msgstr ""
+>>>>>>> 22f6ed31 (translation files for new fields)
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_account_invoice_report
