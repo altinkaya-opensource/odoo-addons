@@ -196,7 +196,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         self, picking, sale_id, warehouse_name_suffix, invoice
     ):
         if sale_id.create_ewaybill_within_invoice and picking.ewaybill_id:
-            # Invalidate cache for picking
+            # Invalidate cache for picking
             picking.invalidate_recordset()
             # E-waybill needs more permissions to be generated
             picking.ewaybill_id.sudo().action_generate_ewaybill_files()
