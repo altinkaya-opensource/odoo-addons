@@ -519,7 +519,6 @@ class DeliveryCarrier(models.Model):
         }
 
         document_id = None
-        error = ""
         try:
             response = fedex_request.upload_document(data=data)
             document_id = response["output"]["meta"]["docId"]
@@ -527,10 +526,10 @@ class DeliveryCarrier(models.Model):
             _logger.error(
                 "Failed to upload the Electronic Trade Document for FedEx shipment: %s",
                 str(e),
+                exc_info=True,
             )
-            error = e
 
-        return document_id, error
+        return document_id
 
     def _prepare_fedex_shipment_data(self, picking):
         """
@@ -646,7 +645,7 @@ class DeliveryCarrier(models.Model):
         # If the carrier is configured to upload documents,
         # we prepare and upload the commercial invoice.
         if self.fedex_upload_documents:
-            document_id, error = self._upload_fedex_commercial_invoice(picking)
+            document_id = self._upload_fedex_commercial_invoice(picking)
             if document_id is not None:
                 data["requestedShipment"]["shipmentSpecialServices"] = {
                     "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
@@ -659,25 +658,6 @@ class DeliveryCarrier(models.Model):
                         ]
                     },
                 }
-            # If the error is because of unsupported country
-            # pair we just log it and continue.
-            elif (
-                "Electronic trade documents are not"
-                " approved for one or both of these countries" in str(error)
-            ):
-                _logger.error(
-                    "Failed to prepare and upload the"
-                    " Electronic Trade Document for FedEx shipment: %s",
-                    str(error),
-                )
-            else:
-                raise UserError(
-                    _(
-                        "Failed to prepare and upload the Electronic Trade Document "
-                        "for FedEx shipment: %s",
-                        str(error),
-                    )
-                ) from error
 
         return data
 
