@@ -16,7 +16,7 @@ FEDEX_API_URL = {
 }
 
 FEDEX_SERVICES_BASE_URL = {
-    "upload_documents": {
+    "upload_document": {
         "sandbox": "https://documentapitest.prod.fedex.com/sandbox",
         "prod": "https://documentapi.prod.fedex.com",
     }
@@ -28,7 +28,7 @@ FEDEX_SERVICES_URL = {
     "shipment": "ship/v1/shipments",
     "cancel": "ship/v1/shipments/cancel",
     "tracking": "track/v1/trackingnumbers",
-    "upload_documents": "documents/v1/etds/encodedmultiupload",
+    "upload_document": "documents/v1/etds/upload",
     "pickup_availability": "pickup/v1/pickups/availabilities",
     "pickup_request": "pickup/v1/pickups",
     "pickup_cancel": "pickup/v1/pickups/cancel",
@@ -104,7 +104,6 @@ class FedExRequest:
         request_data = {}
         try:
             headers = {
-                "Content-Type": content_type,
                 "X-locale": "en_US",
             }
             if auth:
@@ -112,8 +111,11 @@ class FedExRequest:
 
             if content_type == "application/json":
                 request_data["json"] = data
+            elif content_type == "multipart/form-data":
+                request_data["files"] = data
             else:
                 request_data["data"] = data
+                headers["Content-Type"] = content_type
 
             if request_type == "GET":
                 res = requests.get(
@@ -132,6 +134,11 @@ class FedExRequest:
                     _("Unsupported request type, only use 'GET', 'POST' or 'PUT'")
                 )
             result = res.json()
+
+            # Remove 'attachment' to avoid logging raw binary data
+            if content_type == "multipart/form-data":
+                del request_data["files"]["attachment"]
+
             self.delivery_carrier.log_xml(
                 "---Request:\n"
                 + json.dumps(request_data, indent=4)
@@ -149,12 +156,16 @@ class FedExRequest:
             ) from tmo
         except Exception as e:
             raise UserError(
-                _("{error}\n{result}".format(error=e, result=result if result else ""))
+                _(
+                    "FedEx API error: %(error)s\nResponse: %(response)s",
+                    error=str(e),
+                    response=json.dumps(result, indent=4) if result else "",
+                )
             ) from e
 
         errors = self._check_for_errors(result)
         if errors:
-            raise UserError(_(self._format_errors(errors)))
+            raise UserError(self._format_errors(errors))
         return res
 
     def get_rates(self, data):
@@ -173,8 +184,13 @@ class FedExRequest:
         res = self._send_api_request("POST", "tracking", data=data)
         return res.json()
 
-    def upload_documents(self, data):
-        res = self._send_api_request("POST", "upload_documents", data=data)
+    def upload_document(self, data):
+        res = self._send_api_request(
+            "POST",
+            "upload_document",
+            data=data,
+            content_type="multipart/form-data",
+        )
         return res.json()
 
     def check_pickup_availability(self, data):

@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
+import json
 import logging
 from datetime import datetime
 
@@ -468,21 +469,24 @@ class DeliveryCarrier(models.Model):
         return data
 
     def _upload_fedex_commercial_invoice(self, picking):
-        data = {
+        """
+        Upload the FedEx commercial invoice for the given picking.
+        """
+
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
+
+        document_data = {
             "workflowName": "ETDPreshipment",
             "carrierCode": self.fedex_carrier_code,
-            "originCountryCode": (
-                picking.location_id.warehouse_id.partner_id.country_id.code
-            ),
-            "destinationCountryCode": picking.partner_id.country_id.code,
-            "shipmentDate": fields.Date.today().strftime("%Y-%m-%d") + "T12:00:00",
-            "metaData": [
-                {
-                    "fileReferenceId": picking.name + "commercial_invoice",
-                    "shipDocumentType": "COMMERCIAL_INVOICE",
-                    "contentType": "application/pdf",
-                }
-            ],
+            "name": invoice.name + "_CIN.pdf",
+            "contentType": "application/pdf",
+            "meta": {
+                "shipDocumentType": "COMMERCIAL_INVOICE",
+                "originCountryCode": (
+                    picking.location_id.warehouse_id.partner_id.country_id.code
+                ),
+                "destinationCountryCode": picking.partner_id.country_id.code,
+            },
         }
 
         if not self.fedex_commercial_invoice:
@@ -490,24 +494,17 @@ class DeliveryCarrier(models.Model):
                 _("FedEx Commercial Invoice report is not configured for this carrier.")
             )
 
+        attachment = False
         if self.fedex_commercial_invoice.report_type == "py3o":
-            data["metaData"][0]["fileContentBase64"] = base64.b64encode(
-                self.env["ir.actions.report"]._render_py3o(
-                    self.fedex_commercial_invoice.report_name,
-                    res_ids=picking.invoice_ids.filtered(lambda m: m.state == "posted")[
-                        0
-                    ].ids,
-                )[0]
-            ).decode("utf-8")
+            attachment = self.env["ir.actions.report"]._render_py3o(
+                self.fedex_commercial_invoice.report_name,
+                res_ids=invoice.ids,
+            )[0]
         else:
-            data["metaData"][0]["fileContentBase64"] = base64.b64encode(
-                self.env["ir.actions.report"]._render_qweb_pdf(
-                    self.fedex_commercial_invoice.report_name,
-                    res_ids=picking.invoice_ids.filtered(lambda m: m.state == "posted")[
-                        0
-                    ].ids,
-                )[0]
-            ).decode("utf-8")
+            attachment = self.env["ir.actions.report"]._render_qweb_pdf(
+                self.fedex_commercial_invoice.report_name,
+                res_ids=invoice.ids,
+            )[0]
 
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
@@ -516,18 +513,21 @@ class DeliveryCarrier(models.Model):
             prod=self.prod_environment,
         )
 
+        data = {
+            "document": (None, json.dumps(document_data), "application/json"),
+            "attachment": (invoice.name + "_CIN.pdf", attachment, "application/pdf"),
+        }
+
         document_id = None
         try:
-            response = fedex_request.upload_documents(data=data)
-            document_id = response["output"]["documentResponses"]["metaData"]["docId"]
+            response = fedex_request.upload_document(data=data)
+            document_id = response["output"]["meta"]["docId"]
         except Exception as e:
-            raise UserError(
-                _(
-                    "Failed to upload the Electronic"
-                    " Trade Document for FedEx shipment: %s{error_message}",
-                    error_message=e,
-                )
-            ) from e
+            _logger.error(
+                "Failed to upload the Electronic Trade Document for FedEx shipment: %s",
+                str(e),
+                exc_info=True,
+            )
 
         return document_id
 
@@ -646,25 +646,18 @@ class DeliveryCarrier(models.Model):
         # we prepare and upload the commercial invoice.
         if self.fedex_upload_documents:
             document_id = self._upload_fedex_commercial_invoice(picking)
-            if document_id is None:
-                raise UserError(
-                    _(
-                        "Failed to prepare and upload the Electronic Trade Document "
-                        "for FedEx shipment."
-                    )
-                )
-
-            data["requestedShipment"]["shipmentSpecialServices"] = {
-                "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
-                "etdDetail": {
-                    "attachedDocuments": [
-                        {
-                            "documentType": "COMMERCIAL_INVOICE",
-                            "documentId": document_id,
-                        }
-                    ]
-                },
-            }
+            if document_id is not None:
+                data["requestedShipment"]["shipmentSpecialServices"] = {
+                    "specialServiceTypes": ["ELECTRONIC_TRADE_DOCUMENTS"],
+                    "etdDetail": {
+                        "attachedDocuments": [
+                            {
+                                "documentType": "COMMERCIAL_INVOICE",
+                                "documentId": document_id,
+                            }
+                        ]
+                    },
+                }
 
         return data
 
