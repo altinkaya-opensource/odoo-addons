@@ -171,6 +171,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                     "Failed to post invoice for picking %s: %s",
                     picking.name,
                     e,
+                    exc_info=True,
+                    stack_info=True,
                 )
                 picking.invoice_state = "invoicing_error"
         return True
@@ -204,6 +206,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 "l10n_tr_account_ewaybill."
                 f"action_report_ewaybill_{warehouse_name_suffix}"
             )
+            invoice = picking.ewaybill_id  # use ewaybill instead of invoice for report
         else:
             report_ref = (
                 "l10n_tr_account_einvoice_base."
