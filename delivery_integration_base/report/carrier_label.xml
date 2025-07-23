@@ -21,13 +21,13 @@
 ^FO490,102^A0N,122,122^FB260,1,0,L,0^FD<t t-esc="package_label_info" />^FS
 
 ^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="o.carrier_tracking_ref" />^FS
-<t t-if="o.invoice_ids">
+<t t-if="o.invoice_ids.filtered(lambda inv: inv.state == 'posted')">
     ^FO25,116^FB740,1,0,L,0^FDFatura # <t
-            t-esc="', '.join(o.invoice_ids.mapped('number'))"
+            t-esc="', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number'))"
           />^FS
 </t>
 
-<t t-set="formatted_deci" t-value="round(o.picking_total_deci)" />
+<t t-set="formatted_deci" t-value="round(o.picking_total_weight)" />
 ^FO25,157^FB740,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count" /> Paket <t
           t-esc="formatted_deci"
         /> Desi^FS
@@ -66,7 +66,7 @@
     ^FO25,630^GB700,2,2^FS
     ^FO25,642^FB740,1,0,L,0^FDGÖNDEREN^FS
     ^FO25,674^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları^FS
-
+    ^FO25,705^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
     ^XZ
 </t>
 <t t-else="">
@@ -78,7 +78,7 @@
     ^FO25,600^GB700,2,2^FS
     ^FO25,635^FB740,1,0,L,0^FDGÖNDEREN^FS
     ^FO25,674^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları San. Tic. A.Ş.^FS
-
+    ^FO25,705^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
     ^XZ
 </t>
             </t>
