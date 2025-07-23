@@ -75,6 +75,7 @@ class AccountInvoiceReport(models.Model):
         string="Commission Status",
         readonly=True,
     )
+    invoice_count = fields.Integer(string="Partner Invoice Count", readonly=True)
 
     def _select(self):
         return (
@@ -115,7 +116,8 @@ class AccountInvoiceReport(models.Model):
                line.paint_price as paint_price,
                line.laser_marking_price as laser_marking_price,
                line.lasercut_price as lasercut_price,
-               line.insert_installation_price as insert_installation_price
+               line.insert_installation_price as insert_installation_price,
+               inv_count_sub.invoice_count
             """
         )
 
@@ -130,5 +132,15 @@ class AccountInvoiceReport(models.Model):
                LEFT JOIN utm_campaign_partner_rel partner_campaign_rel
                ON (partner_campaign_rel.res_partner_id = partner.id)
                LEFT JOIN sale_commission_line scl ON (scl.move_line_id = line.id)
+               LEFT JOIN (
+            SELECT
+                line.id AS invoice_line_id,
+                COUNT(DISTINCT move.id) AS invoice_count
+            FROM
+                account_move_line line
+                JOIN account_move move ON move.id = line.move_id
+            GROUP BY
+                line.id
+        ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
                """
         )
