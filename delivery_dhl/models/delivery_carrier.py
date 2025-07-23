@@ -86,6 +86,13 @@ class DeliveryCarrier(models.Model):
         help="Whether the shipment is customs declarable or not.",
     )
 
+    # DHL limits the shipment description to 70 characters,
+    dhl_general_shipment_description = fields.Char(
+        default="",
+        max_length=70,
+        help="General shipment description to be used for DHL shipments.",
+    )
+
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
 
@@ -97,7 +104,7 @@ class DeliveryCarrier(models.Model):
             "postalCode": partner.zip or "",
             "cityName": partner.city or partner.state_id.name or "",
             "countryCode": partner.country_id.code or "TR",
-            "addressLine1": partner.street,
+            "addressLine1": partner.street or "",
         }
 
         if partner.street2:
@@ -109,12 +116,16 @@ class DeliveryCarrier(models.Model):
         """
         Prepare DHL contact data from partner.
         """
-        return {
+        contact_data = {
             "fullName": partner.name,
-            "email": partner.email,
-            "phone": partner.phone or partner.mobile or "",
+            "phone": partner.phone or partner.mobile,
             "companyName": partner.commercial_partner_id.name,
         }
+
+        if partner.email:
+            contact_data["email"] = partner.email
+
+        return contact_data
 
     def _prepare_dhl_dummy_packages(self, order):
         """
@@ -392,6 +403,11 @@ class DeliveryCarrier(models.Model):
                     "content": self._prepare_dhl_commercial_invoice_data(invoice),
                 }
             ],
+            "valueAddedServices": [
+                {
+                    "serviceCode": "WY",
+                }
+            ],
             "getAdditionalInformation": [
                 {
                     "typeCode": "pickupDetails",
@@ -406,14 +422,7 @@ class DeliveryCarrier(models.Model):
                 "packages": self._prepare_dhl_packing_data(picking),
                 "isCustomsDeclarable": self.dhl_is_customs_declarable,
                 "incoterm": picking.sale_id.incoterm.code,
-                "description": ", ".join(
-                    [
-                        f"HS: {hs.hs_code}"
-                        for hs in picking.mapped(
-                            "sale_id.order_line.product_id.categ_id.hs_code_id"
-                        )
-                    ]
-                ),
+                "description": self.dhl_general_shipment_description,
                 # DHL requires value to be a multiple of 0.001
                 "declaredValue": round(totalDeclaredValue, 3),
                 "declaredValueCurrency": picking.sale_id.currency_id.name,
