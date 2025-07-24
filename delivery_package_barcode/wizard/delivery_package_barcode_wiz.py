@@ -3,7 +3,7 @@
 import logging
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -162,6 +162,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         if invoice:
             try:
                 invoice.action_post()
+                if invoice.exception_ids:
+                    raise ValidationError(
+                        _("Invoice couldn't be posted due to exceptions.")
+                    )
                 self._handle_ewaybill_and_invoice_report(
                     picking, sale_id, warehouse_name_suffix, invoice
                 )

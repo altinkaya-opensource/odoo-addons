@@ -18,6 +18,7 @@
         "stock_picking_invoice_link",
         "merge_picking_orders",
         "stock_picking_invoicing",
+        "account_move_exception",
     ],
     "data": [
         "security/ir.model.access.csv",
