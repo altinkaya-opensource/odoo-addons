@@ -6,16 +6,19 @@
         <div class="page">
           <h2 style="text-align: center;color:#ff0000;font-weight:bold;">FATURALANDIRMA HATASI</h2>
           <p style="font-size: 16px;">
-            <strong t-esc="o.name" /> NUMARALI SİPARİŞTE FATURA KESİLİRKEN HATA OLUŞTU.
+            <strong t-esc="o.name" /> NUMARALI SEVKTE FATURA KESİLİRKEN HATA OLUŞTU.
             <br/>
             <br/>
             <strong t-esc="o.sale_id.user_id.name"/> SATIŞ TEMSİLCİSİYLE İLETİŞİME GEÇİNİZ.
             <br/>
             <br/>
             <span>Müşteri Adı: </span><span t-esc="o.partner_id.display_name"/>
+            <br/>
+            <span>Sipariş No: </span><span t-esc="o.sale_id.name"/>
           </p>
           <div style="margin-top: 50px; text-align: center;">
             <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 300, 75)"/>
+            <span t-esc="o.name" style="display: block;"/>
           </div>
         </div>
       </t>
