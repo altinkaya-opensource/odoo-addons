@@ -25,6 +25,7 @@
         "wizard/delivery_package_barcode_wiz_views.xml",
         "views/res_partner_views.xml",
         "views/sale_order_views.xml",
+        "reports/autoinvoicing_fail_notify_report.xml",
     ],
     "assets": {
         "web.assets_backend": [

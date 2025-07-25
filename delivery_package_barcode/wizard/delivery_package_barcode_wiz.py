@@ -179,6 +179,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                     stack_info=True,
                 )
                 picking.invoice_state = "invoicing_error"
+                self._print_fail_notify_report(picking)
         return True
 
     def _get_journal_id(self, sale_id):
@@ -226,3 +227,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         report = self.env.ref(report_ref)
         for __ in range(paper_count):
             report.print_document(record_ids=invoice.ids)
+
+    def _print_fail_notify_report(self, picking):
+        """Print the autoinvoicing fail notify report."""
+        report = self.env.ref(
+            "delivery_package_barcode.report_autoinvoicing_fail_notify"
+        )
+        return report.print_document(record_ids=picking.ids)
