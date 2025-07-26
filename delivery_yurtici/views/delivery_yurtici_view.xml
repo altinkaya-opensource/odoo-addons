@@ -17,11 +17,20 @@
                         <group string="Connection">
                             <field
                 name="yurtici_username"
-                attrs="{'required': [('delivery_type', '=', 'yurtici')]}"
+                attrs="{'required': [('delivery_type', '=', 'yurtici'), ('shipment_level', '=', 'send_shipment')]}"
               />
                             <field name="yurtici_password" />
                             <field name="yurtici_user_lang" />
+                            <field
+                name="yurtici_barcodeservice_username"
+                attrs="{'required': [('delivery_type', '=', 'yurtici'), ('shipment_level', '=', 'send_shipment_and_barcode')]}"
+              />
+                            <field name="yurtici_barcodeservice_password" />
+                            <field name="yurtici_barcodeservice_customer_code" />
+                            <field name="yurtici_barcodeservice_address_code" />
                         </group>
+
+
                         <group string="Logistics">
                             <field name="price_rule_ids" />
                         </group>

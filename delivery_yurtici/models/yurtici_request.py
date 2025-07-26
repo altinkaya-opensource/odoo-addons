@@ -17,10 +17,8 @@ from odoo.exceptions import ValidationError
 _logger = logging.getLogger(__name__)
 
 YURTICI_API_URL = {
-    "prod": "https://webservices.yurticikargo.com/"
-    "KOPSWebServices/ShippingOrderDispatcherServices?wsdl",
-    "test": "https://testwebservices.yurticikargo.com/"
-    "KOPSWebServices/ShippingOrderDispatcherServices?wsdl",
+    "prod": "https://webservices.yurticikargo.com/KOPSWebServices/ShippingOrderDispatcherServices?wsdl",
+    "test": "https://testwebservices.yurticikargo.com/KOPSWebServices/ShippingOrderDispatcherServices?wsdl",
 }
 
 # We were using zeep's get_type() method to get the xsd types, but it wasn't working
