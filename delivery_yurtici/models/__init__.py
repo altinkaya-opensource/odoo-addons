@@ -7,3 +7,5 @@
 from . import delivery_carrier
 from . import stock_package_type
 from . import yurtici_request
+from . import yurtici_barcode_request
+from . import res_partner
