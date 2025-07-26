@@ -21,19 +21,6 @@ YURTICI_API_URL = {
     "test": "https://testwebservices.yurticikargo.com/KOPSWebServices/ShippingOrderDispatcherServices?wsdl",
 }
 
-YURTICI_BARCODESERVICE_API_URL = {
-    "prod": {
-        "customer_integration_service": "https://ws.yurticikargo.com/KOPSWebServices/CustomerIntegrationService?wsdl",
-        "scu_transfer_service": "https://ws.yurticikargo.com/KOPSWebServices/ScuTransferDocDataServices?wsdl",
-        "reporting_service": "https://ws.yurticikargo.com/KOPSWebServices/WsReportWithReferenceServices?wsdl",
-    },
-    "test": {
-        "customer_integration_service": "https://testws.yurticikargo.com/KOPSWebServices/CustomerIntegrationService?wsdl",
-        "scu_transfer_service": "https://testws.yurticikargo.com/KOPSWebServices/ScuTransferDocDataServices?wsdl",
-        "reporting_service": None,  # This is missing in the documentation
-    },
-}
-
 # We were using zeep's get_type() method to get the xsd types, but it wasn't working
 # properly, so we had to manually get the types from the wsdl file and create the
 ShippingOrderV0_elements = [
