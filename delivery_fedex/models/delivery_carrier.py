@@ -951,12 +951,14 @@ class DeliveryCarrier(models.Model):
         picking.carrier_tracking_ref = response["trackingNumber"]
         picking.shipping_number = response["trackingNumber"]
 
-        tracking_events = response["trackResults"][0]["scanEvents"]
+        tracking_info = response["trackResults"][0]
 
-        last_event = tracking_events[-1] if tracking_events else {}
+        tracking_events = tracking_info.get("scanEvents", [])
+
+        last_event = tracking_info.get("latestStatusDetail", {})
 
         picking.delivery_state = FEDEX_TO_ODOO_STATUS.get(
-            last_event.get("derivedStatusCode"), "shipping_recorded_in_carrier"
+            last_event.get("code"), "shipping_recorded_in_carrier"
         )
 
         picking.tracking_state_history = "\n".join(
@@ -976,36 +978,23 @@ class DeliveryCarrier(models.Model):
             ]
         )
 
-        carrier_received_by = response["trackResults"][0]["deliveryDetails"].get(
-            "receivedByName"
-        )
-
-        if carrier_received_by:
-            picking.carrier_received_by = carrier_received_by
-
-        if not response["trackResults"][0].get("dateAndTimes"):
-            picking.date_delivered = False
-            return True
-
-        date_delivered_iter = next(
-            (
-                d["dateTime"]
-                for d in response["trackResults"][0]["dateAndTimes"]
-                if d["type"] == "ACTUAL_DELIVERY"
-            ),
-            None,
-        )
-
-        date_delivered = (
-            datetime.fromisoformat(date_delivered_iter).strftime("%Y-%m-%d %H:%M:%S")
-            if date_delivered_iter
-            else False
-        )
-
-        if date_delivered:
-            picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
-                "%Y-%m-%d %H:%M:%S"
+        if picking.delivery_state == "delivered":
+            picking.carrier_received_by = tracking_info["deliveryDetails"].get(
+                "receivedByName"
             )
+
+            date_delivered_string = next(
+                (
+                    d["dateTime"]
+                    for d in tracking_info["dateAndTimes"]
+                    if d["type"] == "ACTUAL_DELIVERY"
+                ),
+                None,
+            )
+
+            picking.date_delivered = datetime.fromisoformat(
+                date_delivered_string
+            ).strftime("%Y-%m-%d %H:%M:%S")
 
         return True
 
