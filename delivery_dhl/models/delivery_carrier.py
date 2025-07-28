@@ -207,7 +207,7 @@ class DeliveryCarrier(models.Model):
                     ).description
                     or lts.product_id.name,
                     # DHL requires values to be a multiple of 0.001
-                    "price": round(lts.price_subtotal / lts.product_uom_qty, 3),
+                    "price": max(round(lts.price_subtotal / lts.product_uom_qty, 3), 0.001),
                     "quantity": {
                         "value": int(lts.product_uom_qty),
                         "unitOfMeasurement": UNECE_TO_DHL_UOM.get(
@@ -229,7 +229,7 @@ class DeliveryCarrier(models.Model):
                 }
             )
 
-        return max(sum(lines_to_ship.mapped("price_subtotal")), 1.0), lineItems
+        return sum(lines_to_ship.mapped("price_subtotal")), lineItems
 
     def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date_str):
         """
