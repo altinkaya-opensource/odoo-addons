@@ -183,7 +183,7 @@ class DeliveryCarrier(models.Model):
         Prepare estimated customs data for DHL
         shipments on the picking and shipping weight.
         """
-        lineItems = []
+        line_items = []
 
         # Get non-delivery lines from the sale order
         lines_to_ship = picking.sale_id.order_line.filtered(
@@ -197,8 +197,15 @@ class DeliveryCarrier(models.Model):
             shipping_weight / len(lines_to_ship) if lines_to_ship else 0.1
         )
 
+        total_value = 0
         for seq, lts in enumerate(lines_to_ship):
-            lineItems.append(
+            # DHL requires price and total declared value to
+            # be a positive multiple of 0.001
+            product_price = max(
+                round(lts.price_subtotal / lts.product_uom_qty, 3), 0.001
+            )
+            total_value += product_price * int(lts.product_uom_qty)
+            line_items.append(
                 {
                     # DHL requires number to be a positive integer
                     "number": seq + 1,
@@ -206,8 +213,7 @@ class DeliveryCarrier(models.Model):
                         lang="en_US"
                     ).description
                     or lts.product_id.name,
-                    # DHL requires values to be a multiple of 0.001
-                    "price": max(round(lts.price_subtotal / lts.product_uom_qty, 3), 0.001),
+                    "price": product_price,
                     "quantity": {
                         "value": int(lts.product_uom_qty),
                         "unitOfMeasurement": UNECE_TO_DHL_UOM.get(
@@ -229,7 +235,7 @@ class DeliveryCarrier(models.Model):
                 }
             )
 
-        return sum(lines_to_ship.mapped("price_subtotal")), lineItems
+        return max(total_value, 0.1), line_items
 
     def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date_str):
         """
@@ -421,10 +427,9 @@ class DeliveryCarrier(models.Model):
             "content": {
                 "packages": self._prepare_dhl_packing_data(picking),
                 "isCustomsDeclarable": self.dhl_is_customs_declarable,
-                "incoterm": picking.sale_id.incoterm.code,
+                "incoterm": invoice.invoice_incoterm_id.code,
                 "description": self.dhl_general_shipment_description,
-                # DHL requires value to be a multiple of 0.001
-                "declaredValue": round(totalDeclaredValue, 3),
+                "declaredValue": totalDeclaredValue,
                 "declaredValueCurrency": picking.sale_id.currency_id.name,
                 "exportDeclaration": {
                     "lineItems": lineItems,
