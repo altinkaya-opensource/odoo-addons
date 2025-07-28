@@ -619,16 +619,11 @@ class DeliveryCarrier(models.Model):
         packages = []
         total_weight = 0
 
-        packs = (
-            picking.package_ids.filtered(lambda p: p.is_pallet) or picking.package_ids
-        )
-
-        for pack in packs:
+        for pack in picking.package_ids:
             packages.append(
                 {
                     "sequenceNumber": len(packages) + 1,
                     "weight": {"units": "KG", "value": pack.shipping_weight},
-                    "subPackagingType": "PALLET" if pack.is_pallet else "PACKAGE",
                     "dimensions": {
                         "length": pack.pack_length,
                         "width": pack.width,
@@ -810,12 +805,7 @@ class DeliveryCarrier(models.Model):
 
             self.fedex_request_pickup(
                 picking,
-                sum(
-                    pack.shipping_weight
-                    for pack in picking.package_ids.self.filtered(
-                        lambda p: not p.is_pallet
-                    )
-                ),
+                sum(pack.shipping_weight for pack in picking.package_ids),
                 master_tracking_number,
             )
 
@@ -961,14 +951,12 @@ class DeliveryCarrier(models.Model):
         picking.carrier_tracking_ref = response["trackingNumber"]
         picking.shipping_number = response["trackingNumber"]
 
-        tracking_info = response["trackResults"][0]
+        tracking_events = response["trackResults"][0]["scanEvents"]
 
-        tracking_events = tracking_info.get("scanEvents", [])
-
-        last_event = tracking_info.get("latestStatusDetail", {})
+        last_event = tracking_events[-1] if tracking_events else {}
 
         picking.delivery_state = FEDEX_TO_ODOO_STATUS.get(
-            last_event.get("code"), "shipping_recorded_in_carrier"
+            last_event.get("derivedStatusCode"), "shipping_recorded_in_carrier"
         )
 
         picking.tracking_state_history = "\n".join(
@@ -988,23 +976,36 @@ class DeliveryCarrier(models.Model):
             ]
         )
 
-        if picking.delivery_state == "delivered":
-            picking.carrier_received_by = tracking_info["deliveryDetails"].get(
-                "receivedByName"
-            )
+        carrier_received_by = response["trackResults"][0]["deliveryDetails"].get(
+            "receivedByName"
+        )
 
-            date_delivered_string = next(
-                (
-                    d["dateTime"]
-                    for d in tracking_info["dateAndTimes"]
-                    if d["type"] == "ACTUAL_DELIVERY"
-                ),
-                None,
-            )
+        if carrier_received_by:
+            picking.carrier_received_by = carrier_received_by
 
-            picking.date_delivered = datetime.fromisoformat(
-                date_delivered_string
-            ).strftime("%Y-%m-%d %H:%M:%S")
+        if not response["trackResults"][0].get("dateAndTimes"):
+            picking.date_delivered = False
+            return True
+
+        date_delivered_iter = next(
+            (
+                d["dateTime"]
+                for d in response["trackResults"][0]["dateAndTimes"]
+                if d["type"] == "ACTUAL_DELIVERY"
+            ),
+            None,
+        )
+
+        date_delivered = (
+            datetime.fromisoformat(date_delivered_iter).strftime("%Y-%m-%d %H:%M:%S")
+            if date_delivered_iter
+            else False
+        )
+
+        if date_delivered:
+            picking.date_delivered = datetime.fromisoformat(date_delivered).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
 
         return True
 
@@ -1015,10 +1016,6 @@ class DeliveryCarrier(models.Model):
         Prepare FedEx pickup payload for the given picking.
         """
         warehouse_partner = picking.location_id.warehouse_id.partner_id
-
-        packs = (
-            picking.package_ids.filtered(lambda p: p.is_pallet) or picking.package_ids
-        )
 
         return {
             "associatedAccountNumber": {"value": self.fedex_account_number},
@@ -1039,7 +1036,7 @@ class DeliveryCarrier(models.Model):
                 "units": "KG",
                 "value": total_weight,
             },
-            "packageCount": len(packs),
+            "packageCount": len(picking.package_ids),
             # TODO: Make this configurable in the future.
             "countryRelationship": "INTERNATIONAL",
             "trackingNumber": tracking_number,
