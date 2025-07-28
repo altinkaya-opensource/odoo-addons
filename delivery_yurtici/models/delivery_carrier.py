@@ -200,7 +200,6 @@ class DeliveryCarrier(models.Model):
             "customerInfo": {
                 "senderCustId": int(self.yurtici_barcodeservice_customer_code),
                 "receiverCustName": picking.partner_id.display_name[:50],
-                # todo
                 "receiverCustAddress": self._prepare_yurtici_address_barcode(
                     picking.partner_id
                 ),
@@ -216,15 +215,14 @@ class DeliveryCarrier(models.Model):
         vals = {
             "documentData": {
                 "carrierLabelingFlag": "1",  # Yurtici will create the label
-                "cargoType": "2",  # Koli
-                "paymentType": "1",  # Sender pays
+                "cargoType": "2",
+                "paymentType": "1" if self.payment_type == "sender_pays" else "0",
                 "totalCargoCount": picking.carrier_package_count or 1,
                 "totalDesi": picking.picking_total_weight,
                 "totalWeight": picking.picking_total_weight,
-                "personGiver": picking.company_id.name
-                + " (DEPO YÖNETİCİSİ)",  # TODO: ask
+                "personGiver": picking.company_id.name + " (DEPO)",
                 "waybillNo": picking.name,
-                "productCode": "STA",
+                "productCode": "STA",  # Currently only "STA" is supported
                 "docCargoArray": [],
             },
             "senderCustData": {
@@ -249,7 +247,7 @@ class DeliveryCarrier(models.Model):
 
         for __ in range(package_count):
             cargo_data = {
-                "cargoType": "2",  # Koli
+                "cargoType": "2",
                 "desi": weight_per_package,
                 "weight": weight_per_package,
                 "docCargoSpecialFieldDataArray": [
@@ -466,7 +464,10 @@ class DeliveryCarrier(models.Model):
     def yurtici_tracking_state_update(self, picking):
         """Tracking state update master method based on shipment level."""
         self.ensure_one()
-        if self.shipment_level == "send_shipment_and_barcode":
+        if (
+            self.shipment_level == "send_shipment_and_barcode"
+            and picking.shipping_number
+        ):
             return self.yurtici_tracking_state_update_barcode(picking)
         else:
             return self.yurtici_tracking_state_update_standart(picking)
@@ -475,10 +476,10 @@ class DeliveryCarrier(models.Model):
         """Tracking state update using barcode service"""
         self.ensure_one()
 
-        if not picking.carrier_tracking_ref:
+        if not picking.shipping_number:
             raise ValidationError(
                 _(
-                    "Picking %(picking_name)s does not have a tracking reference.",
+                    "Picking %(picking_name)s does not have a shipping number.",
                     picking_name=picking.name,
                 )
             )
@@ -490,7 +491,7 @@ class DeliveryCarrier(models.Model):
         try:
             response = yurtici_barcode_request.track_document(
                 {
-                    "docIdArray": [picking.carrier_tracking_ref],
+                    "docIdArray": [picking.shipping_number],
                     "withCargoLifecycle": "true",
                 }
             )
