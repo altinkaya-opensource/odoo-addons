@@ -19,6 +19,7 @@ FEDEX_SERVICES = [
     ("INTERNATIONAL_FIRST", "International First"),
     ("FEDEX_INTERNATIONAL_PRIORITY", "International Priority"),
     ("FEDEX_INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
+    ("INTERNATIONAL_PRIORITY_FREIGHT", "International Priority Freight"),
 ]
 
 FEDEX_PICKUP_TYPES = [
@@ -272,8 +273,28 @@ class DeliveryCarrier(models.Model):
 
         # Create dummy pickings with order's deci
         deci = order.sale_deci * self._get_dimension_factor(order.sale_deci)
-        average_pack_weight = 30
-        pack_weight_threshold = 5
+
+        # TODO: A better estimation system is needed
+        if deci < 68:
+            average_pack_weight = 10
+            pack_weight_threshold = 2
+            sub_package_type = "PACKAGE"
+            dimensions = {
+                "length": 20,
+                "width": 20,
+                "height": 20,
+                "units": "CM",
+            }
+        else:
+            average_pack_weight = deci / (deci // 140)
+            pack_weight_threshold = 68
+            sub_package_type = "PALLET"
+            dimensions = {
+                "length": 120,
+                "width": 90,
+                "height": 80,
+                "units": "CM",
+            }
 
         # Calculate average weighted package count
         # and create them excluding the remainder
@@ -282,6 +303,8 @@ class DeliveryCarrier(models.Model):
         packages = [
             {
                 "weight": {"units": "KG", "value": average_pack_weight},
+                "subPackagingType": sub_package_type,
+                "dimensions": dimensions,
             }
             for __ in range(avg_weighted_package_count)
         ]
@@ -295,6 +318,8 @@ class DeliveryCarrier(models.Model):
             packages.append(
                 {
                     "weight": {"units": "KG", "value": deci % average_pack_weight},
+                    "subPackagingType": sub_package_type,
+                    "dimensions": dimensions,
                 }
             )
 
@@ -619,11 +644,17 @@ class DeliveryCarrier(models.Model):
         packages = []
         total_weight = 0
 
-        for pack in picking.package_ids:
+        packs = (
+            picking.package_ids.filtered(lambda p: p.is_pallet) or picking.package_ids
+        )
+
+        for pack in packs:
             packages.append(
                 {
+                    "groupPackageCount": "1",
                     "sequenceNumber": len(packages) + 1,
                     "weight": {"units": "KG", "value": pack.shipping_weight},
+                    "subPackagingType": "PALLET" if pack.is_pallet else "PACKAGE",
                     "dimensions": {
                         "length": pack.pack_length,
                         "width": pack.width,
@@ -658,6 +689,21 @@ class DeliveryCarrier(models.Model):
                         ]
                     },
                 }
+
+        # TODO: Maybe make a better check for freight services?
+        # TODO: Maybe add a configuration option for freight weight?
+        # TODO: Maybe add a configuration option for freight packing list?
+        if "freight" in self.fedex_service_type.lower():
+            shippersLoadAndCount = picking.package_ids.filtered(
+                lambda p: not p.is_pallet
+            )
+            data["requestedShipment"]["expressFreightDetail"] = {
+                # The number is just a placeholder, it is
+                # not used by FedEx API in Turkey
+                "bookingConfirmationNumber": "123456789812",
+                "shippersLoadAndCount": len(shippersLoadAndCount),
+                "packingListEnclosed": True,
+            }
 
         return data
 
@@ -802,7 +848,7 @@ class DeliveryCarrier(models.Model):
             shipment_data = response["output"]["transactionShipments"][0]
 
             master_tracking_number = shipment_data["masterTrackingNumber"]
-
+            # TODO: Pickup is not tested with Freight services
             self.fedex_request_pickup(
                 picking,
                 sum(pack.shipping_weight for pack in picking.package_ids),
@@ -1017,7 +1063,7 @@ class DeliveryCarrier(models.Model):
         """
         warehouse_partner = picking.location_id.warehouse_id.partner_id
 
-        return {
+        data = {
             "associatedAccountNumber": {"value": self.fedex_account_number},
             "carrierCode": self.fedex_carrier_code,
             "originDetail": {
@@ -1041,6 +1087,24 @@ class DeliveryCarrier(models.Model):
             "countryRelationship": "INTERNATIONAL",
             "trackingNumber": tracking_number,
         }
+
+        # TODO: Dynamic dimensions based on the packages
+        # TODO: Ask about truckType
+        if "freight" in self.fedex_service_type.lower():
+            data["expressFreightDetail"] = {
+                "service": self.fedex_service_type,
+                "bookingNumber": "12345678",  # Placeholder, not used in Turkey
+                "dimensions": {
+                    "length": 120,
+                    "width": 90,
+                    "height": 80,
+                    "units": "CM",
+                },
+                "truckType": "TRACTOR_TRAILER_ACCESS",
+                # "DROP_TRAILER_AGREEMENT" "LIFTGATE" "TRACTOR_TRAILER_ACCESS"
+            }
+
+        return data
 
     def _prepare_fedex_pickup_check_data(self, picking):
         """
