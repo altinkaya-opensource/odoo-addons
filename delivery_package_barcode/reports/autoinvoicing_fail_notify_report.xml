@@ -1,24 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
   <template id="autoinvoicing_fail_notify">
     <t t-call="web.basic_layout">
       <t t-foreach="docs" t-as="o">
         <div class="page">
-          <h2 style="text-align: center;color:#ff0000;font-weight:bold;">FATURALANDIRMA HATASI</h2>
+          <h2
+            style="text-align: center;color:#ff0000;font-weight:bold;"
+          >FATURALANDIRMA HATASI</h2>
           <p style="font-size: 16px;">
             <strong t-esc="o.name" /> NUMARALI SEVKTE FATURA KESİLİRKEN HATA OLUŞTU.
-            <br/>
-            <br/>
-            <strong t-esc="o.sale_id.user_id.name"/> SATIŞ TEMSİLCİSİYLE İLETİŞİME GEÇİNİZ.
-            <br/>
-            <br/>
-            <span>Müşteri Adı: </span><span t-esc="o.partner_id.display_name"/>
-            <br/>
-            <span>Sipariş No: </span><span t-esc="o.sale_id.name"/>
+            <br />
+            <br />
+            <strong
+              t-esc="o.sale_id.user_id.name"
+            /> SATIŞ TEMSİLCİSİYLE İLETİŞİME GEÇİNİZ.
+            <br />
+            <br />
+            <span>Müşteri Adı: </span><span t-esc="o.partner_id.display_name" />
+            <br />
+            <span>Sipariş No: </span><span t-esc="o.sale_id.name" />
           </p>
           <div style="margin-top: 50px; text-align: center;">
-            <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 300, 75)"/>
-            <span t-esc="o.name" style="display: block;"/>
+            <img
+              t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 300, 75)"
+            />
+            <span t-esc="o.name" style="display: block;" />
           </div>
         </div>
       </t>
@@ -29,7 +35,9 @@
       <field name="name">Faturalandırma Hatası Bildirim Raporu</field>
       <field name="model">stock.picking</field>
       <field name="report_type">qweb-pdf</field>
-      <field name="report_name">delivery_package_barcode.autoinvoicing_fail_notify</field>
+      <field
+      name="report_name"
+    >delivery_package_barcode.autoinvoicing_fail_notify</field>
     </record>
 
 </odoo>
