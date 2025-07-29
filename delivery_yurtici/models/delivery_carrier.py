@@ -269,13 +269,13 @@ class DeliveryCarrier(models.Model):
         result = []
 
         for picking in pickings:
-            try:
-                # Save or reuse customer information if available
-                partner = picking.partner_id
-                if partner.yurtici_partner_id and partner.yurtici_address_id:
-                    yurtici_customer_id = partner.yurtici_partner_id
-                    yurtici_address_id = partner.yurtici_address_id
-                else:
+            # Save or reuse customer information if available
+            partner = picking.partner_id
+            if partner.yurtici_partner_id and partner.yurtici_address_id:
+                yurtici_customer_id = partner.yurtici_partner_id
+                yurtici_address_id = partner.yurtici_address_id
+            else:
+                try:
                     customer_vals = self._prepare_customer_info_vals(picking)
                     customer_response = yurtici_barcode_request._save_customer(
                         customer_vals
@@ -289,7 +289,18 @@ class DeliveryCarrier(models.Model):
                     ]
                     partner.yurtici_partner_id = yurtici_customer_id
                     partner.yurtici_address_id = yurtici_address_id
+                except Exception as e:
+                    raise ValidationError(
+                        _(
+                            "Failed to save customer information: %(error)s",
+                            error=str(e),
+                        )
+                    )
 
+                finally:
+                    self._yurtici_log_request(yurtici_barcode_request)
+
+            try:
                 # Prepare shipping values for barcode service
                 shipping_vals = self._prepare_yurtici_barcode_shipping_vals(
                     picking, yurtici_customer_id, yurtici_address_id
