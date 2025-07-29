@@ -363,6 +363,21 @@ class DeliveryCarrier(models.Model):
                 result.append(vals)
                 continue
             result.append({"tracking_number": response.cargoKey, "exact_price": 0.0})
+
+            labels = self._generate_zpl_barcode_string(picking, response.cargoKey)
+
+            self.env["ir.attachment"].create(
+                {
+                    "name": f"{picking.name}_yurtici_label.zpl",
+                    "datas": base64.b64encode("\n".join(labels).encode("utf-8")).decode(
+                        "utf-8"
+                    ),
+                    "res_model": "stock.picking",
+                    "res_id": picking.id,
+                    "is_delivery_document": True,
+                }
+            )
+
             result.append(vals)
         return result
 
