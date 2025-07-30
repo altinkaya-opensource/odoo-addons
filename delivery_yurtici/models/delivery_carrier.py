@@ -5,6 +5,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import base64
+import time
 from datetime import datetime
 
 import phonenumbers
@@ -289,6 +290,11 @@ class DeliveryCarrier(models.Model):
                     ]
                     partner.yurtici_partner_id = yurtici_customer_id
                     partner.yurtici_address_id = yurtici_address_id
+
+                    # FIXME: This is an experimental workaround for ambiguous
+                    # error.
+                    time.sleep(10)  # Let the YK system process the address and partner
+
                 except Exception as e:
                     raise ValidationError(
                         _(
