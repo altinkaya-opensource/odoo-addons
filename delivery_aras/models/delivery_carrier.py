@@ -190,7 +190,7 @@ class DeliveryCarrier(models.Model):
                     # Aras claims that waiting for a while after sending
                     # the request helps to get the barcode without issues.
                     # TODO: check and find a better way to handle this.
-                    time.sleep(3)
+                    time.sleep(5)
                     if aras_response := aras_request._get_barcode(
                         response.OrgReceiverCustId
                     ):

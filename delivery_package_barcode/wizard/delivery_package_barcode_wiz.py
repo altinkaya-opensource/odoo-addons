@@ -203,8 +203,6 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         self, picking, sale_id, warehouse_name_suffix, invoice
     ):
         if sale_id.create_ewaybill_within_invoice and picking.ewaybill_id:
-            # Invalidate cache for picking
-            picking.invalidate_recordset()
             # E-waybill needs more permissions to be generated
             picking.ewaybill_id.sudo().action_generate_ewaybill_files()
             report_ref = (
@@ -218,15 +216,11 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 f"action_report_einvoice_{warehouse_name_suffix}"
             )
 
-        if picking.carrier_id.shipment_level == "send_shipment_and_barcode":
+        if picking:
             picking.action_print_delivery_documents()
-            paper_count = 1
-        else:
-            paper_count = 2
 
         report = self.env.ref(report_ref)
-        for __ in range(paper_count):
-            report.print_document(record_ids=invoice.ids)
+        report.print_document(record_ids=invoice.ids)
 
     def _print_fail_notify_report(self, picking):
         """Print the autoinvoicing fail notify report."""
