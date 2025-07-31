@@ -187,7 +187,7 @@ class ProductMergeWizard(models.TransientModel):
                 "SELECT column_name FROM information_schema.columns "
                 "WHERE table_name LIKE %s"
             )
-            self._cr.execute(query, (table))
+            self._cr.execute(query, tuple([table]))
             columns = []
             for data in self._cr.fetchall():
                 if data[0] != column:
