@@ -752,24 +752,26 @@ class DeliveryCarrier(models.Model):
             prod=self.prod_environment,
         )
         payload = self._prepare_fedex_account_rate_data(account_move)
-        response = fedex_request.get_rates(payload)
+        try:
+            response = fedex_request.get_rates(payload)
 
-        rate_data = self._format_rate_data(response)
-        price = rate_data.get("price")
+            rate_data = self._format_rate_data(response)
+            price = rate_data.get("price")
 
-        # If needed, convert the price to the order's currency
-        if rate_data.get("currency") != account_move.currency_id.name:
-            currency = self.env["res.currency"].search(
-                [("name", "=", rate_data.get("currency"))], limit=1
-            )
+            # If needed, convert the price to the order's currency
+            if rate_data.get("currency") != account_move.currency_id.name:
+                currency = self.env["res.currency"].search(
+                    [("name", "=", rate_data.get("currency"))], limit=1
+                )
 
-            price = currency._convert(
-                price,
-                account_move.currency_id,
-                account_move.company_id,
-                fields.Date.today(),
-            )
-
+                price = currency._convert(
+                    price,
+                    account_move.currency_id,
+                    account_move.company_id,
+                    fields.Date.today(),
+                )
+        except Exception as __:  # This means there is no rate or the request failed
+            price = 0.0
         return price
 
     def fedex_send_shipping(self, pickings):

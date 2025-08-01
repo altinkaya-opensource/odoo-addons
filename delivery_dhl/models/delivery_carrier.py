@@ -455,31 +455,34 @@ class DeliveryCarrier(models.Model):
             delivery_carrier=self,
         )
         payload = self._prepare_dhl_sale_rate_data(order)
-        response = dhl_request.get_rate(payload)
+        try:
+            response = dhl_request.get_rate(payload)
 
-        currency_name = response["exchangeRates"][0]["baseCurrency"]
+            currency_name = response["exchangeRates"][0]["baseCurrency"]
 
-        price = next(
-            (
-                price_data["price"]
-                for price_data in response["products"][0]["totalPrice"]
-                if price_data["priceCurrency"] == currency_name
-            ),
-            None,
-        )
-
-        # If needed, convert the price to the order's currency
-        if currency_name != order.currency_id.name:
-            currency = self.env["res.currency"].search(
-                [("name", "=", currency_name)], limit=1
+            price = next(
+                (
+                    price_data["price"]
+                    for price_data in response["products"][0]["totalPrice"]
+                    if price_data["priceCurrency"] == currency_name
+                ),
+                None,
             )
 
-            price = currency._convert(
-                price,
-                order.currency_id,
-                order.company_id,
-                fields.Date.today(),
-            )
+            # If needed, convert the price to the order's currency
+            if currency_name != order.currency_id.name:
+                currency = self.env["res.currency"].search(
+                    [("name", "=", currency_name)], limit=1
+                )
+
+                price = currency._convert(
+                    price,
+                    order.currency_id,
+                    order.company_id,
+                    fields.Date.today(),
+                )
+        except Exception as __:
+            price = 0.0
 
         return {
             "success": True,
