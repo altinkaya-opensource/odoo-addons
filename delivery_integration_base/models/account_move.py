@@ -17,7 +17,6 @@ class AccountMove(models.Model):
             try:
                 for picking in move.picking_ids:
                     picking.with_context(send_from_account_move=True).send_to_shipper()
-                    picking.shipping_number = picking.carrier_tracking_ref
                     move.delivery_ref_no = picking.carrier_tracking_ref
             except Exception as e:
                 _logger.error(
