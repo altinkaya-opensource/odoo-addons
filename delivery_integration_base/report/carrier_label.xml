@@ -53,7 +53,7 @@
 <t t-set="line1" t-value="street[0:40]" />
 <t t-set="line2" t-value="street[40:80]" />
 
-^FO25,444^FB740,1,0,L,0^FD<t t-esc="o.partner_id.name" />^FS
+^FO25,444^FB740,1,0,L,0^FD<t t-esc="o.partner_id.display_name" />^FS
 ^FO25,474^FB740,1,0,L,0^FD<t t-esc="o.partner_id.neighbour_id.name" />^FS
 ^FO25,504^FB740,1,0,L,0^FD<t t-esc="line1" />^FS
 
