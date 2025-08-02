@@ -65,6 +65,20 @@ class AccountMove(models.Model):
         compute="_compute_other_inv_in_reconciles",
     )
 
+    @api.depends("move_type")
+    def _compute_invoice_default_sale_person(self):
+        """
+        Overriden to use partner's default sale person since we're
+        creating invoices from warehouse operations.
+        """
+        for move in self:
+            if move.is_sale_document(include_receipts=True):
+                move.invoice_user_id = (
+                    move.partner_id.commercial_partner_id.user_id or self.env.user
+                )
+            else:
+                move.invoice_user_id = False
+
     @api.model
     def _compute_full_reconcile_ids(self):
         for invoice in self:
