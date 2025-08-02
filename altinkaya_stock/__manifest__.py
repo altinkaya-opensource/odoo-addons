@@ -17,7 +17,7 @@
         "barcodes_generator_product",
         "partner_ranking",
         "stock_inventory",
-        "stock_available_unreserved",
+        # "stock_available_unreserved",
         "stock_picking_invoicing",
         "stock_quant_package_dimension",
     ],

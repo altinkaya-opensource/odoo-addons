@@ -111,13 +111,15 @@
             <field name="qty_available" position="before">
                 <field
           name="qty_available_merkez"
-          string="Merkez Depo"
-          widget="float_time"
+          string="Merkez Uygun"
+          widget="uom"
+          options="{'uom_field': 'uom_id'}"
         />
                 <field
           name="qty_available_sincan"
-          string="Sincan Depo"
-          widget="float_time"
+          string="Sincan Uygun"
+          widget="uom"
+          options="{'uom_field': 'uom_id'}"
         />
             </field>
 
@@ -125,30 +127,7 @@
                 <attribute name="string">Satış Fiyatı</attribute>
             </xpath>
 
-            <field name="qty_available" position="before">
-                <field
-          name="qty_available_merkez"
-          string="Merkez Depo"
-          widget="float_time"
-        />
-                <field
-          name="qty_available_sincan"
-          string="Sincan Depo"
-          widget="float_time"
-        />
-            </field>
 
-        </field>
-    </record>
-
-    <record id="view_stock_product_tree" model="ir.ui.view">
-        <field name="name">product.stock.tree.inherit</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="stock.view_stock_product_tree" />
-        <field name="arch" type="xml">
-            <field name="qty_available" position="after">
-                <field name="free_qty" />
-            </field>
         </field>
     </record>
 

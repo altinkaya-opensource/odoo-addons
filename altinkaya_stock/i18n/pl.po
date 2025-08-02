@@ -524,8 +524,8 @@ msgid "Durumu"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_enjek
-#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_enjek
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_enjeksiyon
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_enjeksiyon
 msgid "Enjeksiyon Depo Mevcut"
 msgstr ""
 

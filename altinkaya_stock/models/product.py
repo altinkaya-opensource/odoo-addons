@@ -2,6 +2,20 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
 
+LOCATION_MAPPING = {
+    "sincan": 21,
+    "merkez": 12,
+    "enjeksiyon": 29,
+    "montaj": 53,
+    "cnc": 61,
+    "metal": 37,
+    "boya": 45,
+    "maske": 114,
+    "baski": 77,
+    "torna": 5895,
+    "kaplama": 6362,
+}
+
 
 class Product(models.Model):
     _inherit = "product.product"
@@ -17,7 +31,7 @@ class Product(models.Model):
     )
 
     product_template_variant_value_ids = fields.Many2many(
-        # Remove domain in this field
+        # Removes domain in this field
         domain=None,
     )
 
@@ -28,6 +42,10 @@ class Product(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        """
+        Inherited to set the barcode rule from the category and
+        generate barcode automatically.
+        """
         records = super().create(vals_list)
 
         for record in records:
@@ -62,99 +80,147 @@ class Product(models.Model):
         compute="_compute_custom_available",
         search="_search_qty_merkez",
     )
-    qty_available_enjek = fields.Float(
+    qty_available_enjeksiyon = fields.Float(
         "Enjeksiyon Depo Mevcut",
-        compute="_compute_custom2_available",
-        search="_search_qty_enjek",
+        compute="_compute_custom_available",
+        search="_search_qty_enjeksiyon",
     )
     qty_available_montaj = fields.Float(
         "Montaj Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_montaj",
     )
     qty_available_cnc = fields.Float(
         "CNC Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_cnc",
     )
     qty_available_metal = fields.Float(
         "Metal Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_metal",
     )
     qty_available_boya = fields.Float(
         "Boya Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_boya",
     )
     qty_available_maske = fields.Float(
         "Maske Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_maske",
     )
     qty_available_baski = fields.Float(
         "Baski Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_baski",
     )
     qty_available_torna = fields.Float(
         "Torna Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_torna",
     )
     qty_available_kaplama = fields.Float(
         "Kaplama Depo Mevcut",
-        compute="_compute_custom2_available",
+        compute="_compute_custom_available",
         search="_search_qty_kaplama",
     )
 
     qty_incoming_sincan = fields.Float(
-        "Sincan Depo Gelen", compute="_compute_custom_available"
+        "Sincan Depo Gelen",
+        compute="_compute_custom_available",
     )
     qty_incoming_merkez = fields.Float(
-        "Merkez Depo Gelen", compute="_compute_custom_available"
+        "Merkez Depo Gelen",
+        compute="_compute_custom_available",
     )
     qty_outgoing_sincan = fields.Float(
-        "Sincan Depo Giden", compute="_compute_custom_available"
+        "Sincan Depo Giden",
+        compute="_compute_custom_available",
     )
     qty_outgoing_merkez = fields.Float(
-        "Merkez Depo Giden", compute="_compute_custom_available"
+        "Merkez Depo Giden",
+        compute="_compute_custom_available",
     )
     qty_virtual_sincan = fields.Float(
-        "Sincan Depo Tahmini", compute="_compute_custom_available"
+        "Sincan Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_merkez = fields.Float(
-        "Merkez Depo Tahmini", compute="_compute_custom_available"
+        "Merkez Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_enjeksiyon = fields.Float(
-        "Enjeksiyon Depo Tahmini", compute="_compute_custom_available"
+        "Enjeksiyon Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_montaj = fields.Float(
-        "Montaj Depo Tahmini", compute="_compute_custom_available"
+        "Montaj Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_torna = fields.Float(
-        "Torna Depo Tahmini", compute="_compute_custom_available"
+        "Torna Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_cnc = fields.Float(
-        "CNC Depo Tahmini", compute="_compute_custom_available"
+        "CNC Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_metal = fields.Float(
-        "Metal Depo Tahmini", compute="_compute_custom_available"
+        "Metal Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_boya = fields.Float(
-        "Boya Depo Tahmini", compute="_compute_custom_available"
+        "Boya Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_baski = fields.Float(
-        "Baski Depo Tahmini", compute="_compute_custom_available"
+        "Baski Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_virtual_kaplama = fields.Float(
-        "Kaplama Depo Tahmini", compute="_compute_custom_available"
+        "Kaplama Depo Tahmini",
+        compute="_compute_custom_available",
     )
     qty_unreserved_sincan = fields.Float(
-        "Sincan Depo Rezervesiz", compute="_compute_custom_available"
+        "Sincan Depo Rezervesiz",
+        compute="_compute_custom_available",
     )
     qty_unreserved_merkez = fields.Float(
-        "Merkez Depo Rezervesiz", compute="_compute_custom_available"
+        "Merkez Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_enjeksiyon = fields.Float(
+        "Enjeksiyon Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_montaj = fields.Float(
+        "Montaj Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_cnc = fields.Float(
+        "CNC Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_metal = fields.Float(
+        "Metal Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_boya = fields.Float(
+        "Boya Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_baski = fields.Float(
+        "Baski Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_torna = fields.Float(
+        "Torna Depo Rezervesiz",
+        compute="_compute_custom_available",
+    )
+    qty_unreserved_kaplama = fields.Float(
+        "Kaplama Depo Rezervesiz",
+        compute="_compute_custom_available",
     )
 
     @api.onchange("product_template_variant_value_ids")
@@ -206,7 +272,7 @@ class Product(models.Model):
             )
         ]
 
-    def _search_qty_enjek(self, operator, value):
+    def _search_qty_enjeksiyon(self, operator, value):
         return [
             (
                 "id",
@@ -306,93 +372,24 @@ class Product(models.Model):
         ]
 
     def _compute_custom_available(self):
+        fields_to_compute_mapping = {
+            "qty_available": "qty_available_",
+            "incoming_qty": "qty_incoming_",
+            "outgoing_qty": "qty_outgoing_",
+            "virtual_available": "qty_virtual_",
+            "free_qty": "qty_unreserved_",
+        }
         for product in self:
-            product.qty_available_sincan = product.with_context(
-                **{"location": 21}
-            ).qty_available
-            product.qty_available_merkez = product.with_context(
-                **{"location": 12}
-            ).qty_available
-            product.qty_incoming_sincan = product.with_context(
-                **{"location": 21}
-            ).incoming_qty
-            product.qty_incoming_merkez = product.with_context(
-                **{"location": 12}
-            ).incoming_qty
-            product.qty_outgoing_sincan = product.with_context(
-                **{"location": 21}
-            ).outgoing_qty
-            product.qty_outgoing_merkez = product.with_context(
-                **{"location": 12}
-            ).outgoing_qty
-            product.qty_virtual_sincan = product.with_context(
-                **{"location": 21}
-            ).virtual_available
-            product.qty_virtual_merkez = product.with_context(
-                **{"location": 12}
-            ).virtual_available
-            product.qty_virtual_enjeksiyon = product.with_context(
-                **{"location": 29}
-            ).virtual_available
-            product.qty_virtual_montaj = product.with_context(
-                **{"location": 53}
-            ).virtual_available
-            product.qty_virtual_torna = product.with_context(
-                **{"location": 5895}
-            ).virtual_available
-            product.qty_virtual_cnc = product.with_context(
-                **{"location": 61}
-            ).virtual_available
-            product.qty_virtual_metal = product.with_context(
-                **{"location": 37}
-            ).virtual_available
-            product.qty_virtual_boya = product.with_context(
-                **{"location": 45}
-            ).virtual_available
-            product.qty_virtual_baski = product.with_context(
-                **{"location": 77}
-            ).virtual_available
-            product.qty_virtual_kaplama = product.with_context(
-                **{"location": 6362}
-            ).virtual_available
-            product.qty_unreserved_sincan = product.with_context(
-                **{"location": 21}
-            ).free_qty
-            product.qty_unreserved_merkez = product.with_context(
-                **{"location": 12}
-            ).free_qty
-
-    def _compute_custom2_available(self):
-        for product in self:
-            product.qty_available_montaj = product.with_context(
-                **{"location": 53}
-            ).qty_available
-            product.qty_available_enjek = product.with_context(
-                **{"location": 29}
-            ).qty_available
-            product.qty_available_cnc = product.with_context(
-                **{"location": 61}
-            ).qty_available
-            product.qty_available_boya = product.with_context(
-                **{"location": 45}
-            ).qty_available
-            product.qty_available_metal = product.with_context(
-                **{"location": 37}
-            ).qty_available
-            product.qty_available_maske = product.with_context(
-                **{"location": 114}
-            ).qty_available
-            product.qty_available_baski = product.with_context(
-                **{"location": 77}
-            ).qty_available
-            product.qty_available_torna = product.with_context(
-                **{"location": 5895}
-            ).qty_available
-            product.qty_available_kaplama = product.with_context(
-                **{"location": 6362}
-            ).qty_available
+            for field, prefix in fields_to_compute_mapping.items():
+                for location_name, location_id in LOCATION_MAPPING.items():
+                    field_name = f"{prefix}{location_name}"
+                    if hasattr(product, field_name):
+                        product[field_name] = getattr(
+                            product.with_context(**{"location": location_id}), field
+                        )
 
     def single_product_update_quant_reservation(self):
+        # DEPRECATED
         StockQuant = self.env["stock.quant"]
         StockMoveLine = self.env["stock.move.line"]
         decimal_places = self.env["decimal.precision"].precision_get(
@@ -430,30 +427,6 @@ class Product(models.Model):
                     ):
                         quant.write({"reserved_quantity": raw_reserved_qty})
 
-    def _compute_set_quantities(self):
-        # Explode set content and find unreserved quantity
-        for product in self:
-            bom_dict = self.env["mrp.bom"].sudo()._bom_find(products=product)
-            bom_id = bom_dict.get(product)
-            if bom_id and bom_id.type == "phantom":
-                boms, lines = bom_id.explode(
-                    product, quantity=1, picking_type=bom_id.picking_type_id
-                )
-                exploded_set_qty = 0
-                for line in lines:
-                    unreserved_qty = line[1]["target_product"].qty_available_not_res
-                    factor = line[1]["qty"]
-                    if unreserved_qty > 0 and factor > 0:
-                        set_qty = unreserved_qty / factor
-                    else:
-                        set_qty = 0
-                    exploded_set_qty = (
-                        min(set_qty, exploded_set_qty) if exploded_set_qty else set_qty
-                    )
-                return exploded_set_qty
-            else:
-                return product.qty_available_not_res
-
 
 class mrpProduction(models.Model):
     _inherit = "mrp.production"
@@ -464,17 +437,26 @@ class mrpProduction(models.Model):
     qty_virtual_sincan = fields.Float(
         "Sincan Depo Tahmini", related="product_id.qty_virtual_sincan"
     )
+    qty_unreserved_sincan = fields.Float(
+        "Sincan Depo Rezervesiz", related="product_id.qty_unreserved_sincan"
+    )
     qty_available_merkez = fields.Float(
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
     qty_virtual_merkez = fields.Float(
         "Merkez Depo Tahmini", related="product_id.qty_virtual_merkez"
     )
-    qty_available_enjek = fields.Float(
-        "Enjeksiyon Depo Mevcut", related="product_id.qty_available_enjek"
+    qty_unreserved_merkez = fields.Float(
+        "Merkez Depo Rezervesiz", related="product_id.qty_unreserved_merkez"
     )
-    qty_virtual_enjek = fields.Float(
+    qty_available_enjeksiyon = fields.Float(
+        "Enjeksiyon Depo Mevcut", related="product_id.qty_available_enjeksiyon"
+    )
+    qty_virtual_enjeksiyon = fields.Float(
         "Enjeksiyon Depo Tahmini", related="product_id.qty_virtual_enjeksiyon"
+    )
+    qty_unreserved_enjeksiyon = fields.Float(
+        "Enjeksiyon Depo Rezervesiz", related="product_id.qty_unreserved_enjeksiyon"
     )
     qty_available_montaj = fields.Float(
         "Montaj Depo Mevcut", related="product_id.qty_available_montaj"
@@ -482,11 +464,17 @@ class mrpProduction(models.Model):
     qty_virtual_montaj = fields.Float(
         "Montaj Depo Tahmini", related="product_id.qty_virtual_montaj"
     )
+    qty_unreserved_montaj = fields.Float(
+        "Montaj Depo Rezervesiz", related="product_id.qty_unreserved_montaj"
+    )
     qty_available_cnc = fields.Float(
         "CNC Depo Mevcut", related="product_id.qty_available_cnc"
     )
     qty_virtual_cnc = fields.Float(
         "CNC Depo Tahmini", related="product_id.qty_virtual_cnc"
+    )
+    qty_unreserved_cnc = fields.Float(
+        "CNC Depo Rezervesiz", related="product_id.qty_unreserved_cnc"
     )
     qty_available_metal = fields.Float(
         "Metal Depo Mevcut", related="product_id.qty_available_metal"
@@ -494,11 +482,17 @@ class mrpProduction(models.Model):
     qty_virtual_metal = fields.Float(
         "Metal Depo Tahmini", related="product_id.qty_virtual_metal"
     )
+    qty_unreserved_metal = fields.Float(
+        "Metal Depo Rezervesiz", related="product_id.qty_unreserved_metal"
+    )
     qty_available_boya = fields.Float(
         "Boya Depo Mevcut", related="product_id.qty_available_boya"
     )
     qty_virtual_boya = fields.Float(
         "Boya Depo Tahmini", related="product_id.qty_virtual_boya"
+    )
+    qty_unreserved_boya = fields.Float(
+        "Boya Depo Rezervesiz", related="product_id.qty_unreserved_boya"
     )
     qty_available_maske = fields.Float(
         "Maske Depo Mevcut", related="product_id.qty_available_maske"
@@ -509,17 +503,26 @@ class mrpProduction(models.Model):
     qty_virtual_baski = fields.Float(
         "Baski Depo Tahmini", related="product_id.qty_virtual_baski"
     )
+    qty_unreserved_baski = fields.Float(
+        "Baski Depo Rezervesiz", related="product_id.qty_unreserved_baski"
+    )
     qty_available_torna = fields.Float(
         "Torna Depo Mevcut", related="product_id.qty_available_torna"
     )
     qty_virtual_torna = fields.Float(
         "Torna Depo Tahmini", related="product_id.qty_virtual_torna"
     )
+    qty_unreserved_torna = fields.Float(
+        "Torna Depo Rezervesiz", related="product_id.qty_unreserved_torna"
+    )
     qty_available_kaplama = fields.Float(
         "Kaplama Depo Mevcut", related="product_id.qty_available_kaplama"
     )
     qty_virtual_kaplama = fields.Float(
         "Kaplama Depo Tahmini", related="product_id.qty_virtual_kaplama"
+    )
+    qty_unreserved_kaplama = fields.Float(
+        "Kaplama Depo Rezervesiz", related="product_id.qty_unreserved_kaplama"
     )
 
 
