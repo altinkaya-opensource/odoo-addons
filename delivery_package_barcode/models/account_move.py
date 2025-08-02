@@ -35,7 +35,7 @@ class AccountMove(models.Model):
         Inherited to set invoice_state automatically when invoice is correctly posted
         and has delivery_ref_no.
         """
-        super().action_post()
+        res = super().action_post()
         for inv in self.filtered(lambda move: move.is_invoice(include_receipts=True)):
             if inv.state == "posted" and inv.picking_ids and inv.delivery_ref_no:
                 done_pickings = inv.picking_ids.filtered(
@@ -46,3 +46,4 @@ class AccountMove(models.Model):
                         "invoice_state": "invoiced",
                     }
                 )
+        return res
