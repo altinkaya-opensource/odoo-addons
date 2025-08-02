@@ -4,6 +4,13 @@ from odoo import fields, models
 class AccountInvoiceReport(models.Model):
     _inherit = "account.invoice.report"
 
+    acquirer_id = fields.Many2one(
+        "res.partner",
+        string="Acquirer",
+        help="The user who acquired this customer.",
+        readonly=True,
+    )
+    seller_id = fields.Many2one("res.users", string="Salesperson", readonly=True)
     state_id = fields.Many2one("res.country.state", string="State", readonly=True)
     price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
     total_tax = fields.Float(string="Tax Total", readonly=True)
@@ -93,6 +100,8 @@ class AccountInvoiceReport(models.Model):
             super()._select()
             + """
             ,
+            partner.customer_acquired_by as acquirer_id,
+            partner.user_id as seller_id,
             partner.state_id as state_id,
             partner_campaign_rel.utm_campaign_id as mass_campaign_id,
             partner.source_id as partner_source_id,
