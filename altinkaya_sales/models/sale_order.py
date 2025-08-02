@@ -236,7 +236,7 @@ class SaleOrder(models.Model):
         store=True,
     )
 
-    @api.depends("currency_id", "amount_total", "date_order")
+    @api.depends("currency_id", "amount_untaxed", "date_order", "pricelist_id")
     def _compute_amount_untaxed_usd(self):
         """
         This function computes the untaxed amount in USD
@@ -250,49 +250,49 @@ class SaleOrder(models.Model):
         query = """
 -- -- EUR_ID = 1
 -- -- USD_ID = 2
-        SELECT sale_order.id,
-               CASE
-                   WHEN pl.currency_id = 2 THEN sale_order.amount_untaxed
-                   ELSE
-                       CASE
-                           WHEN sale_order.amount_untaxed IS NOT NULL THEN
-                               CASE
-                                   WHEN pl.currency_id = 1 THEN
-                                       (
-                                           SELECT sale_order.amount_untaxed /
-                                           rateEUR.rate * rateUSD.rate
-                                           FROM res_currency_rate rateEUR,
-                                           res_currency_rate rateUSD
-                                           WHERE rateEUR.currency_id = 1
-                                           AND rateUSD.currency_id = 2
-                                           AND rateEUR.name =
-                                           sale_order.date_order::date
-                                           AND rateUSD.name =
-                                           sale_order.date_order::date
-                                       )
-                                   ELSE
-                                       (
-                                           SELECT sale_order.amount_untaxed
-                                           * rateUSD.rate
-                                           FROM res_currency_rate rateUSD
-                                           WHERE rateUSD.currency_id = 2
-                                           AND rateUSD.name
-                                           = sale_order.date_order::date
-                                       )
-                               END
-                           ELSE 0.0
-                       END
-               END AS amount_untaxed_usd
-        FROM sale_order
-        INNER JOIN product_pricelist pl ON sale_order.pricelist_id = pl.id
-        WHERE sale_order.id in %(ids)s;
-
+SELECT
+  sale_order.id,
+  CASE
+    WHEN pl.currency_id = 2 THEN sale_order.amount_untaxed
+    ELSE
+      CASE
+        WHEN pl.currency_id = 1 THEN
+          (
+            SELECT sale_order.amount_untaxed / rateEUR.rate * rateUSD.rate
+            FROM (
+              SELECT rate FROM res_currency_rate
+              WHERE currency_id = 1 AND name <= sale_order.date_order::date
+              ORDER BY name DESC
+              LIMIT 1
+            ) AS rateEUR,
+            (
+              SELECT rate FROM res_currency_rate
+              WHERE currency_id = 2 AND name <= sale_order.date_order::date
+              ORDER BY name DESC
+              LIMIT 1
+            ) AS rateUSD
+          )
+        ELSE
+          (
+            SELECT sale_order.amount_untaxed * rateUSD.rate
+            FROM (
+              SELECT rate FROM res_currency_rate
+              WHERE currency_id = 2 AND name <= sale_order.date_order::date
+              ORDER BY name DESC
+              LIMIT 1
+            ) AS rateUSD
+          )
+      END
+  END AS amount_untaxed_usd
+FROM sale_order
+JOIN product_pricelist pl ON sale_order.pricelist_id = pl.id
+WHERE sale_order.id in %(ids)s;
         """
         cr.execute(query, {"ids": tuple(self.ids)})
         result = dict(cr.fetchall())
         for order in self.filtered("id"):
             if result.get(order.id):
-                order.amount_untaxed_usd = result[order.id]
+                order.amount_untaxed_usd = result[order.id] or 0.0
             else:
                 order.amount_untaxed_usd = 0.0
 

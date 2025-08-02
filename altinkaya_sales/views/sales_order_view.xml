@@ -29,6 +29,20 @@
           decoration-bf="1"
           optional="hide"
         />
+
+
+    <field name="currency_id_usd" invisible="1" />
+    <field
+          name="amount_untaxed_usd"
+          sum="Total Tax Excluded USD"
+          widget="monetary"
+          optional="hide"
+        />
+
+
+
+
+
                 </xpath>
             </field>
         </record>
@@ -382,5 +396,31 @@
 
             </field>
         </record>
+
+		<record id="sale_order_kanban_inherit_altinkaya" model="ir.ui.view">
+			<field name="name">sale.order.kanban.inherit.altinkaya</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_sale_order_kanban" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//kanban" position="attributes">
+					<attribute name="default_group_by">order_state</attribute>
+				</xpath>
+
+				<xpath expr="//field[@name='currency_id']" position="after">
+					<field name="currency_id_usd" />
+					<field
+          name="amount_untaxed_usd"
+          widget="monetary"
+          options="{'currency_field': 'currency_id_usd'}"
+        />
+					<field name="order_state" />
+					<progressbar
+          field="order_state"
+          colors="{&quot;25_completed&quot;: &quot;success&quot;}"
+        />
+				</xpath>
+			</field>
+		</record>
 
 </odoo>
