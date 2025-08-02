@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-16 08:05+0000\n"
-"PO-Revision-Date: 2025-05-16 08:05+0000\n"
+"POT-Creation-Date: 2025-08-02 12:43+0000\n"
+"PO-Revision-Date: 2025-08-02 12:43+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,11 @@ msgid "<b>Müşteri:</b>"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.remove_production_smart_button_stat
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.product_mrp_orders_button
 msgid ""
 "<span class=\"o_stat_text\">\n"
-"                                Productions\n"
-"                            </span>"
+"                                Manufacturing Orders\n"
+"                        </span>"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -313,6 +313,13 @@ msgid "Display Name"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__child_bom_id
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__operation_id
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__product_id
+msgid "Dummy field to make this model compatible with BoM lines"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
 msgid "Dün Açılanlar"
 msgstr ""
@@ -499,11 +506,6 @@ msgid "Manufacting Order Printed"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.remove_production_smart_button_stat
-msgid "Manufactured in the last 365 days"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.actions.server,name:altinkaya_mrp.ir_cron_mrp_auto_print_mrp_orders_ir_actions_server
 #: model:ir.cron,cron_name:altinkaya_mrp.ir_cron_mrp_auto_print_mrp_orders
 msgid "Manufacturing: Auto Print MRP Orders"
@@ -558,6 +560,11 @@ msgid "Notes"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__operation_id
+msgid "Operation"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
 msgid "Operatör"
@@ -590,6 +597,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_product_template
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_id
 msgid "Product"
 msgstr "Modelo de Artigo"
 
@@ -758,6 +766,11 @@ msgstr ""
 #: model:ir.model,name:altinkaya_mrp.model_stock_rule
 msgid "Stock Rule"
 msgstr "Regras de Inventariação"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__child_bom_id
+msgid "Sub BoM"
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_bom_form_inherit_tmpl_line

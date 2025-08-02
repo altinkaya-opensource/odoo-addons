@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="product_mrp_orders_button" model="ir.ui.view">
+        <field name="name">product.mrp.orders.button</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="100" />
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_view_mos']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_product_forecast_report']" position="after">
+                <button class="oe_stat_button" name="action_view_mos" type="object" attrs="{'invisible': [('type', 'not in', ['product', 'consu'])]}" icon="fa-list-alt" options="{}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">
+                                Manufacturing Orders
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

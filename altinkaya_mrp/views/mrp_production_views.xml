@@ -144,7 +144,7 @@
             <field name="view_mode">tree,graph,pivot,form</field>
         </record>
 
-        <record id="remove_production_smart_button_stat" model="ir.ui.view">
+        <!-- <record id="remove_production_smart_button_stat" model="ir.ui.view">
             <field name="name">remove.smart.button.stat</field>
             <field name="model">product.template</field>
             <field name="priority" eval="100" />
@@ -168,7 +168,7 @@
                     </button>
                 </xpath>
             </field>
-        </record>
+        </record> -->
 
         <record id="mrp_production_tree_view_priority" model="ir.ui.view">
         <field name="name">MRP Production Tree View Priority</field>
