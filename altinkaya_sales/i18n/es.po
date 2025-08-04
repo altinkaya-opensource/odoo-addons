@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 08:33+0000\n"
-"PO-Revision-Date: 2025-05-26 08:33+0000\n"
+"POT-Creation-Date: 2025-08-04 12:23+0000\n"
+"PO-Revision-Date: 2025-08-04 12:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,8 +49,59 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_sale_order_portal_template_inherit
+msgid ""
+"<i class=\"fa fa-credit-card\"/>\n"
+"                Pay &amp;amp; Confirm"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid ""
+"<i class=\"fa fa-spinner\"/>\n"
+"                <strong>Order State:</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid ""
+"<i class=\"fa fa-truck\"/>\n"
+"                            Where is my cargo?"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "<span>Desi: </span>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong class=\"d-block mb-1\">Partner</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Destination Port:</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Fiscal Position:</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Incoterm:</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Payment Term:</strong>"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Warehouse:</strong>"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -381,6 +432,11 @@ msgstr ""
 #. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__27_cancel
 msgid "Canceled"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "Cargo Tracking"
 msgstr ""
 
 #. module: altinkaya_sales
@@ -919,6 +975,11 @@ msgid "Productions"
 msgstr "Producción"
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Products"
+msgstr ""
+
+#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__20_cutting
 msgid "Profile Cutting"
 msgstr ""
@@ -1105,6 +1166,11 @@ msgstr ""
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
 msgid "Total Tax Excluded"
+msgstr ""
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
+msgid "Total Tax Excluded USD"
 msgstr ""
 
 #. module: altinkaya_sales

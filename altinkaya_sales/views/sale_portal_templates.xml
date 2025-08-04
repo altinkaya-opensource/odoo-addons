@@ -4,6 +4,7 @@
     id="sale_order_portal_content_configurations_inherit"
     name="Sales Order Portal Show Partner"
     inherit_id="sale.sale_order_portal_content"
+    priority="100"
   >
 
         <!-- UOM View Precision -->
@@ -157,14 +158,6 @@
             </div>
         </xpath>
 
-        <!--        Visual improvements-->
-        <xpath
-      expr="//div[@id='informations']//div[@t-if='sale_order.validity_date']"
-      position="attributes"
-    >
-            <attribute name="style">margin-top:-12px;</attribute>
-        </xpath>
-
         <!--        Makes the invoice visible only if there is an einvoice-->
         <xpath expr="//t[@t-set='invoices']" position="attributes">
             <attribute name="t-value">[i for i in sale_order.invoice_ids if i.state not
@@ -177,12 +170,15 @@
     id="sale_order_sale_order_portal_template_inherit"
     name="Sales Order Portal Inherit"
     inherit_id="sale.sale_order_portal_template"
+    priority="100"
   >
 
         <!-- Change visual of payment button -->
-        <xpath expr="//a[@t-elif='sale_order.has_to_be_paid(True)']" position="replace">
+        <xpath
+      expr="//div[@t-elif='sale_order._has_to_be_paid(True)']/a"
+      position="replace"
+    >
             <a
-        t-elif="sale_order.has_to_be_paid(True)"
         role="button"
         class="btn btn-success btn-block mb8 btn-lg"
         data-toggle="modal"
@@ -196,4 +192,49 @@
 
     </template>
 
+    <template
+    id="sale_order_sale_order_portal_content_inherit_precision"
+    name="Sales Order Portal Inherit Content Precision"
+    inherit_id="sale.sale_order_portal_content"
+    priority="100"
+  >
+        <xpath expr="//strong[@t-if='line.discount &gt; 0']" position="replace">
+            <strong t-if="line.discount &gt; 0" class="text-info">
+                <t t-out="((line.discount % 1) and '%.2f' or '%d') % line.discount" />%
+            </strong>
+        </xpath>
+
+        <xpath expr="//span[@t-field='line.price_subtotal']" position="attributes">
+            <attribute name="t-options">{"widget": "float", "precision": 2}</attribute>
+        </xpath>
+
+        <xpath expr="//span[@t-field='line.price_total']" position="attributes">
+            <attribute name="t-options">{"widget": "float", "precision": 2}</attribute>
+        </xpath>
+        <xpath expr="//td[@t-if='not line.is_downpayment']" position="inside">
+            <t t-out="line.currency_id.symbol" />
+        </xpath>
+
+        <xpath expr="//span[@t-out='current_subtotal']" position="attributes">
+            <attribute name="t-options">{"widget": "float", "precision": 2}</attribute>
+        </xpath>
+
+        <xpath expr="//span[@t-out='current_subtotal']" position="after">
+            <t t-out="line.currency_id.symbol" />
+        </xpath>
+
+    </template>
+
+        <template
+    id="sale_order_sale_order_portal_template_inherit_precision"
+    name="Sales Order Portal Inherit Precision"
+    inherit_id="sale.sale_order_portal_template"
+  >
+        <xpath expr="//b[@t-field='sale_order.amount_total']" position="attributes">
+            <attribute name="t-options">{"widget": "float", "precision": 2}</attribute>
+        </xpath>
+        <xpath expr="//b[@t-field='sale_order.amount_total']" position="after">
+            <t t-out="sale_order.currency_id.symbol" />
+        </xpath>
+    </template>
 </odoo>
