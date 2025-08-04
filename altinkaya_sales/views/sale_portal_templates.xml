@@ -92,10 +92,6 @@
             </div>
         </xpath>
 
-        <!--        Visual improvements-->
-        <xpath expr="//div[hasclass('row')]" position="before">
-            <hr />
-        </xpath>
 
         <!--        Adds these fields to sale portal: (incoterm, destination_port, fiscal_position_id, warehouse_id, payment_term_id)-->
         <xpath expr="//div[@id='informations']" position="after">
