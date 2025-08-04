@@ -39,3 +39,10 @@ class MrpRouting(models.Model):
         "This can be a partner location if you subcontract the "
         "manufacturing operations.",
     )
+
+    user_id = fields.Many2one(
+        "res.users",
+        "Responsible",
+        help="The user responsible for this routing. This is used for "
+        "notifications and follow-ups.",
+    )
