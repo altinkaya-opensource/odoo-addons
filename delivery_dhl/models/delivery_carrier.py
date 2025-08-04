@@ -235,7 +235,7 @@ class DeliveryCarrier(models.Model):
                 }
             )
 
-        return max(total_value, 0.1), line_items
+        return max(round(total_value, 3), 0.1), line_items
 
     def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date_str):
         """

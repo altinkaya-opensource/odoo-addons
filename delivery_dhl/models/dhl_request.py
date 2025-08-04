@@ -24,7 +24,7 @@ _DHL_SERVICES_URL = {
     "tracking": "shipments/%(shipmentTrackingNumber)s/tracking",
 }
 
-REQUEST_TIMEOUT = 20  # seconds, used in requests
+REQUEST_TIMEOUT = 15  # seconds, used in requests
 
 _logger = logging.getLogger(__name__)
 
@@ -45,11 +45,16 @@ class DHLRequest:
 
         return _DHL_API_URL[self.api_env] + "/" + _DHL_SERVICES_URL[service]
 
-    def _check_for_error(self, response):
-        return response.get("status")
+    def _format_error(self, response, error=None):
+        if not response:
+            return _("DHL API Error: %(error)s", error=str(error))
 
-    def _format_error(self, response):
-        return f"{response['title']}: {response["message"]} - {response["detail"]}"
+        return _(
+            "DHL API Error: %(title)s: %(message)s - %(detail)s",
+            title=response.get("title", ""),
+            message=response.get("message", ""),
+            detail=response.get("detail", ""),
+        )
 
     def _send_api_request(
         self,
@@ -142,19 +147,9 @@ class DHLRequest:
                 ),
             ) from tmo
         except Exception as e:
-            _logger.error(
-                f"Error while sending DHL request: {e} - {result if result else ""}"
-            )
-            raise UserError(
-                _(
-                    "DHL Error: %(error)s - %(result)s",
-                    error=e,
-                    result=result if result else "",
-                )
-            ) from e
+            _logger.error(self._format_error(result, e), exc_info=True)
+            raise UserError(self._format_error(result, e)) from e
 
-        if self._check_for_error(result):
-            raise UserError(_(self._format_error(response=result)))
         return res
 
     def get_rate(self, data):
