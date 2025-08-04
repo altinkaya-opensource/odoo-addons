@@ -19,6 +19,7 @@ FEDEX_SERVICES = [
     ("INTERNATIONAL_FIRST", "International First"),
     ("FEDEX_INTERNATIONAL_PRIORITY", "International Priority"),
     ("FEDEX_INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
+    ("INTERNATIONAL_PRIORITY_FREIGHT", "International Priority Freight"),
 ]
 
 FEDEX_PICKUP_TYPES = [
@@ -272,8 +273,28 @@ class DeliveryCarrier(models.Model):
 
         # Create dummy pickings with order's deci
         deci = order.sale_deci * self._get_dimension_factor(order.sale_deci)
-        average_pack_weight = 30
-        pack_weight_threshold = 5
+
+        # TODO: A better estimation system is needed
+        if deci < 68:
+            average_pack_weight = 10
+            pack_weight_threshold = 2
+            sub_package_type = "PACKAGE"
+            dimensions = {
+                "length": 20,
+                "width": 20,
+                "height": 20,
+                "units": "CM",
+            }
+        else:
+            average_pack_weight = deci / (deci // 140)
+            pack_weight_threshold = 68
+            sub_package_type = "PALLET"
+            dimensions = {
+                "length": 120,
+                "width": 90,
+                "height": 80,
+                "units": "CM",
+            }
 
         # Calculate average weighted package count
         # and create them excluding the remainder
@@ -282,6 +303,8 @@ class DeliveryCarrier(models.Model):
         packages = [
             {
                 "weight": {"units": "KG", "value": average_pack_weight},
+                "subPackagingType": sub_package_type,
+                "dimensions": dimensions,
             }
             for __ in range(avg_weighted_package_count)
         ]
@@ -295,6 +318,8 @@ class DeliveryCarrier(models.Model):
             packages.append(
                 {
                     "weight": {"units": "KG", "value": deci % average_pack_weight},
+                    "subPackagingType": sub_package_type,
+                    "dimensions": dimensions,
                 }
             )
 
@@ -619,21 +644,43 @@ class DeliveryCarrier(models.Model):
         packages = []
         total_weight = 0
 
-        for pack in picking.package_ids:
-            packages.append(
-                {
-                    "sequenceNumber": len(packages) + 1,
-                    "weight": {"units": "KG", "value": pack.shipping_weight},
-                    "dimensions": {
-                        "length": pack.pack_length,
-                        "width": pack.width,
-                        "height": pack.height,
-                        "units": pack.length_uom_id.name.upper(),
-                    },
-                }
-            )
-            total_weight += pack.shipping_weight
-            pack.sequence = len(packages)
+        pallets = picking.package_ids.filtered(lambda p: p.is_pallet)
+        if pallets:
+            # If there are pallets, we prepare the packages based on pallets
+            for pallet in pallets:
+                packages.append(
+                    {
+                        "groupPackageCount": "1",
+                        "sequenceNumber": len(packages) + 1,
+                        "weight": {"units": "KG", "value": pallet.shipping_weight},
+                        "subPackagingType": "PALLET",
+                        "dimensions": {
+                            "length": pallet.pack_length,
+                            "width": pallet.width,
+                            "height": pallet.height,
+                            "units": pallet.length_uom_id.name.upper(),
+                        },
+                    }
+                )
+                total_weight += pallet.shipping_weight
+                pallet.sequence = len(packages)
+        else:
+            # If there are no pallets, we use the packages directly
+            for package in picking.package_ids:
+                packages.append(
+                    {
+                        "sequenceNumber": len(packages) + 1,
+                        "weight": {"units": "KG", "value": package.shipping_weight},
+                        "dimensions": {
+                            "length": package.pack_length,
+                            "width": package.width,
+                            "height": package.height,
+                            "units": package.length_uom_id.name.upper(),
+                        },
+                    }
+                )
+                total_weight += package.shipping_weight
+                package.sequence = len(packages)
 
         data["requestedShipment"]["customsClearanceDetail"] = (
             self._prepare_fedex_customs_data(picking, total_weight)
@@ -658,6 +705,20 @@ class DeliveryCarrier(models.Model):
                         ]
                     },
                 }
+
+        if pallets:
+            # If there are pallets, we need to add the
+            # express freight details to the shipment data.
+            shippersLoadAndCount = picking.package_ids.filtered(
+                lambda p: not p.is_pallet
+            )
+            data["requestedShipment"]["expressFreightDetail"] = {
+                # The number is just a placeholder, it is
+                # not used by FedEx API in Turkey
+                "bookingConfirmationNumber": "123456789812",
+                "shippersLoadAndCount": len(shippersLoadAndCount),
+                "packingListEnclosed": True,
+            }
 
         return data
 
@@ -798,6 +859,17 @@ class DeliveryCarrier(models.Model):
 
         result = []
         for picking in pickings:
+            if (
+                "freight" in self.fedex_service_type.lower()
+                and not picking.package_ids.filtered(lambda p: p.is_pallet)
+            ):
+                raise UserError(
+                    _(
+                        "FedEx Freight service requires at "
+                        "least one pallet in the picking."
+                    )
+                )
+
             payload = self._prepare_fedex_shipment_data(picking)
             response = fedex_request.create_shipment(payload)
 
