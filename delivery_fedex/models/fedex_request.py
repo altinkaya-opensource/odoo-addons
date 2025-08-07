@@ -3,6 +3,7 @@
 
 
 import json
+import logging
 
 import requests
 
@@ -34,7 +35,9 @@ FEDEX_SERVICES_URL = {
     "pickup_cancel": "pickup/v1/pickups/cancel",
 }
 
-REQUEST_TIMEOUT = 10  # seconds, used in requests
+REQUEST_TIMEOUT = 15  # seconds, used in requests
+
+_logger = logging.getLogger(__name__)
 
 
 class FedExRequest:
@@ -65,12 +68,15 @@ class FedExRequest:
 
         return errors
 
-    def _format_errors(self, errors):
-        formatted_result = ""
-        for code, message in errors:
-            formatted_result += f"Error {code}: {message}\n"
+    def _format_errors(self, response, error):
+        if not response:
+            return _("FedEx Error, %(error)s", error=str(error))
 
-        return formatted_result
+        error_string = "\n".join([e["message"] for e in response["errors"]])
+        return _(
+            "FedEx Error: %(error_string)s",
+            error_string=error_string,
+        )
 
     def _get_oauth_key(self):
         res = self._send_api_request(
@@ -155,17 +161,9 @@ class FedExRequest:
                 ),
             ) from tmo
         except Exception as e:
-            raise UserError(
-                _(
-                    "FedEx API error: %(error)s\nResponse: %(response)s",
-                    error=str(e),
-                    response=json.dumps(result, indent=4) if result else "",
-                )
-            ) from e
+            _logger.error(self._format_errors(result, e), exc_info=True)
+            raise UserError(self._format_errors(result, e)) from e
 
-        errors = self._check_for_errors(result)
-        if errors:
-            raise UserError(self._format_errors(errors))
         return res
 
     def get_rates(self, data):

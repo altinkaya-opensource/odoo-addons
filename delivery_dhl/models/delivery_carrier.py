@@ -235,7 +235,7 @@ class DeliveryCarrier(models.Model):
                 }
             )
 
-        return max(total_value, 0.1), line_items
+        return max(round(total_value, 3), 0.1), line_items
 
     def _prepare_dhl_base_rate_data(self, company_id, partner_id, delivery_date_str):
         """
@@ -329,7 +329,9 @@ class DeliveryCarrier(models.Model):
         """
         packages = []
 
-        for pack in picking.package_ids:
+        for pack in (
+            picking.package_ids.filtered(lambda p: p.is_pallet) or picking.package_ids
+        ):
             packages.append(
                 {
                     # DHL requires values to be a multiple of 0.001

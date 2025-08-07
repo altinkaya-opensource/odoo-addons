@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 08:33+0000\n"
-"PO-Revision-Date: 2025-05-26 08:33+0000\n"
+"POT-Creation-Date: 2025-08-04 12:23+0000\n"
+"PO-Revision-Date: 2025-08-04 12:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,9 +49,66 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_sale_order_portal_template_inherit
+msgid ""
+"<i class=\"fa fa-credit-card\"/>\n"
+"                Pay &amp;amp; Confirm"
+msgstr ""
+"<i class=\"fa fa-credit-card\"/>\n"
+"                Öde &amp;amp; Onayla"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid ""
+"<i class=\"fa fa-spinner\"/>\n"
+"                <strong>Order State:</strong>"
+msgstr ""
+"<i class=\"fa fa-spinner\"/>\n"
+"                <strong>Sipariş Durumu:</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid ""
+"<i class=\"fa fa-truck\"/>\n"
+"                            Where is my cargo?"
+msgstr ""
+"<i class=\"fa fa-truck\"/>\n"
+"                            Kargom nerede?"
+
+#. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "<span>Desi: </span>"
-msgstr ""
+msgstr "<span>Desi: </span>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong class=\"d-block mb-1\">Partner</strong>"
+msgstr "<strong class=\"d-block mb-1\">Müşteri</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Destination Port:</strong>"
+msgstr "<strong>Varış Limanı:</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Fiscal Position:</strong>"
+msgstr "<strong>Mali Durum:</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Incoterm:</strong>"
+msgstr "<strong>Incoterm:</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Payment Term:</strong>"
+msgstr "<strong>Ödeme Şartı:</strong>"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "<strong>Warehouse:</strong>"
+msgstr "<strong>Depo:</strong>"
 
 #. module: altinkaya_sales
 #: model:mail.template,body_html:altinkaya_sales.email_template_edi_sale_altinkaya1
@@ -611,6 +668,11 @@ msgid "Canceled"
 msgstr "İptal"
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
+msgid "Cargo Tracking"
+msgstr "Kargo Takibi"
+
+#. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_partner__v_cari_urun_count
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_users__v_cari_urun_count
 msgid "Carinin Urunleri"
@@ -1150,6 +1212,11 @@ msgid "Productions"
 msgstr "Üretimler"
 
 #. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.res_partner_view_form_altinkaya
+msgid "Products"
+msgstr "Ürünler"
+
+#. module: altinkaya_sales
 #: model:ir.model.fields.selection,name:altinkaya_sales.selection__sale_order__order_state__20_cutting
 msgid "Profile Cutting"
 msgstr "Profil Kesimde"
@@ -1337,6 +1404,11 @@ msgstr "Kalıphanede Bekliyor"
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
 msgid "Total Tax Excluded"
 msgstr "Toplam Vergi Hariç"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications
+msgid "Total Tax Excluded USD"
+msgstr "Toplam Vergi Hariç USD"
 
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_tree_modifications

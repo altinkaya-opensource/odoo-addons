@@ -36,6 +36,7 @@
                 groups="stock.group_adv_location"
                 domain="[('usage', '!=', 'view')]"
               />
+                                              <field name="user_id" />
                            </group>
                         </group>
                         <notebook>

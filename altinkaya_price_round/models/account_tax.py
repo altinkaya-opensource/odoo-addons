@@ -28,7 +28,32 @@ class AccountTax(models.Model):
 
         res["amount_total"] = round(res["amount_total"], 2)
         res["formatted_amount_total"] = formatLang(
-            self.env, res["amount_total"], currency_obj=currency
+            self.env, res["amount_total"], digits=2, currency_obj=currency
         )
+
+        res["formatted_amount_untaxed"] = formatLang(
+            self.env, round(res["amount_untaxed"], 2), digits=2, currency_obj=currency
+        )
+
+        for st in res["subtotals"]:
+            st["formatted_amount"] = formatLang(
+                self.env, round(st["amount"], 2), digits=2, currency_obj=currency
+            )
+
+        for _, gbs in res["groups_by_subtotal"].items():
+            for s in gbs:
+                s["formatted_tax_group_amount"] = formatLang(
+                    self.env,
+                    round(s["tax_group_amount"], 2),
+                    digits=2,
+                    currency_obj=currency,
+                )
+
+                s["formatted_tax_group_base_amount"] = formatLang(
+                    self.env,
+                    round(s["tax_group_base_amount"], 2),
+                    digits=2,
+                    currency_obj=currency,
+                )
 
         return res

@@ -18,6 +18,6 @@ class ResPartner(models.Model):
             "neighbour_id",
         ]
         if any(field in vals for field in address_fields):
-            vals["yurtici_partner_id"] = False
-            vals["yurtici_address_id"] = False
+            self.yurtici_address_id = False
+            self.yurtici_partner_id = False
         return res
