@@ -86,7 +86,7 @@ class StockPicking(models.Model):
         copy=True,
     )
 
-    @api.depends("carrier_id")
+    @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         for record in self:
             source = record.sale_id or record.purchase_id
