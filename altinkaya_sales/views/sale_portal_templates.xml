@@ -71,7 +71,7 @@
             <div>
                 <t
           t-set="trackable_pickings"
-          t-value="sale_order.picking_ids.filtered(lambda p: p.carrier_tracking_url)"
+          t-value="sale_order.picking_ids.filtered(lambda p: p.carrier_tracking_url and p.shipping_number)"
         />
                 <ul t-if="trackable_pickings" class="list-unstyled">
                     <li t-foreach="trackable_pickings" t-as="picking">
