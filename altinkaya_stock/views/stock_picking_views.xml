@@ -72,13 +72,13 @@
           name="action_create_procurement"
           type="object"
           string="Tedarik"
-          attrs="{'invisible':[('state','in',['waiting','done'])]}"
+          attrs="{'invisible':[('state','in',['waiting','done', 'cancel'])]}"
         />
                 <button
           name="action_make_mts"
           type="object"
           string="Stoktan Al"
-          attrs="{'invisible':[('state', 'not in', ['waiting','cancel'])]}"
+          attrs="{'invisible':[('state', 'not in', ['waiting'])]}"
         />
             </xpath>
 

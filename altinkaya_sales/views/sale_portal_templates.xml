@@ -163,32 +163,6 @@
     </template>
 
     <template
-    id="sale_order_sale_order_portal_template_inherit"
-    name="Sales Order Portal Inherit"
-    inherit_id="sale.sale_order_portal_template"
-    priority="100"
-  >
-
-        <!-- Change visual of payment button -->
-        <xpath
-      expr="//div[@t-elif='sale_order._has_to_be_paid(True)']/a"
-      position="replace"
-    >
-            <a
-        role="button"
-        class="btn btn-success btn-block mb8 btn-lg"
-        data-toggle="modal"
-        data-target="#modalaccept"
-        href="#"
-      >
-                <i class="fa fa-credit-card" />
-                Pay &amp;amp; Confirm
-            </a>
-        </xpath>
-
-    </template>
-
-    <template
     id="sale_order_sale_order_portal_content_inherit_precision"
     name="Sales Order Portal Inherit Content Precision"
     inherit_id="sale.sale_order_portal_content"
