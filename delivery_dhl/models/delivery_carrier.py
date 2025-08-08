@@ -279,28 +279,37 @@ class DeliveryCarrier(models.Model):
 
         return data
 
-    def _prepare_dhl_estimated_pickup_date(self, cutoff_hour=14):
+    def _prepare_dhl_estimated_pickup_date(
+        self, cutoff_hour=14, cut_off_margin_minutes=30
+    ):
         """
-        Prepare estimated pickup date based on the current time.
-        If the current time is before `cutoff_hour`, add 30 minutes to the current time.
-        Otherwise, set the pickup time to the next day at `next_day_hour`.
+        Prepare estimated pickup date for DHL API requests.
+        The pickup date is calculated based on the current time,
+        cutoff hour, and a margin to avoid issues with the cutoff time.
         """
         now_utc = fields.Datetime.now()
 
-        tz = pytz.timezone(self.env.user.tz or "UTC")
-        now_local = pytz.utc.localize(now_utc).astimezone(tz)
-        if now_local.hour < cutoff_hour:
-            estimated_datetime = now_local + timedelta(minutes=30)
+        cutoff_margin = timedelta(minutes=cut_off_margin_minutes)
+        user_tz = pytz.timezone(self.env.user.tz or "UTC")
+        now_local = pytz.utc.localize(now_utc).astimezone(user_tz)
+
+        cutoff_time = (
+            now_local.replace(hour=cutoff_hour, minute=0, second=0, microsecond=0)
+            - cutoff_margin
+        )
+
+        if now_local < cutoff_time:
+            estimated = now_local.replace(
+                hour=cutoff_hour, minute=0, second=0, microsecond=0
+            )
         else:
-            estimated_datetime = (now_local + timedelta(days=1)).replace(
+            tomorrow = now_local + timedelta(days=1)
+            estimated = tomorrow.replace(
                 hour=cutoff_hour, minute=0, second=0, microsecond=0
             )
 
-        tz_str = estimated_datetime.strftime("%z")
-
-        return estimated_datetime.strftime(
-            f"%Y-%m-%dT%H:%M:%SGMT{tz_str[:3]}:{tz_str[3:]}"
-        )
+        tz_str = estimated.strftime("%z")
+        return estimated.strftime(f"%Y-%m-%dT%H:%M:%SGMT{tz_str[:3]}:{tz_str[3:]}")
 
     def _prepare_dhl_commercial_invoice_data(self, invoices):
         """
