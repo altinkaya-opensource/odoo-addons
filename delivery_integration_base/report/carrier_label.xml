@@ -18,7 +18,7 @@
           t-elif="o.carrier_id.payment_type=='customer_pays'"
         > Alıcı Ödemeli</t>^FS
 
-^FO490,102^A0N,122,122^FB260,1,0,L,0^FD<t t-esc="package_label_info" />^FS
+^FO490,102^A0N,122,122^FB320,1,0,L,0^FD<t t-esc="package_label_info" />^FS
 
 <t t-set="carrier_ref" t-value="carrier_ref" />
 ^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="o.name" />^FS
@@ -53,12 +53,34 @@
 <t t-set="line1" t-value="street[0:40]" />
 <t t-set="line2" t-value="street[40:80]" />
 
-^FO25,444^FB740,1,0,L,0^FD<t t-esc="o.partner_id.display_name" />^FS
-^FO25,474^FB740,1,0,L,0^FD<t t-esc="o.partner_id.neighbour_id.name" />^FS
-^FO25,504^FB740,1,0,L,0^FD<t t-esc="line1" />^FS
+<t t-set="display_name_line1" t-value="o.partner_id.display_name[:60]" />
+<t
+          t-set="display_name_line2"
+          t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''"
+        />
+
+^FO25,444^FB740,1,0,L,0^FD<t t-esc="display_name_line1" />^FS
+<t t-if="display_name_line2">
+    ^FO25,474^FB740,1,0,L,0^FD<t t-esc="display_name_line2" />^FS
+</t>
+
+^FO25,504^FB740,1,0,L,0^FD<t t-esc="o.partner_id.neighbour_id.name" />^FS
+^FO25,534^FB740,1,0,L,0^FD<t t-esc="line1" />^FS
 
 <t t-if="line2">
-    ^FO25,534^FB740,1,0,L,0^FD<t t-esc="line2" />^FS
+    ^FO25,564^FB740,1,0,L,0^FD<t t-esc="line2" />^FS
+    ^FO25,594^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
+            t-esc="o.partner_id.country_id.name"
+          />^FS
+    ^FO25,624^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
+
+    ^FO25,660^GB700,2,2^FS
+    ^FO25,672^FB740,1,0,L,0^FDGÖNDEREN^FS
+    ^FO25,704^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları^FS
+    ^FO25,735^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
+    ^XZ
+</t>
+<t t-else="">
     ^FO25,564^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
             t-esc="o.partner_id.country_id.name"
           />^FS
@@ -66,18 +88,6 @@
 
     ^FO25,630^GB700,2,2^FS
     ^FO25,642^FB740,1,0,L,0^FDGÖNDEREN^FS
-    ^FO25,674^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları^FS
-    ^FO25,705^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
-    ^XZ
-</t>
-<t t-else="">
-    ^FO25,534^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
-            t-esc="o.partner_id.country_id.name"
-          />^FS
-    ^FO25,564^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
-
-    ^FO25,600^GB700,2,2^FS
-    ^FO25,635^FB740,1,0,L,0^FDGÖNDEREN^FS
     ^FO25,674^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları San. Tic. A.Ş.^FS
     ^FO25,705^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
     ^XZ
