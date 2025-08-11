@@ -54,7 +54,10 @@
 <t t-set="line2" t-value="street[40:80]" />
 
 <t t-set="display_name_line1" t-value="o.partner_id.display_name[:60]" />
-<t t-set="display_name_line2" t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''" />
+<t
+          t-set="display_name_line2"
+          t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''"
+        />
 
 ^FO25,444^FB740,1,0,L,0^FD<t t-esc="display_name_line1" />^FS
 <t t-if="display_name_line2">
