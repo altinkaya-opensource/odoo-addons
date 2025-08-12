@@ -82,7 +82,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             "is_packaged": True,
         }
         picking.write(vals)
-        if not picking.block_autoinvoicing:
+        if picking and not picking.block_autoinvoicing:
             self.with_delay()._proceed_autoinvoicing(picking)
         return True
 
@@ -216,9 +216,10 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 f"action_report_einvoice_{warehouse_name_suffix}"
             )
 
-        if picking:
-            picking.action_print_delivery_documents()
+        # Print cargo label
+        picking.action_print_delivery_documents()
 
+        # Print invoice or e-waybill report
         report = self.env.ref(report_ref)
         report.print_document(record_ids=invoice.ids)
 

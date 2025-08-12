@@ -128,6 +128,9 @@ class MergePicking(models.TransientModel):
                 "origin": _(
                     "Merged (%(pickings)s)", pickings=", ".join(source_document)
                 ),
+                "date_done": fields.Datetime.now()
+                if main_pick.state == "done"
+                else False,
             },
         )
         main_pick.action_confirm()
