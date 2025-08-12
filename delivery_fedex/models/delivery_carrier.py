@@ -286,7 +286,7 @@ class DeliveryCarrier(models.Model):
                 "units": "CM",
             }
         else:
-            average_pack_weight = deci / (deci // 140)
+            average_pack_weight = deci / ((deci // 140) or 1)
             pack_weight_threshold = 68
             sub_package_type = "PALLET"
             dimensions = {
