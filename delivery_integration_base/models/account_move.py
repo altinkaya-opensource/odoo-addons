@@ -15,7 +15,9 @@ class AccountMove(models.Model):
         """
         for move in self:
             try:
-                for picking in move.picking_ids:
+                for picking in move.picking_ids.filtered(
+                    lambda p: not p.carrier_tracking_ref
+                ):
                     picking.with_context(send_from_account_move=True).send_to_shipper()
                     move.delivery_ref_no = picking.carrier_tracking_ref
             except Exception as e:
