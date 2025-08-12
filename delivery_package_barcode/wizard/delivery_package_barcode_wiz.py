@@ -159,27 +159,36 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
         journal_id = self._get_journal_id(sale_id)
         invoice = self._create_invoice(picking, journal_id)
-        if invoice:
-            try:
-                invoice.action_post()
-                if invoice.exception_ids:
-                    raise ValidationError(
-                        _("Invoice couldn't be posted due to exceptions.")
+        try:
+            invoice.action_post()
+
+            if invoice.state != "posted":
+                raise UserError(
+                    _(
+                        "Invoice %(inv)s could not be posted. "
+                        "Please check the invoice.",
+                        inv=invoice.name,
                     )
-                self._handle_ewaybill_and_invoice_report(
-                    picking, sale_id, warehouse_name_suffix, invoice
                 )
-                picking.invoice_state = "invoiced"
-            except Exception as e:
-                _logger.error(
-                    "Failed to post invoice for picking %s: %s",
-                    picking.name,
-                    e,
-                    exc_info=True,
-                    stack_info=True,
+
+            if invoice.exception_ids:
+                raise ValidationError(
+                    _("Invoice couldn't be posted due to exceptions.")
                 )
-                picking.invoice_state = "invoicing_error"
-                self._print_fail_notify_report(picking)
+            self._handle_ewaybill_and_invoice_report(
+                picking, sale_id, warehouse_name_suffix, invoice
+            )
+            picking.invoice_state = "invoiced"
+        except Exception as e:
+            _logger.error(
+                "Failed to post invoice for picking %s: %s",
+                picking.name,
+                e,
+                exc_info=True,
+                stack_info=True,
+            )
+            picking.invoice_state = "invoicing_error"
+            self._print_fail_notify_report(picking)
         return True
 
     def _get_journal_id(self, sale_id):
@@ -216,7 +225,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 f"action_report_einvoice_{warehouse_name_suffix}"
             )
 
-        # Print cargo label
+        # Print cargo label
         picking.action_print_delivery_documents()
 
         # Print invoice or e-waybill report

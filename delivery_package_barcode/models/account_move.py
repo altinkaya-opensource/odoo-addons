@@ -34,6 +34,8 @@ class AccountMove(models.Model):
         """
         Inherited to set invoice_state automatically when invoice is correctly posted
         and has delivery_ref_no.
+
+        This function supposed to be called on manual actions.
         """
         res = super().action_post()
         for inv in self.filtered(lambda move: move.is_invoice(include_receipts=True)):
