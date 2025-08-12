@@ -83,7 +83,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         }
         picking.write(vals)
         if picking and not picking.block_autoinvoicing:
-            self.with_delay()._proceed_autoinvoicing(picking)
+            self._proceed_autoinvoicing(picking)
         return True
 
     def process_barcode(self, barcode):
