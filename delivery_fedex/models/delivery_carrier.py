@@ -4,6 +4,7 @@
 import base64
 import json
 import logging
+import math
 from datetime import datetime
 
 import phonenumbers
@@ -274,7 +275,6 @@ class DeliveryCarrier(models.Model):
         # Create dummy pickings with order's deci
         deci = order.sale_deci * self._get_dimension_factor(order.sale_deci)
 
-        # TODO: A better estimation system is needed
         if deci < 68:
             average_pack_weight = 10
             pack_weight_threshold = 2
@@ -286,16 +286,16 @@ class DeliveryCarrier(models.Model):
                 "units": "CM",
             }
         else:
-            average_pack_weight = deci / ((deci // 140) or 1)
+            package_count = math.ceil(deci / 60)
+            average_pack_weight = deci / package_count
             pack_weight_threshold = 68
             sub_package_type = "PALLET"
             dimensions = {
-                "length": 120,
-                "width": 90,
-                "height": 80,
+                "length": 80,
+                "width": 60,
+                "height": 50,
                 "units": "CM",
             }
-
         # Calculate average weighted package count
         # and create them excluding the remainder
         avg_weighted_package_count = int(deci // average_pack_weight)

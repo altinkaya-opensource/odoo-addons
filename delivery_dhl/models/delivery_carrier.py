@@ -150,11 +150,7 @@ class DeliveryCarrier(models.Model):
         packages = [
             {
                 "weight": average_pack_weight,
-                "dimensions": {
-                    "length": 1,
-                    "width": 1,
-                    "height": 1,
-                },
+                "dimensions": {"length": 45, "width": 35, "height": 30},
             }
             for __ in range(avg_weighted_package_count)
         ]
@@ -168,11 +164,7 @@ class DeliveryCarrier(models.Model):
             packages.append(
                 {
                     "weight": deci % average_pack_weight,
-                    "dimensions": {
-                        "length": 0.1,
-                        "width": 0.1,
-                        "height": 0.1,
-                    },
+                    "dimensions": {"length": 35, "width": 25, "height": 20},
                 }
             )
 
