@@ -26,7 +26,7 @@
     "Receipts, Delivery Orders and Returns",
     "author": "Cybrosys Techno Solutions, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "depends": ["base", "stock"],
+    "depends": ["base", "stock", "delivery_integration_base"],
     "data": [
         "security/ir.model.access.csv",
         "data/merge_picking_action_data.xml",

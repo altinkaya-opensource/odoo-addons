@@ -100,6 +100,8 @@ class MergePicking(models.TransientModel):
             )
         # If there is no exception, continues with the merging process
         source_document = []
+        total_package_count = 0
+        total_weight = 0.0
         if self.existing_pick_id:
             main_pick = self.existing_pick_id
             orders = self.merge_picking_ids - main_pick
@@ -108,6 +110,10 @@ class MergePicking(models.TransientModel):
             orders = self.merge_picking_ids
             main_pick = orders[0].copy({"move_ids": None})
         for record in orders:
+            # Sum all package counts and weights, don't lose them.
+            total_package_count += record.carrier_package_count or 0
+            total_weight += record.picking_total_weight or 0.0
+
             for move in record.move_ids:
                 move.write(
                     {
@@ -131,6 +137,8 @@ class MergePicking(models.TransientModel):
                 "date_done": fields.Datetime.now()
                 if main_pick.state == "done"
                 else False,
+                "carrier_package_count": total_package_count,
+                "picking_total_weight": total_weight,
             },
         )
         main_pick.action_confirm()
