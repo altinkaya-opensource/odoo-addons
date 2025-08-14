@@ -9,7 +9,7 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     carrier_package_count = fields.Integer(
-        "Package Count", help="Number of packages", default=1
+        "Package Count", help="Number of packages", default=0
     )
     carrier_total_deci = fields.Float(help="Carrier total reception Deci")
     picking_total_deci = fields.Float(
