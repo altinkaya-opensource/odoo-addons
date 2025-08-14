@@ -16,6 +16,7 @@ DHL_SERVICES = [
     ("E", "Express 9:00"),
     ("Y", "Express 12:00"),
     ("P", "Express Worldwide"),
+    ("H", "Economy Select"),
 ]
 
 DHL_STATUS_CODE_MAP = {
