@@ -17,11 +17,11 @@
         "export_account_move_xlsx/temp_gelir_fatura.xml",
         "export_account_move_xlsx/reports.xml",
         # Partner Statement
-        "export_partner_statement/temp_partner_statement.xml",
-        "export_partner_statement/reports.xml",
+        # "export_partner_statement/temp_partner_statement.xml",
+        # "export_partner_statement/reports.xml",
         # Partner Statement Currency
-        "export_partner_currency_statement/temp_partner_statement_currency.xml",
-        "export_partner_currency_statement/reports.xml",
+        # "export_partner_currency_statement/temp_partner_statement_currency.xml",
+        # "export_partner_currency_statement/reports.xml",
         # Payment Excel
         "export_account_payment_xlsx/reports.xml",
         "export_account_payment_xlsx/temp_payments.xml",

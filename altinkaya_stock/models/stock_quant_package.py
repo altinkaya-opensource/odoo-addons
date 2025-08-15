@@ -117,9 +117,7 @@ class StockQuantPackage(models.Model):
                 _("You cannot dissolve a package that is part of a pallet.")
             )
 
-        move_lines = self.picking_id.move_line_ids.filtered(
-            lambda ml: ml.result_package_id == self
-        )
+        move_lines = self.move_line_ids
         if move_lines:
             move_lines.result_package_id = False
         quants = self.mapped("quant_ids")

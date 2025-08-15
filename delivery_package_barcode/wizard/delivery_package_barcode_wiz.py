@@ -111,6 +111,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
     def _barcode_domain(self, barcode):
         return [
+            ("state", "=", "done"),
             ("invoice_state", "!=", "invoiced"),
             "|",
             "|",
