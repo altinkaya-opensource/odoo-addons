@@ -135,36 +135,14 @@ class DeliveryCarrier(models.Model):
         if order.picking_ids:
             raise UserError(_("Cannot get rates for an order with existing pickings."))
 
-        # Create dummy pickings with order's deci
-        deci = order.sale_deci * self._get_dimension_factor(order.sale_deci)
-        average_pack_weight = 30
-        pack_weight_threshold = 5
+        raw_packages = self._generate_dummy_packages(order.sale_deci)
 
-        # Calculate average weighted package count
-        # and create them excluding the remainder
-        avg_weighted_package_count = int(deci // average_pack_weight)
-
-        # DHL requires packages to have dimensions,
-        # so we create dummy packages with small dimensions
-        # so it would not affect the rate calculation.
-        packages = [
-            {
-                "weight": average_pack_weight,
-                "dimensions": {"length": 45, "width": 35, "height": 30},
-            }
-            for __ in range(avg_weighted_package_count)
-        ]
-
-        # If there's a remainder weight surpassing the threshold,
-        # or if there are no packages yet, we need to add it as a package
-        if (
-            deci % average_pack_weight > pack_weight_threshold
-            or avg_weighted_package_count == 0
-        ):
+        packages = []
+        for pack in raw_packages:
             packages.append(
                 {
-                    "weight": deci % average_pack_weight,
-                    "dimensions": {"length": 35, "width": 25, "height": 20},
+                    "weight": pack["weight"],
+                    "dimensions": pack["dimensions"],
                 }
             )
 
