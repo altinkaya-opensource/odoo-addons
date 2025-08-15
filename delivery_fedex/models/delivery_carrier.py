@@ -4,7 +4,6 @@
 import base64
 import json
 import logging
-import math
 from datetime import datetime
 
 import phonenumbers
@@ -272,53 +271,19 @@ class DeliveryCarrier(models.Model):
         if order.picking_ids:
             raise UserError(_("Cannot get rates for an order with existing pickings."))
 
-        # Create dummy pickings with order's deci
-        deci = order.sale_deci * self._get_dimension_factor(order.sale_deci)
+        raw_packages = self._generate_dummy_packages(order.sale_deci)
 
-        if deci < 68:
-            average_pack_weight = 10
-            pack_weight_threshold = 2
-            sub_package_type = "PACKAGE"
+        packages = []
+        for pack in raw_packages:
+            package_type = "PALLET" if pack.get("is_pallet") else "PACKAGE"
             dimensions = {
-                "length": 20,
-                "width": 20,
-                "height": 20,
+                **pack.get("dimensions", {}),
                 "units": "CM",
             }
-        else:
-            package_count = math.ceil(deci / 60)
-            average_pack_weight = deci / package_count
-            pack_weight_threshold = 68
-            sub_package_type = "PALLET"
-            dimensions = {
-                "length": 80,
-                "width": 60,
-                "height": 50,
-                "units": "CM",
-            }
-        # Calculate average weighted package count
-        # and create them excluding the remainder
-        avg_weighted_package_count = int(deci // average_pack_weight)
-
-        packages = [
-            {
-                "weight": {"units": "KG", "value": average_pack_weight},
-                "subPackagingType": sub_package_type,
-                "dimensions": dimensions,
-            }
-            for __ in range(avg_weighted_package_count)
-        ]
-
-        # If there's a remainder weight surpassing the threshold,
-        # or if there are no packages yet, we need to add it as a package
-        if (
-            deci % average_pack_weight > pack_weight_threshold
-            or avg_weighted_package_count == 0
-        ):
             packages.append(
                 {
-                    "weight": {"units": "KG", "value": deci % average_pack_weight},
-                    "subPackagingType": sub_package_type,
+                    "weight": {"units": "KG", "value": pack.get("weight")},
+                    "subPackagingType": package_type,
                     "dimensions": dimensions,
                 }
             )

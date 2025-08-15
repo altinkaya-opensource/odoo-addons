@@ -11,12 +11,30 @@
           name="shipment_level"
           attrs="{'invisible': [('delivery_type', 'in', ['fixed', 'base_on_rule'])]}"
         />
-            <field name="carrier_barcode_type" />
-            <field name="barcode_text_1" />
-            <field name="attach_barcode" />
-            <field name="default_printer_id" />
-            <field name="payment_type" />
-            <field name="deci_type" />
+            <group string="" colspan="2">
+                <field name="carrier_barcode_type" />
+                <field name="barcode_text_1" />
+                <field name="attach_barcode" />
+                <field name="default_printer_id" />
+                <field name="payment_type" />
+                <field name="deci_type" />
+            </group>
+            <group string="Pallet Settings">
+                <field name="dummy_pallet_weight" />
+                <field name="dummy_pallet_length" />
+                <field name="dummy_pallet_width" />
+                <field name="dummy_pallet_height" />
+                <field name="dummy_pallet_threshold" />
+            </group>
+
+            <group string="Package Settings">
+                <field name="dummy_package_weight" />
+                <field name="dummy_package_length" />
+                <field name="dummy_package_width" />
+                <field name="dummy_package_height" />
+                <field name="dummy_remainder_threshold_percent" />
+            </group>
+
 
         </field>
 
