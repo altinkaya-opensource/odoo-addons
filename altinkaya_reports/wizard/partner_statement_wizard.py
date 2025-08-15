@@ -24,15 +24,6 @@ class WizarPartnerStatement(models.TransientModel):
         "End Date", required=1, default=_default_date_end, store=True
     )
     partner_id = fields.Many2one("res.partner", default=_default_partner_ids)
-    english_statement = fields.Boolean(default=False)
-
-    @api.model
-    def _default_get(self, fields):
-        res = super().default_get(fields)
-        lang = self.env.context.get("lang", [])
-        if lang == "en_US":
-            res["english_statement"] = True
-        return res
 
     def print_report(self):
         report_name = "altinkaya_reports.partner_statement_altinkaya"
@@ -44,20 +35,22 @@ class WizarPartnerStatement(models.TransientModel):
                 "partner_ids": self.partner_id.ids,
             }
         )
-        if self.english_statement:
+        if self._context.get("wizard_lang") == "en_US":
             report_name += "_en"
         return self.env.ref(report_name).report_action(
-            [], data={"context": json.dumps(context)}
+            docids=self.partner_id.ids, data={"yigit": "123"}
         )
 
 
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    def render_qweb_pdf(self, res_ids=None, data=None):
+    def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         if (
-            self.report_name.startswith("altinkaya_reports.report_partner_statement")
+            report_ref
+            and str(report_ref).startswith("altinkaya_reports.report_partner_statement")
+            and self._context.get("active_model") == "res.partner"
             and not res_ids
         ):
-            res_ids = self.env.context.get("partner_ids", [])
-        return super().render_qweb_pdf(res_ids=res_ids, data=data)
+            res_ids = self._context.get("active_ids", [])
+        return super()._render_qweb_pdf(report_ref, res_ids=res_ids, data=data)

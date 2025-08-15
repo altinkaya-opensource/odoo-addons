@@ -31,7 +31,7 @@
             <field name="res_model">partner.statement.wizard</field>
             <field name="view_mode">form</field>
             <field name="binding_model_id" ref="base.model_res_partner" />
-            <field name="context">{'lang': 'tr_TR'}</field>
+            <field name="context">{'wizard_lang': 'tr_TR'}</field>
             <field name="target">new</field>
         </record>
 
@@ -43,7 +43,7 @@
             <field name="res_model">partner.statement.wizard</field>
             <field name="view_mode">form</field>
             <field name="binding_model_id" ref="base.model_res_partner" />
-            <field name="context">{'lang': 'en_US'}</field>
+            <field name="context">{'wizard_lang': 'en_US'}</field>
             <field name="target">new</field>
         </record>
 </odoo>
