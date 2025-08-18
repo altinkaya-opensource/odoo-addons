@@ -114,6 +114,7 @@ class MergePicking(models.TransientModel):
             total_package_count += record.carrier_package_count or 0
             total_weight += record.picking_total_weight or 0.0
 
+            # Copy the move lines to the main picking
             for move in record.move_ids:
                 move.write(
                     {
@@ -121,12 +122,22 @@ class MergePicking(models.TransientModel):
                     }
                 )
 
+            # Copy the move lines to the main picking
             for line in record.move_line_ids:
                 line.write(
                     {
                         "picking_id": main_pick.id,
                     }
                 )
+
+            # Copy the packages
+            for package in record.package_ids:
+                package.write(
+                    {
+                        "picking_id": main_pick.id,
+                    }
+                )
+
             source_document.append(record.name)
             record.action_cancel()
         main_pick.write(
