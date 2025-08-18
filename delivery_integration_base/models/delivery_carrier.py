@@ -101,6 +101,22 @@ class DeliveryCarrier(models.Model):
         help="Delivery deadline for carrier that has no integration.",
     )
 
+    dummy_pallet_threshold = fields.Float()
+
+    dummy_pallet_weight = fields.Float()
+
+    dummy_pallet_length = fields.Float()
+    dummy_pallet_width = fields.Float()
+    dummy_pallet_height = fields.Float()
+
+    dummy_package_weight = fields.Float()
+
+    dummy_package_length = fields.Float()
+    dummy_package_width = fields.Float()
+    dummy_package_height = fields.Float()
+
+    dummy_remainder_threshold_percent = fields.Float()
+
     @api.constrains("factor_a", "factor_b")
     def _check_factor_values(self):
         dp = 2
@@ -415,3 +431,57 @@ class DeliveryCarrier(models.Model):
             zpl_files.append(qweb_bytes.decode("utf-8"))
 
         return zpl_files
+
+    def _generate_dummy_packages(self, volumetric_weight):
+        """
+        Generate dummy packages for the carrier.
+        This is used to create a package label without actual delivery data.
+        """
+
+        # Create dummy pickings with order's volumetric weight
+        volumetric_weight = volumetric_weight * self._get_dimension_factor(
+            volumetric_weight
+        )
+
+        is_pallet = volumetric_weight >= self.dummy_pallet_threshold
+        if is_pallet:
+            pack_weight = self.dummy_pallet_weight or 100.0
+            dimensions = {
+                "length": self.dummy_pallet_length or 120.0,
+                "width": self.dummy_pallet_width or 80.0,
+                "height": self.dummy_pallet_height or 120.0,
+            }
+        else:
+            pack_weight = self.dummy_package_weight or 30.0
+            dimensions = {
+                "length": self.dummy_package_length or 30.0,
+                "width": self.dummy_package_width or 30.0,
+                "height": self.dummy_package_height or 30.0,
+            }
+
+        packages = []
+
+        while volumetric_weight > pack_weight:
+            packages.append(
+                {
+                    "weight": pack_weight,
+                    "dimensions": dimensions,
+                    "is_pallet": is_pallet,
+                }
+            )
+
+            volumetric_weight -= pack_weight
+
+        if (
+            not packages
+            or volumetric_weight > self.dummy_remainder_threshold_percent * pack_weight
+        ):
+            packages.append(
+                {
+                    "weight": volumetric_weight,
+                    "dimensions": dimensions,
+                    "is_pallet": is_pallet,
+                }
+            )
+
+        return packages

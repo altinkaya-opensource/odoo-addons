@@ -98,10 +98,7 @@
             <div id="other info">
                 <hr />
                 <t t-if="sale_order.incoterm and sale_order.destination_port">
-                    <div
-            class="mb-1 row rounded col-lg-6 col-12"
-            style="background-color: rgba(150, 150, 220, 0.2);"
-          >
+                    <div class="mb-1 row rounded col-lg-6 col-12">
                         <div class="col-12 g-0 px-0">
                             <t t-if="sale_order.incoterm">
                                 <strong>Incoterm:</strong>
