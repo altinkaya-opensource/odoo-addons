@@ -1,7 +1,6 @@
-import json
 from datetime import date
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class WizarPartnerStatement(models.TransientModel):
