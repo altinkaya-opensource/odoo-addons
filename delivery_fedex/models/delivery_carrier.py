@@ -20,6 +20,7 @@ FEDEX_SERVICES = [
     ("FEDEX_INTERNATIONAL_PRIORITY", "International Priority"),
     ("FEDEX_INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
     ("INTERNATIONAL_PRIORITY_FREIGHT", "International Priority Freight"),
+    ("INTERNATIONAL_ECONOMY_FREIGHT", "International Economy Freight"),
 ]
 
 FEDEX_PICKUP_TYPES = [
