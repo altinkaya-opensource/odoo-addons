@@ -109,9 +109,9 @@ class AccountInvoiceReport(models.Model):
             partner.medium_id as partner_medium_id,
             to_char(move.invoice_date, 'MM') AS month_nr,
             to_char(move.invoice_date, 'IW') AS week_nr,
-            so.source_id as sale_source_id,
-            so.campaign_id as sale_campaign_id,
-            so.medium_id as sale_medium_id,
+            so_utm.sale_source_id,
+            so_utm.sale_campaign_id,
+            so_utm.sale_medium_id,
             partner.create_date as partner_create_date,
             line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
@@ -145,22 +145,44 @@ class AccountInvoiceReport(models.Model):
         return (
             super()._from()
             + """
-               LEFT JOIN sale_order_line_invoice_rel solir
-               ON (line.id = solir.invoice_line_id)
-               LEFT JOIN sale_order_line sol ON (solir.order_line_id = sol.id)
-               LEFT JOIN sale_order so ON (sol.order_id = so.id)
-               LEFT JOIN utm_campaign_partner_rel partner_campaign_rel
-               ON (partner_campaign_rel.res_partner_id = partner.id)
-               LEFT JOIN sale_commission_line scl ON (scl.move_line_id = line.id)
-               LEFT JOIN (
-            SELECT
-                line.id AS invoice_line_id,
-                COUNT(DISTINCT move.id) AS invoice_count
-            FROM
-                account_move_line line
+            -- collapse SO chain to 1 row per invoice line
+            LEFT JOIN (
+                SELECT
+                    solir.invoice_line_id,
+                    MAX(so.source_id)   AS sale_source_id,
+                    MAX(so.campaign_id) AS sale_campaign_id,
+                    MAX(so.medium_id)   AS sale_medium_id
+                FROM sale_order_line_invoice_rel solir
+                JOIN sale_order_line sol ON sol.id = solir.order_line_id
+                JOIN sale_order so       ON so.id = sol.order_id
+                GROUP BY solir.invoice_line_id
+            ) so_utm ON so_utm.invoice_line_id = line.id
+
+            LEFT JOIN (
+                SELECT res_partner_id, MAX(utm_campaign_id) AS utm_campaign_id
+                FROM utm_campaign_partner_rel
+                GROUP BY res_partner_id
+            ) partner_campaign_rel ON partner_campaign_rel.res_partner_id = partner.id
+
+            LEFT JOIN (
+                SELECT
+                    move_line_id,
+                    MAX(commission_type)      AS commission_type,
+                    MAX(commission_rule_type) AS commission_rule_type,
+                    SUM(commission_amount)    AS commission_amount,
+                    MAX(commission_rate)      AS commission_rate,
+                    MAX(state)                AS state
+                FROM sale_commission_line
+                GROUP BY move_line_id
+            ) scl ON scl.move_line_id = line.id
+
+            LEFT JOIN (
+                SELECT
+                    line.id AS invoice_line_id,
+                    COUNT(DISTINCT move.id) AS invoice_count
+                FROM account_move_line line
                 JOIN account_move move ON move.id = line.move_id
-            GROUP BY
-                line.id
-        ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
-               """
+                GROUP BY line.id
+            ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
+            """
         )
