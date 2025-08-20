@@ -4,6 +4,4 @@ access_export_account_move_line_xlsx,access.export.account.move.line.xlsx,model_
 access_export_account_move_xlsx,access.export.acocunt.move.xlsx,model_report_account_move,base.group_user,1,1,1,1
 access_export_account_payment_xlsx,access.export.account.payment.xlsx,model_report_account_payment,base.group_user,1,1,1,1
 access_export_partner_currency_statement,access.export.partner.currency.statement,model_report_partner_statement_currency,base.group_user,1,1,1,1
-access_export_partner_statement,access.export.partner.statement,model_report_partner_statement,base.group_user,1,1,1,1
 access_export_purchase_order_xlsx,access.export.purchase.order.xlsx,purchase.model_purchase_order,base.group_user,1,1,1,1
-access_export_partner_statement_lines,access.export.partner.statement.lines,model_partner_statement_lines,base.group_user,1,1,1,1

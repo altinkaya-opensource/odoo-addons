@@ -102,8 +102,8 @@ class SaleOrder(models.Model):
             ("02_sent", "Quotation"),
             ("025_approved", "Waiting Salesperson"),
             ("03_sale", "Confirmed Sale Order"),
-            ("04_molding_waiting", "Tool Shop Queue"),
             # üretim
+            ("04_molding_waiting", "Tool Shop Queue"),
             ("05_production", "Production"),
             ("06_molding", "Tool Production"),
             ("07_injection_waiting", "Injection Queue"),
