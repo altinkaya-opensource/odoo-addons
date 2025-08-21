@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-02 12:43+0000\n"
-"PO-Revision-Date: 2025-08-02 12:43+0000\n"
+"POT-Creation-Date: 2025-08-21 13:13+0000\n"
+"PO-Revision-Date: 2025-08-21 13:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -276,6 +276,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_date
 msgid "Created on"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__sale_date
+msgid ""
+"Creation date of draft/sent orders,\n"
+"Confirmation date of confirmed orders."
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -673,6 +680,11 @@ msgid "Reference"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__user_id
+msgid "Responsible"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__process_id
 msgid "Rota"
 msgstr ""
@@ -704,6 +716,11 @@ msgstr ""
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_sac_menu
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_sac_production
 msgid "Sac Atölyesi İşleri"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__sale_date
+msgid "Sale Date"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -829,6 +846,13 @@ msgstr "このレコードの保留中のチェンジセットの数"
 #: model:ir.model.fields,help:altinkaya_mrp.field_x_makine__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "このレコードの全体のチェンジセット数"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_routing__user_id
+msgid ""
+"The user responsible for this routing. This is used for notifications and "
+"follow-ups."
+msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__time_stop

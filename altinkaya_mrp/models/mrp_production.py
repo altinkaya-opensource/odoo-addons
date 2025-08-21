@@ -24,6 +24,11 @@ class MrpProduction(models.Model):
     mo_printed = fields.Boolean("Manufacting Order Printed", default=False)
     sale_id = fields.Many2one("sale.order", string="Sale Order")
     sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
+    sale_date = fields.Datetime(
+        "Sale Date",
+        related="sale_id.date_order",
+        readonly=True,
+    )
     active_rule_id = fields.Many2one("stock.rule", string="Active Rule")
     date_planned = fields.Datetime("Planned Date")
     date_start2 = fields.Datetime("Date Start")

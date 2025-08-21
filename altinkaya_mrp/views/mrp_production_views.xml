@@ -98,6 +98,10 @@
         expr="//field[@name='components_availability_state']"
         position="before"
       >
+                    <field
+          name="sale_date"
+          attrs="{'invisible': [('sale_id', '=', False)]}"
+        />
                 <field name="date_start" />
                 <field name="date_finished" />
                 <field name="commitment_date" />
@@ -114,11 +118,12 @@
                     <field name="sale_note" />
                 </xpath>
                 <xpath expr="//field[@name='components_availability']" position="after">
-                    <field name="location_src_id" />
-                    <field name="location_dest_id" />
-                    <field name="sale_id" />
-                    <field name="origin" />
-                    <field name="procurement_group_id" />
+                    <field
+          name="sale_id"
+          attrs="{'invisible': [('sale_id', '=', False)]}"
+        />
+                    <field name="origin" invisible="1" />
+                    <field name="procurement_group_id" readonly="1" />
                     <field name="x_makine" />
                     <field name="x_operator" />
                 </xpath>
@@ -180,6 +185,7 @@
                 <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
             </xpath>
             <field name="date_planned_start" position="after">
+            <field name="sale_date" optional="hide" />
                 <field name="priority" />
             </field>
 
@@ -275,6 +281,7 @@
                     <field name="message_needaction" invisible="1" />
                     <field name="name" />
                     <field name="date_planned_start" />
+                    <field name="sale_date" optional="hide" />
                     <field name="priority" />
                     <field name="product_id" />
                     <field name="origin" />
