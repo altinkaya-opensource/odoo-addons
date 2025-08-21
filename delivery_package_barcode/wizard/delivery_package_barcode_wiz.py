@@ -154,7 +154,9 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
         warehouse_name_suffix = warehouse_id.name.lower()
-        draft_invoice = picking.invoice_ids.filtered(lambda inv: inv.state == "draft")
+        draft_invoice = picking.invoice_ids.filtered(
+            lambda inv: inv.state == "draft"
+        ).sudo()
 
         # Reset waybill_id for every picking
         picking.ewaybill_id = False
