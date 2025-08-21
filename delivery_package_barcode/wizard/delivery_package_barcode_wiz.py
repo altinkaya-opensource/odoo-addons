@@ -154,12 +154,13 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         sale_id = picking.sale_id
         warehouse_id = picking.picking_type_id.warehouse_id
         warehouse_name_suffix = warehouse_id.name.lower()
+        draft_invoice = picking.invoice_ids.filtered(lambda inv: inv.state == "draft")
 
         # Reset waybill_id for every picking
         picking.ewaybill_id = False
 
         journal_id = self._get_journal_id(sale_id)
-        invoice = self._create_invoice(picking, journal_id)
+        invoice = draft_invoice or self._create_invoice(picking, journal_id)
         try:
             invoice.action_post()
 
