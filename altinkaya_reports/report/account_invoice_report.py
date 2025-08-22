@@ -12,7 +12,7 @@ class AccountInvoiceReport(models.Model):
     )
     seller_id = fields.Many2one("res.users", string="Salesperson", readonly=True)
     state_id = fields.Many2one("res.country.state", string="State", readonly=True)
-    price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
+    price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True, group_operator="sum")
     total_tax = fields.Float(string="Tax Total", readonly=True)
     price_average_usd = fields.Float(
         string="Average Price USD", readonly=True, group_operator="avg"
@@ -109,13 +109,24 @@ class AccountInvoiceReport(models.Model):
             partner.medium_id as partner_medium_id,
             to_char(move.invoice_date, 'MM') AS month_nr,
             to_char(move.invoice_date, 'IW') AS week_nr,
-            so_utm.sale_source_id,
-            so_utm.sale_campaign_id,
-            so_utm.sale_medium_id,
+            so.source_id as sale_source_id,
+            so.campaign_id as sale_campaign_id,
+            so.medium_id as sale_medium_id,
             partner.create_date as partner_create_date,
             line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
-            -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
+            CASE
+              WHEN line.balance <> 0
+                THEN -line.balance * move.usd_rate
+              ELSE
+                ( line.price_subtotal
+                  * (CASE
+                       WHEN move.move_type IN ('in_invoice','out_refund','in_receipt')
+                            THEN -1 ELSE 1
+                    END)
+                * currency_table.rate
+              ) * move.usd_rate
+            END AS price_total_usd,
             -COALESCE(
                -- Average line price
                (line.balance / NULLIF(line.quantity, 0.0)) *
@@ -145,44 +156,22 @@ class AccountInvoiceReport(models.Model):
         return (
             super()._from()
             + """
-            -- collapse SO chain to 1 row per invoice line
-            LEFT JOIN (
-                SELECT
-                    solir.invoice_line_id,
-                    MAX(so.source_id)   AS sale_source_id,
-                    MAX(so.campaign_id) AS sale_campaign_id,
-                    MAX(so.medium_id)   AS sale_medium_id
-                FROM sale_order_line_invoice_rel solir
-                JOIN sale_order_line sol ON sol.id = solir.order_line_id
-                JOIN sale_order so       ON so.id = sol.order_id
-                GROUP BY solir.invoice_line_id
-            ) so_utm ON so_utm.invoice_line_id = line.id
-
-            LEFT JOIN (
-                SELECT res_partner_id, MAX(utm_campaign_id) AS utm_campaign_id
-                FROM utm_campaign_partner_rel
-                GROUP BY res_partner_id
-            ) partner_campaign_rel ON partner_campaign_rel.res_partner_id = partner.id
-
-            LEFT JOIN (
-                SELECT
-                    move_line_id,
-                    MAX(commission_type)      AS commission_type,
-                    MAX(commission_rule_type) AS commission_rule_type,
-                    SUM(commission_amount)    AS commission_amount,
-                    MAX(commission_rate)      AS commission_rate,
-                    MAX(state)                AS state
-                FROM sale_commission_line
-                GROUP BY move_line_id
-            ) scl ON scl.move_line_id = line.id
-
-            LEFT JOIN (
-                SELECT
-                    line.id AS invoice_line_id,
-                    COUNT(DISTINCT move.id) AS invoice_count
-                FROM account_move_line line
+               LEFT JOIN sale_order_line_invoice_rel solir
+               ON (line.id = solir.invoice_line_id)
+               LEFT JOIN sale_order_line sol ON (solir.order_line_id = sol.id)
+               LEFT JOIN sale_order so ON (sol.order_id = so.id)
+               LEFT JOIN utm_campaign_partner_rel partner_campaign_rel
+               ON (partner_campaign_rel.res_partner_id = partner.id)
+               LEFT JOIN sale_commission_line scl ON (scl.move_line_id = line.id)
+               LEFT JOIN (
+            SELECT
+                line.id AS invoice_line_id,
+                COUNT(DISTINCT move.id) AS invoice_count
+            FROM
+                account_move_line line
                 JOIN account_move move ON move.id = line.move_id
-                GROUP BY line.id
-            ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
-            """
+            GROUP BY
+                line.id
+        ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
+               """
         )
