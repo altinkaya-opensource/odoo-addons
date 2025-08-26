@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+        <record id="view_quotation_tree" model="ir.ui.view">
+          <field name="name">sale_altinkaya.view_quotation_tree</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_quotation_tree"/>
+          <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='state']" position="replace">
+              <field name="order_state"/>
+              <field name="state" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='company_id']" position="attributes">
+              <attribute name="optional">hide</attribute>
+            </xpath>
+          </field>
+        </record>
+
         <record model="ir.ui.view" id="view_sales_order_tree_modifications">
             <field name="name">sales order form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree" />
             <field eval="999" name="priority" />
             <field name="arch" type="xml">
+              <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='state']" position="replace">
+                <field name="order_state"/>
+                <field name="state" invisible="1"/>
+              </xpath>
+              <xpath expr="//tree[not(@class='o_sale_order')]/field[@name='company_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+              </xpath>
                 <xpath
         expr="//tree[not(@class='o_sale_order')]/field[@name='amount_untaxed']"
         position="replace"
