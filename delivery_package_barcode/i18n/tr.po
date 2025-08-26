@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 12:10+0000\n"
-"PO-Revision-Date: 2025-07-22 12:10+0000\n"
+"POT-Creation-Date: 2025-08-26 14:34+0000\n"
+"PO-Revision-Date: 2025-08-26 14:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,13 +23,20 @@ msgid " - PACK BARCODE"
 msgstr " - PAKET BARKODU"
 
 #. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.autoinvoicing_fail_notify
+msgid ""
+"<br/>\n"
+"            <span>Sipariş No: </span>"
+msgstr ""
+
+#. module: delivery_package_barcode
 #: model_terms:ir.ui.view,arch_db:delivery_package_barcode.view_delivery_package_barcode_wiz_form
 msgid ""
 "<span>Auto-invoicing is disabled for this picking. The invoice will be "
 "created maunally.</span>"
 msgstr ""
-"<span>Otomatik faturalama kapalı. Bu sevkte "
-"fatura manuel oluşturulacak.</span>"
+"<span>Otomatik faturalama kapalı. Bu sevkte fatura manuel "
+"oluşturulacak.</span>"
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__barcode
@@ -144,6 +151,16 @@ msgid "Error on Invoicing"
 msgstr "Faturalandırma Hatası"
 
 #. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.autoinvoicing_fail_notify
+msgid "FATURALANDIRMA HATASI"
+msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.actions.report,name:delivery_package_barcode.report_autoinvoicing_fail_notify
+msgid "Faturalandırma Hatası Bildirim Raporu"
+msgstr ""
+
+#. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__id
 msgid "ID"
 msgstr ""
@@ -154,9 +171,23 @@ msgid "If True, the autoinvoicing will be blocked for this picking."
 msgstr ""
 
 #. module: delivery_package_barcode
+#: model:ir.model.fields,help:delivery_package_barcode.field_res_partner__recalculate_shipping_cost
+#: model:ir.model.fields,help:delivery_package_barcode.field_res_users__recalculate_shipping_cost
+msgid ""
+"If this is checked, shipping cost will be recalculated on Invoice creation."
+msgstr "Eğer işaretlenirse, fatura oluşturulurken nakliye maliyeti yeniden hesaplanır."
+
+#. module: delivery_package_barcode
 #: model:ir.model.fields.selection,name:delivery_package_barcode.selection__delivery_package_barcode_wiz__message_type__info
 msgid "Info"
 msgstr "Bilgi"
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
+#, python-format
+msgid "Invoice %(inv)s could not be posted. Please check the invoice."
+msgstr ""
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_invoice_state_mixin__invoice_state
@@ -164,6 +195,13 @@ msgstr "Bilgi"
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__invoice_state
 msgid "Invoice Status"
 msgstr "Fatura Durumu"
+
+#. module: delivery_package_barcode
+#. odoo-python
+#: code:addons/delivery_package_barcode/wizard/delivery_package_barcode_wiz.py:0
+#, python-format
+msgid "Invoice couldn't be posted due to exceptions."
+msgstr ""
 
 #. module: delivery_package_barcode
 #: model:ir.model.fields,help:delivery_package_barcode.field_stock_invoice_state_mixin__invoice_state
@@ -214,6 +252,14 @@ msgid "Message Type"
 msgstr "Mesaj Tipi"
 
 #. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.autoinvoicing_fail_notify
+msgid ""
+"NUMARALI SEVKTE FATURA KESİLİRKEN HATA OLUŞTU.\n"
+"            <br/>\n"
+"            <br/>"
+msgstr ""
+
+#. module: delivery_package_barcode
 #: model:ir.model.fields,field_description:delivery_package_barcode.field_delivery_package_barcode_wiz__name
 msgid "Name"
 msgstr "Ad"
@@ -258,6 +304,21 @@ msgstr "Sevkler"
 #, python-format
 msgid "Please scan a barcode to find the picking."
 msgstr "Lütfen sevkiyatı bulmak için bir barkod tarayın."
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_res_partner__recalculate_shipping_cost
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_res_users__recalculate_shipping_cost
+msgid "Recalculate Shipping Cost"
+msgstr "Ftr. Nakliyeyi Tekrar Hesapla"
+
+#. module: delivery_package_barcode
+#: model_terms:ir.ui.view,arch_db:delivery_package_barcode.autoinvoicing_fail_notify
+msgid ""
+"SATIŞ TEMSİLCİSİYLE İLETİŞİME GEÇİNİZ.\n"
+"            <br/>\n"
+"            <br/>\n"
+"            <span>Müşteri Adı: </span>"
+msgstr ""
 
 #. module: delivery_package_barcode
 #: model:ir.model,name:delivery_package_barcode.model_sale_order

@@ -21,3 +21,9 @@ class ResPartner(models.Model):
     block_autoinvoicing = fields.Boolean(
         default=False,
     )
+
+    recalculate_shipping_cost = fields.Boolean(
+        help="If this is checked, shipping cost will be recalculated "
+        "on Invoice creation.",
+        default=False,
+    )

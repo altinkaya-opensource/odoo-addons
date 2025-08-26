@@ -257,7 +257,6 @@ class DeliveryCarrier(models.Model):
 
         order = order.with_context(rate_carrier_id=self.id)  # Do not lose context
         order.order_line.invalidate_model()  # recompute order line deci
-        dp = 4  # decimal precision
 
         deci = sum(order.order_line.mapped("deci"))
         factor = self._get_dimension_factor(deci)
@@ -265,6 +264,10 @@ class DeliveryCarrier(models.Model):
 
         weight = order.sale_weight
         volume = order.sale_volume
+        return self._get_price_available_price_section(order, weight, volume, deci)
+
+    def _get_price_available_price_section(self, order, weight, volume, deci):
+        dp = 4  # decimal precision
         total_delivery = sum(
             order.order_line.filtered(lambda o: o.is_delivery).mapped("price_total")
         )

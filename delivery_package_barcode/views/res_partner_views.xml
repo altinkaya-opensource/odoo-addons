@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="picking_policy" position="after">
                 <field name="block_autoinvoicing" />
+                <field name="recalculate_shipping_cost" />
             </field>
         </field>
     </record>

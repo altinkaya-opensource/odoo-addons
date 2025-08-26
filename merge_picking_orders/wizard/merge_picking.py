@@ -108,7 +108,9 @@ class MergePicking(models.TransientModel):
             source_document.append(main_pick.name)
         else:
             orders = self.merge_picking_ids
-            main_pick = orders[0].copy({"move_ids": None})
+            main_pick = orders[0].copy(
+                {"move_ids": None, "invoice_state": orders[0].invoice_state}
+            )
         for record in orders:
             # Sum all package counts and weights, don't lose them.
             total_package_count += record.carrier_package_count or 0
