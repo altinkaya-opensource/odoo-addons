@@ -59,6 +59,7 @@ class AccountMove(models.Model):
             )
             if (
                 inv.partner_id.recalculate_shipping_cost
+                and inv.carrier_id.payment_type == "sender_pays"
                 and not any(inv.picking_ids.mapped("block_autoinvoicing"))
                 and done_pickings
             ):
