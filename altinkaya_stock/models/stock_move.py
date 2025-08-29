@@ -53,6 +53,28 @@ class StockMove(models.Model):
             "target": "new",
         }
 
+    def action_show_qc_details(self):
+        self.ensure_one()
+        wiz = self.env["qc.attach.wizard"].create(
+            {
+                "product_id": self.move_line_ids.product_id.id,
+                "picking_id": self.picking_id.id,
+                "lot_id": self.move_line_ids.lot_id.id if self.move_line_ids else False,
+            }
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "qc.attach.wizard",
+            "view_mode": "form",
+            "res_id": wiz.id,
+            "target": "new",
+            "context": {
+                "active_model": self._name,
+                "active_id": self.id,
+                "active_ids": [self.id],
+            },
+        }
+
     def action_make_mts(self):
         self.ensure_one()
         return {

@@ -42,7 +42,13 @@
         "views/stock_package_type_view.xml",
         "security/security_group.xml",
         "security/ir.model.access.csv",
+        "wizard/qc_attach_wizard_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "altinkaya_stock/static/src/js/qc_image_upload.js",
+        ],
+    },
     "installable": True,
     "auto_install": False,
 }

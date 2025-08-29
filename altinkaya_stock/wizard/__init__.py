@@ -5,3 +5,4 @@ from . import wizard_update_unreserved_quants
 from . import wizard_change_picking_warehouse
 from . import choose_delivery_package
 from . import wizard_create_packaging_pallet
+from . import qc_attach_wizard

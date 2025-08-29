@@ -20,7 +20,8 @@
 ##############################################################################
 
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import float_is_zero, float_round
 
 
@@ -85,6 +86,44 @@ class StockPicking(models.Model):
         help="Packages related to this picking.",
         copy=True,
     )
+
+    def _check_qc_required_for_location(self):
+        Inspection = self.env["qc.inspection"]
+        missing_map = {}
+        for picking in self.filtered(lambda p: p.location_id.id == 8):
+            missing = []
+            for product in picking.move_line_ids.mapped("product_id"):
+                if not product:
+                    continue
+                domain = [("picking_id", "=", picking.id)]
+                if "object_id" in Inspection._fields:
+                    domain += [
+                        "|",
+                        ("object_id", "=", f"product.product,{product.id}"),
+                        ("product_id", "=", product.id),
+                    ]
+                else:
+                    domain += [("product_id", "=", product.id)]
+                if not Inspection.search_count(domain):
+                    missing.append(product.display_name or product.name)
+            if missing:
+                missing_map[picking] = missing
+
+        if missing_map:
+            parts = []
+            for p, miss in missing_map.items():
+                parts.append(f"{p.name}:\n- " + "\n- ".join(miss))
+            raise UserError(
+                _(
+                    """Validation blocked. QC inspection is
+                    required for these products:\n\n%s"""
+                )
+                % "\n\n".join(parts)
+            )
+
+    def button_validate(self):
+        self.filtered(lambda p: p.location_id.id == 8)._check_qc_required_for_location()
+        return super().button_validate()
 
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):

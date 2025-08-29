@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+    <record id="stock_move_kanban_inherit_qc_button" model="ir.ui.view">
+      <field name="name">stock.move.kanban.inherit.qc.button</field>
+      <field name="model">stock.move</field>
+      <field name="inherit_id" ref="stock.view_move_kandan" />
+      <field name="arch" type="xml">
+        <xpath
+        expr="//templates/t[@t-name='kanban-box']//button[@name='action_show_details']"
+        position="after"
+      >
+          <button
+          name="action_show_qc_details"
+          string="Add Product Picture"
+          class="o_icon_button fa fa-paperclip"
+          type="object"
+          attrs="{'invisible': [('show_details_visible', '=', False)]}"
+        />
+        </xpath>
+      </field>
+    </record>
+
     <record id="view_stock_move_line_tree_packaged" model="ir.ui.view">
         <field name="name">stock.move.line.tree.packaged</field>
         <field name="model">stock.move.line</field>

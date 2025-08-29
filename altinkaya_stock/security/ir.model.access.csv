@@ -6,3 +6,4 @@ access_change_picking_warehouse,access_change_picking_warehouse,model_wizard_cha
 access_choose_delivery_package_lines_user,access.choose.delivery.package.lines.user,model_choose_delivery_package_move_lines,base.group_user,1,1,1,1
 access_create_packaging_pallet,access.create.packaging.pallet,model_wizard_create_packaging_pallet,base.group_user,1,1,1,1
 access_create_packaging_pallet_line,access.create.packaging.pallet.line,model_wizard_create_packaging_pallet_line,base.group_user,1,1,1,1
+access_qc_attach_wizard_user,qc.attach.wizard,model_qc_attach_wizard,base.group_user,1,1,1,1
