@@ -66,7 +66,11 @@ class PhoneCommon(models.AbstractModel):
         bulutsantralim_connector = self.env.company.bulutsantralim_connector_id
 
         if bulutsantralim_connector:
-            caller = self.env.user.internal_number
+            caller = (
+                self.env.user.internal_number.split(",")[0]
+                if self.env.user.internal_number
+                else False
+            )
             number = self._number_sanitization(erp_number)
 
             if not caller:

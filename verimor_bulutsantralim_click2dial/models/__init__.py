@@ -8,3 +8,4 @@ from . import bulutsantralim_connector
 from . import res_users
 from . import res_company
 from . import phone_common
+from . import crm_phonecall

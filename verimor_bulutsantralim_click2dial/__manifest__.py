@@ -12,8 +12,8 @@
     "summary": "Verimor Bulutsantralim Odoo Connector",
     "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "depends": ["base", "crm", "base_phone"],
-    "external_dependencies": {"python": ["phonenumbers"]},
+    "depends": ["base", "crm", "base_phone", "crm_phonecall"],
+    "external_dependencies": {"python": ["phonenumbers", "requests"]},
     "data": [
         "security/ir.model.access.csv",
         "views/bulutsantralim_connector_view.xml",

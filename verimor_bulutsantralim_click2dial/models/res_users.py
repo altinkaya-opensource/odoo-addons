@@ -11,7 +11,9 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     internal_number = fields.Char(
-        string="User Internal Number", copy=False, help="User's internal phone number."
+        string="User Internal Numbers",
+        copy=False,
+        help="Comma Separated User's internal phone number. E.g. 101,102",
     )
 
     _sql_constraints = [
