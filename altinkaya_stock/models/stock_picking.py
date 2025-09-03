@@ -91,7 +91,8 @@ class StockPicking(models.Model):
         for record in self:
             source = record.sale_id or record.purchase_id
             if record.carrier_id and source:
-                source.write({"carrier_id": record.carrier_id.id})
+                source.carrier_id = record.carrier_id.id
+                # source.write({"carrier_id": record.carrier_id.id})
 
     def _compute_trimmed_sale_note(self):
         """
