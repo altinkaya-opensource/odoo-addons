@@ -89,7 +89,9 @@ class StockPicking(models.Model):
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         for record in self:
-            source = record.sale_id or record.purchase_id
+            # purchase has no carrier_id field anymore
+            # source = record.sale_id or record.purchase_id
+            source = record.sale_id
             if record.carrier_id and source:
                 source.carrier_id = record.carrier_id.id
                 # source.write({"carrier_id": record.carrier_id.id})
