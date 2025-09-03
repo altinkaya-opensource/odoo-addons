@@ -2,7 +2,7 @@ jsdoc = require("eslint-plugin-jsdoc");
 
 const config = [{
     plugins: {
-      jsdoc,
+        jsdoc,
     },
 
     languageOptions: {
