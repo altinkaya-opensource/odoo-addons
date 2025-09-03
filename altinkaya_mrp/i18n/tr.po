@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-21 13:13+0000\n"
-"PO-Revision-Date: 2025-08-21 13:13+0000\n"
+"POT-Creation-Date: 2025-09-03 08:37+0000\n"
+"PO-Revision-Date: 2025-09-03 08:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -750,6 +750,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__sequence
 msgid "Sequence"
 msgstr "Sıra"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__similar_mo_count
+msgid "Similar MO Count"
+msgstr "Benzer Üretim Sayısı"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__similar_mo_ids
+msgid "Similar Mo"
+msgstr "Benzer Üretim"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Similar Productions"
+msgstr "Benzer Üretimler"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route

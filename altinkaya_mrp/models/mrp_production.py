@@ -45,6 +45,26 @@ class MrpProduction(models.Model):
     # TODO: @dogan workcenter_id alanini kullanabiliriz
     x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine")
     x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
+    similar_mo_ids = fields.Many2many(
+        "mrp.production",
+        compute="_compute_similar_mo_ids",
+    )
+    similar_mo_count = fields.Integer(
+        string="Similar MO Count",
+        compute="_compute_similar_mo_ids",
+    )
+
+    def _compute_similar_mo_ids(self):
+        for record in self:
+            similar_mos = self.search(
+                [
+                    ("product_id", "=", record.product_id.id),
+                    ("state", "not in", ["done", "cancel"]),
+                    ("id", "!=", record.id),
+                ]
+            )
+            record.similar_mo_ids = similar_mos
+            record.similar_mo_count = len(similar_mos)
 
     def _generate_moves(self):
         if self.env.context.get("context", {}).get("migration", False):
