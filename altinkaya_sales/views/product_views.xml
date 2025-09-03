@@ -1,30 +1,27 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-
     <menuitem
-    name="Product Categories"
-    action="product.product_category_action_form"
-    id="menu_product_category_on_sale"
-    parent="sale.product_menu_catalog"
-    sequence="16"
-  />
+        name="Product Categories"
+        action="product.product_category_action_form"
+        id="menu_product_category_on_sale"
+        parent="sale.product_menu_catalog"
+        sequence="16"
+    />
 
-
-	<data>
-
+    <data>
         <record id="product_template_old_price_form_attr_price" model="ir.ui.view">
             <field name="name">product.template.altinkaya_form_attr_price</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
-           <xpath expr="//field[@name='value_ids']" position="after">
-                <field name="use_in_pricing" />
-                <field name="attr_base_price"> </field>
-                <field name="attr_val_price_coef"> </field>
-             </xpath>
+                <xpath expr="//field[@name='value_ids']" position="after">
+                    <field name="use_in_pricing" />
+                    <field name="attr_base_price" />
+                    <field name="attr_val_price_coef" />
+                </xpath>
 
-            <!--TODO: this group is not correct.-->
-			<!-- <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+                <!--TODO: this group is not correct.-->
+                <!-- <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
 				<button name="compute_set_product_price" string="Compute Set Price" type="object"
 						group="__export__.res_groups_95_4c14ca81"
 						confirm="This method will recalculate the prices of all variants within the current product template. Do you want to continue?"/>
@@ -32,43 +29,48 @@
             </field>
         </record>
 
-<!--         <template id="assets_backend" name="help.online.assets" inherit_id="web.assets_backend"> -->
-<!--             <xpath expr="." position="inside"> -->
-<!--                 <link rel="stylesheet" href="/alinkaya_oldprice/static/src/css/alinkaya_oldprice.css" type="text/css"/> -->
+        <!--         <template id="assets_backend" name="help.online.assets" inherit_id="web.assets_backend"> -->
+        <!--             <xpath expr="." position="inside"> -->
+        <!--                 <link rel="stylesheet" href="/alinkaya_oldprice/static/src/css/alinkaya_oldprice.css" type="text/css"/> -->
 
-<!--             </xpath> -->
-<!--         </template> -->
+        <!--             </xpath> -->
+        <!--         </template> -->
 
-		<record id="product_category_custom_products" model="ir.ui.view">
-			<field name="name">product.category.custom_products</field>
-			<field name="model">product.category</field>
-			<field name="inherit_id" ref="product.product_category_form_view" />
-			<field name="arch" type="xml">
-				<xpath expr="//field[@name='parent_id']" position="after">
-					<field name="custom_products" />
-
-				</xpath>
-			</field>
-		</record>
-		<!--Hide Multiple Fields From Product Variants List View-->
-		<record id="product_product_tree_hide_fields" model="ir.ui.view">
-			<field name="name">product.product.tree.hide.fields</field>
-			<field name="model">product.product</field>
-			<field name="inherit_id" ref="product.product_product_tree_view" />
-			<field name="arch" type="xml">
-				<xpath expr="//tree/field[@name='standard_price']" position="attributes">
-					<attribute name="invisible">1</attribute>
-				</xpath>
-				<xpath expr="//tree/field[@name='virtual_available']" position="attributes">
-					<attribute name="invisible">1</attribute>
-				</xpath>
-				<!-- <xpath expr="//tree/field[@name='incoming_qty']" position="attributes">
+        <record id="product_category_custom_products" model="ir.ui.view">
+            <field name="name">product.category.custom_products</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="custom_products" />
+                </xpath>
+            </field>
+        </record>
+        <!--Hide Multiple Fields From Product Variants List View-->
+        <record id="product_product_tree_hide_fields" model="ir.ui.view">
+            <field name="name">product.product.tree.hide.fields</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//tree/field[@name='standard_price']"
+                    position="attributes"
+                >
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath
+                    expr="//tree/field[@name='virtual_available']"
+                    position="attributes"
+                >
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- <xpath expr="//tree/field[@name='incoming_qty']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath>
 				<xpath expr="//tree/field[@name='outgoing_qty']" position="attributes">
 					<attribute name="invisible">1</attribute>
 				</xpath> -->
-			</field>
-		</record>
-	</data>
+            </field>
+        </record>
+    </data>
 </odoo>

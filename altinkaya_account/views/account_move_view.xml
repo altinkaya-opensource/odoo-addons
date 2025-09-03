@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="account_move_total_balance">
         <field name="name">account.move.total.balance</field>
         <field name="model">account.move</field>
@@ -8,19 +7,18 @@
         <field name="type">form</field>
         <field name="priority" eval="999" />
         <field name="arch" type="xml">
-
             <xpath expr="//notebook" position="inside">
                 <page
-          name="reconcile_and_currency_difference"
-          string="Reconcile and Currency Difference"
-          attrs="{'invisible':[('journal_id','!=', 60)]}"
-        >
+                    name="reconcile_and_currency_difference"
+                    string="Reconcile and Currency Difference"
+                    attrs="{'invisible':[('journal_id','!=', 60)]}"
+                >
                     <label for="full_reconcile_ids" string="Reconciliations" />
                     <field name="full_reconcile_ids" nolabel="1" />
                     <label
-            for="other_inv_in_reconciles"
-            string="Invoices in reconciliations"
-          />
+                        for="other_inv_in_reconciles"
+                        string="Invoices in reconciliations"
+                    />
                     <field name="other_inv_in_reconciles" nolabel="1" />
                 </page>
             </xpath>
@@ -35,11 +33,11 @@
             <xpath expr="//label[@for='partner_id']" position="before">
                 <field name="carrier_id" />
                 <field
-          name="address_contact_id"
-          string="Teslimat Adresi"
-          context="{'show_address': 1}"
-          options="{'always_reload': True}"
-        />
+                    name="address_contact_id"
+                    string="Teslimat Adresi"
+                    context="{'show_address': 1}"
+                    options="{'always_reload': True}"
+                />
             </xpath>
 
             <xpath expr="//field[@name='narration']" position="replace">
@@ -51,9 +49,9 @@
 
             <xpath expr="//field[@name='invoice_date']" position="after">
                 <field
-          name="supplier_invoice_number"
-          attrs="{'invisible': [('move_type','=','out_invoice')]}"
-        />
+                    name="supplier_invoice_number"
+                    attrs="{'invisible': [('move_type','=','out_invoice')]}"
+                />
             </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="after">
@@ -62,9 +60,9 @@
             </xpath>
 
             <xpath
-        expr="/form/sheet/notebook/page[@name='other_info']"
-        position="after"
-      >
+                expr="/form/sheet/notebook/page[@name='other_info']"
+                position="after"
+            >
                 <page string="Payments">
                     <field name="payment_ids">
                         <tree>
@@ -81,42 +79,40 @@
             </xpath>
 
             <xpath
-        expr="//group[@name='sale_info_group']/field[@name='ref']"
-        position="after"
-      >
+                expr="//group[@name='sale_info_group']/field[@name='ref']"
+                position="after"
+            >
                 <field name="delivery_ref_no" />
             </xpath>
 
             <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
                 <field name="move_type" invisible="1" />
                 <field
-          name="purchase_line_amount"
-          attrs="{'invisible': [('move_type','not in',['in_invoice', 'in_refund'])]}"
-        />
+                    name="purchase_line_amount"
+                    attrs="{'invisible': [('move_type','not in',['in_invoice', 'in_refund'])]}"
+                />
                 <field name="partner_order_ref" />
                 <field name="moves_picking_ref" />
                 <field name="lot_ids" widget="many2many_tags" />
             </xpath>
 
             <xpath
-        expr="//field[@name='invoice_line_ids']//field[@name='price_unit']"
-        position="after"
-      >
+                expr="//field[@name='invoice_line_ids']//field[@name='price_unit']"
+                position="after"
+            >
                 <field name="unit_discounted" />
             </xpath>
 
             <xpath expr="//button[@name='button_cancel']" position="after">
                 <button
-          name="action_match_einvoice_lines_picking"
-          type="object"
-          class="oe_highlight"
-          string="Match Picking Lines"
-          attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}"
-          groups="account.group_account_invoice"
-        />
-
+                    name="action_match_einvoice_lines_picking"
+                    type="object"
+                    class="oe_highlight"
+                    string="Match Picking Lines"
+                    attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}"
+                    groups="account.group_account_invoice"
+                />
             </xpath>
-
         </field>
     </record>
 
@@ -125,40 +121,37 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_account_invoice_filter" />
         <field name="arch" type="xml">
-
             <xpath expr="//filter[@name='late']" position="after">
                 <separator />
                 <filter
-          string="İhracat"
-          name="Export"
-          domain="['&amp;','&amp;',('state','!=','draft'),('state','!=','cancel'),('fiscal_position_id','ilike','İHRACAT')]"
-        />
+                    string="İhracat"
+                    name="Export"
+                    domain="['&amp;','&amp;',('state','!=','draft'),('state','!=','cancel'),('fiscal_position_id','ilike','İHRACAT')]"
+                />
                 <filter
-          string="Yurtiçi Normal TL"
-          name="TRNormalTL"
-          domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','=',31),('state','!=','draft'),('state','!=','cancel')]"
-        />
+                    string="Yurtiçi Normal TL"
+                    name="TRNormalTL"
+                    domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','=',31),('state','!=','draft'),('state','!=','cancel')]"
+                />
                 <filter
-          string="Yurtiçi Normal YP"
-          name="TRNormalYP"
-          domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','!=',31),('state','!=','draft'),('state','!=','cancel')]"
-        />
+                    string="Yurtiçi Normal YP"
+                    name="TRNormalYP"
+                    domain="['&amp;','&amp;','&amp;','&amp;',('fiscal_position_id','not ilike','tevkifat'),('fiscal_position_id','not ilike','İHRACAT'),('currency_id','!=',31),('state','!=','draft'),('state','!=','cancel')]"
+                />
                 <filter
-          string="Yurtiçi Tevkifat"
-          name="TRTevkifat"
-          domain="['&amp;', '&amp;', ('fiscal_position_id', 'ilike', 'tevkifat'), ('state', '!=', 'draft'), ('state', '!=', 'cancel')]"
-        />
+                    string="Yurtiçi Tevkifat"
+                    name="TRTevkifat"
+                    domain="['&amp;', '&amp;', ('fiscal_position_id', 'ilike', 'tevkifat'), ('state', '!=', 'draft'), ('state', '!=', 'cancel')]"
+                />
             </xpath>
 
             <xpath expr="//filter[@name='duedate']" position="after">
                 <filter
-          string="Mali Koşul"
-          name="fiscal_pos"
-          context="{'group_by':'fiscal_position_id'}"
-        />
+                    string="Mali Koşul"
+                    name="fiscal_pos"
+                    context="{'group_by':'fiscal_position_id'}"
+                />
             </xpath>
-
         </field>
     </record>
-
 </odoo>

@@ -5,11 +5,9 @@
         <field name="model">uom.uom</field>
         <field name="inherit_id" ref="uom.product_uom_form_view" />
         <field name="arch" type="xml">
-
             <field name="rounding" position="after">
                 <field name="view_precision" />
             </field>
-
         </field>
     </record>
 </odoo>

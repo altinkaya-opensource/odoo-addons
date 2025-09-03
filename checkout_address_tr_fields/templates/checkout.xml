@@ -1,62 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template
-    id="layout_tr_address_fields"
-    inherit_id="website_sale.address"
-    name="Turkey address fields for checkout page"
-    priority="20"
-  >
-
+        id="layout_tr_address_fields"
+        inherit_id="website_sale.address"
+        name="Turkey address fields for checkout page"
+        priority="20"
+    >
         <!-- Add required data for Javascript -->
         <xpath expr="//select[@name='state_id']" position="attributes">
             <attribute name="t-attf-model">res.country.state</attribute>
         </xpath>
 
         <xpath
-      expr="//form//div[@class='row']/div[contains(@t-attf-class, 'div_city')]"
-      position="attributes"
-    >
+            expr="//form//div[@class='row']/div[contains(@t-attf-class, 'div_city')]"
+            position="attributes"
+        >
             <attribute
-        name="t-attf-class"
-      >mb-3 #{error.get('city') and 'o_has_error' or ''} col-md-8 div_city d-none</attribute>
+                name="t-attf-class"
+            >mb-3 #{error.get('city') and 'o_has_error' or ''} col-md-8 div_city d-none</attribute>
         </xpath>
 
-<!--        &lt;!&ndash; Show VAT alert, NOTE: This VAT check functionality is related on another module &ndash;&gt;-->
-<!--        <xpath expr="//div[contains(@t-attf-class, 'div_vat')]" position="inside">-->
-<!--            <small t-if="not checkout['vat']" class="form-text text-muted d-block">*You can fill 11111111111 if not applicable.</small>-->
-<!--        </xpath>-->
+        <!--        &lt;!&ndash; Show VAT alert, NOTE: This VAT check functionality is related on another module &ndash;&gt;-->
+        <!--        <xpath expr="//div[contains(@t-attf-class, 'div_vat')]" position="inside">-->
+        <!--            <small t-if="not checkout['vat']" class="form-text text-muted d-block">*You can fill 11111111111 if not applicable.</small>-->
+        <!--        </xpath>-->
 
-<!--        &lt;!&ndash; Add Tax Office &ndash;&gt;-->
-<!--        <xpath expr="//div[contains(@t-attf-class, 'div_vat')]" position="after">-->
-<!--            <div t-attf-class="mb-3 #{error.get('vat') and 'o_has_error' or ''} col-lg-6 div_tax_office mb-0">-->
-<!--                <label class="col-form-label fw-normal label-optional" for="tax_office">Tax Office</label>-->
-<!--                <input type="text" name="tax_office" t-attf-class="form-control #{error.get('tax_office') and 'is-invalid' or ''}" t-att-value="'tax_office' in checkout and checkout['tax_office']" t-att-readonly="'1' if vat_warning else None"/>-->
-<!--            </div>-->
-<!--        </xpath>-->
-
+        <!--        &lt;!&ndash; Add Tax Office &ndash;&gt;-->
+        <!--        <xpath expr="//div[contains(@t-attf-class, 'div_vat')]" position="after">-->
+        <!--            <div t-attf-class="mb-3 #{error.get('vat') and 'o_has_error' or ''} col-lg-6 div_tax_office mb-0">-->
+        <!--                <label class="col-form-label fw-normal label-optional" for="tax_office">Tax Office</label>-->
+        <!--                <input type="text" name="tax_office" t-attf-class="form-control #{error.get('tax_office') and 'is-invalid' or ''}" t-att-value="'tax_office' in checkout and checkout['tax_office']" t-att-readonly="'1' if vat_warning else None"/>-->
+        <!--            </div>-->
+        <!--        </xpath>-->
 
         <!-- Add address fields -->
         <xpath
-      expr="//form//div[@class='row']/div[contains(@t-attf-class, 'div_state')]"
-      position="after"
-    >
+            expr="//form//div[@class='row']/div[contains(@t-attf-class, 'div_state')]"
+            position="after"
+        >
             <div
-        t-attf-class="mb-3 #{error.get('state_id') and 'o_has_error' or ''} col-lg-6 tr_address_field"
-        t-att-style="(not districts or not country.state_ids) and 'display: none'"
-      >
+                t-attf-class="mb-3 #{error.get('state_id') and 'o_has_error' or ''} col-lg-6 tr_address_field"
+                t-att-style="(not districts or not country.state_ids) and 'display: none'"
+            >
                 <label class="col-form-label" for="district_id">District </label>
                 <select
-          name="district_id"
-          t-attf-class="form-select #{error.get('district_id') and 'is-invalid' or ''}"
-          t-attf-model="address.district"
-          data-init="1"
-        >
+                    name="district_id"
+                    t-attf-class="form-select #{error.get('district_id') and 'is-invalid' or ''}"
+                    t-attf-model="address.district"
+                    data-init="1"
+                >
                     <option value="">District...</option>
                     <t t-foreach="districts" t-as="s">
                         <option
-              t-att-value="s.id"
-              t-att-selected="s.id == ('district_id' in checkout and country and checkout['district_id'] != '' and int(checkout['district_id']))"
-            >
+                            t-att-value="s.id"
+                            t-att-selected="s.id == ('district_id' in checkout and country and checkout['district_id'] != '' and int(checkout['district_id']))"
+                        >
                             <t t-esc="s.name" />
                         </option>
                     </t>
@@ -64,22 +62,22 @@
             </div>
 
             <div
-        t-attf-class="mb-3 #{error.get('state_id') and 'o_has_error' or ''} col-lg-6 tr_address_field"
-        t-att-style="(not country or not country.state_ids) and 'display: none'"
-      >
+                t-attf-class="mb-3 #{error.get('state_id') and 'o_has_error' or ''} col-lg-6 tr_address_field"
+                t-att-style="(not country or not country.state_ids) and 'display: none'"
+            >
                 <label class="col-form-label" for="neighbour_id">Neighbour </label>
                 <select
-          name="neighbour_id"
-          t-attf-class="form-select #{error.get('neighbour_id') and 'is-invalid' or ''}"
-          t-attf-model="address.neighbour"
-          data-init="1"
-        >
+                    name="neighbour_id"
+                    t-attf-class="form-select #{error.get('neighbour_id') and 'is-invalid' or ''}"
+                    t-attf-model="address.neighbour"
+                    data-init="1"
+                >
                     <option value="">Neighbour...</option>
                     <t t-foreach="neighbours" t-as="s">
                         <option
-              t-att-value="s.id"
-              t-att-selected="s.id == ('neighbour_id' in checkout and country and checkout['neighbour_id'] != '' and int(checkout['neighbour_id']))"
-            >
+                            t-att-value="s.id"
+                            t-att-selected="s.id == ('neighbour_id' in checkout and country and checkout['neighbour_id'] != '' and int(checkout['neighbour_id']))"
+                        >
                             <t t-esc="s.name" />
                         </option>
                     </t>
@@ -89,15 +87,14 @@
     </template>
 
     <template
-    id="address_widget_tr_fields"
-    inherit_id="base.contact"
-    name="Turkey address fields for checkout page"
-    priority="20"
-  >
+        id="address_widget_tr_fields"
+        inherit_id="base.contact"
+        name="Turkey address fields for checkout page"
+        priority="20"
+    >
         <xpath expr="//span[@itemprop='streetAddress']" position="inside">
             <span itemprop="addressCountry" t-esc="state_id" />
             <span itemprop="addressCountry" t-esc="region_id" />
         </xpath>
     </template>
-
 </odoo>

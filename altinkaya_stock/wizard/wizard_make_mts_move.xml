@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-        <record id="view_wizard_make_mts_move_form" model="ir.ui.view">
-            <field name="name">make.mts.move.form</field>
-            <field name="model">make.mts.move</field>
-            <field name="arch" type="xml">
-	            <form>
-            		<group invisible="1">
-            			<field name="move_id" />
-            		</group>
-            		<p>
+    <record id="view_wizard_make_mts_move_form" model="ir.ui.view">
+        <field name="name">make.mts.move.form</field>
+        <field name="model">make.mts.move</field>
+        <field name="arch" type="xml">
+            <form>
+                <group invisible="1">
+                    <field name="move_id" />
+                </group>
+                <p>
             			Bu hareketi besleyen tüm tedarikler iptal edilecektir!
             		</p>
-            		<footer>
+                <footer>
                         <button
-            name="action_confirm"
-            string="Confirm"
-            type="object"
-            class="oe_highlight"
-          />
+                    name="action_confirm"
+                    string="Confirm"
+                    type="object"
+                    class="oe_highlight"
+                />
                         or
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
-	            </form>
-            </field>
-        </record>
-
+            </form>
+        </field>
+    </record>
 </odoo>

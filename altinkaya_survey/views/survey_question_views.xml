@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="survey_question_star_rating_form">
         <field name="name">Form view for survey question star rating</field>
         <field name="inherit_id" ref="survey.survey_question_form" />
@@ -9,50 +8,46 @@
             <xpath expr="//div[hasclass('o_preview_questions')]" position="inside">
                 <div attrs="{'invisible': [('question_type', '!=', 'star_rating')]}">
                     <i
-            class="fa fa-star fa-2x"
-            role="img"
-            aria-label="Star Rating"
-            title="Star Rating"
-          />
+                        class="fa fa-star fa-2x"
+                        role="img"
+                        aria-label="Star Rating"
+                        title="Star Rating"
+                    />
                     <i
-            class="fa fa-star fa-2x"
-            role="img"
-            aria-label="Star Rating"
-            title="Star Rating"
-          />
+                        class="fa fa-star fa-2x"
+                        role="img"
+                        aria-label="Star Rating"
+                        title="Star Rating"
+                    />
                     <i
-            class="fa fa-star fa-2x"
-            role="img"
-            aria-label="Star Rating"
-            title="Star Rating"
-          />
+                        class="fa fa-star fa-2x"
+                        role="img"
+                        aria-label="Star Rating"
+                        title="Star Rating"
+                    />
                     <i
-            class="fa fa-star fa-2x"
-            role="img"
-            aria-label="Star Rating"
-            title="Star Rating"
-          />
+                        class="fa fa-star fa-2x"
+                        role="img"
+                        aria-label="Star Rating"
+                        title="Star Rating"
+                    />
                     <i
-            class="fa fa-star fa-2x"
-            role="img"
-            aria-label="Star Rating"
-            title="Star Rating"
-          />
+                        class="fa fa-star fa-2x"
+                        role="img"
+                        aria-label="Star Rating"
+                        title="Star Rating"
+                    />
                 </div>
             </xpath>
 
             <xpath expr="//page[@name='answers']/group" position="inside">
                 <group attrs="{'invisible': [('question_type', '!=', 'star_rating')]}">
                     <field
-            name="star_count"
-            attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"
-          />
+                        name="star_count"
+                        attrs="{'invisible': [('question_type', '!=', 'star_rating')]}"
+                    />
                 </group>
             </xpath>
-
-
-
         </field>
     </record>
-
 </odoo>

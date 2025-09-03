@@ -15,12 +15,12 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button
-          name="%(do_view_purchases)d"
-          string="Purchases"
-          type="action"
-          class="oe_stat_button"
-          icon="fa-envelope"
-        />
+                    name="%(do_view_purchases)d"
+                    string="Purchases"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-envelope"
+                />
             </xpath>
         </field>
     </record>

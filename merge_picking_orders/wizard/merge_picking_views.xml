@@ -25,23 +25,23 @@
                     </field>
                     <group>
                         <field
-              name="existing_pick_id"
-              domain="[('id', 'in', merge_picking_ids)]"
-              widget="selection"
-            />
+                            name="existing_pick_id"
+                            domain="[('id', 'in', merge_picking_ids)]"
+                            widget="selection"
+                        />
                     </group>
                     <footer>
                         <button
-              name="action_merge"
-              string="Merge"
-              type="object"
-              class="btn-primary"
-            />
+                            name="action_merge"
+                            string="Merge"
+                            type="object"
+                            class="btn-primary"
+                        />
                         <button
-              string="Cancel"
-              class="btn-secondary"
-              special="cancel"
-            />
+                            string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"
+                        />
                     </footer>
                 </sheet>
             </form>

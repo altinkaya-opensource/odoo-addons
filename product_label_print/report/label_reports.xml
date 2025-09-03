@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-        <template id="product_label_report">
-            <t t-foreach="docs" t-as="o">
-                <t t-translation="off">
-
-<t t-if="o.printer_type == 'GODEX'">
+    <template id="product_label_report">
+        <t t-foreach="docs" t-as="o">
+            <t t-translation="off">
+                <t t-if="o.printer_type == 'GODEX'">
 <t t-if="o.label_ids[0].first_label_empty">^B52</t>
 ^Q50,3
 ^W104
@@ -33,7 +32,7 @@ AB,0,164,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''" />
 AB,0,188,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''" />
 <t t-if="label.label1.pieces_in_pack > 0.0 ">
 AT,21,213,56,56,0,0E,0,0,<t
-                  t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
+                    t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
                 /> <t t-esc="label.label1.uom_name or ''" />
 </t>
 BE,24,271,3,8,93,0,1,<t t-esc="label.label1.barcode or ''" />
@@ -51,7 +50,7 @@ AB,419,163,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''" />
 AB,419,187,1,1,0,0E,<t t-raw="label.label1.note or label.label2.nameL4[0:40] or ''" />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,439,212,56,56,0,0E,0,0,<t
-                  t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
+                    t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
                 /> <t t-esc="label.label2.uom_name or ''" />
 </t>
 BE,442,270,3,8,93,0,1,<t t-esc="label.label2.barcode or ''" />
@@ -62,7 +61,7 @@ AB,684,242,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''" />
 E
 </t>
 </t>
-<t t-if="o.printer_type == 'GODEX300'">
+                <t t-if="o.printer_type == 'GODEX300'">
 <t t-if="o.label_ids[0].first_label_empty">^B52</t>
 ^Q50,3
 ^W104
@@ -88,7 +87,7 @@ AD,27,285,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''" />
 AD,27,319,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''" />
 <t t-if="label.label1.pieces_in_pack > 0.0">
 AT,46,345,79,79,0,0E,0,0,<t
-                  t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
+                    t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
                 /> <t t-esc="label.label1.uom_name or ''" />
 </t>
 BE,30,431,5,12,123,0,1,<t t-esc="label.label1.barcode or ''" />
@@ -107,7 +106,7 @@ AD,653,285,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''" />
 AD,653,319,1,1,0,0E,<t t-raw="label.label2.note or label.label2.nameL4[0:40] or ''" />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,672,345,79,79,0,0E,0,0,<t
-                  t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
+                    t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
                 /> <t t-esc="label.label2.uom_name or ''" />
 </t>
 BE,656,431,5,12,123,0,1,<t t-esc="label.label2.barcode or ''" />
@@ -120,7 +119,7 @@ AD,1025,381,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''" />
 E
 </t>
 </t>
-    </t>
-                </t>
-        </template>
+            </t>
+        </t>
+    </template>
 </odoo>

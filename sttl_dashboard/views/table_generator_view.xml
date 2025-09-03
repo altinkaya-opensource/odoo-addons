@@ -13,11 +13,11 @@
                     </group>
                     <footer>
                         <button
-              string="Generate Table"
-              type="object"
-              name="action_generate_table"
-              class="oe_highlight"
-            />
+                            string="Generate Table"
+                            type="object"
+                            name="action_generate_table"
+                            class="oe_highlight"
+                        />
                     </footer>
                 </sheet>
             </form>

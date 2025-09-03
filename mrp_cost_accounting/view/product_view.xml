@@ -1,52 +1,44 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <record id="product_product_view_form_normal_inherit_extended2" model="ir.ui.view">
+        <field name="name">product.product.view.form.normal.inherit.extended2</field>
+        <field name="model">product.product</field>
+        <field name="priority">4</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='update_cost_price']" position="inside">
+                <button
+                    name="button_compute_quants_cost"
+                    string="Compute Quants Cost"
+                    type="object"
+                    attrs="{'invisible': ['&amp;', ('valuation', '=', 'real_time'), ('cost_method', '=', 'fifo')]}"
+                    help="Compute the price of the product using products and operations of related bill of materials, for manufactured products only."
+                    class="oe_link oe_read_only"
+                    colspan="2"
+                />
+            </xpath>
+        </field>
+    </record>
 
-        <record
-    id="product_product_view_form_normal_inherit_extended2"
-    model="ir.ui.view"
-  >
-            <field
-      name="name"
-    >product.product.view.form.normal.inherit.extended2</field>
-            <field name="model">product.product</field>
-            <field name="priority">4</field>
-            <field name="inherit_id" ref="product.product_normal_form_view" />
-            <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]" />
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='update_cost_price']" position="inside">
-                    <button
-          name="button_compute_quants_cost"
-          string="Compute Quants Cost"
-          type="object"
-          attrs="{'invisible': ['&amp;', ('valuation', '=', 'real_time'), ('cost_method', '=', 'fifo')]}"
-          help="Compute the price of the product using products and operations of related bill of materials, for manufactured products only."
-          class="oe_link oe_read_only"
-          colspan="2"
-        />
-                </xpath>
-            </field>
-        </record>
-
-        <record id="product_variant_easy_edit_view_bom_inherit_2" model="ir.ui.view">
-            <field
-      name="name"
-    >product.product.product.view.form.easy.bom.inherit2</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
-            <field name="arch" type="xml">
-                <data>
+    <record id="product_variant_easy_edit_view_bom_inherit_2" model="ir.ui.view">
+        <field name="name">product.product.product.view.form.easy.bom.inherit2</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <data>
                 <xpath expr="//div[@name='update_cost_price']" position="inside">
                     <field name="bom_count" invisible="1" />
                     <button
-            name="button_compute_quants_cost"
-            string="Compute Quants Cost"
-            type="object"
-            attrs="{'invisible': ['&amp;', ('valuation', '=', 'real_time'), ('cost_method', '=', 'fifo')]}"
-            help="Compute the price of the product using products and operations of related bill of materials, for manufactured products only."
-            class="oe_link oe_read_only"
-          />
+                        name="button_compute_quants_cost"
+                        string="Compute Quants Cost"
+                        type="object"
+                        attrs="{'invisible': ['&amp;', ('valuation', '=', 'real_time'), ('cost_method', '=', 'fifo')]}"
+                        help="Compute the price of the product using products and operations of related bill of materials, for manufactured products only."
+                        class="oe_link oe_read_only"
+                    />
                 </xpath>
-                </data>
-            </field>
-        </record>
+            </data>
+        </field>
+    </record>
 </odoo>

@@ -7,7 +7,6 @@
   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 -->
 <template>
-
     <!-- Add phone button in top right menu for "Open Caller" -->
     <t t-name="verimor_bulutsantralim_click2dial.systray.OpenCaller">
         <li class="o_mail_systray_item">
@@ -25,5 +24,4 @@
         </t>
     </t>
     -->
-
 </template>

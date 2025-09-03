@@ -4,17 +4,17 @@
         <xpath expr="//div[@id='wrapwrap']" position="before">
             <t t-if="website">
                 <div class="o_loading_toast" style="display:none;">
-                  <svg class="o_spinner" viewBox="0 0 50 50">
-                    <circle
-              class="path"
-              cx="25"
-              cy="25"
-              r="20"
-              fill="none"
-              stroke-width="5"
-            />
-                  </svg>
-                  <p class="o_loading_toast_text">Loading...</p>
+                    <svg class="o_spinner" viewBox="0 0 50 50">
+                        <circle
+                            class="path"
+                            cx="25"
+                            cy="25"
+                            r="20"
+                            fill="none"
+                            stroke-width="5"
+                        />
+                    </svg>
+                    <p class="o_loading_toast_text">Loading...</p>
                 </div>
             </t>
         </xpath>

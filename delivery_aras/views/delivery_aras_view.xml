@@ -10,22 +10,22 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]" position='before'>
                 <page
-          string="Aras Configuration"
-          attrs="{'invisible': [('delivery_type', '!=', 'aras')]}"
-        >
+                    string="Aras Configuration"
+                    attrs="{'invisible': [('delivery_type', '!=', 'aras')]}"
+                >
                     <group>
                         <group string="Connection">
                             <!-- SetOrder -->
                             <field
-                name="aras_username"
-                attrs="{'required': [('delivery_type', '=', 'aras')]}"
-              />
+                                name="aras_username"
+                                attrs="{'required': [('delivery_type', '=', 'aras')]}"
+                            />
                             <field name="aras_password" />
                             <!-- Query -->
-                             <field
-                name="aras_query_username"
-                attrs="{'required': [('delivery_type', '=', 'aras')]}"
-              />
+                            <field
+                                name="aras_query_username"
+                                attrs="{'required': [('delivery_type', '=', 'aras')]}"
+                            />
                             <field name="aras_query_password" />
                             <field name="aras_customer_code" />
                         </group>

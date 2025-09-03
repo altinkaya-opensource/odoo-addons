@@ -63,7 +63,6 @@
         <field name="dpi">90</field>
     </record>
 
-
     <record id="sale.action_report_saleorder" model="ir.actions.report">
         <field name="paperformat_id" ref="paperformat_sale" />
     </record>
@@ -85,6 +84,4 @@
     <record id="list_carrier_report" model="ir.actions.report">
         <field name="paperformat_id" ref="paperformat_stock_transfer_carrier_list" />
     </record>
-
-
 </odoo>

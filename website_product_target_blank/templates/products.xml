@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="products_target_blank"
-    inherit_id="website_sale.products_item"
-    name="Opens product page in new tag"
-  >
+        id="products_target_blank"
+        inherit_id="website_sale.products_item"
+        name="Opens product page in new tag"
+    >
         <xpath expr="//a[@itemprop='url']" position="attributes">
-
             <attribute name="target">_blank</attribute>
-
         </xpath>
     </template>
 </odoo>

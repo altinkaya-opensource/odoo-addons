@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="variants_extend_form_view">
         <field name="name">product.template.variants.extended</field>
         <field name="model">product.template</field>
@@ -28,24 +27,23 @@
         <field name="model">product.attribute</field>
         <field name="inherit_id" ref="product.product_attribute_view_form" />
         <field name="arch" type="xml">
-
             <xpath
-        expr="//field[@name='value_ids']//field[@name='name']"
-        position="after"
-      >
+                expr="//field[@name='value_ids']//field[@name='name']"
+                position="after"
+            >
                 <field name="attr_type" invisible="1" />
                 <field
-          name="numeric_value"
-          attrs="{'readonly':[('attr_type','!=','numeric')],'required':[('attr_type','=','numeric')]}"
-        />
+                    name="numeric_value"
+                    attrs="{'readonly':[('attr_type','!=','numeric')],'required':[('attr_type','=','numeric')]}"
+                />
                 <field
-          name="min_range"
-          attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}"
-        />
+                    name="min_range"
+                    attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}"
+                />
                 <field
-          name="max_range"
-          attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}"
-        />
+                    name="max_range"
+                    attrs="{'readonly':[('attr_type','!=','range')],'required':[('attr_type','=','range')]}"
+                />
             </xpath>
         </field>
     </record>
@@ -59,22 +57,20 @@
                 <field name="attr_type" />
                 <field name="name" />
                 <group expand="0" string="Group By">
-
                     <filter
-            string="Attribute"
-            name="attribute"
-            domain="[]"
-            context="{'group_by':'attribute_id'}"
-          />
+                        string="Attribute"
+                        name="attribute"
+                        domain="[]"
+                        context="{'group_by':'attribute_id'}"
+                    />
                     <filter
-            string="Attribute Type"
-            name="attr_type"
-            domain="[]"
-            context="{'group_by':'display_type'}"
-          />
+                        string="Attribute Type"
+                        name="attr_type"
+                        domain="[]"
+                        context="{'group_by':'display_type'}"
+                    />
                 </group>
             </search>
         </field>
     </record>
-
 </odoo>

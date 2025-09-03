@@ -1,168 +1,209 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.tax.office.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="vat" position="before">
+                <field string="Tax Office Name" name="tax_office_name" />
+            </field>
+        </field>
+    </record>
 
-		<record id="view_partner_form" model="ir.ui.view">
-			<field name="name">res.partner.tax.office.inherit</field>
-			<field name="model">res.partner</field>
-			<field name="inherit_id" ref="base.view_partner_form" />
-			<field name="arch" type="xml">
-				<field name="vat" position="before">
-					<field string="Tax Office Name" name="tax_office_name" />
+    <record id="res_partner_view_form_altinkaya" model="ir.ui.view">
+        <field name="name">altinkaya_telfax.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field eval="100" name="priority" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_route_map']" position="replace">
+                <button
+                    type="object"
+                    name="action_view_v_cari_urun"
+                    class="oe_stat_button"
+                    icon="fa-code-fork"
+                    attrs="{'invisible': [('v_cari_urun_count', '=', 0)]}"
+                >
+                    <field
+                        name="v_cari_urun_count"
+                        widget="statinfo"
+                        string="Products"
+                    />
+                </button>
+            </xpath>
 
-				</field>
-			</field>
-		</record>
-
-		<record id="res_partner_view_form_altinkaya" model="ir.ui.view">
-			<field name="name">altinkaya_telfax.partner.form</field>
-			<field name="model">res.partner</field>
-			<field name="inherit_id" ref="base.view_partner_form" />
-			<field eval="100" name="priority" />
-			<field name="arch" type="xml">
-
-				<xpath expr="//button[@name='open_route_map']" position="replace">
-					<button
-          type="object"
-          name="action_view_v_cari_urun"
-          class="oe_stat_button"
-          icon="fa-code-fork"
-          attrs="{'invisible': [('v_cari_urun_count', '=', 0)]}"
-        >
-						<field name="v_cari_urun_count" widget="statinfo" string="Products" />
-					</button>
-				</xpath>
-
-				<xpath expr="/form/sheet/group/group//field[@name='mobile']" position="after">
-					<field name="z_contact_name" />
-				</xpath>
-				<xpath expr="//group[@name='container']" position="inside">
-					<group>
-						<field name="segment_id" />
-						<field name="z_tel_kampanya" />
-						<!-- <field name="z_kat_postala" />
+            <xpath
+                expr="/form/sheet/group/group//field[@name='mobile']"
+                position="after"
+            >
+                <field name="z_contact_name" />
+            </xpath>
+            <xpath expr="//group[@name='container']" position="inside">
+                <group>
+                    <field name="segment_id" />
+                    <field name="z_tel_kampanya" />
+                    <!-- <field name="z_kat_postala" />
 						<field name="z_kat_postalandi" />
 						<field name="z_kat_email" /> -->
-					</group>
-					<group colspan="4" string="Sektörler">
-						<field name="show_partner_industry_for_person" invisible="1" />
-						<field name="industry_id" />
-						<field
-            name="secondary_industry_ids"
-            widget="many2many_tags"
-            attrs="{'invisible': [('is_company', '=', False),
+                </group>
+                <group colspan="4" string="Sektörler">
+                    <field name="show_partner_industry_for_person" invisible="1" />
+                    <field name="industry_id" />
+                    <field
+                        name="secondary_industry_ids"
+                        widget="many2many_tags"
+                        attrs="{'invisible': [('is_company', '=', False),
 						('show_partner_industry_for_person', '=', False)]}"
-          />
-						<field
-            name="nace_product_categ_ids"
-            widget="many2many_tags"
-            string="Hedef Ürün Kategorisi"
-          />
-					</group>
-				</xpath>
-				<xpath expr="/form/sheet/notebook/page[@name='internal_notes']" position="attributes">
-					<attribute name="invisible">1</attribute>
-				</xpath>
-				<xpath expr="/form/sheet/notebook/page[@name='accounting']" position="after">
-					<page name="internal_notes" string="Notes" modifiers="{}">
-						<group colspan="2" col="2" modifiers="{}">
-							<separator string="Warning on the Sales Order" colspan="4" modifiers="{}" />
-							<field name="sale_warn" nolabel="1" modifiers="{}" colspan="2" />
-							<field
-              name="sale_warn_msg"
-              colspan="2"
-              nolabel="1"
-              attrs="{'required':[('sale_warn', '!=', False), ('sale_warn','!=','no-message')],'readonly':[('sale_warn','=','no-message')]}"
-              modifiers="{'required':[['sale_warn','!=',false],['sale_warn','!=','no-message']],'readonly':[['sale_warn','=','no-message']]}"
-            />
-						</group>
-						<group colspan="2" col="2" modifiers="{}">
-							<separator string="Warning on the Purchase Order" colspan="4" modifiers="{}" />
-							<field name="purchase_warn" nolabel="1" modifiers="{}" colspan="2" />
-							<field
-              name="purchase_warn_msg"
-              colspan="2"
-              nolabel="1"
-              attrs="{'required':[('purchase_warn', '!=', False), ('purchase_warn','!=','no-message')],'readonly':[('purchase_warn','=','no-message')]}"
-              modifiers="{'required':[['purchase_warn','!=',false],['purchase_warn','!=','no-message']],'readonly':[['purchase_warn','=','no-message']]}"
-            />
-						</group>
-						<group colspan="2" col="2" modifiers="{}">
-							<separator string="Warning on the Invoice" colspan="4" modifiers="{}" />
-							<field name="invoice_warn" nolabel="1" modifiers="{}" colspan="2" />
-							<field
-              name="invoice_warn_msg"
-              colspan="2"
-              nolabel="1"
-              attrs="{'required':[('invoice_warn', '!=', False), ('invoice_warn','!=','no-message')],'readonly':[('invoice_warn','=','no-message')]}"
-              modifiers="{'required':[['invoice_warn','!=',false],['invoice_warn','!=','no-message']],'readonly':[['invoice_warn','=','no-message']]}"
-            />
-						</group>
-						<group colspan="2" col="2" modifiers="{}">
-							<separator string="Warning on the Picking" colspan="4" modifiers="{}" />
-							<field name="picking_warn" nolabel="1" modifiers="{}" colspan="2" />
-							<field
-              name="picking_warn_msg"
-              colspan="2"
-              nolabel="1"
-              attrs="{'required':[('picking_warn', '!=', False), ('picking_warn','!=','no-message')],'readonly':[('picking_warn','=','no-message')]}"
-              modifiers="{'required':[['picking_warn','!=',false],['picking_warn','!=','no-message']],'readonly':[['picking_warn','=','no-message']]}"
-            />
-						</group>
-					</page>
-				</xpath>
-				<xpath expr="/form/sheet//field[@name='category_id']" position="replace" />
-				<xpath expr="/form/sheet//field[@name='name']" position="after">
-					<h3>
-						<field
-            name="category_id"
-            widget="many2many_tags"
-            options="{'color_field': 'color', 'no_create_edit': True}"
-            placeholder="Tags..."
-          />
-					</h3>
-				</xpath>
-				<xpath expr="/form/sheet/group/group" position="inside">
-					<field name="comment" colspan="3" />
+                    />
+                    <field
+                        name="nace_product_categ_ids"
+                        widget="many2many_tags"
+                        string="Hedef Ürün Kategorisi"
+                    />
+                </group>
+            </xpath>
+            <xpath
+                expr="/form/sheet/notebook/page[@name='internal_notes']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="/form/sheet/notebook/page[@name='accounting']"
+                position="after"
+            >
+                <page name="internal_notes" string="Notes" modifiers="{}">
+                    <group colspan="2" col="2" modifiers="{}">
+                        <separator
+                            string="Warning on the Sales Order"
+                            colspan="4"
+                            modifiers="{}"
+                        />
+                        <field
+                            name="sale_warn"
+                            nolabel="1"
+                            modifiers="{}"
+                            colspan="2"
+                        />
+                        <field
+                            name="sale_warn_msg"
+                            colspan="2"
+                            nolabel="1"
+                            attrs="{'required':[('sale_warn', '!=', False), ('sale_warn','!=','no-message')],'readonly':[('sale_warn','=','no-message')]}"
+                            modifiers="{'required':[['sale_warn','!=',false],['sale_warn','!=','no-message']],'readonly':[['sale_warn','=','no-message']]}"
+                        />
+                    </group>
+                    <group colspan="2" col="2" modifiers="{}">
+                        <separator
+                            string="Warning on the Purchase Order"
+                            colspan="4"
+                            modifiers="{}"
+                        />
+                        <field
+                            name="purchase_warn"
+                            nolabel="1"
+                            modifiers="{}"
+                            colspan="2"
+                        />
+                        <field
+                            name="purchase_warn_msg"
+                            colspan="2"
+                            nolabel="1"
+                            attrs="{'required':[('purchase_warn', '!=', False), ('purchase_warn','!=','no-message')],'readonly':[('purchase_warn','=','no-message')]}"
+                            modifiers="{'required':[['purchase_warn','!=',false],['purchase_warn','!=','no-message']],'readonly':[['purchase_warn','=','no-message']]}"
+                        />
+                    </group>
+                    <group colspan="2" col="2" modifiers="{}">
+                        <separator
+                            string="Warning on the Invoice"
+                            colspan="4"
+                            modifiers="{}"
+                        />
+                        <field
+                            name="invoice_warn"
+                            nolabel="1"
+                            modifiers="{}"
+                            colspan="2"
+                        />
+                        <field
+                            name="invoice_warn_msg"
+                            colspan="2"
+                            nolabel="1"
+                            attrs="{'required':[('invoice_warn', '!=', False), ('invoice_warn','!=','no-message')],'readonly':[('invoice_warn','=','no-message')]}"
+                            modifiers="{'required':[['invoice_warn','!=',false],['invoice_warn','!=','no-message']],'readonly':[['invoice_warn','=','no-message']]}"
+                        />
+                    </group>
+                    <group colspan="2" col="2" modifiers="{}">
+                        <separator
+                            string="Warning on the Picking"
+                            colspan="4"
+                            modifiers="{}"
+                        />
+                        <field
+                            name="picking_warn"
+                            nolabel="1"
+                            modifiers="{}"
+                            colspan="2"
+                        />
+                        <field
+                            name="picking_warn_msg"
+                            colspan="2"
+                            nolabel="1"
+                            attrs="{'required':[('picking_warn', '!=', False), ('picking_warn','!=','no-message')],'readonly':[('picking_warn','=','no-message')]}"
+                            modifiers="{'required':[['picking_warn','!=',false],['picking_warn','!=','no-message']],'readonly':[['picking_warn','=','no-message']]}"
+                        />
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="/form/sheet//field[@name='category_id']" position="replace" />
+            <xpath expr="/form/sheet//field[@name='name']" position="after">
+                <h3>
+                    <field
+                        name="category_id"
+                        widget="many2many_tags"
+                        options="{'color_field': 'color', 'no_create_edit': True}"
+                        placeholder="Tags..."
+                    />
+                </h3>
+            </xpath>
+            <xpath expr="/form/sheet/group/group" position="inside">
+                <field name="comment" colspan="3" />
+            </xpath>
+            <xpath
+                expr="//field[@name='property_delivery_carrier_id']"
+                position="attributes"
+            >
+                <attribute name="string">Nakliye Yöntemi</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_policy']" position="attributes">
+                <attribute name="string">Teslim Tercihi</attribute>
+            </xpath>
+            <field name="sale_incoterm_id" position="replace" />
+            <field name="sale_incoterm_address_id" position="replace" />
+        </field>
+    </record>
 
-				</xpath>
-				<xpath expr="//field[@name='property_delivery_carrier_id']" position="attributes">
-                    <attribute name="string">Nakliye Yöntemi</attribute>
-                </xpath>
-				<xpath expr="//field[@name='picking_policy']" position="attributes">
-                    <attribute name="string">Teslim Tercihi</attribute>
-                </xpath>
-				<field name="sale_incoterm_id" position="replace" />
-                <field name="sale_incoterm_address_id" position="replace" />
+    <record id="res_partner_view_tree_altinkaya" model="ir.ui.view">
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="name">res.partner.inherit_altinkaya1</field>
+        <field name="model">res.partner</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
 
-			</field>
-		</record>
-
-
-
-		<record id="res_partner_view_tree_altinkaya" model="ir.ui.view">
-			<field name="inherit_id" ref="base.view_partner_tree" />
-			<field name="name">res.partner.inherit_altinkaya1</field>
-			<field name="model">res.partner</field>
-			<field name="type">tree</field>
-			<field name="arch" type="xml">
-				<xpath expr="//field[@name='email']" position="attributes">
-					<attribute name="invisible">1</attribute>
-				</xpath>
-			</field>
-		</record>
-
-
-		<record model="ir.ui.view" id="res_partner_search_view_altinkaya">
-			<field name="name">res.partner.search.view</field>
-			<field name="model">res.partner</field>
-			<field name="inherit_id" ref="base.view_res_partner_filter" />
-			<field name="arch" type="xml">
-				<field name="parent_id" position="after">
-					<field name="vat" filter_domain="[('vat','like',self)]" />
-				</field>
-			</field>
-		</record>
-
-
-
+    <record model="ir.ui.view" id="res_partner_search_view_altinkaya">
+        <field name="name">res.partner.search.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="vat" filter_domain="[('vat','like',self)]" />
+            </field>
+        </field>
+    </record>
 </odoo>

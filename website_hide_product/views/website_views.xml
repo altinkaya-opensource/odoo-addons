@@ -8,10 +8,10 @@
                 <page name="product_exclusion" string="Product Exclusion">
                     <group>
                         <field
-              name="excluded_product_ids"
-              options="{'no_create_edit':True, 'no_create':True}"
-              domain="[('is_published', '=', True)]"
-            >
+                            name="excluded_product_ids"
+                            options="{'no_create_edit':True, 'no_create':True}"
+                            domain="[('is_published', '=', True)]"
+                        >
                             <tree>
                                 <field name="default_code" />
                                 <field name="name" />
@@ -20,10 +20,10 @@
                             </tree>
                         </field>
                         <field
-              name="excluded_product_category_ids"
-              options="{'no_create_edit':True, 'no_create':True}"
-              domain="[('is_published', '=', True)]"
-            >
+                            name="excluded_product_category_ids"
+                            options="{'no_create_edit':True, 'no_create':True}"
+                            domain="[('is_published', '=', True)]"
+                        >
                             <tree>
                                 <field name="name" />
                                 <field name="is_published" />

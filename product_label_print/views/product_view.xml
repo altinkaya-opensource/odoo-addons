@@ -1,45 +1,39 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <record id="product_product_print_label_single_tree" model="ir.ui.view">
+        <field name="name">product.product.tree.inherit.print_label</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button
+                    name="action_print_label"
+                    type="object"
+                    icon="fa-barcode"
+                    title="Print Barcode"
+                />
+            </xpath>
+        </field>
+    </record>
 
-		<record id="product_product_print_label_single_tree" model="ir.ui.view">
-       		<field name="name">product.product.tree.inherit.print_label</field>
-          	<field name="model">product.product</field>
-          	<field name="inherit_id" ref="product.product_product_tree_view" />
-          	<field name="arch" type="xml">
+    <record id="product_product_print_label_single_form" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.print_label</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    class="oe_inline oe_stat_button"
+                    name="action_print_label"
+                    type="object"
+                    icon="fa-barcode"
+                    string="Print Label"
+                />
+            </div>
+        </field>
+    </record>
 
-                	<xpath expr="//tree" position="inside">
-       						<button
-          name="action_print_label"
-          type="object"
-          icon="fa-barcode"
-          title="Print Barcode"
-        />
-                  	</xpath>
-          	</field>
-       </record>
-
-       <record id="product_product_print_label_single_form" model="ir.ui.view">
-       		<field name="name">product.product.form.inherit.print_label</field>
-          	<field name="model">product.product</field>
-          	<field name="inherit_id" ref="product.product_normal_form_view" />
-          	<field name="arch" type="xml">
-
-                <div name="button_box" position="inside">
-                    <button
-          class="oe_inline oe_stat_button"
-          name="action_print_label"
-          type="object"
-          icon="fa-barcode"
-          string="Print Label"
-        >
-                    </button>
-
-                </div>
-          	</field>
-       </record>
-
-
-	<record id="action_print_molding_label_multi" model="ir.actions.server">
+    <record id="action_print_molding_label_multi" model="ir.actions.server">
         <field name="name">Print Molding Label Multi Action</field>
         <field name="type">ir.actions.server</field>
         <field name="model_id" ref="product.model_product_product" />
@@ -49,5 +43,4 @@
             records.action_print_molding_label()
         </field>
     </record>
-
 </odoo>

@@ -9,45 +9,44 @@
             <!--  <filter name="thisyear" position="after"> -->
             <xpath expr="//search/field[@name='invoice_date']" position="after">
                 <filter
-          string="This F.Year"
-          name="thisyear"
-          domain="['|', ('invoice_date', '=', False), '&amp;',('invoice_date','&lt;=', time.strftime('%Y-12-31')),('invoice_date','&gt;=',time.strftime('%Y-01-01'))]"
-          help="Journal Entries with period in current year"
-        />
+                    string="This F.Year"
+                    name="thisyear"
+                    domain="['|', ('invoice_date', '=', False), '&amp;',('invoice_date','&lt;=', time.strftime('%Y-12-31')),('invoice_date','&gt;=',time.strftime('%Y-01-01'))]"
+                    help="Journal Entries with period in current year"
+                />
 
                 <filter
-          string="Last Year"
-          name="lastyear"
-          domain="['|', ('invoice_date', '=', False), '&amp;', ('invoice_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%Y-01-01')),('invoice_date','&lt;=', time.strftime('%Y-01-01'))]"
-        />
+                    string="Last Year"
+                    name="lastyear"
+                    domain="['|', ('invoice_date', '=', False), '&amp;', ('invoice_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%Y-01-01')),('invoice_date','&lt;=', time.strftime('%Y-01-01'))]"
+                />
                 <separator />
                 <filter
-          string="Türkiye"
-          name="turkey"
-          domain="[('country_id.id', '=','224'),('country_id.name', '!=','False')]"
-        />
+                    string="Türkiye"
+                    name="turkey"
+                    domain="[('country_id.id', '=','224'),('country_id.name', '!=','False')]"
+                />
                 <filter
-          string="Yurtdışı"
-          name="outturkey"
-          domain="[('country_id.id', '!=','224'),('country_id.id', '!=','55'),('country_id', '!=',False)]"
-        />
+                    string="Yurtdışı"
+                    name="outturkey"
+                    domain="[('country_id.id', '!=','224'),('country_id.id', '!=','55'),('country_id', '!=',False)]"
+                />
                 <separator />
 
                 <filter
-          string="Due Date"
-          name="duedate"
-          domain="[('invoice_date_due', '&lt;=', context_today().strftime('%Y-%m-%d'))]"
-        />
-
+                    string="Due Date"
+                    name="duedate"
+                    domain="[('invoice_date_due', '&lt;=', context_today().strftime('%Y-%m-%d'))]"
+                />
             </xpath>
 
             <!--  </filter> -->
             <xpath expr="//search/group/filter[@name='partner_id']" position="replace">
                 <filter
-          string="Partner"
-          name="partner"
-          context="{'group_by':'partner_id','residual_visible':True}"
-        />
+                    string="Partner"
+                    name="partner"
+                    context="{'group_by':'partner_id','residual_visible':True}"
+                />
             </xpath>
             <!-- <filter string="Supplier" position="attributes">
                     <attribute name="name">supplier</attribute>
@@ -55,39 +54,36 @@
         </field>
     </record>
 
-     <record id="inherit_view_account_invoice_report_pivot" model="ir.ui.view">
-          <field name="name">account.invoice.report.pivot</field>
-          <field name="model">account.invoice.report</field>
-          <field name="inherit_id" ref="account.view_account_invoice_report_pivot" />
-          <field name="priority" eval="100" />
-          <field name="arch" type="xml">
-                  <xpath expr="//field[@name='product_categ_id']" position="replace" />
-                  <field name="price_subtotal" position="replace">
-                    <field name="price_total_usd" type="measure" />
-                  </field>
-          </field>
-     </record>
-
-    <record
-    id="account.action_account_invoice_report_all"
-    model="ir.actions.act_window"
-  >
-        <field name="view_mode">pivot,graph</field>
-        <field
-      name="context"
-    >{'search_default_thisyear':1, 'search_default_current':1, 'search_default_customer': 1, 'group_by':['invoice_date'], 'group_by_no_leaf':1}</field>
+    <record id="inherit_view_account_invoice_report_pivot" model="ir.ui.view">
+        <field name="name">account.invoice.report.pivot</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_pivot" />
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_categ_id']" position="replace" />
+            <field name="price_subtotal" position="replace">
+                <field name="price_total_usd" type="measure" />
+            </field>
+        </field>
     </record>
 
     <record
-    id="account.action_account_invoice_report_all_supp"
-    model="ir.actions.act_window"
-  >
+        id="account.action_account_invoice_report_all"
+        model="ir.actions.act_window"
+    >
         <field name="view_mode">pivot,graph</field>
         <field
-      name="context"
-    >{'search_default_thisyear':1, 'search_default_current':1, 'search_default_supplier': 1, 'group_by':['invoice_date'], 'group_by_no_leaf':1}</field>
+            name="context"
+        >{'search_default_thisyear':1, 'search_default_current':1, 'search_default_customer': 1, 'group_by':['invoice_date'], 'group_by_no_leaf':1}</field>
     </record>
 
-
-
+    <record
+        id="account.action_account_invoice_report_all_supp"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">pivot,graph</field>
+        <field
+            name="context"
+        >{'search_default_thisyear':1, 'search_default_current':1, 'search_default_supplier': 1, 'group_by':['invoice_date'], 'group_by_no_leaf':1}</field>
+    </record>
 </odoo>

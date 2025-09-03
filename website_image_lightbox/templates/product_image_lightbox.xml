@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template
-    id="product_image_lightbox"
-    inherit_id="website_sale.shop_product_image"
-    name="Lightbox support for product images"
-  >
+        id="product_image_lightbox"
+        inherit_id="website_sale.shop_product_image"
+        name="Lightbox support for product images"
+    >
         <xpath expr="//div[@t-field='product_image.image_1920']" position="attributes">
             <attribute
-        name="t-options"
-      >{"lightbox": True, "widget": "image", "preview_image": "image_1024", "class": "oe_unmovable product_detail_img mh-100", "alt-field": "name", "zoom": product_image.can_image_1024_be_zoomed and "image_1920"}</attribute>
+                name="t-options"
+            >{"lightbox": True, "widget": "image", "preview_image": "image_1024", "class": "oe_unmovable product_detail_img mh-100", "alt-field": "name", "zoom": product_image.can_image_1024_be_zoomed and "image_1920"}</attribute>
         </xpath>
     </template>
 </odoo>

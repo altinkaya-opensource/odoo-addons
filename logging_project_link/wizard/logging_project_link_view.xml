@@ -14,11 +14,11 @@
                 </group>
                 <footer>
                     <button
-            name="create_task"
-            string="Create Task"
-            type="object"
-            class="oe_highlight"
-          />
+                    name="create_task"
+                    string="Create Task"
+                    type="object"
+                    class="oe_highlight"
+                />
                     or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
@@ -27,12 +27,12 @@
     </record>
 
     <act_window
-    id="logging_link_wizard"
-    res_model="logging.linker"
-    src_model="ir.logging"
-    multi="True"
-    target="new"
-    name="Logging Linker Window"
-    view_id="logging_linker_view"
-  />
+        id="logging_link_wizard"
+        res_model="logging.linker"
+        src_model="ir.logging"
+        multi="True"
+        target="new"
+        name="Logging Linker Window"
+        view_id="logging_linker_view"
+    />
 </odoo>

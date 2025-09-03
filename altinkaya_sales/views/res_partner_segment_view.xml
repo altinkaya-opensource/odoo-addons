@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="res_partner_segment_form_view">
         <field name="name">res.partner.segment.form</field>
         <field name="model">res.partner.segment</field>
@@ -17,17 +16,16 @@
                     <notebook>
                         <page name="partners" string="Partners">
                             <field
-                name="partner_ids"
-                widget="one2many_list"
-                readonly="1"
-              />
+                                name="partner_ids"
+                                widget="one2many_list"
+                                readonly="1"
+                            />
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
 
     <record model="ir.ui.view" id="res_partner_segment_tree_view">
         <field name="name">res.partner.segment.tree</field>
@@ -52,5 +50,4 @@
         <field name="action" ref="res_partner_segment_act_window" />
         <field name="sequence" eval="16" />
     </record>
-
 </odoo>

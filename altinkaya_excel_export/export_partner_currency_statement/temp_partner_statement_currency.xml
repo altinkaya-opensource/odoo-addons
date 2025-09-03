@@ -5,8 +5,8 @@
         <field name="fname">partner_statement_currency.xlsx</field>
         <field name="name">Cari Dövizli Ekstre</field>
         <field
-      name="description"
-    >Müşterilerin dövizli ekstresini excel olarak basan şablon.</field>
+            name="description"
+        >Müşterilerin dövizli ekstresini excel olarak basan şablon.</field>
         <field name="input_instruction">
                         {
                 '__EXPORT__': {

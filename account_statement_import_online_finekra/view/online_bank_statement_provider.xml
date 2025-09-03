@@ -4,16 +4,16 @@
         <field name="name">online.bank.statement.provider.form.finekra</field>
         <field name="model">online.bank.statement.provider</field>
         <field
-      name="inherit_id"
-      ref="account_statement_import_online.online_bank_statement_provider_form"
-    />
+            name="inherit_id"
+            ref="account_statement_import_online.online_bank_statement_provider_form"
+        />
         <field name="arch" type="xml">
-        <!-- < page idi groupa çevirdim -->
+            <!-- < page idi groupa çevirdim -->
             <xpath expr="//group[@name='configuration']" position="inside">
                 <group
-          name="finekra"
-          attrs="{'invisible':[('service','!=','finekra')]}"
-        >
+                    name="finekra"
+                    attrs="{'invisible':[('service','!=','finekra')]}"
+                >
                     <field name="finekra_email" />
                     <field name="finekra_password" />
                     <field name="finekra_tenant_code" />

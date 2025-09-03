@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-        <!--Email template for send partner statement-->
-        <record id="email_template_edi_send_statement" model="mail.template">
-            <field name="name">Cari Mutabakat Maili</field>
-            <field name="email_from">{{ (user.email or '') }}</field>
-            <field name="subject">Cari Ekstre Mutabakatı</field>
-            <field name="partner_to">{{ object.id }}</field>
-            <field name="email_to">{{ object.email }}</field>
-            <field name="model_id" ref="base.model_res_partner" />
-            <field name="auto_delete" eval="True" />
-            <field name="report_template" ref="partner_statement_altinkaya" />
-            <field
-      name="body_html"
-    ><![CDATA[
+    <!--Email template for send partner statement-->
+    <record id="email_template_edi_send_statement" model="mail.template">
+        <field name="name">Cari Mutabakat Maili</field>
+        <field name="email_from">{{ (user.email or '') }}</field>
+        <field name="subject">Cari Ekstre Mutabakatı</field>
+        <field name="partner_to">{{ object.id }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="model_id" ref="base.model_res_partner" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_template" ref="partner_statement_altinkaya" />
+        <field
+            name="body_html"
+        ><![CDATA[
 <div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
    <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
        Değerli iş ortağımız <t t-out="object.name or ''" />,
@@ -29,21 +28,21 @@
    </p>
 </div>
             ]]></field>
-        </record>
+    </record>
 
-        <!--Email template for send partner statement-->
-        <record id="email_template_edi_send_statement_en" model="mail.template">
-            <field name="name">Partner Statement Mail</field>
-            <field name="email_from">{{ (user.email or '') }}</field>
-            <field name="subject">Partner Statement</field>
-            <field name="partner_to">{{ object.id }}</field>
-            <field name="email_to">{{ object.email }}</field>
-            <field name="model_id" ref="base.model_res_partner" />
-            <field name="auto_delete" eval="True" />
-            <field name="report_template" ref="partner_statement_altinkaya_en" />
-            <field
-      name="body_html"
-    ><![CDATA[
+    <!--Email template for send partner statement-->
+    <record id="email_template_edi_send_statement_en" model="mail.template">
+        <field name="name">Partner Statement Mail</field>
+        <field name="email_from">{{ (user.email or '') }}</field>
+        <field name="subject">Partner Statement</field>
+        <field name="partner_to">{{ object.id }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="model_id" ref="base.model_res_partner" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_template" ref="partner_statement_altinkaya_en" />
+        <field
+            name="body_html"
+        ><![CDATA[
 <div style="font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
    <p style="margin:0px 0 1rem 0;font-size:13px;font-family:&quot;Lucida Grande&quot;, Helvetica, Verdana, Arial, sans-serif;">
        Our valued business partner <t t-out="object.name or ''" />,
@@ -59,6 +58,5 @@
    </p>
 </div>
             ]]></field>
-        </record>
-
+    </record>
 </odoo>

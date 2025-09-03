@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="report_partner_statement" model="ir.ui.view">
         <field name="name">report.partner.statement</field>
         <field name="model">report.partner.statement</field>
@@ -10,9 +9,9 @@
             <xpath expr="//group[@name='criteria']" position="after">
                 Carinin ekstresini çıkartmak için aşağıdaki butonları kullanınız.
                 <group>
-                    <field name="date_start" />
-                    <field name="date_end" />
-                </group>
+                <field name="date_start" />
+                <field name="date_end" />
+            </group>
             </xpath>
         </field>
     </record>
@@ -24,8 +23,7 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field
-      name="context"
-    >{'template_domain': [('res_model', '=', 'report.partner.statement'), ('fname', '=', 'partner_statement.xlsx'), ('gname', '=', False)]}</field>
+            name="context"
+        >{'template_domain': [('res_model', '=', 'report.partner.statement'), ('fname', '=', 'partner_statement.xlsx'), ('gname', '=', False)]}</field>
     </record>
-
 </odoo>

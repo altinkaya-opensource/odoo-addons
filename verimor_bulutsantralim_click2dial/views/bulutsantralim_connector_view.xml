@@ -7,88 +7,88 @@
   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 -->
 <odoo>
+    <record id="view_bulutsantralim_connector_search" model="ir.ui.view">
+        <field name="name">bulutsantralim.connector.search</field>
+        <field name="model">bulutsantralim.connector</field>
+        <field name="arch" type="xml">
+            <search string="Bulutsantralim Server Search">
+                <separator />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
 
-
-<record id="view_bulutsantralim_connector_search" model="ir.ui.view">
-    <field name="name">bulutsantralim.connector.search</field>
-    <field name="model">bulutsantralim.connector</field>
-    <field name="arch" type="xml">
-        <search string="Bulutsantralim Server Search">
-            <separator />
-            <filter
-          string="Archived"
-          name="inactive"
-          domain="[('active', '=', False)]"
-        />
-        </search>
-    </field>
-</record>
-
-<record id="view_bulutsantralim_connector_form" model="ir.ui.view">
-    <field name="name">bulutsantralim.connector.form</field>
-    <field name="model">bulutsantralim.connector</field>
-    <field name="arch" type="xml">
-        <form string="Bulutsantralim Connector">
-            <sheet>
-                <div class="oe_button_box" name="button_box">
-                    <button
-              name="toggle_active"
-              type="object"
-              class="oe_stat_button"
-              icon="fa-archive"
-            >
-                        <field
-                name="active"
-                widget="boolean_button"
-                options='{"terminology": "archive"}'
-              />
-                    </button>
-                </div>
-                <div class="oe_title">
-                    <label for="name" string="Connector Name" class="oe_edit_only" />
-                    <h1>
-                        <field name="name" />
-                    </h1>
-                </div>
-                <group name="config" string="Verimor Bulutsantralim Configuration">
-                    <field name="api_key" />
-                </group>
-                <group name="optional_settings" string="Optional Settings">
-                    <field name="manual_answer" />
-                    <label for="call_timeout" />
-                    <div>
-                        <field name="call_timeout" class="oe_inline" />
+    <record id="view_bulutsantralim_connector_form" model="ir.ui.view">
+        <field name="name">bulutsantralim.connector.form</field>
+        <field name="model">bulutsantralim.connector</field>
+        <field name="arch" type="xml">
+            <form string="Bulutsantralim Connector">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="toggle_active"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-archive"
+                        >
+                            <field
+                                name="active"
+                                widget="boolean_button"
+                                options='{"terminology": "archive"}'
+                            />
+                        </button>
                     </div>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
+                    <div class="oe_title">
+                        <label
+                            for="name"
+                            string="Connector Name"
+                            class="oe_edit_only"
+                        />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="config" string="Verimor Bulutsantralim Configuration">
+                        <field name="api_key" />
+                    </group>
+                    <group name="optional_settings" string="Optional Settings">
+                        <field name="manual_answer" />
+                        <label for="call_timeout" />
+                        <div>
+                            <field name="call_timeout" class="oe_inline" />
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-<record id="view_bulutsantralim_connector_tree" model="ir.ui.view">
-    <field name="name">bulutsantralim.connector.tree</field>
-    <field name="model">bulutsantralim.connector</field>
-    <field name="arch" type="xml">
-        <tree>
-            <field name="name" />
-            <field name="active" />
-        </tree>
-    </field>
-</record>
+    <record id="view_bulutsantralim_connector_tree" model="ir.ui.view">
+        <field name="name">bulutsantralim.connector.tree</field>
+        <field name="model">bulutsantralim.connector</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
 
-<record id="action_bulutsantralim_connector" model="ir.actions.act_window">
-    <field name="name">Bulutsantralim Connector</field>
-    <field name="res_model">bulutsantralim.connector</field>
-    <field name="view_mode">tree,form</field>
-</record>
+    <record id="action_bulutsantralim_connector" model="ir.actions.act_window">
+        <field name="name">Bulutsantralim Connector</field>
+        <field name="res_model">bulutsantralim.connector</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-<!-- Menu entry under Settings > Technical > Phone -->
-<menuitem
-    action="action_bulutsantralim_connector"
-    id="act_menu_bulutsantralim_server"
-    parent="base_phone.menu_config_phone"
-    sequence="50"
-  />
-
-
+    <!-- Menu entry under Settings > Technical > Phone -->
+    <menuitem
+        action="action_bulutsantralim_connector"
+        id="act_menu_bulutsantralim_server"
+        parent="base_phone.menu_config_phone"
+        sequence="50"
+    />
 </odoo>

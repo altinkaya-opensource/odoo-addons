@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="tr_chart_template_accounts" model="account.chart.template">
-
         <field name="property_account_payable_id" ref="t320" />
         <field name="property_account_receivable_id" ref="t120" />
 
@@ -12,15 +10,11 @@
         <field name="income_currency_exchange_account_id" ref="t100" />
         <field name="expense_currency_exchange_account_id" ref="t100" />
 
-
         <!--
         <field name="property_stock_account_input_categ_id" ref="t600"/>
         <field name="property_stock_account_output_categ_id" ref="t600"/>
         <field name="property_stock_valuation_account_id" ref="t600"/>
         <field name="rejected_check_account_id" ref="t600"/>
         -->
-
-
-            </record>
-
+    </record>
 </odoo>

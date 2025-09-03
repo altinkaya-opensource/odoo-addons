@@ -12,5 +12,4 @@
         <field eval="True" name="active" />
         <field name="state">code</field>
     </record>
-
 </odoo>

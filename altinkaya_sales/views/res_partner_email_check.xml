@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="res_partner_email_check_tree_view">
         <field name="name">res.partner.email.check.tree</field>
         <field name="model">res.partner</field>
@@ -20,8 +19,8 @@
         <field name="view_id" ref="res_partner_email_check_tree_view" />
         <field name="search_view_id" ref="base.view_res_partner_filter" />
         <field
-      name="domain"
-    >[('email_invalid', '=', True), "|", ("active", "=", True), ("active", "=", False)]</field>
+            name="domain"
+        >[('email_invalid', '=', True), "|", ("active", "=", True), ("active", "=", False)]</field>
     </record>
 
     <record model="ir.ui.menu" id="res_partner_email_check_menu">
@@ -31,5 +30,4 @@
         <field name="sequence" eval="99" />
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]" />
     </record>
-
 </odoo>

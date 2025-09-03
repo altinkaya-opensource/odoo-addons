@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-        <record id="view_currency_tree_second_rate" model="ir.ui.view">
-            <field name="name">res.currency.form.rate.type</field>
-            <field name="model">res.currency.rate</field>
-            <field name="inherit_id" ref="base.view_currency_rate_tree" />
-            <field name="arch" type="xml">
-                <data>
-                    <xpath expr="//field[@name='rate']" position="after">
-                        <field name="tcmb_forex_buying_inverse" />
-                        <field name="tcmb_forex_selling_inverse" />
-                        <field name="tcmb_banknote_buying_inverse" />
-                        <field name="tcmb_banknote_selling_inverse" />
-                        <field name="altinkaynak_selling_inverse" />
-                        <field name="altinkaynak_buying_inverse" />
-                    </xpath>
-                </data>
-            </field>
-        </record>
-
+    <record id="view_currency_tree_second_rate" model="ir.ui.view">
+        <field name="name">res.currency.form.rate.type</field>
+        <field name="model">res.currency.rate</field>
+        <field name="inherit_id" ref="base.view_currency_rate_tree" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='rate']" position="after">
+                    <field name="tcmb_forex_buying_inverse" />
+                    <field name="tcmb_forex_selling_inverse" />
+                    <field name="tcmb_banknote_buying_inverse" />
+                    <field name="tcmb_banknote_selling_inverse" />
+                    <field name="altinkaynak_selling_inverse" />
+                    <field name="altinkaynak_buying_inverse" />
+                </xpath>
+            </data>
+        </field>
+    </record>
 </odoo>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_currency_form_rate_turkey" model="ir.ui.view">
         <field name="name">res.currency.form</field>
         <field name="model">res.currency</field>
@@ -12,5 +11,4 @@
             </field>
         </field>
     </record>
-
 </odoo>

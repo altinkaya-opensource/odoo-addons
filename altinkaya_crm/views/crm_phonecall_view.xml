@@ -17,7 +17,6 @@
             <field name="description" position="after">
                 <field name="transcript" groups="base.group_system" />
             </field>
-
         </field>
     </record>
 
@@ -41,8 +40,6 @@
             <field name="user_id" position="after">
                 <field name="activity_type_id" />
             </field>
-
         </field>
     </record>
-
 </odoo>

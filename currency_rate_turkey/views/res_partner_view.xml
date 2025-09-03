@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-        <record id="partner_sec_currency_form_view" model="ir.ui.view">
-            <field name="name">partner.sec.currencyform.view</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="arch" type="xml">
-                <field name="property_account_payable_id" position="after">
-                    <field name="property_rate_field" />
-                </field>
+    <record id="partner_sec_currency_form_view" model="ir.ui.view">
+        <field name="name">partner.sec.currencyform.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="property_account_payable_id" position="after">
+                <field name="property_rate_field" />
             </field>
-        </record>
-
+        </field>
+    </record>
 </odoo>

@@ -36,10 +36,10 @@
         <field name="view_mode">tree,form</field>
     </record>
     <menuitem
-    id="menu_website_500_errors"
-    name="500 Errors"
-    parent="website.menu_website_global_configuration"
-    action="action_website_500_errors"
-    sequence="99"
-  />
+        id="menu_website_500_errors"
+        name="500 Errors"
+        parent="website.menu_website_global_configuration"
+        action="action_website_500_errors"
+        sequence="99"
+    />
 </odoo>

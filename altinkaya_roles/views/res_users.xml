@@ -13,14 +13,11 @@
                             <field name="groups_id" wizard="many2many_tags" />
                             <field name="complete_name" />
                         </tree>
-
                     </field>
-
                 </page>
                 <page string="User Access Views">
                     <field name="view_access" edit="false" create="false">
                         <tree>
-
                             <field name="groups_id" wizard="many2many_tags" />
                             <field name="name" />
                         </tree>
@@ -61,15 +58,10 @@
                         <tree edit="false" create="false">
                             <field name="category_id" />
                             <field name="display_name" />
-
                         </tree>
                     </field>
                 </page>
-
             </xpath>
-
         </field>
-
     </record>
-
 </odoo>

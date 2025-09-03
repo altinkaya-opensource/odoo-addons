@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="product_quantity_inherit"
-    inherit_id="website_sale.product_quantity"
-    name="Product Qty Increment Step"
-  >
+        id="product_quantity_inherit"
+        inherit_id="website_sale.product_quantity"
+        name="Product Qty Increment Step"
+    >
         <xpath expr="//input[@name='add_qty']" position="before">
             <t t-set="step" t-value="product.qty_increment_step or add_qty or 1" />
             <span
-        t-attf-data-increment-step="#{product.qty_increment_step}"
-        t-attf-class="d-none"
-      />
+                t-attf-data-increment-step="#{product.qty_increment_step}"
+                t-attf-class="d-none"
+            />
         </xpath>
 
         <xpath expr="//input[@name='add_qty']" position="attributes">

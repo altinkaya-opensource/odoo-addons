@@ -21,7 +21,6 @@
                         <field name="country_ids" widget="many2many_tags" />
                         <field name="carrier_ids" widget="many2many_tags" />
                         <field name="state_ids" widget="many2many_tags" />
-
                     </group>
                 </sheet>
             </form>
@@ -40,7 +39,6 @@
             </p>
         </field>
     </record>
-<!--    <menuitem id="delivery_region_menu" action="delivery_integration_base.action_delivery_region"-->
-<!--              parent="stock.menu_delivery" sequence="1"/>-->
-
+    <!--    <menuitem id="delivery_region_menu" action="delivery_integration_base.action_delivery_region"-->
+    <!--              parent="stock.menu_delivery" sequence="1"/>-->
 </odoo>

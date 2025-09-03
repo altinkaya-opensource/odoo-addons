@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-        <record id="view_update_quant_wizard_form" model="ir.ui.view">
-            <field name="name">fix.unreserved.quants.wizard.form</field>
-            <field name="model">update.unreserved.quants</field>
-            <field name="arch" type="xml">
-                <form string="Update Quant Reservations">
-                    <sheet>
-                        <footer>
-                            <button
-              name="action_update_unreserved_quants"
-              type="object"
-              string="Update"
-              class="oe_highlight"
-            />
-                            <button string="Cancel" class="oe_link" special="cancel" />
-                        </footer>
-                    </sheet>
+    <record id="view_update_quant_wizard_form" model="ir.ui.view">
+        <field name="name">fix.unreserved.quants.wizard.form</field>
+        <field name="model">update.unreserved.quants</field>
+        <field name="arch" type="xml">
+            <form string="Update Quant Reservations">
+                <sheet>
+                    <footer>
+                        <button
+                            name="action_update_unreserved_quants"
+                            type="object"
+                            string="Update"
+                            class="oe_highlight"
+                        />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-                </form>
-            </field>
-        </record>
+    <record id="update_quants_wizard_action" model="ir.actions.act_window">
+        <field name="name">Update Quant Reservations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">update.unreserved.quants</field>
+        <field name="view_mode">form</field>
 
-        <record id="update_quants_wizard_action" model="ir.actions.act_window">
-            <field name="name">Update Quant Reservations</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">update.unreserved.quants</field>
-            <field name="view_mode">form</field>
+        <field name="view_id" ref="view_update_quant_wizard_form" />
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
 
-            <field name="view_id" ref="view_update_quant_wizard_form" />
-            <field name="context">{}</field>
-            <field name="target">new</field>
-        </record>
-
-        <menuitem
-    action="update_quants_wizard_action"
-    id="menu_update_quant_wizard"
-    parent="stock.menu_warehouse_config"
-    sequence="10"
-  />
-
-
-
+    <menuitem
+        action="update_quants_wizard_action"
+        id="menu_update_quant_wizard"
+        parent="stock.menu_warehouse_config"
+        sequence="10"
+    />
 </odoo>

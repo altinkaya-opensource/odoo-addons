@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="set_product_alert"
-    inherit_id="website_sale.product"
-    name="Set Product ALert"
-  >
+        id="set_product_alert"
+        inherit_id="website_sale.product"
+        name="Set Product ALert"
+    >
         <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
             <t t-if="product.set_product">
-               <p
-          class="alert alert-info"
-        >This is a SET product. It will be divided into sub-products when you add it to cart.</p>
+                <p
+                    class="alert alert-info"
+                >This is a SET product. It will be divided into sub-products when you add it to cart.</p>
             </t>
         </xpath>
     </template>

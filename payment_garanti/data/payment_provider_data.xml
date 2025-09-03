@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
-
     <record id="payment_provider_garanti" model="payment.provider">
         <field name="name">Garanti</field>
         <field name="display_as">Garanti Sanal Pos</field>
         <field
-      name="payment_icon_ids"
-      eval="[(6, 0, [
+            name="payment_icon_ids"
+            eval="[(6, 0, [
                    ref('payment.payment_icon_cc_mastercard'),
                    ref('payment.payment_icon_cc_visa'),
                ])]"
-    />
+        />
         <field
-      name="image_128"
-      type="base64"
-      file="payment_garanti/static/description/icon.png"
-    />
+            name="image_128"
+            type="base64"
+            file="payment_garanti/static/description/icon.png"
+        />
         <field name="code">garanti</field>
         <field name="inline_form_view_id" ref="inline_form" />
     </record>
-
 </odoo>

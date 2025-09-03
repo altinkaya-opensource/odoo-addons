@@ -5,8 +5,8 @@
         <field name="fname">partner_statement.xlsx</field>
         <field name="name">Cari Ekstre</field>
         <field
-      name="description"
-    >Müşterilerin ekstresini excel olarak basan şablon.</field>
+            name="description"
+        >Müşterilerin ekstresini excel olarak basan şablon.</field>
         <field name="input_instruction">
                         {
                 '__EXPORT__': {

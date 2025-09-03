@@ -7,10 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
                 <filter
-          string="My Team"
-          name="my_team"
-          domain="[('my_team', '=', 'user_id.team_id')]"
-        />
+                    string="My Team"
+                    name="my_team"
+                    domain="[('my_team', '=', 'user_id.team_id')]"
+                />
             </xpath>
         </field>
     </record>

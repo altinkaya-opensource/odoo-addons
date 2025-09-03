@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <template
-    id="filter_available_values"
-    inherit_id="website_sale.products_attributes"
-    name="Filter out the available attributes"
-  >
-
+    <template
+        id="filter_available_values"
+        inherit_id="website_sale.products_attributes"
+        name="Filter out the available attributes"
+    >
         <!-- Hide filters when there is no category -->
         <xpath
-      expr="//div[@id='wsale_products_attributes_collapse']"
-      position="attributes"
-    >
+            expr="//div[@id='wsale_products_attributes_collapse']"
+            position="attributes"
+        >
             <attribute name="t-if">category</attribute>
         </xpath>
 
         <!-- Filter out the non-available values -->
         <xpath
-      expr="//div[hasclass('accordion-item', 'nav-item', 'mb-1')]"
-      position="before"
-    >
+            expr="//div[hasclass('accordion-item', 'nav-item', 'mb-1')]"
+            position="before"
+        >
             <t
-        t-set="available_values"
-        t-value="a.value_ids.filter_available_values(category)"
-      />
+                t-set="available_values"
+                t-value="a.value_ids.filter_available_values(category)"
+            />
         </xpath>
 
         <!-- Hide non-avabile attributes -->
         <xpath
-      expr="//div[hasclass('accordion-item', 'nav-item', 'mb-1')]"
-      position="attributes"
-    >
+            expr="//div[hasclass('accordion-item', 'nav-item', 'mb-1')]"
+            position="attributes"
+        >
             <attribute name="t-if">available_values</attribute>
         </xpath>
 
@@ -45,9 +44,8 @@
 
         <!-- Color filter -->
         <!-- TODO: this expression causes an error -->
-<!--        <xpath expr="//div[hasclass('mb-3')]/t" position="attributes">-->
-<!--            <attribute name="t-foreach">available_values</attribute>-->
-<!--        </xpath>-->
-
+        <!--        <xpath expr="//div[hasclass('mb-3')]/t" position="attributes">-->
+        <!--            <attribute name="t-foreach">available_values</attribute>-->
+        <!--        </xpath>-->
     </template>
 </odoo>

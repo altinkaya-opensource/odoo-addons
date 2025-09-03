@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
     <record
-    id="product_qty_increment_step_product_template_form_view"
-    model="ir.ui.view"
-  >
+        id="product_qty_increment_step_product_template_form_view"
+        model="ir.ui.view"
+    >
         <field name="name">Product Qty Increment Step View</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view" />

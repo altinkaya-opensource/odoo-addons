@@ -5,35 +5,34 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
-	        <xpath expr="//field[@name='has_chart_of_accounts']" position="before">
-				<h2>Checks</h2>
-	            <div class="row mt16 o_settings_container" id="check_accounts">
-	                <div class="col-12 col-lg-6 o_setting_box">
-	                    <div class="o_setting_left_pane">
-	                    </div>
-	                    <div class="o_setting_right_pane">
-	                        <label
-                for="holding_check_account_id"
-                string="Holding Account"
-                class="col-lg-3"
-              />
-	                        <field name="holding_check_account_id" class="oe_inline" />
-	                        <label
-                for="rejected_check_account_id"
-                string="Rejected Account"
-                class="col-lg-3"
-              />
-	                        <field name="rejected_check_account_id" class="oe_inline" />
-	                        <label
-                for="deferred_check_account_id"
-                string="Deferred Account"
-                class="col-lg-3"
-              />
-	                        <field name="deferred_check_account_id" class="oe_inline" />
-	                    </div>
-	                </div>
-	            </div>
-			</xpath>
+            <xpath expr="//field[@name='has_chart_of_accounts']" position="before">
+                <h2>Checks</h2>
+                <div class="row mt16 o_settings_container" id="check_accounts">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <label
+                                for="holding_check_account_id"
+                                string="Holding Account"
+                                class="col-lg-3"
+                            />
+                            <field name="holding_check_account_id" class="oe_inline" />
+                            <label
+                                for="rejected_check_account_id"
+                                string="Rejected Account"
+                                class="col-lg-3"
+                            />
+                            <field name="rejected_check_account_id" class="oe_inline" />
+                            <label
+                                for="deferred_check_account_id"
+                                string="Deferred Account"
+                                class="col-lg-3"
+                            />
+                            <field name="deferred_check_account_id" class="oe_inline" />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

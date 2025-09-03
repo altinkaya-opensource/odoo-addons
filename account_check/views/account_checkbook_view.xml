@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_account_checkbook_tree" model="ir.ui.view">
         <field name="name">account.checkbook.tree</field>
         <field name="model">account.checkbook</field>
         <field name="arch" type="xml">
-        <!-- colors="blue:state == 'draft';black:state in ('active');red:state == 'hrejected';gray:state == 'used'" -->
+            <!-- colors="blue:state == 'draft';black:state in ('active');red:state == 'hrejected';gray:state == 'used'" -->
             <tree editable="bottom">
                 <field name="issue_check_subtype" />
                 <field name="name" />
@@ -41,5 +40,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

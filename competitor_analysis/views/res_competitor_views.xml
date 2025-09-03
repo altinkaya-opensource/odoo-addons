@@ -1,44 +1,42 @@
 <?xml version="1.0" ?>
 <odoo>
-        <!-- Competitors -->
-        <record id="view_res_competitor_tree" model="ir.ui.view">
-            <field name="name">view.res.competitor.tree</field>
-            <field name="model">res.competitor</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="name" />
-                    <field name="website_url" />
-                    <field name="last_crawled" />
-                    <field name="crawled_url_count" />
-                    <field name="crawling_active" />
-
-
-                </tree>
-            </field>
-        </record>
-        <record id="view_res_competitor_form" model="ir.ui.view">
-            <field name="name">view.res.competitor.form</field>
-            <field name="model">res.competitor</field>
-            <field name="arch" type="xml">
-                <form string="Competitor">
-                    <header>
-                        <button
-            string="Crawl Competitor"
-            name="do_crawling"
-            type="object"
-            attrs="{'invisible':[('crawling_active','=',False)]}"
-            class="oe_highlight"
-          />
-                    </header>
-                    <sheet>
+    <!-- Competitors -->
+    <record id="view_res_competitor_tree" model="ir.ui.view">
+        <field name="name">view.res.competitor.tree</field>
+        <field name="model">res.competitor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="website_url" />
+                <field name="last_crawled" />
+                <field name="crawled_url_count" />
+                <field name="crawling_active" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_competitor_form" model="ir.ui.view">
+        <field name="name">view.res.competitor.form</field>
+        <field name="model">res.competitor</field>
+        <field name="arch" type="xml">
+            <form string="Competitor">
+                <header>
+                    <button
+                        string="Crawl Competitor"
+                        name="do_crawling"
+                        type="object"
+                        attrs="{'invisible':[('crawling_active','=',False)]}"
+                        class="oe_highlight"
+                    />
+                </header>
+                <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button
-              class="oe_stat_button"
-              type="object"
-              name="action_open_crawled_urls"
-              icon="fa-tasks"
-              attrs="{'invisible': [('crawling_active', '=', False)]}"
-            >
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_open_crawled_urls"
+                            icon="fa-tasks"
+                            attrs="{'invisible': [('crawling_active', '=', False)]}"
+                        >
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="crawled_url_count" />
@@ -47,30 +45,29 @@
                             </div>
                         </button>
                     </div>
-                        <group col="4">
-                            <field name="name" />
-                            <field name="website_url" />
-                            <field name="crawler_proxy_id" />
-                            <field name="crawling_active" />
-                            <field name="crawled_url_count" />
-                            <field name="last_crawled" />
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-        <record id="action_res_competitor" model="ir.actions.act_window">
-            <field name="name">Competitors</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">res.competitor</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
+                    <group col="4">
+                        <field name="name" />
+                        <field name="website_url" />
+                        <field name="crawler_proxy_id" />
+                        <field name="crawling_active" />
+                        <field name="crawled_url_count" />
+                        <field name="last_crawled" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_res_competitor" model="ir.actions.act_window">
+        <field name="name">Competitors</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.competitor</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
                     Click to add a new competitor.
                 </p>
-            </field>
-        </record>
-
+        </field>
+    </record>
 </odoo>

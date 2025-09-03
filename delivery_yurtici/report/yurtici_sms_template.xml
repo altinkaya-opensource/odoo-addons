@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="1">
-
-        <record id="yurtici_sms_template" model="mail.template">
-            <field name="name">Yurtiçi Kargo SMS Template</field>
-            <field
-      name="subject"
-    ><![CDATA[
+    <record id="yurtici_sms_template" model="mail.template">
+        <field name="name">Yurtiçi Kargo SMS Template</field>
+        <field
+            name="subject"
+        ><![CDATA[
                 <t t-out="object.company_id.name"/> Picking (Ref <t t-out="object.name or 'n/a'"/>)
             ]]></field>
-            <field name="email_to">{{ object.partner_id.email or '' }}</field>
-            <field name="model_id" ref="stock.model_stock_picking" />
-            <field name="auto_delete" eval="True" />
-            <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
-            <field name="lang">{{ object.partner_id.lang }}</field>
-            <field
-      name="body_html"
-    ><![CDATA[
+        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field
+            name="body_html"
+        ><![CDATA[
                 <p>Your order <strong><t t-out="object.sale_id.name or ''"/></strong> has been shipped.</p>
                 <t t-if="object.carrier_tracking_url">
                     <p>For Tracking: <a t-att-href="object.carrier_tracking_url"><t t-out="object.carrier_tracking_url"/></a></p>
                 </t>
             ]]></field>
-        </record>
-
+    </record>
 </odoo>

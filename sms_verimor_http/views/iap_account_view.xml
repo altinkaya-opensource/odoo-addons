@@ -6,24 +6,23 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='account']" position="after">
                 <group
-          string="Verimor account"
-          name="verimor"
-          attrs="{'invisible': [('provider', '!=', 'sms_verimor_http')]}"
-        >
+                    string="Verimor account"
+                    name="verimor"
+                    attrs="{'invisible': [('provider', '!=', 'sms_verimor_http')]}"
+                >
                     <group>
-                    <field name="sms_verimor_http_username" />
-                    <field name="sms_verimor_http_password" />
-                    <field name="sms_verimor_http_sms_header" string="SMS Header" />
+                        <field name="sms_verimor_http_username" />
+                        <field name="sms_verimor_http_password" />
+                        <field name="sms_verimor_http_sms_header" string="SMS Header" />
                     </group>
 
                     <group>
                         <button
-              name="get_verimor_sms_balance"
-              type="object"
-              string="Check SMS Balance"
-            />
+                            name="get_verimor_sms_balance"
+                            type="object"
+                            string="Check SMS Balance"
+                        />
                     </group>
-
                 </group>
             </xpath>
         </field>

@@ -14,26 +14,25 @@
                         <field name="dashboard_aggregate" />
                         <field name="dashboard_sequence_number" />
                         <field
-              name="dashboard_field_aggregate"
-              attrs="{'invisible': ['|', ('dashboard_aggregate', '=', 'count'),('dashboard_aggregate', '=', False)]}"
-            />
+                            name="dashboard_field_aggregate"
+                            attrs="{'invisible': ['|', ('dashboard_aggregate', '=', 'count'),('dashboard_aggregate', '=', False)]}"
+                        />
                         <field name="dashboard_limit_value" />
                         <field name="dashboard_domain" />
                         <field name="dashboard_sort_by" />
                     </group>
                     <footer>
                         <button
-              string="Generate Chart"
-              type="object"
-              name="action_generate_chart"
-              class="oe_highlight"
-            />
+                            string="Generate Chart"
+                            type="object"
+                            name="action_generate_chart"
+                            class="oe_highlight"
+                        />
                     </footer>
                 </sheet>
             </form>
         </field>
     </record>
-
 
     <record id="view_chart_menu_generator" model="ir.ui.view">
         <field name="name">chart.menu.generator</field>
@@ -44,25 +43,25 @@
                     <group>
 <!--                        attrs="{'readonly': [(True, '=', True)]}"-->
                         <field
-              name="menu_name"
-              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
-            />/>
+                        name="menu_name"
+                        attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+                    />/>
                         <field
-              name="dashboard_top_menu_id"
-              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
-            />
+                        name="dashboard_top_menu_id"
+                        attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+                    />
                         <field
-              name="dashboard_group_access"
-              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
-            />
+                        name="dashboard_group_access"
+                        attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+                    />
                         <field
-              name="dashboard_column_type"
-              attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
-            />
+                        name="dashboard_column_type"
+                        attrs="{'readonly': [('dashboard_check_box', '=', True)]}"
+                    />
                         <field
-              name="dashboard_height_selection"
-              attrs="{'readonly': [('dashboard_check_box', '=', True)],'invisible':[('dashboard_column_type','!=',False)]}"
-            />
+                        name="dashboard_height_selection"
+                        attrs="{'readonly': [('dashboard_check_box', '=', True)],'invisible':[('dashboard_column_type','!=',False)]}"
+                    />
                         <field name="dashboard_check_box" invisible="1" />
                     </group>
                 </sheet>
@@ -81,7 +80,6 @@
         </field>
     </record>
 
-
     <record id="action_chart_generator" model="ir.actions.act_window">
         <field name="name">Chart Generator</field>
         <field name="res_model">chart.generator</field>
@@ -89,5 +87,5 @@
         <field name="view_id" ref="view_chart_generator_form" />
     </record>
 
-<!--    <menuitem id="menu_chart_generator" name="Chart Generator" parent="user_dashboard_view" action="action_chart_generator"/>-->
+    <!--    <menuitem id="menu_chart_generator" name="Chart Generator" parent="user_dashboard_view" action="action_chart_generator"/>-->
 </odoo>

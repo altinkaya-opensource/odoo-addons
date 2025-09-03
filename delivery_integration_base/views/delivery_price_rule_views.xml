@@ -13,9 +13,9 @@
             </xpath>
             <xpath expr="//field[@name='variable_factor']" position="after">
                 <span
-          class="text-muted"
-          attrs="{'invisible': [('variable', '!=', 'deci')]}"
-        >
+                    class="text-muted"
+                    attrs="{'invisible': [('variable', '!=', 'deci')]}"
+                >
                     Variable factor must be deci.
                 </span>
             </xpath>

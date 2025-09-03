@@ -2,31 +2,31 @@
 <odoo>
     <template id="product_attribute_table" inherit_id="sale.variants" priority="200">
         <xpath
-      expr="//ul[@t-attf-class='list-unstyled js_add_cart_variants mb-0 #{ul_class}']"
-      position="replace"
-    >
+            expr="//ul[@t-attf-class='list-unstyled js_add_cart_variants mb-0 #{ul_class}']"
+            position="replace"
+        >
             <div class="attribute_container d-none" />
             <ul
-        class="d-none js_add_cart_variants mb-0"
-        t-att-data-attribute_exclusions="{'exclusions: []'}"
-      />
+                class="d-none js_add_cart_variants mb-0"
+                t-att-data-attribute_exclusions="{'exclusions: []'}"
+            />
             <t t-if="len(product.product_variant_ids) &gt; 1">
                 <t
-          t-set="product_attributes"
-          t-value="product._build_product_variant_table()"
-        />
+                    t-set="product_attributes"
+                    t-value="product._build_product_variant_table()"
+                />
                 <div class="container mb-2 rounded-3 o_table_container">
                     <table
-            class="table table-bordered  table-striped text-center align-middle"
-            id="product_variants_table"
-          >
+                        class="table table-bordered  table-striped text-center align-middle"
+                        id="product_variants_table"
+                    >
                         <thead class="o_product_table_head">
                             <tr>
                                 <th style="width:50px;" />
                                 <t
-                  t-foreach="product_attributes['header']"
-                  t-as="p_attribute"
-                >
+                                    t-foreach="product_attributes['header']"
+                                    t-as="p_attribute"
+                                >
                                     <th>
                                         <t t-out="p_attribute.name" />
                                     </th>
@@ -35,28 +35,28 @@
                         </thead>
                         <tbody>
                             <t
-                t-set="first_combination"
-                t-value="product_attributes['rows'][0]"
-              />
+                                t-set="first_combination"
+                                t-value="product_attributes['rows'][0]"
+                            />
                             <t
-                t-foreach="product_attributes['rows']"
-                t-as="attribute_values"
-              >
+                                t-foreach="product_attributes['rows']"
+                                t-as="attribute_values"
+                            >
                                 <tr>
                                     <td class="text-start">
                                         <input
-                      type="radio"
-                      t-attf-class="form-check-input product-select"
-                      t-attf-name="product-variant-table-select"
-                      t-att-checked="attribute_values == first_combination and 'checked' or None"
-                      t-att-vals="','.join([str(x.id) for x in attribute_values])"
-                    />
+                                            type="radio"
+                                            t-attf-class="form-check-input product-select"
+                                            t-attf-name="product-variant-table-select"
+                                            t-att-checked="attribute_values == first_combination and 'checked' or None"
+                                            t-att-vals="','.join([str(x.id) for x in attribute_values])"
+                                        />
                                     </td>
                                     <t t-foreach="attribute_values" t-as="attr_val">
                                         <t t-set="is_printed" t-value="False" />
                                         <t
-                      t-if="attr_val.attribute_id in product_attributes['header']"
-                    >
+                                            t-if="attr_val.attribute_id in product_attributes['header']"
+                                        >
                                             <t t-set="is_printed" t-value="True" />
                                             <td t-esc="attr_val.name" />
                                         </t>
@@ -67,26 +67,26 @@
                                         </t>
                                     </t>
                                     <t
-                    t-if="attribute_values == first_combination and product_attributes['has_grouped_attr']"
-                  >
+                                        t-if="attribute_values == first_combination and product_attributes['has_grouped_attr']"
+                                    >
                                         <t
-                      t-foreach="product_attributes['grouped_attr'].values()"
-                      t-as="grouped_attr"
-                    >
+                                            t-foreach="product_attributes['grouped_attr'].values()"
+                                            t-as="grouped_attr"
+                                        >
                                             <td
-                        t-attf-rowspan="#{len(product_attributes['rows'])}"
-                      >
+                                                t-attf-rowspan="#{len(product_attributes['rows'])}"
+                                            >
                                                 <select
-                          class="form-select special-attr-selector"
-                        >
+                                                    class="form-select special-attr-selector"
+                                                >
                                                     <t
-                            t-foreach="grouped_attr"
-                            t-as="grouped_attr_val"
-                          >
+                                                        t-foreach="grouped_attr"
+                                                        t-as="grouped_attr_val"
+                                                    >
                                                         <option
-                              t-att-value="grouped_attr_val.id"
-                              t-esc="grouped_attr_val.name"
-                            />
+                                                            t-att-value="grouped_attr_val.id"
+                                                            t-esc="grouped_attr_val.name"
+                                                        />
                                                     </t>
                                                 </select>
                                             </td>

@@ -6,9 +6,9 @@
         <field name="model">account.bank.statement.line</field>
         <field name="arch" type="xml">
             <tree
-        create="false"
-        default_order="date desc, statement_id desc, sequence desc, id desc"
-      >
+                create="false"
+                default_order="date desc, statement_id desc, sequence desc, id desc"
+            >
                 <field name="sequence" readonly="1" invisible="1" />
                 <field name="statement_id" />
                 <field name="journal_id" invisible="1" />
@@ -28,18 +28,16 @@
         <field name="name">account.bank.statement.line.reconcile.view</field>
         <field name="model">account.bank.statement.line</field>
         <field
-      name="inherit_id"
-      ref="account_reconcile_oca.bank_statement_line_form_reconcile_view"
-    />
+            name="inherit_id"
+            ref="account_reconcile_oca.bank_statement_line_form_reconcile_view"
+        />
         <field name="arch" type="xml">
-
             <!-- Filter out currency valuation move lines -->
             <field name="add_account_move_line_id" position="attributes">
                 <attribute
-          name="domain"
-        >[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
+                    name="domain"
+                >[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('journal_code', 'not in', ('KFARK', 'KRFRK', 'KRDGR'))]</attribute>
             </field>
-
         </field>
     </record>
 
@@ -55,12 +53,10 @@
     </record>
 
     <menuitem
-    id="menu_bank_payments"
-    parent="account.menu_finance_receivables"
-    name="Bank Payments"
-    action="action_bank_payments"
-    sequence="16"
-  />
-
-
+        id="menu_bank_payments"
+        parent="account.menu_finance_receivables"
+        name="Bank Payments"
+        action="action_bank_payments"
+        sequence="16"
+    />
 </odoo>

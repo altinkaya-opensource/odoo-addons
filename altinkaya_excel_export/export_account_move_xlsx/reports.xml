@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="report_account_move" model="ir.ui.view">
         <field name="name">report.account.move</field>
         <field name="model">report.account.move</field>
@@ -15,21 +14,20 @@
     </record>
 
     <record
-    id="action_account_invoice_excel_export_gelir_fatura"
-    model="ir.actions.act_window"
-  >
+        id="action_account_invoice_excel_export_gelir_fatura"
+        model="ir.actions.act_window"
+    >
         <field name="name">Gelir Fatura Excel</field>
         <field name="res_model">report.account.move</field>
         <field name="binding_model_id" ref="account.model_account_move" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field
-      name="context"
-    >{'template_domain': [('res_model', '=', 'report.account.move'),
+            name="context"
+        >{'template_domain': [('res_model', '=', 'report.account.move'),
                                                    ('fname', '=', 'gelir_fatura.xlsx'),
                                                    ('gname', '=', False)]}</field>
     </record>
-
 
     <record id="action_account_move_excel_export" model="ir.actions.act_window">
         <field name="name">Zirve Masraf Fatura</field>
@@ -38,10 +36,9 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field
-      name="context"
-    >{'template_domain': [('res_model', '=', 'report.account.move'),
+            name="context"
+        >{'template_domain': [('res_model', '=', 'report.account.move'),
                                                    ('fname', '=', 'zirve_masraf_fatura.xlsx'),
                                                    ('gname', '=', False)]}</field>
     </record>
-
 </odoo>

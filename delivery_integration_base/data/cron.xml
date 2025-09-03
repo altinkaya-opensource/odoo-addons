@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
     <record
-    forcecreate="True"
-    id="ir_cron_delivery_update_pickings_state"
-    model="ir.cron"
-  >
+        forcecreate="True"
+        id="ir_cron_delivery_update_pickings_state"
+        model="ir.cron"
+    >
         <field name="name">Picking Delivery State Update</field>
         <field name="user_id" ref="base.user_root" />
         <field name="interval_number">60</field>
@@ -16,5 +16,4 @@
         <field eval="False" name="active" />
         <field name="state">code</field>
     </record>
-
 </odoo>

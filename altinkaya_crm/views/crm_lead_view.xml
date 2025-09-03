@@ -7,10 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='assigned_to_me']" position="after">
                 <filter
-          string="My Team Activities"
-          name="activities_my_team"
-          domain="[('my_team_activity', '=', True)]"
-        />
+                    string="My Team Activities"
+                    name="activities_my_team"
+                    domain="[('my_team_activity', '=', True)]"
+                />
             </xpath>
         </field>
     </record>
@@ -20,15 +20,15 @@
         <field name="inherit_id" ref="crm.crm_lead_view_form" />
         <field name="arch" type="xml">
             <xpath
-        expr="//group[@name='lead_partner']/field[@name='partner_id']"
-        position="after"
-      >
+                expr="//group[@name='lead_partner']/field[@name='partner_id']"
+                position="after"
+            >
                 <field name="linkedin" widget="url" />
             </xpath>
             <xpath
-        expr="//group[@name='opportunity_partner']/field[@name='partner_id']"
-        position="after"
-      >
+                expr="//group[@name='opportunity_partner']/field[@name='partner_id']"
+                position="after"
+            >
                 <field name="linkedin" widget="url" />
             </xpath>
         </field>

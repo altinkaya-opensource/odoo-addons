@@ -13,10 +13,10 @@
 ^CF0,30
 <t t-set="delivery_type_label" t-value="delivery_type_label" />
 ^FO25,34^FB740,1,0,L,0^FD<t t-esc="delivery_type_label" /><t
-          t-if="o.carrier_id.payment_type=='sender_pays'"
-        > Gönderici Ödemeli</t><t
-          t-elif="o.carrier_id.payment_type=='customer_pays'"
-        > Alıcı Ödemeli</t>^FS
+                t-if="o.carrier_id.payment_type=='sender_pays'"
+            > Gönderici Ödemeli</t><t
+                t-elif="o.carrier_id.payment_type=='customer_pays'"
+            > Alıcı Ödemeli</t>^FS
 
 ^FO490,102^A0N,122,122^FB320,1,0,L,0^FD<t t-esc="package_label_info" />^FS
 
@@ -24,14 +24,14 @@
 ^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="o.name" />^FS
 <t t-if="o.invoice_ids.filtered(lambda inv: inv.state == 'posted')">
     ^FO25,116^FB740,1,0,L,0^FDFatura # <t
-            t-esc="', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number'))"
-          />^FS
+                t-esc="', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number'))"
+            />^FS
 </t>
 
 <t t-set="formatted_deci" t-value="round(o.picking_total_weight)" />
 ^FO25,157^FB740,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count" /> Paket <t
-          t-esc="formatted_deci"
-        /> Desi^FS
+                t-esc="formatted_deci"
+            /> Desi^FS
 
 ^BY3,3,149
 ^FO190,218^BCN,149,Y,N,N
@@ -42,22 +42,22 @@
 ^FO25,410^FB740,1,0,L,0^FDALICI^FS
 
 <t
-          t-set="street_parts"
-          t-value="[
+                t-set="street_parts"
+                t-value="[
         o.partner_id.street,
         o.partner_id.district_id.name if o.partner_id.district_id else '',
         o.partner_id.zip or ''
    ]"
-        />
+            />
 <t t-set="street" t-value="' '.join([part for part in street_parts if part])" />
 <t t-set="line1" t-value="street[0:40]" />
 <t t-set="line2" t-value="street[40:80]" />
 
 <t t-set="display_name_line1" t-value="o.partner_id.display_name[:60]" />
 <t
-          t-set="display_name_line2"
-          t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''"
-        />
+                t-set="display_name_line2"
+                t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''"
+            />
 
 ^FO25,444^FB740,1,0,L,0^FD<t t-esc="display_name_line1" />^FS
 <t t-if="display_name_line2">
@@ -70,8 +70,8 @@
 <t t-if="line2">
     ^FO25,564^FB740,1,0,L,0^FD<t t-esc="line2" />^FS
     ^FO25,594^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
-            t-esc="o.partner_id.country_id.name"
-          />^FS
+                t-esc="o.partner_id.country_id.name"
+            />^FS
     ^FO25,624^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
 
     ^FO25,660^GB700,2,2^FS
@@ -82,8 +82,8 @@
 </t>
 <t t-else="">
     ^FO25,564^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
-            t-esc="o.partner_id.country_id.name"
-          />^FS
+                t-esc="o.partner_id.country_id.name"
+            />^FS
     ^FO25,594^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
 
     ^FO25,630^GB700,2,2^FS

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="product_category_description"
-    inherit_id="website_sale.products"
-    name="Product Category Description"
-  >
+        id="product_category_description"
+        inherit_id="website_sale.products"
+        name="Product Category Description"
+    >
         <xpath expr="//div[hasclass('products_header')]" position="before">
             <t t-if="category and category.description">
                 <script src="/website_product_category/static/src/js/readmore.js" />
                 <div class="fold-wrapper-wrapper my-2">
                     <div
-            t-attf-id="folded_category_description"
-            t-attf-class="fold-wrapper-description"
-          >
+                        t-attf-id="folded_category_description"
+                        t-attf-class="fold-wrapper-description"
+                    >
                         <t t-out="category.description" />
                     </div>
                 </div>
@@ -37,22 +37,25 @@
                           element.style.maxHeight = 'none';
                     },
                     moreLink: '<div
-            class="fold-wrapper-last-toggle justify-content-center"
-            style="display: flex;"
-          ><a href="#" class="btn btn-outline-primary rounded-circle"><i
-                class="mx-2 fa fa-angle-double-down"
-              /></a></div>',
+                    class="fold-wrapper-last-toggle justify-content-center"
+                    style="display: flex;"
+                >
+                    <a href="#" class="btn btn-outline-primary rounded-circle">
+                        <i class="mx-2 fa fa-angle-double-down" />
+                    </a>
+                </div>',
                     lessLink: '<div
-            class="fold-wrapper-last-toggle justify-content-center"
-            style="display: flex;"
-          ><a href="#" class="btn btn-outline-primary rounded-circle"><i
-                class="mx-2 fa fa-angle-double-up"
-              /></a></div>'
+                    class="fold-wrapper-last-toggle justify-content-center"
+                    style="display: flex;"
+                >
+                    <a href="#" class="btn btn-outline-primary rounded-circle">
+                        <i class="mx-2 fa fa-angle-double-up" />
+                    </a>
+                </div>'
                     });
 
                 </script>
             </t>
-
         </xpath>
     </template>
 </odoo>

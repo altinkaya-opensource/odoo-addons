@@ -13,40 +13,40 @@
                         <tree editable="top" delete="0" create="0">
                             <field name="carrier_id" readonly="1" />
                             <field
-                name="price"
-                readonly="1"
-                currency_field="currency_id"
-              />
+                                name="price"
+                                readonly="1"
+                                currency_field="currency_id"
+                            />
                             <field name="currency_id" invisible="1" />
                             <field name="try_currency_id" invisible="1" />
                             <field
-                name="try_price"
-                readonly="1"
-                attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
-                currency_field="try_currency_id"
-              />
+                                name="try_price"
+                                readonly="1"
+                                attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
+                                currency_field="try_currency_id"
+                            />
                             <field name="selected" />
                         </tree>
                     </field>
                     <div>
                         <p
-              class="text-muted"
-            >Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
+                            class="text-muted"
+                        >Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
                     </div>
                     <footer>
                         <button
-              name="button_confirm"
-              type="object"
-              string="Apply"
-              class="btn-primary"
-              data-hotkey="q"
-            />
+                            name="button_confirm"
+                            type="object"
+                            string="Apply"
+                            class="btn-primary"
+                            data-hotkey="q"
+                        />
                         <button
-              string="Discard"
-              special="cancel"
-              data-hotkey="z"
-              class="btn-secondary"
-            />
+                            string="Discard"
+                            special="cancel"
+                            data-hotkey="z"
+                            class="btn-secondary"
+                        />
                     </footer>
                 </form>
             </xpath>

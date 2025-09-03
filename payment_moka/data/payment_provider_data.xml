@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
-
     <record id="payment_provider_moka" model="payment.provider">
         <field name="name">Moka</field>
         <field name="display_as">POS (powered by Moka)</field>
         <field
-      name="payment_icon_ids"
-      eval="[(6, 0, [
+            name="payment_icon_ids"
+            eval="[(6, 0, [
                    ref('payment.payment_icon_cc_mastercard'),
                    ref('payment.payment_icon_cc_visa'),
                ])]"
-    />
+        />
         <field
-      name="image_128"
-      type="base64"
-      file="payment_moka/static/description/icon.png"
-    />
+            name="image_128"
+            type="base64"
+            file="payment_moka/static/description/icon.png"
+        />
         <field name="code">moka</field>
         <field name="inline_form_view_id" ref="inline_form" />
     </record>
-
 </odoo>

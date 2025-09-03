@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_ideasoft_backend_form" model="ir.ui.view">
         <field name="name">ideasoft.backend.form</field>
         <field name="model">ideasoft.backend</field>
         <field name="arch" type="xml">
             <form string="Ideasoft Backend">
-
                 <header>
                     <button
-            name="generate_export_xml"
-            type="object"
-            string="Regenerate XML"
-            class="oe_highlight"
-          />
+                        name="generate_export_xml"
+                        type="object"
+                        string="Regenerate XML"
+                        class="oe_highlight"
+                    />
                 </header>
 
                 <sheet>
@@ -26,10 +24,10 @@
                         <field name="currency_id" />
                         <field name="lang_id" />
                         <field
-              name="location_ids"
-              widget="many2many_tags"
-              options="{'no_create': True}"
-            />
+                            name="location_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                        />
                         <field name="product_domain" />
                         <field name="attachment_id" />
                     </group>
@@ -49,7 +47,6 @@
         </field>
     </record>
 
-
     <record id="action_ideasoft_backend" model="ir.actions.act_window">
         <field name="name">Ideasoft Backend</field>
         <field name="res_model">ideasoft.backend</field>
@@ -57,11 +54,10 @@
     </record>
 
     <menuitem
-    id="menu_ideasoft_backend"
-    name="Ideasoft Backend"
-    parent="sale.menu_sale_config"
-    action="action_ideasoft_backend"
-    sequence="10"
-  />
-
+        id="menu_ideasoft_backend"
+        name="Ideasoft Backend"
+        parent="sale.menu_sale_config"
+        action="action_ideasoft_backend"
+        sequence="10"
+    />
 </odoo>

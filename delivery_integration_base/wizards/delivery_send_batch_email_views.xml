@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-        <record id="delivery_send_batch_email" model="ir.ui.view">
-            <field name="name">delivery.send.batch.email.form</field>
-            <field name="model">delivery.send.batch.email</field>
-            <field name="arch" type="xml">
-                <form string="Send E-mails To Customer">
-                    <footer>
-                        <button
-            string="Send Mails"
-            name="send_batch_email"
-            type="object"
-            default_focus="1"
-            class="btn-primary"
-          />
-                        <button
-            string="Cancel"
-            class="btn-secondary"
-            special="cancel"
-          />
-                    </footer>
-                </form>
-            </field>
-        </record>
+    <record id="delivery_send_batch_email" model="ir.ui.view">
+        <field name="name">delivery.send.batch.email.form</field>
+        <field name="model">delivery.send.batch.email</field>
+        <field name="arch" type="xml">
+            <form string="Send E-mails To Customer">
+                <footer>
+                    <button
+                        string="Send Mails"
+                        name="send_batch_email"
+                        type="object"
+                        default_focus="1"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
 
     <record id="action_delivery_send_batch_email" model="ir.actions.act_window">
         <field name="name">Send E-mails To Customer</field>
@@ -33,5 +28,4 @@
         <field name="context">{}</field>
         <field name="binding_model_id" ref="stock.model_stock_picking" />
     </record>
-
 </odoo>

@@ -13,26 +13,26 @@
                         <field name="currency_id" invisible="1" />
                         <field name="try_currency_id" invisible="1" />
                         <field
-              name="try_price"
-              readonly="1"
-              attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
-              currency_field="try_currency_id"
-            />
+                            name="try_price"
+                            readonly="1"
+                            attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
+                            currency_field="try_currency_id"
+                        />
                         <field name="selected" />
                     </tree>
                 </field>
                 <div>
                     <p
-            class="text-muted"
-          >Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
+                        class="text-muted"
+                    >Select preferred delivery carrier. Shipment price will be added on order lines as product.</p>
                 </div>
                 <footer>
                     <button
-            name="action_confirm"
-            string="Select"
-            type="object"
-            class="oe_highlight"
-          />
+                    name="action_confirm"
+                    string="Select"
+                    type="object"
+                    class="oe_highlight"
+                />
                     or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>

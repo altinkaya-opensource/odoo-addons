@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="view_account_journal_form_finekra">
         <field name="name">account.journal.form</field>
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
-                <group name="online_bank_statements" position="inside">
-                    <field name="finekra_account_id" />
-                </group>
+            <group name="online_bank_statements" position="inside">
+                <field name="finekra_account_id" />
+            </group>
         </field>
     </record>
-
-
 </odoo>

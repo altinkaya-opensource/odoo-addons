@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <!--     <record id="view_account_payment2_form_inherited" model="ir.ui.view"> -->
     <!--         <field name="name">account.payment.form.inherited</field> -->
     <!--         <field name="model">account.payment</field> -->
@@ -31,26 +30,26 @@
             <xpath expr="//field[@name='payment_method_line_id']" position="after">
                 <field name="is_check_payment" invisible="1" />
                 <field
-          name="check_payment_type"
-          widget="radio"
-          attrs="{'invisible': [('is_check_payment', '=', False)], 'readonly': [('state', '!=', 'draft')]}"
-        />
+                    name="check_payment_type"
+                    widget="radio"
+                    attrs="{'invisible': [('is_check_payment', '=', False)], 'readonly': [('state', '!=', 'draft')]}"
+                />
             </xpath>
             <xpath expr="//sheet/group" position="inside">
                 <group
-          name="checks"
-          attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'delivered_third_check', 'issue_check'])]}"
-        >
+                    name="checks"
+                    attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'delivered_third_check', 'issue_check'])]}"
+                >
                     <field
-            name="check_id"
-            attrs="{'invisible': [('check_id', '=', False)]}"
-          />
+                        name="check_id"
+                        attrs="{'invisible': [('check_id', '=', False)]}"
+                    />
                     <!-- no usamos el widget many2many_tags porque les interesa filtrar y buscar por montos y demas -->
                     <!-- creamos un campo copy por compatibilidad con mig de v8 donde se podia mas de un cheque por payment, igualmente se podria unir todo en chekc_ids pero era medio complicada la consulta -->
                     <field
-            name="check_ids"
-            attrs="{'invisible': ['|',  '|', ('check_ids', '=', []), ('check_id', '!=', False), ('check_payment_type', 'not in', ['received_third_check', 'issue_check'])]}"
-          >
+                        name="check_ids"
+                        attrs="{'invisible': ['|',  '|', ('check_ids', '=', []), ('check_id', '!=', False), ('check_payment_type', 'not in', ['received_third_check', 'issue_check'])]}"
+                    >
                         <tree edit="false" create="false">
                             <field name="number" />
                             <field name="payment_date" />
@@ -60,18 +59,18 @@
                         </tree>
                     </field>
                     <label
-            for="check_ids"
-            colspan="2"
-            attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])]}"
-          />
+                        for="check_ids"
+                        colspan="2"
+                        attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])]}"
+                    />
                     <field
-            name="check_ids"
-            nolabel="1"
-            colspan="2"
-            options="{'no_create': True}"
-            domain="[('journal_id', '=', journal_id), ('state', '=', 'holding'), ('type', '=', 'third_check')]"
-            attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])], 'required': [('state','=','draft'),('check_payment_type', '=', 'delivered_third_check'), ('payment_type', 'in', ['transfer', 'outbound']),  ('state', '!=', 'cancelled')]}"
-          >
+                        name="check_ids"
+                        nolabel="1"
+                        colspan="2"
+                        options="{'no_create': True}"
+                        domain="[('journal_id', '=', journal_id), ('state', '=', 'holding'), ('type', '=', 'third_check')]"
+                        attrs="{'invisible': ['|', ('check_payment_type', '!=', 'delivered_third_check'), ('payment_type', 'not in', ['transfer', 'outbound'])], 'required': [('state','=','draft'),('check_payment_type', '=', 'delivered_third_check'), ('payment_type', 'in', ['transfer', 'outbound']),  ('state', '!=', 'cancelled')]}"
+                    >
                         <tree edit="false">
                             <field name="number" />
                             <field name="payment_date" />
@@ -83,35 +82,35 @@
                 </group>
                 <group name="check_data" states='draft'>
                     <field
-            name="checkbook_id"
-            options="{'no_create': True, 'no_open': True}"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['issue_check'])]}"
-            domain="[('journal_id', '=', journal_id), ('state', '=', 'active')]"
-          />
+                        name="checkbook_id"
+                        options="{'no_create': True, 'no_open': True}"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['issue_check'])]}"
+                        domain="[('journal_id', '=', journal_id), ('state', '=', 'active')]"
+                    />
                     <field
-            name="check_number"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),'|', ('check_payment_type', '=', 'received_third_check'), '&amp;', ('check_payment_type', '=', 'issue_check'), ('checkbook_numerate_on_printing', '=', False)]}"
-          />
+                        name="check_number"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),'|', ('check_payment_type', '=', 'received_third_check'), '&amp;', ('check_payment_type', '=', 'issue_check'), ('checkbook_numerate_on_printing', '=', False)]}"
+                    />
                     <field
-            name="check_issue_date"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check', 'issue_check'])]}"
-          />
+                        name="check_issue_date"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check', 'issue_check'])]}"
+                    />
                     <field
-            name="check_payment_date"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_subtype', '=', 'deferred')]}"
-          />
+                        name="check_payment_date"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check', 'issue_check'])], 'required': [('state','=','draft'),('check_subtype', '=', 'deferred')]}"
+                    />
                     <field
-            name="check_bank_id"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
-          />
+                        name="check_bank_id"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])], 'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
+                    />
                     <field
-            name="check_owner_vat"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
-          />
+                        name="check_owner_vat"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
+                    />
                     <field
-            name="check_owner_name"
-            attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
-          />
+                        name="check_owner_name"
+                        attrs="{'invisible': [('check_payment_type', 'not in', ['received_third_check'])],  'required': [('state','=','draft'),('check_payment_type', 'in', ['received_third_check'])]}"
+                    />
                 </group>
             </xpath>
             <!--            <xpath expr="//div[@name='amount_div']/field[@name='amount']" position="attributes">-->
@@ -119,8 +118,8 @@
             <!--            </xpath>-->
             <field name="currency_id" position="attributes">
                 <attribute
-          name="attrs"
-        >{'readonly': ['|',('state','!=','draft'),('check_payment_type', '=', 'delivered_third_check')]}</attribute>
+                    name="attrs"
+                >{'readonly': ['|',('state','!=','draft'),('check_payment_type', '=', 'delivered_third_check')]}</attribute>
             </field>
             <!--<label for="amount" position="before">
                 <label for="amount" attrs="{'invisible': [('check_payment_type', '!=', 'delivered_third_check')]}"/>
@@ -137,10 +136,10 @@
             </div>-->
             <field name="payment_method_line_id" position="after">
                 <field
-          name="check_deposit_type"
-          widget="radio"
-          attrs="{'invisible': ['|', ('payment_type', '!=', 'transfer'), ('check_payment_type', '!=', 'delivered_third_check')]}"
-        />
+                    name="check_deposit_type"
+                    widget="radio"
+                    attrs="{'invisible': ['|', ('payment_type', '!=', 'transfer'), ('check_payment_type', '!=', 'delivered_third_check')]}"
+                />
             </field>
         </field>
     </record>
@@ -157,12 +156,11 @@
             </field>
             <xpath expr="//filter[@name='state_sent']" position="before">
                 <filter
-          string="Checks To Print and Numerate"
-          domain="[('payment_method_id.code', '=', 'issue_check'), ('state','=','draft'), ('check_number', '=', False)]"
-          name="checks_to_numerate"
-        />
+                    string="Checks To Print and Numerate"
+                    domain="[('payment_method_id.code', '=', 'issue_check'), ('state','=','draft'), ('check_number', '=', False)]"
+                    name="checks_to_numerate"
+                />
             </xpath>
         </field>
     </record>
-
 </odoo>

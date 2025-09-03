@@ -10,11 +10,11 @@
                     <h4 class="o_org_chart_title mb16 mt0">Organization Chart</h4>
                     <div id="o_partner_main_chart">
                         <field
-              name="org_chart_child_ids"
-              widget="partner_org_chart"
-              readonly="1"
-              nolabel="1"
-            />
+                            name="org_chart_child_ids"
+                            widget="partner_org_chart"
+                            readonly="1"
+                            nolabel="1"
+                        />
                     </div>
                 </div>
             </xpath>

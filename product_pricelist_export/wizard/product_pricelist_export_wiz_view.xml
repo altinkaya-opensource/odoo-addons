@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <form string="Export Pricelist">
                 <sheet>
-                        <p
-            class="text-muted"
-          >Lists all products if no category is selected</p>
+                    <p
+                        class="text-muted"
+                    >Lists all products if no category is selected</p>
                     <group>
                         <field name="product_categ_ids" widget="many2many_tags" />
                         <field name="pricelist_lang" />
@@ -16,11 +16,11 @@
                     </group>
                     <footer>
                         <button
-              name="action_export"
-              type="object"
-              string="Export"
-              class="oe_highlight"
-            />
+                            name="action_export"
+                            type="object"
+                            string="Export"
+                            class="oe_highlight"
+                        />
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
                 </sheet>
@@ -39,12 +39,10 @@
     </record>
 
     <menuitem
-    action="product_pricelist_export_wiz_action"
-    id="menu_product_pricelist_export_wiz"
-    parent="sale.product_menu_catalog"
-    sequence="10"
-    groups="product_pricelist_export.group_pricelist_export"
-  />
-
-
+        action="product_pricelist_export_wiz_action"
+        id="menu_product_pricelist_export_wiz"
+        parent="sale.product_menu_catalog"
+        sequence="10"
+        groups="product_pricelist_export.group_pricelist_export"
+    />
 </odoo>

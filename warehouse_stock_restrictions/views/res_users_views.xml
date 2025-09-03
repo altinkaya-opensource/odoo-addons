@@ -8,27 +8,27 @@
             <notebook>
                 <page string="Warehouse Stock Restrictions">
                     <group>
-                            <field name="restrict_locations" />
+                        <field name="restrict_locations" />
                     </group>
                     <group
-            string="Allowed Stock Locations"
-            attrs="{'invisible': [('restrict_locations', '=', False)]}"
-          >
+                        string="Allowed Stock Locations"
+                        attrs="{'invisible': [('restrict_locations', '=', False)]}"
+                    >
                         <group>
                             <field name="stock_location_ids" widget="many2many_tags" />
                         </group>
                     </group>
                     <group string="Allowed Warehouse Operation Types">
                         <field
-              name="default_picking_type_ids"
-              widget="many2many_tags"
-            />
+                            name="default_picking_type_ids"
+                            widget="many2many_tags"
+                        />
                     </group>
                     <group string="Sale Order Warehouse Restrictions">
-                            <field
-              name="sale_order_restricted_warehouse_ids"
-              widget="many2many_tags"
-            />
+                        <field
+                            name="sale_order_restricted_warehouse_ids"
+                            widget="many2many_tags"
+                        />
                     </group>
                 </page>
             </notebook>

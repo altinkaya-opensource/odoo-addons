@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-        <!-- <template id="report_list_mrp_report_data">
+    <!-- <template id="report_list_mrp_report_data">
             <t t-call="web.html_container">
                 <style>
                     .table {
@@ -52,60 +52,56 @@
             </t>
 
         </template> -->
-        <template id="altinkaya_mrp_report_data_table">
-            <table class="table table-bordered" style="page-break-inside:avoid;">
-                <tr>
-                    <th class="text-center" style="width:150px">No</th>
-                    <th
-          class="text-center"
-          style="width:500px"
-        >Ürün Adı Hammaddeler ve Notlar</th>
-                    <th class="text-center" style="width:100px">Miktar</th>
-                    <th class="text-center" style="width:100px">Gerçekleşen Miktar</th>
-                    <th
-          class="text-center"
-          style="width:150px"
-        >Başlama / Bitiş Tarih saati</th>
-                    <th class="text-center" style="width:100px">Operatör</th>
-                    <th class="text-center" style="width:100px">İmza</th>
-                </tr>
-                <tr t-foreach="docs" t-as="o">
-                    <td class="text-center">
-                        <span t-esc="o.name" />
-                        <br />
-                        <span t-field="o.priority" />
-                    </td>
-                    <td class="text-center">
-                        <span t-field="o.product_id.default_code" />
-                        <table class="table table-sm" style="width:500px">
-                            <tr t-foreach="o.move_raw_ids" t-as="mr">
-                                <td>HAM:
+    <template id="altinkaya_mrp_report_data_table">
+        <table class="table table-bordered" style="page-break-inside:avoid;">
+            <tr>
+                <th class="text-center" style="width:150px">No</th>
+                <th
+                    class="text-center"
+                    style="width:500px"
+                >Ürün Adı Hammaddeler ve Notlar</th>
+                <th class="text-center" style="width:100px">Miktar</th>
+                <th class="text-center" style="width:100px">Gerçekleşen Miktar</th>
+                <th
+                    class="text-center"
+                    style="width:150px"
+                >Başlama / Bitiş Tarih saati</th>
+                <th class="text-center" style="width:100px">Operatör</th>
+                <th class="text-center" style="width:100px">İmza</th>
+            </tr>
+            <tr t-foreach="docs" t-as="o">
+                <td class="text-center">
+                    <span t-esc="o.name" />
+                    <br />
+                    <span t-field="o.priority" />
+                </td>
+                <td class="text-center">
+                    <span t-field="o.product_id.default_code" />
+                    <table class="table table-sm" style="width:500px">
+                        <tr t-foreach="o.move_raw_ids" t-as="mr">
+                            <td>HAM:
                                     <span t-field="mr.product_id.display_name" />
                                     <span t-field="mr.product_uom_qty" />
                                     <span t-field="mr.product_uom.name" />
                                 </td>
-                            </tr>
-                        </table>
-                        <t t-if="o.x_note">
+                        </tr>
+                    </table>
+                    <t t-if="o.x_note">
                             Not:
                             <span t-field="o.x_note" />
                         </t>
-                    </td>
-                    <td class="text-center">
-                        <span t-field="o.product_qty" />
-                        <span t-field="o.product_uom_id.name" />
-                    </td>
-                    <td class="text-center">
-                    </td>
-                    <td class="text-center">
-                    </td>
-                    <td class="text-center">
-                        <span t-field="o.x_operator" />
-                    </td>
-                    <td class="text-center">
-                    </td>
-                </tr>
-            </table>
-        </template>
-
+                </td>
+                <td class="text-center">
+                    <span t-field="o.product_qty" />
+                    <span t-field="o.product_uom_id.name" />
+                </td>
+                <td class="text-center" />
+                <td class="text-center" />
+                <td class="text-center">
+                    <span t-field="o.x_operator" />
+                </td>
+                <td class="text-center" />
+            </tr>
+        </table>
+    </template>
 </odoo>

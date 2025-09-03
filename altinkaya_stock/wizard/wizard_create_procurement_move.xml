@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
     <record id="view_wizard_create_procurement_move_form" model="ir.ui.view">
         <field name="name">create.procurement.move.form</field>
         <field name="model">create.procurement.move</field>
@@ -17,64 +16,64 @@
                     <field name="procure_move" />
                 </group>
                 <group string="Satışlar">
-							<field name="sale_qty30days" />
-							<field name="sale_qty180days" />
-							<field name="sale_qty360days" />
-					</group>
+                    <field name="sale_qty30days" />
+                    <field name="sale_qty180days" />
+                    <field name="sale_qty360days" />
+                </group>
                 <group>
                     <group string="Sincan Depo" class="oe_form">
                         <field name="qty_to_sincan" class="oe_inline" />
                         <field
-              name="qty_available_sincan"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_available_sincan"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_incoming_sincan"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_incoming_sincan"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_outgoing_sincan"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_outgoing_sincan"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_virtual_sincan"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_virtual_sincan"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                     </group>
 
                     <group string="Merkez Depo" class="oe_form">
                         <field name="qty_to_merkez" class="oe_inline" />
                         <field
-              name="qty_available_merkez"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_available_merkez"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_incoming_merkez"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_incoming_merkez"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_outgoing_merkez"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_outgoing_merkez"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                         <field
-              name="qty_virtual_merkez"
-              widget="uom"
-              options="{'uom_field': 'uom'}"
-            />
+                            name="qty_virtual_merkez"
+                            widget="uom"
+                            options="{'uom_field': 'uom'}"
+                        />
                     </group>
                 </group>
 
                 <div>
                     <p
-          >Tedarik Oluştur tuşuna basıldığında siparişin kaleminin tam sayısı kadar ilgili depoya tedarik oluşturulup sevk satırına bağlanır.<br
-            />
+                    >Tedarik Oluştur tuşuna basıldığında siparişin kaleminin tam sayısı kadar ilgili depoya tedarik oluşturulup sevk satırına bağlanır.<br
+                    />
 							Ek olarak depolara da tedarik oluşturulması isteniyorsa ilgili deponun kutusuna adet girilir.</p>
                 </div>
                 <notebook>
@@ -94,16 +93,15 @@
                 </notebook>
                 <footer>
                     <button
-            name="action_create"
-            string="Tedarik Oluştur"
-            type="object"
-            class="oe_highlight"
-          />
+                    name="action_create"
+                    string="Tedarik Oluştur"
+                    type="object"
+                    class="oe_highlight"
+                />
                         or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
-
 </odoo>

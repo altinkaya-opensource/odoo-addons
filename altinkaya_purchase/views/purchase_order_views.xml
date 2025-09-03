@@ -1,59 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <record id="purchase_order_form_altinkaya" model="ir.ui.view">
-            <field name="name">purchase.order.form.altinkaya</field>
-            <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form" />
-            <field name="arch" type="xml">
-                <xpath
-        expr="//header/button[@name='action_rfq_send']"
-        position="attributes"
-      >
-                    <attribute
-          name="attrs"
-        >{'invisible': [('state','not in', ('draft','approved','to approve','purchase', 'done'))]}</attribute>
-                </xpath>
-                <xpath
-        expr="//field[@name='order_line']/tree//field[@name='product_qty']"
-        position="attributes"
-      >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
-        expr="//field[@name='order_line']/tree//field[@name='qty_received']"
-        position="attributes"
-      >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <xpath
-        expr="//field[@name='order_line']/tree//field[@name='qty_invoiced']"
-        position="attributes"
-      >
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-                <field name="origin" position="after">
-                    <field
-          name="pricelist_id"
-          groups="purchase.group_purchase_user"
-        /> <!-- domain="[('list_type_use', '=', 'purchase')]" -->
-                </field>
+    <record id="purchase_order_form_altinkaya" model="ir.ui.view">
+        <field name="name">purchase.order.form.altinkaya</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//header/button[@name='action_rfq_send']"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'invisible': [('state','not in', ('draft','approved','to approve','purchase', 'done'))]}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree//field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree//field[@name='qty_received']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree//field[@name='qty_invoiced']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <field name="origin" position="after">
+                <field name="pricelist_id" groups="purchase.group_purchase_user" />
+                <!-- domain="[('list_type_use', '=', 'purchase')]" -->
             </field>
-        </record>
-        <record id="purchase_order_line_tree_inherit" model="ir.ui.view">
-            <field name="name">purchase.order.line.tree.inherit</field>
-            <field name="model">purchase.order.line</field>
-            <field
-      name="inherit_id"
-      ref="purchase_order_line_menu.purchase_order_line_tree"
-    />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_qty']" position="attributes">
-                    <attribute name="widget">uom</attribute>
-                    <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-                </xpath>
-            </field>
-        </record>
+        </field>
+    </record>
+    <record id="purchase_order_line_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree.inherit</field>
+        <field name="model">purchase.order.line</field>
+        <field
+            name="inherit_id"
+            ref="purchase_order_line_menu.purchase_order_line_tree"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>

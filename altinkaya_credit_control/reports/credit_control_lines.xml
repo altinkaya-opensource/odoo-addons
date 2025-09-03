@@ -7,91 +7,91 @@
                 <t t-if="doc.partner_id.lang == 'tr_TR'">
                     <tr style="font-size:14px;">
                         <th
-              style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Tarih</th>
+                            style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Tarih</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Açıklama</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Açıklama</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Ref</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Ref</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Vadesi</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Vadesi</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Miktar</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Miktar</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Kalan Miktar</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Kalan Miktar</th>
                     </tr>
                 </t>
                 <t t-else="">
                     <tr style="font-size:14px;">
                         <th
-              style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Date</th>
+                            style="min-width:15px;border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Date</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Descriptipon</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Descriptipon</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Ref</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Ref</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Due Date</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Due Date</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Amount</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Amount</th>
                         <th
-              style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
-            >Residual Amount</th>
+                            style="border: 1px solid black !important;background-color: #c2c2c2;text-align: center; font-size: 14px;"
+                        >Residual Amount</th>
                     </tr>
                 </t>
                 <t
-          t-foreach="doc.credit_control_line_ids.filtered(lambda c: c.state != 'sent')"
-          t-as="line"
-        >
+                    t-foreach="doc.credit_control_line_ids.filtered(lambda c: c.state != 'sent')"
+                    t-as="line"
+                >
                     <t t-set="inv" t-value="line.invoice_id" />
                     <t t-set="currency" t-value="line.move_line_id.currency_id" />
                     <tr>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span t-esc="line.move_line_id.date.strftime('%d.%m.%Y')" />
                         </td>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span t-esc="line.move_line_id.journal_id.name or ''" />
                         </td>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span
-                t-esc="inv.name if inv else line.move_line_id.move_id.name"
-              />
+                                t-esc="inv.name if inv else line.move_line_id.move_id.name"
+                            />
                         </td>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span t-esc="line.date_due.strftime('%d.%m.%Y')" />
                         </td>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span
-                t-esc="line.amount_due"
-                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
-              />
+                                t-esc="line.amount_due"
+                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                            />
                         </td>
                         <td
-              style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
-            >
+                            style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
+                        >
                             <span
-                t-esc="line.balance_due"
-                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
-              />
+                                t-esc="line.balance_due"
+                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                            />
                         </td>
                     </tr>
                 </t>
@@ -99,6 +99,5 @@
         </table>
 
         <t t-call="altinkaya_credit_control.credit_control_bank_account_template" />
-
     </template>
 </odoo>

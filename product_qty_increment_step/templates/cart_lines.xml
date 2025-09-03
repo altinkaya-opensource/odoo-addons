@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="cart_lines_qty_step"
-    inherit_id="website_sale.cart_lines"
-    name="Cart Lines Qty Step"
-  >
-
+        id="cart_lines_qty_step"
+        inherit_id="website_sale.cart_lines"
+        name="Cart Lines Qty Step"
+    >
         <xpath expr="//input[hasclass('js_quantity')]" position="after">
             <span
-        class="d-none"
-        t-attf-data-increment-step="#{line.product_id.product_tmpl_id.qty_increment_step}"
-      />
+                class="d-none"
+                t-attf-data-increment-step="#{line.product_id.product_tmpl_id.qty_increment_step}"
+            />
         </xpath>
-
     </template>
 </odoo>

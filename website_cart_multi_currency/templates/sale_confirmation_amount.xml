@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="sale_confirmation_amount"
-    inherit_id="website_sale.confirmation"
-    name="Sale Confirmation Currency Amount"
-    priority="200"
-  >
+        id="sale_confirmation_amount"
+        inherit_id="website_sale.confirmation"
+        name="Sale Confirmation Currency Amount"
+        priority="200"
+    >
         <xpath expr="//strong[@t-field='payment_tx_id.amount']" position="replace">
             <t t-if="order.currency_id != order.company_currency_id">
                 <strong
-          t-field="order.amount_total_company_currency"
-          t-options="{'widget': 'monetary', 'display_currency': order.company_currency_id}"
-        />
+                    t-field="order.amount_total_company_currency"
+                    t-options="{'widget': 'monetary', 'display_currency': order.company_currency_id}"
+                />
             </t>
             <t t-else="">
                 <strong
-          t-field="payment_tx_id.amount"
-          t-options="{'widget': 'monetary', 'display_currency': order.pricelist_id.currency_id}"
-        />
+                    t-field="payment_tx_id.amount"
+                    t-options="{'widget': 'monetary', 'display_currency': order.pricelist_id.currency_id}"
+                />
             </t>
         </xpath>
     </template>
-
 </odoo>

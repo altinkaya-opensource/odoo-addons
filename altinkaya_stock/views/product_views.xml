@@ -7,19 +7,19 @@
         <field name="priority" eval="40" />
         <field name="arch" type="xml">
             <xpath
-        expr="//field[@name='product_template_variant_value_ids']"
-        position="before"
-      >
+                expr="//field[@name='product_template_variant_value_ids']"
+                position="before"
+            >
                 <field name="domain_attribute_value_ids" invisible="1" />
             </xpath>
             <xpath
-        expr="//field[@name='product_template_variant_value_ids']"
-        position="attributes"
-      >
+                expr="//field[@name='product_template_variant_value_ids']"
+                position="attributes"
+            >
                 <attribute name="readonly">0</attribute>
                 <attribute
-          name="domain"
-        >[('id','in',domain_attribute_value_ids)]</attribute>
+                    name="domain"
+                >[('id','in',domain_attribute_value_ids)]</attribute>
                 <attribute name="options">{'no_create':True,'no_edit':True}</attribute>
                 <attribute name="placeholder">Product Attribute Values</attribute>
             </xpath>
@@ -33,21 +33,20 @@
             </xpath>
             <button name="action_view_stock_move_lines" position="before">
                 <button
-          string="Yapılacak Hareketler"
-          type="object"
-          name="action_view_todo_moves"
-          attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}"
-          class="oe_stat_button"
-          icon="fa-arrows-v"
-          groups="stock.group_stock_user"
-        />
+                    string="Yapılacak Hareketler"
+                    type="object"
+                    name="action_view_todo_moves"
+                    attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}"
+                    class="oe_stat_button"
+                    icon="fa-arrows-v"
+                    groups="stock.group_stock_user"
+                />
             </button>
             <xpath expr="//field[@name='description_sale']" position="after">
                 <group string="Muhasebe" colspan="2">
                     <field name="invoice_policy" />
                 </group>
             </xpath>
-
         </field>
     </record>
 
@@ -65,8 +64,6 @@
             </p>
         </field>
     </record>
-
-
 
     <record id="product_variant_button_altinkaya_stock" model="ir.ui.view">
         <field name="name">Altinkaya Product Variant Button</field>
@@ -90,10 +87,8 @@
                     <field name="invoice_policy" />
                 </group>
             </xpath>
-
         </field>
     </record>
-
 
     <record id="product_product_tree_price_view" model="ir.ui.view">
         <field name="name">product.product.price.tree</field>
@@ -110,24 +105,22 @@
 
             <field name="qty_available" position="before">
                 <field
-          name="qty_available_merkez"
-          string="Merkez Uygun"
-          widget="uom"
-          options="{'uom_field': 'uom_id'}"
-        />
+                    name="qty_available_merkez"
+                    string="Merkez Uygun"
+                    widget="uom"
+                    options="{'uom_field': 'uom_id'}"
+                />
                 <field
-          name="qty_available_sincan"
-          string="Sincan Uygun"
-          widget="uom"
-          options="{'uom_field': 'uom_id'}"
-        />
+                    name="qty_available_sincan"
+                    string="Sincan Uygun"
+                    widget="uom"
+                    options="{'uom_field': 'uom_id'}"
+                />
             </field>
 
             <xpath expr="//field[@name='attr_price']" position="attributes">
                 <attribute name="string">Satış Fiyatı</attribute>
             </xpath>
-
-
         </field>
     </record>
 
@@ -160,7 +153,6 @@
                     <field name="qty_outgoing_sincan" widget="uom" />
                     <field name="qty_virtual_sincan" widget="uom" />
                 </group>
-
             </xpath>
 
             <!--            <xpath expr="//field[@name='type']" position="after">
@@ -171,10 +163,8 @@
                 <attribute name="attrs">{'invisible':[('type_variant','!=',False)]}</attribute>
 
             </xpath>-->
-
         </field>
     </record>
-
 
     <record id="product_template_product_tree_inherit_view" model="ir.ui.view">
         <field name="name">product.template.product.tree.inherit</field>
@@ -197,11 +187,11 @@
 
                 <field name="name" readonly="1" />
                 <field
-          name="attribute_value_ids"
-          readonly="1"
-          widget="many2many_tags"
-          groups="product.group_product_variant"
-        />
+                    name="attribute_value_ids"
+                    readonly="1"
+                    widget="many2many_tags"
+                    groups="product.group_product_variant"
+                />
                 <field name="product_length" />
                 <field name="product_width" />
                 <field name="product_height" />
@@ -221,9 +211,9 @@
     </record>
 
     <record
-    id="product_product_product_shipment_dimensions"
-    model="ir.actions.act_window"
-  >
+        id="product_product_product_shipment_dimensions"
+        model="ir.actions.act_window"
+    >
         <field name="name">Product Shipment Dimensions</field>
         <field name="res_model">product.product</field>
         <field name="type">ir.actions.act_window</field>
@@ -235,11 +225,11 @@
     </record>
 
     <menuitem
-    id="menu_product_shipment_dimensions"
-    name="Product Shipment Dimensions"
-    action="product_product_product_shipment_dimensions"
-    parent="stock.menu_stock_inventory_control"
-    sequence="30"
-    groups="sales_team.group_sale_salesman"
-  />
+        id="menu_product_shipment_dimensions"
+        name="Product Shipment Dimensions"
+        action="product_product_product_shipment_dimensions"
+        parent="stock.menu_stock_inventory_control"
+        sequence="30"
+        groups="sales_team.group_sale_salesman"
+    />
 </odoo>

@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="sale_order_portal_content_configurations_inherit"
-    name="Sales Order Portal Show Partner"
-    inherit_id="sale.sale_order_portal_content"
-    priority="100"
-  >
-
+        id="sale_order_portal_content_configurations_inherit"
+        name="Sales Order Portal Show Partner"
+        inherit_id="sale.sale_order_portal_content"
+        priority="100"
+    >
         <!-- UOM View Precision -->
         <xpath expr="//span[@t-field='line.product_uom_qty']" position="replace">
             <t t-if="line.product_uom.id == 1">
                 <span
-          t-field="line.product_uom_qty"
-          t-options='{"widget": "float", "precision": 0}'
-        />
+                    t-field="line.product_uom_qty"
+                    t-options='{"widget": "float", "precision": 0}'
+                />
             </t>
             <t t-else="">
                 <span
-          t-field="line.product_uom_qty"
-          t-options='{"widget": "float", "precision": 2}'
-        />
+                    t-field="line.product_uom_qty"
+                    t-options='{"widget": "float", "precision": 2}'
+                />
             </t>
         </xpath>
 
-
         <!--        Changes invoice's widget-->
         <xpath
-      expr="//address[@t-field='sale_order.partner_invoice_id']"
-      position="attributes"
-    >
+            expr="//address[@t-field='sale_order.partner_invoice_id']"
+            position="attributes"
+        >
             <attribute name="t-options">{"widget": "contact", "fields": ["address",
                 "name"], "no_marker": False}
             </attribute>
@@ -36,9 +34,9 @@
 
         <!--        Changes shipping's widget-->
         <xpath
-      expr="//address[@t-field='sale_order.partner_shipping_id']"
-      position="attributes"
-    >
+            expr="//address[@t-field='sale_order.partner_shipping_id']"
+            position="attributes"
+        >
             <attribute name="t-options">{"widget": "contact", "fields": ["address",
                 "name"], "no_marker": False}
             </attribute>
@@ -46,19 +44,18 @@
 
         <!--        Adds the partner right next to the addresses in the portal-->
         <xpath
-      expr="//div[@id='informations']/div[@class='row']/div[@class='col-lg-6'][1]"
-      position="before"
-    >
+            expr="//div[@id='informations']/div[@class='row']/div[@class='col-lg-6'][1]"
+            position="before"
+        >
             <div id="partner" class="col-lg-6">
                 <strong class="d-block mb-1">Partner</strong>
                 <address
-          t-field="sale_order.partner_id"
-          t-options='{"widget": "contact", "fields": ["name", "address", "phone", "mobile", "email"], "no_marker": False}'
-        />
+                    t-field="sale_order.partner_id"
+                    t-options='{"widget": "contact", "fields": ["name", "address", "phone", "mobile", "email"], "no_marker": False}'
+                />
                 <div style="height:20px" />
             </div>
         </xpath>
-
 
         <xpath expr="//div[@id='introduction']" position="inside">
             <!--        Adds sale_order.order_state to sale portal-->
@@ -70,20 +67,20 @@
             <!--        Adds cargo trackings-->
             <div>
                 <t
-          t-set="trackable_pickings"
-          t-value="sale_order.picking_ids.filtered(lambda p: p.carrier_tracking_url and p.shipping_number)"
-        />
+                    t-set="trackable_pickings"
+                    t-value="sale_order.picking_ids.filtered(lambda p: p.carrier_tracking_url and p.shipping_number)"
+                />
                 <ul t-if="trackable_pickings" class="list-unstyled">
                     <li t-foreach="trackable_pickings" t-as="picking">
                         <span t-esc="picking.carrier_id.name" /> (<span
-              t-esc="picking.shipping_number"
-            />)
+                        t-esc="picking.shipping_number"
+                    />)
                         <a
-              class="btn btn-info mx-auto mb-1"
-              title="Cargo Tracking"
-              target="_blank"
-              t-att-href="picking.carrier_tracking_url"
-            >
+                        class="btn btn-info mx-auto mb-1"
+                        title="Cargo Tracking"
+                        target="_blank"
+                        t-att-href="picking.carrier_tracking_url"
+                    >
                             <i class="fa fa-truck" />
                             Where is my cargo?
                         </a>
@@ -91,7 +88,6 @@
                 </ul>
             </div>
         </xpath>
-
 
         <!--        Adds these fields to sale portal: (incoterm, destination_port, fiscal_position_id, warehouse_id, payment_term_id)-->
         <xpath expr="//div[@id='informations']" position="after">
@@ -160,11 +156,11 @@
     </template>
 
     <template
-    id="sale_order_sale_order_portal_content_inherit_precision"
-    name="Sales Order Portal Inherit Content Precision"
-    inherit_id="sale.sale_order_portal_content"
-    priority="100"
-  >
+        id="sale_order_sale_order_portal_content_inherit_precision"
+        name="Sales Order Portal Inherit Content Precision"
+        inherit_id="sale.sale_order_portal_content"
+        priority="100"
+    >
         <xpath expr="//strong[@t-if='line.discount &gt; 0']" position="replace">
             <strong t-if="line.discount &gt; 0" class="text-info">
                 <t t-out="((line.discount % 1) and '%.2f' or '%d') % line.discount" />%
@@ -189,14 +185,13 @@
         <xpath expr="//span[@t-out='current_subtotal']" position="after">
             <t t-out="line.currency_id.symbol" />
         </xpath>
-
     </template>
 
-        <template
-    id="sale_order_sale_order_portal_template_inherit_precision"
-    name="Sales Order Portal Inherit Precision"
-    inherit_id="sale.sale_order_portal_template"
-  >
+    <template
+        id="sale_order_sale_order_portal_template_inherit_precision"
+        name="Sales Order Portal Inherit Precision"
+        inherit_id="sale.sale_order_portal_template"
+    >
         <xpath expr="//b[@t-field='sale_order.amount_total']" position="attributes">
             <attribute name="t-options">{"widget": "float", "precision": 2}</attribute>
         </xpath>

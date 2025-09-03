@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="account_check_action_wizard_form_view">
         <field name="name">account.check.action.wizard.form</field>
         <field name="model">account.check.action.wizard</field>
@@ -12,15 +11,15 @@
                     <field name="journal_id" />
                     <field name="debit_account_id" />
                     <field name="credit_account_id" />
-<!--                     attrs="{'invisible':[('action_type','not in',['deposit'])], 'required':[('action_type','in',['deposit'])]}"/> -->
+                    <!--                     attrs="{'invisible':[('action_type','not in',['deposit'])], 'required':[('action_type','in',['deposit'])]}"/> -->
                 </group>
                 <footer>
                     <button
-            string="Confirm"
-            name="action_confirm"
-            type="object"
-            class="oe_highlight"
-          />
+                    string="Confirm"
+                    name="action_confirm"
+                    type="object"
+                    class="oe_highlight"
+                />
                     or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
@@ -34,5 +33,4 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
 </odoo>

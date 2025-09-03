@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="product_schema_markup"
-    inherit_id="website_sale.product_price"
-    name="Cross selling on all products"
-  >
+        id="product_schema_markup"
+        inherit_id="website_sale.product_price"
+        name="Cross selling on all products"
+    >
         <xpath expr="//div[@itemprop='offers']" position="inside">
-
             <!-- Brand -->
             <div
-        itemprop="brand"
-        itemtype="https://schema.org/Brand"
-        itemscope="itemscope"
-      >
+                itemprop="brand"
+                itemtype="https://schema.org/Brand"
+                itemscope="itemscope"
+            >
                 <meta itemprop="name" t-attf-content="#{website.name}" />
             </div>
 
@@ -21,52 +20,52 @@
 
             <!-- Delivery Info -->
             <div
-        itemprop="shippingDetails"
-        itemtype="https://schema.org/OfferShippingDetails"
-        itemscope="itemscope"
-      >
+                itemprop="shippingDetails"
+                itemtype="https://schema.org/OfferShippingDetails"
+                itemscope="itemscope"
+            >
                 <div
-          itemprop="shippingRate"
-          itemtype="https://schema.org/MonetaryAmount"
-          itemscope="itemscope"
-        >
+                    itemprop="shippingRate"
+                    itemtype="https://schema.org/MonetaryAmount"
+                    itemscope="itemscope"
+                >
                     <meta itemprop="value" content="0" />
                     <meta itemprop="currency" content="TRY" />
                 </div>
                 <div
-          itemprop="shippingDestination"
-          itemtype="https://schema.org/DefinedRegion"
-          itemscope="itemscope"
-        >
+                    itemprop="shippingDestination"
+                    itemtype="https://schema.org/DefinedRegion"
+                    itemscope="itemscope"
+                >
                     <meta itemprop="addressCountry" content="TR" />
                 </div>
                 <div
-          itemprop="deliveryTime"
-          itemtype="https://schema.org/ShippingDeliveryTime"
-          itemscope="itemscope"
-        >
+                    itemprop="deliveryTime"
+                    itemtype="https://schema.org/ShippingDeliveryTime"
+                    itemscope="itemscope"
+                >
                     <div
-            itemprop="handlingTime"
-            itemtype="https://schema.org/QuantitativeValue"
-            itemscope="itemscope"
-          >
+                        itemprop="handlingTime"
+                        itemtype="https://schema.org/QuantitativeValue"
+                        itemscope="itemscope"
+                    >
                         <meta itemprop="minValue" content="0" />
                         <meta itemprop="maxValue" content="1" />
                         <meta itemprop="unitCode" content="DAY" />
                     </div>
                     <div
-            itemprop="transitTime"
-            itemtype="https://schema.org/QuantitativeValue"
-            itemscope="itemscope"
-          >
+                        itemprop="transitTime"
+                        itemtype="https://schema.org/QuantitativeValue"
+                        itemscope="itemscope"
+                    >
                         <meta
-              itemprop="minValue"
-              t-attf-content="#{website.delivery_min_time}"
-            />
+                            itemprop="minValue"
+                            t-attf-content="#{website.delivery_min_time}"
+                        />
                         <meta
-              itemprop="maxValue"
-              t-attf-content="#{website.delivery_max_time}"
-            />
+                            itemprop="maxValue"
+                            t-attf-content="#{website.delivery_max_time}"
+                        />
                         <meta itemprop="unitCode" content="DAY" />
                     </div>
                 </div>
@@ -74,20 +73,20 @@
 
             <!-- Return Policy -->
             <div
-        itemprop="hasMerchantReturnPolicy"
-        itemtype="https://schema.org/MerchantReturnPolicy"
-        itemscope="itemscope"
-      >
+                itemprop="hasMerchantReturnPolicy"
+                itemtype="https://schema.org/MerchantReturnPolicy"
+                itemscope="itemscope"
+            >
                 <meta itemprop="applicableCountry" content="TR" />
                 <meta
-          itemprop="returnPolicyCategory"
-          content="https://schema.org/MerchantReturnFiniteReturnWindow"
-        />
+                    itemprop="returnPolicyCategory"
+                    content="https://schema.org/MerchantReturnFiniteReturnWindow"
+                />
                 <meta itemprop="merchantReturnDays" content="30" />
                 <meta
-          itemprop="returnMethod"
-          content="https://schema.org/ReturnByMail"
-        />
+                    itemprop="returnMethod"
+                    content="https://schema.org/ReturnByMail"
+                />
                 <meta itemprop="returnFees" content="https://schema.org/FreeReturn" />
             </div>
 
@@ -95,26 +94,24 @@
 
             <!-- Price Valid Until -->
             <meta
-        itemprop="priceValidUntil"
-        t-attf-content="#{website.price_validity_date.strftime('%Y-%m-%d')}"
-      />
+                itemprop="priceValidUntil"
+                t-attf-content="#{website.price_validity_date.strftime('%Y-%m-%d')}"
+            />
 
             <!-- Review and rating -->
-<!--            <div itemprop="review" itemtype="https://schema.org/Review" itemscope="itemscope">-->
-<!--                <div itemprop="author" itemtype="https://schema.org/Person" itemscope="itemscope">-->
-<!--                    <meta itemprop="name" content="Fred Benson"/>-->
-<!--                </div>-->
-<!--                <div itemprop="reviewRating" itemtype="https://schema.org/Rating" itemscope="itemscope">-->
-<!--                    <meta itemprop="ratingValue" content="4"/>-->
-<!--                    <meta itemprop="bestRating" content="5"/>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope="itemscope">-->
-<!--                <meta itemprop="reviewCount" content="89"/>-->
-<!--                <meta itemprop="ratingValue" content="4.4"/>-->
-<!--            </div>-->
-
-
+            <!--            <div itemprop="review" itemtype="https://schema.org/Review" itemscope="itemscope">-->
+            <!--                <div itemprop="author" itemtype="https://schema.org/Person" itemscope="itemscope">-->
+            <!--                    <meta itemprop="name" content="Fred Benson"/>-->
+            <!--                </div>-->
+            <!--                <div itemprop="reviewRating" itemtype="https://schema.org/Rating" itemscope="itemscope">-->
+            <!--                    <meta itemprop="ratingValue" content="4"/>-->
+            <!--                    <meta itemprop="bestRating" content="5"/>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope="itemscope">-->
+            <!--                <meta itemprop="reviewCount" content="89"/>-->
+            <!--                <meta itemprop="ratingValue" content="4.4"/>-->
+            <!--            </div>-->
         </xpath>
     </template>
 </odoo>

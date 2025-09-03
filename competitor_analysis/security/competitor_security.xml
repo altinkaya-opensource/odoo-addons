@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record model="ir.module.category" id="module_category_competitor_analysis">
         <field name="name">Competitor Analysis</field>
         <field name="sequence">20</field>
@@ -11,6 +10,4 @@
         <field name="category_id" ref="module_category_competitor_analysis" />
         <field name="users" eval="[(4, ref('base.user_root'))]" />
     </record>
-
-
 </odoo>

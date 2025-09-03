@@ -1,78 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <!-- TODO: Add l10n_eu_nace missing views, they migrated to res.partner.industry -->
-        <record id="res_partner_form_view_marketing" model="ir.ui.view">
-            <field name="name">res.partner.form</field>
-            <field name="model">res.partner</field>
-            <field name="priority" eval="100" />
-            <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="arch" type="xml">
+    <!-- TODO: Add l10n_eu_nace missing views, they migrated to res.partner.industry -->
+    <record id="res_partner_form_view_marketing" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="priority" eval="100" />
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']" position="inside">
+                <group string="Main Worksector" name="marketing">
+                    <field
+                        name="main_worksector_id"
+                        nolabel="1"
+                        placeholder="Main Worksector"
+                    />
+                </group>
+                <group string="Other Worksectors">
+                    <field name="worksector_ids" nolabel="1" />
+                </group>
+                <group string="Target Product Category">
+                    <field name="target_product_categ_ids" nolabel="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
 
-                <xpath expr="//page[@name='sales_purchases']" position="inside">
-                    <group string="Main Worksector" name="marketing">
-
-                        <field
-            name="main_worksector_id"
-            nolabel="1"
-            placeholder="Main Worksector"
-          />
-
+    <record id="res_partner_worksector_form_view" model="ir.ui.view">
+        <field name="name">partner.worksector.form</field>
+        <field name="model">partner.worksector</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="1" />
+                        <field name="description" />
                     </group>
-                    <group string="Other Worksectors">
-                        <field name="worksector_ids" nolabel="1">
-                        </field>
+                    <group string="Partner">
+                        <field name="partner_ids" nolabel="1" />
                     </group>
-                    <group string="Target Product Category">
-                        <field name="target_product_categ_ids" nolabel="1" />
+                    <group string="Product Category" col="4">
+                        <field name="product_categ_ids" nolabel="1" />
                     </group>
-                </xpath>
-            </field>
-        </record>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <record id="res_partner_worksector_form_view" model="ir.ui.view">
-            <field name="name">partner.worksector.form</field>
-            <field name="model">partner.worksector</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <field name="name" required="1" />
-                            <field name="description" />
-                        </group>
-                        <group string="Partner">
-                            <field name="partner_ids" nolabel="1" />
-                        </group>
-                        <group string="Product Category" col="4">
-                            <field name="product_categ_ids" nolabel="1" />
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+    <record id="res_partner_worksector_tree_view" model="ir.ui.view">
+        <field name="name">partner.worksector.tree</field>
+        <field name="model">partner.worksector</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" required="1" />
+            </tree>
+        </field>
+    </record>
 
-        <record id="res_partner_worksector_tree_view" model="ir.ui.view">
-            <field name="name">partner.worksector.tree</field>
-            <field name="model">partner.worksector</field>
-            <field name="arch" type="xml">
-                <tree editable="top">
-                    <field name="name" required="1" />
+    <record id="action_res_partner_worksector" model="ir.actions.act_window">
+        <field name="name">Customer Sectors</field>
+        <field name="res_model">partner.worksector</field>
 
-                </tree>
-            </field>
-        </record>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <record id="action_res_partner_worksector" model="ir.actions.act_window">
-            <field name="name">Customer Sectors</field>
-            <field name="res_model">partner.worksector</field>
-
-            <field name="view_mode">tree,form</field>
-        </record>
-
-        <menuitem
-    action="action_res_partner_worksector"
-    id="menuitem_res_partner_worksector"
-    parent="crm.crm_menu_root"
-    sequence="20"
-  />
-
+    <menuitem
+        action="action_res_partner_worksector"
+        id="menuitem_res_partner_worksector"
+        parent="crm.crm_menu_root"
+        sequence="20"
+    />
 </odoo>

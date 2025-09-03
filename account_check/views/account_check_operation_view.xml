@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_account_check_operation_tree" model="ir.ui.view">
         <field name="name">account.check.operation.tree</field>
         <field name="model">account.check.operation</field>
@@ -38,10 +37,9 @@
     </record>
 
     <menuitem
-    action="action_check_operation"
-    id="menu_check_operation"
-    sequence="30"
-    parent="menu_account_check_root"
-  />
-
+        action="action_check_operation"
+        id="menu_check_operation"
+        sequence="30"
+        parent="menu_account_check_root"
+    />
 </odoo>

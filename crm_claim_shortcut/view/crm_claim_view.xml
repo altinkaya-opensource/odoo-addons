@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_crm_claim" model="ir.ui.view">
         <field name="name">form.crm.claim.inherit</field>
         <field name="model">crm.claim</field>
@@ -12,5 +11,4 @@
             </field>
         </field>
     </record>
-
 </odoo>

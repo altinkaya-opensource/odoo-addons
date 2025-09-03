@@ -5,8 +5,8 @@
         <field name="fname">move_lines.xlsx</field>
         <field name="name">Yevmiyeler Excel</field>
         <field
-      name="description"
-    >Zirve Muhasebe programına uygun biçimde yevmiyelerin içeri aktarılabilmesini sağlayan Excel şablonu.</field>
+            name="description"
+        >Zirve Muhasebe programına uygun biçimde yevmiyelerin içeri aktarılabilmesini sağlayan Excel şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {
@@ -33,5 +33,4 @@
     <function model="xlsx.template" name="load_xlsx_template">
         <value eval="[ref('account_move_line_excel')]" />
     </function>
-
 </odoo>

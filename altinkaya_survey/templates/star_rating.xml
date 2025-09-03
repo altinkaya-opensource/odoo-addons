@@ -1,143 +1,135 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-        <!-- STAR RATING RESULT TEMPLATE -->
-        <template id="result_star" name="Star Rating Result">
-            <div>
-                <!-- Tabs -->
-                <ul class="nav nav-tabs d-print-none" role="tablist">
-                    <li t-if="question_answered" class="nav-item">
-                        <a
-            t-att-href="'#survey_graph_question_%d' % question.id"
-            t-att-aria-controls="'survey_graph_question_%d' % question.id"
-            class="nav-link active"
-            data-bs-toggle="tab"
-            role="tab"
-          >
-                            <i class="fa fa-bar-chart-o" />
-                            <span
-              t-if="question.question_type == 'simple_choice'"
-            >Pie Graph</span>
-                            <span t-else="">Graph</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-            t-att-href="'#survey_data_question_%d' % question.id"
-            t-att-aria-controls="'survey_data_question_%d' % question.id"
-            t-attf-class="nav-link"
-            data-bs-toggle="tab"
-            role="tab"
-          >
+    <!-- STAR RATING RESULT TEMPLATE -->
+    <template id="result_star" name="Star Rating Result">
+        <div>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs d-print-none" role="tablist">
+                <li t-if="question_answered" class="nav-item">
+                    <a
+                        t-att-href="'#survey_graph_question_%d' % question.id"
+                        t-att-aria-controls="'survey_graph_question_%d' % question.id"
+                        class="nav-link active"
+                        data-bs-toggle="tab"
+                        role="tab"
+                    >
+                        <i class="fa fa-bar-chart-o" />
+                        <span
+                            t-if="question.question_type == 'simple_choice'"
+                        >Pie Graph</span>
+                        <span t-else="">Graph</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        t-att-href="'#survey_data_question_%d' % question.id"
+                        t-att-aria-controls="'survey_data_question_%d' % question.id"
+                        t-attf-class="nav-link"
+                        data-bs-toggle="tab"
+                        role="tab"
+                    >
                             <i class="fa fa-list-alt me-1" />
 Data
                         </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div
-          role="tabpanel"
-          class="tab-pane survey_graph active"
-          t-att-id="'survey_graph_question_%d' % question.id"
-          t-att-data-question-id="question.id"
-          data-graph-type="pie"
-          t-att-data-graph-data="graph_data"
-          t-att-graph-data="graph_data"
-        >
-                        <canvas />
-                    </div>
-                    <div
-          role="tabpanel"
-          t-att-id="'survey_data_question_%d' % question.id"
-          t-attf-class="tab-pane #{'active' if not question_answered else ''}"
-        >
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Answer</th>
-                                    <th>User Choice</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr t-foreach="table_data" t-as="choice_data">
-                                    <td>
-                                        <p>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div
+                    role="tabpanel"
+                    class="tab-pane survey_graph active"
+                    t-att-id="'survey_graph_question_%d' % question.id"
+                    t-att-data-question-id="question.id"
+                    data-graph-type="pie"
+                    t-att-data-graph-data="graph_data"
+                    t-att-graph-data="graph_data"
+                >
+                    <canvas />
+                </div>
+                <div
+                    role="tabpanel"
+                    t-att-id="'survey_data_question_%d' % question.id"
+                    t-attf-class="tab-pane #{'active' if not question_answered else ''}"
+                >
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Answer</th>
+                                <th>User Choice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="table_data" t-as="choice_data">
+                                <td>
+                                    <p>
                                         <t t-esc="choice_data['value']" /> Star
                                         </p>
-                                    </td>
-                                    <td class="o_survey_answer">
+                                </td>
+                                <td class="o_survey_answer">
                                         <span
-                    t-esc="round(choice_data['count'] * 100.0/ (len(question_data['answer_line_done_ids']) or 1), 2)"
-                  /> %
+                                    t-esc="round(choice_data['count'] * 100.0/ (len(question_data['answer_line_done_ids']) or 1), 2)"
+                                /> %
                                         <span
-                    t-out="choice_data['count_text']"
-                    class="badge text-bg-primary"
-                  />
+                                    t-out="choice_data['count_text']"
+                                    class="badge text-bg-primary"
+                                />
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-
             </div>
-        </template>
+        </div>
+    </template>
 
+    <!-- STAR FORM TEMPLATE -->
+    <template id="star_rating" name="Star Rating">
+        <div class="star-rating o_survey_comment_container p-0">
+            <t t-foreach="range(question.star_count)" t-as="star_number">
+                <span class="fa fa-star-o" t-att-data-rating="(star_number+1)" />
+            </t>
 
-        <!-- STAR FORM TEMPLATE -->
-        <template id="star_rating" name="Star Rating">
-            <div class="star-rating o_survey_comment_container p-0">
-                <t t-foreach="range(question.star_count)" t-as="star_number">
-                    <span class="fa fa-star-o" t-att-data-rating="(star_number+1)" />
-                </t>
+            <t
+                t-set="answer_star_count"
+                t-value="answer_lines[0].value_star_rating if answer_lines else None"
+            />
+            <input
+                type="hidden"
+                t-att-name="question.id"
+                t-att-data-question-type="question.question_type"
+                class="rating-value"
+                t-att-value="answer_star_count"
+                t-att-disabled="'1' if answer_star_count else None"
+            />
+        </div>
+    </template>
 
-                <t
-        t-set="answer_star_count"
-        t-value="answer_lines[0].value_star_rating if answer_lines else None"
-      />
-                <input
-        type="hidden"
-        t-att-name="question.id"
-        t-att-data-question-type="question.question_type"
-        class="rating-value"
-        t-att-value="answer_star_count"
-        t-att-disabled="'1' if answer_star_count else None"
-      />
-            </div>
-        </template>
+    <!-- SURVEY FORM -->
+    <template id="survey_form_star_rating" inherit_id="survey.question_container">
+        <xpath expr="//div[hasclass('o_survey_question_error')]" position="before">
+            <t t-if="question.question_type == 'star_rating'">
+                <t t-call="altinkaya_survey.star_rating" />
+            </t>
+        </xpath>
+    </template>
 
-        <!-- SURVEY FORM -->
-        <template id="survey_form_star_rating" inherit_id="survey.question_container">
-            <xpath expr="//div[hasclass('o_survey_question_error')]" position="before">
-                <t t-if="question.question_type == 'star_rating'">
-                    <t t-call="altinkaya_survey.star_rating" />
-                </t>
-            </xpath>
-        </template>
+    <!-- SURVEY FORM PRINT -->
+    <template id="survey_form_star_rating_print" inherit_id="survey.survey_page_print">
+        <xpath expr="//t[@t-call='survey.question_simple_choice']" position="after">
+            <t t-if="question.question_type == 'star_rating'">
+                <t t-call="altinkaya_survey.star_rating" />
+            </t>
+        </xpath>
+    </template>
 
-        <!-- SURVEY FORM PRINT -->
-        <template
-    id="survey_form_star_rating_print"
-    inherit_id="survey.survey_page_print"
-  >
-            <xpath expr="//t[@t-call='survey.question_simple_choice']" position="after">
-                <t t-if="question.question_type == 'star_rating'">
-                    <t t-call="altinkaya_survey.star_rating" />
-                </t>
-            </xpath>
-        </template>
-
-        <!-- SURVEY RESULT -->
-        <template
-    id="survey_star_rating_results"
-    inherit_id="survey.survey_page_statistics_question"
-  >
-            <xpath expr="//t[@t-call='survey.question_result_matrix']" position="after">
-                <t t-if="question.question_type in ['star_rating']">
-                    <t t-call="altinkaya_survey.result_star" />
-                </t>
-            </xpath>
-        </template>
-
+    <!-- SURVEY RESULT -->
+    <template
+        id="survey_star_rating_results"
+        inherit_id="survey.survey_page_statistics_question"
+    >
+        <xpath expr="//t[@t-call='survey.question_result_matrix']" position="after">
+            <t t-if="question.question_type in ['star_rating']">
+                <t t-call="altinkaya_survey.result_star" />
+            </t>
+        </xpath>
+    </template>
 </odoo>

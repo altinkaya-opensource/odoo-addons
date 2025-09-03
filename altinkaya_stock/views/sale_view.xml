@@ -1,81 +1,79 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <record id="view_sale_order_form_inherit_qty" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit.qty</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form" />
-            <field name="arch" type="xml">
-
+    <record id="view_sale_order_form_inherit_qty" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.qty</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
             <field name="partner_shipping_id" position="after">
                 <field name="packed" />
             </field>
 
-        <xpath
-        expr="//field[@name='order_line']/form//field[@name='product_uom_qty']"
-        position="attributes"
-      >
-            <attribute name="widget">uom</attribute>
-            <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-        </xpath>
-        <xpath
-        expr="//field[@name='order_line']/form//field[@name='customer_lead']"
-        position="attributes"
-      >
-          <attribute name="widget">uom</attribute>
-          <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-      </xpath>
-        <xpath
-        expr="//field[@name='order_line']/form//field[@name='unit_discounted']"
-        position="after"
-      >
-                    <field
-          name="qty_unreserved_sincan"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-                    <field
-          name="qty_unreserved_merkez"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-        </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='product_uom_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='customer_lead']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='unit_discounted']"
+                position="after"
+            >
+                <field
+                    name="qty_unreserved_sincan"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
+                <field
+                    name="qty_unreserved_merkez"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
+            </xpath>
 
-                <xpath
-        expr="//field[@name='order_line']/tree/field[@name='price_unit']"
-        position="before"
-      >
-                    <field
-          name="qty_unreserved_merkez"
-          string="Merkez"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-                    <field
-          name="qty_unreserved_sincan"
-          string="Sincan"
-          widget="uom"
-          options="{'uom_field': 'product_uom'}"
-        />
-                </xpath>
-                    <xpath
-        expr="//field[@name='order_line']/tree/field[@name='route_id']"
-        position="attributes"
-      >
-                        <attribute name="invisible">1</attribute>
-                    </xpath>
-                    <xpath
-        expr="//field[@name='order_line']/tree/field[@name='qty_delivered']"
-        position="attributes"
-      >
-                        <attribute name="invisible">1</attribute>
-                    </xpath>
-                    <xpath
-        expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']"
-        position="attributes"
-      >
-                        <attribute name="invisible">1</attribute>
-                    </xpath>
-                </field>
-        </record>
-
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='price_unit']"
+                position="before"
+            >
+                <field
+                    name="qty_unreserved_merkez"
+                    string="Merkez"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
+                <field
+                    name="qty_unreserved_sincan"
+                    string="Sincan"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='route_id']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='qty_delivered']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>

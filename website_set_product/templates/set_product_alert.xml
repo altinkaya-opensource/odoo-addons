@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="set_product_alert"
-    inherit_id="website_sale.product"
-    name="Set Product Alert"
-  >
+        id="set_product_alert"
+        inherit_id="website_sale.product"
+        name="Set Product Alert"
+    >
         <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
             <t
-        t-if="product.set_product and (website.website_show_price and not product.website_hide_price)"
-      >
-               <p class="alert alert-info"><i
-            class="fa fa-info-circle"
-          /> When this product is added to the cart, accessories will also be added. If you wish, you can remove the parts you do not want from the cart.</p>
+                t-if="product.set_product and (website.website_show_price and not product.website_hide_price)"
+            >
+                <p class="alert alert-info"><i
+                    class="fa fa-info-circle"
+                /> When this product is added to the cart, accessories will also be added. If you wish, you can remove the parts you do not want from the cart.</p>
             </t>
         </xpath>
     </template>

@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <record id="wizard_address_import_form_view" model="ir.ui.view">
-            <field name="name">wizard.address.import.form</field>
-            <field name="model">wizard.address.import</field>
-            <field name="arch" type="xml">
-                <form create="0">
-                    <group>
-                        <field name="xls_file" required="1" />
-                    </group>
-                    <footer>
-                        <button
-            type="object"
-            name="import_excel"
-            string="Import Excel"
-            class="oe_highlight"
-          />
-                    </footer>
-                </form>
-            </field>
-        </record>
+    <record id="wizard_address_import_form_view" model="ir.ui.view">
+        <field name="name">wizard.address.import.form</field>
+        <field name="model">wizard.address.import</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <group>
+                    <field name="xls_file" required="1" />
+                </group>
+                <footer>
+                    <button
+                        type="object"
+                        name="import_excel"
+                        string="Import Excel"
+                        class="oe_highlight"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
 
-        <record id="action_wizard_address_import_view" model="ir.actions.act_window">
-            <field name="name">Address Import From XLS</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">wizard.address.import</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
+    <record id="action_wizard_address_import_view" model="ir.actions.act_window">
+        <field name="name">Address Import From XLS</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.address.import</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 
-        <menuitem
-    id="menu_wizard_addres_import"
-    action="action_wizard_address_import_view"
-    parent="contacts.menu_localisation"
-    sequence="30"
-  />
-
+    <menuitem
+        id="menu_wizard_addres_import"
+        action="action_wizard_address_import_view"
+        parent="contacts.menu_localisation"
+        sequence="30"
+    />
 </odoo>

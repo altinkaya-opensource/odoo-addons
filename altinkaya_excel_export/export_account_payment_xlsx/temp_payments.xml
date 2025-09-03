@@ -5,8 +5,8 @@
         <field name="fname">payments.xlsx</field>
         <field name="name">Ödemeler Excel</field>
         <field
-      name="description"
-    >Zirve Muhasebe programına uygun biçimde ödemelerin içeri aktarılabilmesini sağlayan Excel şablonu.</field>
+            name="description"
+        >Zirve Muhasebe programına uygun biçimde ödemelerin içeri aktarılabilmesini sağlayan Excel şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {
@@ -32,5 +32,4 @@
     <function model="xlsx.template" name="load_xlsx_template">
         <value eval="[ref('account_payment_excel')]" />
     </function>
-
 </odoo>

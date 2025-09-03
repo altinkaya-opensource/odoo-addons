@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template id="inline_form">
         <div class="row">
             <div class="col-12 col-lg-8 garanti-form">
                 <input
-          name="provider_id"
-          type="hidden"
-          id="provider_id"
-          t-att-value="id"
-        />
+                    name="provider_id"
+                    type="hidden"
+                    id="provider_id"
+                    t-att-value="id"
+                />
                 <input name="partner_id" type="hidden" t-att-value="partner_id" />
                 <div id="credit-card">
                     <div class="form-group">
@@ -17,11 +16,11 @@
                             <h6>Card Owner</h6>
                         </label>
                         <input
-              type="text"
-              name="cardName"
-              placeholder="Card Owner Name"
-              class="form-control "
-            />
+                            type="text"
+                            name="cardName"
+                            placeholder="Card Owner Name"
+                            class="form-control "
+                        />
                     </div>
                     <div class="form-group">
                         <label for="cardNumber">
@@ -29,13 +28,13 @@
                         </label>
                         <div class="input-group">
                             <input
-                type="text"
-                maxlength="19"
-                name="cardNumber"
-                placeholder="XXXX XXXX XXXX XXXX"
-                inputmode="numeric"
-                class="form-control "
-              />
+                                type="text"
+                                maxlength="19"
+                                name="cardNumber"
+                                placeholder="XXXX XXXX XXXX XXXX"
+                                inputmode="numeric"
+                                class="form-control "
+                            />
                             <span class="input-group-text text-muted">
                                 <i class="fa fa-credit-card mx-1" />
                             </span>
@@ -51,14 +50,14 @@
                                 </label>
                                 <div class="input-group">
                                     <select
-                    name="validMonth"
-                    t-attf-class="form-select"
-                  >
+                                        name="validMonth"
+                                        t-attf-class="form-select"
+                                    >
                                         <option
-                      value=""
-                      disabled="disabled"
-                      selected="selected"
-                    >Month
+                                            value=""
+                                            disabled="disabled"
+                                            selected="selected"
+                                        >Month
                                         </option>
                                         <t t-foreach="range(1, 13)" t-as="r">
                                             <option t-att-value="r">
@@ -68,15 +67,15 @@
                                     </select>
                                     <select name="validYear" t-attf-class="form-select">
                                         <option
-                      value=""
-                      disabled="disabled"
-                      selected="selected"
-                    >Year
+                                            value=""
+                                            disabled="disabled"
+                                            selected="selected"
+                                        >Year
                                         </option>
                                         <t
-                      t-foreach="range(datetime.date.today().year, datetime.date.today().year+13)"
-                      t-as="r"
-                    >
+                                            t-foreach="range(datetime.date.today().year, datetime.date.today().year+13)"
+                                            t-as="r"
+                                        >
                                             <option t-att-value="r">
                                                 <t t-esc="r" />
                                             </option>
@@ -88,19 +87,19 @@
                         <div class="col-4">
                             <div class="form-group mb-4">
                                 <label
-                  title="Three digit CV code on the back of your card"
-                >
+                                    title="Three digit CV code on the back of your card"
+                                >
                                     <h6>CVV
                                         <i class="fa fa-question-circle d-inline" />
                                     </h6>
                                 </label>
                                 <div class="input-group">
                                     <input
-                    type="text"
-                    name="cardCVV"
-                    maxlength="4"
-                    class="form-control"
-                  />
+                                        type="text"
+                                        name="cardCVV"
+                                        maxlength="4"
+                                        class="form-control"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -109,26 +108,25 @@
             </div>
             <div class="col-12 col-lg-4 text-center my-auto">
                 <t
-          t-if="list(filter(lambda lg : lg[0] == lang, languages))[0][0] == 'tr_TR'"
-        >
+                    t-if="list(filter(lambda lg : lg[0] == lang, languages))[0][0] == 'tr_TR'"
+                >
                     <img
-            class="img-fluid w-50 w-lg-75"
-            src="/payment_garanti/static/img/ssl_256bit.png"
-          />
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_garanti/static/img/ssl_256bit.png"
+                    />
                     <img
-            class="img-fluid w-50 w-lg-75"
-            src="/payment_garanti/static/img/secure_payment.png"
-          />
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_garanti/static/img/secure_payment.png"
+                    />
                 </t>
                 <t t-else="">
                     <img
-            class="img-fluid w-50 w-lg-75"
-            src="/payment_garanti/static/img/ssl_secured.png"
-          />
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_garanti/static/img/ssl_secured.png"
+                    />
                 </t>
             </div>
         </div>
         <div class="d-none" id="webform" />
     </template>
-
 </odoo>

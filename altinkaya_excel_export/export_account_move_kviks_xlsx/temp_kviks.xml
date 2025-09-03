@@ -5,8 +5,8 @@
         <field name="fname">kviks.xlsx</field>
         <field name="name">KVIKS Sevkiyat Bildirimi</field>
         <field
-      name="description"
-    >KVIKS sistemine uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
+            name="description"
+        >KVIKS sistemine uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {

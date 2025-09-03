@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <function model="ir.model.fields" name="formbuilder_whitelist">
-            <value>res.partner</value>
-            <value
-      eval="[
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>res.partner</value>
+        <value
+            eval="[
                 'district_id',
                 'region_id',
                 'neighbour_id',
                 'tax_office_name',
             ]"
-    />
-        </function>
+        />
+    </function>
 </odoo>

@@ -19,7 +19,6 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='variant_seller_ids']" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
@@ -27,11 +26,11 @@
             <xpath expr="//field[@name='variant_seller_ids']" position="after">
                 <group string="Vendors" name="variant_vendors2">
                     <field
-            name="variant_seller_ids_2"
-            context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}"
-            nolabel="1"
-            colspan="2"
-          />
+                        name="variant_seller_ids_2"
+                        context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}"
+                        nolabel="1"
+                        colspan="2"
+                    />
                 </group>
             </xpath>
         </field>

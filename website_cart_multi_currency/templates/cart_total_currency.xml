@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
-    id="cart_total_currency"
-    inherit_id="website_sale.total"
-    name="Cart Total Currency"
-  >
+        id="cart_total_currency"
+        inherit_id="website_sale.total"
+        name="Cart Total Currency"
+    >
         <xpath expr="//tr[@id='order_total']" position="after">
             <tr
-        t-if="partner and partner.country_id and partner.country_id.id == website_sale_order.company_id.country_id.id and (website_sale_order.pricelist_id.currency_id != website_sale_order.company_currency_id)"
-        id="order_total_currency_rate"
-      >
+                t-if="partner and partner.country_id and partner.country_id.id == website_sale_order.company_id.country_id.id and (website_sale_order.pricelist_id.currency_id != website_sale_order.company_currency_id)"
+                id="order_total_currency_rate"
+            >
                 <td class="text-end border-top border-bottom-0">
                     <strong>Currency Rate:</strong>
                 </td>
                 <td class="text-xl-end border-top border-bottom-0">
                     <span
-            t-field="website_sale_order.currency_rate"
-            class="monetary_field"
-            t-options='{"widget": "float", "decimal_precision": "Currency Rate Precision"}'
-          />
+                        t-field="website_sale_order.currency_rate"
+                        class="monetary_field"
+                        t-options='{"widget": "float", "decimal_precision": "Currency Rate Precision"}'
+                    />
                 </td>
             </tr>
             <tr
-        t-if="partner and partner.country_id and partner.country_id.id == website_sale_order.company_id.country_id.id and website_sale_order.pricelist_id.currency_id != website_sale_order.company_currency_id"
-        id="order_amount_total_currency"
-      >
+                t-if="partner and partner.country_id and partner.country_id.id == website_sale_order.company_id.country_id.id and website_sale_order.pricelist_id.currency_id != website_sale_order.company_currency_id"
+                id="order_amount_total_currency"
+            >
                 <td class="text-end border-top border-bottom-0">
                     <strong>Total Payment:</strong>
                 </td>
                 <td class="text-xl-end border-top border-bottom-0">
                     <strong
-            t-field="website_sale_order.amount_total_company_currency"
-            class="monetary_field"
-            t-options='{"widget": "monetary", "display_currency": website_sale_order.company_currency_id}'
-          />
+                        t-field="website_sale_order.amount_total_company_currency"
+                        class="monetary_field"
+                        t-options='{"widget": "monetary", "display_currency": website_sale_order.company_currency_id}'
+                    />
                 </td>
             </tr>
-
         </xpath>
     </template>
-
 </odoo>

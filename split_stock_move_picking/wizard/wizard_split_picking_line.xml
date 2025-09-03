@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_stock_split_picking_line_window" model="ir.ui.view">
         <field name="model">split.stock.move.picking</field>
         <field name="arch" type="xml">
@@ -12,15 +11,14 @@
                     <field name="uom" />
                     <field name="qty" class="oe_inline" />
                     <field name="after_split_qty" />
-
                 </group>
                 <footer>
                     <button
-            name="action_split"
-            class="btn btn-primary"
-            string="Böl"
-            type="object"
-          />
+                    name="action_split"
+                    class="btn btn-primary"
+                    string="Böl"
+                    type="object"
+                />
                     or
                     <button special="cancel" class="btn btn-secondary" string="İptal" />
                 </footer>
@@ -37,5 +35,4 @@
         <field name="context">{'default_move_id': active_id}</field>
         <field name="domain">[('move_id','=', active_id)]</field>
     </record>
-
 </odoo>
