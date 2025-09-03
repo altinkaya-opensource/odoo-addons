@@ -14,3 +14,4 @@ class CRMPhonecall(models.Model):
     state = fields.Selection(
         selection_add=[("success", "Success"), ("failed", "Failed")]
     )
+    transcript = fields.Text()

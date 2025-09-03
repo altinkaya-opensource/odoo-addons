@@ -14,6 +14,10 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
+            <field name="description" position="after">
+                <field name="transcript" groups="base.group_system" />
+            </field>
+
         </field>
     </record>
 
