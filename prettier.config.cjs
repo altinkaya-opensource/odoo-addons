@@ -9,7 +9,15 @@ const config = {
     semi: true,
     trailingComma: "es5",
     xmlWhitespaceSensitivity: "preserve",
-    tabWidth: 4,
+    overrides: [
+        {
+            files: "*.xml",
+            options: {
+                tabWidth: 4,
+            },
+        },
+
+    ],
 };
 
 module.exports = config;
