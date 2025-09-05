@@ -25,8 +25,9 @@ class MrpProduction(models.Model):
     sale_id = fields.Many2one("sale.order", string="Sale Order")
     sale_note = fields.Text("Sale Note", related="sale_id.internal_note", readonly=True)
     sale_date = fields.Datetime(
-        "Sale Date",
-        related="sale_id.date_order",
+        compute="_compute_sale_date",
+        store=True,
+        index=True,
         readonly=True,
     )
     active_rule_id = fields.Many2one("stock.rule", string="Active Rule")
@@ -53,6 +54,19 @@ class MrpProduction(models.Model):
         string="Similar MO Count",
         compute="_compute_similar_mo_ids",
     )
+
+    def _compute_sale_date(self):
+        """
+        Compute the sale date based on the related sale order or procurement group.
+        If neither is available, use the creation date of the production order.
+        """
+        for record in self:
+            if record.sale_id:
+                record.sale_date = record.sale_id.date_order
+            elif record.procurement_group_id:
+                record.sale_date = record.procurement_group_id.create_date
+            else:
+                record.sale_date = record.create_date
 
     def _compute_similar_mo_ids(self):
         for record in self:
@@ -336,6 +350,9 @@ class MrpProduction(models.Model):
                 # set urgent if available qty is less than 25% of minimum required qty
                 if total_available_qty < (total_minimum_qty * 0.25):
                     production.priority = "2"
+                    # Also set a dummy sale_date so any MTS production would be
+                    # ordered in production list.
+                    production.sale_date = fields.Datetime.now()
         return True
 
     def action_assign_reserved(self):

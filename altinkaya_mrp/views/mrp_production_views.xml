@@ -261,7 +261,7 @@
         <field name="arch" type="xml">
             <tree
                 decoration-bf="message_needaction==True"
-                default_order="priority desc,name asc"
+                default_order="priority desc,sale_date desc,name asc"
                 decoration-danger="date_planned_start&lt;current_date and state not in ('done','cancel')"
                 decoration-info="sale_id != False"
                 decoration-success="state=='progress'"
