@@ -25,3 +25,7 @@ class CrmPhonecall(models.Model):
     verimor_recording_url = fields.Char(
         string="Verimor Recording URL", help="URL for the Verimor call recording."
     )
+    verimor_call_data = fields.Text(
+        string="Verimor Call Raw Data",
+        help="Raw data received from Verimor for the call.",
+    )

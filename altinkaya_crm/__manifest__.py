@@ -16,6 +16,7 @@
         "sale",
         "partner_industry_secondary",
         "crm_phonecall",
+        "verimor_bulutsantralim_click2dial",
     ],
     "data": [
         "views/crm_lead_view.xml",

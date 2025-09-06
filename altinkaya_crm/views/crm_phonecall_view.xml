@@ -16,6 +16,7 @@
 
             <field name="description" position="after">
                 <field name="transcript" groups="base.group_system" />
+                <field name="verimor_call_data" groups="base.group_system" />
             </field>
         </field>
     </record>
