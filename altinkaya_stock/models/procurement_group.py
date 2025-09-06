@@ -24,7 +24,6 @@ class ProcurementGroup(models.Model):
         ]  # Start with empty recordset
         halted_procurements = self.search(
             [
-                ("sale_id", "=", False),
                 ("stock_move_ids.state", "not in", ["done", "cancel"]),
                 ("mrp_production_ids", "!=", False),
             ],
