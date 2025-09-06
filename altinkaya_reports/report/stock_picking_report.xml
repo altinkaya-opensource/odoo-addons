@@ -241,6 +241,7 @@
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
+                                        <th>QR</th>
                                         <th>
                                             <strong>Ürün</strong>
                                         </th>
@@ -268,6 +269,13 @@
                                 <tbody>
                                     <tr t-foreach="o.move_ids" t-as="move">
                                         <t>
+                                            <td t-if="move.draft_inspection_id">
+                                                <img
+                                                    t-att-src="'data:image/png;base64, %s' % (move.draft_inspection_id.qc_qr_150)"
+                                                    style="width:40px;height:40px;"
+                                                />
+                                            </td>
+
                                             <td>
                                                 <span style="font-size:13px;">
                                                     <t

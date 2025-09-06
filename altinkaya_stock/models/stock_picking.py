@@ -86,6 +86,23 @@ class StockPicking(models.Model):
         copy=True,
     )
 
+    halted_procurements = fields.Boolean(
+        store=False, search="_search_halted_procurements"
+    )
+
+    def _search_halted_procurements(self, operator, value):
+        if operator != "=":
+            return []
+
+        ProcurementGroup = self.env["procurement.group"]
+        halted_procurements = ProcurementGroup._get_halted_procurements()
+        if value:
+            pickings = self.search([("group_id", "in", halted_procurements.ids)])
+        else:
+            pickings = self.search([("group_id", "not in", halted_procurements.ids)])
+
+        return [("id", "in", pickings.ids)]
+
     @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         for record in self:

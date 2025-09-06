@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-16 12:54+0000\n"
-"PO-Revision-Date: 2025-07-16 12:54+0000\n"
+"POT-Creation-Date: 2025-09-06 07:28+0000\n"
+"PO-Revision-Date: 2025-09-06 07:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgstr ""
 
 #. module: altinkaya_stock
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "<span class=\"text-muted\">Mevcut / Tahmini:</span>"
+msgid "<span class=\"text-muted\">Mevcut / Uygun / Tahmini:</span>"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -138,6 +138,12 @@ msgid "Baski Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_baski
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_baski
+msgid "Baski Depo Rezervesiz"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_baski
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_baski
 msgid "Baski Depo Tahmini"
@@ -149,16 +155,15 @@ msgid "Baskı Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__block_autoinvoicing
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_users__block_autoinvoicing
-#: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__block_autoinvoicing
-msgid "Block Autoinvoicing"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_boya
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_boya
 msgid "Boya Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_boya
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_boya
+msgid "Boya Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -186,6 +191,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_cnc
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_cnc
 msgid "CNC Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_cnc
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_cnc
+msgid "CNC Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -239,11 +250,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_change_ids
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_change_ids
@@ -271,11 +282,11 @@ msgstr "Alterações do conjunto de alterações"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__changeset_ids
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__changeset_ids
@@ -317,22 +328,17 @@ msgid "Confirm"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model,name:altinkaya_stock.model_res_partner
-msgid "Contact"
-msgstr "Contacto"
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_changesets
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_changesets
@@ -360,11 +366,11 @@ msgstr "Contagem de conjuntos de alterações"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
@@ -392,11 +398,11 @@ msgstr "Conte as alterações pendentes do conjunto de alterações"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__count_pending_changesets
@@ -530,7 +536,13 @@ msgid "Enjeksiyon Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_enjek
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_enjeksiyon
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_enjeksiyon
+msgid "Enjeksiyon Depo Rezervesiz"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_virtual_enjeksiyon
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_virtual_enjeksiyon
 msgid "Enjeksiyon Depo Tahmini"
 msgstr ""
@@ -543,11 +555,6 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
 msgid "Exist package to bind the selected move lines to."
-msgstr ""
-
-#. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
-msgid "Fix Quant Reservation"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -578,6 +585,11 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__qty_outgoing_sincan
 msgid "Giden Sincan"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__halted_procurements
+msgid "Halted Procurements"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -667,6 +679,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_kaplama
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_kaplama
 msgid "Kaplama Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_kaplama
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_kaplama
+msgid "Kaplama Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -764,7 +782,6 @@ msgid "Merkez"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_product_tree_price_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_create_procurement_move_form
 msgid "Merkez Depo"
@@ -789,6 +806,7 @@ msgid "Merkez Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_merkez
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_merkez
 msgid "Merkez Depo Rezervesiz"
 msgstr ""
@@ -805,9 +823,20 @@ msgid "Merkez Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_product_tree_price_view
+msgid "Merkez Uygun"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_metal
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_metal
 msgid "Metal Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_metal
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_metal
+msgid "Metal Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -825,6 +854,12 @@ msgstr "Regra de Inventário Minimo"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_montaj
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_montaj
 msgid "Montaj Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_montaj
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_montaj
+msgid "Montaj Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1048,6 +1083,11 @@ msgid "Previous Purchases"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model,name:altinkaya_stock.model_procurement_group
+msgid "Procurement Group"
+msgstr "Grupo de Aprovisionamento"
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_product_template
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__product_id
 msgid "Product"
@@ -1261,7 +1301,6 @@ msgid "Sincan"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_product_tree_price_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_product_form_inherit_custom_available
 #: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_wizard_create_procurement_move_form
 msgid "Sincan Depo"
@@ -1286,6 +1325,7 @@ msgid "Sincan Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_sincan
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_sincan
 msgid "Sincan Depo Rezervesiz"
 msgstr ""
@@ -1302,17 +1342,22 @@ msgid "Sincan Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.product_product_tree_price_view
+msgid "Sincan Uygun"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__smart_search
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__smart_search
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__smart_search
@@ -1424,11 +1469,11 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_mrp_production__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_stock.field_procurement_group__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changeset_changes
-#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changeset_changes
@@ -1456,11 +1501,11 @@ msgstr "O número de alterações pendentes deste registo"
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_mrp_production__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_procurement_group__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_pending_changesets
-#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_pending_changesets
@@ -1488,11 +1533,11 @@ msgstr "O número de conjuntos de alterações pendentes deste registo"
 #: model:ir.model.fields,help:altinkaya_stock.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_make_mts_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_mrp_production__count_changesets
+#: model:ir.model.fields,help:altinkaya_stock.field_procurement_group__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_category__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_product__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_product_template_attribute_value__count_changesets
-#: model:ir.model.fields,help:altinkaya_stock.field_res_partner__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_inventory__count_changesets
@@ -1557,6 +1602,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_torna
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_available_torna
 msgid "Torna Depo Mevcut"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_unreserved_torna
+#: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__qty_unreserved_torna
+msgid "Torna Depo Rezervesiz"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1653,11 +1704,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_ir_actions_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_make_mts_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_stock.field_procurement_group__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_category__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_product__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_product_template_attribute_value__user_can_see_changeset
-#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_sale_order_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_inventory__user_can_see_changeset
