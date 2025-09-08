@@ -269,10 +269,12 @@
                                 <tbody>
                                     <tr t-foreach="o.move_ids" t-as="move">
                                         <t>
-                                            <td t-if="move.draft_inspection_id">
+                                            <td
+                                                t-if="move.draft_inspection_id.qr_image_256"
+                                            >
                                                 <img
-                                                    t-att-src="'data:image/png;base64, %s' % (move.draft_inspection_id.qc_qr_150)"
-                                                    style="width:40px;height:40px;"
+                                                    t-att-src="image_data_uri(move.draft_inspection_id.qr_image_256)"
+                                                    style="height:64px;width:64px;"
                                                 />
                                             </td>
 
