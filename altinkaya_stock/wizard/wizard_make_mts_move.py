@@ -27,18 +27,21 @@ class MakeMtsMove(models.TransientModel):
         moves_with_origs = moves_with_origs.filtered(
             lambda m: m.state not in ["done", "cancel"]
         )
+        # Exclude the current move from the moves to be cancelled
+        moves_with_origs = moves_with_origs - move_id
 
         moves_no_production = moves_with_origs.filtered(lambda m: not m.production_id)
         productions = moves_with_origs.mapped("production_id")
-        productions = productions.filtered(
+        productions_to_cancel = productions.filtered(
             lambda p: p.state not in ["progress", "done", "cancel"]
         )
-        for production in productions:
+        for production in productions_to_cancel:
             production.action_cancel()
         moves_no_production._action_cancel()
 
     def action_confirm(self):
         self.ensure_one()
+        # Save current propagate_cancel
         propagate_cancel = self.move_id.propagate_cancel
         # set the propagate field to False, so it will be possible to cancel the
         # moves separately.
