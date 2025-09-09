@@ -274,7 +274,7 @@
                                             >
                                                 <img
                                                     t-att-src="image_data_uri(move.draft_inspection_id.qr_image_256)"
-                                                    style="height:64px;width:64px;"
+                                                    style="height:50px;width:50px;"
                                                 />
                                             </td>
 
