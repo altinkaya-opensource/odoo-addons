@@ -245,7 +245,9 @@ class PrintPackBarcodeWizard(models.TransientModel):
         self.generate_labels()
         return (
             self.env.ref("product_label_print.label_product_product")
-            .with_context(active_model="print.pack.barcode.wiz")
+            .with_context(
+                **dict(self.env.context, active_model="print.pack.barcode.wiz")
+            )
             .report_action(docids=[self.id])
         )
 
@@ -256,12 +258,16 @@ class PrintPackBarcodeWizard(models.TransientModel):
         printer = self.env.user.context_def_label_printer
         if not printer:
             raise Warning(_("You need to set a label printer in order to print."))
+        report = self.env.ref("product_label_print.label_product_product").with_context(
+            **self.env.context
+        )
+        payload = report._render_qweb_text(
+            "product_label_print.label_product_product",
+            docids=[self.id],
+        )[0]
         printer.print_document(
             "product_label_print.label_product_product",
-            self.env.ref("product_label_print.label_product_product")._render_qweb_text(
-                "product_label_print.label_product_product",
-                docids=[self.id],
-            )[0],
+            payload,
             doc_form="txt",
         )
         return {"type": "ir.actions.act_window_close"}
