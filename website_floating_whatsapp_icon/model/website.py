@@ -20,9 +20,21 @@
 #############################################################################
 
 from odoo import fields, models
-
+import urllib
 
 class Website(models.Model):
     _inherit = "website"
 
     mobile_number = fields.Char(translate=True)
+    pre_filled_message = fields.Char(
+        translate=True, string="WhatsApp Pre-filled Message"
+    )
+
+    def get_whatsapp_url(self):
+        self.ensure_one()
+        if self.mobile_number:
+            number = self.mobile_number
+            message = self.pre_filled_message or ""
+            encoded_message = urllib.parse.quote(message)
+            return f"https://wa.me/{number}?text={encoded_message}"
+        return ""

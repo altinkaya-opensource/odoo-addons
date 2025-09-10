@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="mobile_number" />
+                <field name="pre_filled_message" />
             </field>
         </field>
     </record>
