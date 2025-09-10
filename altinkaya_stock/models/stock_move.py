@@ -1,5 +1,4 @@
-from odoo import _, fields, models
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -155,42 +154,6 @@ class StockMove(models.Model):
     #         "target": "new",
     #         "res_id": self.id,
     #     }
-
-    def action_open_first_orig_dest_move(self):
-        """
-        Open the detailed form view of the first origin move of the current move.
-        """
-        self.ensure_one()
-        if self._context.get("is_origin"):
-            move_id = self.domain_orig_move
-        else:
-            move_id = self.domain_dest_move
-        view = self.env.ref("stock.view_move_form")
-
-        if move_id.production_id or move_id.raw_material_production_id:
-            view = self.env.ref("mrp.mrp_production_form_view")
-            model = "mrp.production"
-            res_id = (move_id.production_id or move_id.raw_material_production_id).id
-
-        elif move_id.picking_id:
-            view = self.env.ref("stock.view_picking_form")
-            model = "stock.picking"
-            res_id = move_id.picking_id.id
-        else:
-            raise ValidationError(
-                _("No origin/destination move with production or picking found.")
-            )
-
-        return {
-            "name": _("Origin/Dest. Move"),
-            "type": "ir.actions.act_window",
-            "view_mode": "form",
-            "res_model": model,
-            "views": [(view.id, "form")],
-            "view_id": view.id,
-            "target": "current",
-            "res_id": res_id,
-        }
 
     def _action_assign_reserved(self):
         for move in self:
