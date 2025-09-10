@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-03 08:37+0000\n"
-"PO-Revision-Date: 2025-09-03 08:37+0000\n"
+"POT-Creation-Date: 2025-09-10 11:34+0000\n"
+"PO-Revision-Date: 2025-09-10 11:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,6 +40,11 @@ msgstr ""
 "<span class=\"o_stat_text\">\n"
 "                                Üretim Emirleri\n"
 "                        </span>"
+
+#. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "<span class=\"o_stat_text\">Similar MOs</span>"
+msgstr "<span class=\"o_stat_text\">Benzer Üre.</span>"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
@@ -280,13 +285,6 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_date
 msgid "Created on"
 msgstr "Oluşturulma Tarihi"
-
-#. module: altinkaya_mrp
-#: model:ir.model.fields,help:altinkaya_mrp.field_mrp_production__sale_date
-msgid ""
-"Creation date of draft/sent orders,\n"
-"Confirmation date of confirmed orders."
-msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__cycle_nbr
@@ -755,6 +753,13 @@ msgstr "Sıra"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__similar_mo_count
 msgid "Similar MO Count"
 msgstr "Benzer Üretim Sayısı"
+
+#. module: altinkaya_mrp
+#. odoo-python
+#: code:addons/altinkaya_mrp/models/mrp_production.py:0
+#, python-format
+msgid "Similar Manufacturing Orders"
+msgstr "Benzer Üretim Emirleri"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__similar_mo_ids

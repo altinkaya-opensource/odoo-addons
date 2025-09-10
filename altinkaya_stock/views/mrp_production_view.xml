@@ -327,7 +327,7 @@
                     name="action_open_first_orig_dest_move"
                     type="object"
                     context="{'is_origin': True}"
-                    icon="fa-arrow-left"
+                    icon="fa-2x fa-arrow-left"
                     title="Origin Move"
                 />
                 <button
@@ -335,7 +335,7 @@
                     name="action_open_first_orig_dest_move"
                     type="object"
                     context="{'is_origin': False}"
-                    icon="fa-arrow-right"
+                    icon="fa-2x fa-arrow-right"
                     title="Origin Move"
                 />
                 <button

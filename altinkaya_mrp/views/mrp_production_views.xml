@@ -18,6 +18,12 @@
                 <page name="finished_products" string="Finished Products">
                     <field name="move_finished_ids" nolabel="1" readonly="1">
                         <tree>
+                            <field name="domain_orig_move" invisible="1" />
+                            <field name="domain_dest_move" invisible="1" />
+                            <field name="domain_orig_move_production" invisible="1" />
+                            <field name="domain_orig_move_picking" invisible="1" />
+                            <field name="domain_dest_move_production" invisible="1" />
+                            <field name="domain_dest_move_picking" invisible="1" />
                             <field name="product_id" />
                             <field
                                 name="product_qty"
@@ -26,6 +32,22 @@
                             />
                             <field name="location_dest_id" />
                             <field name="state" />
+                            <button
+                                attrs="{'invisible': ['|', ('domain_orig_move', '=', False), '&amp;',('domain_orig_move_picking', '=', False), ('domain_orig_move_production', '=', False)]}"
+                                name="action_open_first_orig_dest_move"
+                                type="object"
+                                context="{'is_origin': True}"
+                                icon="fa-2x fa-arrow-left"
+                                title="Origin Move"
+                            />
+                            <button
+                                attrs="{'invisible': ['|', ('domain_dest_move', '=', False), '&amp;',('domain_dest_move_picking', '=', False), ('domain_dest_move_production', '=', False)]}"
+                                name="action_open_first_orig_dest_move"
+                                type="object"
+                                context="{'is_origin': False}"
+                                icon="fa-2x fa-arrow-right"
+                                title="Origin Move"
+                            />
                         </tree>
                     </field>
                 </page>
