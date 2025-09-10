@@ -65,6 +65,26 @@
                 />
             </xpath>
 
+            <xpath
+                expr="//button[@name='action_view_reception_report']"
+                position="after"
+            >
+                <button
+                    class="oe_stat_button"
+                    name="action_open_similar_mo"
+                    type="object"
+                    icon="fa-code-fork"
+                    attrs="{'invisible': [('similar_mo_count', '=', 0)]}"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="similar_mo_count" />
+                        </span>
+                        <span class="o_stat_text">Similar MOs</span>
+                    </div>
+                </button>
+            </xpath>
+
             <!-- <xpath expr="//button[@name='post_inventory']" position="replace">
 <button name="post_inventory" string="Post Inventory" type="object" attrs="{'invisible': [('post_visible', '=', False)]}"></button>
 </xpath> -->

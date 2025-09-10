@@ -74,11 +74,28 @@ class MrpProduction(models.Model):
                 [
                     ("product_id", "=", record.product_id.id),
                     ("state", "not in", ["done", "cancel"]),
-                    ("id", "!=", record.id),
+                    # ("id", "!=", record.id),
                 ]
             )
             record.similar_mo_ids = similar_mos
             record.similar_mo_count = len(similar_mos)
+
+    def action_open_similar_mo(self):
+        self.ensure_one()
+        return {
+            "name": _("Similar Manufacturing Orders"),
+            "type": "ir.actions.act_window",
+            "view_mode": "tree,form",
+            "res_model": "mrp.production",
+            "views": [
+                (
+                    self.env.ref("altinkaya_mrp.mrp_production_tree_without_route").id,
+                    "tree",
+                )
+            ],
+            "domain": [("id", "in", self.similar_mo_ids.ids)],
+            "context": self.env.context,
+        }
 
     def _generate_moves(self):
         if self.env.context.get("context", {}).get("migration", False):

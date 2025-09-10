@@ -1,4 +1,5 @@
 from odoo import _, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -11,6 +12,22 @@ class StockMove(models.Model):
     qty_available_merkez = fields.Float(
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
+
+    first_orig_move = fields.Many2one(
+        "stock.move",
+        compute="_compute_first_orig_dest_move",
+        help="This field attended to use it in domain.",
+    )
+
+    first_dest_move = fields.Many2one(
+        "stock.move",
+        compute="_compute_first_orig_dest_move",
+    )
+
+    def _compute_first_orig_dest_move(self):
+        for move in self:
+            move.first_orig_move = fields.first(move.move_orig_ids)
+            move.first_dest_move = fields.first(move.move_dest_ids)
 
     # def force_assign(self, moves):
     #     for move in moves:
@@ -136,23 +153,59 @@ class StockMove(models.Model):
                 orig_moves._action_assign(force_qty=force_qty)
         return res
 
-    def action_open_detailed_form(self):
+    # def action_open_detailed_form(self):
+    #     """
+    #     Open the detailed form view of the move lines of the current move.
+    #     """
+    #     self.ensure_one()
+
+    #     view = self.env.ref("stock.view_move_form")
+
+    #     return {
+    #         "name": _("Stock Move"),
+    #         "type": "ir.actions.act_window",
+    #         "view_mode": "form",
+    #         "res_model": "stock.move",
+    #         "views": [(view.id, "form")],
+    #         "view_id": view.id,
+    #         "target": "new",
+    #         "res_id": self.id,
+    #     }
+
+    def action_open_first_orig_dest_move(self):
         """
-        Open the detailed form view of the move lines of the current move.
+        Open the detailed form view of the first origin move of the current move.
         """
         self.ensure_one()
-
+        if self._context.get("is_origin"):
+            move_id = self.first_orig_move
+        else:
+            move_id = self.first_dest_move
         view = self.env.ref("stock.view_move_form")
 
+        if move_id.production_id or move_id.raw_material_production_id:
+            view = self.env.ref("mrp.mrp_production_form_view")
+            model = "mrp.production"
+            res_id = (move_id.production_id or move_id.raw_material_production_id).id
+
+        elif move_id.picking_id:
+            view = self.env.ref("stock.view_picking_form")
+            model = "stock.picking"
+            res_id = move_id.picking_id.id
+        else:
+            raise ValidationError(
+                _("No origin/destination move with production or picking found.")
+            )
+
         return {
-            "name": _("Stock Move"),
+            "name": _("Origin/Dest. Move"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
-            "res_model": "stock.move",
+            "res_model": model,
             "views": [(view.id, "form")],
             "view_id": view.id,
-            "target": "new",
-            "res_id": self.id,
+            "target": "current",
+            "res_id": res_id,
         }
 
     def _action_assign_reserved(self):

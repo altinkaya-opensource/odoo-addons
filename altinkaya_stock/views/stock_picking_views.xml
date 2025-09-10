@@ -45,6 +45,8 @@
                 expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
                 position="after"
             >
+                <field name="first_orig_move" invisible="1" />
+                <field name="first_dest_move" invisible="1" />
                 <field
                     name="qty_available_merkez"
                     string="Merkez"
@@ -57,11 +59,27 @@
                     widget="uom"
                     options="{'uom_field': 'product_uom'}"
                 />
-                <button
+                <!-- <button
                     name="action_open_detailed_form"
                     type="object"
                     icon="fa-eye"
                     title="Move Details"
+                /> -->
+                <button
+                    attrs="{'invisible': ['|', ('first_orig_move', '=', False), '&amp;',('first_orig_move.picking_id', '=', False), ('first_orig_move.production_id', '=', False)]}"
+                    name="action_open_first_orig_dest_move"
+                    type="object"
+                    context="{'is_origin': True}"
+                    icon="fa-arrow-left"
+                    title="Origin Move"
+                />
+                <button
+                    attrs="{'invisible': ['|', ('first_dest_move', '=', False), '&amp;',('first_dest_move.picking_id', '=', False), ('first_dest_move.production_id', '=', False)]}"
+                    name="action_open_first_orig_dest_move"
+                    type="object"
+                    context="{'is_origin': False}"
+                    icon="fa-arrow-right"
+                    title="Origin Move"
                 />
                 <button
                     name="action_create_procurement"
