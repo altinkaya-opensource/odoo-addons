@@ -35,7 +35,9 @@ AT,21,213,56,56,0,0E,0,0,<t
                     t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
                 /> <t t-esc="label.label1.uom_name or ''" />
 </t>
+<t t-if="not o.env.context.get('has_inspection')">
 BE,24,271,3,8,93,0,1,<t t-esc="label.label1.barcode or ''" />
+</t>
 BQ,44,2,3,10,68,0,0,<t t-esc="label.label1.lot_id.name or ''" />
 AB,266,243,1,1,0,0,Lot <t t-esc="label.label1.lot_id.name or ''" />
 </t>
@@ -53,7 +55,9 @@ AT,439,212,56,56,0,0E,0,0,<t
                     t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
                 /> <t t-esc="label.label2.uom_name or ''" />
 </t>
+<t t-if="not o.env.context.get('has_inspection')">
 BE,442,270,3,8,93,0,1,<t t-esc="label.label2.barcode or ''" />
+</t>
 BQ,462,1,3,10,68,0,0,<t t-esc="label.label2.lot_id.name or ''" />
 AB,684,242,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''" />
 </t>
@@ -90,7 +94,9 @@ AT,46,345,79,79,0,0E,0,0,<t
                     t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
                 /> <t t-esc="label.label1.uom_name or ''" />
 </t>
+<t t-if="not o.env.context.get('has_inspection')">
 BE,30,431,5,12,123,0,1,<t t-esc="label.label1.barcode or ''" />
+</t>
 BQ,76,26,5,12,106,0,0,<t t-esc="label.label1.lot_id.name or ''" />
 AD,399,381,1,1,0,0,Lot <t t-esc="label.label1.lot_id.name or ''" />
 </t>
@@ -109,7 +115,9 @@ AT,672,345,79,79,0,0E,0,0,<t
                     t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
                 /> <t t-esc="label.label2.uom_name or ''" />
 </t>
+<t t-if="not o.env.context.get('has_inspection')">
 BE,656,431,5,12,123,0,1,<t t-esc="label.label2.barcode or ''" />
+</t>
 BQ,702,26,5,12,106,0,0,<t t-esc="label.label2.lot_id.name or ''" />
 AD,1025,381,1,1,0,0,Lot <t t-esc="label.label2.lot_id.name or ''" />
 </t>
