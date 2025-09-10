@@ -14,7 +14,7 @@
         "sale",
         "hr",
         "mrp_sale_info",
-        "altinkaya_stock",
+        "stock_related_move_shortcut",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -13,54 +13,6 @@ class StockMove(models.Model):
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
 
-    domain_orig_move = fields.Many2one(
-        "stock.move",
-        compute="_compute_domain_fields",
-    )
-    domain_dest_move = fields.Many2one(
-        "stock.move",
-        compute="_compute_domain_fields",
-    )
-    domain_orig_move_production = fields.Many2one(
-        "mrp.production",
-        compute="_compute_domain_fields",
-    )
-    domain_orig_move_picking = fields.Many2one(
-        "stock.picking",
-        compute="_compute_domain_fields",
-    )
-    domain_dest_move_production = fields.Many2one(
-        "mrp.production",
-        compute="_compute_domain_fields",
-    )
-    domain_dest_move_picking = fields.Many2one(
-        "stock.picking",
-        compute="_compute_domain_fields",
-    )
-
-    def _compute_domain_fields(self):
-        for move in self:
-            # Start with empty values
-            move.domain_orig_move_production = False
-            move.domain_orig_move_picking = False
-            move.domain_dest_move_production = False
-            move.domain_dest_move_picking = False
-            # Get the first origin and destination moves
-            move.domain_orig_move = fields.first(move.move_orig_ids)
-            move.domain_dest_move = fields.first(move.move_dest_ids)
-            if move.domain_orig_move:
-                move.domain_orig_move_production = (
-                    move.domain_orig_move.production_id
-                    or move.domain_orig_move.raw_material_production_id
-                )
-                move.domain_orig_move_picking = move.domain_orig_move.picking_id
-            if move.domain_dest_move:
-                move.domain_dest_move_production = (
-                    move.domain_dest_move.production_id
-                    or move.domain_dest_move.raw_material_production_id
-                )
-                move.domain_dest_move_picking = move.domain_dest_move.picking_id
-
     # def force_assign(self, moves):
     #     for move in moves:
     #         move.move_line_ids.create(
