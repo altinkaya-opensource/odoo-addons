@@ -36,5 +36,5 @@ class Website(models.Model):
             number = self.mobile_number
             message = self.pre_filled_message or ""
             encoded_message = urllib.parse.quote(message)
-            return f"https://wa.me/{number}?text={encoded_message}"
+            return f"https://api.whatsapp.com/send?phone={number}&text={encoded_message}"
         return ""
