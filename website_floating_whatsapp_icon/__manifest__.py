@@ -36,7 +36,7 @@
     "images": ["static/description/banner.png"],
     "assets": {
         "web.assets_frontend": [
-            "/website_floating_whatsapp_icon/static/src/css/whatsapp.css",
+            "/website_floating_whatsapp_icon/static/src/css/whatsapp.scss",
         ],
     },
     "license": "LGPL-3",
