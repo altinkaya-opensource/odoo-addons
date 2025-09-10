@@ -45,8 +45,12 @@
                 expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
                 position="after"
             >
-                <field name="first_orig_move" invisible="1" />
-                <field name="first_dest_move" invisible="1" />
+                <field name="domain_orig_move" invisible="1" />
+                <field name="domain_dest_move" invisible="1" />
+                <field name="domain_orig_move_production" invisible="1" />
+                <field name="domain_orig_move_picking" invisible="1" />
+                <field name="domain_dest_move_production" invisible="1" />
+                <field name="domain_dest_move_picking" invisible="1" />
                 <field
                     name="qty_available_merkez"
                     string="Merkez"
@@ -66,7 +70,7 @@
                     title="Move Details"
                 /> -->
                 <button
-                    attrs="{'invisible': ['|', ('first_orig_move', '=', False), '&amp;',('first_orig_move.picking_id', '=', False), ('first_orig_move.production_id', '=', False)]}"
+                    attrs="{'invisible': ['|', ('domain_orig_move', '=', False), '&amp;',('domain_orig_move_picking', '=', False), ('domain_orig_move_production', '=', False)]}"
                     name="action_open_first_orig_dest_move"
                     type="object"
                     context="{'is_origin': True}"
@@ -74,7 +78,7 @@
                     title="Origin Move"
                 />
                 <button
-                    attrs="{'invisible': ['|', ('first_dest_move', '=', False), '&amp;',('first_dest_move.picking_id', '=', False), ('first_dest_move.production_id', '=', False)]}"
+                    attrs="{'invisible': ['|', ('domain_dest_move', '=', False), '&amp;',('domain_dest_move_picking', '=', False), ('domain_dest_move_production', '=', False)]}"
                     name="action_open_first_orig_dest_move"
                     type="object"
                     context="{'is_origin': False}"
