@@ -91,7 +91,11 @@ class MrpProduction(models.Model):
                 (
                     self.env.ref("altinkaya_mrp.mrp_production_tree_without_route").id,
                     "tree",
-                )
+                ),
+                (
+                    self.env.ref("mrp.mrp_production_form_view").id,
+                    "form",
+                ),
             ],
             "domain": [("id", "in", self.similar_mo_ids.ids)],
             "context": self.env.context,

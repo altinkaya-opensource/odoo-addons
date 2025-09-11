@@ -51,14 +51,14 @@
                         </tree>
                     </field>
                 </page>
-                <page name="similar_productions" string="Similar Productions">
+                <!-- <page name="similar_productions" string="Similar Productions">
                     <field
                         name="similar_mo_ids"
                         nolabel="1"
                         readonly="1"
                         context="{'tree_view_ref': 'altinkaya_mrp.mrp_production_tree_without_route'}"
                     />
-                </page>
+                </page> -->
             </xpath>
 
             <xpath expr="//button/field[@name='product_qty']" position="attributes">
