@@ -47,4 +47,5 @@
             "altinkaya_account/static/src/xml/reconcile.xml",
         ],
     },
+    "external_dependencies": {"python": ["openpyxl"]},
 }

@@ -3,14 +3,10 @@ from datetime import date as dt_date
 from datetime import datetime
 from io import BytesIO
 
+from openpyxl import load_workbook
+
 from odoo import _, fields, models
 from odoo.exceptions import UserError
-
-try:
-    from openpyxl import load_workbook
-except Exception:
-    load_workbook = None
-
 
 COL_ACCOUNT = 0
 COL_DATE = 1
@@ -74,10 +70,6 @@ class AccountAccrualUploadWizard(models.TransientModel):
     )
 
     def _load_active_sheet(self):
-        if not load_workbook:
-            raise UserError(
-                _("Python package 'openpyxl' is required to read .xlsx files.")
-            )
         if not self.data_file:
             raise UserError(_("Please upload an .xlsx file."))
 
