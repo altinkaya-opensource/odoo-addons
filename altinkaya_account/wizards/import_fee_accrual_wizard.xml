@@ -40,7 +40,7 @@
     <menuitem
         id="menu_accrual_upload_root"
         name="Upload Fee Accrual"
-        parent="account.account_invoicing_menu"
+        parent="account.menu_finance_entries"
         action="action_accrual_upload_wizard"
         sequence="95"
     />
