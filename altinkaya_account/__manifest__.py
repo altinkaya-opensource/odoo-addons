@@ -39,6 +39,7 @@
         "views/res_config_settings.xml",
         "wizards/create_currency_difference_invoice.xml",
         "wizards/create_currency_valuation_move.xml",
+        "wizards/import_fee_accrual_wizard.xml",
     ],
     "assets": {
         "web.assets_backend": [
@@ -46,4 +47,5 @@
             "altinkaya_account/static/src/xml/reconcile.xml",
         ],
     },
+    "external_dependencies": {"python": ["openpyxl"]},
 }
