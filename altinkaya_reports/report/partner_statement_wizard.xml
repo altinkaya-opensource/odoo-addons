@@ -189,17 +189,17 @@
                                 </td>
                                 <td class="text-right" style="padding:0;">
                                     <span
-                                        t-raw="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
+                                        t-out="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
                                     />
                                 </td>
                                 <td class="text-right" style="padding:0;">
                                     <span
-                                        t-raw="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
+                                        t-out="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
                                     />
                                 </td>
                                 <td class="text-right" style="padding:0;">
                                     <span
-                                        t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
+                                        t-out="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
                                     />
 
                                     <!-- t-options='{"widget": "monetary", "display_currency": None}' -->
