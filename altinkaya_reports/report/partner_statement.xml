@@ -230,17 +230,17 @@
                     </td>
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
                         />
                         <!-- t-options='{"widget": "monetary", "display_currency": None}' -->
                     </td>
@@ -338,12 +338,12 @@
 
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['amount_currency'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['amount_currency'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['currency_balance'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['currency_balance'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-center" style="min-width:15px">
@@ -351,17 +351,17 @@
                     </td>
 
                     <td class="text-end">
-                        <span t-raw="number_lang.format('%.5f', s['currency_rate'])" />
+                        <span t-out="number_lang.format('%.5f', s['currency_rate'])" />
                     </td>
 
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['amount'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['amount'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-end">
                         <span
-                            t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
+                            t-out="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
                         />
                     </td>
                     <td class="text-center" style="min-width:15px">
