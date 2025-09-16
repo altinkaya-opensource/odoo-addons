@@ -100,7 +100,6 @@ $wa-breakpoint-tablet: 1024px;
     // Hover state
     &:hover {
         background: linear-gradient(135deg, $wa-color-hover 0%, $wa-color-active 100%);
-        transform: translateY(-2px);
         @include wa-button-shadow($wa-shadow-opacity-hover, $wa-shadow-blur-hover);
         text-decoration: none;
         color: $wa-color-white;
