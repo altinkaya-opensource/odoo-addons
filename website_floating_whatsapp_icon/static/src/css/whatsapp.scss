@@ -48,179 +48,180 @@ $wa-breakpoint-tablet: 1024px;
 
 // Mixins
 @mixin wa-transition($properties...) {
-    transition: $properties;
+  transition: $properties;
 }
 
 @mixin wa-flex-center($gap: 10px) {
-    display: inline-flex;
-    align-items: center;
-    gap: $gap;
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
 }
 
 @mixin wa-button-shadow($opacity: $wa-shadow-opacity, $blur: $wa-shadow-blur) {
-    box-shadow: 0 4px $blur rgba($wa-color-primary, $opacity);
+  box-shadow: 0 4px $blur rgba($wa-color-primary, $opacity);
 }
 
 // Pulse animation
 @keyframes wa-pulse {
-    0% {
-        box-shadow: 0 4px $wa-shadow-blur rgba($wa-color-primary, $wa-shadow-opacity);
-    }
-    50% {
-        box-shadow: 0 4px 25px rgba($wa-color-primary, 0.5);
-    }
-    100% {
-        box-shadow: 0 4px $wa-shadow-blur rgba($wa-color-primary, $wa-shadow-opacity);
-    }
+  0% {
+    box-shadow: 0 4px $wa-shadow-blur rgba($wa-color-primary, $wa-shadow-opacity);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba($wa-color-primary, 0.5);
+  }
+  100% {
+    box-shadow: 0 4px $wa-shadow-blur rgba($wa-color-primary, $wa-shadow-opacity);
+  }
 }
 
 // Main WhatsApp Button
 .cy_whatsapp_web {
-    position: fixed;
-    bottom: $wa-spacing-desktop;
-    right: $wa-spacing-desktop;
-    background: linear-gradient(135deg, $wa-color-primary 0%, $wa-color-hover 100%);
-    color: $wa-color-white;
-    padding: $wa-padding-desktop;
-    border-radius: $wa-radius-desktop;
+  position: fixed;
+  bottom: $wa-spacing-desktop;
+  right: $wa-spacing-desktop;
+  background: linear-gradient(135deg, $wa-color-primary 0%, $wa-color-hover 100%);
+  color: $wa-color-white;
+  padding: $wa-padding-desktop;
+  border-radius: $wa-radius-desktop;
+  text-decoration: none;
+  @include wa-flex-center();
+  font-size: $wa-font-size-base;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  @include wa-button-shadow();
+  z-index: $wa-z-index;
+  @include wa-transition(
+    all $wa-transition-duration ease,
+    bottom $wa-transition-bottom cubic-bezier(0.4, 0, 0.2, 1)
+  );
+  white-space: nowrap;
+  animation: wa-pulse $wa-animation-duration infinite;
+
+  // Hover state
+  &:hover {
+    background: linear-gradient(135deg, $wa-color-hover 0%, $wa-color-active 100%);
+    @include wa-button-shadow($wa-shadow-opacity-hover, $wa-shadow-blur-hover);
     text-decoration: none;
-    @include wa-flex-center();
-    font-size: $wa-font-size-base;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    @include wa-button-shadow();
-    z-index: $wa-z-index;
-    @include wa-transition(
-        all $wa-transition-duration ease,
-        bottom $wa-transition-bottom cubic-bezier(0.4, 0, 0.2, 1)
-    );
-    white-space: nowrap;
-    animation: wa-pulse $wa-animation-duration infinite;
+    color: $wa-color-white;
+    animation: none;
 
-    // Hover state
-    &:hover {
-        background: linear-gradient(135deg, $wa-color-hover 0%, $wa-color-active 100%);
-        @include wa-button-shadow($wa-shadow-opacity-hover, $wa-shadow-blur-hover);
-        text-decoration: none;
-        color: $wa-color-white;
-        animation: none;
-
-        .cy-icon {
-            transform: scale(1.1);
-        }
-    }
-
-    // Active state
-    &:active {
-        transform: translateY(0);
-    }
-
-    // Adjust position when back-to-top button is visible
-    &.whatsapp-shifted {
-        bottom: $wa-spacing-shifted !important;
-
-        @media (max-width: $wa-breakpoint-mobile) {
-            bottom: $wa-spacing-shifted-mobile !important;
-        }
-    }
-
-    // Icon styles
     .cy-icon {
-        font-size: $wa-icon-size-desktop;
-        color: $wa-color-white;
-        display: flex;
-        align-items: center;
-        @include wa-transition(transform $wa-transition-duration ease);
+      transform: scale(1.1);
     }
+  }
 
-    // Text styles
-    .cy-whatsapp-text {
-        color: $wa-color-white;
-        letter-spacing: 0.3px;
-    }
+  // Active state
+  &:active {
+    transform: translateY(0);
+  }
 
-    // Mobile responsive
+  // Adjust position when back-to-top button is visible
+  &.whatsapp-shifted {
+    bottom: $wa-spacing-shifted !important;
+
     @media (max-width: $wa-breakpoint-mobile) {
-        padding: $wa-padding-mobile;
-        border-radius: $wa-radius-mobile;
-        bottom: $wa-spacing-mobile-bottom;
-        right: $wa-spacing-mobile;
-        gap: 0;
+      bottom: $wa-spacing-shifted-mobile !important;
+    }
+  }
 
-        .cy-whatsapp-text {
-            display: none;
-        }
+  // Icon styles
+  .cy-icon {
+    font-size: $wa-icon-size-desktop;
+    color: $wa-color-white;
+    display: flex;
+    align-items: center;
+    @include wa-transition(transform $wa-transition-duration ease);
+  }
 
-        .cy-icon {
-            font-size: $wa-icon-size-mobile;
-            margin: 0;
-        }
+  // Text styles
+  .cy-whatsapp-text {
+    color: $wa-color-white;
+    letter-spacing: 0.3px;
+  }
+
+  // Mobile responsive
+  @media (max-width: $wa-breakpoint-mobile) {
+    padding: $wa-padding-mobile;
+    border-radius: $wa-radius-mobile;
+    bottom: $wa-spacing-mobile-bottom;
+    right: $wa-spacing-mobile;
+    gap: 0;
+
+    .cy-whatsapp-text {
+      display: none;
     }
 
-    // Tablet responsive
-    @media (min-width: #{$wa-breakpoint-mobile + 1px}) and (max-width: $wa-breakpoint-tablet) {
-        padding: $wa-padding-tablet;
-        font-size: $wa-font-size-tablet;
-
-        .cy-icon {
-            font-size: $wa-icon-size-tablet;
-        }
+    .cy-icon {
+      font-size: $wa-icon-size-mobile;
+      margin: 0;
     }
+  }
+
+  // Tablet responsive
+  @media (min-width: #{$wa-breakpoint-mobile + 1px}) and (max-width: $wa-breakpoint-tablet) {
+    padding: $wa-padding-tablet;
+    font-size: $wa-font-size-tablet;
+
+    .cy-icon {
+      font-size: $wa-icon-size-tablet;
+    }
+  }
 }
 
 // Additional support features
 .cy_whatsapp_web {
-    // Dark mode support
-    @media (prefers-color-scheme: dark) {
-        @include wa-button-shadow($wa-shadow-opacity-hover, $wa-shadow-blur-hover);
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    @include wa-button-shadow($wa-shadow-opacity-hover, $wa-shadow-blur-hover);
+  }
+
+  // Reduced motion support for accessibility
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    @include wa-transition(none);
+
+    &:hover {
+      transform: none;
     }
 
-    // Reduced motion support for accessibility
-    @media (prefers-reduced-motion: reduce) {
-        animation: none;
-        @include wa-transition(none);
-
-        &:hover {
-            transform: none;
-        }
-
-        .cy-icon {
-            @include wa-transition(none);
-        }
+    .cy-icon {
+      @include wa-transition(none);
     }
+  }
 }
 
 // Optional: Additional button variants
 .cy_whatsapp_web {
-    // Minimal style variant
-    &.minimal {
-        background: $wa-color-primary;
-        box-shadow: 0 2px 8px rgba($wa-color-primary, $wa-shadow-opacity);
+  // Minimal style variant
+  &.minimal {
+    background: $wa-color-primary;
+    box-shadow: 0 2px 8px rgba($wa-color-primary, $wa-shadow-opacity);
 
-        &:hover {
-            background: $wa-color-hover;
-        }
+    &:hover {
+      background: $wa-color-hover;
+    }
+  }
+
+  // Outline style variant
+  &.outline {
+    background: transparent;
+    border: 2px solid $wa-color-primary;
+    color: $wa-color-primary;
+
+    .cy-icon,
+    .cy-whatsapp-text {
+      color: $wa-color-primary;
     }
 
-    // Outline style variant
-    &.outline {
-        background: transparent;
-        border: 2px solid $wa-color-primary;
-        color: $wa-color-primary;
+    &:hover {
+      background: $wa-color-primary;
+      color: $wa-color-white;
 
-        .cy-icon,
-        .cy-whatsapp-text {
-            color: $wa-color-primary;
-        }
-
-        &:hover {
-            background: $wa-color-primary;
-            color: $wa-color-white;
-
-            .cy-icon,
-            .cy-whatsapp-text {
-                color: $wa-color-white;
-            }
-        }
+      .cy-icon,
+      .cy-whatsapp-text {
+        color: $wa-color-white;
+      }
     }
+  }
 }

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<template
-    id="ChatToCompany"
-    name="Chat With Company"
-    inherit_id="web.frontend_layout"
->
-    <xpath expr="//header[@id='top']" position="before">
-        <a
-            t-att-href="website.get_whatsapp_url()"
-            class="cy_whatsapp_web"
-            target="_blank"
-            rel="noopener"
-        >
-            <i class="fa fa-whatsapp cy-icon" />
-            <span class="cy-whatsapp-text">Chat with us</span>
-        </a>
-    </xpath>
-</template>
+    <template
+        id="ChatToCompany"
+        name="Chat With Company"
+        inherit_id="web.frontend_layout"
+    >
+        <xpath expr="//header[@id='top']" position="before">
+            <a
+                t-att-href="website.get_whatsapp_url()"
+                class="cy_whatsapp_web"
+                target="_blank"
+                rel="noopener"
+            >
+                <i class="fa fa-whatsapp cy-icon" />
+                <span class="cy-whatsapp-text">Chat with us</span>
+            </a>
+        </xpath>
+    </template>
 </odoo>
