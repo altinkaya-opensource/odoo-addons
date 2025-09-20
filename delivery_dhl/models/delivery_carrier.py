@@ -545,8 +545,11 @@ class DeliveryCarrier(models.Model):
 
             picking.invoice_ids.filtered(lambda m: m.state == "posted")[0].message_post(
                 body=_(
-                    "DHL Pickup scheduled for <strong>%(pickup_date)s</strong>.",
+                    "DHL Pickup scheduled for <strong>%(pickup_date)s</strong>. Pickup"
+                    " dispatch confirmation number: <strong>%(confirmation_number)s"
+                    "</strong>.",
                     pickup_date=self._prepare_dhl_estimated_pickup_date(),
+                    confirmation_number=shipment_data["dispatchConfirmationNumber"],
                 )
             )
 
