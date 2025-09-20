@@ -131,7 +131,8 @@ class DeliveryCarrier(models.Model):
                 "ReceiverName": picking.partner_id.display_name[
                     :100
                 ],  # Aras Kargo has a 100 characters limit for receiver name
-                "ReceiverAddress": self._aras_address(picking.partner_id),
+                # Aras Kargo has a 250 characters limit for receiver address
+                "ReceiverAddress": self._aras_address(picking.partner_id)[:250],
                 "ReceiverPhone1": self._aras_phone_number(
                     picking.partner_id, priority="mobile"
                 ),
