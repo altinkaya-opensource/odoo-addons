@@ -30,7 +30,7 @@ _IYZICO_INSTALLMENT_OPTIONS_URL = "/payment/iyzico/installment_options"
 class iyzicoCoontroller(http.Controller):
     @http.route(_IYZICO_INSTALLMENT_OPTIONS_URL, type="json", auth="public")
     def iyzico_installment_options(
-        self, card_number, amount, access_token, partner_id, provider_id
+        self, card_number, amount, access_token, partner_id, provider_id, currency_id
     ):
         """Fetch installment options for a given card number and amount.
 
@@ -48,16 +48,19 @@ class iyzicoCoontroller(http.Controller):
             [("access_token", "=", access_token), ("partner_id", "=", partner_id)],
             limit=1,
         )
+        partner_id = request.env["res.partner"].browse(partner_id)
+        temp_currency_id = request.env["res.currency"].browse(currency_id)
         provider_sudo = (
             request.env["payment.provider"].sudo().browse(provider_id).exists()
         )
         try:
-            order.ensure_one()
             installment_options = provider_sudo.iyzico_check_installment(
                 card_number,
                 amount,
                 order,
                 request.env["payment.transaction"],  # dummy recordset
+                temp_currency_id,
+                partner_id,
             )
             response["status"] = "success"
             response["installment_options"] = installment_options

@@ -31,6 +31,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             );
             this._bindCardFormatterAndInstallmentLoader();
             this._bindInstallmentSelectionHandlers();
+            this._bindOrderTotalObserver();
             this._iyzicoInstallmentEnabled = $("#iyzico-form [name='iyzico_installment_enabled']").val() === 'True';
             return res;
         },
@@ -169,6 +170,26 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
         },
 
         /**
+         * Bind observer for order total changes to update installment options.
+         */
+        _bindOrderTotalObserver: function () {
+            if ($('#order_total').length === 0) return;
+
+            this._orderTotalObserver = new MutationObserver(() => {
+                if (this._lastCardNumber && !$('#iyzico-installments').hasClass('d-none')) {
+                    $('#iyzico-installments').addClass('d-none');
+                    this._loadInstallmentOptions(this._lastCardNumber);
+                }
+            });
+
+            this._orderTotalObserver.observe($('#order_total')[0], {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        },
+
+        /**
          * Installments
          */
         /**
@@ -235,20 +256,20 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             const $container = $('#installment-options-container');
 
             if ($section.hasClass('d-none') === false && this._lastCardNumber === cardNumber) {
-                // already loaded for this card
+                // Already loaded for this card
                 $container.find('.iyzico-loading').remove();
                 return;
             }
 
             this._lastCardNumber = cardNumber;
 
-            // set title and subtitle
+            // Set title and subtitle
             $('#installment-title').text(_t('Installment Options'));
             $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
 
             const errorMessage = _t('Unable to load installment options. Please try again.');
 
-            // real call
+            // Real call
             return rpc.query({
                 route: '/payment/iyzico/installment_options',
                 params: {
@@ -257,7 +278,8 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     access_token: this.txContext.accessToken,
                     partner_id: this.txContext.partnerId,
                     provider_id: parseInt($("#iyzico-form [name='iyzico_provider_id']").val(), 10),
-
+                    tx_ref: this.txContext.referencePrefix,
+                    currency_id: this.txContext.currencyId,
                 },
             }).then(data => {
                 $container.find('.iyzico-loading').remove();
@@ -333,7 +355,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     }
                     else {
                         // non-3DS, just reload to show the updated status
-                        window.location.href = this.txContext.landingRoute;
+                        window.location.href = '/payment/status';
                     }
                 } else if (paymentResponse.status === 'error') {
                     this._displayError(
@@ -347,7 +369,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                 this._displayError(
                     serverErrorTitle,
                     paymentErrorMessage,
-                    error?.message?.data?.message || unexpectedErrorMessage
+                    (error && error.message && error.message.data && error.message.data.message) || unexpectedErrorMessage
                 );
             });
         },

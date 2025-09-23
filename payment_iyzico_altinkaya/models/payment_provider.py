@@ -53,7 +53,13 @@ class PaymentProvider(models.Model):
     )
 
     def _get_iyzico_connector(
-        self, tx, order_id=None, card_args=None, installment=None
+        self,
+        tx,
+        order_id=None,
+        card_args=None,
+        installment=None,
+        temp_currency_id=None,
+        partner_id=None,
     ):
         """Create and return an Iyzico connector instance.
 
@@ -72,6 +78,8 @@ class PaymentProvider(models.Model):
             order_id=order_id,
             card_args=card_args,
             installment=installment,
+            temp_currency_id=temp_currency_id,
+            partner_id=partner_id,
         )
 
     def iyzico_enable_3ds_mode(self, connector, force_3ds=False):
@@ -123,7 +131,9 @@ class PaymentProvider(models.Model):
         else:
             return ("non_3ds", connector.make_non_3ds_payment())
 
-    def iyzico_check_installment(self, card_number, price, order_id, tx):
+    def iyzico_check_installment(
+        self, card_number, price, order_id, tx, temp_currency_id, partner_id
+    ):
         """Fetch installment options for a given card number and amount.
 
         :param str card_number: The card number to fetch installment options for.
@@ -134,7 +144,9 @@ class PaymentProvider(models.Model):
         :rtype: list
         """
         installment_options = []
-        connector = self._get_iyzico_connector(tx, order_id)
+        connector = self._get_iyzico_connector(
+            tx, order_id, temp_currency_id=temp_currency_id, partner_id=partner_id
+        )
         _iyz_options = connector.check_installment(price, card_number=card_number)
         if _iyz_options["status"] == "success":
             for item in _iyz_options["installmentDetails"][0]["installmentPrices"]:

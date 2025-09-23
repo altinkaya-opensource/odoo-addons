@@ -38,6 +38,8 @@ class iyzicoConnector:
         order_id=None,
         card_args=None,
         installment=None,
+        temp_currency_id=None,
+        partner_id=None,
     ):
         self.api_key = api_key
         self.secret_key = secret_key.encode()  # Must be bytes
@@ -45,6 +47,8 @@ class iyzicoConnector:
         self.tx = tx
         self.env = tx.env  # To access env outside of tx
         self.order_id = order_id or self.tx.sale_order_ids
+        self.temp_currency_id = temp_currency_id
+        self.partner_id = partner_id or self.tx.partner_id
         self.card_args = card_args or {}
         self.installment = int(installment or 1)
         self._session = requests.Session()
@@ -60,13 +64,13 @@ class iyzicoConnector:
 
     @property
     def source_currency(self):
-        return self.tx.currency_id or self.order_id.currency_id
+        return self.tx.currency_id or self.order_id.currency_id or self.temp_currency_id
 
     @property
     def payment_currency(self):
         currency_try = self.env.ref("base.TRY")
         partner_country = (
-            self.tx.partner_id or self.order_id.partner_id
+            self.tx.partner_id or self.order_id.partner_id or self.partner_id
         ).commercial_partner_id.country_id
 
         if self.source_currency != currency_try and partner_country.code == "TR":
@@ -138,7 +142,7 @@ class iyzicoConnector:
             hashlib.sha256,
         ).hexdigest()
         auth_string = (
-            f"apiKey:{self.api_key}" f"&randomKey:{rnd}" f"&signature:{encrypted_data}"
+            f"apiKey:{self.api_key}&randomKey:{rnd}&signature:{encrypted_data}"
         ).encode()
         return {
             "Authorization": "IYZWSv2 " + base64.b64encode(auth_string).decode(),
@@ -153,7 +157,7 @@ class iyzicoConnector:
         :rtype: bool
         :raises AssertionError: If signature is invalid.
         """
-        data_to_encrypt = f"{response_data["conversationId"]}:{response_data["token"]}"
+        data_to_encrypt = f"{response_data['conversationId']}:{response_data['token']}"
         encrypted_data = hmac.new(
             self.secret_key,
             data_to_encrypt.encode(),
