@@ -14,9 +14,14 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
         /**
          * Lifecycle
          */
+        /**
+         * Initialize the payment form mixin.
+         * @returns {Promise} Promise resolving when initialization is complete.
+         */
         start: function () {
             const res = this._super ? this._super(...arguments) : Promise.resolve();
             this._installmentDebounceTimer = null;
+            this._lastCardNumber = null;
             this._debouncedLoadInstallments = this._debounce(
                 this._loadInstallmentOptions.bind(this),
                 250
@@ -30,6 +35,12 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
         /**
          * Utils
          */
+        /**
+         * Create a debounced version of a function.
+         * @param {Function} func - The function to debounce.
+         * @param {number} delay - The delay in milliseconds.
+         * @returns {Function} The debounced function.
+         */
         _debounce: function (func, delay) {
             return (...args) => {
                 clearTimeout(this._installmentDebounceTimer);
@@ -37,6 +48,11 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             };
         },
 
+        /**
+         * Convert a base64 string to UTF-8.
+         * @param {string} b64 - The base64 encoded string.
+         * @returns {string} The decoded UTF-8 string.
+         */
         _base64ToUtf8: function (b64) {
             const bin = atob(b64);
             const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
@@ -45,6 +61,9 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
 
         /**
          * DOM bindings
+         */
+        /**
+         * Bind card number formatting and installment loading handlers.
          */
         _bindCardFormatterAndInstallmentLoader: function () {
             const $input = $("#iyzico-form [name='cardNumber']");
@@ -66,16 +85,30 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     if (this._iyzicoInstallmentEnabled) {
                         const $installmentsSection = $('#iyzico-installments');
                         const $installmentInfoText = $('#installment-info-text');
+                        const $container = $('#installment-options-container');
                         if (value.replace(/\D/g, '').length >= 8) {
-                            this._debouncedLoadInstallments(value.replace(/\D/g, ''));
-
+                            if ($installmentsSection.hasClass('d-none')) {
+                                $installmentsSection.removeClass('d-none');
+                                $('#installment-title').text(_t('Installment Options'));
+                                $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
+                            }
+                            $container.find('.iyzico-installment-option, .alert').remove();
+                            if ($container.find('.iyzico-loading').length === 0) {
+                                $container.append(`
+                                    <div class="iyzico-loading text-center p-4">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status">
+                                            <span class="visually-hidden">${_t('Loading...')}</span>
+                                        </div>
+                                        ${_t('Loading installment options...')}
+                                    </div>
+                                `);
+                            }
                             $installmentInfoText.addClass('d-none');
+                            this._debouncedLoadInstallments(value.replace(/\D/g, ''));
                         } else {
                             $installmentsSection.addClass('d-none');
                             $installmentInfoText.removeClass('d-none');
-                            const $container = $('#installment-options-container');
-
-                            // reset and show loader
+                            // reset
                             $container.find('.iyzico-installment-option, .iyzico-loading, .alert').remove();
                         }
                     }
@@ -102,6 +135,9 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                 });
         },
 
+        /**
+         * Bind handlers for installment option selection.
+         */
         _bindInstallmentSelectionHandlers: function () {
             // card click on option
             $(document)
@@ -130,11 +166,12 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
         /**
          * Installments
          */
+        /**
+         * Populate the installment options in the UI.
+         * @param {Array} installmentData - Array of installment options.
+         */
         _populateInstallmentOptions: function (installmentData) {
             const $container = $('#installment-options-container');
-
-            $('#installment-title').text(_t('Installment Options'));
-            $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
 
             $container.find('.iyzico-installment-option').remove();
 
@@ -180,34 +217,35 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
         },
 
 
+        /**
+         * Load installment options for the given card number.
+         * @param {string} cardNumber - The card number.
+         * @returns {Promise} Promise resolving when the request is complete.
+         */
         _loadInstallmentOptions: function (cardNumber) {
             if ((cardNumber || '').length < 8) return;
 
             const $section = $('#iyzico-installments');
+            const $container = $('#installment-options-container');
 
-            if ($section.hasClass('d-none') === false) {
-                // already loaded
+            if ($section.hasClass('d-none') === false && this._lastCardNumber === cardNumber) {
+                // already loaded for this card
+                $container.find('.iyzico-loading').remove();
                 return;
             }
 
-            const $container = $('#installment-options-container');
+            this._lastCardNumber = cardNumber;
 
-            // reset and show loader
-            $container.find('.iyzico-installment-option, .iyzico-loading, .alert').remove();
-            $container.append(`
-                <div class="iyzico-loading text-center p-4">
-                    <div class="spinner-border spinner-border-sm me-2" role="status">
-                        <span class="visually-hidden">${_t('Loading...')}</span>
-                    </div>
-                    ${_t('Loading installment options...')}
-                </div>
-            `);
+            // set title and subtitle
+            $('#installment-title').text(_t('Installment Options'));
+            $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
+
             // real call
             return rpc.query({
                 route: '/payment/iyzico/installment_options',
                 params: {
                     card_number: cardNumber,
-                    amount: this.txContext.amount,
+                    amount: parseFloat(this.txContext.amount),
                     access_token: this.txContext.accessToken,
                     partner_id: this.txContext.partnerId,
                     provider_id: parseInt($("#iyzico-form [name='iyzico_provider_id']").val(), 10),
@@ -237,6 +275,13 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
 
         /**
          * Payments
+         */
+        /**
+         * Process a direct payment for Iyzico.
+         * @param {string} code - The provider code.
+         * @param {number} providerId - The provider ID.
+         * @param {Object} processingValues - The processing values.
+         * @returns {Promise} Promise resolving with payment response.
          */
         _processDirectPayment: function (code, providerId, processingValues) {
             if (code !== 'iyzico_altinkaya') {
@@ -293,6 +338,13 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             });
         },
 
+        /**
+         * Prepare the inline form for Iyzico payments.
+         * @param {string} code - The provider code.
+         * @param {number} paymentOptionId - The payment option ID.
+         * @param {string} flow - The payment flow.
+         * @returns {Promise} Promise resolving when preparation is complete.
+         */
         _prepareInlineForm: function (code, paymentOptionId, flow) {
             if (code !== 'iyzico_altinkaya') {
                 return this._super(...arguments);

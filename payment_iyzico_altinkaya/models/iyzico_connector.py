@@ -76,6 +76,12 @@ class iyzicoConnector:
 
     @staticmethod
     def _random_string(length=12):
+        """Generate a random string of specified length.
+
+        :param int length: The length of the random string.
+        :return: A random string consisting of letters and digits.
+        :rtype: str
+        """
         return "".join(
             random.SystemRandom().choice(string.ascii_letters + string.digits)
             for _ in range(length)
@@ -87,6 +93,12 @@ class iyzicoConnector:
         return f"{base_url}{_IYZICO_RETURN_URL}"
 
     def _convert_price(self, price):
+        """Convert the price to the payment currency if necessary.
+
+        :param float price: The original price.
+        :return: The converted and rounded price.
+        :rtype: float
+        """
         company_id = self.env.company
 
         if self.source_currency != self.payment_currency:
@@ -99,6 +111,13 @@ class iyzicoConnector:
         return round(price, 2)
 
     def _generate_auth_headers(self, endpoint, request_body=None):
+        """Generate authentication headers for Iyzico API requests.
+
+        :param str endpoint: The API endpoint.
+        :param str request_body: The request body as JSON string.
+        :return: Dictionary of headers.
+        :rtype: dict
+        """
         rnd = self._random_string()
         data_to_encrypt = f"{rnd}{endpoint}{request_body or ''}"
         encrypted_data = hmac.new(
@@ -115,6 +134,13 @@ class iyzicoConnector:
         }
 
     def _check_signature(self, response_data):
+        """Check the signature of the response data for security.
+
+        :param dict response_data: The response data from Iyzico.
+        :return: True if signature is valid.
+        :rtype: bool
+        :raises AssertionError: If signature is invalid.
+        """
         data_to_encrypt = f"{response_data["conversationId"]}:{response_data["token"]}"
         encrypted_data = hmac.new(
             self.secret_key,
@@ -125,6 +151,14 @@ class iyzicoConnector:
         return True
 
     def _request(self, method, endpoint, data=None):
+        """Make an authenticated request to the Iyzico API.
+
+        :param str method: HTTP method (e.g., 'POST').
+        :param str endpoint: API endpoint.
+        :param dict data: Request data.
+        :return: Response data.
+        :rtype: dict
+        """
         url = f"{self.base_url}{endpoint}"
         body = json.dumps(data) if data is not None else None
         headers = {"Content-Type": "application/json"} if data else {}
@@ -142,6 +176,13 @@ class iyzicoConnector:
         return response_data
 
     def check_installment(self, price, card_number=None):
+        """Check available installment options for a given price and card.
+
+        :param float price: The transaction price.
+        :param str card_number: The card number (optional).
+        :return: Installment data from Iyzico.
+        :rtype: dict
+        """
         data = {
             "locale": self.locale,
             "price": self._convert_price(price),
@@ -155,8 +196,10 @@ class iyzicoConnector:
     def _get_enabled_installments(self):
         """Return a list of enabled installment options.
 
-        If no option is enabled, return an empty list which means all options are
-        enabled.
+        If no option is enabled, return an empty list which means
+        all options are enabled.
+
+        :rtype: list
         """
         try:
             # TODO: I'm not sure if this is the correct way to get available
@@ -169,6 +212,11 @@ class iyzicoConnector:
             return []
 
     def _prepare_buyer_data(self):
+        """Prepare buyer data for Iyzico payment request.
+
+        :return: Buyer information dictionary.
+        :rtype: dict
+        """
         partner = self.tx.partner_id.commercial_partner_id
         return {
             "id": str(partner.id),
@@ -183,6 +231,12 @@ class iyzicoConnector:
         }
 
     def _prepare_address_data(self, address_type):
+        """Prepare address data for shipping or billing.
+
+        :param str address_type: 'shipping' or 'billing'.
+        :return: Address information dictionary.
+        :rtype: dict
+        """
         if self.tx.sale_order_ids:
             if address_type == "shipping":
                 partner = self.tx.sale_order_ids.partner_shipping_id
@@ -198,6 +252,11 @@ class iyzicoConnector:
         }
 
     def _prepare_basket_items_data(self):
+        """Prepare basket items data for the payment request.
+
+        :return: List of basket items.
+        :rtype: list
+        """
         items = []
         if self.tx.sale_order_ids:
             for line in self.tx.sale_order_ids.order_line:
@@ -225,6 +284,12 @@ class iyzicoConnector:
         return items
 
     def _prepare_iyzico_price_vals(self, basket_items):
+        """Prepare price values for Iyzico payment.
+
+        :param list basket_items: List of basket items.
+        :return: Price data dictionary.
+        :rtype: dict
+        """
         amount = sum(item["price"] for item in basket_items)
         return {
             "price": amount,
@@ -233,6 +298,11 @@ class iyzicoConnector:
         }
 
     def _prepare_card_data(self):
+        """Prepare card data for payment request.
+
+        :return: Card information dictionary.
+        :rtype: dict
+        """
         return {
             "cardHolderName": self.card_args.get("card_name", ""),
             "cardNumber": self.card_args.get("card_number", "").replace(" ", ""),
@@ -242,6 +312,11 @@ class iyzicoConnector:
         }
 
     def _prepare_payment_request_data(self):
+        """Prepare the full payment request data for Iyzico.
+
+        :return: Payment request data dictionary.
+        :rtype: dict
+        """
         base_data = {
             "locale": self.locale,
             "conversationId": self.conversation_id,
@@ -262,6 +337,12 @@ class iyzicoConnector:
         return base_data
 
     def _prepare_3ds_auth_data(self, response_data):
+        """Prepare data for 3DS authentication response.
+
+        :param dict response_data: Response data from 3DS initialization.
+        :return: 3DS auth data dictionary.
+        :rtype: dict
+        """
         return {
             "locale": self.locale,
             "conversationId": self.conversation_id,
@@ -270,6 +351,12 @@ class iyzicoConnector:
         }
 
     def initialize_3ds_process(self):
+        """Initialize the 3DS payment process.
+
+        :return: 3DS HTML content.
+        :rtype: str
+        :raises ValidationError: If initialization fails.
+        """
         data = self._prepare_payment_request_data()
         response = {}
         try:
@@ -283,6 +370,12 @@ class iyzicoConnector:
             )
 
     def make_non_3ds_payment(self):
+        """Make a non-3DS payment.
+
+        :return: Tuple of status and response data.
+        :rtype: tuple
+        :raises ValidationError: If payment fails.
+        """
         data = self._prepare_payment_request_data()
         response = {}
         try:
@@ -299,6 +392,12 @@ class iyzicoConnector:
             )
 
     def auth_3ds_response(self, response_data):
+        """Authenticate the 3DS response.
+
+        :param dict response_data: 3DS response data.
+        :return: Tuple of status and response data or error message.
+        :rtype: tuple or str
+        """
         try:
             data = self._prepare_3ds_auth_data(response_data)
             res = self._request("POST", "/payment/3dsecure/auth", data)

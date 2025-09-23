@@ -28,9 +28,15 @@ class PaymentTransaction(models.Model):
     def _iyzico_compute_access_token(
         self, reference=None, amount=None, partner_id=None
     ):
-        """
-        Return the expected access token for Iyzico transactions.
-        This can work with payment.transaction recordset or payment dictionary
+        """Return the expected access token for Iyzico transactions.
+
+        This can work with payment.transaction recordset or payment dictionary.
+
+        :param str reference: Transaction reference.
+        :param float amount: Transaction amount.
+        :param int partner_id: Partner ID.
+        :return: Access token or False.
+        :rtype: str or bool
         """
         self.ensure_one()
         if self.provider_code != "iyzico_altinkaya":
@@ -78,6 +84,12 @@ class PaymentTransaction(models.Model):
         return res
 
     def _iyzico_finalize_payment(self, status, response):
+        """Finalize the payment based on status and response.
+
+        :param str status: Payment status ('success' or 'error').
+        :param dict response: Response data from Iyzico.
+        :return: None
+        """
         try:
             if status == "success":
                 self._set_done()

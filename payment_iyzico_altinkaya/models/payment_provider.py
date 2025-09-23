@@ -53,12 +53,12 @@ class PaymentProvider(models.Model):
     )
 
     def iyzico_enable_3ds_mode(self, tx, force_3ds=False):
-        """
-        Determine whether to enable 3DS payment mode based on transaction details.
+        """Determine whether to enable 3DS payment mode based on transaction details.
 
         :param tx: The payment transaction record.
         :param force_3ds: Boolean to force 3DS payment mode.
         :return: True if 3DS should be enabled, False for non-3DS.
+        :rtype: bool
         """
         self.ensure_one()
 
@@ -80,6 +80,15 @@ class PaymentProvider(models.Model):
         return True
 
     def iyzico_check_installment(self, card_number, price, order_id, tx):
+        """Fetch installment options for a given card number and amount.
+
+        :param str card_number: The card number to fetch installment options for.
+        :param float price: The price amount for the transaction.
+        :param order_id: The sale order record.
+        :param tx: The payment transaction record (dummy recordset).
+        :return: List of installment options.
+        :rtype: list
+        """
         installment_options = []
         connector = iyzicoConnector(
             api_key=self.iyzico_api_key,
@@ -112,9 +121,7 @@ class PaymentProvider(models.Model):
     def _iyzico_get_api_url(self):
         """Return the API URL according to the provider state.
 
-        Note: self.ensure_one()
-
-        :return: The API URL
+        :return: The API URL.
         :rtype: str
         """
         self.ensure_one()
@@ -125,10 +132,12 @@ class PaymentProvider(models.Model):
             return TEST_URL
 
     def _iyzico_format_card_number(self, card_number):
-        """
-        This method is used to format the card number
-        :param card_number: The card number
-        :return: The formatted card number
+        """Format the card number for validation.
+
+        :param str card_number: The card number to format.
+        :return: The formatted card number.
+        :rtype: str
+        :raises ValidationError: If the card number is invalid.
         """
         card_number = card_number.replace(" ", "")
         if len(card_number) in [15, 16] and card_number.isdigit():
@@ -137,11 +146,13 @@ class PaymentProvider(models.Model):
             raise ValidationError(_("Card number is not valid."))
 
     def _iyzico_initialize_3ds_process(self, tx, card_args, installment=None):
-        """
-        This method is used to prepare the payment request to Iyzico
-        :param tx: The transaction
-        :param amount: The amount of the transaction
-        :param currency: The currency of the transaction
+        """Initialize the 3DS payment process with Iyzico.
+
+        :param tx: The payment transaction record.
+        :param dict card_args: The card information arguments.
+        :param int installment: The installment number (optional).
+        :return: Tuple of payment method and gateway response.
+        :rtype: tuple
         """
         self.ensure_one()
         tx.ensure_one()
@@ -156,11 +167,13 @@ class PaymentProvider(models.Model):
         return ("3ds", connector.initialize_3ds_process())
 
     def _iyzico_make_non_3ds_payment(self, tx, card_args, installment=None):
-        """
-        This method is used to prepare the payment request to Iyzico
-        :param tx: The transaction
-        :param amount: The amount of the transaction
-        :param currency: The currency of the transaction
+        """Make a non-3DS payment request to Iyzico.
+
+        :param tx: The payment transaction record.
+        :param dict card_args: The card information arguments.
+        :param int installment: The installment number (optional).
+        :return: Tuple of payment method and gateway response.
+        :rtype: tuple
         """
         self.ensure_one()
         tx.ensure_one()
@@ -175,10 +188,11 @@ class PaymentProvider(models.Model):
         return ("non_3ds", connector.make_non_3ds_payment())
 
     def _iyzico_validate_card_args(self, card_args):
-        """
-        Validation method for credit/debit card information
-        :param card_args: The card information
-        :return: error message if there is any error
+        """Validate credit/debit card information.
+
+        :param dict card_args: The card information arguments.
+        :return: Error message if validation fails, empty string otherwise.
+        :rtype: str
         """
         error = ""
         card_number = self._iyzico_format_card_number(card_args.get("card_number"))

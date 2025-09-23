@@ -34,12 +34,12 @@ class iyzicoCoontroller(http.Controller):
     ):
         """Fetch installment options for a given card number and amount.
 
-        :param str card_number: The card number to fetch installment options for
-        :param int amount: The amount of the transaction in minor units of the currency
-        :param str access_token: The access token used to verify the provided values
-        :param int provider_id: The provider handling the transaction
-        :param str reference: The reference of the transaction
-        :return: The JSON-formatted content of the response
+        :param str card_number: The card number to fetch installment options for.
+        :param float amount: The amount of the transaction.
+        :param str access_token: The access token used to verify the provided values.
+        :param int partner_id: The partner ID.
+        :param int provider_id: The provider handling the transaction.
+        :return: The JSON-formatted content of the response.
         :rtype: dict
         """
         response = {"status": "", "installment_options": []}
@@ -83,13 +83,13 @@ class iyzicoCoontroller(http.Controller):
     ):
         """Make a payment request and handle the notification data.
 
-        :param int provider_id: The provider handling the transaction
-        :param str reference: The reference of the transaction
-        :param int amount: The amount of the transaction in minor units of the currency
-        :param int currency_id: The currency of the transaction, as a `res.currency` id
-        :param int partner_id: The partner making the transaction, as a `res.partner` id
-        :param str access_token: The access token used to verify the provided values
-        :return: The JSON-formatted content of the response
+        :param int provider_id: The provider handling the transaction.
+        :param str reference: The reference of the transaction.
+        :param str access_token: The access token used to verify the provided values.
+        :param int installment: The installment number.
+        :param dict card_args: The card information arguments.
+        :param bool force_3ds: Whether to force 3DS authentication.
+        :return: The JSON-formatted content of the response.
         :rtype: dict
         """
         # Check that the transaction details have not been altered.
@@ -164,9 +164,11 @@ class iyzicoCoontroller(http.Controller):
         methods=["POST"],
     )
     def iyzico_return_from_3ds_auth(self, **kwargs):
-        """
-        Handle the return from the 3DS authentication.
-        notification_data is a dict coming from iyzico.
+        """Handle the return from the 3DS authentication.
+
+        :param dict kwargs: Notification data from Iyzico.
+        :return: Redirect response to status page.
+        :rtype: werkzeug.wrappers.Response
         """
         request.env["payment.transaction"].sudo()._handle_notification_data(
             "iyzico_altinkaya", kwargs
