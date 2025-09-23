@@ -74,6 +74,10 @@ class iyzicoConnector:
 
         return self.source_currency
 
+    @property
+    def installment_enabled(self):
+        return self.tx.provider_id.iyzico_installment_enabled and self.installment > 1
+
     @staticmethod
     def _random_string(length=12):
         """Generate a random string of specified length.
@@ -91,6 +95,14 @@ class iyzicoConnector:
     def return_url(self):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         return f"{base_url}{_IYZICO_RETURN_URL}"
+
+    def _get_card_number_formatted(self):
+        """Get the card number formatted without spaces.
+
+        :return: The card number without spaces.
+        :rtype: str
+        """
+        return self.card_args.get("card_number", "").replace(" ", "")
 
     def _convert_price(self, price):
         """Convert the price to the payment currency if necessary.
@@ -193,23 +205,32 @@ class iyzicoConnector:
 
         return self._request("POST", "/payment/iyzipos/installment", data)
 
-    def _get_enabled_installments(self):
-        """Return a list of enabled installment options.
+    def _get_installed_included_price(self):
+        """Calculate the total price including installment fees.
 
-        If no option is enabled, return an empty list which means
-        all options are enabled.
-
-        :rtype: list
+        :param float amount: The base amount.
+        :return: The total amount including installment fees.
+        :rtype: float
         """
-        try:
-            # TODO: I'm not sure if this is the correct way to get available
-            # installments. Please check and correct if necessary.
-            data = self.check_installment(self.tx.amount)
-            installment_details = data["installmentDetails"]
-            any_issuer = installment_details[0]
-            return [x["installmentNumber"] for x in any_issuer["installmentPrices"]]
-        except Exception:
-            return []
+        installment_amount = self.check_installment(
+            self.tx.amount,
+            self._get_card_number_formatted(),
+        )
+        installed_included_price = None
+        for item in installment_amount.get("installmentDetails", []):
+            for price_info in item.get("installmentPrices", []):
+                if price_info["installmentNumber"] == self.installment:
+                    installed_included_price = price_info["totalPrice"]
+
+        if not installed_included_price:
+            raise ValidationError(
+                _(
+                    "The selected installment option is not available."
+                    "Please try again or select a different option."
+                )
+            )
+
+        return installed_included_price
 
     def _prepare_buyer_data(self):
         """Prepare buyer data for Iyzico payment request.
@@ -223,7 +244,7 @@ class iyzicoConnector:
             "name": partner.name,
             "surname": partner.name,
             "identityNumber": self.tx.partner_id.vat or "11111111111",
-            "email": partner.email or "",
+            "email": partner.email.split(",")[0] or "",
             "gsmNumber": partner.mobile or partner.phone or "",
             "registrationAddress": partner.contact_address or "",
             "city": partner.city or partner.state_id.name or "",
@@ -291,9 +312,15 @@ class iyzicoConnector:
         :rtype: dict
         """
         amount = sum(item["price"] for item in basket_items)
+
+        if self.installment_enabled:
+            paid_amount = self._get_installed_included_price()
+        else:
+            paid_amount = amount
+
         return {
             "price": amount,
-            "paidPrice": amount,
+            "paidPrice": paid_amount,
             "currency": self.payment_currency.name,
         }
 
@@ -305,7 +332,7 @@ class iyzicoConnector:
         """
         return {
             "cardHolderName": self.card_args.get("card_name", ""),
-            "cardNumber": self.card_args.get("card_number", "").replace(" ", ""),
+            "cardNumber": self._get_card_number_formatted(),
             "expireMonth": self.card_args.get("card_valid_month", "").zfill(2),
             "expireYear": self.card_args.get("card_valid_year", "")[-2:],
             "cvc": self.card_args.get("card_cvv", ""),
@@ -332,7 +359,7 @@ class iyzicoConnector:
         # Add price related vals
         base_data.update(self._prepare_iyzico_price_vals(base_data["basketItems"]))
 
-        if self.tx.provider_id.iyzico_installment_enabled:
+        if self.installment_enabled:
             base_data["installment"] = self.installment
         return base_data
 

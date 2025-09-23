@@ -166,10 +166,10 @@
         <div
             t-if="installment_enabled"
             id="iyzico-installments"
-            class="row d-none mt-2 mt-md-0 iyzico-installments-container"
+            class="row d-none iyzico-installments-container"
         >
             <div class="col-12">
-                <div class="card border-0 iyzico-installments-card">
+                <div class="card iyzico-installments-card">
                     <div class="card-header bg-light border-0 py-3">
                         <h5 class="mb-0 text-primary">
                             <i class="fa fa-calendar-alt me-2" />

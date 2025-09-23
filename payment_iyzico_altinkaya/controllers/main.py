@@ -65,7 +65,7 @@ class iyzicoCoontroller(http.Controller):
             response["status"] = "error"
             response["error_message"] = _("Invalid response.")
         except Exception as exc:
-            _logger.debug("[iyzico] Error while fetching installment options: %s", exc)
+            _logger.error("[iyzico] Error while fetching installment options: %s", exc)
             response["status"] = "error"
             response["error_message"] = _("An error occurred. Please try again.")
 
@@ -116,27 +116,18 @@ class iyzicoCoontroller(http.Controller):
             if card_error:
                 raise ValidationError(card_error)
 
-            if provider_sudo.iyzico_enable_3ds_mode(tx_sudo, force_3ds):
-                payment_method, gateway_response = (
-                    provider_sudo._iyzico_initialize_3ds_process(
-                        tx_sudo, card_args, installment
-                    )
-                )
-            else:
-                payment_method, gateway_response = (
-                    provider_sudo._iyzico_make_non_3ds_payment(
-                        tx_sudo, card_args, installment
-                    )
-                )
-                tx_sudo._iyzico_finalize_payment(*gateway_response)
-            response["status"] = "success"
+            payment_method, gateway_response = provider_sudo._iyzico_initialize_payment(
+                tx_sudo, card_args, installment, force_3ds=force_3ds
+            )
 
-            if payment_method == "3ds":
-                response["payment_method"] = "3ds"
-                response["encoded_form"] = gateway_response
-            else:
-                response["payment_method"] = "non_3ds"
-                response["gateway_response"] = gateway_response
+            if payment_method == "non_3ds":
+                # Finalize the payment immediately in case of non-3DS payment
+                tx_sudo._iyzico_finalize_payment(*gateway_response)
+
+            response["status"] = "success"
+            response["payment_method"] = payment_method
+            response["gateway_response"] = gateway_response
+
         except AssertionError:  # When access token is invalid
             response["status"] = "error"
             response["error_message"] = _("iyzico: Invalid access token.")
@@ -148,7 +139,7 @@ class iyzicoCoontroller(http.Controller):
             response["status"] = "error"
             response["error_message"] = str(exc)
         except Exception as exc:
-            _logger.debug("[iyzico] Validation error: %s", exc)
+            _logger.error("[iyzico] Validation error: %s", exc)
             response["status"] = "error"
             error_msg = _("Something bad happened. Please try again.")
             response["error_message"] = error_msg

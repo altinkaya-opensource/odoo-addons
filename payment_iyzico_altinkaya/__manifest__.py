@@ -29,11 +29,9 @@
     ],
     "external_dependencies": {"python": ["requests"]},
     "data": [
-        # "security/ir.model.access.csv",
-        # "views/payment_provider_error_views.xml",
         "views/payment_iyzico_altinkaya_templates.xml",
         "views/payment_provider_views.xml",
-        # "views/payment_transaction_views.xml",
+        "views/payment_transaction_views.xml",
         "data/payment_provider_data.xml",
     ],
     "assets": {

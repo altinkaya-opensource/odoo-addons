@@ -52,7 +52,29 @@ class PaymentProvider(models.Model):
         default=lambda self: self.env.ref("base.TRY"),
     )
 
-    def iyzico_enable_3ds_mode(self, tx, force_3ds=False):
+    def _get_iyzico_connector(
+        self, tx, order_id=None, card_args=None, installment=None
+    ):
+        """Create and return an Iyzico connector instance.
+
+        :param tx: The payment transaction record.
+        :param order_id: The sale order record (optional).
+        :param dict card_args: The card information arguments (optional).
+        :param int installment: The installment number (optional).
+        :return: An iyzicoConnector instance.
+        :rtype: iyzicoConnector
+        """
+        return iyzicoConnector(
+            api_key=self.iyzico_api_key,
+            secret_key=self.iyzico_secret_key,
+            base_url=self._iyzico_get_api_url(),
+            tx=tx,
+            order_id=order_id,
+            card_args=card_args,
+            installment=installment,
+        )
+
+    def iyzico_enable_3ds_mode(self, connector, force_3ds=False):
         """Determine whether to enable 3DS payment mode based on transaction details.
 
         :param tx: The payment transaction record.
@@ -65,19 +87,41 @@ class PaymentProvider(models.Model):
         if force_3ds:
             return True
 
-        partner = tx.partner_id.commercial_partner_id
+        partner = connector.tx.partner_id.commercial_partner_id
         # Disable 3DS for non-Turkish partners (international transactions)
         if partner.country_id and partner.country_id.code != "TR":
             return False
 
         # Disable 3DS if amount is below threshold in TRY
         if (
-            tx.currency_id == self.iyzico_currency_try_id
-            and tx.amount <= self.iyzico_3ds_threshold_amount
+            connector.payment_currency == self.iyzico_currency_try_id
+            and connector._convert_price(connector.tx.amount)
+            <= self.iyzico_3ds_threshold_amount
         ):
             return False
 
         return True
+
+    def _iyzico_initialize_payment(
+        self, tx, card_args, installment=None, force_3ds=False
+    ):
+        """Initialize the payment process with Iyzico.
+
+        :param tx: The payment transaction record.
+        :param dict card_args: The card information arguments.
+        :param int installment: The installment number (optional).
+        :return: Tuple of payment method and gateway response.
+        :rtype: tuple
+        """
+        self.ensure_one()
+        tx.ensure_one()
+        connector = self._get_iyzico_connector(
+            tx, card_args=card_args, installment=installment
+        )
+        if self.iyzico_enable_3ds_mode(connector, force_3ds=force_3ds):
+            return ("3ds", connector.initialize_3ds_process())
+        else:
+            return ("non_3ds", connector.make_non_3ds_payment())
 
     def iyzico_check_installment(self, card_number, price, order_id, tx):
         """Fetch installment options for a given card number and amount.
@@ -138,60 +182,6 @@ class PaymentProvider(models.Model):
             return card_number
         else:
             raise ValidationError(_("Card number is not valid."))
-
-    def _iyzico_initialize_3ds_process(self, tx, card_args, installment=None):
-        """Initialize the 3DS payment process with Iyzico.
-
-        :param tx: The payment transaction record.
-        :param dict card_args: The card information arguments.
-        :param int installment: The installment number (optional).
-        :return: Tuple of payment method and gateway response.
-        :rtype: tuple
-        """
-        self.ensure_one()
-        tx.ensure_one()
-        connector = self._get_iyzico_connector(
-            tx, card_args=card_args, installment=installment
-        )
-        return ("3ds", connector.initialize_3ds_process())
-
-    def _iyzico_make_non_3ds_payment(self, tx, card_args, installment=None):
-        """Make a non-3DS payment request to Iyzico.
-
-        :param tx: The payment transaction record.
-        :param dict card_args: The card information arguments.
-        :param int installment: The installment number (optional).
-        :return: Tuple of payment method and gateway response.
-        :rtype: tuple
-        """
-        self.ensure_one()
-        tx.ensure_one()
-        connector = self._get_iyzico_connector(
-            tx, card_args=card_args, installment=installment
-        )
-        return ("non_3ds", connector.make_non_3ds_payment())
-
-    def _get_iyzico_connector(
-        self, tx, order_id=None, card_args=None, installment=None
-    ):
-        """Create and return an Iyzico connector instance.
-
-        :param tx: The payment transaction record.
-        :param order_id: The sale order record (optional).
-        :param dict card_args: The card information arguments (optional).
-        :param int installment: The installment number (optional).
-        :return: An iyzicoConnector instance.
-        :rtype: iyzicoConnector
-        """
-        return iyzicoConnector(
-            api_key=self.iyzico_api_key,
-            secret_key=self.iyzico_secret_key,
-            base_url=self._iyzico_get_api_url(),
-            tx=tx,
-            order_id=order_id,
-            card_args=card_args,
-            installment=installment,
-        )
 
     def _iyzico_validate_card_args(self, card_args):
         """Validate credit/debit card information.

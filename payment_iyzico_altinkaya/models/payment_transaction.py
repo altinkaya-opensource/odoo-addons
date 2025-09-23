@@ -15,11 +15,19 @@ _logger = logging.getLogger(__name__)
 class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
 
-    iyzico_payment_id = fields.Char(
-        string="Iyzico Payment ID",
-        help="The payment ID returned by Iyzico to reference "
-        "the payment method used for the transaction",
+    iyzico_installment_fee = fields.Monetary(
+        string="iyzico Installment Fee",
+        help="The commission amount charged by Iyzico for this transaction",
         readonly=True,
+        currency_field="iyzico_commission_currency_id",
+        copy=False,
+    )
+    iyzico_commission_currency_id = fields.Many2one(
+        "res.currency",
+        string="Iyzico Commission Currency",
+        help="Currency of the Iyzico commission amount",
+        readonly=True,
+        default=lambda self: self.env.ref("base.TRY"),
         copy=False,
     )
 
@@ -83,6 +91,15 @@ class PaymentTransaction(models.Model):
         )
         return res
 
+    def _iyzico_set_commission_data(self, response):
+        """Set the commission data from the Iyzico response.s
+
+        :param dict response: Response data from Iyzico.
+        :return: bool
+        """
+        self.iyzico_installment_fee = response.get("merchantCommissionRateAmount", 0)
+        return True
+
     def _iyzico_finalize_payment(self, status, response):
         """Finalize the payment based on status and response.
 
@@ -93,6 +110,7 @@ class PaymentTransaction(models.Model):
         try:
             if status == "success":
                 self._set_done()
+                self._iyzico_set_commission_data(response)
             else:
                 self._set_error(response)
         except Exception as e:
@@ -117,7 +135,7 @@ class PaymentTransaction(models.Model):
             return
 
         self.operation = "online_redirect"
-        self.iyzico_payment_id = notification_data.get("paymentId")
+        self.provider_reference = notification_data.get("paymentId")
         if notification_data.get("status") == "success":
             connector = iyzicoConnector(
                 api_key=self.provider_id.iyzico_api_key,

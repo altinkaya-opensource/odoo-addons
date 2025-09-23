@@ -1,3 +1,6 @@
+/** @odoo-module **/
+
+
 // Copyright (C) 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
 odoo.define('payment_iyzico_altinkaya.payment_form', require => {
     'use strict';
@@ -93,13 +96,15 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                                 $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
                             }
                             $container.find('.iyzico-installment-option, .alert').remove();
+                            const loadingText = _t('Loading...');
+                            const loadingOptionsText = _t('Loading installment options...');
                             if ($container.find('.iyzico-loading').length === 0) {
                                 $container.append(`
                                     <div class="iyzico-loading text-center p-4">
                                         <div class="spinner-border spinner-border-sm me-2" role="status">
-                                            <span class="visually-hidden">${_t('Loading...')}</span>
+                                            <span class="visually-hidden">${loadingText}</span>
                                         </div>
-                                        ${_t('Loading installment options...')}
+                                        ${loadingOptionsText}
                                     </div>
                                 `);
                             }
@@ -176,12 +181,13 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             $container.find('.iyzico-installment-option').remove();
 
             installmentData.forEach((option, index) => {
-                const isLast = index === installmentData.length - 1;
-                const borderClass = isLast ? '' : 'border-bottom';
+                // Extract translatable strings for better extraction
+                const installmentLabel = option.installmentNumber === 1 ? _t('Single Payment') : sprintf(_t('%s Months'), option.installmentNumber);
+                const commissionText = option.installmentNumber === 1 ? _t('No commission') : sprintf(_t('Monthly amount: %s'), option.monthlyPrice);
 
                 const $installmentOption = $(`
-                    <div class="iyzico-installment-option border ${borderClass}" data-installment="${option.installmentNumber}">
-                        <div class="d-flex align-items-center py-1 px-2">
+                    <div class="iyzico-installment-option p-1" data-installment="${option.installmentNumber}">
+                        <div class="d-flex align-items-center py-0 px-1">
                             <div class="form-check me-3">
                                 <input class="form-check-input" type="radio" name="installmentRadio"
                                        value="${option.installmentNumber}" id="installment${option.installmentNumber}"
@@ -192,12 +198,12 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1 ${option.installmentNumber === 1 ? 'fw-bold' : ''}">
-                                            ${option.installmentNumber === 1 ? _t('Single Payment') : sprintf(_t('%s Months'), option.installmentNumber)}
+                                            ${installmentLabel}
                                         </h6>
                                         <small class="${option.installmentNumber === 1 ? 'text-success' : 'text-muted'}">
                                             ${option.installmentNumber === 1
-                        ? `<i class="fa fa-check-circle me-1"></i>${_t('No commission')}`
-                        : sprintf(_t('Monthly amount: %s'), option.monthlyPrice)
+                        ? `<i class="fa fa-check-circle me-1"></i>${commissionText}`
+                        : commissionText
                     }
                                         </small>
                                     </div>
@@ -240,6 +246,8 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
             $('#installment-title').text(_t('Installment Options'));
             $('#installment-subtitle').text(_t('Choose the installment option that suits your card'));
 
+            const errorMessage = _t('Unable to load installment options. Please try again.');
+
             // real call
             return rpc.query({
                 route: '/payment/iyzico/installment_options',
@@ -259,7 +267,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                 } else {
                     $container.append(`
                         <div class="alert alert-warning text-center m-3">
-                            ${_t('Unable to load installment options. Please try again.')}
+                            ${errorMessage}
                         </div>
                     `);
                 }
@@ -267,7 +275,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                 $container.find('.iyzico-loading').remove();
                 $container.append(`
                     <div class="alert alert-warning text-center m-3">
-                        ${_t('Unable to load installment options. Please try again.')}
+                        ${errorMessage}
                     </div>
                 `);
             });
@@ -290,6 +298,12 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
 
             const selectedInstallment = $('input[name="selectedInstallment"]').val() || '1';
 
+            // Extract translatable strings
+            const paymentErrorTitle = _t('Payment Error');
+            const paymentErrorMessage = _t('We are not able to process your payment.');
+            const serverErrorTitle = _t('Server Error');
+            const unexpectedErrorMessage = _t('Unexpected error');
+
             return this._rpc({
                 route: '/payment/iyzico/payments',
                 params: {
@@ -311,7 +325,7 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     // paymentResponse may be a base64-encoded script string in your flow.
                     // If it's the whole object, adapt to paymentResponse.script_b64.
                     if (paymentResponse.payment_method === '3ds') {
-                        const codeStr = this._base64ToUtf8(paymentResponse.encoded_form);
+                        const codeStr = this._base64ToUtf8(paymentResponse.gateway_response);
                         // https://stackoverflow.com/questions/1236360/how-do-i-replace-the-entire-html-node-using-jquery
                         let redirectPage = document.open("text/html", "replace");
                         redirectPage.write(codeStr);
@@ -323,17 +337,17 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     }
                 } else if (paymentResponse.status === 'error') {
                     this._displayError(
-                        _t('Payment Error'),
-                        _t('We are not able to process your payment.'),
+                        paymentErrorTitle,
+                        paymentErrorMessage,
                         paymentResponse.error_message
                     );
                 }
             }).guardedCatch((error) => {
                 if (error && error.event) error.event.preventDefault();
                 this._displayError(
-                    _t('Server Error'),
-                    _t('We are not able to process your payment.'),
-                    error?.message?.data?.message || _t('Unexpected error')
+                    serverErrorTitle,
+                    paymentErrorMessage,
+                    error?.message?.data?.message || unexpectedErrorMessage
                 );
             });
         },
