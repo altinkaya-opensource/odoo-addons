@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="payment_provider_iyzico" model="payment.provider">
+        <field name="name">iyzico</field>
+        <field name="display_as">iyzico Sanal Pos</field>
+        <field
+            name="payment_icon_ids"
+            eval="[(6, 0, [
+                   ref('payment.payment_icon_cc_mastercard'),
+                   ref('payment.payment_icon_cc_visa'),
+               ])]"
+        />
+        <field
+            name="image_128"
+            type="base64"
+            file="payment_iyzico_altinkaya/static/description/icon.png"
+        />
+        <field name="code">iyzico_altinkaya</field>
+        <field name="inline_form_view_id" ref="inline_form" />
+    </record>
+</odoo>

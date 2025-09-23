@@ -1,0 +1,480 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* payment_iyzico_altinkaya
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-23 11:18+0000\n"
+"PO-Revision-Date: 2025-09-23 11:18+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "%s Months"
+msgstr "%s Ay"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__iyzico_3ds_threshold_amount
+msgid "3DS Threshold Amount"
+msgstr "3DS Eşik Tutarı"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_transaction.py:0
+#, python-format
+msgid "3DS: Something went wrong during the payment. Please try again."
+msgstr "3DS: Ödeme sırasında bir şeyler ters gitti. Lütfen tekrar deneyin."
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid ""
+"<i class=\"fa fa-info-circle\"/> Installement options will be available when"
+" you enter your card number."
+msgstr ""
+"<i class=\"fa fa-info-circle\"/> Kart numaranızı girdiğinizde taksit "
+"seçenekleri görünecektir."
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid ""
+"<option value=\"\" disabled=\"disabled\" selected=\"selected\">Month\n"
+"                                        </option>"
+msgstr ""
+"<option value=\"\" disabled=\"disabled\" selected=\"selected\">Ay\n"
+"                                        </option>"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid ""
+"<option value=\"\" disabled=\"disabled\" selected=\"selected\">Year\n"
+"                                        </option>"
+msgstr ""
+"<option value=\"\" disabled=\"disabled\" selected=\"selected\">Yıl\n"
+"                                        </option>"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__iyzico_api_key
+msgid "API Key"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__iyzico_api_key
+msgid "API Key provided by Iyzico Sanal Pos"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/iyzico_connector.py:0
+#: code:addons/payment_iyzico_altinkaya/models/iyzico_connector.py:0
+#, python-format
+msgid "An error occurred. Please contact the administrator."
+msgstr "Bir hata oluştu. Lütfen bizimle iletişime geçin."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/controllers/main.py:0
+#, python-format
+msgid "An error occurred. Please try again."
+msgstr "Bir hata oluştu. Lütfen tekrar deneyin."
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid ""
+"CVV\n"
+"                                        <i class=\"fa fa-question-circle-o d-inline\"/>"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_provider.py:0
+#, python-format
+msgid "Card CVV is not valid.\n"
+msgstr "Kart CVV geçerli değil.\n"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Card Owner"
+msgstr "Kart Sahibi"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Card Owner Name"
+msgstr "Kart Sahibinin Adı"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_provider.py:0
+#, python-format
+msgid "Card expiration date is not valid.\n"
+msgstr "Kart son kullanma tarihi geçerli değil.\n"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_provider.py:0
+#, python-format
+msgid "Card name is not valid.\n"
+msgstr "Kart adı geçerli değil.\n"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Card number"
+msgstr "Kart numarası"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_provider.py:0
+#, python-format
+msgid "Card number is not valid."
+msgstr "Kart numarası geçerli değil."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_provider.py:0
+#, python-format
+msgid "Card number is not valid.\n"
+msgstr "Kart numarası geçerli değil.\n"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__changeset_change_ids
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__changeset_change_ids
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__changeset_ids
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__changeset_ids
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklikler"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Choose the installment option that suits your card"
+msgstr "Tercih ettiğiniz taksit seçeneğini seçin."
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__code
+msgid "Code"
+msgstr "Kod"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__count_changesets
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__count_changesets
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__count_pending_changesets
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__count_pending_changesets
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__iyzico_currency_try_id
+msgid ""
+"Currency in which the 3DS threshold amount is defined. It is recommended to "
+"set this to Turkish Lira (TRY)."
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__iyzico_installment_enabled
+msgid "Enable Installments"
+msgstr "Taksitleri Etkinleştir"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__iyzico_installment_enabled
+msgid "Enable installment options during checkout"
+msgstr "Taksit seçeneklerini ödeme sırasında etkinleştir"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Expiration Date"
+msgstr "Son Kullanma Tarihi"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model,name:payment_iyzico_altinkaya.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP Yönlendirme"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Installment Options"
+msgstr "Taksit Seçenekleri"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/controllers/main.py:0
+#: code:addons/payment_iyzico_altinkaya/controllers/main.py:0
+#, python-format
+msgid "Invalid response."
+msgstr "Geçersiz yanıt."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/iyzico_connector.py:0
+#, python-format
+msgid "Invalid signature"
+msgstr "Geçersiz imza"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__iyzico_payment_id
+msgid "Iyzico Payment ID"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Loading installment options..."
+msgstr "Taksit seçenekleri yükleniyor..."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Monthly amount: %s"
+msgstr "Aylık tutar: %s"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "No commission"
+msgstr "Ek ücret yok"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Pay with 3D Secure Authentication"
+msgstr "3D Secure Doğrulaması ile Öde"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Payment Error"
+msgstr "Ödeme Hatası"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model,name:payment_iyzico_altinkaya.model_payment_provider
+msgid "Payment Provider"
+msgstr "Ödeme Sağlayıcı"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model,name:payment_iyzico_altinkaya.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Ödeme İşlemi"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__iyzico_secret_key
+msgid "Secret Key"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__iyzico_secret_key
+msgid "Secret Key provided by Iyzico Sanal Pos"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Server Error"
+msgstr "Sunucu Hatası"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Single Payment"
+msgstr "Tek Çekim"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__smart_search
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__smart_search
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/controllers/main.py:0
+#, python-format
+msgid "Something bad happened. Please try again."
+msgstr "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_transaction.py:0
+#, python-format
+msgid "Something went wrong during the payment. Please try again."
+msgstr "Ödeme sırasında bir şeyler ters gitti. Lütfen tekrar deneyin."
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__iyzico_currency_try_id
+msgid "TRY Currency"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_ir_http__count_pending_changeset_changes
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__count_pending_changeset_changes
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_transaction__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_ir_http__count_pending_changesets
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__count_pending_changesets
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_transaction__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_ir_http__count_changesets
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__count_changesets
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_transaction__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_transaction__iyzico_payment_id
+msgid ""
+"The payment ID returned by Iyzico to reference the payment method used for "
+"the transaction"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__code
+msgid "The technical code of this payment provider."
+msgstr "Bu ödeme sağlayıcının teknik adı"
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "Three digit CV code on the back of your card"
+msgstr "Kartınızın arkasındaki üç haneli CV kodu"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,help:payment_iyzico_altinkaya.field_payment_provider__iyzico_3ds_threshold_amount
+msgid ""
+"Transactions above this amount will require 3D Secure authentication. Set to"
+" 0 to always require 3D Secure authentication."
+msgstr ""
+"Bu tutarın üzerindeki işlemler 3D Secure kimlik doğrulaması gerektirecektir."
+" 3D Secure kimlik doğrulamasını her zaman gerektirmek için 0 olarak "
+"ayarlayın."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Unable to load installment options. Please try again."
+msgstr "Taksit seçenekleri yüklenemedi. Lütfen tekrar deneyin."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "Unexpected error"
+msgstr "Beklenmeyen hata"
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_ir_http__user_can_see_changeset
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_provider__user_can_see_changeset
+#: model:ir.model.fields,field_description:payment_iyzico_altinkaya.field_payment_transaction__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: payment_iyzico_altinkaya
+#. odoo-javascript
+#: code:addons/payment_iyzico_altinkaya/static/src/js/payment_form.js:0
+#, python-format
+msgid "We are not able to process your payment."
+msgstr "Ödemenizi işleme alamıyoruz."
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:ir.ui.view,arch_db:payment_iyzico_altinkaya.inline_form
+msgid "XXXX XXXX XXXX XXXX"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:payment.provider,name:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "iyzico"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model:ir.model.fields.selection,name:payment_iyzico_altinkaya.selection__payment_provider__code__iyzico_altinkaya
+#: model:payment.provider,display_as:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "iyzico Sanal Pos"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/controllers/main.py:0
+#, python-format
+msgid "iyzico: Invalid access token."
+msgstr "iyzico: Geçersiz erişim belirteci."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_transaction.py:0
+#, python-format
+msgid "iyzico: No transaction found matching reference %(tx_code)s."
+msgstr "iyzico: %(tx_code)s referansıyla eşleşen işlem bulunamadı."
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_transaction.py:0
+#, python-format
+msgid "iyzico: Received data with missing transaction code."
+msgstr "iyzico: Eksik işlem kodu ile veri alındı."
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:payment.provider,done_msg:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "Ödemeniz başarıyla işleme alındı. Teşekkür ederiz!"
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:payment.provider,pending_msg:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "Ödemeniz başarıyla işleme koyuldu, ancak onay bekliyor."
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:payment.provider,cancel_msg:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "Ödemeniz iptal edildi."
+msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#: model_terms:payment.provider,auth_msg:payment_iyzico_altinkaya.payment_provider_iyzico
+msgid "Ödemeniz onaylandı."
+msgstr ""

@@ -1,0 +1,111 @@
+// SCSS styles for Iyzico Payment Form
+// Variables
+$iyzico-border-radius: 4px;
+$iyzico-transition-speed: 0.2s;
+$iyzico-hover-bg: #f8f9fa;
+$iyzico-border-color: #dee2e6;
+
+// Installment options styling
+.iyzico-installment-option {
+  cursor: pointer;
+  transition: all $iyzico-transition-speed ease;
+  border: 1px solid $iyzico-border-color !important;
+  background-color: #fff;
+
+  &:hover {
+    background-color: $iyzico-hover-bg;
+    border-color: #007bff !important;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+  }
+
+  &.bg-light {
+    background-color: #e3f2fd !important;
+    border-color: #007bff !important;
+  }
+
+  .form-check-input:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .installment-amount {
+    font-size: 0.9rem;
+    color: #495057;
+  }
+}
+
+// Installments section animation
+.iyzico-installments-container {
+  animation: iyzico-slideDown 0.3s ease-in-out;
+  margin-top: 0.5rem;
+}
+
+// Card styling override
+.iyzico-installments-card {
+  border-radius: $iyzico-border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Loading state styling
+.iyzico-loading {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+// Keyframe animation
+@keyframes iyzico-slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .iyzico-installment-option {
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+
+    .form-check {
+      margin-bottom: 8px;
+      margin-right: 0 !important;
+    }
+
+    .text-end {
+      text-align: left !important;
+      margin-top: 8px;
+    }
+
+    .justify-content-between {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 8px;
+    }
+  }
+
+  .iyzico-installments-card {
+    margin: 0 -15px;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .iyzico-installment-option {
+    padding: 6px !important;
+
+    h6 {
+      font-size: 0.9rem;
+    }
+
+    .installment-amount {
+      font-size: 0.9rem;
+    }
+  }
+}

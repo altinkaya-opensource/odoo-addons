@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="inline_form">
+        <div id="iyzico-form" class="row">
+            <div class="col-12 col-lg-8">
+                <t
+                    t-set="turkish_partner"
+                    t-value="request.env['res.partner'].browse(partner_id).commercial_partner_id.country_id.code == 'TR'"
+                />
+                <t
+                    t-set="installment_enabled"
+                    t-value="provider.iyzico_installment_enabled and turkish_partner"
+                />
+                <input
+                    name="iyzico_provider_id"
+                    type="hidden"
+                    t-att-value="provider_id"
+                />
+                <input
+                    name="iyzico_installment_enabled"
+                    type="hidden"
+                    t-att-value="installment_enabled"
+                />
+                <div id="credit-card">
+                    <div class="form-group">
+                        <label for="username">
+                            <h6>Card Owner</h6>
+                        </label>
+                        <input
+                            type="text"
+                            name="cardName"
+                            placeholder="Card Owner Name"
+                            class="form-control "
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="cardNumber">
+                            <h6>Card number</h6>
+                        </label>
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                maxlength="19"
+                                name="cardNumber"
+                                placeholder="XXXX XXXX XXXX XXXX"
+                                inputmode="numeric"
+                                class="form-control "
+                            />
+                            <span class="input-group-text text-muted">
+                                <i class="fa fa-credit-card mx-1" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label>
+                                    <h6>
+                                        Expiration Date
+                                    </h6>
+                                </label>
+                                <div class="input-group">
+                                    <select
+                                        name="validMonth"
+                                        t-attf-class="form-select"
+                                    >
+                                        <option
+                                            value=""
+                                            disabled="disabled"
+                                            selected="selected"
+                                        >Month
+                                        </option>
+                                        <t t-foreach="range(1, 13)" t-as="r">
+                                            <option t-att-value="r">
+                                                <t t-esc="('%s' % r).zfill(2)" />
+                                            </option>
+                                        </t>
+                                    </select>
+                                    <select name="validYear" t-attf-class="form-select">
+                                        <option
+                                            value=""
+                                            disabled="disabled"
+                                            selected="selected"
+                                        >Year
+                                        </option>
+                                        <t
+                                            t-foreach="range(datetime.date.today().year, datetime.date.today().year+13)"
+                                            t-as="r"
+                                        >
+                                            <option t-att-value="r">
+                                                <t t-esc="r" />
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group mb-4">
+                                <label
+                                    title="Three digit CV code on the back of your card"
+                                >
+                                    <h6>CVV
+                                        <i class="fa fa-question-circle-o d-inline" />
+                                    </h6>
+                                </label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        name="cardCVV"
+                                        maxlength="4"
+                                        class="form-control"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        t-attf-class="{{'form-group mb-4'}} {{'d-none' if not turkish_partner else ''}}"
+                    >
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                name="iyzico_force_3ds"
+                            />
+                            <label class="form-check-label mt-0" for="iyzico_force_3ds">
+    Pay with 3D Secure Authentication
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 text-center my-auto">
+                <t
+                    t-if="list(filter(lambda lg : lg[0] == lang, languages))[0][0] == 'tr_TR'"
+                >
+                    <img
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_iyzico_altinkaya/static/img/ssl_256bit.png"
+                    />
+                    <img
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_iyzico_altinkaya/static/img/secure_payment.png"
+                    />
+                </t>
+                <t t-else="">
+                    <img
+                        class="img-fluid w-50 w-lg-75"
+                        src="/payment_iyzico_altinkaya/static/img/ssl_secured.png"
+                    />
+                </t>
+            </div>
+            <p
+                t-if="installment_enabled"
+                id="installment-info-text"
+                class="text-muted mt-2 mt-md-0"
+            >
+                <i
+                class="fa fa-info-circle"
+            /> Installement options will be available when you enter your card number.
+            </p>
+        </div>
+        <!-- Installment Options Section -->
+        <div
+            t-if="installment_enabled"
+            id="iyzico-installments"
+            class="row d-none iyzico-installments-container"
+        >
+            <div class="col-12">
+                <div class="card iyzico-installments-card">
+                    <div class="card-header bg-light border-0 py-3">
+                        <h5 class="mb-0 text-primary">
+                            <i class="fa fa-calendar-alt me-2" />
+                            <span id="installment-title" />
+                        </h5>
+                        <small class="text-muted" id="installment-subtitle" />
+                    </div>
+                    <div class="p-0" id="installment-options-container">
+                        <input type="hidden" name="selectedInstallment" value="1" />
+                        <!-- Installment options will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
