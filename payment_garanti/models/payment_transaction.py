@@ -83,13 +83,16 @@ class PaymentTransaction(models.Model):
         if self.provider_code != "garanti":
             return res
 
-        return {
-            "access_token": payment_utils.generate_access_token(
-                processing_values["reference"],
-                processing_values["amount"],
-                processing_values["partner_id"],
-            )
-        }
+        res.update(
+            {
+                "access_token": payment_utils.generate_access_token(
+                    processing_values["reference"],
+                    processing_values["amount"],
+                    processing_values["partner_id"],
+                )
+            }
+        )
+        return res
 
     def _process_notification_data(self, notification_data):
         """Override of payment to process the transaction based on Garanti data.

@@ -1,0 +1,160 @@
+# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import logging
+
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
+
+from odoo.addons.payment import utils as payment_utils
+
+from .iyzico_connector import iyzicoConnector
+
+_logger = logging.getLogger(__name__)
+
+
+class PaymentTransaction(models.Model):
+    _inherit = "payment.transaction"
+
+    iyzico_payment_id = fields.Char(
+        string="Iyzico Payment ID",
+        help="The payment ID returned by Iyzico to reference "
+        "the payment method used for the transaction",
+        readonly=True,
+        copy=False,
+    )
+
+    # === BUSINESS METHODS ===#
+
+    def _iyzico_compute_access_token(
+        self, reference=None, amount=None, partner_id=None
+    ):
+        """
+        Return the expected access token for Iyzico transactions.
+        This can work with payment.transaction recordset or payment dictionary
+        """
+        self.ensure_one()
+        if self.provider_code != "iyzico_altinkaya":
+            return False
+
+        reference = reference or self.reference
+        amount = amount or self.amount
+        partner_id = partner_id or self.partner_id.id
+
+        return payment_utils.generate_access_token(reference, amount, partner_id)
+
+    def _iyzico_ensure_access_token(self, access_token):
+        """Ensure the access token is valid.
+
+        Note: self.ensure_one()
+
+        :param str access_token: The access token to validate
+        :return: None
+        :raise: ValidationError if the access token is invalid
+        """
+        expected_access_token = self._iyzico_compute_access_token()
+        if not expected_access_token:
+            return
+
+        assert access_token == expected_access_token
+
+    def _get_specific_processing_values(self, processing_values):
+        """Override of payment to return Iyzico-specific processing values.
+
+        Note: self.ensure_one() from `_get_processing_values`
+
+        :param dict processing_values: The generic processing values of the transaction
+        :return: The dict of provider-specific processing values
+        :rtype: dict
+        """
+        res = super()._get_specific_processing_values(processing_values)
+        if self.provider_code != "iyzico_altinkaya":
+            return res
+
+        res["access_token"] = self._iyzico_compute_access_token(
+            reference=processing_values.get("reference"),
+            amount=processing_values.get("amount"),
+            partner_id=processing_values.get("partner_id"),
+        )
+        return res
+
+    def _iyzico_finalize_payment(self, status, response):
+        try:
+            if status == "success":
+                self._set_done()
+            else:
+                self._set_error(response)
+        except Exception as e:
+            _logger.warning(
+                "iyzico payment error: %s, data: %s", (e, response), exc_info=True
+            )
+            self._set_error(
+                _("Something went wrong during the payment. Please try again.")
+            )
+
+    def _process_notification_data(self, notification_data):
+        """Override of payment to process the transaction based on iyzico data.
+
+        Note: self.ensure_one()
+
+        :param dict notification_data: The notification data sent by the provider
+        :return: None
+        :raise: ValidationError if inconsistent data were received
+        """
+        super()._process_notification_data(notification_data)
+        if self.provider_code != "iyzico_altinkaya":
+            return
+
+        self.operation = "online_redirect"
+        self.iyzico_payment_id = notification_data.get("paymentId")
+        if notification_data.get("status") == "success":
+            connector = iyzicoConnector(
+                api_key=self.provider_id.iyzico_api_key,
+                secret_key=self.provider_id.iyzico_secret_key,
+                base_url=self.provider_id._iyzico_get_api_url(),
+                tx=self,
+            )
+            res = connector.auth_3ds_response(notification_data)
+            self._iyzico_finalize_payment(*res)
+
+        else:
+            self._set_error(
+                _("3DS: Something went wrong during the payment. Please try again.")
+            )
+
+    def _get_tx_from_notification_data(self, provider_code, notification_data):
+        """Override of payment to find the transaction based on iyzico data.
+
+        :param str provider_code: The code of the provider that handled the transaction
+        :param dict notification_data: The notification data sent by the provider
+        :return: The transaction if found
+        :rtype: recordset of `payment.transaction`
+        :raise: ValidationError if inconsistent data were received
+        :raise: ValidationError if the data match no transaction
+        """
+        tx = super()._get_tx_from_notification_data(provider_code, notification_data)
+        if provider_code != "iyzico_altinkaya" or len(tx) == 1:
+            return tx
+
+        tx_code = notification_data.get("conversationId")
+        if not tx_code:
+            raise ValidationError(
+                _("iyzico: Received data with missing transaction code.")
+            )
+
+        tx = self.search(
+            [
+                ("reference", "=", tx_code),
+                ("state", "not in", ("done", "cancel", "error")),
+            ],
+            limit=1,
+            order="id desc",
+        )
+
+        if not tx:
+            raise ValidationError(
+                _(
+                    "iyzico: No transaction found matching reference %(tx_code)s.",
+                    tx_code=tx_code,
+                )
+            )
+        return tx

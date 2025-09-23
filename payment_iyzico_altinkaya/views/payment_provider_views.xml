@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">iyzico Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form" />
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position='inside'>
+                <group attrs="{'invisible': [('code', '!=', 'iyzico_altinkaya')]}">
+                    <field name="iyzico_api_key" />
+                    <field name="iyzico_secret_key" password="True" />
+                    <field name="iyzico_installment_enabled" />
+
+                    <label for="iyzico_3ds_threshold_amount" />
+                    <div name="iyzico_3ds_configuration" class="d-flex">
+                        <field name="iyzico_3ds_threshold_amount" class="me-2" />
+                        <field name="iyzico_currency_try_id" />
+                    </div>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>
