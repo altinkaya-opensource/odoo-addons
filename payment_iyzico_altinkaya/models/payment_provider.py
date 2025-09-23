@@ -1,4 +1,4 @@
-# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# Copyright 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
@@ -90,13 +90,7 @@ class PaymentProvider(models.Model):
         :rtype: list
         """
         installment_options = []
-        connector = iyzicoConnector(
-            api_key=self.iyzico_api_key,
-            secret_key=self.iyzico_secret_key,
-            base_url=self._iyzico_get_api_url(),
-            tx=tx,
-            order_id=order_id,
-        )
+        connector = self._get_iyzico_connector(tx, order_id)
         _iyz_options = connector.check_installment(price, card_number=card_number)
         if _iyz_options["status"] == "success":
             for item in _iyz_options["installmentDetails"][0]["installmentPrices"]:
@@ -156,13 +150,8 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         tx.ensure_one()
-        connector = iyzicoConnector(
-            api_key=self.iyzico_api_key,
-            secret_key=self.iyzico_secret_key,
-            base_url=self._iyzico_get_api_url(),
-            tx=tx,
-            card_args=card_args,
-            installment=installment,
+        connector = self._get_iyzico_connector(
+            tx, card_args=card_args, installment=installment
         )
         return ("3ds", connector.initialize_3ds_process())
 
@@ -177,15 +166,32 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         tx.ensure_one()
-        connector = iyzicoConnector(
+        connector = self._get_iyzico_connector(
+            tx, card_args=card_args, installment=installment
+        )
+        return ("non_3ds", connector.make_non_3ds_payment())
+
+    def _get_iyzico_connector(
+        self, tx, order_id=None, card_args=None, installment=None
+    ):
+        """Create and return an Iyzico connector instance.
+
+        :param tx: The payment transaction record.
+        :param order_id: The sale order record (optional).
+        :param dict card_args: The card information arguments (optional).
+        :param int installment: The installment number (optional).
+        :return: An iyzicoConnector instance.
+        :rtype: iyzicoConnector
+        """
+        return iyzicoConnector(
             api_key=self.iyzico_api_key,
             secret_key=self.iyzico_secret_key,
             base_url=self._iyzico_get_api_url(),
             tx=tx,
+            order_id=order_id,
             card_args=card_args,
             installment=installment,
         )
-        return ("non_3ds", connector.make_non_3ds_payment())
 
     def _iyzico_validate_card_args(self, card_args):
         """Validate credit/debit card information.

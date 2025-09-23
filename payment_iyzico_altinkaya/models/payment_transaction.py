@@ -1,4 +1,4 @@
-# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# Copyright 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
