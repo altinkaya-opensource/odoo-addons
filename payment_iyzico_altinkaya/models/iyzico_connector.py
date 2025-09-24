@@ -24,6 +24,7 @@ import requests
 
 from odoo import _
 from odoo.exceptions import ValidationError
+from odoo.tools import float_is_zero
 
 from ..controllers.main import _IYZICO_RETURN_URL
 
@@ -282,11 +283,16 @@ class iyzicoConnector:
         """
         items = []
         if self.order_id:
-            for line in self.order_id.order_line:
+            for line in self.order_id.order_line.filtered(
+                lambda ol: not float_is_zero(
+                    ol.price_total,
+                    precision_rounding=self.payment_currency.rounding or 0.01,
+                )
+            ):
                 items.append(
                     {
                         "id": str(line.id),
-                        "name": line.name[:254],  # iyzico limit
+                        "name": line.name[:200],  # iyzico limit
                         "category1": line.product_id.categ_id.name or "",
                         "itemType": "VIRTUAL"
                         if line.product_id.type == "service"
