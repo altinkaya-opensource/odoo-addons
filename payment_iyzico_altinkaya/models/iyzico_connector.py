@@ -323,7 +323,7 @@ class iyzicoConnector:
             paid_amount = amount
 
         return {
-            "price": amount,
+            "price": round(amount, 2),
             "paidPrice": paid_amount,
             "currency": self.payment_currency.name,
         }
