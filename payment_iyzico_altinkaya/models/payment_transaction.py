@@ -91,26 +91,41 @@ class PaymentTransaction(models.Model):
         )
         return res
 
-    def _iyzico_set_commission_data(self, response):
+    def _iyzico_set_amounts(self, response):
         """Set the commission data from the Iyzico response.s
 
         :param dict response: Response data from Iyzico.
         :return: bool
         """
-        self.iyzico_installment_fee = response.get("merchantCommissionRateAmount", 0)
+        currency_id = self.env["res.currency"].search(
+            [("name", "=", response.get("currency"))], limit=1
+        )
+        paid_amount = response.get("paidPrice", self.amount)
+        installment_fee = response.get("merchantCommissionRateAmount", 0)
+        self.write(
+            {
+                "amount": paid_amount,
+                "currency_id": currency_id.id,
+                "iyzico_installment_fee": installment_fee,
+            }
+        )
         return True
 
     def _iyzico_finalize_payment(self, status, response):
         """Finalize the payment based on status and response.
 
         :param str status: Payment status ('success' or 'error').
-        :param dict response: Response data from Iyzico.
+        :param dict response: Response data from iyzico.
         :return: None
         """
         try:
             if status == "success":
                 self._set_done()
-                self._iyzico_set_commission_data(response)
+                # When setting iyzico amounts, there could be mismatch in amounts
+                # due to installment fees. So, firstly confirm the order to lock the
+                # amount, then set the amounts from iyzico response.
+                self._check_amount_and_confirm_order()
+                self._iyzico_set_amounts(response)
             else:
                 self._set_error(response)
         except Exception as e:

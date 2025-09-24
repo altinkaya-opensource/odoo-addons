@@ -248,7 +248,7 @@ class iyzicoConnector:
             "name": partner.name,
             "surname": partner.name,
             "identityNumber": self.tx.partner_id.vat or "11111111111",
-            "email": partner.email.split(",")[0] or "",
+            "email": (partner.email or "").split(",")[0],
             "gsmNumber": partner.mobile or partner.phone or "",
             "registrationAddress": partner.contact_address or "",
             "city": partner.city or partner.state_id.name or "",

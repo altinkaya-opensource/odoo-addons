@@ -23,10 +23,7 @@
     "summary": "iyzico Sanal POS, internet üzerinden yapılan satışlarda"
     " kredi kartı ile ödeme alınabilmesi için oluşturulan güvenli"
     " bir ödeme çözümüdür.",
-    "depends": [
-        "account_payment",
-        "payment",
-    ],
+    "depends": ["account_payment", "payment", "sale"],
     "external_dependencies": {"python": ["requests"]},
     "data": [
         "views/payment_iyzico_altinkaya_templates.xml",
