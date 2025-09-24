@@ -48,7 +48,7 @@ class iyzicoConnector:
         self.env = tx.env  # To access env outside of tx
         self.order_id = order_id or self.tx.sale_order_ids
         self.temp_currency_id = temp_currency_id
-        self.partner_id = partner_id or self.tx.partner_id
+        self.partner_id = partner_id or self.tx.partner_id or self.order_id.partner_id
         self.card_args = card_args or {}
         self.installment = int(installment or 1)
         self._session = requests.Session()
@@ -60,7 +60,7 @@ class iyzicoConnector:
 
     @property
     def locale(self):
-        return "tr" if self.tx.partner_id.lang == "tr_TR" else "en"
+        return "tr" if self.partner_id.lang == "tr_TR" else "en"
 
     @property
     def source_currency(self):
@@ -69,9 +69,7 @@ class iyzicoConnector:
     @property
     def payment_currency(self):
         currency_try = self.env.ref("base.TRY")
-        partner_country = (
-            self.tx.partner_id or self.order_id.partner_id or self.partner_id
-        ).commercial_partner_id.country_id
+        partner_country = (self.partner_id).commercial_partner_id.country_id
 
         if self.source_currency != currency_try and partner_country.code == "TR":
             return currency_try
@@ -242,7 +240,7 @@ class iyzicoConnector:
         :return: Buyer information dictionary.
         :rtype: dict
         """
-        partner = self.tx.partner_id.commercial_partner_id
+        partner = self.partner_id
         return {
             "id": str(partner.id),
             "name": partner.name,
@@ -264,11 +262,11 @@ class iyzicoConnector:
         """
         if self.tx.sale_order_ids:
             if address_type == "shipping":
-                partner = self.tx.sale_order_ids.partner_shipping_id
+                partner = self.order_id.partner_shipping_id
             elif address_type == "billing":
-                partner = self.tx.sale_order_ids.partner_invoice_id
+                partner = self.order_id.partner_invoice_id
         else:
-            partner = self.tx.partner_id
+            partner = self.partner_id
         return {
             "contactName": partner.name,
             "city": partner.city or partner.state_id.name or "",
@@ -283,8 +281,8 @@ class iyzicoConnector:
         :rtype: list
         """
         items = []
-        if self.tx.sale_order_ids:
-            for line in self.tx.sale_order_ids.order_line:
+        if self.order_id:
+            for line in self.order_id.order_line:
                 items.append(
                     {
                         "id": str(line.id),
