@@ -286,7 +286,7 @@ class iyzicoConnector:
                 items.append(
                     {
                         "id": str(line.id),
-                        "name": line.name,
+                        "name": line.name[:254],  # iyzico limit
                         "category1": line.product_id.categ_id.name or "",
                         "itemType": "VIRTUAL"
                         if line.product_id.type == "service"
