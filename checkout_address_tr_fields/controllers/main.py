@@ -178,3 +178,32 @@ class WebsiteSaleInherit(WebsiteSale):
             req.append("district_id")
             req.append("neighbour_id")
         return req
+
+    def checkout_check_address(self, order):
+        """
+        Check if the shipping address is complete, otherwise try to use
+        the billing address or the commercial partner as shipping address.
+        If none of them is complete, redirect to the address form.
+        """
+        shipping_fields_required = self._get_mandatory_fields_shipping(
+            order.partner_shipping_id.country_id.id
+        )
+
+        if not all(
+            order.partner_shipping_id.read(shipping_fields_required)[0].values()
+        ):
+            if order.partner_shipping_id != order.partner_id and all(
+                order.partner_id.read(shipping_fields_required)[0].values()
+            ):
+                order.partner_shipping_id = order.partner_id
+            elif (
+                order.partner_shipping_id != order.partner_id.commercial_partner_id
+                and all(
+                    order.partner_id.commercial_partner_id.read(
+                        shipping_fields_required
+                    )[0].values()
+                )
+            ):
+                order.partner_shipping_id = order.partner_id.commercial_partner_id
+
+        return super().checkout_check_address(order)
