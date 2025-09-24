@@ -319,7 +319,7 @@ class iyzicoConnector:
         :return: Price data dictionary.
         :rtype: dict
         """
-        amount = sum(item["price"] for item in basket_items)
+        amount = round(sum(item["price"] for item in basket_items), 2)
 
         if self.installment_enabled:
             paid_amount = self._get_installed_included_price()
@@ -327,7 +327,7 @@ class iyzicoConnector:
             paid_amount = amount
 
         return {
-            "price": round(amount, 2),
+            "price": amount,
             "paidPrice": paid_amount,
             "currency": self.payment_currency.name,
         }
