@@ -91,24 +91,24 @@ class PaymentProvider(models.Model):
         :rtype: bool
         """
         self.ensure_one()
-
-        if force_3ds:
-            return True
-
-        partner = connector.tx.partner_id.commercial_partner_id
-        # Disable 3DS for non-Turkish partners (international transactions)
-        if partner.country_id and partner.country_id.code != "TR":
-            return False
-
-        # Disable 3DS if amount is below threshold in TRY
-        if (
-            connector.payment_currency == self.iyzico_currency_try_id
-            and connector._convert_price(connector.tx.amount)
-            <= self.iyzico_3ds_threshold_amount
-        ):
-            return False
-
         return True
+        # if force_3ds:
+        #     return True
+
+        # partner = connector.tx.partner_id.commercial_partner_id
+        # # Disable 3DS for non-Turkish partners (international transactions)
+        # if partner.country_id and partner.country_id.code != "TR":
+        #     return False
+
+        # # Disable 3DS if amount is below threshold in TRY
+        # if (
+        #     connector.payment_currency == self.iyzico_currency_try_id
+        #     and connector._convert_price(connector.tx.amount)
+        #     <= self.iyzico_3ds_threshold_amount
+        # ):
+        #     return False
+
+        # return True
 
     def _iyzico_initialize_payment(
         self, tx, card_args, installment=None, force_3ds=False

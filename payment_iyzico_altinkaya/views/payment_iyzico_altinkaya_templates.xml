@@ -115,7 +115,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
+                    <!-- <div
                         t-attf-class="{{'form-group mb-4'}} {{'d-none' if not turkish_partner else ''}}"
                     >
                         <div class="form-check">
@@ -129,7 +129,7 @@
     Pay with 3D Secure Authentication
                             </label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-12 col-lg-4 text-center my-auto">

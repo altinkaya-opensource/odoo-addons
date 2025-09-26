@@ -333,7 +333,8 @@ odoo.define('payment_iyzico_altinkaya.payment_form', require => {
                     reference: processingValues.reference,
                     access_token: processingValues.access_token,
                     installment: selectedInstallment,
-                    force_3ds: $("#iyzico-form [name='iyzico_force_3ds']")[0].checked,
+                    //force_3ds: $("#iyzico-form [name='iyzico_force_3ds']")[0].checked,
+                    force_3ds: true,
                     card_args: {
                         card_name: $("#iyzico-form [name='cardName']").val(),
                         card_number: $("#iyzico-form [name='cardNumber']").val(),
