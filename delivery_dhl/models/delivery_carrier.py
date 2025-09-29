@@ -90,7 +90,7 @@ class DeliveryCarrier(models.Model):
     # DHL limits the shipment description to 70 characters,
     dhl_general_shipment_description = fields.Char(
         default="",
-        max_length=70,
+        size=70,
         help="General shipment description to be used for DHL shipments.",
     )
 

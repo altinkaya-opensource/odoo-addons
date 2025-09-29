@@ -17,6 +17,6 @@ class ResPartner(models.Model):
     property_rate_field = fields.Selection(
         selection=lambda self: self.env["res.currency.rate"]._get_rate_fields(),
         default="rate",
-        required=True,
+        # required=True,
         string="Currency Rate Field",
     )

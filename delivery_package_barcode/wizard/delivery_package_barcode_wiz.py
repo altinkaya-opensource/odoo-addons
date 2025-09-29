@@ -23,7 +23,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     barcode = fields.Char()
     picking_ids = fields.Many2many(
         "stock.picking",
-        rel="delivery_package_barcode_wiz_picking_rel",
+        relation="delivery_package_barcode_wiz_picking_rel",
         string="Pickings",
     )
     picking_line_ids = fields.One2many(

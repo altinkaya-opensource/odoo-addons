@@ -20,7 +20,7 @@ class StockPicking(models.Model):
     )
 
     fedex_pickup_location = fields.Char(
-        string="FedEx Pickup Confirmation Code",
+        string="FedEx Pickup Location",
         help="Confirmation code for the FedEx pickup.",
         readonly=True,
     )
