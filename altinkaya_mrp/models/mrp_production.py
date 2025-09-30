@@ -41,10 +41,10 @@ class MrpProduction(models.Model):
         related="bom_id.routing_id",
         store=True,
     )
-    x_operator = fields.Many2one("hr.employee", "Uretimi Yapan Operator")
+    x_operator = fields.Many2one("hr.employee", "Uretimi Yapan Operator", tracking=True)
     x_note = fields.Text("Note")
     # TODO: @dogan workcenter_id alanini kullanabiliriz
-    x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine")
+    x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine", tracking=True)
     x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
     similar_mo_ids = fields.Many2many(
         "mrp.production",
