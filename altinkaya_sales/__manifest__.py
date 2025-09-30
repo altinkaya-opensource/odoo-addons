@@ -42,6 +42,7 @@
         "account_financial_risk",
         "altinkaya_py3o_reports",
         "sale_management",
+        "sale_mrp",
     ],
     "author": "Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",

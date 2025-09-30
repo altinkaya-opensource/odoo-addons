@@ -199,4 +199,14 @@
             <t t-out="sale_order.currency_id.symbol" />
         </xpath>
     </template>
+
+    <template
+        id="sale_portal_hide_production_orders"
+        name="Sale Portal Hide Production Orders"
+        inherit_id="sale_mrp.sale_order_portal_content_inherit_sale_mrp"
+    >
+        <xpath expr="//t[@t-set='mrp_productions']" position="after">
+            <t t-set="mrp_productions" t-value="False" />
+        </xpath>
+    </template>
 </odoo>
