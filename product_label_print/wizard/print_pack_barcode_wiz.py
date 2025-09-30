@@ -266,8 +266,8 @@ class PrintPackBarcodeWizard(models.TransientModel):
             docids=[self.id],
         )[0]
         printer.print_document(
-            "product_label_print.label_product_product",
-            payload,
+            report=None,
+            content=payload,
             doc_form="txt",
         )
         return {"type": "ir.actions.act_window_close"}
