@@ -20,7 +20,7 @@
         "security/ir.model.access.csv",
         "security/mrp_security.xml",
         "views/mrp_bom_template_line_views.xml",
-        "reports/report_mrporder.xml",
+        # "reports/report_mrporder.xml",
         "views/cron.xml",
         "views/x_makine_views.xml",
         "views/procurement_view.xml",

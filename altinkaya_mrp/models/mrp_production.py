@@ -135,9 +135,9 @@ class MrpProduction(models.Model):
                     return move_id
             return False
 
-        if self.move_dest_ids:
+        if self.move_finished_ids:
             route = []
-            for m in _get_next_moves(fields.first(self.move_dest_ids)):
+            for m in _get_next_moves(fields.first(self.move_finished_ids)):
                 if m.picking_id.id:
                     route.append(("picking", m.picking_id))
                 elif m.raw_material_production_id.id:
