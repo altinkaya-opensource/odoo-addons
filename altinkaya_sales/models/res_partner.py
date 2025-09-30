@@ -87,11 +87,11 @@ class ResPartner(models.Model):
         """
         Make sure country_id is set to company country if not provided.
         """
-        partners = super().create(vals_list)
-        for partner in partners:
-            if not partner.country_id:
-                partner.country_id = self.env.company.country_id
-        return partners
+        for vals in vals_list:
+            if "country_id" not in vals or not vals.get("country_id"):
+                vals["country_id"] = self.env.company.country_id.id
+
+        return super().create(vals_list)
 
     @api.constrains("country_id")
     def _check_country_accounts(self):
