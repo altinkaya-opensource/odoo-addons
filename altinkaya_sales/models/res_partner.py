@@ -82,6 +82,17 @@ class ResPartner(models.Model):
     )
     credit_insurance_validity = fields.Date()
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        """
+        Make sure country_id is set to company country if not provided.
+        """
+        partners = super().create(vals_list)
+        for partner in partners:
+            if not partner.country_id:
+                partner.country_id = self.env.company.country_id
+        return partners
+
     @api.constrains("country_id")
     def _check_country_accounts(self):
         """
