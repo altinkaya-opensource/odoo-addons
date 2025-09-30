@@ -55,6 +55,7 @@ class MrpProduction(models.Model):
         compute="_compute_similar_mo_ids",
     )
 
+    @api.depends("sale_id", "sale_id.date_order", "procurement_group_id")
     def _compute_sale_date(self):
         """
         Compute the sale date based on the related sale order or procurement group.
