@@ -167,7 +167,7 @@
                 />
                 <field name="origin" invisible="1" />
                 <field name="procurement_group_id" readonly="1" />
-                <field name="x_makine" />
+                <field name="x_makine" options="{'no_open': True, 'no_create': True}" />
                 <field name="x_operator" />
             </xpath>
 
