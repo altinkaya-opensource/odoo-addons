@@ -5,7 +5,7 @@
             <div class="col-12 col-lg-8">
                 <t
                     t-set="turkish_partner"
-                    t-value="request.env['res.partner'].browse(partner_id).commercial_partner_id.country_id.code == 'TR'"
+                    t-value="request.env['res.partner'].sudo().browse(partner_id).commercial_partner_id.country_id.code == 'TR'"
                 />
                 <t
                     t-set="installment_enabled"
