@@ -298,10 +298,12 @@ class Partner(models.Model):
     ):
         template = self.env.ref("altinkaya_reports.email_template_edi_send_statement")
 
-        if self.lang == 'tr_TR':
+        if self.lang == "tr_TR":
             report_name = f"cari_hesap_ekstresi_{self.name}"
         else:
             report_name = f"partner_statement_{self.name}"
 
-        template.with_context(report_name=report_name).send_mail(self.id, force_send=True)
+        template.with_context(report_name=report_name).send_mail(
+            self.id, force_send=True
+        )
         return True

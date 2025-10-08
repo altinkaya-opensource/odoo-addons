@@ -1,6 +1,6 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, _
+from odoo import _, models
 from odoo.exceptions import UserError
 
 
@@ -14,21 +14,17 @@ class ResPartner(models.Model):
         total = len(partners)
         for index, partner in enumerate(partners, 1):
             try:
-                # Log progress in the server log
                 if index % 10 == 0 or index == total:
-                    partners._cr.execute("SELECT 1")  # Keep connection alive
+                    partners._cr.execute("SELECT 1")
 
                 partner.with_context(lang=partner.lang).send_reconciliation_mail()
             except Exception as e:
-                unsent_partners.append("%s: %s" % (partner.name, str(e)))
+                unsent_partners.append(f"{partner.name}: {e!s}")
 
-        self.env.cr.commit()
         if unsent_partners:
+            error_details = "\n".join(unsent_partners)
             raise UserError(
-                _(
-                    "Following partners could not be sent:\n%s"
-                    % "\n".join(unsent_partners)
-                )
+                _("Following partners could not be sent:") + f"\n{error_details}"
             )
 
     def send_reconciliation_mail(self):
@@ -36,7 +32,12 @@ class ResPartner(models.Model):
         contact = self.accounting_contact or self
 
         if not contact.email:
-            raise UserError(_("Partner %s does not have an email address." % self.name))
+            raise UserError(
+                _(
+                    "Partner %(partner_name)s does not have an email address.",
+                    partner_name=self.name,
+                )
+            )
 
         if contact.lang == "tr_TR":
             template = self.env.ref(
@@ -54,8 +55,13 @@ class ResPartner(models.Model):
                     "email_to": contact.email,
                     "reply_to": self.env.user.email_formatted,
                     "email_from": self.env.user.email_formatted,
-                }
+                },
             )
-            self.env.cr.commit()  # commit after each mail sent
         except Exception as e:
-            raise UserError(_("Partner %s could not be sent: %s" % (self.name, str(e))))
+            raise UserError(
+                _(
+                    "Partner %(partner_name)s could not be sent: %(error)s",
+                    partner_name=self.name,
+                    error=e,
+                )
+            )
