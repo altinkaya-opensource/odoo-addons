@@ -19,6 +19,7 @@
         "portal",
         "altinkaya_reports",
         "short_url_yourls",
+        "contacts"
     ],
     "data": [
         "views/sale_order_views.xml",
