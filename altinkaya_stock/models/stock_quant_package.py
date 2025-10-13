@@ -19,7 +19,7 @@ from odoo.exceptions import ValidationError
 
 class StockQuantPackage(models.Model):
     _inherit = "stock.quant.package"
-    _order = "sequence, id"
+    _order = "sequence asc, id desc"
 
     name = fields.Char(compute="_compute_name", store=True)
 
@@ -90,6 +90,7 @@ class StockQuantPackage(models.Model):
             position = list(similar_packs.sorted(key=lambda p: p.sequence)).index(rec)
             position_in_picking = position + 1
             rec.number = f"{rec.package_type_id.prefix_code}{position_in_picking}"
+            rec.sequence = position_in_picking
 
     @api.depends(
         "sequence",
@@ -99,6 +100,7 @@ class StockQuantPackage(models.Model):
         "pallet_id",
     )
     def _compute_name(self):
+        self._compute_number()
         for rec in self:
             if not rec.id:
                 rec.name = rec.package_type_id.name
