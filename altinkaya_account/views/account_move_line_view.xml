@@ -13,4 +13,25 @@
             </field>
         </field>
     </record>
+
+    <record id="view_move_line_tree_currency_editable" model="ir.ui.view">
+        <field name="name">account.move.line.tree.currency.editable</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree" />
+        <field name="priority">9999</field>
+        <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </tree>
+            <field name="currency_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="invisible">0</attribute>
+                <attribute name="attrs">{}</attribute>
+            </field>
+            <field name="amount_currency" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="force_save">1</attribute>
+            </field>
+        </field>
+    </record>
 </odoo>

@@ -85,3 +85,57 @@ class AccountMoveLine(models.Model):
                 line.amount_currency = line.currency_id.round(
                     line.balance * line.currency_rate
                 )
+
+    def _get_lock_date_protected_fields(self):
+        """
+        Override to allow currency_id and amount_currency changes on reconciled and posted entries
+        """
+        res = super()._get_lock_date_protected_fields()
+
+        allowed_fields = ['currency_id', 'amount_currency']
+
+        reconciliation_fnames = res.get('reconciliation', [])
+        reconciliation_fnames = [f for f in reconciliation_fnames if f not in allowed_fields]
+        res['reconciliation'] = reconciliation_fnames
+
+        fiscal_fnames = res.get('fiscal', [])
+        fiscal_fnames = [f for f in fiscal_fnames if f not in allowed_fields]
+        res['fiscal'] = fiscal_fnames
+
+        return res
+
+    def _check_reconciliation(self):
+        """
+        Override to skip reconciliation check if we're in a context
+        that allows currency changes on reconciled lines
+        """
+        if self.env.context.get('allow_currency_change_on_reconciled'):
+            return
+
+        return super()._check_reconciliation()
+
+    def write(self, vals):
+        """
+        Override to allow currency_id and amount_currency changes on reconciled entries
+        """
+        if vals:
+            reconciled_with_currency_change = any(
+                line.reconciled and (
+                    ('currency_id' in vals and vals.get('currency_id') != line.currency_id.id) or
+                    ('amount_currency' in vals and vals.get('amount_currency') != line.amount_currency)
+                )
+                for line in self
+            )
+
+            if reconciled_with_currency_change:
+                if 'currency_id' in vals and len(self) == 1:
+                    vals['amount_currency'] = self.amount_currency
+
+                return super(AccountMoveLine, self.with_context(
+                    allow_currency_change_on_reconciled=True,
+                    check_move_validity=False,
+                    skip_invoice_sync=True,
+                    skip_invoice_line_sync=True,
+                )).write(vals)
+
+        return super().write(vals)
