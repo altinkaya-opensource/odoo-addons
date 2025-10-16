@@ -82,11 +82,6 @@ class DeliveryCarrier(models.Model):
         help="DHL Commercial Invoice report to be used for shipments.",
     )
 
-    dhl_is_customs_declarable = fields.Boolean(
-        default=True,
-        help="Whether the shipment is customs declarable or not.",
-    )
-
     # DHL limits the shipment description to 70 characters,
     dhl_general_shipment_description = fields.Char(
         default="",
@@ -328,6 +323,12 @@ class DeliveryCarrier(models.Model):
 
         return packages
 
+    def _get_is_customs_declarable(self, invoice):
+        """
+        Determine if the shipment is customs declarable.
+        """
+        return invoice.fiscal_position_id.is_export
+
     def _prepare_dhl_shipment_data(self, picking):
         """
         Prepare shipment data for DHL API requests
@@ -408,7 +409,7 @@ class DeliveryCarrier(models.Model):
             ],
             "content": {
                 "packages": self._prepare_dhl_packing_data(picking),
-                "isCustomsDeclarable": self.dhl_is_customs_declarable,
+                "isCustomsDeclarable": self._get_is_customs_declarable(invoice),
                 "incoterm": invoice.invoice_incoterm_id.code,
                 "description": self.dhl_general_shipment_description,
                 "declaredValue": totalDeclaredValue,

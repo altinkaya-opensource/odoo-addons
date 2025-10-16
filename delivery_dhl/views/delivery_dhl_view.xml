@@ -51,10 +51,6 @@
                                 attrs="{'required': [('delivery_type', '=', 'dhl')]}"
                             />
                             <field
-                                name="dhl_is_customs_declarable"
-                                attrs="{'required': [('delivery_type', '=', 'dhl')]}"
-                            />
-                            <field
                                 name="dhl_general_shipment_description"
                                 attrs="{'required': [('delivery_type', '=', 'dhl')]}"
                             />
