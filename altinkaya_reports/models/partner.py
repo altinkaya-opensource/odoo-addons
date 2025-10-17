@@ -292,4 +292,3 @@ class Partner(models.Model):
                 new_idx += 1
             filtered_lines[curr_count] = [last_line] + new_lines
         return filtered_lines
-
