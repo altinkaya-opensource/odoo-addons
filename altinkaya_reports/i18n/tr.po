@@ -795,12 +795,12 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:mail.template,subject:altinkaya_reports.email_template_edi_send_statement
 msgid "Cari Ekstre Mutabakatı"
-msgstr "Ekstre"
+msgstr "Cari Ekstre Mutabakatı"
 
 #. module: altinkaya_reports
 #: model:mail.template,name:altinkaya_reports.email_template_edi_send_statement
-msgid "Cari Mutabakat Maili"
-msgstr ""
+msgid "Cari Ekstre Mutabakatı Maili"
+msgstr "Cari Ekstre Mutabakatı Maili"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
@@ -1218,8 +1218,8 @@ msgstr "İş Ortağı Tarihi"
 #: model:ir.actions.report,name:altinkaya_reports.partner_statement_altinkaya
 #: model:mail.template,subject:altinkaya_reports.email_template_edi_send_statement_en
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_partner_statement_wizard
-msgid "Partner Statement"
-msgstr "Ekstre"
+msgid "Partner Statement Mail"
+msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.actions.act_window,name:altinkaya_reports.action_view_partner_statement_wizard_en
@@ -1234,7 +1234,7 @@ msgstr "Ekstre (Ingilizce)"
 #. module: altinkaya_reports
 #: model:mail.template,name:altinkaya_reports.email_template_edi_send_statement_en
 msgid "Partner Statement Mail"
-msgstr "Ekstre Mail"
+msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_partner_statement_wizard

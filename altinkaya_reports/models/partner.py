@@ -293,17 +293,3 @@ class Partner(models.Model):
             filtered_lines[curr_count] = [last_line] + new_lines
         return filtered_lines
 
-    def email_statement(
-        self,
-    ):
-        template = self.env.ref("altinkaya_reports.email_template_edi_send_statement")
-
-        if self.lang == "tr_TR":
-            report_name = f"cari_hesap_ekstresi_{self.name}"
-        else:
-            report_name = f"partner_statement_{self.name}"
-
-        template.with_context(report_name=report_name).send_mail(
-            self.id, force_send=True
-        )
-        return True
