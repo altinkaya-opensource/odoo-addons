@@ -187,7 +187,7 @@ class CreateProcurementMove(models.TransientModel):
         if not group_id:
             group_id = self.env["procurement.group"].create(
                 {
-                    "name": warehouse_id.name + " Açan: " + self.env.user.name,
+                    "name": f"{warehouse_id.name or ''} Açan: {self.env.user.name or ''}",
                 }
             )
         values = {
