@@ -51,9 +51,6 @@ class ResPartner(models.Model):
             template.with_context(lang=contact.lang).send_mail(
                 contact.id,
                 force_send=True,
-                email_values={
-                    "recipient_ids": [(4, self.id)],
-                },
             )
         except Exception as e:
             raise UserError(
