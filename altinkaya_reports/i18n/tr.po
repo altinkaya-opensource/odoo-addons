@@ -1232,11 +1232,6 @@ msgid "Partner Statement English"
 msgstr "Ekstre (Ingilizce)"
 
 #. module: altinkaya_reports
-#: model:mail.template,name:altinkaya_reports.email_template_edi_send_statement_en
-msgid "Partner Statement Mail"
-msgstr ""
-
-#. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_partner_statement_wizard
 msgid "Partner Statement Wizard"
 msgstr "Ekstre Sihirbazı"

@@ -3,7 +3,9 @@
     <!--Email template for send partner statement-->
     <record id="email_template_edi_send_statement" model="mail.template">
         <field name="name">Cari Ekstre Mutabakatı Maili</field>
-        <field name="email_from">{{ (user.email_formatted or user.email or '') }}</field>
+        <field
+            name="email_from"
+        >{{ (user.email_formatted or user.email or '') }}</field>
         <field name="subject">Cari Ekstre Mutabakatı</field>
         <field name="partner_to">{{ object.id }}</field>
         <field name="reply_to">{{ (user.email_formatted or user.email or '') }}</field>
@@ -36,7 +38,9 @@
     <!--Email template for send partner statement-->
     <record id="email_template_edi_send_statement_en" model="mail.template">
         <field name="name">Partner Statement Mail</field>
-        <field name="email_from">{{ (user.email_formatted or user.email or '') }}</field>
+        <field
+            name="email_from"
+        >{{ (user.email_formatted or user.email or '') }}</field>
         <field name="subject">Partner Statement</field>
         <field name="partner_to">{{ object.id }}</field>
         <field name="email_to">{{ object.email }}</field>
