@@ -48,13 +48,11 @@ class ResPartner(models.Model):
                 "altinkaya_reports.email_template_edi_send_statement_en"
             )
         try:
-            template.send_mail(
+            template.with_context(lang=contact.lang).send_mail(
                 contact.id,
                 force_send=True,
                 email_values={
-                    "email_to": contact.email,
-                    "reply_to": self.env.user.email_formatted,
-                    "email_from": self.env.user.email_formatted,
+                    "recipient_ids": [(4, self.id)],
                 },
             )
         except Exception as e:
