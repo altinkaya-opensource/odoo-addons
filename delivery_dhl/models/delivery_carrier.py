@@ -144,7 +144,7 @@ class DeliveryCarrier(models.Model):
 
         return packages
 
-    def _prepare_dhl_customs_data(self, picking, shipping_weight):
+    def _prepare_dhl_custom_details_data(self, picking, shipping_weight):
         """
         Prepare estimated customs data for DHL
         shipments on the picking and shipping weight.
@@ -329,6 +329,37 @@ class DeliveryCarrier(models.Model):
         """
         return invoice.fiscal_position_id.is_export
 
+    def _prepare_dhl_customs_data(self, picking, shipping_weight):
+        """
+        Prepare customs data for DHL API requests
+        based on the stock picking and shipping weight.
+        """
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
+        custom_declarable = self._get_is_customs_declarable(invoice)
+        data = {
+            "isCustomsDeclarable": custom_declarable,
+            "description": self.dhl_general_shipment_description,
+            "incoterm": invoice.invoice_incoterm_id.code,
+        }
+
+        if custom_declarable:
+            total_declared_value, line_items = self._prepare_dhl_custom_details_data(
+                picking, shipping_weight
+            )
+            data["declaredValue"] = total_declared_value
+            data["declaredValueCurrency"] = picking.sale_id.currency_id.name
+            data["exportDeclaration"] = {
+                "lineItems": line_items,
+                "invoice": {
+                    "number": invoice.name,
+                    "date": (invoice.invoice_date or fields.Date.today()).strftime(
+                        "%Y-%m-%d"
+                    ),
+                },
+            }
+
+        return data
+
     def _prepare_dhl_shipment_data(self, picking):
         """
         Prepare shipment data for DHL API requests
@@ -337,12 +368,7 @@ class DeliveryCarrier(models.Model):
 
         warehouse_id = picking.location_id.warehouse_id
         invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
-
-        totalDeclaredValue, lineItems = self._prepare_dhl_customs_data(
-            picking, picking.shipping_weight
-        )
-
-        return {
+        data = {
             "accounts": [{"typeCode": "shipper", "number": self.dhl_account_number}],
             "customerDetails": {
                 "shipperDetails": {
@@ -409,23 +435,15 @@ class DeliveryCarrier(models.Model):
             ],
             "content": {
                 "packages": self._prepare_dhl_packing_data(picking),
-                "isCustomsDeclarable": self._get_is_customs_declarable(invoice),
-                "incoterm": invoice.invoice_incoterm_id.code,
-                "description": self.dhl_general_shipment_description,
-                "declaredValue": totalDeclaredValue,
-                "declaredValueCurrency": picking.sale_id.currency_id.name,
-                "exportDeclaration": {
-                    "lineItems": lineItems,
-                    "invoice": {
-                        "number": invoice.name,
-                        "date": (invoice.invoice_date or fields.Date.today()).strftime(
-                            "%Y-%m-%d"
-                        ),
-                    },
-                },
                 "unitOfMeasurement": "metric",
             },
         }
+
+        data["content"].update(
+            self._prepare_dhl_customs_data(picking, picking.shipping_weight)
+        )
+
+        return data
 
     def dhl_rate_shipment(self, order):
         """
