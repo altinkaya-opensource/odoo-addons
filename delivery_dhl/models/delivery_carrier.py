@@ -343,13 +343,13 @@ class DeliveryCarrier(models.Model):
         }
 
         if custom_declarable:
-            totalDeclaredValue, lineItems = self._prepare_dhl_custom_details_data(
+            total_declared_value, line_items = self._prepare_dhl_custom_details_data(
                 picking, shipping_weight
             )
-            data["declaredValue"] = totalDeclaredValue
+            data["declaredValue"] = total_declared_value
             data["declaredValueCurrency"] = picking.sale_id.currency_id.name
             data["exportDeclaration"] = {
-                "lineItems": lineItems,
+                "lineItems": line_items,
                 "invoice": {
                     "number": invoice.name,
                     "date": (invoice.invoice_date or fields.Date.today()).strftime(
