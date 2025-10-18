@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 12:23+0000\n"
-"PO-Revision-Date: 2025-08-04 12:23+0000\n"
+"POT-Creation-Date: 2025-10-18 06:50+0000\n"
+"PO-Revision-Date: 2025-10-18 06:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,15 +49,6 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_sales
-#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_sale_order_portal_template_inherit
-msgid ""
-"<i class=\"fa fa-credit-card\"/>\n"
-"                Pay &amp;amp; Confirm"
-msgstr ""
-"<i class=\"fa fa-credit-card\"/>\n"
-"                Öde &amp;amp; Onayla"
-
-#. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
 msgid ""
 "<i class=\"fa fa-spinner\"/>\n"
@@ -78,7 +69,7 @@ msgstr ""
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.view_sales_order_form_modifications
 msgid "<span>Desi: </span>"
-msgstr "<span>Desi: </span>"
+msgstr ""
 
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
@@ -98,7 +89,7 @@ msgstr "<strong>Mali Durum:</strong>"
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
 msgid "<strong>Incoterm:</strong>"
-msgstr "<strong>Incoterm:</strong>"
+msgstr ""
 
 #. module: altinkaya_sales
 #: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_portal_content_configurations_inherit
@@ -1306,6 +1297,11 @@ msgstr "Kaynak Ürün"
 #, python-format
 msgid "Source product must be set"
 msgstr "Kaynak ürün ayarlanmalıdır"
+
+#. module: altinkaya_sales
+#: model_terms:ir.ui.view,arch_db:altinkaya_sales.sale_order_sale_order_portal_content_inherit_precision
+msgid "Stock Available"
+msgstr "Stok Mevcut"
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,field_description:altinkaya_sales.field_res_country__default_try_bank_account_id
