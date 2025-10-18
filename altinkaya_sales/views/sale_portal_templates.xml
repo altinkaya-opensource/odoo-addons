@@ -161,10 +161,36 @@
         inherit_id="sale.sale_order_portal_content"
         priority="100"
     >
-        <xpath expr="//strong[@t-if='line.discount &gt; 0']" position="replace">
-            <strong t-if="line.discount &gt; 0" class="text-info">
-                <t t-out="((line.discount % 1) and '%.2f' or '%d') % line.discount" />%
-            </strong>
+
+        <xpath expr="//t[@t-set='display_discount']" position="after">
+            <t t-set="has_stock_available" t-value="False"/>
+            <t t-foreach="sale_order.order_line" t-as="check_line">
+                <t t-if="check_line.product_id and check_line.product_id.type == 'product' and not check_line.display_type">
+                    <t t-set="check_qty_data" t-value="check_line.product_id.get_quantity_website()" />
+                    <t t-set="check_total_available" t-value="check_qty_data.get('qty_unreserved_sincan', 0) + check_qty_data.get('qty_unreserved_merkez', 0)" />
+                    <t t-if="check_line.product_uom_qty &lt;= check_total_available">
+                        <t t-set="has_stock_available" t-value="True"/>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+
+        <xpath expr="//table[@id='sales_order_table']/thead/tr/th[@id='product_name_header']" position="after">
+            <th t-if="has_stock_available" class="text-center">Stock Available</th>
+        </xpath>
+
+        <xpath expr="//td[@id='product_name']" position="after">
+            <td t-if="has_stock_available" class="text-center">
+                <t t-if="line.product_id and line.product_id.type == 'product'">
+                    <t t-set="qty_data" t-value="line.product_id.get_quantity_website()" />
+                    <t t-set="total_available" t-value="qty_data.get('qty_unreserved_sincan', 0) + qty_data.get('qty_unreserved_merkez', 0)" />
+                    <t t-if="line.product_uom_qty &lt;= total_available">
+                        <span class="text-success">
+                            <i class="fa fa-check-circle" />
+                        </span>
+                    </t>
+                </t>
+            </td>
         </xpath>
 
         <xpath expr="//span[@t-field='line.price_subtotal']" position="attributes">
