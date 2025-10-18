@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-17 06:50+0000\n"
-"PO-Revision-Date: 2025-06-17 06:50+0000\n"
+"POT-Creation-Date: 2025-10-18 13:05+0000\n"
+"PO-Revision-Date: 2025-10-18 13:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,15 @@ msgstr "%s Yıldız"
 #, python-format
 msgid "%s Votes"
 msgstr "%s Oy"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_google_review_link
+msgid ""
+"<i class=\"fa fa-google me-2\" style=\"color: #4285f4;\"/>\n"
+"                    Leave a Google Review"
+msgstr ""
+"<i class=\"fa fa-google me-2\" style=\"color: #4285f4;\"/>\n"
+"                    Google'da da Değerlendir"
 
 #. module: altinkaya_survey
 #: model_terms:ir.ui.view,arch_db:altinkaya_survey.result_star
@@ -139,6 +148,13 @@ msgid "Count Pending Changesets"
 msgstr "Bekleyen Değişiklikler Sayısı"
 
 #. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/res_partner.py:0
+#, python-format
+msgid "Following partners could not be sent:"
+msgstr ""
+
+#. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_user_input_line__general_answer
 msgid "General Answer"
 msgstr "Genel Cevap"
@@ -193,6 +209,20 @@ msgid "Number of stars to be displayed in the survey."
 msgstr "Ankette görüntülenecek yıldız sayısı."
 
 #. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/res_partner.py:0
+#, python-format
+msgid "Partner %(partner_name)s could not be sent: %(error)s"
+msgstr ""
+
+#. module: altinkaya_survey
+#. odoo-python
+#: code:addons/altinkaya_survey/models/res_partner.py:0
+#, python-format
+msgid "Partner %(partner_name)s does not have an email address."
+msgstr ""
+
+#. module: altinkaya_survey
 #: model:ir.model.fields,field_description:altinkaya_survey.field_survey_survey__default_partner_survey
 msgid "Partner Survey"
 msgstr "Müşteri Anketi"
@@ -234,6 +264,11 @@ msgstr "Varsayılan Satış Anketi"
 #: model:ir.model,name:altinkaya_survey.model_sale_order
 msgid "Sales Order"
 msgstr "Satış Siparişi"
+
+#. module: altinkaya_survey
+#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_google_review_link
+msgid "Share your experience and help others discover us"
+msgstr "Yorumunuzu Google'da paylaşarak bize yardımcı olun"
 
 #. module: altinkaya_survey
 #: model:ir.model.fields,help:altinkaya_survey.field_survey_user_input__shortened_url
@@ -282,11 +317,6 @@ msgstr ""
 #: model:ir.model,name:altinkaya_survey.model_survey_survey
 msgid "Survey"
 msgstr "Anket"
-
-#. module: altinkaya_survey
-#: model_terms:ir.ui.view,arch_db:altinkaya_survey.survey_response_line_tree
-msgid "Survey Answer Line"
-msgstr "Anket Cevapları"
 
 #. module: altinkaya_survey
 #: model:ir.actions.act_window,name:altinkaya_survey.action_survey_response_line
@@ -395,8 +425,8 @@ msgstr "Bu kayıt için bekleyen genel değişiklik sayısı"
 #: code:addons/altinkaya_survey/models/survey_survey.py:0
 #, python-format
 msgid ""
-"There is already a survey with default sale survey checked (%s).Please "
-"uncheck it before checking this survey."
+"There is already a survey with default sale survey checked (%(title)s). "
+"Please uncheck it before checking this survey."
 msgstr ""
 
 #. module: altinkaya_survey
