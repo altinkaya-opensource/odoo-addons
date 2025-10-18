@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="survey_google_review_link" inherit_id="survey.survey_fill_form_done">
+        <xpath expr="//div[@class='o_survey_finished mt32 mb32']/h1" position="after">
+            <t t-set="has_five_star_rating" t-value="False"/>
+            <t t-foreach="answer.user_input_line_ids" t-as="line">
+                <t t-if="line.question_id.question_type == 'star_rating' and line.value_star_rating == 5">
+                    <t t-set="has_five_star_rating" t-value="True"/>
+                </t>
+            </t>
+            <div t-if="has_five_star_rating" class="o_survey_google_review mt-5 mb-5 p-4 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div class="mb-3">
+                    <i class="fa fa-star text-warning" style="font-size: 2em; margin: 0 5px;"/>
+                    <i class="fa fa-star text-warning" style="font-size: 2em; margin: 0 5px;"/>
+                    <i class="fa fa-star text-warning" style="font-size: 2em; margin: 0 5px;"/>
+                    <i class="fa fa-star text-warning" style="font-size: 2em; margin: 0 5px;"/>
+                    <i class="fa fa-star text-warning" style="font-size: 2em; margin: 0 5px;"/>
+                </div>
+                <h3 class="text-white mb-3" style="font-weight: 600;">Share your experience and help others discover us</h3>
+                <a href="https://g.page/r/Cbenqo4Sl0LDEBM/review?utm_source=survey&amp;utm_medium=5star&amp;utm_campaign=satisfaction_survey" target="_blank" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2em; font-weight: 600; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+                    <i class="fa fa-google me-2" style="color: #4285f4;"/>
+                    Leave a Google Review
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

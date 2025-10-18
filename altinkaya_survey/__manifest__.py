@@ -29,6 +29,7 @@
         "templates/disable_odoo_branding.xml",
         "templates/star_rating.xml",
         "templates/sale_portal_rate_us.xml",
+        "templates/google_review_link.xml",
     ],
     "assets": {
         "survey.survey_assets": [
