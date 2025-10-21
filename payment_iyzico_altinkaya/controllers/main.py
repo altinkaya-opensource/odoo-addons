@@ -44,11 +44,15 @@ class iyzicoCoontroller(http.Controller):
         """
         response = {"status": "", "installment_options": []}
 
-        order = request.env["sale.order"].search(
-            [("access_token", "=", access_token), ("partner_id", "=", partner_id)],
-            limit=1,
+        order = (
+            request.env["sale.order"]
+            .sudo()
+            .search(
+                [("access_token", "=", access_token), ("partner_id", "=", partner_id)],
+                limit=1,
+            )
         )
-        partner_id = request.env["res.partner"].browse(partner_id)
+        partner_id = request.env["res.partner"].sudo().browse(partner_id)
         temp_currency_id = request.env["res.currency"].browse(currency_id)
         provider_sudo = (
             request.env["payment.provider"].sudo().browse(provider_id).exists()
