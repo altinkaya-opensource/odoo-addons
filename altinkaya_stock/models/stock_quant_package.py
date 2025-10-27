@@ -19,14 +19,14 @@ from odoo.exceptions import ValidationError
 
 class StockQuantPackage(models.Model):
     _inherit = "stock.quant.package"
-    _order = "sequence asc, id desc"
+    _order = "is_pallet desc, sequence asc, id desc"
 
-    name = fields.Char(compute="_compute_name", store=True)
+    number = fields.Char(help="Number for the pallet package.")
 
-    number = fields.Char(
-        help="Number for the pallet package.",
-        compute="_compute_number",
-        store=True,
+    package_multiplier = fields.Integer(
+        "Package Multiplier",
+        help="Identifies how many package there are",
+        default=1,
     )
 
     sequence = fields.Integer(
@@ -81,26 +81,73 @@ class StockQuantPackage(models.Model):
         default=lambda self: self.env.ref("uom.product_uom_cubic_meter")
     )
 
-    @api.depends("picking_id", "picking_id.package_ids", "sequence")
-    def _compute_number(self):
-        for rec in self:
-            similar_packs = self.filtered(
-                lambda p: p.package_type_id == rec.package_type_id
-            )
-            position = list(similar_packs.sorted(key=lambda p: p.sequence)).index(rec)
-            position_in_picking = position + 1
-            rec.number = f"{rec.package_type_id.prefix_code}{position_in_picking}"
-            rec.sequence = position_in_picking
+    def explode_packages(self):
+        """Explode the packages inside this package (if any) and return them."""
+        self.ensure_one()
 
-    @api.depends(
-        "sequence",
-        "package_type_id",
-        "picking_id",
-        "picking_id.package_ids",
-        "pallet_id",
-    )
-    def _compute_name(self):
-        self._compute_number()
+        product_quantities = {}
+        for quant in self.quant_ids:
+            product = quant.product_id
+            product_quantities[product] = (
+                product_quantities.get(product, 0) + quant.quantity
+            )
+
+        multiplier = self.package_multiplier or 1
+        exploded_quantities = {}
+
+        for product, total_qty in product_quantities.items():
+            qty_per_package = total_qty / multiplier
+            remainder = qty_per_package % 1
+
+            if remainder > 0.01 and remainder < 0.99:
+                raise ValidationError(
+                    _(
+                        "Cannot explode package '%s' because the quantity of"
+                        " product '%s' (%.2f) is not divisible by the package"
+                        " multiplier (%d)."
+                    )
+                    % (
+                        self.name,
+                        product.display_name,
+                        total_qty,
+                        self.package_multiplier,
+                    )
+                )
+
+            exploded_quantities[product] = qty_per_package
+
+        return exploded_quantities
+
+    def action_compute_number(self):
+        packages_by_type = {}
+        for rec in self:
+            package_type = rec.package_type_id
+            if package_type not in packages_by_type:
+                packages_by_type[package_type] = []
+            packages_by_type[package_type].append(rec)
+
+        previous_sequences = {package_type: 0 for package_type in packages_by_type}
+        for rec in self:
+            package_type = rec.package_type_id
+            position = packages_by_type[package_type].index(rec)
+            position_in_picking = previous_sequences[package_type] + 1
+
+            prefix = package_type.prefix_code
+            multiplier = rec.package_multiplier
+
+            if multiplier > 1:
+                end_position = position_in_picking + multiplier - 1
+                rec.number = (
+                    f"{prefix}{position_in_picking:02d}-{prefix}{end_position:02d}"
+                )
+                rec.sequence = position + multiplier
+            else:
+                rec.number = f"{prefix}{position_in_picking:02d}"
+                rec.sequence = position_in_picking
+
+            previous_sequences[package_type] = rec.sequence
+
+    def action_compute_name(self):
         for rec in self:
             if not rec.id:
                 rec.name = rec.package_type_id.name

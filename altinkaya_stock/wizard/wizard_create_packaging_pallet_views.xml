@@ -57,7 +57,6 @@
                         <field name="shipping_weight" />
                     </tree>
                 </field>
-
                 <footer>
                     <button
                         string="Create Pallet"

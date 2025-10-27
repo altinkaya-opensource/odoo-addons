@@ -52,6 +52,11 @@ class ChooseDeliveryPackage(models.TransientModel):
         string="Available Packages",
         compute="_compute_available_package_ids",
     )
+    package_multiplier = fields.Integer(
+        "Package Multiplier",
+        help="Identifies how many package there are",
+        default=1,
+    )
 
     @api.depends("picking_id")
     def _compute_available_package_ids(self):
@@ -167,6 +172,7 @@ class ChooseDeliveryPackage(models.TransientModel):
         delivery_package.height = self.package_height
         delivery_package.weight_uom_id = self.package_weight_uom_id
         delivery_package.length_uom_id = self.package_dimensions_uom_id
+        delivery_package.package_multiplier = self.package_multiplier
 
         return {"type": "ir.actions.act_window_close"}
 

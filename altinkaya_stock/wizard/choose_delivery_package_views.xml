@@ -54,6 +54,7 @@
                         attrs="{'invisible': [('available_package_ids', '=', False)]}"
                         domain="[('id', 'in', available_package_ids)]"
                     />
+                    <field name="package_multiplier" />
                 </group>
             </xpath>
 

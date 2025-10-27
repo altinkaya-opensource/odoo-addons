@@ -233,3 +233,11 @@ class StockPicking(models.Model):
             )
         ]
         return action
+
+    def action_compute_package_numbers(self):
+        """
+        Compute package numbers for all packages in the picking.
+        """
+        for picking in self:
+            picking.package_ids.action_compute_number()
+            picking.package_ids.action_compute_name()

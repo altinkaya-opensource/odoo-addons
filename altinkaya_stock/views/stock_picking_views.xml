@@ -150,6 +150,13 @@
                         class="btn btn-secondary"
                         icon="fa-th-large"
                     />
+                    <button
+                        name="action_compute_package_numbers"
+                        type="object"
+                        string="Compute Numbers"
+                        class="btn btn-secondary"
+                        icon="fa-calculator"
+                    />
                 </page>
             </xpath>
         </field>
