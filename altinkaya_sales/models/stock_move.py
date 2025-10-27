@@ -7,7 +7,6 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     def _do_unreserve(self):
-        
         moves_to_unreserve = OrderedSet()
         done_moves_to_unreserve = self.env["stock.move"]
 
@@ -24,7 +23,10 @@ class StockMove(models.Model):
                     done_moves_to_unreserve |= move
                 else:
                     raise UserError(
-                        _("You cannot unreserve a stock move that has been set to 'Done'.")
+                        _(
+                            """You cannot unreserve a stock move
+                            that has been set to 'Done'."""
+                        )
                     )
             else:
                 moves_to_unreserve.add(move.id)
@@ -70,7 +72,6 @@ class StockMove(models.Model):
         return True
 
     def _action_cancel(self):
-
         done_moves = self.filtered(lambda m: m.state == "done" and not m.scrapped)
 
         allowed_done_moves = self.env["stock.move"]
@@ -89,9 +90,7 @@ class StockMove(models.Model):
             super(StockMove, remaining_moves)._action_cancel()
 
         if allowed_done_moves:
-            moves_to_cancel = allowed_done_moves.filtered(
-                lambda m: m.state != "cancel"
-            )
+            moves_to_cancel = allowed_done_moves.filtered(lambda m: m.state != "cancel")
 
             moves_to_cancel._do_unreserve()
 
