@@ -57,6 +57,7 @@ FEDEX_TO_ODOO_STATUS = {
     "IP": "shipping_recorded_in_carrier",
     "HP": "shipping_recorded_in_carrier",
     "MD": "shipping_recorded_in_carrier",
+    "IN": "shipping_recorded_in_carrier",
     # In transit
     "IT": "in_transit",
     "AR": "in_transit",
@@ -69,7 +70,6 @@ FEDEX_TO_ODOO_STATUS = {
     "TR": "in_transit",
     "CC": "in_transit",
     "CH": "in_transit",
-    "IN": "in_transit",
     # Canceled shipment
     "CA": "canceled_shipment",
     "LC": "canceled_shipment",
