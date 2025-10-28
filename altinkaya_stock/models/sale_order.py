@@ -44,5 +44,7 @@ class SaleOrder(models.Model):
         for order in self:
             procurement_moves = order.procurement_group_id.stock_move_ids
             if procurement_moves:
-                procurement_moves._action_cancel()
+                procurement_moves.filtered(
+                    lambda m: m.state not in ("cancel", "done")
+                )._action_cancel()
         return res
