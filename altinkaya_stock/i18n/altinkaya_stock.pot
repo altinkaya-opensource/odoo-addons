@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-06 07:28+0000\n"
-"PO-Revision-Date: 2025-09-06 07:28+0000\n"
+"POT-Creation-Date: 2025-10-30 08:59+0000\n"
+"PO-Revision-Date: 2025-10-30 08:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -105,11 +105,6 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__6
 msgid "ACİL"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__active
-msgid "Active"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -232,6 +227,15 @@ msgid "Cancel"
 msgstr ""
 
 #. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/models/stock_quant_package.py:0
+#, python-format
+msgid ""
+"Cannot explode package '%s' because the quantity of product '%s' (%.2f) is "
+"not divisible by the package multiplier (%d)."
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__categ_id
 msgid "Category"
 msgstr ""
@@ -265,7 +269,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__changeset_change_ids
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_change_ids
@@ -297,7 +300,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__changeset_ids
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__changeset_ids
@@ -320,6 +322,11 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_choose_delivery_package_move_lines
 msgid "Choose Delivery Package Move Lines"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+msgid "Compute Numbers"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -349,7 +356,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_changesets
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_changesets
@@ -381,7 +387,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_pending_changeset_changes
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
@@ -413,7 +418,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__count_pending_changesets
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
@@ -474,16 +478,6 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_create_procurement_move__move_qty
 msgid "Demand Quantity"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.stock_route_altinkaya_form
-msgid "Description"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__description
-msgid "Description for routes"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -620,10 +614,9 @@ msgid "ID"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,help:altinkaya_stock.field_stock_route__active
-msgid ""
-"If the active field is set to False, it will allow you to hide the route "
-"without removing it."
+#: model:ir.model.fields,help:altinkaya_stock.field_choose_delivery_package__package_multiplier
+#: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__package_multiplier
+msgid "Identifies how many package there are"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -656,11 +649,6 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_inventory
 msgid "Inventory Adjustment Group"
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model,name:altinkaya_stock.model_stock_route
-msgid "Inventory Routes"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -879,12 +867,6 @@ msgid "Move"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
-msgid "Move Details"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package_move_lines__move_line_id
 msgid "Move Line"
 msgstr ""
@@ -934,6 +916,12 @@ msgid "Number for the pallet package."
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_form_inherit_procurement
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_production_form_inherit_print_product_label
+msgid "Origin Move"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_id_to_bind
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__package_id
 msgid "Package"
@@ -952,8 +940,9 @@ msgid "Package Length"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__name
-msgid "Package Reference"
+#: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_multiplier
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__package_multiplier
+msgid "Package Multiplier"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1197,11 +1186,6 @@ msgid "Result Package Pallet"
 msgstr ""
 
 #. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__name
-msgid "Route"
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__9
 msgid "Sac Üretiminde"
 msgstr ""
@@ -1274,7 +1258,6 @@ msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__sequence
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__sequence
 msgid "Sequence"
 msgstr ""
 
@@ -1367,7 +1350,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__smart_search
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__smart_search
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__smart_search
@@ -1398,10 +1380,7 @@ msgid "Stock Location"
 msgstr ""
 
 #. module: altinkaya_stock
-#. odoo-python
-#: code:addons/altinkaya_stock/models/stock_move.py:0
 #: model:ir.model,name:altinkaya_stock.model_stock_move
-#, python-format
 msgid "Stock Move"
 msgstr ""
 
@@ -1483,7 +1462,6 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_pending_changeset_changes
-#: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changeset_changes
@@ -1515,7 +1493,6 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_pending_changesets
-#: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_pending_changesets
@@ -1547,7 +1524,6 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_picking__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__count_changesets
-#: model:ir.model.fields,help:altinkaya_stock.field_stock_route__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_warehouse_orderpoint__count_changesets
 #: model:ir.model.fields,help:altinkaya_stock.field_update_unreserved_quants__count_changesets
@@ -1718,7 +1694,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__user_can_see_changeset
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_route__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_warehouse_orderpoint__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_stock.field_update_unreserved_quants__user_can_see_changeset
@@ -1824,13 +1799,6 @@ msgstr ""
 #: code:addons/altinkaya_stock/models/stock_quant_package.py:0
 #, python-format
 msgid "You cannot dissolve a package that is part of a pallet."
-msgstr ""
-
-#. module: altinkaya_stock
-#. odoo-python
-#: code:addons/altinkaya_stock/wizard/choose_delivery_package.py:0
-#, python-format
-msgid "You cannot pack more than the available quantity for %(name)s."
 msgstr ""
 
 #. module: altinkaya_stock

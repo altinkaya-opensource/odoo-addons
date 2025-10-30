@@ -81,6 +81,19 @@ class StockQuantPackage(models.Model):
         default=lambda self: self.env.ref("uom.product_uom_cubic_meter")
     )
 
+    @api.depends("pack_length", "width", "height")
+    def _compute_volume(self):
+        """Overriden to use package multiplier"""
+        Packaging = self.env["product.packaging"]
+        for pack in self:
+            pack.volume = Packaging._calculate_volume(
+                pack.pack_length,
+                pack.height,
+                pack.width,
+                pack.length_uom_id,
+                pack.volume_uom_id,
+            ) * (pack.package_multiplier or 1)
+
     def explode_packages(self):
         """Explode the packages inside this package (if any) and return them."""
         self.ensure_one()
