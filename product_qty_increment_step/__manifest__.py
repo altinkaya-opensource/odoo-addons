@@ -9,7 +9,7 @@
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
-    "depends": ["website", "website_sale", "altinkaya_ecommerce"],
+    "depends": ["website_sale", "altinkaya_ecommerce"],
     "data": [
         "views/product_template_view.xml",
         "templates/cart_lines.xml",
