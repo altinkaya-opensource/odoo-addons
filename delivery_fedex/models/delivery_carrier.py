@@ -201,8 +201,7 @@ class DeliveryCarrier(models.Model):
 
     fedex_upload_documents = fields.Boolean(
         string="Upload Documents",
-        help="If checked, the carrier will upload "
-        "electronic trade documents to FedEx.",
+        help="If checked, the carrier will upload electronic trade documents to FedEx.",
         default=True,
     )
 
@@ -1077,7 +1076,9 @@ class DeliveryCarrier(models.Model):
                 "units": "KG",
                 "value": total_weight,
             },
-            "packageCount": len(picking.package_ids),
+            "packageCount": len(
+                picking.package_ids.filtered(lambda p: not p.pallet_id)
+            ),
             # TODO: Make this configurable in the future.
             "countryRelationship": "INTERNATIONAL",
             "trackingNumber": tracking_number,
