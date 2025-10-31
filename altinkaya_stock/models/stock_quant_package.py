@@ -81,6 +81,15 @@ class StockQuantPackage(models.Model):
         default=lambda self: self.env.ref("uom.product_uom_cubic_meter")
     )
 
+    @api.constrains("package_multiplier")
+    def _check_package_multiplier(self):
+        for pack in self:
+            if pack.package_multiplier < 1:
+                raise ValidationError(
+                    _("The package multiplier must be at least 1 for package '%s'.")
+                    % pack.name
+                )
+
     @api.depends("pack_length", "width", "height")
     def _compute_volume(self):
         """Overriden to use package multiplier"""
