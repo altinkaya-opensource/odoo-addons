@@ -28,6 +28,7 @@ class SaleOrderLine(models.Model):
 
     def explode_set_contents(self):
         """Explodes order lines."""
+        self = self.with_context(exploding_set_contents=True)
         bom_obj = self.env["mrp.bom"].sudo()
         to_unlink_ids = self.env["sale.order.line"]
         to_explode_again_ids = self.env["sale.order.line"]
