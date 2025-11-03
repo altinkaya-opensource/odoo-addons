@@ -25,6 +25,7 @@ WRITEOFF_THRESHOLD = 5.0
 WRITEOFF_ACCOUNT_CODE = "679"
 PARTIAL_MIN_PERCENTAGE = 10.0
 ROUNDING_PRECISION = 0.1
+CURRENCY_DIFF_JOURNALS = ("KRDGR", "KRFRK", "KFARK")
 
 
 class AccountAutoReconcile(models.AbstractModel):
@@ -37,7 +38,7 @@ class AccountAutoReconcile(models.AbstractModel):
             ("parent_state", "=", "posted"),
             ("partner_id", "=", move.commercial_partner_id.id),
             ("reconciled", "=", False),
-            ("journal_id.code", "not in", ("KRDGR", "KRFRK", "KFARK")),
+            ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
             ("id", "not in", move.line_ids.ids),
             "|",
             ("amount_residual", "!=", 0.0),
@@ -61,7 +62,7 @@ class AccountAutoReconcile(models.AbstractModel):
         if not payment_lines:
             return False
 
-        total_payment = abs(sum(payment_lines.mapped('amount_residual')))
+        total_payment = abs(sum(payment_lines.mapped("amount_residual")))
         invoice_amount = abs(move.amount_residual)
 
         min_required = invoice_amount * (PARTIAL_MIN_PERCENTAGE / 100.0)
@@ -158,10 +159,10 @@ class AccountAutoReconcile(models.AbstractModel):
                     ["out_invoice", "out_refund", "in_invoice", "in_refund"],
                 ),
                 ("payment_state", "in", ("not_paid", "partial")),
+                ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
             ],
             order="invoice_date desc",
         )
-
         for move in invoices:
             pay_term_lines = move.line_ids.filtered(
                 lambda line: line.account_id.account_type
@@ -187,7 +188,8 @@ class AccountAutoReconcile(models.AbstractModel):
             amount_residual_signed = abs(move.amount_residual_signed)
 
             if (
-                float_compare(
+                amount_residual_signed > 0
+                and float_compare(
                     amount_residual_signed,
                     WRITEOFF_THRESHOLD,
                     precision_rounding=0.01,
@@ -225,7 +227,7 @@ class AccountAutoReconcile(models.AbstractModel):
             )
 
         writeoff_amount = move.amount_residual_signed
-        if move.is_inbound():
+        if move.is_outbound():
             writeoff_amount *= -1
 
         writeoff_entry = self.env["account.move"].create(
