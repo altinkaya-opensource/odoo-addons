@@ -24,6 +24,16 @@ class AccountPayment(models.Model):
         "account.bank.statement.line", "Bank Statement Line"
     )
 
+    def action_post(self):
+        """
+        Ensure the payment's partner is the commercial partner before posting.
+        """
+        for payment in self:
+            commercial_partner = payment.partner_id.commercial_partner_id
+            if payment.partner_id != commercial_partner:
+                payment.partner_id = commercial_partner
+        return super().action_post()
+
     # def _synchronize_from_moves(self, changed_fields):
     #     """
     #     Convert payments amount_currency and currency_id fields related
