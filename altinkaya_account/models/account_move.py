@@ -65,6 +65,11 @@ class AccountMove(models.Model):
         compute="_compute_other_inv_in_reconciles",
     )
 
+    installment_fee_tx_id = fields.Many2one(
+        "payment.transaction",
+        string="Installment Fee Payment Transaction",
+    )
+
     @api.depends("move_type")
     def _compute_invoice_default_sale_person(self):
         """
@@ -320,6 +325,13 @@ class AccountMove(models.Model):
             ):
                 for line in invoice.currency_difference_line_ids:
                     line.write({"difference_checked": False})
+
+            if invoice.installment_fee_tx_id:
+                tx = invoice.installment_fee_tx_id
+                tx.installment_fee_invoiced = False
+                tx.invoiced_installment_fee = 0.0
+                tx.installment_fee_invoice_id = False
+
         return super().unlink()
 
     def _calculate_hs_code_distribution(self):

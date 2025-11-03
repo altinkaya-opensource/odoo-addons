@@ -21,6 +21,8 @@
         "base_partner_sequence",
         "account_reconcile_oca",
         "account_credit_control",
+        "payment_iyzico_altinkaya",
+        "account_billing_point",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -17,3 +17,4 @@ from . import account_account_reconcile
 from . import account_full_reconcile
 from . import account_fiscal_position
 from . import account_auto_reconcile
+from . import payment_transaction
