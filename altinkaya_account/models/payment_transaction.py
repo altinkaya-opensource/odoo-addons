@@ -18,9 +18,8 @@ from odoo import fields, models
 class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
 
-    invoiced_installment_fee = fields.Monetary(
+    invoiced_installment_fee = fields.Float(
         string="Invoiced Installment Fee",
-        currency_field="currency_id",
         default=0.0,
     )
     installment_fee_invoiced = fields.Boolean(
@@ -37,7 +36,12 @@ class PaymentTransaction(models.Model):
             [
                 ("iyzico_installment_fee", ">", 0.1),
                 ("installment_fee_invoiced", "=", False),
+                ("payment_id.state", "=", "posted"),
             ]
+        )
+        try_currency = self.env.ref("base.TRY")
+        installment_fee_account = self.env["account.account"].search(
+            [("code", "=", "602.02")], limit=1
         )
         journal_id = self.env["account.journal"].search(
             [("code", "=", "VDFR")], limit=1
@@ -63,6 +67,7 @@ class PaymentTransaction(models.Model):
                 "journal_id": journal_id.id,
                 "billing_point_id": billing_point.id,
                 "installment_fee_tx_id": tx.id,
+                "currency_id": try_currency.id,
                 "invoice_line_ids": [
                     (
                         0,
@@ -73,6 +78,7 @@ class PaymentTransaction(models.Model):
                             "product_uom_id": unit_uom_id,
                             "price_unit": fee_without_tax,
                             "tax_ids": [(6, 0, [tax_id.id])],
+                            "account_id": installment_fee_account.id,
                         },
                     )
                 ],
