@@ -235,6 +235,7 @@ class AccountAutoReconcile(models.AbstractModel):
                 "move_type": "entry",
                 "journal_id": writeoff_journal.id,
                 "date": move.date,
+                "partner_id": move.partner_id.id,
                 "line_ids": [
                     (
                         0,
