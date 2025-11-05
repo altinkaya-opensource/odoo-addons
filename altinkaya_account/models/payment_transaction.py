@@ -47,7 +47,7 @@ class PaymentTransaction(models.Model):
             [("code", "=", "VDFR")], limit=1
         )
         # 2ALTINKAYA-EFİNANS
-        billing_point = self.env["account.billing.point"].browse(3)
+        billing_point = self.env["account.billing.point"].browse(2)
         tax_id = self.env["account.tax"].search(
             [
                 ("amount", "=", 20),
