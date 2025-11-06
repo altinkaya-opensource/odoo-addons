@@ -39,6 +39,7 @@ class AccountAutoReconcile(models.AbstractModel):
             ("partner_id", "=", move.commercial_partner_id.id),
             ("reconciled", "=", False),
             ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
+            ("journal_id.check_journal", "=", False),
             ("id", "not in", move.line_ids.ids),
             "|",
             ("amount_residual", "!=", 0.0),

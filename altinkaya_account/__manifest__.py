@@ -18,6 +18,7 @@
         "sale_stock",
         "purchase",
         "delivery",
+        "account_check",
         "base_partner_sequence",
         "account_reconcile_oca",
         "account_credit_control",
