@@ -11,7 +11,6 @@
     "depends": ["base", "stock", "sale_management"],
     "data": [
         "views/res_users_views.xml",
-        "security/ir.model.access.csv",
-        "data/ir_rule.xml",
+        # "data/ir_rule.xml",
     ],
 }

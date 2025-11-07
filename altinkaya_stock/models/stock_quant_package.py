@@ -24,7 +24,6 @@ class StockQuantPackage(models.Model):
     number = fields.Char(help="Number for the pallet package.")
 
     package_multiplier = fields.Integer(
-        "Package Multiplier",
         help="Identifies how many package there are",
         default=1,
     )
@@ -124,16 +123,17 @@ class StockQuantPackage(models.Model):
             if remainder > 0.01 and remainder < 0.99:
                 raise ValidationError(
                     _(
-                        "Cannot explode package '%s' because the quantity of"
-                        " product '%s' (%.2f) is not divisible by the package"
-                        " multiplier (%d)."
+                        "Cannot explode package '%(package)s' because the quantity of"
+                        " product '%(product)s' (%(qty).2f) is not"
+                        " divisible by the package"
+                        " multiplier (%(multiplier)d)."
                     )
-                    % (
-                        self.name,
-                        product.display_name,
-                        total_qty,
-                        self.package_multiplier,
-                    )
+                    % {
+                        "package": self.name,
+                        "product": product.display_name,
+                        "qty": total_qty,
+                        "multiplier": self.package_multiplier,
+                    }
                 )
 
             exploded_quantities[product] = qty_per_package

@@ -19,11 +19,9 @@ class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
 
     invoiced_installment_fee = fields.Float(
-        string="Invoiced Installment Fee",
         default=0.0,
     )
     installment_fee_invoiced = fields.Boolean(
-        string="Installment Fee Invoiced",
         default=False,
     )
     installment_fee_invoice_id = fields.Many2one(

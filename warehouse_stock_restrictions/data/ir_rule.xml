@@ -2,7 +2,7 @@
 <!-- Copyright 2025 Erol Develi (https://github.com/erlinberg) -->
 <!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).  -->
 <odoo>
-    <record id="filter_admin_stock_picking_type_allowed" model="ir.rule">
+    <!-- <record id="filter_admin_stock_picking_type_allowed" model="ir.rule">
         <field name="name">Filter Stock Picking Type Admin</field>
         <field name="model_id" ref="stock.model_stock_picking_type" />
         <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]" />
@@ -36,5 +36,5 @@
         <field name="perm_write" eval="False" />
         <field name="perm_create" eval="False" />
         <field name="perm_unlink" eval="False" />
-    </record>
+    </record> -->
 </odoo>

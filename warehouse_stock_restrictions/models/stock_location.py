@@ -12,8 +12,20 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from odoo import models
 
-from . import stock_move
-from . import res_users
-from . import stock_quant
-from . import stock_location
+
+class StockLocation(models.Model):
+    _inherit = "stock.location"
+
+    def write(self, values):
+        """
+        When inventory adjustment is being done, bypass access rights checks
+        for updating last_inventory_date field.
+        """
+        if self._context.get("allow_inventory_adjustment") and list(values.keys()) == [
+            "last_inventory_date"
+        ]:
+            self = self.sudo()
+
+        return super().write(values)

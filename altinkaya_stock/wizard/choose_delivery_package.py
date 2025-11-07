@@ -53,7 +53,6 @@ class ChooseDeliveryPackage(models.TransientModel):
         compute="_compute_available_package_ids",
     )
     package_multiplier = fields.Integer(
-        "Package Multiplier",
         help="Identifies how many package there are",
         default=1,
     )

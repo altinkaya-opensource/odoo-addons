@@ -14,7 +14,7 @@ LOCATION_RESTRICTED_MESSAGE = _(
 class StockMove(models.Model):
     _inherit = "stock.move"
 
-    @api.constrains("state", "location_id", "location_dest_id")
+    @api.constrains("procure_method", "state", "location_id", "location_dest_id")
     def check_user_location_rights(self):
         """Check if the user has the rights to process the move
         in the given locations.
@@ -27,17 +27,10 @@ class StockMove(models.Model):
             return True
 
         for stock_move in self:
-            if stock_move.state in ["draft", "waiting", "assigned", "confirmed"]:
-                continue
-
-            user_locations = self.env.user.stock_location_ids
-            if stock_move.location_id not in user_locations:
+            user_warehouses = self.env.user.allowed_warehouse_ids
+            if stock_move.warehouse_id not in user_warehouses:
                 raise AccessError(
-                    LOCATION_RESTRICTED_MESSAGE % stock_move.location_id.name
-                )
-            if stock_move.location_dest_id in user_locations:
-                raise AccessError(
-                    LOCATION_RESTRICTED_MESSAGE % stock_move.location_dest_id.name
+                    LOCATION_RESTRICTED_MESSAGE % stock_move.warehouse_id.name
                 )
 
         return True

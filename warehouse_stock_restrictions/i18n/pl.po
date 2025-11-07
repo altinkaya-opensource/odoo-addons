@@ -1,0 +1,151 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* warehouse_stock_restrictions
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-07 11:00+0000\n"
+"PO-Revision-Date: 2025-11-07 11:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__allowed_warehouse_ids
+#: model_terms:ir.ui.view,arch_db:warehouse_stock_restrictions.view_location_security_users_form
+msgid "Allowed Warehouses"
+msgstr ""
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__changeset_change_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__changeset_change_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__changeset_change_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Zmiany w zestawie zmian"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__changeset_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__changeset_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__changeset_ids
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__count_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__count_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__count_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__count_changesets
+msgid "Count Changesets"
+msgstr "Proszę liczyć zestawy zmian"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Proszę policzyć oczekujące zmiany w zestawie zmian"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__count_pending_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__count_pending_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__count_pending_changesets
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Proszę policzyć oczekujące zestawy zmian"
+
+#. module: warehouse_stock_restrictions
+#. odoo-python
+#: code:addons/warehouse_stock_restrictions/models/stock_move.py:0
+#, python-format
+msgid ""
+"Invalid Location. You cannot process this move since you do not control the "
+"location \"%s\". Please contact your Adminstrator."
+msgstr ""
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model,name:warehouse_stock_restrictions.model_stock_quant
+msgid "Quants"
+msgstr "Kwanty"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__restrict_locations
+msgid "Restrict Location"
+msgstr ""
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__smart_search
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__smart_search
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__smart_search
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__smart_search
+msgid "Smart Search"
+msgstr "Inteligentne wyszukiwanie"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model,name:warehouse_stock_restrictions.model_stock_location
+msgid "Stock Location"
+msgstr "Strefy Magazynowe"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model,name:warehouse_stock_restrictions.model_stock_move
+msgid "Stock Move"
+msgstr "Przesunięcie"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_res_users__count_pending_changeset_changes
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_location__count_pending_changeset_changes
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_quant__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Liczba oczekujących zmian tego rekordu"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_res_users__count_pending_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_location__count_pending_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_move__count_pending_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_quant__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Liczba oczekujących zestawów zmian tego rekordu"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_res_users__count_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_location__count_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_move__count_changesets
+#: model:ir.model.fields,help:warehouse_stock_restrictions.field_stock_quant__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Ogólna liczba zestawów zmian tego rekordu"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model,name:warehouse_stock_restrictions.model_res_users
+msgid "User"
+msgstr "Użytkownik"
+
+#. module: warehouse_stock_restrictions
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_res_users__user_can_see_changeset
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_location__user_can_see_changeset
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:warehouse_stock_restrictions.field_stock_quant__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Użytkownik może zobaczyć zestaw zmian"
+
+#. module: warehouse_stock_restrictions
+#: model_terms:ir.ui.view,arch_db:warehouse_stock_restrictions.view_location_security_users_form
+msgid "Warehouse Stock Restrictions"
+msgstr ""
+
+#. module: warehouse_stock_restrictions
+#. odoo-python
+#: code:addons/warehouse_stock_restrictions/models/stock_quant.py:0
+#, python-format
+msgid ""
+"You do not have permission to adjust inventory in this warehouse.\n"
+"Warehouse: %(wh)s\n"
+"Product: %(p)s"
+msgstr ""

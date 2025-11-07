@@ -26,7 +26,8 @@ class SaleOrderLine(models.Model):
             # Get the increment step from the product template
             step = line.product_id.product_tmpl_id.qty_increment_step
 
-            # Skip validation if step is 0 or not set (feature disabled for this product)
+            # Skip validation if step is 0 or not set
+            # (feature disabled for this product)
             if not step or step <= 0:
                 continue
 
@@ -35,7 +36,8 @@ class SaleOrderLine(models.Model):
             if line.product_uom_qty % step != 0:
                 raise ValidationError(
                     _(
-                        'Product "%(product)s" must be ordered in multiples of %(step)s.\n'
+                        'Product "%(product)s" must be ordered in'
+                        " multiples of %(step)s.\n"
                         "Your quantity %(quantity)s is not valid.\n"
                         "Valid quantities: %(step)s, %(double)s, %(triple)s, etc."
                     )
