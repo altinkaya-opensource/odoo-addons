@@ -51,5 +51,7 @@ class StockQuant(models.Model):
         res = super()._get_inventory_move_values(
             qty, location_id, location_dest_id, out=out
         )
-        res["warehouse_id"] = location_dest_id.warehouse_id.id
+        res["warehouse_id"] = (
+            location_id.warehouse_id or location_dest_id.warehouse_id
+        ).id
         return res

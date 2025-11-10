@@ -26,9 +26,16 @@ class StockMove(models.Model):
         if not self.env.user.restrict_locations:
             return True
 
+        user_warehouses = self.env.user.allowed_warehouse_ids
+
         for stock_move in self:
-            user_warehouses = self.env.user.allowed_warehouse_ids
-            if stock_move.warehouse_id not in user_warehouses:
+            warehouses = (stock_move.location_id + stock_move.location_dest_id).mapped(
+                "warehouse_id"
+            )
+            warehouses |= stock_move.picking_type_id.warehouse_id
+            warehouses |= stock_move.warehouse_id
+
+            if (warehouses - user_warehouses) == warehouses:
                 raise AccessError(
                     LOCATION_RESTRICTED_MESSAGE % stock_move.warehouse_id.name
                 )
