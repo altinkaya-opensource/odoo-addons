@@ -18,6 +18,9 @@ class SaleOrderLine(models.Model):
         if self._context.get("exploding_set_contents"):
             return
 
+        if self._context.get("connector_no_export"):
+            return
+
         for line in self:
             # Skip validation if no product is set
             if not line.product_id:
