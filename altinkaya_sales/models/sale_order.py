@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 def _match_production_with_route(production):  # noqa: C901
@@ -354,3 +355,17 @@ WHERE sale_order.id in %(ids)s;
         for so in res:
             so.order_line.explode_set_contents()
         return res
+
+    def action_cancel(self):
+        """Force to call the cancel method on done picking for having the
+        expected error, as Odoo has now filter out such pickings from the
+        cancel operation.
+        """
+        if not self.env.user.has_group("__export__.res_groups_156_a480bcf3"):
+            raise UserError(
+                _(
+                    "Sipariş iptal yetkiniz bulunmamaktadır. "
+                    "Lütfen yetkili bir kullanıcı ile iletişime geçiniz."
+                )
+            )
+        return super().action_cancel()
