@@ -361,11 +361,12 @@ WHERE sale_order.id in %(ids)s;
         expected error, as Odoo has now filter out such pickings from the
         cancel operation.
         """
-        if not self.env.user.has_group("__export__.res_groups_156_a480bcf3"):
-            raise UserError(
-                _(
-                    "Sipariş iptal yetkiniz bulunmamaktadır. "
-                    "Lütfen yetkili bir kullanıcı ile iletişime geçiniz."
+        for __ in self.filtered(lambda s: s.state in ["sale", "done", "approved"]):
+            if not self.env.user.has_group("__export__.res_groups_156_a480bcf3"):
+                raise UserError(
+                    _(
+                        "Sipariş iptal yetkiniz bulunmamaktadır. "
+                        "Lütfen yetkili bir kullanıcı ile iletişime geçiniz."
+                    )
                 )
-            )
         return super().action_cancel()
