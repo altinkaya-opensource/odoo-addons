@@ -78,13 +78,6 @@
                 </page>
             </xpath>
 
-            <xpath
-                expr="//group[@name='sale_info_group']/field[@name='ref']"
-                position="after"
-            >
-                <field name="delivery_ref_no" />
-            </xpath>
-
             <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
                 <field name="move_type" invisible="1" />
                 <field
