@@ -842,6 +842,15 @@ class DeliveryCarrier(models.Model):
             shipment_data = response["output"]["transactionShipments"][0]
 
             master_tracking_number = shipment_data["masterTrackingNumber"]
+            multiple_tracking_numbers = ", ".join(
+                x["trackingNumber"] for x in shipment_data["pieceResponses"]
+            )
+            # If there is only one package, both tracking numbers are the same
+            # don't use multiple tracking numbers in that case
+            if master_tracking_number == multiple_tracking_numbers:
+                multiple_tracking_numbers = ""
+
+            picking.multiple_shipping_numbers = multiple_tracking_numbers
 
             self.fedex_request_pickup(
                 picking,

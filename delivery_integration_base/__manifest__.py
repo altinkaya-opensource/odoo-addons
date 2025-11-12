@@ -28,6 +28,7 @@
         "wizards/delivery_send_batch_email_views.xml",
         "wizards/choose_delivery_carrier_views.xml",
         "views/sale_order_views.xml",
+        "views/account_move_views.xml",
         "views/delivery_region_views.xml",
         "report/delivery_mail_template.xml",
         "views/dispatched_deliveries_views.xml",

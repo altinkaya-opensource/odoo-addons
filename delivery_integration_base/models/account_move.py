@@ -1,6 +1,6 @@
 import logging
 
-from odoo import _, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -8,6 +8,17 @@ _logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
     _inherit = "account.move"
+
+    delivery_ref_no = fields.Char(
+        string="Delivery Reference No.",
+        help="Delivery carrier reference number before"
+        " the shipment is sent to the carrier.",
+    )
+    multiple_delivery_ref_no = fields.Text(
+        string="Multiple Delivery Reference Nos.",
+        help="Some carriers provide multiple reference numbers for a "
+        "single shipment if it contains multiple packages.",
+    )
 
     def send_to_shipper(self):
         """
@@ -20,6 +31,7 @@ class AccountMove(models.Model):
                 ):
                     picking.with_context(send_from_account_move=True).send_to_shipper()
                     move.delivery_ref_no = picking.carrier_tracking_ref
+                    move.multiple_delivery_ref_no = picking.multiple_shipping_numbers
             except Exception as e:
                 _logger.error(
                     "Error sending shipment from invoice for move %s: %s",

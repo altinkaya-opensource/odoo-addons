@@ -21,6 +21,10 @@ class StockPicking(models.Model):
     )
     carrier_received_by = fields.Char("Received By", help="Received by")
     shipping_number = fields.Char(help="Shipping Tracking Number")
+    multiple_shipping_numbers = fields.Text(
+        help="Some carriers provide multiple tracking numbers for a "
+        "single shipment if it contains multiple packages."
+    )
     mail_sent = fields.Boolean("Mail Sent To Customer", default=False, copy=False)
     delivery_payment_type = fields.Selection(
         related="carrier_id.payment_type", readonly=True

@@ -35,12 +35,6 @@ class AccountMove(models.Model):
         compute="_compute_waiting_picking_ids",
     )
 
-    delivery_ref_no = fields.Char(
-        string="Delivery Reference No.",
-        help="Delivery carrier reference number before"
-        " the shipment is sent to the carrier.",
-    )
-
     tax_line_ids = fields.Many2many(
         "account.move.line",
         string="Tax Lines",
