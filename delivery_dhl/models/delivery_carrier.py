@@ -327,7 +327,10 @@ class DeliveryCarrier(models.Model):
         """
         Determine if the shipment is customs declarable.
         """
-        return invoice.fiscal_position_id.is_export
+        # TODO: Burası çok karışık ve yeterli dokümantasyon sağlanmadı.
+        # O yüzden şimdilik hep True döndürüyoruz.
+        # return invoice.fiscal_position_id.is_export
+        return True
 
     def _prepare_dhl_customs_data(self, picking, shipping_weight):
         """
