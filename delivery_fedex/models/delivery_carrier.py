@@ -357,12 +357,11 @@ class DeliveryCarrier(models.Model):
             "purpose": picking.sale_id.fedex_shipment_purpose,
         }
 
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
+
         # Get non-delivery lines from the sale order
-        lines_to_ship = picking.sale_id.order_line.filtered(
-            lambda l: l.product_id.type in ["product", "consu"]
-            and not l.is_delivery
-            and not l.display_type
-            and l.product_uom_qty > 0
+        lines_to_ship = invoice.invoice_line_ids.filtered(
+            lambda l: not l.product_id.default_code.startswith("KAR-PO")
         )
 
         # Estimate the customs value and weight
@@ -370,7 +369,7 @@ class DeliveryCarrier(models.Model):
         data["commodities"] = [
             self._prepare_fedex_commodities_entry(
                 ol.product_id,
-                ol.product_uom_qty,
+                ol.quantity,
                 ol.price_subtotal,
                 picking.sale_id.currency_id.name,
                 shipping_weight / len(lines_to_ship),
