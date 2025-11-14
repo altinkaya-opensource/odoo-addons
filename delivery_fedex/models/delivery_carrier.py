@@ -334,7 +334,9 @@ class DeliveryCarrier(models.Model):
             "name": product.with_context(lang="en_US").name,
             "countryOfManufacture": product.country_of_origin.code or "TR",
             "quantity": quantity,
-            "harmonizedCode": product.categ_id.hs_code_id.hs_code,
+            "harmonizedCode": (
+                product.categ_id.hs_code_id or product.hs_code_id
+            ).hs_code,
             "quantityUnits": "Ea",
             "weight": {
                 "units": "KG",
