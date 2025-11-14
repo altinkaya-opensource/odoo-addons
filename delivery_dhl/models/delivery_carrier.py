@@ -150,13 +150,10 @@ class DeliveryCarrier(models.Model):
         shipments on the picking and shipping weight.
         """
         line_items = []
-
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
         # Get non-delivery lines from the sale order
-        lines_to_ship = picking.sale_id.order_line.filtered(
-            lambda l: l.product_id.type in ["product", "consu"]
-            and not l.is_delivery
-            and not l.display_type
-            and l.product_uom_qty > 0
+        lines_to_ship = invoice.invoice_line_ids.filtered(
+            lambda l: not l.product_id.default_code.startswith("KAR-PO")
         )
 
         average_line_weight = (
@@ -167,10 +164,8 @@ class DeliveryCarrier(models.Model):
         for seq, lts in enumerate(lines_to_ship):
             # DHL requires price and total declared value to
             # be a positive multiple of 0.001
-            product_price = max(
-                round(lts.price_subtotal / lts.product_uom_qty, 3), 0.001
-            )
-            total_value += product_price * int(lts.product_uom_qty)
+            product_price = max(round(lts.price_subtotal / lts.quantity, 3), 0.001)
+            total_value += product_price * int(lts.quantity)
             line_items.append(
                 {
                     # DHL requires number to be a positive integer
@@ -181,9 +176,9 @@ class DeliveryCarrier(models.Model):
                     or lts.product_id.name,
                     "price": product_price,
                     "quantity": {
-                        "value": int(lts.product_uom_qty),
+                        "value": int(lts.quantity),
                         "unitOfMeasurement": UNECE_TO_DHL_UOM.get(
-                            lts.product_uom.unece_code, "PCS"
+                            lts.product_uom_id.unece_code, "PCS"
                         ),
                     },
                     "weight": {
@@ -327,7 +322,7 @@ class DeliveryCarrier(models.Model):
         """
         Determine if the shipment is customs declarable.
         """
-        # TODO: Burası çok karışık ve yeterli dokümantasyon sağlanmadı.
+        # TODO: Burası çok karışık ve yeterli dokümantasyon sağlanmadı.
         # O yüzden şimdilik hep True döndürüyoruz.
         # return invoice.fiscal_position_id.is_export
         return True
