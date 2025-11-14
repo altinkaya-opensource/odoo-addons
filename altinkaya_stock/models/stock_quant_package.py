@@ -151,7 +151,6 @@ class StockQuantPackage(models.Model):
         previous_sequences = {package_type: 0 for package_type in packages_by_type}
         for rec in self:
             package_type = rec.package_type_id
-            position = packages_by_type[package_type].index(rec)
             position_in_picking = previous_sequences[package_type] + 1
 
             prefix = package_type.prefix_code
@@ -162,12 +161,12 @@ class StockQuantPackage(models.Model):
                 rec.number = (
                     f"{prefix}{position_in_picking:02d}-{prefix}{end_position:02d}"
                 )
-                rec.sequence = position + multiplier
+                list_sequence = end_position
             else:
                 rec.number = f"{prefix}{position_in_picking:02d}"
-                rec.sequence = position_in_picking
+                list_sequence = position_in_picking
 
-            previous_sequences[package_type] = rec.sequence
+            previous_sequences[package_type] = list_sequence
 
     def action_compute_name(self):
         for rec in self:
