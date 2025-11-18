@@ -1,0 +1,184 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sms_netgsm
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-18 11:41+0000\n"
+"PO-Revision-Date: 2025-11-18 11:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__0
+msgid "0 - Bilgilendirme (İYS kontrolü yapılmaz)"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__11
+msgid "11 - Ticari (Bireysel, İYS kontrollü)"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__12
+msgid "12 - Ticari (Tacir, İYS kontrollü)"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__changeset_change_ids
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__changeset_ids
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: sms_netgsm
+#: model_terms:ir.ui.view,arch_db:sms_netgsm.netgsm_iap_account_view_form
+msgid "Check SMS Balance"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_iys_filter
+msgid "Choose 'IYS Filter' to apply IYS filtering on your messages."
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__count_changesets
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__count_pending_changesets
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model,name:sms_netgsm.model_iap_account
+msgid "IAP Account"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_iys_filter
+msgid "IYS Filter"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_password
+msgid "Netgsm Password"
+msgstr ""
+
+#. module: sms_netgsm
+#. odoo-python
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "Netgsm SMS Balance"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_sms_header
+msgid "Netgsm SMS Header"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_username
+msgid "Netgsm Username"
+msgstr ""
+
+#. module: sms_netgsm
+#: model_terms:ir.ui.view,arch_db:sms_netgsm.netgsm_iap_account_view_form
+msgid "Netgsm account"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_password
+msgid "Password of your Netgsm account. (required)"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__provider
+msgid "Provider"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model,name:sms_netgsm.model_sms_api
+msgid "SMS API"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__provider__sms_netgsm
+msgid "SMS Netgsm API"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_sms_header
+msgid ""
+"Sender ID (Title). If this field is empty, your first title registered in "
+"the system is used."
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__smart_search
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__count_pending_changeset_changes
+#: model:ir.model.fields,help:sms_netgsm.field_sms_api__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__count_pending_changesets
+#: model:ir.model.fields,help:sms_netgsm.field_sms_api__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__count_changesets
+#: model:ir.model.fields,help:sms_netgsm.field_sms_api__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__user_can_see_changeset
+#: model:ir.model.fields,field_description:sms_netgsm.field_sms_api__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_username
+msgid "Username of your Netgsm account. (required)"
+msgstr ""
+
+#. module: sms_netgsm
+#. odoo-python
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "You need to save your Netgsm account first."
+msgstr ""
+
+#. module: sms_netgsm
+#. odoo-python
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "Your Netgsm SMS balance is: %(balance)s"
+msgstr ""

@@ -1,0 +1,114 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * sms_netgsm
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-18 12:00:00\n"
+"PO-Revision-Date: 2025-01-18 12:00:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__provider__sms_netgsm
+msgid "SMS Netgsm API"
+msgstr "SMS Netgsm API"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_username
+msgid "Netgsm Username"
+msgstr "Netgsm Kullanıcı Adı"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_username
+msgid "Username of your Netgsm account. (required)"
+msgstr "Netgsm hesabınızın kullanıcı adı. (zorunlu)"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_password
+msgid "Netgsm Password"
+msgstr "Netgsm Parola"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_password
+msgid "Password of your Netgsm account. (required)"
+msgstr "Netgsm hesabınızın şifresi. (zorunlu)"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_sms_header
+msgid "Netgsm SMS Header"
+msgstr "Netgsm SMS Başlığı"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_sms_header
+msgid ""
+"Sender ID (Title). If this field is empty, your first title registered in "
+"the system is used."
+msgstr ""
+"Gönderici kimliği (Başlık). Bu alan boş bırakılırsa, sistemde kayıtlı ilk "
+"başlığınız kullanılır."
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__0
+msgid "0 - Bilgilendirme (İYS kontrolü yapılmaz)"
+msgstr "0 - Bilgilendirme (İYS kontrolü yapılmaz)"
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__11
+msgid "11 - Ticari (Bireysel, İYS kontrollü)"
+msgstr "11 - Ticari (Bireysel, İYS kontrollü)"
+
+#. module: sms_netgsm
+#: model:ir.model.fields.selection,name:sms_netgsm.selection__iap_account__sms_netgsm_iys_filter__12
+msgid "12 - Ticari (Tacir, İYS kontrollü)"
+msgstr "12 - Ticari (Tacir, İYS kontrollü)"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,field_description:sms_netgsm.field_iap_account__sms_netgsm_iys_filter
+msgid "IYS Filter"
+msgstr "İYS Filtresi"
+
+#. module: sms_netgsm
+#: model:ir.model.fields,help:sms_netgsm.field_iap_account__sms_netgsm_iys_filter
+msgid "Choose 'IYS Filter' to apply IYS filtering on your messages."
+msgstr "Mesajlarınıza İYS filtreleme uygulamak için 'İYS Filtresi' seçin."
+
+#. module: sms_netgsm
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "You need to save your Netgsm account first."
+msgstr "Önce Netgsm hesabınızı kaydetmeniz gerekir."
+
+#. module: sms_netgsm
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "Netgsm SMS Balance"
+msgstr "Netgsm SMS Bakiyesi"
+
+#. module: sms_netgsm
+#: code:addons/sms_netgsm/models/iap_account.py:0
+#, python-format
+msgid "Your Netgsm SMS balance is: %(balance)s"
+msgstr "Netgsm SMS bakiyeniz: %(balance)s"
+
+#. module: sms_netgsm
+#: model:ir.ui.view,arch_db:sms_netgsm.netgsm_iap_account_view_form
+msgid "Check SMS Balance"
+msgstr "SMS Bakiyesini Kontrol Et"
+
+#. module: sms_netgsm
+#: model:ir.model,name:sms_netgsm.model_iap_account
+msgid "IAP Account"
+msgstr "IAP Hesabı"
+
+#. module: sms_netgsm
+#: model:ir.model,name:sms_netgsm.model_sms_api
+msgid "SMS API"
+msgstr "SMS API"

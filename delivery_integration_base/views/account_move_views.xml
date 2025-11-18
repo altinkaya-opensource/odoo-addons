@@ -16,8 +16,6 @@
                     attrs="{'invisible': [('multiple_delivery_ref_no', '=', False)]}"
                 />
             </xpath>
-
         </field>
     </record>
-
 </odoo>

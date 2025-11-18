@@ -37,7 +37,10 @@
                     attrs="{'invisible': [('delivery_state', '!=', 'customer_delivered')]}"
                 />
                 <field name="shipping_number" attrs="{'readonly': 1}" />
-                <field name="multiple_shipping_numbers" attrs="{'readonly': 1, 'invisible': [('multiple_shipping_numbers', '=', False)]}" />
+                <field
+                    name="multiple_shipping_numbers"
+                    attrs="{'readonly': 1, 'invisible': [('multiple_shipping_numbers', '=', False)]}"
+                />
             </xpath>
             <xpath expr="//field[@name='shipping_weight']" position="after">
                 <field

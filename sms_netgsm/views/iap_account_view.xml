@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="netgsm_iap_account_view_form" model="ir.ui.view">
+        <field name="model">iap.account</field>
+        <field name="inherit_id" ref="iap.iap_account_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='account']" position="after">
+                <group
+                    string="Netgsm account"
+                    name="netgsm"
+                    attrs="{'invisible': [('provider', '!=', 'sms_netgsm')]}"
+                >
+                    <group>
+                        <field name="sms_netgsm_username" />
+                        <field name="sms_netgsm_password" />
+                        <field name="sms_netgsm_sms_header" />
+                        <field name="sms_netgsm_iys_filter" />
+                    </group>
+
+                    <group>
+                        <button
+                            name="get_netgsm_sms_balance"
+                            type="object"
+                            string="Check SMS Balance"
+                        />
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
