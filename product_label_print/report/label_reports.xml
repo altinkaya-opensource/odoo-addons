@@ -26,10 +26,10 @@ Th:m:s
 Y0,76,cicek_5037
 
 AT,53,72,42,42,0,0,0,0,[<t t-esc="label.label1.default_code" />]
-AB,0,116,1,1,0,0E,<t t-out="label.label1.nameL1[0:40] or ''" />
-AB,0,140,1,1,0,0E,<t t-out="label.label1.nameL2[0:40] or ''" />
-AB,0,164,1,1,0,0E,<t t-out="label.label1.nameL3[0:40] or ''" />
-AB,0,188,1,1,0,0E,<t t-out="label.label1.note or label.label1.nameL4[0:40] or ''" />
+AB,0,116,1,1,0,0E,<t t-raw="label.label1.nameL1[0:40] or ''" />
+AB,0,140,1,1,0,0E,<t t-raw="label.label1.nameL2[0:40] or ''" />
+AB,0,164,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''" />
+AB,0,188,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''" />
 <t t-if="label.label1.pieces_in_pack > 0.0 ">
 AT,21,213,56,56,0,0E,0,0,<t
                     t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
@@ -46,10 +46,10 @@ Y419,77,cicek_5037
 Dy2-me-dd
 Th:m:s
 AT,472,73,42,42,0,0,0,0,[<t t-out="label.label2.default_code" />]
-AB,419,115,1,1,0,0E,<t t-out="label.label2.nameL1[0:40] or ''" />
-AB,419,139,1,1,0,0E,<t t-out="label.label2.nameL2[0:40] or ''" />
-AB,419,163,1,1,0,0E,<t t-out="label.label2.nameL3[0:40] or ''" />
-AB,419,187,1,1,0,0E,<t t-out="label.label1.note or label.label2.nameL4[0:40] or ''" />
+AB,419,115,1,1,0,0E,<t t-raw="label.label2.nameL1[0:40] or ''" />
+AB,419,139,1,1,0,0E,<t t-raw="label.label2.nameL2[0:40] or ''" />
+AB,419,163,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''" />
+AB,419,187,1,1,0,0E,<t t-raw="label.label1.note or label.label2.nameL4[0:40] or ''" />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,439,212,56,56,0,0E,0,0,<t
                     t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
@@ -85,10 +85,10 @@ Y27,153,cicek7052
 Dy2-me-dd
 Th:m:s
 AT,105,149,58,58,0,0,0,0,[<t t-esc="label.label1.default_code" />]
-AD,27,217,1,1,0,0E,<t t-out="label.label1.nameL1[0:40] or ''" />
-AD,27,251,1,1,0,0E,<t t-out="label.label1.nameL2[0:40] or ''" />
-AD,27,285,1,1,0,0E,<t t-out="label.label1.nameL3[0:40] or ''" />
-AD,27,319,1,1,0,0E,<t t-out="label.label1.note or label.label1.nameL4[0:40] or ''" />
+AD,27,217,1,1,0,0E,<t t-raw="label.label1.nameL1[0:40] or ''" />
+AD,27,251,1,1,0,0E,<t t-raw="label.label1.nameL2[0:40] or ''" />
+AD,27,285,1,1,0,0E,<t t-raw="label.label1.nameL3[0:40] or ''" />
+AD,27,319,1,1,0,0E,<t t-raw="label.label1.note or label.label1.nameL4[0:40] or ''" />
 <t t-if="label.label1.pieces_in_pack > 0.0">
 AT,46,345,79,79,0,0E,0,0,<t
                     t-esc="label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or ''"
@@ -106,10 +106,10 @@ Y653,153,cicek7052
 Dy2-me-dd
 Th:m:s
 AT,731,149,58,58,0,0,0,0,[<t t-esc="label.label2.default_code" />]
-AD,653,217,1,1,0,0E,<t t-out="label.label2.nameL1[0:40] or ''" />
-AD,653,251,1,1,0,0E,<t t-out="label.label2.nameL2[0:40] or ''" />
-AD,653,285,1,1,0,0E,<t t-out="label.label2.nameL3[0:40] or ''" />
-AD,653,319,1,1,0,0E,<t t-out="label.label2.note or label.label2.nameL4[0:40] or ''" />
+AD,653,217,1,1,0,0E,<t t-raw="label.label2.nameL1[0:40] or ''" />
+AD,653,251,1,1,0,0E,<t t-raw="label.label2.nameL2[0:40] or ''" />
+AD,653,285,1,1,0,0E,<t t-raw="label.label2.nameL3[0:40] or ''" />
+AD,653,319,1,1,0,0E,<t t-raw="label.label2.note or label.label2.nameL4[0:40] or ''" />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,672,345,79,79,0,0E,0,0,<t
                     t-esc="label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or ''"
