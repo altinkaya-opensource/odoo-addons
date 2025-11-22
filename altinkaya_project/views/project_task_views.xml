@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 Erol Develi (https://github.com/erlinberg)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Kanban view: Display ticket number under task name -->
+    <record id="view_task_kanban_ticket_number" model="ir.ui.view">
+        <field name="name">project.task.kanban.ticket.number</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban" />
+        <field name="arch" type="xml">
+            <!-- Declare the ticket_number field in the kanban field list -->
+            <field name="color" position="after">
+                <field name="ticket_number" />
+            </field>
+            <!-- Position ticket number under the name for active tasks -->
+            <xpath
+                expr="//strong[hasclass('o_kanban_record_title')]/t/field[@name='name']"
+                position="after"
+            >
+                <t t-if="record.ticket_number.raw_value">
+                    <br />
+                    <span class="text-muted">
+                        <field name="ticket_number" />
+                    </span>
+                </t>
+            </xpath>
+            <!-- Position ticket number under the name for archived tasks -->
+            <xpath
+                expr="//strong[hasclass('o_kanban_record_title')]/s/field[@name='name']"
+                position="after"
+            >
+                <t t-if="record.ticket_number.raw_value">
+                    <br />
+                    <span class="text-muted">
+                        <field name="ticket_number" />
+                    </span>
+                </t>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Form view: Display ticket number in title area (readonly) -->
+    <record id="view_task_form_ticket_number" model="ir.ui.view">
+        <field name="name">project.task.form.ticket.number</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="after">
+                <field name="ticket_number" readonly="1" />
+            </field>
+        </field>
+    </record>
+</odoo>
