@@ -2,7 +2,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import random
-import string
 
 from odoo import Command, fields, models
 
@@ -11,14 +10,12 @@ class ProjectTask(models.Model):
     _inherit = "project.task"
 
     def _compute_ticket_name(self):
-        """Generates a random ticket number. Overrides the default method.
-        We excluded some characters from the random string to avoid confusion."""
+        """Generates a random ticket number. We excluded some
+        characters from the random string to avoid confusion."""
 
         while True:
             unique = "".join(
-                random.choices(
-                    string.ascii_uppercase.replace("I", "") + string.digits, k=3
-                )
+                random.choice("ABCDEFGHJKLMNPRSTUVXYZ123456789") for i in range(3)
             )
             if not self.search([("ticket_number", "=", unique)], limit=1):
                 break
