@@ -3,10 +3,22 @@
     <record id="product_normal_form_inherit_variant_routes" model="ir.ui.view">
         <field name="name">product.product.form.inherit.variant_routes</field>
         <field name="model">product.product</field>
+        <field name="priority" eval="999" />
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='route_ids']" position="after">
-                <field name="variant_route_ids" widget="many2many_checkboxes" />
+            <xpath expr="//group[@name='operations']" position="after">
+                <label
+                    for="variant_route_ids"
+                    attrs="{'invisible': [('type', '=', 'service')]}"
+                />
+                <div>
+                    <field
+                        name="variant_route_ids"
+                        class="mb-0"
+                        widget="many2many_checkboxes"
+                        attrs="{'invisible': ['|', ('has_available_route_ids', '=', False), ('type', '=', 'service')]}"
+                    />
+                </div>
             </xpath>
 
             <xpath expr="//field[@name='route_ids']" position="attributes">
