@@ -22,9 +22,8 @@ from datetime import datetime
 
 import requests
 
-from odoo import _
+from odoo import _, fields
 from odoo.exceptions import ValidationError
-from odoo.tools import float_is_zero
 
 from ..controllers.main import _IYZICO_RETURN_URL
 
@@ -278,29 +277,31 @@ class iyzicoConnector:
     def _prepare_basket_items_data(self):
         """Prepare basket items data for the payment request.
 
+        To handle all scenarios, we include only the first positive line
+        from the order as the basket item. This ensures compatibility
+        with iyzico and Odoo's promotion mechanisms.
+
         :return: List of basket items.
         :rtype: list
         """
         items = []
-        if self.order_id:
-            for line in self.order_id.order_line.filtered(
-                lambda ol: not float_is_zero(
-                    ol.price_total,
-                    precision_rounding=self.payment_currency.rounding or 0.01,
-                )
-            ):
-                items.append(
-                    {
-                        "id": str(line.id),
-                        "name": line.name[:200],  # iyzico limit
-                        "category1": line.product_id.categ_id.name or "",
-                        "itemType": "VIRTUAL"
-                        if line.product_id.type == "service"
-                        else "PHYSICAL",
-                        "price": self._convert_price(line.price_total),
-                    }
-                )
+        first_line = fields.first(
+            self.order_id.order_line.filtered(lambda ol: ol.price_total > 0)
+        )
+        if first_line:
+            items.append(
+                {
+                    "id": str(first_line.id),
+                    "name": first_line.name[:200],  # iyzico limit
+                    "category1": first_line.product_id.categ_id.name or "",
+                    "itemType": "VIRTUAL"
+                    if first_line.product_id.type == "service"
+                    else "PHYSICAL",
+                    "price": self._convert_price(self.tx.amount),
+                }
+            )
         else:
+            # Fallback: if no positive lines, use transaction reference
             items.append(
                 {
                     "id": self.tx.reference,
