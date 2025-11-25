@@ -1097,10 +1097,20 @@ class DeliveryCarrier(models.Model):
             "trackingNumber": tracking_number,
         }
         if "freight" in self.fedex_service_type.lower():
+            first_pallet = fields.first(
+                picking.package_ids.filtered(lambda p: p.is_pallet)
+            )
+            dimensions = {
+                "length": first_pallet.pack_length,
+                "width": first_pallet.width,
+                "height": first_pallet.height,
+                "units": first_pallet.length_uom_id.name.upper(),
+            }
             data["expressFreightDetail"] = {
                 "truckType": "DROP_TRAILER_AGREEMENT",
                 "service": self.fedex_service_type,
                 "trailerLength": "TRAILER_28_FT",
+                "dimensions": dimensions,
             }
 
         return data
