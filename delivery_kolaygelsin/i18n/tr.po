@@ -1,0 +1,188 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_kolaygelsin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-28 14:22+0000\n"
+"PO-Revision-Date: 2025-03-28 14:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_kolaygelsin
+#. odoo-python
+#: code:addons/delivery_kolaygelsin/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"%s\n"
+"Partner's district code is missing."
+msgstr ""
+"%s\n"
+"Iş Ortağı bölge kodu eksik."
+
+#. module: delivery_kolaygelsin
+#. odoo-python
+#: code:addons/delivery_kolaygelsin/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"%s\n"
+"Partner's phone number is missing. It's a required field for dispatch."
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__sendeo_cc_code
+msgid "CC Code"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model_terms:ir.ui.view,arch_db:delivery_kolaygelsin.view_sendeo_delivery_carrier_form
+msgid "Connection"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model_terms:ir.ui.view,arch_db:delivery_kolaygelsin.view_sendeo_delivery_carrier_form
+msgid "Logistics"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__packaging_carrier_type
+msgid "Packaging Carrier Type"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model,name:delivery_kolaygelsin.model_product_packaging
+msgid "Product Packaging"
+msgstr "Ürün Paketleme"
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields.selection,name:delivery_kolaygelsin.selection__delivery_carrier__delivery_type__sendeo
+#: model:ir.model.fields.selection,name:delivery_kolaygelsin.selection__product_packaging__packaging_carrier_type__sendeo
+msgid "Kolay Gelsin"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#. odoo-python
+#: code:addons/delivery_kolaygelsin/models/sendeo_request.py:0
+#: code:addons/delivery_kolaygelsin/models/sendeo_request.py:0
+#, python-format
+msgid ""
+"Kolay Gelsin API Error.\n"
+"Error Message: %sexceptionMessage"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__sendeo_cc_code
+msgid "Kolay Gelsin CC Code"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.actions.report,name:delivery_kolaygelsin.sendeo_carrier_label_report
+msgid "Kolay Gelsin Carrier Label"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model_terms:ir.ui.view,arch_db:delivery_kolaygelsin.view_sendeo_delivery_carrier_form
+msgid "Kolay Gelsin Configuration"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__sendeo_password
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__sendeo_password
+msgid "Kolay Gelsin Password"
+msgstr "Parola "
+
+#. module: delivery_kolaygelsin
+#. odoo-python
+#: code:addons/delivery_kolaygelsin/models/delivery_carrier.py:0
+#, python-format
+msgid "Kolay Gelsin Shipping barcode document"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__sendeo_username
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__sendeo_username
+msgid "Kolay Gelsin Username"
+msgstr "Kullanıcı adı "
+
+#. module: delivery_kolaygelsin
+#: model:ir.model,name:delivery_kolaygelsin.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Teslimat Yöntemleri"
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_product_packaging__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_product_packaging__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_kolaygelsin.field_product_packaging__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_kolaygelsin.field_product_packaging__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: delivery_kolaygelsin
+#. odoo-python
+#: code:addons/delivery_kolaygelsin/models/delivery_carrier.py:0
+#, python-format
+msgid "You can't cancel a shipment that already has been sent to Kolay Gelsin"
+msgstr ""

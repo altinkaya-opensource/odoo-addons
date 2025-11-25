@@ -1,0 +1,365 @@
+# Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import base64
+
+import phonenumbers
+from dateutil import parser
+
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
+
+from .kolaygelsin_request import KolaygelsinRequest
+
+KOLAYGELSIN_STATUS_CODES = {
+    101: ("Kargo Sevk Emri Alındı", "İş Emri Alındı"),
+    102: ("Belge Düzenlendi", "Gönderi Oluşturuldu"),
+    103: ("Şube TM Yükleme", "Çıkış Şubesinden Hareket Etti"),
+    104: ("TM Şube İndirme", "Teslimat Noktasında"),
+    105: ("TM Hat Yükleme", "Hat Aracına Yüklendi"),
+    106: ("TM Hat İndirme", "Hat Aracından İndi"),
+    107: ("TM Şube Yükleme", "Transfer Merkezinden Şubeye Yüklendi"),
+    108: ("Şube TM İndirme", "Transfer Merkezine İndi"),
+    109: ("Şube Dağıtım Yükleme", "Dağıtıma Çıkarıldı"),
+    110: ("Şube Dağıtım İndirme", "Şube Dağıtım İndirme"),
+    111: ("Teslim Edildi", "Teslim Edildi"),
+    112: ("Alıcı Telefonu Yanlış", "Alıcı Telefonu Yanlış"),
+    113: ("İade Talebi", "İade Talebi"),
+    114: ("Alıcı Adresinde Yok", "Alıcı Adresinde Yok"),
+    115: ("Alıcı Adresi Yanlış", "Alıcı Adresi Yanlış"),
+    117: ("Hasarlı Gönderi", "Hasarlı Gönderi"),
+    118: ("Kayıp Kargo", "Kayıp Kargo"),
+    119: ("Devir", "Devir"),
+    120: ("Eksik Teslim Edildi", "Eksik Teslim Edildi"),
+    121: ("Dağıtım Alanı Dışında", "Dağıtım Alanı Dışında"),
+    122: ("Ödeme Tipi Kabul Edilmedi", "Ödeme Tipi Kabul Edilmedi"),
+    123: ("Randevulu Teslimat", "Randevulu Teslimat"),
+    124: ("Mobil Dağıtım Bölgesi", "Mobil Dağıtım Bölgesi"),
+    125: ("Eksik Kargo", "Eksik Kargo"),
+    126: ("Yönlendirme", "Yönlendirme"),
+    127: ("Hat Aracı Gecikmesi", "Hat Aracı Gecikmesi"),
+    128: ("Olumsuz Hava Koşulları", "Olumsuz Hava Koşulları"),
+    129: ("Taşıma Fiyatı Yüksek Bulundu", "Taşıma Fiyatı Yüksek Bulundu"),
+    130: ("Teslim Edilemedi", "Teslim edilemedi"),
+    131: ("İade Gönderi", "İade Edilen Gönderi"),
+    132: ("Ölçüm Tartım", "Ölçüm Tartım yapıldı"),
+    133: ("İptal Gönderi", "İptal Gönderi"),
+    134: ("İade Onay", "İade Talebine Onay Verildi"),
+    135: ("İş Emri İadesi", "İş Emri ile İade Edilen Gönderi"),
+    136: ("İade Red", "Müşteri tarafından red edildi"),
+    137: ("Randevulu Alım", "Müşteri Randevu Verdi"),
+    138: ("Gönderi Alındı", "Gönderi Alındı"),
+    139: ("İptal İş Emri", "İptal İş Emri"),
+    140: ("Kurye Teslimatta", "Kurye Teslimatta"),
+    141: ("Kurye Zimmete Aldı", "Kurye zimmete alma"),
+    142: ("Kurye Zimmetten Çıkardı", "Kurye zimmetten çıkarma"),
+    143: ("Kayıp Kargo", "Kayıp Kargo İş Emri"),
+    151: ("İade Olarak Teslim", "İade Olarak Teslim"),
+}
+
+
+class DeliveryCarrier(models.Model):
+    _inherit = "delivery.carrier"
+
+    delivery_type = fields.Selection(
+        selection_add=[("kolaygelsin", "Kolay Gelsin")],
+        ondelete={"kolaygelsin": "cascade"},
+    )
+
+    kolaygelsin_cc_code = fields.Char("CC Code", help="Kolay Gelsin CC Code")
+    kolaygelsin_username = fields.Char(help="Kolay Gelsin Username")
+    kolaygelsin_password = fields.Char(help="Kolay Gelsin Password")
+
+    def _get_kolaygelsin_credentials(self):
+        """Access key is mandatory for every request while group and user are
+        optional"""
+        credentials = {
+            "prod": self.prod_environment,
+            "username": self.kolaygelsin_username,
+            "password": self.kolaygelsin_password,
+        }
+        return credentials
+
+    def _kolaygelsin_address(self, partner):
+        """Sender address is the address of the company, required field."""
+        return partner._display_address()
+
+    def _kolaygelsin_city_id(self, partner):
+        """Kolay Gelsin requires city ids without zeros."""
+        return int(partner.state_id.code.lstrip("0"))
+
+    def _kolaygelsin_phone_number(self, partner, priority="mobile"):
+        """
+        Kolay Gelsin requires phone number without spaces and country code.
+        We use priority selector to handle two different phone numbers.
+        :param partner: recordset res.partner
+        :param priority: string
+        :return: phone number without spaces and country code
+        """
+        priority_field = getattr(partner, priority)
+        if priority_field:
+            return phonenumbers.format_number(
+                phonenumbers.parse(priority_field, partner.country_id.code or "TR"),
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+90")
+        elif partner.phone or partner.mobile:
+            return phonenumbers.format_number(
+                phonenumbers.parse(
+                    partner.phone or partner.mobile, partner.country_id.code or "TR"
+                ),
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+90")
+        else:
+            raise ValidationError(
+                _(
+                    "%(partner)s\nPartner's phone number is missing."
+                    " It's a required field for dispatch.",
+                    partner=partner.name,
+                )
+            )
+
+    def _prepare_kolaygelsin_products(self, picking):
+        # TODO: implement stock.quant.package
+        vals = {
+            "products": [
+                {
+                    "count": picking.carrier_package_count,
+                    "deci": 1,  # Doc: required field but there is no description
+                }
+            ]
+        }
+        return vals
+
+    def _kolaygelsin_district_code(self, partner):
+        code = partner.district_id.sendeo_code
+        if code:
+            return int(code)
+        else:
+            raise ValidationError(_("%s\nPartner's district code is missing."))
+
+    def _prepare_kolaygelsin_shipping(self, picking):
+        """Convert picking values for Kolay Gelsin Kargo api
+        :param picking record with picking to send
+        :returns dict values for the connector
+        """
+        self.ensure_one()
+        # We'll compose the request via some diferenced parts, like label settings,
+        # address options, incoterms and so. There are lots of thing to take into
+        # account to acomplish a properly formed request.
+        vals = {}
+        vals.update(
+            {
+                "deliveryType": 1,  # Lokasyonunuz >> Müşteriniz
+                "referenceNo": picking.name,
+                "senderAuthority": picking.company_id.name,
+                "senderAddress": self._kolaygelsin_address(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderCityId": self._kolaygelsin_city_id(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderDistrictId": self._kolaygelsin_district_code(
+                    picking.picking_type_id.warehouse_id.partner_id
+                ),
+                "senderPhone": self._kolaygelsin_phone_number(
+                    picking.picking_type_id.warehouse_id.partner_id, priority="phone"
+                ),
+                "senderGSM": self._kolaygelsin_phone_number(
+                    picking.picking_type_id.warehouse_id.partner_id, priority="mobile"
+                ),
+                "senderEmail": picking.picking_type_id.warehouse_id.partner_id.email,
+                "receiver": picking.partner_id.display_name,
+                "receiverAuthority": picking.partner_id.name,
+                "receiverAddress": self._kolaygelsin_address(picking.partner_id),
+                "receiverCityId": self._kolaygelsin_city_id(picking.partner_id),
+                "receiverDistrictId": self._kolaygelsin_district_code(picking.partner_id),
+                "receiverPhone": self._kolaygelsin_phone_number(
+                    picking.partner_id, priority="phone"
+                ),
+                "receiverGSM": self._kolaygelsin_phone_number(
+                    picking.partner_id, priority="mobile"
+                ),
+                "receiverEmail": picking.partner_id.email,
+                "paymentType": 1,  # Default is 1, required
+                "collectionType": 0,
+                "collectionPrice": 0,
+                "serviceType": 1,  # Default is 1, required
+                "barcodeLabelType": 1 if self.carrier_barcode_type == "pdf" else 2,
+            }
+        )
+        product_array = self._prepare_kolaygelsin_products(picking)
+        vals.update(product_array)
+        return vals
+
+    def kolaygelsin_send_shipping(self, pickings):
+        """Send booking request to Kolay Gelsin
+        :param pickings: A recordset of pickings
+        :return list: A list of dictionaries although in practice it's
+        called one by one and only the first item in the dict is taken. Due
+        to this design, we have to inject vals in the context to be able to
+        add them to the message.
+        """
+        kolaygelsin_request = KolaygelsinRequest(**self._get_kolaygelsin_credentials())
+        result = []
+        for picking in pickings:
+            vals = self._prepare_kolaygelsin_shipping(picking)
+
+            try:
+                response = kolaygelsin_request._set_delivery(vals)
+            except Exception as e:
+                raise e
+
+            if not response:
+                result.append(vals)
+                continue
+            vals["tracking_number"] = picking.name
+            vals["exact_price"] = 0
+
+            body = _("Kolay Gelsin Shipping barcode document")
+            barcode_type = self.carrier_barcode_type
+            if barcode_type == "pdf":
+                barcode = response.get("Barcode")
+                data = base64.b64decode(barcode)
+
+            else:
+                data = barcode = response.get("BarcodeZpl")
+            if barcode and self.attach_barcode:
+                attachment = [
+                    (
+                        "kolaygelsin_etiket_{}.{}".format(
+                            response.get("TrackingNumber"), barcode_type
+                        ),
+                        data,
+                    )
+                ]
+                picking.message_post(body=body, attachments=attachment)
+            result.append(vals)
+        return result
+
+    def kolaygelsin_cancel_shipment(self, pickings):
+        """Cancel the expedition
+        :param pickings - stock.picking recordset
+        :returns bool
+        """
+        kolaygelsin_request = KolaygelsinRequest(**self._get_kolaygelsin_credentials())
+        for picking in pickings.filtered("carrier_tracking_ref"):
+            if hasattr(
+                self, f"{self.delivery_type}_tracking_state_update"
+            ):  # check state before cancel
+                getattr(self, f"{self.delivery_type}_tracking_state_update")(picking)
+
+            if picking.delivery_state not in [
+                "shipping_recorded_in_carrier",
+                "canceled_shipment",
+            ]:
+                raise ValidationError(
+                    _(
+                        "You can't cancel a shipment that already "
+                        "has been sent to Kolay Gelsin"
+                    )
+                )
+            kolaygelsin_request._cancel_shipment(reference=picking.name)
+            picking.write({"shipping_number": False})
+        return True
+
+    def kolaygelsin_get_tracking_link(self, picking):
+        """Provide tracking link for the customer"""
+        return f"https://sube.kolaygelsin.com/takip?ccode={self.kolaygelsin_cc_code}&musref={picking.carrier_tracking_ref}"
+
+    def _kolaygelsin_status_codes(self, status_code):
+        """
+        Return the status code in Odoo delivery_state selection field format
+        For more information, see the API documentation
+        """
+        if status_code in [101, 102]:
+            return "shipping_recorded_in_carrier"
+        elif status_code in [103, 105, 106, 107, 109]:
+            return "in_transit"
+        elif status_code in [133, 139, 136]:
+            return "canceled_shipment"
+        elif status_code in [
+            112,
+            113,
+            114,
+            115,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            125,
+            127,
+            128,
+            129,
+            130,
+        ]:
+            return "incidence"
+        elif status_code in [111]:
+            return "customer_delivered"
+        else:
+            return "warehouse_delivered"
+
+    def kolaygelsin_tracking_state_update(self, picking):
+        """Tracking state update"""
+        self.ensure_one()
+        if not picking.carrier_tracking_ref:
+            return
+        kolaygelsin_request = KolaygelsinRequest(**self._get_kolaygelsin_credentials())
+        try:
+            response = kolaygelsin_request._get_tracking_states(reference=picking.name)
+        except ValidationError:
+            return
+        status_event_list = response.get("StatusHistories")
+        if status_event_list:
+            picking.write(
+                {
+                    "tracking_state_history": (
+                        "\n".join(
+                            "{} - [{}] {}".format(
+                                parser.parse(t["StatusDate"]).strftime(
+                                    "%d/%m/%Y %H:%M:%S"
+                                ),
+                                t["Status"],
+                                t["Description"],
+                            )
+                            for t in status_event_list
+                        )
+                    ),
+                    "tracking_state": response["StateText"],
+                    "delivery_state": self._kolaygelsin_status_codes(response["State"]),
+                    "shipping_number": response["TrackingNo"],
+                }
+            )
+        return True
+
+    def kolaygelsin_carrier_get_label(self, picking):
+        """Generate label for picking
+        :returns cargo barcode label as base64 encoded pdf or ZPL (txt)
+        """
+        picking.ensure_one()
+        reference = picking.name
+        if picking.delivery_type != "kolaygelsin" or not reference:
+            return
+        barcode_type = self.carrier_barcode_type
+        kolaygelsin_request = KolaygelsinRequest(**self._get_kolaygelsin_credentials())
+        response = kolaygelsin_request._shipping_label(reference, barcode_type)
+
+        if barcode_type == "pdf":
+            barcode = response.get("Barcode")
+            data = base64.b64decode(barcode)
+
+        else:
+            data = barcode = response.get("BarcodeZpl")
+
+        if not barcode:
+            return False
+
+        return data
+
+    def kolaygelsin_rate_shipment(self, order):
+        """There's no public API so another price method should be used."""
+        return self.base_on_rule_rate_shipment(order)
+
+    def kolaygelsin_get_rate(self, order):
+        """Get delivery price for Kolay Gelsin"""
+        return self.base_on_rule_get_rate(order)

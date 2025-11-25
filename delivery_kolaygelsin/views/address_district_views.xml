@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 Yiğit Budak (https://github.com/yibudak)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_sendeo_address_district_form" model="ir.ui.view">
+        <field name="model">address.district</field>
+        <field name="inherit_id" ref="l10n_tr_address.view_address_district_form" />
+        <field name="arch" type="xml">
+            <field name="state_id" position="after">
+                <field name="sendeo_code" />
+            </field>
+        </field>
+    </record>
+</odoo>
