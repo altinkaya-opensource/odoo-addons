@@ -677,7 +677,7 @@ class DeliveryCarrier(models.Model):
             # If there are pallets, we need to add the
             # express freight details to the shipment data.
             shippersLoadAndCount = picking.package_ids.filtered(
-                lambda p: not p.is_pallet
+                lambda p: not p.pallet_id
             )
             data["requestedShipment"]["expressFreightDetail"] = {
                 # The number is just a placeholder, it is
@@ -1070,7 +1070,7 @@ class DeliveryCarrier(models.Model):
         """
         warehouse_partner = picking.location_id.warehouse_id.partner_id
 
-        return {
+        data = {
             "associatedAccountNumber": {"value": self.fedex_account_number},
             "carrierCode": self.fedex_carrier_code,
             "originDetail": {
@@ -1096,6 +1096,14 @@ class DeliveryCarrier(models.Model):
             "countryRelationship": "INTERNATIONAL",
             "trackingNumber": tracking_number,
         }
+        if "freight" in self.fedex_service_type.lower():
+            data["expressFreightDetail"] = {
+                "truckType": "DROP_TRAILER_AGREEMENT",
+                "service": self.fedex_service_type,
+                "trailerLength": "TRAILER_28_FT",
+            }
+
+        return data
 
     def _prepare_fedex_pickup_check_data(self, picking):
         """
