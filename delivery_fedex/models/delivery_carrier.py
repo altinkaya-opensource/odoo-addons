@@ -855,7 +855,10 @@ class DeliveryCarrier(models.Model):
 
             self.fedex_request_pickup(
                 picking,
-                sum(pack.shipping_weight for pack in picking.package_ids),
+                sum(
+                    pack.shipping_weight
+                    for pack in picking.package_ids.filtered(lambda p: not p.pallet_id)
+                ),
                 master_tracking_number,
             )
 
