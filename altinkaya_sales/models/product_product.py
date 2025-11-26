@@ -1,6 +1,6 @@
 import logging
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -13,6 +13,30 @@ class ProductProduct(models.Model):
     name_variant = fields.Char(
         compute="_compute_name_variant_report_name", string="Variant Name"
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """
+        When creating a variant with an existing template, the UI sends ALL
+        visible fields including inherited ones. The ORM then writes these
+        to the parent template triggering modified() on every field, which
+        marks all dependent computed fields for recomputation.
+
+        To avoid this, we remove inherited fields from vals before calling
+        create on super.
+        """
+        for vals in vals_list:
+            if vals.get("product_tmpl_id"):
+                # Get all inherited field names (fields from product.template)
+                inherited_fnames = [
+                    fname
+                    for fname, field in self._fields.items()
+                    if field.inherited
+                ]
+                # Remove them from vals - they already exist on the template
+                for fname in inherited_fnames:
+                    vals.pop(fname, None)
+        return super().create(vals_list)
 
     def _compute_name_variant_report_name(self):
         for record in self:
