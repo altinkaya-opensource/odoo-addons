@@ -10,7 +10,7 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["delivery_integration_base"],
+    "depends": ["delivery_integration_base", "delivery_sendeo"],
     "external_dependencies": {"python": ["phonenumbers", "openpyxl"]},
     "data": [
         "views/delivery_kolaygelsin_view.xml",
