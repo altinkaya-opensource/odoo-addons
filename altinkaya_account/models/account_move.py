@@ -334,10 +334,15 @@ class AccountMove(models.Model):
         package_ids = self.picking_ids.mapped("package_ids").filtered(
             lambda p: not p.is_pallet
         )
+        cup_ids = self.picking_ids.mapped("package_ids").filtered(
+            lambda p: not p.pallet_id
+        )
         hs_code_distribution = {}
 
         total_calculated_weight = sum(package_ids.mapped("weight")) or 1.0
-        total_gross_weight = sum(package_ids.mapped("shipping_weight")) or 1.0
+        total_gross_weight = (
+            sum((x.shipping_weight * x.package_multiplier) for x in cup_ids) or 1.0
+        )
 
         hs_codes = package_ids.mapped("quant_ids.product_id.categ_id.hs_code_id")
         index = 1
