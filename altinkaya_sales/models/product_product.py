@@ -29,9 +29,7 @@ class ProductProduct(models.Model):
             if vals.get("product_tmpl_id"):
                 # Get all inherited field names (fields from product.template)
                 inherited_fnames = [
-                    fname
-                    for fname, field in self._fields.items()
-                    if field.inherited
+                    fname for fname, field in self._fields.items() if field.inherited
                 ]
                 # Remove them from vals - they already exist on the template
                 for fname in inherited_fnames:

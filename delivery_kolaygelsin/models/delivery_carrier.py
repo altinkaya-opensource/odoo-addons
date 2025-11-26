@@ -171,7 +171,9 @@ class DeliveryCarrier(models.Model):
                 "receiverAuthority": picking.partner_id.name,
                 "receiverAddress": self._kolaygelsin_address(picking.partner_id),
                 "receiverCityId": self._kolaygelsin_city_id(picking.partner_id),
-                "receiverDistrictId": self._kolaygelsin_district_code(picking.partner_id),
+                "receiverDistrictId": self._kolaygelsin_district_code(
+                    picking.partner_id
+                ),
                 "receiverPhone": self._kolaygelsin_phone_number(
                     picking.partner_id, priority="phone"
                 ),
