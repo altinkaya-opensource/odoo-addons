@@ -615,38 +615,40 @@ class DeliveryCarrier(models.Model):
         if pallets:
             # If there are pallets, we prepare the packages based on pallets
             for pallet in pallets:
-                packages.append(
-                    {
-                        "groupPackageCount": "1",
-                        "sequenceNumber": len(packages) + 1,
-                        "weight": {"units": "KG", "value": pallet.shipping_weight},
-                        "subPackagingType": "PALLET",
-                        "dimensions": {
-                            "length": pallet.pack_length,
-                            "width": pallet.width,
-                            "height": pallet.height,
-                            "units": pallet.length_uom_id.name.upper(),
-                        },
-                    }
-                )
-                total_weight += pallet.shipping_weight
+                for _ in range(pallet.package_multiplier):
+                    packages.append(
+                        {
+                            "groupPackageCount": "1",
+                            "sequenceNumber": len(packages) + 1,
+                            "weight": {"units": "KG", "value": pallet.shipping_weight},
+                            "subPackagingType": "PALLET",
+                            "dimensions": {
+                                "length": pallet.pack_length,
+                                "width": pallet.width,
+                                "height": pallet.height,
+                                "units": pallet.length_uom_id.name.upper(),
+                            },
+                        }
+                    )
+                    total_weight += pallet.shipping_weight
                 pallet.sequence = len(packages)
         else:
             # If there are no pallets, we use the packages directly
             for package in picking.package_ids:
-                packages.append(
-                    {
-                        "sequenceNumber": len(packages) + 1,
-                        "weight": {"units": "KG", "value": package.shipping_weight},
-                        "dimensions": {
-                            "length": package.pack_length,
-                            "width": package.width,
-                            "height": package.height,
-                            "units": package.length_uom_id.name.upper(),
-                        },
-                    }
-                )
-                total_weight += package.shipping_weight
+                for _ in range(package.package_multiplier):
+                    packages.append(
+                        {
+                            "sequenceNumber": len(packages) + 1,
+                            "weight": {"units": "KG", "value": package.shipping_weight},
+                            "dimensions": {
+                                "length": package.pack_length,
+                                "width": package.width,
+                                "height": package.height,
+                                "units": package.length_uom_id.name.upper(),
+                            },
+                        }
+                    )
+                    total_weight += package.shipping_weight
                 package.sequence = len(packages)
 
         data["requestedShipment"]["customsClearanceDetail"] = (
@@ -676,14 +678,17 @@ class DeliveryCarrier(models.Model):
         if pallets:
             # If there are pallets, we need to add the
             # express freight details to the shipment data.
-            shippersLoadAndCount = picking.package_ids.filtered(
-                lambda p: not p.pallet_id
-            )
+            packages = picking.package_ids.filtered(lambda p: not p.pallet_id)
+
+            shippersLoadAndCount = 0
+            for package in packages:
+                shippersLoadAndCount += package.package_multiplier
+
             data["requestedShipment"]["expressFreightDetail"] = {
                 # The number is just a placeholder, it is
                 # not used by FedEx API in Turkey
                 "bookingConfirmationNumber": "123456789812",
-                "shippersLoadAndCount": len(shippersLoadAndCount),
+                "shippersLoadAndCount": shippersLoadAndCount,
                 "packingListEnclosed": True,
             }
 
