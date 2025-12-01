@@ -134,7 +134,8 @@ class DeliveryCarrier(models.Model):
         if code:
             return int(code)
         else:
-            raise ValidationError(_("%s\nPartner's district code is missing."))
+            # raise ValidationError(_("%s\nPartner's district code is missing."))
+            return 0
 
     def _prepare_kolaygelsin_shipping(self, picking):
         """Convert picking values for Kolay Gelsin Kargo api
@@ -174,6 +175,7 @@ class DeliveryCarrier(models.Model):
                 "receiverDistrictId": self._kolaygelsin_district_code(
                     picking.partner_id
                 ),
+                "receiverDistrictName": picking.partner_id.district_id.name,
                 "receiverPhone": self._kolaygelsin_phone_number(
                     picking.partner_id, priority="phone"
                 ),
