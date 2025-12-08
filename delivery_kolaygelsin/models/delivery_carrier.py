@@ -332,6 +332,10 @@ class DeliveryCarrier(models.Model):
                     "tracking_state": response["StateText"],
                     "delivery_state": self._kolaygelsin_status_codes(response["State"]),
                     "shipping_number": response["TrackingNo"],
+                    "carrier_total_deci": response["DeciWeight"],
+                    "carrier_shipping_cost": response["TotalPrice"],
+                    "carrier_shipping_vat": response["TaxPrice"],
+                    "carrier_shipping_total": response["GrandTotalPrice"],
                 }
             )
         return True
