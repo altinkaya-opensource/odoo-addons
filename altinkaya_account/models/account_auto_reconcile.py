@@ -227,9 +227,25 @@ class AccountAutoReconcile(models.AbstractModel):
                 f"'{WRITEOFF_ACCOUNT_CODE}' for write-offs."
             )
 
-        writeoff_amount = move.amount_residual_signed
-        if move.is_outbound():
-            writeoff_amount *= -1
+        pay_term_line = move.line_ids.filtered(
+            lambda line: line.account_id.account_type
+            in ("asset_receivable", "liability_payable")
+        )
+        writeoff_amount = abs(move.amount_residual_signed)
+
+        # Determine debit/credit based on account type
+        if pay_term_line.account_id.account_type == "asset_receivable":
+            # Customer invoice: CREDIT receivable, DEBIT writeoff account
+            recv_pay_debit = 0.0
+            recv_pay_credit = writeoff_amount
+            writeoff_debit = writeoff_amount
+            writeoff_credit = 0.0
+        else:
+            # Supplier invoice: DEBIT payable, CREDIT writeoff account
+            recv_pay_debit = writeoff_amount
+            recv_pay_credit = 0.0
+            writeoff_debit = 0.0
+            writeoff_credit = writeoff_amount
 
         writeoff_entry = self.env["account.move"].create(
             {
@@ -243,8 +259,8 @@ class AccountAutoReconcile(models.AbstractModel):
                         0,
                         {
                             "account_id": writeoff_account.id,
-                            "debit": writeoff_amount if writeoff_amount > 0 else 0.0,
-                            "credit": -writeoff_amount if writeoff_amount < 0 else 0.0,
+                            "debit": writeoff_debit,
+                            "credit": writeoff_credit,
                             "name": f"{move.name} Write-off",
                         },
                     ),
@@ -252,12 +268,9 @@ class AccountAutoReconcile(models.AbstractModel):
                         0,
                         0,
                         {
-                            "account_id": move.line_ids.filtered(
-                                lambda line: line.account_id.account_type
-                                in ("asset_receivable", "liability_payable")
-                            ).account_id.id,
-                            "debit": -writeoff_amount if writeoff_amount < 0 else 0.0,
-                            "credit": writeoff_amount if writeoff_amount > 0 else 0.0,
+                            "account_id": pay_term_line.account_id.id,
+                            "debit": recv_pay_debit,
+                            "credit": recv_pay_credit,
                             "name": f"{move.name} Write-off",
                         },
                     ),
