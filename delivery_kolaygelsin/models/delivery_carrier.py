@@ -76,6 +76,7 @@ class DeliveryCarrier(models.Model):
             "prod": self.prod_environment,
             "username": self.kolaygelsin_username,
             "password": self.kolaygelsin_password,
+            "delivery_carrier": self,
         }
         return credentials
 

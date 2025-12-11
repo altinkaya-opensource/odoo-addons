@@ -1,6 +1,7 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 
 import requests
@@ -21,8 +22,9 @@ class KolaygelsinRequest:
     the provided API. We leave the operations empty for future.
     """
 
-    def __init__(self, username, password, prod=False):
+    def __init__(self, username, password, prod=False, delivery_carrier=None):
         """Initialize the API client with the credentials."""
+        self.delivery_carrier = delivery_carrier
         data = {
             "musteri": username if prod else "TEST",
             "sifre": password if prod else "TesT.43e54",
@@ -43,10 +45,24 @@ class KolaygelsinRequest:
         if not init:
             headers.update({"Authorization": f"Bearer {self.jwt_token}"})
 
+        # Log request
+        if self.delivery_carrier.debug_logging:
+            self.delivery_carrier.log_xml(
+                json.dumps(vals, indent=4, ensure_ascii=False),
+                func="kolaygelsin_request",
+            )
+
         if post_with_params:
             response = self.session.post(url, params=vals, headers=headers).json()
         else:
             response = self.session.post(url, json=vals, headers=headers).json()
+
+        # Log response
+        if self.delivery_carrier.debug_logging:
+            self.delivery_carrier.log_xml(
+                json.dumps(response, indent=4, ensure_ascii=False),
+                func="kolaygelsin_response",
+            )
 
         if response["StatusCode"] == 200:
             return response["result"]
@@ -70,7 +86,23 @@ class KolaygelsinRequest:
             "Authorization": f"Bearer {self.jwt_token}",
         }
         url = f"{KOLAYGELSIN_API_URL}{url}"
+
+        # Log request
+        if self.delivery_carrier.debug_logging:
+            self.delivery_carrier.log_xml(
+                json.dumps({"url": url, "params": vals}, indent=4, ensure_ascii=False),
+                func="kolaygelsin_request",
+            )
+
         response = self.session.get(url, params=vals, headers=headers).json()
+
+        # Log response
+        if self.delivery_carrier.debug_logging:
+            self.delivery_carrier.log_xml(
+                json.dumps(response, indent=4, ensure_ascii=False),
+                func="kolaygelsin_response",
+            )
+
         if response["StatusCode"] == 200:
             return response["result"]
         else:
