@@ -118,12 +118,11 @@ class DeliveryCarrier(models.Model):
             )
 
     def _prepare_kolaygelsin_products(self, picking):
-        # TODO: implement stock.quant.package
         vals = {
             "products": [
                 {
                     "count": picking.carrier_package_count,
-                    "deci": 1,  # Doc: required field but there is no description
+                    "deci": picking.picking_total_weight,
                 }
             ]
         }
