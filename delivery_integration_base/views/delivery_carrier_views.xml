@@ -14,7 +14,6 @@
                 <group string="" colspan="2">
                     <field name="carrier_barcode_type" />
                     <field name="barcode_text_1" />
-                    <field name="attach_barcode" />
                     <field name="default_printer_id" />
                     <field name="payment_type" />
                     <field name="deci_type" />

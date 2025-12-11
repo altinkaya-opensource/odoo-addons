@@ -38,11 +38,6 @@ class DeliveryCarrier(models.Model):
         required=True,
     )
     default_printer_id = fields.Many2one("printing.printer", string="Default Printer")
-    attach_barcode = fields.Boolean(
-        string="Attach Barcode to Picking",
-        default=False,
-        help="If checked, barcode will be attached to picking as a file.",
-    )
     currency_id = fields.Many2one("res.currency", string="Currency", required=True)
     ref_sequence_id = fields.Many2one("ir.sequence", string="Reference Sequence")
     send_sms_customer = fields.Boolean(string="Send SMS to Customer", default=False)

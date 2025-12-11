@@ -217,25 +217,26 @@ class DeliveryCarrier(models.Model):
                 continue
             vals["tracking_number"] = picking.name
             vals["exact_price"] = 0
-
-            body = _("Kolay Gelsin Shipping barcode document")
             barcode_type = self.carrier_barcode_type
+
             if barcode_type == "pdf":
                 barcode = response.get("Barcode")
                 data = base64.b64decode(barcode)
-
             else:
                 data = barcode = response.get("BarcodeZpl")
-            if barcode and self.attach_barcode:
-                attachment = [
-                    (
-                        "kolaygelsin_etiket_{}.{}".format(
+
+            if barcode and self.shipment_level == "send_shipment_and_barcode":
+                self.env["ir.attachment"].create(
+                    {
+                        "name": "kolaygelsin_etiket_{}.{}".format(
                             response.get("TrackingNumber"), barcode_type
                         ),
-                        data,
-                    )
-                ]
-                picking.message_post(body=body, attachments=attachment)
+                        "datas": base64.b64encode(data.encode("utf-8")).decode("utf-8"),
+                        "res_model": "stock.picking",
+                        "res_id": picking.id,
+                        "is_delivery_document": True,
+                    }
+                )
             result.append(vals)
         return result
 
