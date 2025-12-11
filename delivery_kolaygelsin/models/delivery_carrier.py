@@ -123,7 +123,7 @@ class DeliveryCarrier(models.Model):
             "products": [
                 {
                     "count": picking.carrier_package_count,
-                    "deci": picking.picking_total_weight,
+                    "deci": int(picking.picking_total_weight or 1),
                 }
             ]
         }
