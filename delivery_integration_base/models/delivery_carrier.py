@@ -67,7 +67,7 @@ class DeliveryCarrier(models.Model):
 
     show_in_price_table = fields.Boolean(
         string="Show in Price Table",
-        help="Show this carrier in Sale Order Shipment " "Price table",
+        help="Show this carrier in Sale Order Shipment Price table",
     )
     fuel_surcharge_percentage = fields.Float(
         help="Additional Price to add after calculation of tables",
@@ -213,7 +213,11 @@ class DeliveryCarrier(models.Model):
         res = super().get_tracking_link(picking)
         shortener = self.url_shortener_id
 
-        if not res and picking.carrier_id.tracking_url_prefix_no_integration:
+        if (
+            not res
+            and picking.carrier_id.tracking_url_prefix_no_integration
+            and picking.shipping_number
+        ):
             res = (
                 picking.carrier_id.tracking_url_prefix_no_integration
                 + picking.shipping_number
