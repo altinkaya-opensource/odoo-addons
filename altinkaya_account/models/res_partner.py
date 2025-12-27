@@ -9,8 +9,6 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    tax_office_name = fields.Char("Tax Office")
-
     def _search_due_days(self, operator, value):
         partners = self.search(
             [
@@ -38,6 +36,7 @@ class ResPartner(models.Model):
         ]
         return [("id", "in", result)]
 
+    tax_office_name = fields.Char("Tax Office")
     z_muhasebe_kodu = fields.Char(
         "Zirve Muhasebe kodu", size=64, required=False, translate=False
     )
