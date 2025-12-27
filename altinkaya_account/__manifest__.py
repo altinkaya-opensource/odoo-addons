@@ -19,8 +19,6 @@
         "purchase",
         "delivery",
         "account_check",
-        "account_financial_risk",
-        "sale_financial_risk",
         "base_partner_sequence",
         "account_reconcile_oca",
         "account_credit_control",
