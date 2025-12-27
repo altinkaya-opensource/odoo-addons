@@ -27,7 +27,7 @@ class CreditControlCommunication(models.Model):
             )
             report = self.env.ref("altinkaya_reports.partner_statement_altinkaya")
             pdf_content, _ = self.env["ir.actions.report"]._render_qweb_pdf(
-                report, [comm.id]
+                report, [comm.partner_id.id]
             )
             attachments = [
                 (f"Cari Hesap Ekstresi - {comm.partner_id.name}.pdf", pdf_content)
