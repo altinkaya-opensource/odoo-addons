@@ -381,7 +381,9 @@ class DeliveryCarrier(models.Model):
                 continue
             result.append({"tracking_number": response.cargoKey, "exact_price": 0.0})
 
-            labels = self._generate_zpl_barcode_string(picking, response.cargoKey)
+            package_count = max(picking.carrier_package_count, 1)
+            package_barcodes = [response.cargoKey] * package_count
+            labels = self._generate_zpl_barcode_string(picking, package_barcodes)
 
             self.env["ir.attachment"].create(
                 {
