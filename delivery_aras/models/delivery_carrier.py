@@ -207,8 +207,14 @@ class DeliveryCarrier(models.Model):
                     self._aras_log_request(aras_request)
 
                 if zebra_zpls is None:
+                    # This is fallback method to generate dummy ZPL barcodes
+                    # in case Aras API doesn't return any barcode data.
+                    # IMPORTANT: We need to use each package barcode for this.
+                    package_barcodes = [
+                        x["BarcodeNumber"] for x in vals["PieceDetails"]["PieceDetail"]
+                    ]
                     zebra_zpls = self._generate_zpl_barcode_string(
-                        picking, vals["tracking_number"]
+                        picking, package_barcodes
                     )
 
                 self.env["ir.attachment"].create(
@@ -308,9 +314,9 @@ class DeliveryCarrier(models.Model):
             response = response[-1]
 
         vals = {
-            "tracking_state": f"""{response['DURUMU']} -
-            {response['DURUM_EN']} -
-            {response.get('IADE_SEBEBI', '')}""",
+            "tracking_state": f"""{response["DURUMU"]} -
+            {response["DURUM_EN"]} -
+            {response.get("IADE_SEBEBI", "")}""",
             "delivery_state": ARAS_OPERATION_CODES[int(response["DURUM_KODU"])][1],
             "shipping_number": response["KARGO_TAKIP_NO"],
             "carrier_shipping_cost": float(response["TUTAR"]),
