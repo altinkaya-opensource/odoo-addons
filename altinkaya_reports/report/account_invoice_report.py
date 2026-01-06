@@ -94,6 +94,9 @@ class AccountInvoiceReport(models.Model):
         groups="altinkaya_sale_commission.group_sale_commission_user",
     )
     invoice_count = fields.Integer(string="Partner Invoice Count", readonly=True)
+    industry_id = fields.Many2one(
+        "res.partner.industry", string="Industry", readonly=True
+    )
 
     def _select(self):
         return (
@@ -137,7 +140,8 @@ class AccountInvoiceReport(models.Model):
                line.laser_marking_price as laser_marking_price,
                line.lasercut_price as lasercut_price,
                line.insert_installation_price as insert_installation_price,
-               inv_count_sub.invoice_count
+               inv_count_sub.invoice_count,
+               partner.industry_id as industry_id
             """
         )
 
