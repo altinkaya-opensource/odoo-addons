@@ -81,7 +81,9 @@ class ResPartner(models.Model):
             ("move_id.reversal_move_id", "=", False),
             ("move_id.reversed_entry_id", "=", False),
             ("difference_checked", "=", False),
-            ("full_reconcile_id", "!=", False),
+            # ("full_reconcile_id", "!=", False),
+            ("account_id", "=", self.property_account_receivable_id.id),
+            ("date", ">=", "2025-01-01"),
         ]
 
     def _compute_currency_difference_amls(self):
@@ -214,9 +216,11 @@ class ResPartner(models.Model):
                 else:
                     raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
 
-            inv_ids = difference_amls.full_reconcile_id.reconciled_line_ids.filtered(
-                lambda r: "invoice" in r.move_type
-            ).mapped("move_id")
+            inv_ids = (
+                difference_amls._all_reconciled_lines()
+                .filtered(lambda r: "invoice" in r.move_type)
+                .mapped("move_id")
+            )
             total_difference = sum(difference_amls.mapped("balance"))
 
             comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"

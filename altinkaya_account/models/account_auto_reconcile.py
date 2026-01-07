@@ -41,6 +41,7 @@ class AccountAutoReconcile(models.AbstractModel):
             ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
             ("journal_id.check_journal", "=", False),
             ("id", "not in", move.line_ids.ids),
+            ("date", ">=", "2025-01-01"),
             "|",
             ("amount_residual", "!=", 0.0),
             ("amount_residual_currency", "!=", 0.0),
@@ -161,6 +162,7 @@ class AccountAutoReconcile(models.AbstractModel):
                 ),
                 ("payment_state", "in", ("not_paid", "partial")),
                 ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
+                ("date", ">=", "2025-01-01"),
             ],
             order="invoice_date desc",
         )
