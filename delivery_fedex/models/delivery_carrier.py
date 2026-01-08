@@ -208,6 +208,10 @@ class DeliveryCarrier(models.Model):
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
 
+    def _get_package_count(self, packages):
+        """Return total package count considering package_multiplier."""
+        return sum(p.package_multiplier for p in packages)
+
     def _prepare_fedex_address(self, partner):
         """
         Prepare FedEx address data from partner.
@@ -615,7 +619,7 @@ class DeliveryCarrier(models.Model):
         if pallets:
             # If there are pallets, we prepare the packages based on pallets
             for pallet in pallets:
-                for _ in range(pallet.package_multiplier):
+                for _i in range(pallet.package_multiplier):
                     packages.append(
                         {
                             "groupPackageCount": "1",
@@ -635,7 +639,7 @@ class DeliveryCarrier(models.Model):
         else:
             # If there are no pallets, we use the packages directly
             for package in picking.package_ids:
-                for _ in range(package.package_multiplier):
+                for _i in range(package.package_multiplier):
                     packages.append(
                         {
                             "sequenceNumber": len(packages) + 1,
@@ -680,15 +684,11 @@ class DeliveryCarrier(models.Model):
             # express freight details to the shipment data.
             packages = picking.package_ids.filtered(lambda p: not p.pallet_id)
 
-            shippersLoadAndCount = 0
-            for package in packages:
-                shippersLoadAndCount += package.package_multiplier
-
             data["requestedShipment"]["expressFreightDetail"] = {
                 # The number is just a placeholder, it is
                 # not used by FedEx API in Turkey
                 "bookingConfirmationNumber": "123456789812",
-                "shippersLoadAndCount": shippersLoadAndCount,
+                "shippersLoadAndCount": self._get_package_count(packages),
                 "packingListEnclosed": True,
             }
 
@@ -1094,7 +1094,7 @@ class DeliveryCarrier(models.Model):
                 "units": "KG",
                 "value": total_weight,
             },
-            "packageCount": len(
+            "packageCount": self._get_package_count(
                 picking.package_ids.filtered(lambda p: not p.pallet_id)
             ),
             # TODO: Make this configurable in the future.

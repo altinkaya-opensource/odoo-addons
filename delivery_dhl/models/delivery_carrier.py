@@ -123,6 +123,10 @@ class DeliveryCarrier(models.Model):
 
         return contact_data
 
+    def _get_package_count(self, packages):
+        """Return total package count considering package_multiplier."""
+        return sum(p.package_multiplier for p in packages)
+
     def _prepare_dhl_dummy_packages(self, order):
         """
         Estimate and prepare dummy packages for DHL rate
@@ -302,18 +306,19 @@ class DeliveryCarrier(models.Model):
         for pack in (
             picking.package_ids.filtered(lambda p: p.is_pallet) or picking.package_ids
         ):
-            packages.append(
-                {
-                    # DHL requires values to be a multiple of 0.001
-                    "referenceNumber": len(packages) + 1,
-                    "weight": round(pack.shipping_weight, 3),
-                    "dimensions": {
-                        "length": round(pack.pack_length, 3),
-                        "width": round(pack.width, 3),
-                        "height": round(pack.height, 3),
-                    },
-                }
-            )
+            for _i in range(pack.package_multiplier):
+                packages.append(
+                    {
+                        # DHL requires values to be a multiple of 0.001
+                        "referenceNumber": len(packages) + 1,
+                        "weight": round(pack.shipping_weight, 3),
+                        "dimensions": {
+                            "length": round(pack.pack_length, 3),
+                            "width": round(pack.width, 3),
+                            "height": round(pack.height, 3),
+                        },
+                    }
+                )
             pack.sequence = len(packages)
 
         return packages
