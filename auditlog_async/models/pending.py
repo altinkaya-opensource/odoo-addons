@@ -106,9 +106,17 @@ class AuditlogPending(models.Model):
 
             # Prepare old/new value dicts for create_logs
             if self.method == "write":
-                # Use captured values from the pending record
+                # old_values were captured before write - use them directly
                 old_vals = {self.res_id: old_values}
-                new_values = {self.res_id: new_values_input}
+                # new_values must be read from DB because vals may contain
+                # x2many command tuples like [[3, id]] instead of actual IDs
+                record = model_obj.browse(self.res_id)
+                if record.exists():
+                    fields_list = rule_model.get_auditlog_fields(model_obj)
+                    new_values = {self.res_id: record.sudo().read(fields_list)[0]}
+                else:
+                    # Record was deleted after write
+                    new_values = {self.res_id: {}}
 
             elif self.method == "create":
                 record = model_obj.browse(self.res_id)
