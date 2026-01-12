@@ -79,6 +79,7 @@ class AuditlogRule(models.Model):
                         "method": "create",
                         "user_id": self.env.uid,
                         "log_type": log_type,
+                        "state": "pending",
                         "new_values_json": json.dumps(
                             vals, default=auditlog_json_default
                         ),
@@ -154,6 +155,7 @@ class AuditlogRule(models.Model):
                         "method": "write",
                         "user_id": self.env.uid,
                         "log_type": log_type,
+                        "state": "pending",
                         "old_values_json": json.dumps(
                             old_vals, default=auditlog_json_default
                         ),
@@ -232,6 +234,7 @@ class AuditlogRule(models.Model):
                             "method": "unlink",
                             "user_id": self.env.uid,
                             "log_type": log_type,
+                            "state": "pending",
                             "old_values_json": json.dumps(
                                 old_vals, default=auditlog_json_default
                             ),
@@ -249,6 +252,7 @@ class AuditlogRule(models.Model):
                             "method": "unlink",
                             "user_id": self.env.uid,
                             "log_type": log_type,
+                            "state": "pending",
                             "http_request_path": http_path,
                             "http_session_id": http_session,
                         }
