@@ -6,7 +6,7 @@
     "version": "16.0.1.0.0",
     "category": "Tools",
     "summary": "Async audit logging with queue_job for better performance",
-    "author": "Altinkaya Enclosures",
+    "author": "Ahmet Yigit Budak, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "depends": ["auditlog", "queue_job"],
