@@ -3,30 +3,36 @@
 
 import json
 import logging
-from datetime import date, datetime
 
 from odoo import api, models
 from odoo.http import request
+from odoo.tools import date_utils
 
 _logger = logging.getLogger(__name__)
 
 
-def serialize_value(val):
-    """Serialize a value to JSON-safe format."""
-    if val is None or val is False:
-        return False
-    if hasattr(val, "ids"):
-        # Many2many or One2many
-        return val.ids
-    if hasattr(val, "id"):
-        # Many2one
-        return val.id if val else False
-    if isinstance(val, date | datetime):
-        return val.isoformat()
-    if isinstance(val, bytes):
-        # Binary fields
-        return val.decode("utf-8", errors="replace") if val else False
-    return val
+def auditlog_json_default(obj):
+    """JSON default handler for auditlog serialization.
+
+    Based on Odoo's date_utils.json_default but extended to handle
+    recordsets, NewId, and other Odoo-specific types.
+    """
+    # Handle recordsets (must check before date because of potential conflicts)
+    if isinstance(obj, models.BaseModel):
+        # Return list of IDs for recordsets
+        return obj.ids
+
+    # Handle NewId (unsaved record IDs)
+    if isinstance(obj, models.NewId):
+        # Return origin ID if available, otherwise False
+        return obj.origin or False
+
+    # Handle bytes
+    if isinstance(obj, bytes):
+        return obj.decode("utf-8", errors="replace")
+
+    # Fallback to Odoo's default handler for date/datetime and others
+    return date_utils.json_default(obj)
 
 
 class AuditlogRule(models.Model):
@@ -66,11 +72,6 @@ class AuditlogRule(models.Model):
                     _logger.debug("Could not get HTTP context", exc_info=True)
 
             for record, vals in zip(new_records, vals_list, strict=False):
-                # Serialize vals to JSON-safe format
-                serialized_vals = {}
-                for key, value in vals.items():
-                    serialized_vals[key] = serialize_value(value)
-
                 pending_data.append(
                     {
                         "model_name": self._name,
@@ -78,7 +79,9 @@ class AuditlogRule(models.Model):
                         "method": "create",
                         "user_id": self.env.uid,
                         "log_type": log_type,
-                        "new_values_json": json.dumps(serialized_vals),
+                        "new_values_json": json.dumps(
+                            vals, default=auditlog_json_default
+                        ),
                         "http_request_path": http_path,
                         "http_session_id": http_session,
                     }
@@ -134,16 +137,15 @@ class AuditlogRule(models.Model):
                 except Exception:
                     _logger.debug("Could not get HTTP context", exc_info=True)
 
-            # Serialize new values from vals dict
-            new_vals = {}
-            for fname in changed_fields:
-                new_vals[fname] = serialize_value(vals.get(fname))
+            # Capture new values from vals dict (only changed fields)
+            new_vals = {fname: vals.get(fname) for fname in changed_fields}
 
             for record in records.sudo():
-                old_vals = {}
-                for fname in changed_fields:
-                    if fname in record._fields:
-                        old_vals[fname] = serialize_value(record[fname])
+                old_vals = {
+                    fname: record[fname]
+                    for fname in changed_fields
+                    if fname in record._fields
+                }
 
                 pending_data.append(
                     {
@@ -152,8 +154,12 @@ class AuditlogRule(models.Model):
                         "method": "write",
                         "user_id": self.env.uid,
                         "log_type": log_type,
-                        "old_values_json": json.dumps(old_vals),
-                        "new_values_json": json.dumps(new_vals),
+                        "old_values_json": json.dumps(
+                            old_vals, default=auditlog_json_default
+                        ),
+                        "new_values_json": json.dumps(
+                            new_vals, default=auditlog_json_default
+                        ),
                         "changed_fields_json": json.dumps(changed_fields),
                         "http_request_path": http_path,
                         "http_session_id": http_session,
@@ -213,10 +219,11 @@ class AuditlogRule(models.Model):
                 # Capture all field values before deletion
                 fields_list = rule_model.get_auditlog_fields(self)
                 for record in self.sudo():
-                    old_vals = {}
-                    for fname in fields_list:
-                        if fname in record._fields:
-                            old_vals[fname] = serialize_value(record[fname])
+                    old_vals = {
+                        fname: record[fname]
+                        for fname in fields_list
+                        if fname in record._fields
+                    }
 
                     pending_data.append(
                         {
@@ -225,7 +232,9 @@ class AuditlogRule(models.Model):
                             "method": "unlink",
                             "user_id": self.env.uid,
                             "log_type": log_type,
-                            "old_values_json": json.dumps(old_vals),
+                            "old_values_json": json.dumps(
+                                old_vals, default=auditlog_json_default
+                            ),
                             "http_request_path": http_path,
                             "http_session_id": http_session,
                         }
