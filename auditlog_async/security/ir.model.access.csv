@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_auditlog_pending_manager,auditlog.pending.manager,model_auditlog_pending,auditlog.group_auditlog_manager,1,1,1,1
+access_auditlog_pending_user,auditlog.pending.user,model_auditlog_pending,auditlog.group_auditlog_user,1,0,0,0
