@@ -49,6 +49,7 @@ class StockQuantPackage(models.Model):
     is_pallet = fields.Boolean(
         string="Is Pallet",
         related="package_type_id.is_pallet",
+        store=True,
         help="Indicates if this package is a pallet.",
     )
     pallet_id = fields.Many2one(
