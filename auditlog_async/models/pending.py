@@ -102,7 +102,6 @@ class AuditlogPending(models.Model):
             model_obj = self.env[self.model_name]
 
             old_values = json.loads(self.old_values_json or "{}")
-            new_values_input = json.loads(self.new_values_json or "{}")
 
             # Prepare old/new value dicts for create_logs
             if self.method == "write":
@@ -124,13 +123,22 @@ class AuditlogPending(models.Model):
                     fields_list = rule_model.get_auditlog_fields(model_obj)
                     new_values = {self.res_id: record.sudo().read(fields_list)[0]}
                 else:
-                    # Record was deleted after create, use input values
-                    new_values = {self.res_id: new_values_input}
+                    # Record was deleted after create - skip logging
+                    # Input values contain x2many command tuples that can't be processed
+                    _logger.debug(
+                        "Skipping create log for %s(%s) - record deleted",
+                        self.model_name,
+                        self.res_id,
+                    )
+                    self.write({"state": "done"})
+                    return
                 old_vals = {}
 
             elif self.method == "unlink":
                 # For unlink, we captured old values before deletion
-                old_vals = {self.res_id: old_values}
+                # Filter out x2many fields with cascade-deleted related records
+                filtered_values = self._filter_deleted_x2many(model_obj, old_values)
+                old_vals = {self.res_id: filtered_values}
                 new_values = {}
 
             else:
@@ -164,6 +172,40 @@ class AuditlogPending(models.Model):
                     "retry_count": self.retry_count + 1,
                 }
             )
+
+    def _filter_deleted_x2many(self, model_obj, old_values):
+        """Filter x2many fields to remove IDs of cascade-deleted records.
+
+        When a record is deleted, related records (like mail.followers) are
+        often cascade-deleted. This prevents MissingError when auditlog tries
+        to call name_get() on those deleted records.
+        """
+        if not old_values:
+            return old_values
+
+        filtered = {}
+        for field_name, value in old_values.items():
+            # Only process non-empty lists of integers (x2many IDs)
+            if (
+                not isinstance(value, list)
+                or not value
+                or not all(isinstance(v, int) for v in value)
+            ):
+                filtered[field_name] = value
+                continue
+
+            # Check if field is a relational x2many field
+            field = model_obj._fields.get(field_name)
+            if not field or field.type not in ("one2many", "many2many"):
+                filtered[field_name] = value
+                continue
+
+            # Filter to only existing records
+            comodel = self.env[field.comodel_name].sudo()
+            existing_ids = comodel.browse(value).exists().ids
+            filtered[field_name] = existing_ids
+
+        return filtered
 
     @api.model
     def trigger_processing(self):
