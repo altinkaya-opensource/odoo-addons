@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
+  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+-->
+<odoo noupdate="1">
+    <record id="email_template_quotation_reminder" model="mail.template">
+        <field name="name">Sales: Quotation Reminder</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="subject">Teklifinizin Süresi Doluyor - {{ object.name }}</field>
+        <field
+            name="email_from"
+        >{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="partner_to">{{ object.partner_id.id }}</field>
+        <field
+            name="description"
+        >Sent to customers as a reminder before their quotation expires</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <t t-if="object.partner_id.lang == 'tr_TR'">
+                        Sayın <t t-out="object.partner_id.name or ''">Müşteri</t>,
+                        <br /><br />
+                        Tarafınıza iletmiş olduğumuz <span
+                        style="font-weight: bold;"
+                        t-out="object.name or ''"
+                    >S00001</span> numaralı fiyat teklifimizin geçerlilik süresi dolmak üzeredir.
+                        <br /><br />
+                        Teklifinizi işleme alabilmemiz için, bu e-postaya onay verdiğinizi belirtmeniz veya teklifin onaylı suretini tarafımıza iletmeniz yeterlidir.
+                        <br /><br />
+                        Teklifinizi aşağıdaki bağlantıdan inceleyebilir veya onaylayabilirsiniz:
+                        <br /><br />
+                        <a
+                        t-att-href="object.get_portal_url()"
+                        style="display: inline-block; padding: 10px 20px; color: white; background-color: #875A7B; text-decoration: none; border-radius: 5px;"
+                    >
+                            Teklifi Görüntüle ve Onayla
+                        </a>
+                        <br /><br />
+                        Her türlü sorunuz için bu e-postaya yanıt verebilir ya da 0312 395 27 68 numaralı telefondan bizimle iletişime geçebilirsiniz.
+                        <br /><br />
+                        İyi çalışmalar dileriz.
+                        <br />
+                        Saygılarımızla,
+                    </t>
+                    <t t-else="">
+                        Dear <t t-out="object.partner_id.name or ''">Customer</t>,
+                        <br /><br />
+                        We would like to remind you that the validity period of quotation <span
+                        style="font-weight: bold;"
+                        t-out="object.name or ''"
+                    >S00001</span> is about to expire.
+                        <br /><br />
+                        To proceed with your quotation, please confirm your approval by replying to this email or send us the signed copy of the quotation.
+                        <br /><br />
+                        You can review or approve your quotation using the link below:
+                        <br /><br />
+                        <a
+                        t-att-href="object.get_portal_url()"
+                        style="display: inline-block; padding: 10px 20px; color: white; background-color: #875A7B; text-decoration: none; border-radius: 5px;"
+                    >
+                            View Quotation and Approve
+                        </a>
+                        <br /><br />
+                        If you have any questions, please reply to this email or contact us at +90 312 395 27 68.
+                        <br /><br />
+                        Best regards,
+                    </t>
+                    <t t-if="not is_html_empty(object.user_id.signature)">
+                        <br />
+                        <t t-out="object.user_id.signature or ''">--<br />Sales Team</t>
+                    </t>
+                </p>
+            </div>
+        </field>
+        <field name="report_template" ref="sale.action_report_saleorder" />
+        <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True" />
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
+  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+-->
+<odoo noupdate="1">
+    <record id="cron_quotation_reminder" model="ir.cron">
+        <field name="name">Send Quotation Reminders</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="state">code</field>
+        <field name="code">model._cron_send_quotation_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True" />
+        <field name="doall" eval="False" />
+    </record>
+</odoo>
