@@ -305,6 +305,19 @@ WHERE sale_order.id in %(ids)s;
                 or self.partner_shipping_id.commercial_partner_id.property_delivery_carrier_id  # noqa
             ).filtered("active")
 
+    @api.depends("amount_total", "amount_untaxed")
+    def _compute_validity_date(self):
+        """
+        Extend to recompute validity date on revision (amount changes)
+        """
+        res = super()._compute_validity_date()
+        today = fields.Date.context_today(self)
+        for order in self.filtered(lambda s: s.state in ["draft", "sent", "approved"]):
+            days = order.company_id.quotation_validity_days
+            if days > 0:
+                order.validity_date = today + timedelta(days=days)
+        return res
+
     def action_quotation_send(self):
         res = super().action_quotation_send()
 

@@ -8,6 +8,7 @@
         <field name="name">Sales: Quotation Reminder</field>
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="subject">Teklifinizin Süresi Doluyor - {{ object.name }}</field>
+        <field name="auto_delete" eval="False" />
         <field
             name="email_from"
         >{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
@@ -76,6 +77,5 @@
         <field name="report_template" ref="sale.action_report_saleorder" />
         <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
         <field name="lang">{{ object.partner_id.lang }}</field>
-        <field name="auto_delete" eval="True" />
     </record>
 </odoo>
