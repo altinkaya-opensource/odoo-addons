@@ -30,13 +30,13 @@
                 <field name="order_state" />
             </field>
             <xpath
-                expr="//tree[not(@class='o_sale_order')]/field[@name='company_id']"
+                expr="//tree[not(hasclass('o_sale_order'))]/field[@name='company_id']"
                 position="attributes"
             >
                 <attribute name="optional">hide</attribute>
             </xpath>
             <xpath
-                expr="//tree[not(@class='o_sale_order')]/field[@name='amount_untaxed']"
+                expr="//tree[not(hasclass('o_sale_order'))]/field[@name='amount_untaxed']"
                 position="replace"
             >
                 <field
@@ -47,7 +47,7 @@
                 />
             </xpath>
             <xpath
-                expr="//tree[not(@class='o_sale_order')]/field[@name='amount_total']"
+                expr="//tree[not(hasclass('o_sale_order'))]/field[@name='amount_total']"
                 position="replace"
             >
                 <field

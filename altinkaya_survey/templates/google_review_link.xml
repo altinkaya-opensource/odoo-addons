@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="survey_google_review_link" inherit_id="survey.survey_fill_form_done">
-        <xpath expr="//div[@class='o_survey_finished mt32 mb32']/h1" position="after">
+        <xpath expr="//div[hasclass('o_survey_finished')]/h1" position="after">
             <t t-set="has_five_star_rating" t-value="False" />
             <t t-foreach="answer.user_input_line_ids" t-as="line">
                 <t
