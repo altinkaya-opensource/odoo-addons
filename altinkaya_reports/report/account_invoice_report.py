@@ -10,7 +10,9 @@ class AccountInvoiceReport(models.Model):
         help="The user who acquired this customer.",
         readonly=True,
     )
-    seller_id = fields.Many2one("res.users", string="Salesperson", readonly=True)
+    seller_id = fields.Many2one(
+        "res.users", string="Partner Salesperson", readonly=True
+    )
     state_id = fields.Many2one("res.country.state", string="State", readonly=True)
     price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
     total_tax = fields.Float(string="Tax Total", readonly=True)

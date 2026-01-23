@@ -65,7 +65,9 @@ class DeliveryCarrier(models.Model):
         ondelete={"kolaygelsin": "cascade"},
     )
 
-    kolaygelsin_cc_code = fields.Char("CC Code", help="Kolay Gelsin CC Code")
+    kolaygelsin_cc_code = fields.Char(
+        "Kolay Gelsin CC Code", help="Kolay Gelsin CC Code"
+    )
     kolaygelsin_username = fields.Char(help="Kolay Gelsin Username")
     kolaygelsin_password = fields.Char(help="Kolay Gelsin Password")
 

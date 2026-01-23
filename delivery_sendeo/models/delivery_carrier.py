@@ -65,7 +65,7 @@ class DeliveryCarrier(models.Model):
         ondelete={"sendeo": "cascade"},
     )
 
-    sendeo_cc_code = fields.Char("CC Code", help="Sendeo CC Code")
+    sendeo_cc_code = fields.Char("Sendeo CC Code", help="Sendeo CC Code")
     sendeo_username = fields.Char(help="Sendeo Username")
     sendeo_password = fields.Char(help="Sendeo Password")
 

@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
 
     currency_id_try = fields.Many2one(
         related="company_id.currency_id",
-        string="Currency",
+        string="Company Currency",
         readonly=True,
     )
 
