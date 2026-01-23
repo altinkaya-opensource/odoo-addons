@@ -75,13 +75,4 @@
     <record id="stock.action_report_picking" model="ir.actions.report">
         <field name="paperformat_id" ref="paperformat_sale" />
     </record>
-    <record id="list_mrp_report" model="ir.actions.report">
-        <field name="paperformat_id" ref="paperformat_mrp_list" />
-    </record>
-    <record id="list_employee_annual_report" model="ir.actions.report">
-        <field name="paperformat_id" ref="paperformat_mrp_list" />
-    </record>
-    <record id="list_carrier_report" model="ir.actions.report">
-        <field name="paperformat_id" ref="paperformat_stock_transfer_carrier_list" />
-    </record>
 </odoo>

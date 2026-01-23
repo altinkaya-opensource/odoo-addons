@@ -27,7 +27,6 @@
         "report/report_account_payment.xml",
         "report/report_list_mrp.xml",
         "report/report_stock_delivery_carrier.xml",
-        "report/report_hr_employee_annual.xml",
         "report/partner_statement.xml",
         "report/partner_statement_en.xml",
         "report/partner_statement_wizard.xml",
