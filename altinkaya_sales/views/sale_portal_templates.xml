@@ -44,7 +44,7 @@
 
         <!--        Adds the partner right next to the addresses in the portal-->
         <xpath
-            expr="//div[@id='informations']/div[@class='row']/div[@class='col-lg-6'][1]"
+            expr="//div[@id='informations']/div[hasclass('row')]/div[hasclass('col-lg-6')][1]"
             position="before"
         >
             <div id="partner" class="col-lg-6">
