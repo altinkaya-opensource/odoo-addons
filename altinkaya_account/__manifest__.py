@@ -30,7 +30,6 @@
         "views/product_pricelist_view.xml",
         "views/account_move_view.xml",
         "views/partner_view.xml",
-        "views/account_move_view.xml",
         "views/company_view.xml",
         "views/account_invoice_report_view.xml",
         "views/account_payment_term_view.xml",
