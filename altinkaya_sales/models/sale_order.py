@@ -237,6 +237,10 @@ class SaleOrder(models.Model):
         store=True,
     )
 
+    # Extend validity date field to disable precompute
+    # Because we are recomputing it on amount changes
+    validity_date = fields.Date(precompute=False)
+
     @api.depends("currency_id", "amount_untaxed", "date_order", "pricelist_id")
     def _compute_amount_untaxed_usd(self):
         """
