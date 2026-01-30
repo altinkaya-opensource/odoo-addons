@@ -123,7 +123,10 @@ class MRPBoM(models.Model):
             if current_line._skip_bom_line(current_product):
                 continue
 
-            line_quantity = current_qty * current_line.product_qty
+            # Use _compute_line_quantity to apply factor_attribute_id if set
+            line_quantity = self._compute_line_quantity(
+                current_line, current_product, current_qty
+            )
             if line_type == "bom_line":
                 line_product = current_line.product_id
             else:

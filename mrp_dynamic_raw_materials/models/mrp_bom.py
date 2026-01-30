@@ -25,14 +25,24 @@ class MrpBoM(models.Model):
         return False
 
     def _compute_line_quantity(self, line, product, current_qty):
+        """
+        Compute the quantity for a BOM line, applying factor_attribute_id if set.
+        The factor multiplies the numeric value of the product's attribute
+        (e.g., Length) by the attribute_factor and adds it to product_qty.
+        """
         qty_extra = 0.0
         if line.factor_attribute_id:
-            attribute_value_ids = product.attribute_value_ids
-            attribute_value_id = attribute_value_ids.filtered(
+            # In Odoo 16, attribute values are accessed via
+            # product_template_attribute_value_ids
+            ptav_ids = product.product_template_attribute_value_ids
+            matching_ptav = ptav_ids.filtered(
                 lambda v, line=line: v.attribute_id.id == line.factor_attribute_id.id
             )
-            if attribute_value_id:
-                qty_extra = attribute_value_id.numeric_value * line.attribute_factor
+            if matching_ptav:
+                # Get numeric_value from the product_attribute_value_id
+                attr_value = matching_ptav.product_attribute_value_id
+                if attr_value and attr_value.numeric_value:
+                    qty_extra = attr_value.numeric_value * line.attribute_factor
         return current_qty * (line.product_qty + qty_extra)
 
     def _process_phantom_bom(
