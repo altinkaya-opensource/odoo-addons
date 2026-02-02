@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_trendyol_backend_form" model="ir.ui.view">
+        <field name="name">trendyol.backend.form</field>
+        <field name="model">trendyol.backend</field>
+        <field name="arch" type="xml">
+            <form string="Trendyol Backend">
+                <header>
+                    <button
+                        name="action_test_connection"
+                        string="Test Connection"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button
+                        name="action_sync_categories"
+                        string="Sync Categories"
+                        type="object"
+                    />
+                    <button
+                        name="action_sync_brands"
+                        string="Sync Brands"
+                        type="object"
+                    />
+                    <button
+                        name="action_import_orders"
+                        string="Import Orders"
+                        type="object"
+                    />
+                    <button
+                        name="action_sync_stock_prices"
+                        string="Sync Stock/Prices"
+                        type="object"
+                    />
+                    <button
+                        name="action_import_claims"
+                        string="Import Claims"
+                        type="object"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_products"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-cube"
+                        >
+                            <field
+                                name="product_binding_count"
+                                widget="statinfo"
+                                string="Products"
+                            />
+                        </button>
+                        <button
+                            name="action_view_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                        >
+                            <field
+                                name="order_count"
+                                widget="statinfo"
+                                string="Orders"
+                            />
+                        </button>
+                        <button
+                            name="action_view_claims"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-undo"
+                        >
+                            <field
+                                name="claim_count"
+                                widget="statinfo"
+                                string="Claims"
+                            />
+                        </button>
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Backend Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="API Configuration">
+                            <field name="seller_id" />
+                            <field name="api_key" password="True" />
+                            <field name="api_secret" password="True" />
+                            <field name="environment" widget="radio" />
+                        </group>
+                        <group string="Odoo Configuration">
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field name="default_product_id" />
+                            <field name="warehouse_id" />
+                            <field name="pricelist_id" />
+                            <field name="sales_team_id" />
+                            <field name="fiscal_position_id" />
+                            <field name="default_cargo_company_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sync Settings" name="sync_settings">
+                            <group>
+                                <group string="Auto Sync">
+                                    <field name="auto_import_orders" />
+                                    <field name="auto_import_claims" />
+                                    <field name="auto_sync_stock" />
+                                    <field name="auto_sync_tracking" />
+                                    <field name="auto_send_invoice" />
+                                </group>
+                                <group string="Order Settings">
+                                    <field name="auto_confirm_orders" />
+                                    <field name="default_vat_rate" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Webhook" name="webhook">
+                            <group>
+                                <field name="webhook_url" />
+                                <field name="webhook_secret" password="True" />
+                                <field name="webhook_id" />
+                            </group>
+                        </page>
+                        <page string="Sync Status" name="sync_status">
+                            <group>
+                                <group string="Last Sync Times">
+                                    <field name="last_order_sync" readonly="0" />
+                                    <field name="last_claim_sync" />
+                                    <field name="last_stock_sync" />
+                                    <field name="last_category_sync" />
+                                    <field name="last_brand_sync" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <field name="active" invisible="1" />
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_trendyol_backend_tree" model="ir.ui.view">
+        <field name="name">trendyol.backend.tree</field>
+        <field name="model">trendyol.backend</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="seller_id" />
+                <field name="environment" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="warehouse_id" />
+                <field name="product_binding_count" />
+                <field name="order_count" />
+                <field name="last_order_sync" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_trendyol_backend_search" model="ir.ui.view">
+        <field name="name">trendyol.backend.search</field>
+        <field name="model">trendyol.backend</field>
+        <field name="arch" type="xml">
+            <search string="Search Backends">
+                <field name="name" />
+                <field name="seller_id" />
+                <filter
+                    name="active"
+                    string="Active"
+                    domain="[('active', '=', True)]"
+                />
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_environment"
+                        string="Environment"
+                        context="{'group_by': 'environment'}"
+                    />
+                    <filter
+                        name="group_company"
+                        string="Company"
+                        context="{'group_by': 'company_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_trendyol_backend" model="ir.actions.act_window">
+        <field name="name">Trendyol Backends</field>
+        <field name="res_model">trendyol.backend</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trendyol_backend_search" />
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Trendyol backend
+            </p>
+            <p>
+                Configure API credentials and sync settings to connect your Odoo instance with Trendyol marketplace.
+            </p>
+        </field>
+    </record>
+</odoo>

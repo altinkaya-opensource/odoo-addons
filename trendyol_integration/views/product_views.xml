@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Product Product Form Extension -->
+    <record id="view_product_product_form_trendyol" model="ir.ui.view">
+        <field name="name">product.product.form.trendyol</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_trendyol_bindings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-bag"
+                    attrs="{'invisible': [('trendyol_binding_count', '=', 0)]}"
+                >
+                    <field
+                        name="trendyol_binding_count"
+                        widget="statinfo"
+                        string="Trendyol"
+                    />
+                </button>
+            </div>
+            <group name="packaging" position="after">
+                <group
+                    string="Trendyol"
+                    name="trendyol"
+                    groups="trendyol_integration.group_trendyol_user"
+                >
+                    <field name="image_url" />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- Product Template Form Extension -->
+    <record id="view_product_template_form_trendyol" model="ir.ui.view">
+        <field name="name">product.template.form.trendyol</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_trendyol_bindings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-bag"
+                    attrs="{'invisible': [('trendyol_binding_count', '=', 0)]}"
+                >
+                    <field
+                        name="trendyol_binding_count"
+                        widget="statinfo"
+                        string="Trendyol"
+                    />
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

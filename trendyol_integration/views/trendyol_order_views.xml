@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Order Form View -->
+    <record id="view_trendyol_order_form" model="ir.ui.view">
+        <field name="name">trendyol.order.form</field>
+        <field name="model">trendyol.order</field>
+        <field name="arch" type="xml">
+            <form string="Trendyol Order">
+                <header>
+                    <button
+                        name="action_update_tracking"
+                        string="Update Tracking"
+                        type="object"
+                        attrs="{'invisible': ['|', ('cargo_tracking_number', '=', False), ('trendyol_status', 'in', ['shipped', 'delivered'])]}"
+                    />
+                    <button
+                        name="action_send_invoice"
+                        string="Send Invoice"
+                        type="object"
+                        attrs="{'invisible': [('invoice_link_sent', '=', True)]}"
+                    />
+                    <button
+                        name="action_cancel_in_trendyol"
+                        string="Cancel in Trendyol"
+                        type="object"
+                        class="btn-danger"
+                        attrs="{'invisible': [('trendyol_status', 'in', ['shipped', 'delivered', 'cancelled'])]}"
+                        confirm="Are you sure you want to cancel this order in Trendyol?"
+                    />
+                    <button
+                        name="action_view_in_trendyol"
+                        string="View in Trendyol"
+                        type="object"
+                    />
+                    <field
+                        name="trendyol_status"
+                        widget="statusbar"
+                        statusbar_visible="created,picking,invoiced,shipped,delivered"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="trendyol_order_number" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Order Info">
+                            <field name="odoo_id" />
+                            <field name="backend_id" />
+                            <field name="trendyol_package_id" />
+                            <field name="trendyol_customer_id" />
+                            <field name="order_date" />
+                        </group>
+                        <group string="Shipping">
+                            <field name="cargo_provider_name" />
+                            <field name="cargo_tracking_number" />
+                            <field name="cargo_tracking_link" widget="url" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Invoice">
+                            <field name="invoice_link_sent" />
+                            <field name="invoice_sent_date" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Odoo Order" name="odoo_order">
+                            <field name="partner_id" readonly="1" />
+                            <field name="order_line" readonly="1">
+                                <tree>
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_uom_qty" />
+                                    <field name="price_unit" />
+                                    <field name="price_subtotal" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Raw Data" name="raw_data">
+                            <field
+                                name="raw_data"
+                                widget="ace"
+                                options="{'mode': 'json'}"
+                                readonly="1"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Order Tree View -->
+    <record id="view_trendyol_order_tree" model="ir.ui.view">
+        <field name="name">trendyol.order.tree</field>
+        <field name="model">trendyol.order</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="trendyol_status == 'cancelled'"
+                decoration-success="trendyol_status == 'delivered'"
+                decoration-info="trendyol_status == 'shipped'"
+            >
+                <field name="trendyol_order_number" />
+                <field name="odoo_id" />
+                <field name="partner_id" />
+                <field name="order_date" />
+                <field name="trendyol_status" />
+                <field name="cargo_tracking_number" />
+                <field name="invoice_link_sent" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Order Search View -->
+    <record id="view_trendyol_order_search" model="ir.ui.view">
+        <field name="name">trendyol.order.search</field>
+        <field name="model">trendyol.order</field>
+        <field name="arch" type="xml">
+            <search string="Search Orders">
+                <field name="trendyol_order_number" />
+                <field name="trendyol_package_id" />
+                <field name="odoo_id" />
+                <field name="partner_id" />
+                <field name="cargo_tracking_number" />
+                <separator />
+                <filter
+                    name="created"
+                    string="Created"
+                    domain="[('trendyol_status', '=', 'created')]"
+                />
+                <filter
+                    name="picking"
+                    string="Picking"
+                    domain="[('trendyol_status', '=', 'picking')]"
+                />
+                <filter
+                    name="shipped"
+                    string="Shipped"
+                    domain="[('trendyol_status', '=', 'shipped')]"
+                />
+                <filter
+                    name="delivered"
+                    string="Delivered"
+                    domain="[('trendyol_status', '=', 'delivered')]"
+                />
+                <filter
+                    name="cancelled"
+                    string="Cancelled"
+                    domain="[('trendyol_status', '=', 'cancelled')]"
+                />
+                <separator />
+                <filter
+                    name="no_tracking"
+                    string="No Tracking"
+                    domain="[('cargo_tracking_number', '=', False)]"
+                />
+                <filter
+                    name="no_invoice"
+                    string="No Invoice Sent"
+                    domain="[('invoice_link_sent', '=', False)]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'trendyol_status'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Order Date"
+                        context="{'group_by': 'order_date:day'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Order Action -->
+    <record id="action_trendyol_order" model="ir.actions.act_window">
+        <field name="name">Trendyol Orders</field>
+        <field name="res_model">trendyol.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trendyol_order_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Trendyol orders yet
+            </p>
+            <p>
+                Orders will appear here when imported from Trendyol. Configure auto-import in backend settings or click "Import Orders" manually.
+            </p>
+        </field>
+    </record>
+</odoo>

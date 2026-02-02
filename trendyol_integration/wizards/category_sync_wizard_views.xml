@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Category Sync Wizard Form View -->
+    <record id="view_trendyol_category_sync_wizard_form" model="ir.ui.view">
+        <field name="name">trendyol.category.sync.wizard.form</field>
+        <field name="model">trendyol.category.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sync Trendyol Data">
+                <group>
+                    <field name="backend_id" />
+                </group>
+                <group string="What to Sync">
+                    <field name="sync_categories" />
+                    <field name="sync_brands" />
+                    <field
+                        name="sync_attributes"
+                        attrs="{'invisible': [('sync_categories', '=', False)]}"
+                    />
+                </group>
+                <footer>
+                    <button
+                        name="action_sync"
+                        string="Start Sync"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Category Sync Wizard Action -->
+    <record id="action_trendyol_category_sync_wizard" model="ir.actions.act_window">
+        <field name="name">Sync Categories &amp; Brands</field>
+        <field name="res_model">trendyol.category.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
