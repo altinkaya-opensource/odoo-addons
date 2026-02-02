@@ -99,6 +99,9 @@ class AccountInvoiceReport(models.Model):
     industry_id = fields.Many2one(
         "res.partner.industry", string="Industry", readonly=True
     )
+    # Fields from account.move.line
+    origin_price_usd = fields.Float(string="Pricelist Price USD", readonly=True)
+    manual_discount_percentage = fields.Float(readonly=True, group_operator="avg")
 
     def _select(self):
         return (
@@ -143,7 +146,10 @@ class AccountInvoiceReport(models.Model):
                line.lasercut_price as lasercut_price,
                line.insert_installation_price as insert_installation_price,
                inv_count_sub.invoice_count,
-               partner.industry_id as industry_id
+               partner.industry_id as industry_id,
+               line.origin_price_usd as origin_price_usd,
+               line.manual_discount_percentage as manual_discount_percentage
+
             """
         )
 

@@ -13,6 +13,7 @@
         "account_check",
         "mrp",
         "account_invoice_change_currency",
+        "account_invoice_pricelist",
     ],
     "license": "LGPL-3",
     "author": "Yigit Budak, MAkifOzdemir,OnurUgur,Codequarters,Altinkaya Enclosures",
