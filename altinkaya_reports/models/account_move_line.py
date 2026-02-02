@@ -33,11 +33,6 @@ class AccountMoveLine(models.Model):
         store=True,
         help="Expected unit price according to pricelist, in USD.",
     )
-    manual_discount_percentage = fields.Float(
-        compute="_compute_pricelist_comparison",
-        store=True,
-        help="Difference between actual price and pricelist price in percentage.",
-    )
 
     @api.depends(
         "move_id.invoice_date",
@@ -86,12 +81,9 @@ class AccountMoveLine(models.Model):
         "move_id.partner_id",
         "move_id.invoice_date",
         "move_id.move_type",
-        "move_id.currency_id",
         "product_id",
         "product_uom_id",
         "quantity",
-        "price_unit",
-        "discount",
         "display_type",
     )
     def _compute_pricelist_comparison(self):
@@ -99,7 +91,6 @@ class AccountMoveLine(models.Model):
 
         for line in self:
             line.origin_price_usd = 0.0
-            line.manual_discount_percentage = 0.0
 
             # Only out.invoice and product lines
             if (
@@ -132,21 +123,3 @@ class AccountMoveLine(models.Model):
                 origin_price_usd = pricelist_price
 
             line.origin_price_usd = origin_price_usd
-
-            # Calculate the actual price
-            actual_price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-
-            # Convert actual price to USD
-            invoice_currency = line.move_id.currency_id
-            if invoice_currency and invoice_currency != currency_usd:
-                actual_price_usd = invoice_currency._convert(
-                    actual_price, currency_usd, company, date, round=False
-                )
-            else:
-                actual_price_usd = actual_price
-
-            # Calculate manual discount percentage
-            if origin_price_usd:
-                line.manual_discount_percentage = (
-                    (origin_price_usd - actual_price_usd) / origin_price_usd * 100.0
-                )
