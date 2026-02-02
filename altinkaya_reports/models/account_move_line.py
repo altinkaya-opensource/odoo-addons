@@ -27,6 +27,17 @@ class AccountMoveLine(models.Model):
         help="Total amount in company currency."
         " We use this field in account reporting.",
     )
+    origin_price_usd = fields.Float(
+        string="Pricelist Price USD",
+        compute="_compute_pricelist_comparison",
+        store=True,
+        help="Expected unit price according to pricelist, in USD.",
+    )
+    manual_discount_percentage = fields.Float(
+        compute="_compute_pricelist_comparison",
+        store=True,
+        help="Difference between actual price and pricelist price in percentage.",
+    )
 
     @api.depends(
         "move_id.invoice_date",
@@ -69,3 +80,73 @@ class AccountMoveLine(models.Model):
                 _kdv_amount = _kdv_amount / currency_rate
 
             aml.kdv_amount = _kdv_amount
+
+    @api.depends(
+        "move_id.pricelist_id",
+        "move_id.partner_id",
+        "move_id.invoice_date",
+        "move_id.move_type",
+        "move_id.currency_id",
+        "product_id",
+        "product_uom_id",
+        "quantity",
+        "price_unit",
+        "discount",
+        "display_type",
+    )
+    def _compute_pricelist_comparison(self):
+        currency_usd = self.env["res.currency"].search([("name", "=", "USD")], limit=1)
+
+        for line in self:
+            line.origin_price_usd = 0.0
+            line.manual_discount_percentage = 0.0
+
+            # Only out.invoice and product lines
+            if (
+                line.move_id.move_type != "out_invoice"
+                or line.display_type != "product"
+                or not line.product_id
+                or not line.move_id.pricelist_id
+            ):
+                continue
+
+            pricelist = line.move_id.pricelist_id
+            product = line.product_id
+            qty = line.quantity or 1.0
+            uom = line.product_uom_id
+            date = line.move_id.invoice_date or fields.Date.today()
+            company = line.move_id.company_id
+
+            # Get the pricelist price
+            pricelist_price = pricelist._get_product_price(
+                product, qty, uom=uom, date=date
+            )
+
+            # Convert pricelist price to USD
+            pricelist_currency = pricelist.currency_id
+            if pricelist_currency and pricelist_currency != currency_usd:
+                origin_price_usd = pricelist_currency._convert(
+                    pricelist_price, currency_usd, company, date, round=False
+                )
+            else:
+                origin_price_usd = pricelist_price
+
+            line.origin_price_usd = origin_price_usd
+
+            # Calculate the actual price
+            actual_price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+
+            # Convert actual price to USD
+            invoice_currency = line.move_id.currency_id
+            if invoice_currency and invoice_currency != currency_usd:
+                actual_price_usd = invoice_currency._convert(
+                    actual_price, currency_usd, company, date, round=False
+                )
+            else:
+                actual_price_usd = actual_price
+
+            # Calculate manual discount percentage
+            if origin_price_usd:
+                line.manual_discount_percentage = (
+                    (origin_price_usd - actual_price_usd) / origin_price_usd * 100.0
+                )
