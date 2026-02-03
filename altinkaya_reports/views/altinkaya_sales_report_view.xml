@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_altinkaya_sales_report_tree" model="ir.ui.view">
+        <field name="name">altinkaya.sales.report.tree</field>
+        <field name="model">altinkaya.sales.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="invoice_date" />
+                <field name="partner_id" />
+                <field name="product_id" />
+                <field name="quantity" />
+                <field name="price_subtotal" sum="Total" />
+                <field name="price_total_usd" sum="Total USD" />
+                <field name="total_tax" sum="Total Tax" />
+                <field name="state" />
+                <field name="payment_state" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_altinkaya_sales_report" model="ir.actions.act_window">
+        <field name="name">Altinkaya Sales Report</field>
+        <field name="res_model">altinkaya.sales.report</field>
+        <field name="view_mode">tree</field>
+
+        <field name="context">{
+            'search_default_out_invoices': 1,
+            'search_default_posted': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p>
+            <p>
+                This report allows you to analyze your sales with custom fields.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+        id="menu_altinkaya_sales_report"
+        name="Altinkaya Sales Report"
+        parent="account.menu_finance_reports"
+        action="action_altinkaya_sales_report"
+        sequence="100"
+    />
+</odoo>
