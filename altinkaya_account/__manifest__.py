@@ -27,6 +27,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "data/ir_cron.xml",
         "views/product_pricelist_view.xml",
         "views/account_move_view.xml",
         "views/partner_view.xml",
@@ -42,6 +43,7 @@
         "views/credit_control_policy_view.xml",
         "wizards/create_currency_difference_invoice.xml",
         "wizards/create_currency_valuation_move.xml",
+        "wizards/currency_reconcile_fix_wizard.xml",
         "wizards/import_fee_accrual_wizard.xml",
     ],
     "assets": {

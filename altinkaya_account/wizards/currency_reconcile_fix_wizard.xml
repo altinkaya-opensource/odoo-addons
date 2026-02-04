@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="currency_reconcile_fix_wizard_form" model="ir.ui.view">
+        <field name="name">currency.reconcile.fix.wizard.form</field>
+        <field name="model">currency.reconcile.fix.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Fix Currency Reconciliation">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,analysis,phase1,phase2,phase3,done"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Currency Reconciliation Fix Wizard</h1>
+                    </div>
+
+                    <group
+                        string="Configuration"
+                        attrs="{'invisible': [('state', 'not in', ['draft', 'analysis'])]}"
+                    >
+                        <group>
+                            <field
+                                name="partner_id"
+                                options="{'no_create': True}"
+                                placeholder="All partners (leave empty for batch)"
+                            />
+                            <field name="reconcile_from_date" />
+                        </group>
+                        <group>
+                            <field name="batch_size" />
+                        </group>
+                    </group>
+
+                    <group
+                        string="Preview Statistics"
+                        attrs="{'invisible': [('state', '=', 'draft')]}"
+                    >
+                        <group>
+                            <field name="partials_to_unlink_count" />
+                            <field name="exchange_moves_count" />
+                        </group>
+                        <group>
+                            <field name="lines_to_reconcile_count" />
+                            <field name="protected_partials_count" />
+                        </group>
+                    </group>
+
+                    <group
+                        string="Progress"
+                        attrs="{'invisible': [('state', 'in', ['draft', 'analysis'])]}"
+                    >
+                        <group>
+                            <field
+                                name="phase1_processed"
+                                string="Phase 1: Partials Unlinked"
+                            />
+                            <field
+                                name="phase2_processed"
+                                string="Phase 2: KRFRK Deleted"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="phase3_processed"
+                                string="Phase 3: Reconciled"
+                            />
+                            <field
+                                name="phase4_processed"
+                                string="Remaining Lines"
+                                invisible="1"
+                            />
+                        </group>
+                    </group>
+
+                    <group string="Result">
+                        <field
+                            name="result_message"
+                            nolabel="1"
+                            colspan="2"
+                            widget="text"
+                            readonly="1"
+                        />
+                    </group>
+
+                    <notebook attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <page string="Execution Log" name="logs">
+                            <field name="log_ids" readonly="1">
+                                <tree>
+                                    <field name="create_date" string="Time" />
+                                    <field name="phase" />
+                                    <field name="action" />
+                                    <field name="details" />
+                                    <field name="partner_id" />
+                                    <field name="amount" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button
+                        string="Analyze"
+                        name="action_analyze"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                    />
+                    <button
+                        string="Phase 1: Unlink Partials"
+                        name="action_phase1_unlink_partials"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'analysis')]}"
+                        confirm="This will unlink all partial reconciliations without full_reconcile_id. Continue?"
+                    />
+                    <button
+                        string="Phase 2: Cleanup KRFRK"
+                        name="action_phase2_cleanup_orphan_krfrk"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'phase1')]}"
+                        confirm="This will delete orphaned KRFRK moves. Continue?"
+                    />
+                    <button
+                        string="Phase 3: Re-reconcile"
+                        name="action_phase3_reconcile"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'phase2')]}"
+                    />
+                    <button
+                        string="Finalize"
+                        name="action_phase4_finalize"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'phase3')]}"
+                    />
+                    <button
+                        string="Execute All Phases"
+                        name="action_execute_all"
+                        type="object"
+                        class="btn-warning"
+                        attrs="{'invisible': [('state', 'not in', ['draft', 'analysis'])]}"
+                        confirm="This will execute ALL phases in sequence. This is a destructive operation. Are you sure?"
+                    />
+                    <button
+                        string="Reset"
+                        name="action_reset"
+                        type="object"
+                        class="btn-secondary"
+                        attrs="{'invisible': [('state', '=', 'draft')]}"
+                    />
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_currency_reconcile_fix_wizard" model="ir.actions.act_window">
+        <field name="name">Fix Currency Reconciliation</field>
+        <field name="res_model">currency.reconcile.fix.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_currency_reconcile_fix_wizard"
+        name="Fix Currency Reconciliation"
+        parent="account.menu_finance_entries_actions"
+        action="action_currency_reconcile_fix_wizard"
+        sequence="100"
+        groups="account.group_account_manager"
+    />
+</odoo>

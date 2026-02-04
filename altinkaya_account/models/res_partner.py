@@ -81,9 +81,8 @@ class ResPartner(models.Model):
             ("move_id.reversal_move_id", "=", False),
             ("move_id.reversed_entry_id", "=", False),
             ("difference_checked", "=", False),
-            # ("full_reconcile_id", "!=", False),
+            ("full_reconcile_id", "!=", False),
             ("account_id", "=", self.property_account_receivable_id.id),
-            ("date", ">=", "2025-01-01"),
         ]
 
     def _compute_currency_difference_amls(self):
@@ -316,6 +315,21 @@ class ResPartner(models.Model):
                     "currency_difference_line_ids": [(6, 0, difference_amls.ids)],
                 }
             )
+
+            # Clear amount_currency on receivable line
+            self.env.cr.execute(
+                """
+                UPDATE account_move_line
+                SET amount_currency = 0.0, currency_id = %s
+                WHERE move_id = %s and account_id = %s
+            """,
+                (
+                    dif_inv.company_id.currency_id.id,
+                    dif_inv.id,
+                    dif_inv.partner_id.property_account_receivable_id.id,
+                ),
+            )
+            dif_inv.line_ids.invalidate_recordset(["amount_currency", "currency_id"])
             return dif_inv
 
         return False

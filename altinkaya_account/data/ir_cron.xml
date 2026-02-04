@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="cron_unlink_incomplete_partials" model="ir.cron">
+        <field name="name">Unlink Incomplete Partial Reconciles</field>
+        <field name="model_id" ref="model_account_auto_reconcile" />
+        <field name="state">code</field>
+        <field name="code">model._cron_unlink_incomplete_partials()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall">2026-02-05 02:00:00</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
