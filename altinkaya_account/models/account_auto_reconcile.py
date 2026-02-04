@@ -19,7 +19,7 @@ from odoo import fields, models
 _logger = logging.getLogger(__name__)
 
 CURRENCY_DIFF_JOURNALS = ("KRDGR", "KRFRK", "KFARK")
-RECONCILE_FROM_DATE = "2022-01-01"
+RECONCILE_FROM_DATE = "2025-01-01"
 MATCH_THRESHOLD = 0.95  # 95% match required
 RESIDUAL_TOLERANCE = 1.0  # Max 1 TRY for ADVR
 
