@@ -378,4 +378,4 @@ class AccountAutoReconcile(models.AbstractModel):
         _logger.info("Auto-reconcile: Processing %d partners", len(partners))
 
         for partner in partners:
-            self.reconcile_partner(partner, force=force)
+            self.with_delay().reconcile_partner(partner, force=force)
