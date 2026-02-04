@@ -33,6 +33,7 @@ class StockMove(models.Model):
                 move.description_picking = move.sale_line_id.name
         return moves
 
+    @api.onchange("product_id", "picking_type_id")
     def _onchange_product_id(self):
         """
         Override to set description_picking from sale order line name.
