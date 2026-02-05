@@ -77,9 +77,11 @@
                                         t-field="o.partner_id.commercial_partner_id.display_name"
                                     />
                                     <br />
+
                                     <strong
-                                        t-field="o.partner_id.commercial_partner_id.contact_address"
+                                        t-esc="o.partner_id.commercial_partner_id._display_address(without_company=True)"
                                     />
+
                                     <br />
                                     <t
                                         t-if="o.partner_id.commercial_partner_id.phone or o.partner_id.commercial_partner_id.fax"
