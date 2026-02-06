@@ -20,8 +20,8 @@ _logger = logging.getLogger(__name__)
 
 CURRENCY_DIFF_JOURNALS = ("KRDGR", "KRFRK", "KFARK")
 RECONCILE_FROM_DATE = "2025-01-01"
-MATCH_THRESHOLD = 0.95  # 95% match required
-RESIDUAL_TOLERANCE = 1.0  # Max 1 TRY for ADVR
+RESIDUAL_TOLERANCE = 1.0  # Max 1 unit difference for exact match ADVR
+MATCH_THRESHOLD = 0.90  # 90% match required for N:1 and 1:N scenarios
 
 
 class AccountAutoReconcile(models.AbstractModel):
@@ -32,195 +32,116 @@ class AccountAutoReconcile(models.AbstractModel):
     # HELPER METHODS
     # ==========================================
 
-    def _get_partners_with_unreconciled_lines(self):
-        """Get partners with unreconciled receivable/payable lines."""
-        self.env.cr.execute(
-            """
-            SELECT DISTINCT rp.commercial_partner_id
-            FROM account_move_line aml
-            JOIN res_partner rp ON rp.id = aml.partner_id
-            JOIN account_account aa ON aa.id = aml.account_id
-            JOIN account_move am ON am.id = aml.move_id
-            JOIN account_journal aj ON aj.id = aml.journal_id
-            WHERE aa.account_type IN ('asset_receivable', 'liability_payable')
-            AND aml.reconciled = FALSE
-            AND am.state = 'posted'
-            AND aml.date >= %s
-            AND aj.code NOT IN %s
-            AND (aml.amount_residual != 0 OR aml.amount_residual_currency != 0)
-            """,
-            (RECONCILE_FROM_DATE, CURRENCY_DIFF_JOURNALS),
-        )
+    def _get_payment_lines_domain(self, move, pay_term_account_ids):
+        """Build domain to find matching payment lines for an invoice."""
+        domain = [
+            ("account_id", "in", pay_term_account_ids),
+            ("parent_state", "=", "posted"),
+            ("partner_id", "=", move.commercial_partner_id.id),
+            ("reconciled", "=", False),
+            ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS + ("ADVR",)),
+            ("id", "not in", move.line_ids.ids),
+            ("date", ">=", RECONCILE_FROM_DATE),
+            "|",
+            ("amount_residual", "!=", 0.0),
+            ("amount_residual_currency", "!=", 0.0),
+        ]
 
-        partner_ids = [row[0] for row in self.env.cr.fetchall() if row[0]]
-        return self.env["res.partner"].browse(partner_ids)
+        # Payments have opposite balance direction
+        if move.is_inbound():  # Customer invoice/refund
+            domain.append(("balance", "<", 0.0))
+        else:  # Supplier invoice/refund
+            domain.append(("balance", ">", 0.0))
 
-    def _get_partner_unreconciled_lines(self, partner):
-        """Get all unreconciled lines for a partner."""
-        return self.env["account.move.line"].search(
-            [
-                ("partner_id.commercial_partner_id", "=", partner.id),
-                (
-                    "account_id.account_type",
-                    "in",
-                    ("asset_receivable", "liability_payable"),
-                ),
-                ("reconciled", "=", False),
-                ("parent_state", "=", "posted"),
-                ("date", ">=", RECONCILE_FROM_DATE),
-                ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
-                "|",
-                ("amount_residual", "!=", 0.0),
-                ("amount_residual_currency", "!=", 0.0),
-            ]
-        )
+        return domain
 
-    # ==========================================
-    # TYPE A: EXACT MATCH
-    # ==========================================
-
-    def _try_exact_match_for_partner(self, partner, lines):
-        """Try exact match reconciliation for a partner's lines.
-
-        Returns True if any exact match was made.
-        """
-        # Separate by balance direction
-        debit_lines = lines.filtered(lambda l: l.balance > 0)
-        credit_lines = lines.filtered(lambda l: l.balance < 0)
-
-        matched = False
-        for debit_line in debit_lines:
-            if debit_line.reconciled:
-                continue
-
-            for credit_line in credit_lines:
-                if credit_line.reconciled:
-                    continue
-
-                # Must be same currency
-                if debit_line.currency_id != credit_line.currency_id:
-                    continue
-
-                # Check amount match (within 1 TRY tolerance)
-                debit_amount = abs(debit_line.amount_residual_currency)
-                credit_amount = abs(credit_line.amount_residual_currency)
-                diff = abs(debit_amount - credit_amount)
-
-                if diff <= RESIDUAL_TOLERANCE:
-                    # Reconcile these two lines
-                    (debit_line + credit_line).reconcile()
-
-                    # If there's a residual, create ADVR
-                    debit_line.invalidate_recordset(["amount_residual"])
-                    if abs(debit_line.amount_residual) > 0.01:
-                        self._create_advr_for_line(debit_line)
-
-                    _logger.info(
-                        "Exact match: %s <-> %s (diff: %.2f)",
-                        debit_line.move_id.name,
-                        credit_line.move_id.name,
-                        diff,
-                    )
-                    matched = True
-                    break
-
-        return matched
-
-    # ==========================================
-    # TYPE B: SESSIONAL RECONCILIATION
-    # ==========================================
-
-    def _try_sessional_reconcile(self, partner, force=False):
-        """Sessional reconciliation for a partner.
-
-        Gathers all unreconciled lines and checks if we can achieve 95% match.
-        If yes, reconcile all and create ADVR for residual.
-        If no, skip entirely (don't create orphaned partials).
+    def _find_invoices_for_payment(
+        self, payment_line, current_move, account, currency=None
+    ):
+        """Find other invoices that could be covered by this payment.
 
         Args:
-            partner: res.partner record
-            force: If True, skip the 95% threshold and reconcile anyway
+            currency: When set, compare amounts in this foreign currency
+                      instead of company currency.
         """
-        lines = self._get_partner_unreconciled_lines(partner)
-        if not lines:
-            return False
-
-        # Group by account (must reconcile within same account)
-        account_lines = {}
-        for line in lines:
-            acc_id = line.account_id.id
-            if acc_id not in account_lines:
-                account_lines[acc_id] = self.env["account.move.line"]
-            account_lines[acc_id] |= line
-
-        reconciled_any = False
-
-        for _account_id, acc_lines in account_lines.items():
-            # Calculate totals
-            total_debit = sum(l.balance for l in acc_lines if l.balance > 0)
-            total_credit = abs(sum(l.balance for l in acc_lines if l.balance < 0))
-            total_amount = max(total_debit, total_credit)
-
-            if total_amount == 0:
-                continue
-
-            # Calculate potential match
-            potential_match = min(total_debit, total_credit)
-            match_percentage = potential_match / total_amount
-
-            # Skip if below threshold (unless force=True)
-            if not force and match_percentage < MATCH_THRESHOLD:
-                _logger.info(
-                    "Partner %s account %s: match %.1f%% < 95%%, skipping",
-                    partner.name,
-                    acc_lines[0].account_id.code,
-                    match_percentage * 100,
+        if currency:
+            payment_amount = abs(payment_line.amount_residual_currency)
+            current_invoice_amount = abs(
+                sum(
+                    current_move.line_ids.filtered(
+                        lambda l: l.account_id.account_type
+                        in ("asset_receivable", "liability_payable")
+                        and not l.reconciled
+                    ).mapped("amount_residual_currency")
                 )
-                continue
-
-            # Has both debits and credits?
-            has_debits = any(l.balance > 0 for l in acc_lines)
-            has_credits = any(l.balance < 0 for l in acc_lines)
-
-            if not (has_debits and has_credits):
-                # Only one side - if force, create ADVR for each line
-                if force:
-                    for line in acc_lines:
-                        if abs(line.amount_residual) > 0.01:
-                            self._create_advr_for_line(line)
-                    reconciled_any = True
-                continue
-
-            # Reconcile all lines at once
-            acc_lines.reconcile()
-
-            # Check for residual and create ADVR
-            acc_lines.invalidate_recordset(["amount_residual", "reconciled"])
-            remaining = acc_lines.filtered(
-                lambda l: not l.reconciled and abs(l.amount_residual) > 0.01
             )
+        else:
+            payment_amount = abs(payment_line.amount_residual)
+            current_invoice_amount = abs(current_move.amount_residual)
 
-            for line in remaining:
-                self._create_advr_for_line(line)
+        remaining = payment_amount - current_invoice_amount
 
-            _logger.info(
-                "Sessional: Partner %s, account %s, %d lines, %.1f%% match%s",
-                partner.name,
-                acc_lines[0].account_id.code,
-                len(acc_lines),
-                match_percentage * 100,
-                " (forced)" if force else "",
-            )
-            reconciled_any = True
+        if remaining <= 0:
+            return self.env["account.move"]
 
-        return reconciled_any
+        # Find other unpaid invoices for same partner
+        invoice_domain = [
+            ("id", "!=", current_move.id),
+            ("state", "=", "posted"),
+            ("move_type", "=", current_move.move_type),
+            ("payment_state", "in", ("not_paid", "partial")),
+            ("commercial_partner_id", "=", current_move.commercial_partner_id.id),
+            ("date", ">=", RECONCILE_FROM_DATE),
+        ]
+        if currency:
+            invoice_domain.append(("currency_id", "=", currency.id))
+
+        other_invoices = self.env["account.move"].search(
+            invoice_domain, order="invoice_date asc"
+        )
+
+        # Select invoices that fit within remaining payment amount
+        selected = self.env["account.move"]
+        for inv in other_invoices:
+            if currency:
+                # Use pay term lines' residual_currency for accuracy
+                inv_pay_lines = inv.line_ids.filtered(
+                    lambda l: l.account_id.account_type
+                    in ("asset_receivable", "liability_payable")
+                    and not l.reconciled
+                )
+                inv_amount = abs(sum(inv_pay_lines.mapped("amount_residual_currency")))
+            else:
+                inv_amount = abs(inv.amount_residual)
+            if inv_amount <= remaining:
+                selected |= inv
+                remaining -= inv_amount
+                if remaining <= 0:
+                    break
+
+        return selected
 
     # ==========================================
     # ADVR CREATION
     # ==========================================
 
     def _create_advr_for_line(self, line):
-        """Create ADVR entry with reversal to close residual amount."""
+        """Create ADVR entry with reversal to close residual amount.
+
+        ADVR (Advance/Devir) is a carry-forward record that offsets small residuals
+        to achieve full reconciliation. It creates a journal entry and its reversal,
+        then reconciles with the original line.
+        """
+        # Skip lines from ADVR or currency difference journals to prevent chains
+        skip_journals = ("ADVR",) + CURRENCY_DIFF_JOURNALS
+        if line.journal_id.code in skip_journals:
+            _logger.debug(
+                "Skipping ADVR for %s - already from %s journal",
+                line.move_id.name,
+                line.journal_id.code,
+            )
+            return False
+
         advr_journal = self.env["account.journal"].search(
             [("code", "=", "ADVR")], limit=1
         )
@@ -233,10 +154,15 @@ class AccountAutoReconcile(models.AbstractModel):
             return False
 
         residual = line.amount_residual
+        residual_currency = line.amount_residual_currency
+        currency = line.currency_id
+        company_currency = line.company_currency_id
+        is_foreign = currency and currency != company_currency
+
         if abs(residual) < 0.01:
             return False
 
-        # Determine debit/credit
+        # Determine debit/credit based on residual direction
         if residual > 0:
             # Positive residual on receivable = customer owes us
             recv_debit, recv_credit = 0, abs(residual)
@@ -246,6 +172,27 @@ class AccountAutoReconcile(models.AbstractModel):
             recv_debit, recv_credit = abs(residual), 0
             devir_debit, devir_credit = 0, abs(residual)
 
+        recv_line_vals = {
+            "account_id": line.account_id.id,
+            "partner_id": line.partner_id.id,
+            "debit": recv_debit,
+            "credit": recv_credit,
+            "name": f"ADVR - {line.move_id.name}",
+        }
+        devir_line_vals = {
+            "account_id": devir_account.id,
+            "partner_id": line.partner_id.id,
+            "debit": devir_debit,
+            "credit": devir_credit,
+            "name": f"ADVR - {line.move_id.name}",
+        }
+
+        if is_foreign:
+            recv_line_vals["currency_id"] = currency.id
+            recv_line_vals["amount_currency"] = -residual_currency
+            devir_line_vals["currency_id"] = currency.id
+            devir_line_vals["amount_currency"] = residual_currency
+
         advr_move = self.env["account.move"].create(
             {
                 "move_type": "entry",
@@ -254,128 +201,367 @@ class AccountAutoReconcile(models.AbstractModel):
                 "ref": f"ADVR - {line.move_id.name}",
                 "partner_id": line.partner_id.id,
                 "line_ids": [
-                    (
-                        0,
-                        0,
-                        {
-                            "account_id": line.account_id.id,
-                            "partner_id": line.partner_id.id,
-                            "debit": recv_debit,
-                            "credit": recv_credit,
-                            "name": f"ADVR - {line.move_id.name}",
-                        },
-                    ),
-                    (
-                        0,
-                        0,
-                        {
-                            "account_id": devir_account.id,
-                            "partner_id": line.partner_id.id,
-                            "debit": devir_debit,
-                            "credit": devir_credit,
-                            "name": f"ADVR - {line.move_id.name}",
-                        },
-                    ),
+                    (0, 0, recv_line_vals),
+                    (0, 0, devir_line_vals),
                 ],
             }
         )
         advr_move.action_post()
 
-        # Create reversal
-        reversal = self.env["account.move.reversal"].create(
-            {
-                "move_ids": [(6, 0, [advr_move.id])],
-                "journal_id": advr_journal.id,
-                "date_mode": "entry",
-            }
+        # Create reversal directly (avoid account.move.reversal wizard
+        # whose default_get is context-sensitive and fragile)
+        reverse_moves = advr_move._reverse_moves(
+            [{"date": advr_move.date, "ref": f"ADVR REV - {line.move_id.name}"}],
+            cancel=False,
         )
-        reversal.reverse_moves()
-        reversal.new_move_ids.filtered(lambda m: m.state == "draft").action_post()
+        reverse_moves.filtered(lambda m: m.state == "draft").action_post()
 
         # Reconcile ADVR line with original
+        # Use no_exchange_difference to prevent KRFRK creation - ADVR residuals
+        # are not due to exchange rates, they're rounding/matching differences
         advr_line = advr_move.line_ids.filtered(
             lambda l: l.account_id == line.account_id
         )
         if advr_line:
-            (line + advr_line).reconcile()
+            (line + advr_line).with_context(no_exchange_difference=True).reconcile()
 
         _logger.info("Created ADVR for %s: %.2f", line.move_id.name, residual)
         return True
 
-    # ==========================================
-    # NIGHTLY CLEANUP CRON
-    # ==========================================
+    def _create_advr_for_residual_invoice_lines(self, pay_term_lines):
+        """Create ADVR entries for invoice lines that still have residual.
 
-    def _cron_unlink_incomplete_partials(self):
-        """Nightly cleanup: Unlink all partials without full_reconcile_id.
-
-        This ensures no orphaned partial reconciles remain in the system.
-        Unlinking partials automatically deletes associated KRFRK moves
-        via Odoo's cascade delete on exchange_move_id.
+        Only targets invoice pay term lines, not payment lines.
+        Payment residuals should remain available for other invoices.
         """
-        amls = self.env["account.move.line"].search(
-            [
-                "|",
-                ("matched_credit_ids", "!=", False),
-                ("matched_debit_ids", "!=", False),
-                ("full_reconcile_id", "=", False),
-            ]
+        pay_term_lines.invalidate_recordset(["amount_residual", "reconciled"])
+        remaining = pay_term_lines.filtered(
+            lambda l: not l.reconciled and abs(l.amount_residual) > 0.01
+        )
+        for line in remaining:
+            self._create_advr_for_line(line)
+
+    # ==========================================
+    # SCENARIO 1: EXACT MATCH (1:1)
+    # ==========================================
+
+    def _try_exact_match_reconcile(self, move, pay_term_lines):
+        """Find payment with exact or near-exact matching amount.
+
+        Supports cross-currency matching (e.g., USD invoice paid with TRY).
+        If difference is under RESIDUAL_TOLERANCE (1 unit), reconcile and create
+        ADVR for the residual to achieve full reconciliation.
+
+        Returns True if reconciliation successful.
+        """
+        domain = self._get_payment_lines_domain(move, pay_term_lines.account_id.ids)
+        payment_lines = self.env["account.move.line"].search(domain)
+
+        for payment_line in payment_lines:
+            # Compare amounts based on currency match
+            # Same currency: compare foreign currency amounts
+            # Different currency: compare company currency amounts (TRY)
+            if payment_line.currency_id == move.currency_id:
+                payment_amount = abs(payment_line.amount_residual_currency)
+                invoice_amount = abs(
+                    sum(pay_term_lines.mapped("amount_residual_currency"))
+                )
+            else:
+                # Cross-currency: compare in company currency (TRY)
+                payment_amount = abs(payment_line.amount_residual)
+                invoice_amount = abs(move.amount_residual)
+
+            diff = abs(payment_amount - invoice_amount)
+
+            if diff <= RESIDUAL_TOLERANCE:
+                try:
+                    lines_to_reconcile = payment_line + pay_term_lines
+                    lines_to_reconcile.reconcile()
+
+                    _logger.info(
+                        "Exact match: Invoice %s with payment %s (diff: %.2f)",
+                        move.name,
+                        payment_line.move_id.name,
+                        diff,
+                    )
+
+                    # Create ADVR for invoice residual if not fully matched
+                    if diff > 0.01:
+                        self._create_advr_for_residual_invoice_lines(pay_term_lines)
+
+                    return True
+                except Exception as e:
+                    _logger.error("Exact match failed for %s: %s", move.name, e)
+                    continue
+
+        return False
+
+    # ==========================================
+    # SCENARIO 2: MANY PAYMENTS TO ONE INVOICE (N:1)
+    # ==========================================
+
+    def _try_many_payments_to_one_invoice(self, move, pay_term_lines):
+        """Reconcile multiple payments against single invoice.
+
+        Use case: Customer pays invoice in installments.
+        Selects payments up to invoice amount, creates ADVR for any shortfall.
+        """
+        domain = self._get_payment_lines_domain(move, pay_term_lines.account_id.ids)
+        all_payment_lines = self.env["account.move.line"].search(
+            domain, order="date asc, id asc"
         )
 
-        partial_recs = self.env["account.partial.reconcile"]
-        for aml in amls:
-            partial_recs |= aml.matched_credit_ids
-            partial_recs |= aml.matched_debit_ids
+        if not all_payment_lines:
+            return False
 
-        if partial_recs:
-            _logger.info("Unlinking %d incomplete partials", len(partial_recs))
-            partial_recs.unlink()
+        # Use foreign currency when invoice is in foreign currency
+        use_foreign = move.currency_id and move.currency_id != move.company_currency_id
+
+        if use_foreign:
+            invoice_amount = abs(sum(pay_term_lines.mapped("amount_residual_currency")))
+        else:
+            invoice_amount = abs(move.amount_residual)
+
+        if invoice_amount == 0:
+            return False
+
+        # Select payments up to invoice amount (don't grab excess payments)
+        selected_payments = self.env["account.move.line"]
+        running_total = 0.0
+
+        for payment_line in all_payment_lines:
+            if use_foreign and payment_line.currency_id == move.currency_id:
+                payment_amount = abs(payment_line.amount_residual_currency)
+            else:
+                payment_amount = abs(payment_line.amount_residual)
+            selected_payments |= payment_line
+            running_total += payment_amount
+
+            # Stop once we've reached or exceeded invoice amount
+            if running_total >= invoice_amount:
+                break
+
+        if not selected_payments:
+            return False
+
+        try:
+            lines_to_reconcile = pay_term_lines + selected_payments
+            lines_to_reconcile.reconcile()
+
+            match_percentage = min(running_total, invoice_amount) / invoice_amount
+            _logger.info(
+                "N:1 reconcile: Invoice %s with %d payments (%.1f%% match)",
+                move.name,
+                len(selected_payments),
+                match_percentage * 100,
+            )
+
+            # ADVR only for near-matches (>=90%), skip for large gaps
+            if match_percentage >= MATCH_THRESHOLD:
+                self._create_advr_for_residual_invoice_lines(pay_term_lines)
+
+            return True
+        except Exception as e:
+            _logger.error("N:1 reconciliation failed for %s: %s", move.name, e)
+            return False
+
+    # ==========================================
+    # SCENARIO 3: ONE PAYMENT TO MANY INVOICES (1:N)
+    # ==========================================
+
+    def _try_one_payment_to_many_invoices(self, move, pay_term_lines):
+        """Check if a larger payment can cover this invoice plus others.
+
+        Supports cross-currency matching (e.g., TRY payment for USD invoices).
+        Use case: Customer sends bulk payment covering multiple invoices.
+        Requires 90% match threshold, creates ADVR for residual.
+        """
+        domain = self._get_payment_lines_domain(move, pay_term_lines.account_id.ids)
+        payment_lines = self.env["account.move.line"].search(domain)
+
+        # Use foreign currency when invoice is in foreign currency
+        use_foreign = move.currency_id and move.currency_id != move.company_currency_id
+
+        if use_foreign:
+            invoice_amount = abs(sum(pay_term_lines.mapped("amount_residual_currency")))
+        else:
+            invoice_amount = abs(move.amount_residual)
+
+        for payment_line in payment_lines:
+            if use_foreign and payment_line.currency_id == move.currency_id:
+                payment_amount = abs(payment_line.amount_residual_currency)
+            else:
+                payment_amount = abs(payment_line.amount_residual)
+
+            # Payment must be larger than invoice
+            if payment_amount <= invoice_amount:
+                continue
+
+            # Find other invoices this payment could cover
+            foreign_currency = move.currency_id if use_foreign else None
+            other_invoices = self._find_invoices_for_payment(
+                payment_line, move, pay_term_lines.account_id, foreign_currency
+            )
+
+            # Calculate total invoice amount (current + others)
+            total_invoice_amount = invoice_amount
+            all_invoice_lines = pay_term_lines
+
+            for other_move in other_invoices:
+                other_lines = other_move.line_ids.filtered(
+                    lambda line: line.account_id.account_type
+                    in ("asset_receivable", "liability_payable")
+                    and not line.reconciled
+                )
+                all_invoice_lines |= other_lines
+                if use_foreign:
+                    total_invoice_amount += abs(
+                        sum(other_lines.mapped("amount_residual_currency"))
+                    )
+                else:
+                    total_invoice_amount += abs(other_move.amount_residual)
+
+            # Calculate match percentage
+            potential_match = min(payment_amount, total_invoice_amount)
+            max_amount = max(payment_amount, total_invoice_amount)
+            if max_amount == 0:
+                continue
+            match_percentage = potential_match / max_amount
+
+            # Skip if below 90% threshold
+            if match_percentage < MATCH_THRESHOLD:
+                _logger.debug(
+                    "1:N skip: Payment %s match %.1f%% < %.0f%%",
+                    payment_line.move_id.name,
+                    match_percentage * 100,
+                    MATCH_THRESHOLD * 100,
+                )
+                continue
+
+            try:
+                lines_to_reconcile = payment_line + all_invoice_lines
+                lines_to_reconcile.reconcile()
+
+                _logger.info(
+                    "1:N reconcile: Payment %s with %d invoices (%.1f%% match)",
+                    payment_line.move_id.name,
+                    len(other_invoices) + 1,
+                    match_percentage * 100,
+                )
+
+                # ADVR for shortfall when payment doesn't fully cover invoices
+                if payment_amount < total_invoice_amount:
+                    self._create_advr_for_residual_invoice_lines(all_invoice_lines)
+
+                return True
+            except Exception as e:
+                _logger.error("1:N reconciliation failed: %s", e)
+                continue
+
+        return False
 
     # ==========================================
     # PUBLIC METHOD FOR WIZARD
     # ==========================================
 
-    def reconcile_partner(self, partner, force=False):
-        """Reconcile all lines for a specific partner.
+    def reconcile_partner(self, partner):
+        """Reconcile all lines for a specific partner using invoice-centric approach.
 
         This method is called by the wizard to reconcile a single partner.
 
         Args:
             partner: res.partner record (commercial partner)
-            force: If True, skip 95% threshold and create ADVR for residuals
 
         Returns:
             bool: True if any reconciliation was made
         """
-        lines = self._get_partner_unreconciled_lines(partner)
-        if not lines:
-            return False
+        invoices = self.env["account.move"].search(
+            [
+                ("state", "=", "posted"),
+                (
+                    "move_type",
+                    "in",
+                    ["out_invoice", "out_refund", "in_invoice", "in_refund"],
+                ),
+                ("payment_state", "in", ("not_paid", "partial")),
+                ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
+                ("date", ">=", RECONCILE_FROM_DATE),
+                ("commercial_partner_id", "=", partner.id),
+            ],
+            order="invoice_date asc",
+        )
 
-        # Step 1: Try exact matches first
-        self._try_exact_match_for_partner(partner, lines)
+        reconciled_any = False
+        for move in invoices:
+            pay_term_lines = move.line_ids.filtered(
+                lambda line: line.account_id.account_type
+                in ("asset_receivable", "liability_payable")
+                and not line.reconciled
+            )
+            if not pay_term_lines:
+                continue
 
-        # Step 2: Try sessional reconciliation for remaining
-        return self._try_sessional_reconcile(partner, force=force)
+            # Scenario 1: Exact match (1:1)
+            if self._try_exact_match_reconcile(move, pay_term_lines):
+                reconciled_any = True
+                continue
+
+            # Scenario 2: Many payments to one invoice (N:1)
+            if self._try_many_payments_to_one_invoice(move, pay_term_lines):
+                reconciled_any = True
+                continue
+
+            # Scenario 3: One payment to many invoices (1:N)
+            if self._try_one_payment_to_many_invoices(move, pay_term_lines):
+                reconciled_any = True
+
+        return reconciled_any
 
     # ==========================================
     # MAIN CRON METHOD
     # ==========================================
 
-    def _cron_try_auto_reconcile_move_lines(self, force=False):
-        """Main auto-reconcile cron job.
+    def _cron_try_auto_reconcile_move_lines(self):
+        """Invoice-centric auto-reconcile.
 
-        New approach:
-        1. Iterate over partners with unreconciled lines
-        2. For each partner, try exact matches first
-        3. Then try sessional reconciliation (95% threshold)
-        4. Always end with full_reconcile_id (via ADVR if needed)
-        5. If can't achieve 95%, skip entirely (unless force=True)
-
-        Args:
-            force: If True, skip 95% threshold and reconcile anyway
+        For each unpaid invoice:
+        1. Try exact match (1:1) - ADVR for diff under 1 unit
+        2. Try many payments to one invoice (N:1) - ADVR for shortfall
+        3. Try one payment to many invoices (1:N) - 90% threshold + ADVR
         """
-        partners = self._get_partners_with_unreconciled_lines()
-        _logger.info("Auto-reconcile: Processing %d partners", len(partners))
+        invoices = self.env["account.move"].search(
+            [
+                ("state", "=", "posted"),
+                (
+                    "move_type",
+                    "in",
+                    ["out_invoice", "out_refund", "in_invoice", "in_refund"],
+                ),
+                ("payment_state", "in", ("not_paid", "partial")),
+                ("journal_id.code", "not in", CURRENCY_DIFF_JOURNALS),
+                ("date", ">=", RECONCILE_FROM_DATE),
+            ],
+            order="invoice_date asc",
+        )
 
-        for partner in partners:
-            self.with_delay().reconcile_partner(partner, force=force)
+        _logger.info("Auto-reconcile: Processing %d invoices", len(invoices))
+
+        for move in invoices:
+            pay_term_lines = move.line_ids.filtered(
+                lambda line: line.account_id.account_type
+                in ("asset_receivable", "liability_payable")
+                and not line.reconciled
+            )
+            if not pay_term_lines:
+                continue
+
+            # Scenario 1: Exact match (1:1)
+            if self._try_exact_match_reconcile(move, pay_term_lines):
+                continue
+
+            # Scenario 2: Many payments to one invoice (N:1)
+            if self._try_many_payments_to_one_invoice(move, pay_term_lines):
+                continue
+
+            # Scenario 3: One payment to many invoices (1:N)
+            self._try_one_payment_to_many_invoices(move, pay_term_lines)

@@ -85,31 +85,3 @@ class AccountMoveLine(models.Model):
                 line.amount_currency = line.currency_id.round(
                     line.balance * line.currency_rate
                 )
-
-    def _create_reconciliation_partials(self):
-        """Override to disable exchange difference (KRFRK) creation for partials.
-
-        Exchange difference moves are problematic when partial reconciles don't
-        result in full_reconcile_id. This prevents orphaned KRFRK entries.
-        Instead, use ADVR entries to handle residual amounts.
-        """
-        partials_vals_list, _exchange_data = self._prepare_reconciliation_partials(
-            [
-                {
-                    "record": line,
-                    "balance": line.balance,
-                    "amount_currency": line.amount_currency,
-                    "amount_residual": line.amount_residual,
-                    "amount_residual_currency": line.amount_residual_currency,
-                    "company": line.company_id,
-                    "currency": line.currency_id,
-                    "date": line.date,
-                }
-                for line in self
-            ]
-        )
-        partials = self.env["account.partial.reconcile"].create(partials_vals_list)
-
-        # Skip exchange difference move creation (KRFRK)
-
-        return partials

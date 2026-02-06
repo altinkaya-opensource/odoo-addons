@@ -619,8 +619,8 @@ class CurrencyReconcileFixWizard(models.TransientModel):
     def action_phase3_reconcile(self):
         """Phase 3: Full reconcile per partner using auto-reconcile logic.
 
-        Uses account.auto.reconcile.reconcile_partner() with force=True
-        to skip the 95% threshold and reconcile all lines with ADVR for residuals.
+        Uses account.auto.reconcile.reconcile_partner()
+        to reconcile all lines with ADVR for residuals.
         """
         self.ensure_one()
 
@@ -655,8 +655,7 @@ class CurrencyReconcileFixWizard(models.TransientModel):
         _logger.info("Phase 3: Found %d partners to process", total_partners)
 
         for idx, partner in enumerate(partners):
-            # Use auto_reconcile with force=True to skip 95% threshold
-            if auto_reconcile.reconcile_partner(partner, force=True):
+            if auto_reconcile.reconcile_partner(partner):
                 partners_processed += 1
                 self._log(
                     "phase3",
