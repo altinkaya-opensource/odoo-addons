@@ -54,11 +54,11 @@ class TrendyolBackend(models.Model):
     )
 
     # Odoo Mappings
-    warehouse_id = fields.Many2one(
+    warehouse_ids = fields.Many2many(
         "stock.warehouse",
-        string="Warehouse",
+        string="Warehouses",
         required=True,
-        help="Warehouse to use for stock calculations and order fulfillment",
+        help="Warehouses to use for stock calculations and order fulfillment",
     )
     pricelist_id = fields.Many2one(
         "product.pricelist",
@@ -83,6 +83,12 @@ class TrendyolBackend(models.Model):
         string="Default Cargo Company",
         help="Default delivery carrier for Trendyol orders",
     )
+    cargo_mapping_ids = fields.One2many(
+        "trendyol.cargo.mapping",
+        "backend_id",
+        string="Cargo Mappings",
+        help="Map Trendyol cargo providers to Odoo delivery carriers",
+    )
     default_product_id = fields.Many2one(
         "product.product",
         string="Default Product",
@@ -102,51 +108,84 @@ class TrendyolBackend(models.Model):
 
     # Sync Settings
     auto_import_orders = fields.Boolean(
-        string="Auto Import Orders",
         default=True,
         help="Automatically import orders via scheduled job",
     )
     auto_sync_stock = fields.Boolean(
-        string="Auto Sync Stock",
         default=True,
         help="Automatically sync stock levels via scheduled job",
     )
     auto_sync_tracking = fields.Boolean(
-        string="Auto Sync Tracking",
         default=True,
         help="Automatically send tracking numbers when delivery is done",
     )
     auto_send_invoice = fields.Boolean(
-        string="Auto Send Invoice",
         default=True,
-        help="Automatically send invoice link when invoice is posted",
+        help="Send invoice links to Trendyol via nightly batch cron",
     )
     auto_import_claims = fields.Boolean(
-        string="Auto Import Claims",
         default=True,
         help="Automatically import returns/claims via scheduled job",
+    )
+    auto_import_questions = fields.Boolean(
+        default=True,
+        help="Automatically import customer questions via scheduled job",
     )
 
     # Last Sync Timestamps
     last_order_sync = fields.Datetime(
-        string="Last Order Sync",
         readonly=True,
     )
     last_stock_sync = fields.Datetime(
-        string="Last Stock Sync",
         readonly=True,
     )
     last_category_sync = fields.Datetime(
-        string="Last Category Sync",
         readonly=True,
     )
     last_brand_sync = fields.Datetime(
-        string="Last Brand Sync",
         readonly=True,
     )
     last_claim_sync = fields.Datetime(
-        string="Last Claim Sync",
         readonly=True,
+    )
+    last_question_sync = fields.Datetime(
+        readonly=True,
+    )
+
+    # Settlement / Accounting Settings
+    trendyol_partner_id = fields.Many2one(
+        "res.partner",
+        string="Trendyol Partner",
+        help="Partner record representing Trendyol. Used as reference on "
+        "settlement payments and for reporting purposes.",
+    )
+    settlement_journal_id = fields.Many2one(
+        "account.journal",
+        string="Trendyol Payment Journal",
+        domain="[('type', '=', 'bank')]",
+        help="Intermediary bank-type journal for Trendyol payments. "
+        "When a real bank transfer arrives, reconcile against this journal.",
+    )
+    auto_import_settlements = fields.Boolean(
+        default=True,
+        help="Automatically import financial settlements via scheduled job",
+    )
+    auto_reconcile_settlements = fields.Boolean(
+        default=True,
+        help="Automatically reconcile imported settlements with invoices",
+    )
+    last_settlement_sync = fields.Datetime(
+        readonly=True,
+    )
+
+    # Q&A Settings
+    question_user_ids = fields.Many2many(
+        "res.users",
+        "trendyol_backend_question_user_rel",
+        "backend_id",
+        "user_id",
+        string="Q&A Notification Users",
+        help="Users to notify when new customer questions are imported",
     )
 
     # Webhook Configuration
@@ -156,7 +195,6 @@ class TrendyolBackend(models.Model):
         help="Webhook endpoint URL for this backend",
     )
     webhook_secret = fields.Char(
-        string="Webhook Secret",
         groups="trendyol_integration.group_trendyol_manager",
         help="Secret key for webhook authentication",
     )
@@ -178,12 +216,22 @@ class TrendyolBackend(models.Model):
         compute="_compute_counts",
         string="Claims",
     )
+    question_count = fields.Integer(
+        compute="_compute_counts",
+        string="Questions",
+    )
+    settlement_count = fields.Integer(
+        compute="_compute_counts",
+        string="Settlements",
+    )
 
     @api.depends()
     def _compute_counts(self):
         ProductBinding = self.env["trendyol.product.binding"]
         Order = self.env["trendyol.order"]
         Claim = self.env["trendyol.claim"]
+        Question = self.env["trendyol.question"]
+        Settlement = self.env["trendyol.settlement"]
 
         for backend in self:
             backend.product_binding_count = ProductBinding.search_count(
@@ -191,6 +239,12 @@ class TrendyolBackend(models.Model):
             )
             backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
             backend.claim_count = Claim.search_count([("backend_id", "=", backend.id)])
+            backend.question_count = Question.search_count(
+                [("backend_id", "=", backend.id)]
+            )
+            backend.settlement_count = Settlement.search_count(
+                [("backend_id", "=", backend.id)]
+            )
 
     def _get_api_client(self):
         """Get configured API client for this backend."""
@@ -201,6 +255,30 @@ class TrendyolBackend(models.Model):
             api_secret=self.api_secret,
             environment=self.environment,
         )
+
+    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
+        """Get delivery carrier for a Trendyol cargo provider name.
+
+        Searches cargo_mapping_ids by trendyol_cargo_provider_name (exact match,
+        case-insensitive). Falls back to default_cargo_company_id if no mapping
+        is found.
+
+        Args:
+            cargo_provider_name: Cargo provider name from Trendyol API
+
+        Returns:
+            delivery.carrier record or False
+        """
+        self.ensure_one()
+        if cargo_provider_name:
+            name_lower = cargo_provider_name.lower()
+            mapping = self.cargo_mapping_ids.filtered(
+                lambda m: m.trendyol_cargo_provider_name
+                and m.trendyol_cargo_provider_name.lower() == name_lower
+            )
+            if mapping:
+                return mapping[0].carrier_id
+        return self.default_cargo_company_id
 
     def action_test_connection(self):
         """Test API connection."""
@@ -585,6 +663,218 @@ class TrendyolBackend(models.Model):
             "context": {"default_backend_id": self.id},
         }
 
+    def action_import_questions(self):
+        """Manually trigger question import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.trendyol.order",
+            description=_("Import Trendyol questions: %s") % self.name,
+        )._import_questions()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Question import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_questions(self):
+        """Import customer questions from Trendyol API."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Question = self.env["trendyol.question"]
+
+        # Calculate date range (API max 2 weeks)
+        end_date = datetime.now()
+        if self.last_question_sync:
+            start_date = self.last_question_sync
+        else:
+            start_date = end_date - timedelta(days=14)
+
+        start_ts = int(start_date.timestamp() * 1000)
+        end_ts = int(end_date.timestamp() * 1000)
+
+        try:
+            page = 0
+            total_imported = 0
+            while True:
+                result = client.get_questions(
+                    status="WAITING_FOR_ANSWER",
+                    start_date=start_ts,
+                    end_date=end_ts,
+                    page=page,
+                    size=100,
+                )
+                questions = result.get("content", [])
+                if not questions:
+                    break
+
+                for question_data in questions:
+                    question, is_new = Question._import_question(self, question_data)
+                    if question and is_new and self.question_user_ids:
+                        activity_type = self.env.ref("mail.mail_activity_data_todo")
+                        for user in self.question_user_ids:
+                            self.env["mail.activity"].sudo().create(
+                                {
+                                    "res_model_id": self.env["ir.model"]
+                                    .sudo()
+                                    ._get("trendyol.question")
+                                    .id,
+                                    "res_id": question.id,
+                                    "activity_type_id": activity_type.id,
+                                    "user_id": user.id,
+                                    "summary": _(
+                                        "New question from %(customer)s",
+                                        customer=question.customer_name,
+                                    ),
+                                    "note": question.question_text,
+                                }
+                            )
+                    total_imported += 1
+
+                page += 1
+                if page > 50:
+                    _logger.warning("Question import safety limit reached")
+                    break
+
+            self.last_question_sync = fields.Datetime.now()
+            _logger.info(
+                "Imported %d questions for backend %s", total_imported, self.name
+            )
+        except TrendyolAPIError as e:
+            _logger.error("Failed to import questions: %s", str(e))
+            raise
+
+    def action_view_questions(self):
+        """View questions for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Questions"),
+            "res_model": "trendyol.question",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    # ==================== Settlement Methods ====================
+
+    def action_import_settlements(self):
+        """Manually trigger settlement import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.trendyol.order",
+            description=_("Import Trendyol settlements: %s") % self.name,
+        )._import_settlements()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Settlement import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_settlements(self):
+        """Import settlements from Trendyol finance API.
+
+        The API has a max 15-day date range. We iterate in 15-day windows
+        from last_settlement_sync (or 15 days ago) to now.
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        Settlement = self.env["trendyol.settlement"]
+
+        end_date = datetime.now()
+        if self.last_settlement_sync:
+            start_date = self.last_settlement_sync
+        else:
+            start_date = end_date - timedelta(days=15)
+
+        # Iterate in 15-day windows
+        window_start = start_date
+        total_imported = 0
+
+        while window_start < end_date:
+            window_end = min(window_start + timedelta(days=15), end_date)
+            start_ts = int(window_start.timestamp() * 1000)
+            end_ts = int(window_end.timestamp() * 1000)
+
+            try:
+                page = 0
+                while True:
+                    result = client.get_settlements(
+                        start_date=start_ts,
+                        end_date=end_ts,
+                        transaction_types="Sale,Return",
+                        page=page,
+                        size=500,
+                    )
+                    content = result.get("content", [])
+                    if not content:
+                        break
+
+                    for item in content:
+                        settlement = Settlement._import_settlement(self, item)
+                        if (
+                            settlement
+                            and settlement.state == "imported"
+                            and self.auto_reconcile_settlements
+                        ):
+                            try:
+                                settlement._reconcile()
+                            except Exception as e:
+                                settlement.write(
+                                    {
+                                        "state": "error",
+                                        "error_message": str(e),
+                                    }
+                                )
+                                _logger.warning(
+                                    "Auto-reconcile failed for settlement %s: %s",
+                                    settlement.trendyol_settlement_id,
+                                    str(e),
+                                )
+                        total_imported += 1
+
+                    page += 1
+                    if page > 50:
+                        _logger.warning("Settlement import safety limit reached")
+                        break
+
+            except TrendyolAPIError as e:
+                _logger.error(
+                    "Failed to import settlements for window %s - %s: %s",
+                    window_start,
+                    window_end,
+                    str(e),
+                )
+                raise
+
+            window_start = window_end
+
+        self.last_settlement_sync = fields.Datetime.now()
+        _logger.info(
+            "Imported %d settlements for backend %s", total_imported, self.name
+        )
+
+    def action_view_settlements(self):
+        """View settlements for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Settlements"),
+            "res_model": "trendyol.settlement",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
     # ==================== Cron Methods ====================
 
     @api.model
@@ -616,6 +906,36 @@ class TrendyolBackend(models.Model):
                 channel="root.trendyol.order",
                 description=_("Import Trendyol claims: %s") % backend.name,
             )._import_claims()
+
+    @api.model
+    def _cron_import_questions(self):
+        """Cron job to import customer questions from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_questions", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.trendyol.order",
+                description=_("Import Trendyol questions: %s") % backend.name,
+            )._import_questions()
+
+    @api.model
+    def _cron_import_settlements(self):
+        """Cron job to import settlements from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_settlements", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.trendyol.order",
+                description=_("Import Trendyol settlements: %s") % backend.name,
+            )._import_settlements()
 
     @api.model
     def _cron_sync_stock_prices(self):
@@ -655,6 +975,38 @@ class TrendyolBackend(models.Model):
                 channel="root.trendyol.product",
                 description=_("Sync Trendyol brands: %s") % backend.name,
             )._sync_brands()
+
+    @api.model
+    def _cron_send_invoices(self):
+        """Cron job to send invoice links for all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_send_invoice", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend._send_pending_invoices()
+
+    def _send_pending_invoices(self):
+        """Find Trendyol orders with pending invoices and queue sends."""
+        self.ensure_one()
+        orders = self.env["trendyol.order"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("invoice_link_sent", "=", False),
+            ]
+        )
+        for order in orders:
+            posted_invoice = order.odoo_id.invoice_ids.filtered(
+                lambda i: i.state == "posted" and i.move_type == "out_invoice"
+            )
+            if not posted_invoice:
+                continue
+            order.with_delay(
+                channel="root.trendyol.order",
+                description=_("Send invoice: %s") % order.trendyol_order_number,
+            )._send_invoice()
 
     # ==================== Webhook Methods ====================
 
@@ -700,8 +1052,14 @@ class TrendyolBackend(models.Model):
                 "done",
                 "cancel",
             ):
-                order.odoo_id.action_cancel()
+                order.odoo_id.with_context(
+                    from_trendyol_cancel=True,
+                    disable_cancel_warning=True,
+                ).action_cancel()
                 _logger.info("Cancelled Odoo order %s via webhook", order.odoo_id.name)
+
+            # Update picking delivery state
+            order._update_picking_delivery_state(new_status)
 
             # Update tracking info if provided
             tracking = data.get("cargoTrackingNumber")

@@ -45,7 +45,6 @@ class TrendyolClaim(models.Model):
 
     # Dates
     claim_date = fields.Datetime(
-        string="Claim Date",
         help="Date when customer requested return",
     )
     last_modified_date = fields.Datetime(
@@ -62,14 +61,12 @@ class TrendyolClaim(models.Model):
             ("cancelled", "Cancelled"),
             ("unresolved", "Unresolved"),
         ],
-        string="Claim Status",
         default="created",
         required=True,
         index=True,
         tracking=True,
     )
     auto_accepted = fields.Boolean(
-        string="Auto Accepted",
         help="Claim was automatically accepted after 48 hours",
     )
 
@@ -77,7 +74,7 @@ class TrendyolClaim(models.Model):
     cargo_tracking_number = fields.Char(string="Return Tracking Number")
     cargo_tracking_link = fields.Char(string="Return Tracking Link")
     cargo_provider_name = fields.Char(string="Cargo Provider")
-    cargo_sender_number = fields.Char(string="Cargo Sender Number")
+    cargo_sender_number = fields.Char()
 
     # Claim lines
     line_ids = fields.One2many(
@@ -95,18 +92,15 @@ class TrendyolClaim(models.Model):
 
     # Raw data
     raw_data = fields.Text(
-        string="Raw Data",
         help="Original JSON data from Trendyol",
     )
 
     # Computed
     total_quantity = fields.Float(
-        string="Total Quantity",
         compute="_compute_totals",
         store=True,
     )
     line_count = fields.Integer(
-        string="Line Count",
         compute="_compute_totals",
         store=True,
     )
@@ -408,15 +402,13 @@ class TrendyolClaimLine(models.Model):
         "trendyol.product.binding",
         string="Product Binding",
     )
-    barcode = fields.Char(string="Barcode")
-    product_name = fields.Char(string="Product Name")
-    quantity = fields.Float(string="Quantity", default=1.0)
+    barcode = fields.Char()
+    product_name = fields.Char()
+    quantity = fields.Float(default=1.0)
     customer_reason = fields.Char(
-        string="Customer Reason",
         help="Reason stated by customer for return",
     )
     trendyol_reason = fields.Char(
-        string="Trendyol Reason",
         help="Reason assessed by Trendyol",
     )
-    status = fields.Char(string="Status")
+    status = fields.Char()

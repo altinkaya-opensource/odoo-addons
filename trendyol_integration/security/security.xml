@@ -71,4 +71,22 @@
             name="domain_force"
         >[('backend_id.company_id', 'in', company_ids)]</field>
     </record>
+
+    <!-- Settlement: Company-based access -->
+    <record id="rule_trendyol_settlement" model="ir.rule">
+        <field name="name">Trendyol Settlement: Company Access</field>
+        <field name="model_id" ref="model_trendyol_settlement" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Question: Company-based access -->
+    <record id="rule_trendyol_question" model="ir.rule">
+        <field name="name">Trendyol Question: Company Access</field>
+        <field name="model_id" ref="model_trendyol_question" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
 </odoo>

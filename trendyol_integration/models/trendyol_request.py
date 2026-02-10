@@ -90,7 +90,7 @@ class TrendyolRequest:
         """Get common headers for API requests."""
         return {
             "Authorization": self.auth_header,
-            "User-Agent": f"{self.seller_id} - SelfIntegration",
+            "User-Agent": f"{self.seller_id} - Odoo Trendyol Integration",
             "Content-Type": "application/json",
         }
 
@@ -264,7 +264,10 @@ class TrendyolRequest:
         Returns:
             Dict with 'batchRequestId' for tracking
         """
-        endpoint = f"/integration/inventory/sellers/{self.seller_id}/products/price-and-inventory"
+        endpoint = (
+            f"/integration/inventory/sellers/{self.seller_id}"
+            "/products/price-and-inventory"
+        )
         return self._make_request(
             "POST", endpoint, json_data={"items": items}, skip_rate_limit=True
         )
@@ -278,7 +281,10 @@ class TrendyolRequest:
         Returns:
             Dict with batch status and item results
         """
-        endpoint = f"/integration/product/sellers/{self.seller_id}/products/batch-requests/{batch_request_id}"
+        endpoint = (
+            f"/integration/product/sellers/{self.seller_id}"
+            f"/products/batch-requests/{batch_request_id}"
+        )
         return self._make_request("GET", endpoint)
 
     def filter_products(
@@ -379,7 +385,10 @@ class TrendyolRequest:
         Returns:
             Response data
         """
-        endpoint = f"/integration/order/sellers/{self.seller_id}/shipment-packages/{shipment_package_id}"
+        endpoint = (
+            f"/integration/order/sellers/{self.seller_id}"
+            f"/shipment-packages/{shipment_package_id}"
+        )
         json_data = {"status": status}
         if lines:
             json_data["lines"] = lines
@@ -461,7 +470,8 @@ class TrendyolRequest:
 
         Args:
             shipment_package_id: Package ID
-            invoice_link: Public URL to invoice PDF/HTML (must be accessible for 8 years)
+            invoice_link: Public URL to invoice PDF/HTML
+                (must be accessible for 8 years)
             invoice_number: Invoice number (required for micro export orders)
                            Format: 3 alphanumeric + 13 numeric = 16 chars
             invoice_date: Invoice datetime as Unix timestamp (seconds or milliseconds)
@@ -497,8 +507,9 @@ class TrendyolRequest:
 
         Args:
             webhook_url: URL to receive webhooks
-            subscribed_statuses: List of statuses to subscribe to (e.g., CREATED, PICKING,
-                                INVOICED, SHIPPED, CANCELLED, DELIVERED, etc.)
+            subscribed_statuses: List of statuses to subscribe to
+                (e.g., CREATED, PICKING, INVOICED, SHIPPED,
+                CANCELLED, DELIVERED, etc.)
                                 If empty, subscribes to all statuses.
             username: Username for BASIC_AUTHENTICATION
             password: Password for BASIC_AUTHENTICATION
@@ -561,8 +572,9 @@ class TrendyolRequest:
             start_date: Start date (Unix timestamp ms)
             end_date: End date (Unix timestamp ms)
             claim_ids: List of specific claim IDs to fetch
-            claim_item_status: Filter by status (Created, WaitingInAction, Accepted,
-                              Cancelled, Rejected, Unresolved, InAnalysis, WaitingFraudCheck)
+            claim_item_status: Filter by status (Created,
+                WaitingInAction, Accepted, Cancelled, Rejected,
+                Unresolved, InAnalysis, WaitingFraudCheck)
             order_number: Filter by order number
             page: Page number
             size: Page size (max 25)
@@ -598,7 +610,10 @@ class TrendyolRequest:
         Returns:
             Response data
         """
-        endpoint = f"/integration/order/sellers/{self.seller_id}/claims/{claim_id}/items/approve"
+        endpoint = (
+            f"/integration/order/sellers/{self.seller_id}"
+            f"/claims/{claim_id}/items/approve"
+        )
         json_data = {"claimLineItemIdList": claim_line_item_id_list, "params": {}}
         return self._make_request("PUT", endpoint, json_data=json_data)
 
@@ -666,6 +681,40 @@ class TrendyolRequest:
         )
         json_data = {"text": answer_text[:2000]}
         return self._make_request("POST", endpoint, json_data=json_data)
+
+    # ==================== Settlement / Finance Methods ====================
+
+    def get_settlements(
+        self,
+        start_date,
+        end_date,
+        transaction_types=None,
+        page=0,
+        size=500,
+    ):
+        """Get settlement transactions from finance API.
+
+        Args:
+            start_date: Start date (Unix timestamp ms) — required
+            end_date: End date (Unix timestamp ms) — required, max 15 days range
+            transaction_types: Comma-separated types (e.g. "Sale,Return")
+            page: Page number
+            size: Page size (max 500)
+
+        Returns:
+            Dict with settlement content list
+        """
+        endpoint = f"/integration/finance/che/sellers/{self.seller_id}/settlements"
+        params = {
+            "startDate": start_date,
+            "endDate": end_date,
+            "page": page,
+            "size": size,
+        }
+        if transaction_types:
+            params["transactionTypes"] = transaction_types
+
+        return self._make_request("GET", endpoint, params=params)
 
     # ==================== Utility Methods ====================
 

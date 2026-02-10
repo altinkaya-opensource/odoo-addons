@@ -53,7 +53,6 @@ class TrendyolCategory(models.Model):
         string="Attributes",
     )
     full_path = fields.Char(
-        string="Full Path",
         compute="_compute_full_path",
         store=True,
         recursive=True,
@@ -241,7 +240,6 @@ class TrendyolCategoryAttribute(models.Model):
     )
     name = fields.Char(required=True)
     required = fields.Boolean(
-        string="Required",
         help="This attribute is required for product creation",
     )
     allow_custom = fields.Boolean(
@@ -249,11 +247,9 @@ class TrendyolCategoryAttribute(models.Model):
         help="Custom values can be entered for this attribute",
     )
     varianter = fields.Boolean(
-        string="Varianter",
         help="This attribute creates product variants",
     )
     slicer = fields.Boolean(
-        string="Slicer",
         help="This attribute is a slicer attribute",
     )
     value_ids = fields.One2many(

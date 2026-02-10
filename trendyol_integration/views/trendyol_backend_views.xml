@@ -13,31 +13,6 @@
                         type="object"
                         class="btn-primary"
                     />
-                    <button
-                        name="action_sync_categories"
-                        string="Sync Categories"
-                        type="object"
-                    />
-                    <button
-                        name="action_sync_brands"
-                        string="Sync Brands"
-                        type="object"
-                    />
-                    <button
-                        name="action_import_orders"
-                        string="Import Orders"
-                        type="object"
-                    />
-                    <button
-                        name="action_sync_stock_prices"
-                        string="Sync Stock/Prices"
-                        type="object"
-                    />
-                    <button
-                        name="action_import_claims"
-                        string="Import Claims"
-                        type="object"
-                    />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -77,6 +52,30 @@
                                 string="Claims"
                             />
                         </button>
+                        <button
+                            name="action_view_questions"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-question-circle"
+                        >
+                            <field
+                                name="question_count"
+                                widget="statinfo"
+                                string="Questions"
+                            />
+                        </button>
+                        <button
+                            name="action_view_settlements"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-money"
+                        >
+                            <field
+                                name="settlement_count"
+                                widget="statinfo"
+                                string="Settlements"
+                            />
+                        </button>
                     </div>
                     <widget
                         name="web_ribbon"
@@ -102,7 +101,7 @@
                                 groups="base.group_multi_company"
                             />
                             <field name="default_product_id" />
-                            <field name="warehouse_id" />
+                            <field name="warehouse_ids" widget="many2many_tags" />
                             <field name="pricelist_id" />
                             <field name="sales_team_id" />
                             <field name="fiscal_position_id" />
@@ -115,6 +114,7 @@
                                 <group string="Auto Sync">
                                     <field name="auto_import_orders" />
                                     <field name="auto_import_claims" />
+                                    <field name="auto_import_questions" />
                                     <field name="auto_sync_stock" />
                                     <field name="auto_sync_tracking" />
                                     <field name="auto_send_invoice" />
@@ -123,7 +123,35 @@
                                     <field name="auto_confirm_orders" />
                                     <field name="default_vat_rate" />
                                 </group>
+                                <group string="Q&amp;A Settings">
+                                    <field
+                                        name="question_user_ids"
+                                        widget="many2many_tags"
+                                    />
+                                </group>
+                                <group string="Accounting">
+                                    <field name="trendyol_partner_id" />
+                                    <field name="settlement_journal_id" />
+                                    <field name="auto_import_settlements" />
+                                    <field name="auto_reconcile_settlements" />
+                                </group>
                             </group>
+                        </page>
+                        <page string="Cargo Mapping" name="cargo_mapping">
+                            <field name="cargo_mapping_ids">
+                                <tree editable="bottom">
+                                    <field name="trendyol_cargo_provider_name" />
+                                    <field name="carrier_id" />
+                                </tree>
+                            </field>
+                            <span class="text-muted">
+                                <b>Known Trendyol Cargo Providers:</b><br />
+                                Kolay Gelsin Marketplace, Ceva Tedarik Marketplace,
+                                DHL eCommerce Marketplace, PTT Kargo Marketplace,
+                                Sürat Kargo Marketplace, Trendyol Express Marketplace,
+                                Horoz Kargo Marketplace, CEVA Marketplace,
+                                Yurtiçi Kargo Marketplace, Aras Kargo Marketplace
+                            </span>
                         </page>
                         <page string="Webhook" name="webhook">
                             <group>
@@ -132,11 +160,72 @@
                                 <field name="webhook_id" />
                             </group>
                         </page>
+                        <page string="Manual Actions" name="manual_actions">
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <h3>Import</h3>
+                                    <button
+                                        name="action_import_orders"
+                                        string="Import Orders"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
+                                    <button
+                                        name="action_import_claims"
+                                        string="Import Claims"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
+                                    <button
+                                        name="action_import_questions"
+                                        string="Import Questions"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
+                                    <button
+                                        name="action_import_settlements"
+                                        string="Import Settlements"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
+                                </div>
+                                <div class="col-6">
+                                    <h3>Sync</h3>
+                                    <button
+                                        name="action_sync_categories"
+                                        string="Sync Categories"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                    <button
+                                        name="action_sync_brands"
+                                        string="Sync Brands"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                    <button
+                                        name="action_sync_stock_prices"
+                                        string="Sync Stock/Prices"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                </div>
+                            </div>
+                        </page>
                         <page string="Sync Status" name="sync_status">
                             <group>
                                 <group string="Last Sync Times">
                                     <field name="last_order_sync" readonly="0" />
                                     <field name="last_claim_sync" />
+                                    <field name="last_question_sync" readonly="0" />
+                                    <field name="last_settlement_sync" readonly="0" />
                                     <field name="last_stock_sync" />
                                     <field name="last_category_sync" />
                                     <field name="last_brand_sync" />
@@ -165,7 +254,7 @@
                 <field name="seller_id" />
                 <field name="environment" />
                 <field name="company_id" groups="base.group_multi_company" />
-                <field name="warehouse_id" />
+                <field name="warehouse_ids" widget="many2many_tags" />
                 <field name="product_binding_count" />
                 <field name="order_count" />
                 <field name="last_order_sync" />

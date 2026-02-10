@@ -3,7 +3,7 @@
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -36,7 +36,6 @@ class TrendyolOrder(models.Model):
 
     # Trendyol identifiers
     trendyol_order_number = fields.Char(
-        string="Trendyol Order Number",
         required=True,
         index=True,
     )
@@ -55,6 +54,7 @@ class TrendyolOrder(models.Model):
     trendyol_status = fields.Selection(
         [
             ("created", "Created"),
+            ("awaiting", "Awaiting"),
             ("picking", "Picking"),
             ("invoiced", "Invoiced"),
             ("shipped", "Shipped"),
@@ -62,8 +62,10 @@ class TrendyolOrder(models.Model):
             ("delivered", "Delivered"),
             ("undelivered", "Undelivered"),
             ("returned", "Returned"),
+            ("unpacked", "Unpacked"),
+            ("unsupplied", "Unsupplied"),
+            ("at_collection_point", "At Collection Point"),
         ],
-        string="Trendyol Status",
         default="created",
         required=True,
         index=True,
@@ -77,23 +79,19 @@ class TrendyolOrder(models.Model):
 
     # Invoice
     invoice_link_sent = fields.Boolean(
-        string="Invoice Link Sent",
         default=False,
     )
     invoice_sent_date = fields.Datetime(
-        string="Invoice Sent Date",
         readonly=True,
     )
 
     # Raw data
     raw_data = fields.Text(
-        string="Raw Data",
         help="Original JSON data from Trendyol",
     )
 
     # Computed fields
     order_date = fields.Datetime(
-        string="Order Date",
         compute="_compute_order_date",
         store=True,
     )
@@ -114,10 +112,12 @@ class TrendyolOrder(models.Model):
                     data = json.loads(order.raw_data)
                     order_date_ts = data.get("orderDate")
                     if order_date_ts:
-                        order.order_date = datetime.fromtimestamp(order_date_ts / 1000)
+                        # Trendyol timestamps are in UTC+3
+                        dt = datetime.fromtimestamp(data["orderDate"] / 1000)
+                        order.order_date = dt - timedelta(hours=3)
                         continue
                 except (json.JSONDecodeError, TypeError):
-                    pass
+                    _logger.debug("Failed to parse order date from raw_data")
             order.order_date = order.create_date
 
     @api.model
@@ -153,6 +153,7 @@ class TrendyolOrder(models.Model):
             if existing.trendyol_status != new_status:
                 existing.trendyol_status = new_status
                 existing.raw_data = json.dumps(order_data, indent=2, ensure_ascii=False)
+                existing._update_picking_delivery_state(new_status)
             return existing
 
         # Create new order
@@ -192,6 +193,13 @@ class TrendyolOrder(models.Model):
             # Auto-confirm if configured
             if backend.auto_confirm_orders:
                 sale_order.action_confirm()
+                # Set pre-assigned Trendyol tracking number on pickings
+                tracking_number = order_data.get("cargoTrackingNumber")
+                if tracking_number:
+                    pickings = sale_order.picking_ids.filtered(
+                        lambda p: not p.carrier_tracking_ref
+                    )
+                    pickings.carrier_tracking_ref = str(tracking_number)
 
             _logger.info(
                 "Imported order %s (package: %s)",
@@ -220,6 +228,7 @@ class TrendyolOrder(models.Model):
         """
         status_map = {
             "Created": "created",
+            "Awaiting": "awaiting",
             "Picking": "picking",
             "Invoiced": "invoiced",
             "Shipped": "shipped",
@@ -227,6 +236,9 @@ class TrendyolOrder(models.Model):
             "Delivered": "delivered",
             "UnDelivered": "undelivered",
             "Returned": "returned",
+            "UnPacked": "unpacked",
+            "UnSupplied": "unsupplied",
+            "AtCollectionPoint": "at_collection_point",
         }
         return status_map.get(trendyol_status, "created")
 
@@ -485,9 +497,11 @@ class TrendyolOrder(models.Model):
         order_date = fields.Datetime.now()
         if order_data.get("orderDate"):
             try:
-                order_date = datetime.fromtimestamp(order_data["orderDate"] / 1000)
+                # Trendyol timestamps are in UTC+3
+                dt = datetime.fromtimestamp(order_data["orderDate"] / 1000)
+                order_date = dt - timedelta(hours=3)
             except (ValueError, TypeError):
-                pass
+                _logger.debug("Failed to parse order date timestamp")
 
         vals = {
             "partner_id": main_partner.id,
@@ -495,7 +509,7 @@ class TrendyolOrder(models.Model):
             "partner_shipping_id": shipping_partner.id,
             "date_order": order_date,
             "company_id": backend.company_id.id,
-            "warehouse_id": backend.warehouse_id.id,
+            "warehouse_id": backend.warehouse_ids[:1].id,
             "pricelist_id": backend.pricelist_id.id,
             "client_order_ref": str(order_data.get("orderNumber", "")),
         }
@@ -504,8 +518,11 @@ class TrendyolOrder(models.Model):
             vals["team_id"] = backend.sales_team_id.id
         if backend.fiscal_position_id:
             vals["fiscal_position_id"] = backend.fiscal_position_id.id
-        if backend.default_cargo_company_id:
-            vals["carrier_id"] = backend.default_cargo_company_id.id
+        carrier = backend._get_carrier_for_cargo_provider(
+            order_data.get("cargoProviderName")
+        )
+        if carrier:
+            vals["carrier_id"] = carrier.id
 
         return vals
 
@@ -568,18 +585,23 @@ class TrendyolOrder(models.Model):
                 return {
                     "order_id": sale_order.id,
                     "display_type": "line_note",
-                    "name": _("UNMAPPED: %s (Qty: %s, Price: %s)")
-                    % (
-                        line_name,
-                        quantity,
-                        price_incl,
+                    "name": _(
+                        "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)",
+                        product=line_name,
+                        qty=quantity,
+                        price=price_incl,
                     ),
                 }
 
-        # Calculate untaxed price (Trendyol prices are VAT-included)
+        # Trendyol prices are VAT-included; use as-is with
+        # price_include taxes (Odoo checkpoint mechanism prevents drift)
         price_unit = price_incl
-        if vat_rate:
-            price_unit = price_incl / (1 + vat_rate / 100)
+
+        # Trendyol sends discount as absolute amount (TRY), Odoo expects percentage
+        discount_amount = line_data.get("discount", 0)
+        discount_pct = 0.0
+        if discount_amount and price_incl and quantity:
+            discount_pct = (discount_amount / (price_incl * quantity)) * 100
 
         vals = {
             "order_id": sale_order.id,
@@ -587,7 +609,7 @@ class TrendyolOrder(models.Model):
             "product_id": product.id,
             "product_uom_qty": quantity,
             "price_unit": price_unit,
-            "discount": line_data.get("discount", 0),
+            "discount": discount_pct,
         }
 
         # Find and apply matching tax
@@ -612,12 +634,12 @@ class TrendyolOrder(models.Model):
             return None
 
         Tax = self.env["account.tax"]
-        # Search for non-included tax with matching rate
+        # Search for price-included tax with matching rate
         tax = Tax.search(
             [
                 ("type_tax_use", "=", "sale"),
                 ("amount", "=", vat_rate),
-                ("price_include", "=", False),
+                ("price_include", "=", True),
                 ("company_id", "=", backend.company_id.id),
             ],
             limit=1,
@@ -699,7 +721,7 @@ class TrendyolOrder(models.Model):
         }
 
     def _send_invoice(self):
-        """Send invoice link to Trendyol API."""
+        """Send Invoiced status and invoice link to Trendyol API."""
         self.ensure_one()
         client = self.backend_id._get_api_client()
 
@@ -709,18 +731,49 @@ class TrendyolOrder(models.Model):
         )[:1]
 
         if not invoice:
-            raise UserError(_("No posted invoice found."))
+            _logger.warning(
+                "No posted invoice found for order %s, skipping.",
+                self.trendyol_order_number,
+            )
+            return
 
-        # Generate portal URL
+        # Step 1: Send "Invoiced" status via updatePackage (if in picking state)
+        if self.trendyol_status == "picking":
+            lines = self._get_trendyol_lines()
+            if lines:
+                try:
+                    client.update_package_status(
+                        int(self.trendyol_package_id),
+                        status="Invoiced",
+                        lines=lines,
+                        params={"invoiceNumber": invoice.name},
+                    )
+                except TrendyolAPIError as e:
+                    _logger.error(
+                        "Failed to send Invoiced status for %s: %s",
+                        self.trendyol_order_number,
+                        str(e),
+                    )
+                    raise
+
+        # Step 2: Send invoice link (uses e-invoice PDF URL if available)
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        invoice_url = f"{base_url}{invoice._get_share_url()}"
+        invoice_url = f"{base_url}{invoice.get_portal_url()}"
+
+        # Trendyol expects invoiceDateTime as Unix timestamp in milliseconds
+        invoice_ts = None
+        if invoice.invoice_date:
+            invoice_ts = int(
+                datetime.combine(invoice.invoice_date, datetime.min.time()).timestamp()
+                * 1000
+            )
 
         try:
             client.send_invoice_link(
                 int(self.trendyol_package_id),
                 invoice_url,
                 invoice.name,
-                invoice.invoice_date.isoformat() if invoice.invoice_date else None,
+                invoice_ts,
             )
             self.invoice_link_sent = True
             self.invoice_sent_date = fields.Datetime.now()
@@ -761,26 +814,96 @@ class TrendyolOrder(models.Model):
             },
         }
 
+    def _get_trendyol_lines(self):
+        """Get Trendyol line items from raw data for API calls.
+
+        Returns:
+            List of dicts with 'lineId' and 'quantity'
+        """
+        self.ensure_one()
+        try:
+            data = json.loads(self.raw_data or "{}")
+            lines = data.get("lines", [])
+        except (json.JSONDecodeError, TypeError):
+            return []
+        return [
+            {"lineId": line.get("id"), "quantity": line.get("quantity")}
+            for line in lines
+            if line.get("id")
+        ]
+
+    def _update_picking_delivery_state(self, trendyol_status):
+        """Update stock.picking delivery_state from Trendyol status.
+
+        Maps Trendyol status to OCA delivery_state values and writes
+        to related outgoing pickings.
+
+        Args:
+            trendyol_status: Mapped status string (e.g., 'shipped', 'delivered')
+        """
+        self.ensure_one()
+        state_map = {
+            "picking": "shipping_recorded_in_carrier",
+            "invoiced": "shipping_recorded_in_carrier",
+            "shipped": "in_transit",
+            "delivered": "customer_delivered",
+            "cancelled": "canceled_shipment",
+            "undelivered": "incident",
+            "returned": "warehouse_delivered",
+        }
+        delivery_state = state_map.get(trendyol_status)
+        if not delivery_state:
+            return
+        pickings = self.odoo_id.picking_ids.filtered(
+            lambda p: p.picking_type_code == "outgoing"
+        )
+        for picking in pickings:
+            vals = {"delivery_state": delivery_state}
+            if trendyol_status == "shipped":
+                vals["date_shipped"] = fields.Date.today()
+            if trendyol_status == "delivered":
+                vals["date_delivered"] = fields.Datetime.now()
+            picking.write(vals)
+
+    def _notify_picking_status(self):
+        """Notify Trendyol that the package is being prepared (Picking status)."""
+        self.ensure_one()
+        client = self.backend_id._get_api_client()
+        lines = self._get_trendyol_lines()
+        if not lines:
+            _logger.warning(
+                "No lines found for picking notification: %s",
+                self.trendyol_order_number,
+            )
+            return
+        try:
+            client.update_package_status(
+                int(self.trendyol_package_id),
+                status="Picking",
+                lines=lines,
+            )
+            self.trendyol_status = "picking"
+            _logger.info(
+                "Notified Trendyol picking status for order %s",
+                self.trendyol_order_number,
+            )
+        except TrendyolAPIError as e:
+            _logger.error(
+                "Failed to notify picking for %s: %s",
+                self.trendyol_order_number,
+                str(e),
+            )
+            raise
+
     def _cancel_in_trendyol(self, reason_id=None):
         """Cancel order in Trendyol API."""
         self.ensure_one()
         client = self.backend_id._get_api_client()
 
-        # Get line IDs from raw data
-        try:
-            data = json.loads(self.raw_data or "{}")
-            lines = data.get("lines", [])
-        except (json.JSONDecodeError, TypeError):
-            lines = []
+        cancel_lines = self._get_trendyol_lines()
 
-        if not lines:
+        if not cancel_lines:
             raise UserError(_("No order lines found to cancel."))
-
-        cancel_lines = [
-            {"lineId": line.get("id"), "quantity": line.get("quantity")}
-            for line in lines
-            if line.get("id")
-        ]
 
         try:
             client.cancel_order_items(
@@ -789,9 +912,13 @@ class TrendyolOrder(models.Model):
                 reason_id=reason_id,
             )
             self.trendyol_status = "cancelled"
-            # Also cancel in Odoo
+            # Also cancel in Odoo, bypassing the Trendyol guard
+            # and sale_cancel_reason wizard
             if self.odoo_id.state not in ("done", "cancel"):
-                self.odoo_id.action_cancel()
+                self.odoo_id.with_context(
+                    from_trendyol_cancel=True,
+                    disable_cancel_warning=True,
+                ).action_cancel()
             _logger.info("Cancelled order %s", self.trendyol_order_number)
         except TrendyolAPIError as e:
             _logger.error(

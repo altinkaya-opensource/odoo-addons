@@ -13,7 +13,6 @@ class ProductProduct(models.Model):
         string="Trendyol Bindings",
     )
     trendyol_binding_count = fields.Integer(
-        string="Trendyol Binding Count",
         compute="_compute_trendyol_binding_count",
     )
     image_url = fields.Char(
@@ -42,7 +41,6 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     trendyol_binding_count = fields.Integer(
-        string="Trendyol Binding Count",
         compute="_compute_trendyol_binding_count",
     )
 

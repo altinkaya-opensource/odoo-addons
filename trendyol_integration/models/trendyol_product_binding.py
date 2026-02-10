@@ -35,7 +35,6 @@ class TrendyolProductBinding(models.Model):
 
     # Trendyol identifiers
     trendyol_barcode = fields.Char(
-        string="Trendyol Barcode",
         required=True,
         index=True,
         help="Barcode used in Trendyol (usually same as Odoo barcode)",
@@ -67,7 +66,6 @@ class TrendyolProductBinding(models.Model):
 
     # Attributes (stored as JSON)
     trendyol_attributes = fields.Text(
-        string="Trendyol Attributes",
         help="JSON array of category attributes",
     )
 
@@ -80,17 +78,14 @@ class TrendyolProductBinding(models.Model):
             ("rejected", "Rejected"),
             ("error", "Error"),
         ],
-        string="Sync State",
         default="draft",
         required=True,
         index=True,
     )
     sync_error = fields.Text(
-        string="Sync Error",
         readonly=True,
     )
     last_sync_date = fields.Datetime(
-        string="Last Sync Date",
         readonly=True,
     )
 
@@ -110,16 +105,13 @@ class TrendyolProductBinding(models.Model):
 
     # Stock
     trendyol_quantity = fields.Float(
-        string="Trendyol Quantity",
         compute="_compute_trendyol_quantity",
         help="Available quantity for Trendyol",
     )
     last_sent_quantity = fields.Float(
-        string="Last Sent Quantity",
         readonly=True,
     )
     last_sent_price = fields.Float(
-        string="Last Sent Price",
         readonly=True,
     )
 
@@ -157,19 +149,20 @@ class TrendyolProductBinding(models.Model):
             )
             binding.trendyol_list_price = price
 
-    @api.depends("odoo_id", "backend_id", "backend_id.warehouse_id")
+    @api.depends("odoo_id", "backend_id", "backend_id.warehouse_ids")
     def _compute_trendyol_quantity(self):
         for binding in self:
-            if not binding.backend_id.warehouse_id or not binding.odoo_id:
+            if not binding.backend_id.warehouse_ids or not binding.odoo_id:
                 binding.trendyol_quantity = 0.0
                 continue
 
-            # Get available qty from warehouse location
-            warehouse = binding.backend_id.warehouse_id
-            location = warehouse.lot_stock_id
-            binding.trendyol_quantity = binding.odoo_id.with_context(
-                location=location.id
-            ).free_qty
+            # Sum available qty across all warehouse locations
+            total_qty = 0.0
+            for warehouse in binding.backend_id.warehouse_ids:
+                total_qty += binding.odoo_id.with_context(
+                    location=warehouse.lot_stock_id.id
+                ).free_qty
+            binding.trendyol_quantity = total_qty
 
     @api.constrains("trendyol_barcode")
     def _check_barcode(self):

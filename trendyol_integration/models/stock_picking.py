@@ -12,17 +12,13 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     def _action_done(self):
-        """Override to sync tracking number to Trendyol after delivery completion."""
+        """Override to notify Trendyol of Picking status after delivery validation."""
         res = super()._action_done()
 
         for picking in self:
             if picking.picking_type_code != "outgoing":
                 continue
 
-            if not picking.carrier_tracking_ref:
-                continue
-
-            # Check if this delivery is linked to a Trendyol order
             sale_order = picking.sale_id
             if not sale_order:
                 continue
@@ -35,19 +31,15 @@ class StockPicking(models.Model):
             if not backend.auto_sync_tracking:
                 continue
 
-            # Update tracking number in binding
-            trendyol_binding.cargo_tracking_number = picking.carrier_tracking_ref
-
-            # Queue tracking update
+            # Notify Trendyol: Picking status
             trendyol_binding.with_delay(
                 channel="root.trendyol.order",
-                description=_("Update tracking: %s")
+                description=_("Notify picking: %s")
                 % trendyol_binding.trendyol_order_number,
-            )._update_tracking()
+            )._notify_picking_status()
             _logger.info(
-                "Queued tracking update for Trendyol order %s: %s",
+                "Queued picking notification for Trendyol order %s",
                 trendyol_binding.trendyol_order_number,
-                picking.carrier_tracking_ref,
             )
 
         return res

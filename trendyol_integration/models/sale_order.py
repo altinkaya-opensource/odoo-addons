@@ -1,7 +1,8 @@
 # Copyright 2025 Altinkaya Enclosures
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
@@ -12,11 +13,6 @@ class SaleOrder(models.Model):
         "odoo_id",
         string="Trendyol Orders",
     )
-    is_trendyol_order = fields.Boolean(
-        string="Is Trendyol Order",
-        compute="_compute_is_trendyol_order",
-        store=True,
-    )
     trendyol_order_number = fields.Char(
         string="Trendyol Order Number",
         related="trendyol_binding_ids.trendyol_order_number",
@@ -26,9 +22,25 @@ class SaleOrder(models.Model):
         string="Trendyol Status",
     )
 
-    def _compute_is_trendyol_order(self):
-        for order in self:
-            order.is_trendyol_order = bool(order.trendyol_binding_ids)
+    def action_cancel(self):
+        """Block direct cancellation of Trendyol orders.
+
+        Users must cancel from the Trendyol Orders section so the
+        cancellation is propagated to the Trendyol API first.
+        """
+        trendyol_orders = self.filtered(
+            lambda o: o.trendyol_binding_ids
+            and o.trendyol_status not in (False, "cancelled")
+        )
+        if trendyol_orders and not self.env.context.get("from_trendyol_cancel"):
+            raise UserError(
+                _(
+                    "This order was created from Trendyol. Please cancel it"
+                    " from the Trendyol Orders section first so the"
+                    " cancellation is sent to Trendyol."
+                )
+            )
+        return super().action_cancel()
 
     def action_view_trendyol_binding(self):
         """View Trendyol binding for this order."""

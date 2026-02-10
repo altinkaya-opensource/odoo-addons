@@ -6,28 +6,6 @@
     "version": "16.0.1.0.0",
     "category": "Sales/Sales",
     "summary": "Integrate Odoo with Trendyol marketplace",
-    "description": """
-Trendyol Marketplace Integration
-================================
-
-This module provides full integration with Trendyol marketplace:
-
-* Product synchronization (export to Trendyol)
-* Stock and price updates
-* Order import and management
-* Shipment tracking sync
-* Invoice delivery
-* Returns/claims management
-* Webhook support for real-time updates
-
-Configuration
--------------
-1. Go to Sales > Configuration > Trendyol > Backends
-2. Create a new backend with your API credentials
-3. Configure warehouse, pricelist, and other settings
-4. Sync categories and brands
-5. Start exporting products and importing orders
-    """,
     "author": "Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
@@ -39,6 +17,7 @@ Configuration
         "account",
         "queue_job",
         "delivery",
+        "delivery_state",
     ],
     "data": [
         # Security
@@ -54,6 +33,8 @@ Configuration
         "views/trendyol_product_binding_views.xml",
         "views/trendyol_order_views.xml",
         "views/trendyol_claim_views.xml",
+        "views/trendyol_question_views.xml",
+        "views/trendyol_settlement_views.xml",
         "views/trendyol_batch_request_views.xml",
         "views/product_views.xml",
         "views/sale_order_views.xml",

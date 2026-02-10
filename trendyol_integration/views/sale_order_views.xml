@@ -12,7 +12,7 @@
                     type="object"
                     class="oe_stat_button"
                     icon="fa-shopping-bag"
-                    attrs="{'invisible': [('is_trendyol_order', '=', False)]}"
+                    attrs="{'invisible': [('trendyol_binding_ids', '!=', False)]}"
                 >
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_text">Trendyol</span>
@@ -21,7 +21,7 @@
                         </span>
                     </div>
                 </button>
-                <field name="is_trendyol_order" invisible="1" />
+                <field name="trendyol_binding_ids" invisible="1" />
             </div>
         </field>
     </record>
@@ -49,7 +49,7 @@
                 <filter
                     name="trendyol_orders"
                     string="Trendyol Orders"
-                    domain="[('is_trendyol_order', '=', True)]"
+                    domain="[('trendyol_binding_ids', '!=', False)]"
                 />
             </filter>
             <field name="name" position="after">

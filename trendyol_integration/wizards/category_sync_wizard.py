@@ -15,11 +15,9 @@ class TrendyolCategorySyncWizard(models.TransientModel):
         required=True,
     )
     sync_categories = fields.Boolean(
-        string="Sync Categories",
         default=True,
     )
     sync_brands = fields.Boolean(
-        string="Sync Brands",
         default=True,
     )
     sync_attributes = fields.Boolean(

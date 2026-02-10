@@ -18,6 +18,15 @@
         action="action_trendyol_order"
     />
 
+    <!-- Customer Questions Menu -->
+    <menuitem
+        id="menu_trendyol_questions"
+        name="Questions (Q&amp;A)"
+        parent="menu_trendyol_root"
+        sequence="15"
+        action="action_trendyol_question"
+    />
+
     <!-- Claims/Returns Menu -->
     <menuitem
         id="menu_trendyol_claims"
@@ -25,6 +34,15 @@
         parent="menu_trendyol_root"
         sequence="20"
         action="action_trendyol_claim"
+    />
+
+    <!-- Settlements Menu -->
+    <menuitem
+        id="menu_trendyol_settlements"
+        name="Settlements"
+        parent="menu_trendyol_root"
+        sequence="25"
+        action="action_trendyol_settlement"
     />
 
     <!-- Products Menu -->

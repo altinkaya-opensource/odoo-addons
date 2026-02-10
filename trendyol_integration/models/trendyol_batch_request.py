@@ -35,7 +35,6 @@ class TrendyolBatchRequest(models.Model):
             ("product_delete", "Product Delete"),
             ("price_inventory", "Price & Inventory Update"),
         ],
-        string="Request Type",
         required=True,
     )
     state = fields.Selection(
@@ -50,9 +49,9 @@ class TrendyolBatchRequest(models.Model):
         required=True,
         index=True,
     )
-    total_items = fields.Integer(string="Total Items")
-    success_count = fields.Integer(string="Success Count")
-    fail_count = fields.Integer(string="Fail Count")
+    total_items = fields.Integer()
+    success_count = fields.Integer()
+    fail_count = fields.Integer()
     product_binding_ids = fields.Many2many(
         "trendyol.product.binding",
         "trendyol_batch_product_rel",
@@ -61,11 +60,9 @@ class TrendyolBatchRequest(models.Model):
         string="Product Bindings",
     )
     result_data = fields.Text(
-        string="Result Data",
         help="JSON data from batch request result",
     )
     error_messages = fields.Text(
-        string="Error Messages",
         help="Summary of errors from failed items",
     )
 

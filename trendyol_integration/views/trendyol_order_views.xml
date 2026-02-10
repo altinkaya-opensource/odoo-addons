@@ -77,14 +77,6 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Raw Data" name="raw_data">
-                            <field
-                                name="raw_data"
-                                widget="ace"
-                                options="{'mode': 'json'}"
-                                readonly="1"
-                            />
-                        </page>
                     </notebook>
                 </sheet>
             </form>
