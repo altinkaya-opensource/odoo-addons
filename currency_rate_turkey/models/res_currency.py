@@ -32,8 +32,8 @@ class ResCurrency(models.Model):
         :param date:
         :return:
         """
-        use_custom_rate = self._context.get("use_custom_rate", False)
-        custom_rate_currency_id = self._context.get("custom_rate_currency_id", False)
+        # use_custom_rate = self._context.get("use_custom_rate", False)
+        # custom_rate_currency_id = self._context.get("custom_rate_currency_id", False)
 
         # If date is a string, convert it to date
         # Workaround for reconciliation widget
@@ -65,10 +65,10 @@ class ResCurrency(models.Model):
         if not rates:
             rates = self._get_rates_single(company, date)
 
-        # Check for custom rate
-        for rate in self:
-            if use_custom_rate and rate.id == custom_rate_currency_id:
-                rates[rate.id] = self._context.get("custom_rate", False)
+        # # Check for custom rate
+        # for rate in self:
+        #     if use_custom_rate and rate.id == custom_rate_currency_id:
+        #         rates[rate.id] = self._context.get("custom_rate", False)
 
         return rates
 
