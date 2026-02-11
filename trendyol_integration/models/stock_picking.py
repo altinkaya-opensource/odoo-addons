@@ -15,11 +15,16 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     def _get_trendyol_binding(self):
-        """Return the trendyol.order binding linked via sale_id, or False."""
+        """Return the trendyol.order binding linked via sale_id, or False.
+
+        Uses sudo() because warehouse users may not have access to
+        trendyol.order records but still need to trigger integrations
+        when confirming pickings.
+        """
         self.ensure_one()
         if not self.sale_id:
             return False
-        return fields.first(self.sale_id.trendyol_binding_ids)
+        return fields.first(self.sale_id.sudo().trendyol_binding_ids)
 
     def button_validate(self):
         """Extend to auto-fetch Trendyol labels after validation."""
@@ -137,11 +142,7 @@ class StockPicking(models.Model):
             if picking.picking_type_code != "outgoing":
                 continue
 
-            sale_order = picking.sale_id
-            if not sale_order:
-                continue
-
-            trendyol_binding = sale_order.trendyol_binding_ids[:1]
+            trendyol_binding = picking._get_trendyol_binding()
             if not trendyol_binding:
                 continue
 
