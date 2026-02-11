@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Import Orders Cron - Every 15 minutes -->
+    <record id="cron_import_orders" model="ir.cron">
+        <field name="name">Trendyol: Import Orders</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_orders()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Import Claims Cron - Every 30 minutes -->
+    <record id="cron_import_claims" model="ir.cron">
+        <field name="name">Trendyol: Import Claims/Returns</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_claims()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Sync Stock/Prices Cron - Every hour -->
+    <record id="cron_sync_stock_prices" model="ir.cron">
+        <field name="name">Trendyol: Sync Stock and Prices</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_stock_prices()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Check Batch Requests Cron - Every 30 minutes -->
+    <record id="cron_check_batch_requests" model="ir.cron">
+        <field name="name">Trendyol: Check Batch Requests</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_check_batch_requests()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Sync Metadata Cron - Daily -->
+    <record id="cron_sync_metadata" model="ir.cron">
+        <field name="name">Trendyol: Sync Categories and Brands</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_metadata()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+    <!-- Import Settlements Cron - Daily -->
+    <record id="cron_import_settlements" model="ir.cron">
+        <field name="name">Trendyol: Import Settlements</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_settlements()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Import Customer Questions Cron - Every 30 minutes -->
+    <record id="cron_import_questions" model="ir.cron">
+        <field name="name">Trendyol: Import Customer Questions</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_questions()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+
+    <!-- Send Invoice Links Cron - Nightly -->
+    <record id="cron_send_invoices" model="ir.cron">
+        <field name="name">Trendyol: Send Invoice Links</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_send_invoices()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+        <field name="doall">False</field>
+    </record>
+</odoo>

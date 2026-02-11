@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Product Export Wizard Form View -->
+    <record id="view_trendyol_product_export_wizard_form" model="ir.ui.view">
+        <field name="name">trendyol.product.export.wizard.form</field>
+        <field name="model">trendyol.product.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Products to Trendyol">
+                <group>
+                    <group>
+                        <field name="backend_id" />
+                        <field name="trendyol_category_id" />
+                        <field name="trendyol_brand_id" />
+                    </group>
+                    <group>
+                        <field name="vat_rate" />
+                        <field name="skip_existing" />
+                    </group>
+                </group>
+                <group string="Products">
+                    <field name="product_ids" nolabel="1">
+                        <tree>
+                            <field name="default_code" />
+                            <field name="name" />
+                            <field name="barcode" />
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button
+                        name="action_create_bindings"
+                        string="Create Bindings"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Export Wizard Action -->
+    <record id="action_trendyol_product_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export to Trendyol</field>
+        <field name="res_model">trendyol.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <!-- Also bind to product.template -->
+    <record
+        id="action_trendyol_product_export_wizard_template"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Export to Trendyol</field>
+        <field name="res_model">trendyol.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

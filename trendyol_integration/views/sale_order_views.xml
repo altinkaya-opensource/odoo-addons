@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Sale Order Form Extension -->
+    <record id="view_sale_order_form_trendyol" model="ir.ui.view">
+        <field name="name">sale.order.form.trendyol</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_trendyol_binding"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-bag"
+                    attrs="{'invisible': [('trendyol_binding_ids', '!=', False)]}"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Trendyol</span>
+                        <span class="o_stat_value">
+                            <field name="trendyol_order_number" />
+                        </span>
+                    </div>
+                </button>
+                <field name="trendyol_binding_ids" invisible="1" />
+            </div>
+        </field>
+    </record>
+
+    <!-- Sale Order Tree Extension -->
+    <record id="view_sale_order_tree_trendyol" model="ir.ui.view">
+        <field name="name">sale.order.tree.trendyol</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="trendyol_order_number" optional="hide" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Sale Order Search Extension -->
+    <record id="view_sale_order_search_trendyol" model="ir.ui.view">
+        <field name="name">sale.order.search.trendyol</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <separator />
+                <filter
+                    name="trendyol_orders"
+                    string="Trendyol Orders"
+                    domain="[('trendyol_binding_ids', '!=', False)]"
+                />
+            </filter>
+            <field name="name" position="after">
+                <field name="trendyol_order_number" />
+            </field>
+        </field>
+    </record>
+</odoo>

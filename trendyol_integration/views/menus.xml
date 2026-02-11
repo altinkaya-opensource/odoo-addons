@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Main Menu under Sales -->
+    <menuitem
+        id="menu_trendyol_root"
+        name="Trendyol"
+        parent="sale.sale_menu_root"
+        sequence="50"
+        groups="group_trendyol_user"
+    />
+
+    <!-- Orders Menu -->
+    <menuitem
+        id="menu_trendyol_orders"
+        name="Orders"
+        parent="menu_trendyol_root"
+        sequence="10"
+        action="action_trendyol_order"
+    />
+
+    <!-- Customer Questions Menu -->
+    <menuitem
+        id="menu_trendyol_questions"
+        name="Questions (Q&amp;A)"
+        parent="menu_trendyol_root"
+        sequence="15"
+        action="action_trendyol_question"
+    />
+
+    <!-- Claims/Returns Menu -->
+    <menuitem
+        id="menu_trendyol_claims"
+        name="Claims / Returns"
+        parent="menu_trendyol_root"
+        sequence="20"
+        action="action_trendyol_claim"
+    />
+
+    <!-- Settlements Menu -->
+    <menuitem
+        id="menu_trendyol_settlements"
+        name="Settlements"
+        parent="menu_trendyol_root"
+        sequence="25"
+        action="action_trendyol_settlement"
+    />
+
+    <!-- Products Menu -->
+    <menuitem
+        id="menu_trendyol_products"
+        name="Products"
+        parent="menu_trendyol_root"
+        sequence="30"
+        action="action_trendyol_product_binding"
+    />
+
+    <!-- Configuration Menu -->
+    <menuitem
+        id="menu_trendyol_config"
+        name="Configuration"
+        parent="menu_trendyol_root"
+        sequence="100"
+        groups="group_trendyol_manager"
+    />
+
+    <!-- Backends -->
+    <menuitem
+        id="menu_trendyol_backends"
+        name="Backends"
+        parent="menu_trendyol_config"
+        sequence="10"
+        action="action_trendyol_backend"
+    />
+
+    <!-- Categories -->
+    <menuitem
+        id="menu_trendyol_categories"
+        name="Categories"
+        parent="menu_trendyol_config"
+        sequence="20"
+        action="action_trendyol_category"
+    />
+
+    <!-- Brands -->
+    <menuitem
+        id="menu_trendyol_brands"
+        name="Brands"
+        parent="menu_trendyol_config"
+        sequence="30"
+        action="action_trendyol_brand"
+    />
+
+    <!-- Batch Requests -->
+    <menuitem
+        id="menu_trendyol_batch_requests"
+        name="Batch Requests"
+        parent="menu_trendyol_config"
+        sequence="40"
+        action="action_trendyol_batch_request"
+    />
+</odoo>

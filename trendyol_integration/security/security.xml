@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Trendyol Module Category -->
+    <record id="module_category_trendyol" model="ir.module.category">
+        <field name="name">Trendyol Integration</field>
+        <field name="description">Manage Trendyol marketplace integration</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- User Group - Read access to bindings and orders -->
+    <record id="group_trendyol_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_trendyol" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!-- Manager Group - Full access, can configure backends -->
+    <record id="group_trendyol_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_trendyol" />
+        <field name="implied_ids" eval="[(4, ref('group_trendyol_user'))]" />
+        <field
+            name="users"
+            eval="[(4, ref('base.user_admin')), (4, ref('base.user_root'))]"
+        />
+    </record>
+
+    <!-- Record Rules -->
+
+    <!-- Backend: Only managers can see all backends -->
+    <record id="rule_trendyol_backend_manager" model="ir.rule">
+        <field name="name">Trendyol Backend: Manager Access</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="groups" eval="[(4, ref('group_trendyol_manager'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Backend: Users can only see active backends in their company -->
+    <record id="rule_trendyol_backend_user" model="ir.rule">
+        <field name="name">Trendyol Backend: User Access</field>
+        <field name="model_id" ref="model_trendyol_backend" />
+        <field name="groups" eval="[(4, ref('group_trendyol_user'))]" />
+        <field
+            name="domain_force"
+        >[('active', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Product Binding: Company-based access -->
+    <record id="rule_trendyol_product_binding" model="ir.rule">
+        <field name="name">Trendyol Product Binding: Company Access</field>
+        <field name="model_id" ref="model_trendyol_product_binding" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Order: Company-based access -->
+    <record id="rule_trendyol_order" model="ir.rule">
+        <field name="name">Trendyol Order: Company Access</field>
+        <field name="model_id" ref="model_trendyol_order" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Claim: Company-based access -->
+    <record id="rule_trendyol_claim" model="ir.rule">
+        <field name="name">Trendyol Claim: Company Access</field>
+        <field name="model_id" ref="model_trendyol_claim" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Settlement: Company-based access -->
+    <record id="rule_trendyol_settlement" model="ir.rule">
+        <field name="name">Trendyol Settlement: Company Access</field>
+        <field name="model_id" ref="model_trendyol_settlement" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Question: Company-based access -->
+    <record id="rule_trendyol_question" model="ir.rule">
+        <field name="name">Trendyol Question: Company Access</field>
+        <field name="model_id" ref="model_trendyol_question" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

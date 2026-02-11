@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Product Binding Form View -->
+    <record id="view_trendyol_product_binding_form" model="ir.ui.view">
+        <field name="name">trendyol.product.binding.form</field>
+        <field name="model">trendyol.product.binding</field>
+        <field name="arch" type="xml">
+            <form string="Trendyol Product Binding">
+                <header>
+                    <button
+                        name="action_export_to_trendyol"
+                        string="Export to Trendyol"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('sync_state', 'not in', ['draft', 'error'])]}"
+                    />
+                    <button
+                        name="action_update_in_trendyol"
+                        string="Update in Trendyol"
+                        type="object"
+                        attrs="{'invisible': [('sync_state', '!=', 'approved')]}"
+                    />
+                    <button
+                        name="action_sync_stock_price"
+                        string="Sync Stock/Price"
+                        type="object"
+                        attrs="{'invisible': [('sync_state', '!=', 'approved')]}"
+                    />
+                    <button
+                        name="action_set_draft"
+                        string="Set to Draft"
+                        type="object"
+                        attrs="{'invisible': [('sync_state', '=', 'draft')]}"
+                    />
+                    <button
+                        name="action_view_in_trendyol"
+                        string="View in Trendyol"
+                        type="object"
+                        attrs="{'invisible': [('trendyol_product_id', '=', False)]}"
+                    />
+                    <field
+                        name="sync_state"
+                        widget="statusbar"
+                        statusbar_visible="draft,pending,approved"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Product">
+                            <field name="odoo_id" />
+                            <field name="backend_id" />
+                            <field name="trendyol_barcode" />
+                            <field name="trendyol_stock_code" />
+                            <field name="trendyol_product_id" readonly="1" />
+                        </group>
+                        <group string="Trendyol Mapping">
+                            <field name="trendyol_category_id" />
+                            <field name="trendyol_brand_id" />
+                            <field name="vat_rate" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Prices">
+                            <field name="trendyol_list_price" />
+                            <field name="trendyol_sale_price" />
+                            <field name="last_sent_price" readonly="1" />
+                        </group>
+                        <group string="Stock">
+                            <field name="trendyol_quantity" />
+                            <field name="last_sent_quantity" readonly="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attributes" name="attributes">
+                            <field
+                                name="trendyol_attributes"
+                                widget="ace"
+                                options="{'mode': 'json'}"
+                            />
+                        </page>
+                        <page string="Sync Info" name="sync_info">
+                            <group>
+                                <field name="last_sync_date" />
+                                <field name="sync_error" readonly="1" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Binding Tree View -->
+    <record id="view_trendyol_product_binding_tree" model="ir.ui.view">
+        <field name="name">trendyol.product.binding.tree</field>
+        <field name="model">trendyol.product.binding</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="sync_state == 'error'"
+                decoration-warning="sync_state == 'rejected'"
+                decoration-success="sync_state == 'approved'"
+                decoration-info="sync_state == 'pending'"
+            >
+                <field name="name" />
+                <field name="trendyol_barcode" />
+                <field name="trendyol_category_id" />
+                <field name="trendyol_brand_id" />
+                <field name="trendyol_quantity" />
+                <field name="trendyol_sale_price" widget="monetary" />
+                <field name="sync_state" />
+                <field name="backend_id" />
+                <field name="last_sync_date" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Binding Search View -->
+    <record id="view_trendyol_product_binding_search" model="ir.ui.view">
+        <field name="name">trendyol.product.binding.search</field>
+        <field name="model">trendyol.product.binding</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Bindings">
+                <field name="name" />
+                <field name="trendyol_barcode" />
+                <field name="odoo_id" />
+                <field name="trendyol_category_id" />
+                <field name="trendyol_brand_id" />
+                <separator />
+                <filter
+                    name="draft"
+                    string="Draft"
+                    domain="[('sync_state', '=', 'draft')]"
+                />
+                <filter
+                    name="pending"
+                    string="Pending"
+                    domain="[('sync_state', '=', 'pending')]"
+                />
+                <filter
+                    name="approved"
+                    string="Approved"
+                    domain="[('sync_state', '=', 'approved')]"
+                />
+                <filter
+                    name="error"
+                    string="Error"
+                    domain="[('sync_state', '=', 'error')]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_state"
+                        string="Sync State"
+                        context="{'group_by': 'sync_state'}"
+                    />
+                    <filter
+                        name="group_category"
+                        string="Category"
+                        context="{'group_by': 'trendyol_category_id'}"
+                    />
+                    <filter
+                        name="group_brand"
+                        string="Brand"
+                        context="{'group_by': 'trendyol_brand_id'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Product Binding Action -->
+    <record id="action_trendyol_product_binding" model="ir.actions.act_window">
+        <field name="name">Trendyol Products</field>
+        <field name="res_model">trendyol.product.binding</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trendyol_product_binding_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Trendyol product binding
+            </p>
+            <p>
+                Link Odoo products to Trendyol by creating product bindings. You can then export them to Trendyol marketplace.
+            </p>
+        </field>
+    </record>
+</odoo>

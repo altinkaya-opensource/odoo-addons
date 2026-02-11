@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Root Trendyol channel -->
+    <record id="channel_trendyol" model="queue.job.channel">
+        <field name="name">trendyol</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+
+    <!-- Order processing channel -->
+    <record id="channel_trendyol_order" model="queue.job.channel">
+        <field name="name">order</field>
+        <field name="parent_id" ref="channel_trendyol" />
+    </record>
+
+    <!-- Stock/price sync channel -->
+    <record id="channel_trendyol_stock" model="queue.job.channel">
+        <field name="name">stock</field>
+        <field name="parent_id" ref="channel_trendyol" />
+    </record>
+
+    <!-- Product sync channel -->
+    <record id="channel_trendyol_product" model="queue.job.channel">
+        <field name="name">product</field>
+        <field name="parent_id" ref="channel_trendyol" />
+    </record>
+
+    <!-- Webhook processing channel -->
+    <record id="channel_trendyol_webhook" model="queue.job.channel">
+        <field name="name">webhook</field>
+        <field name="parent_id" ref="channel_trendyol" />
+    </record>
+</odoo>

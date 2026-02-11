@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Brand Form View -->
+    <record id="view_trendyol_brand_form" model="ir.ui.view">
+        <field name="name">trendyol.brand.form</field>
+        <field name="model">trendyol.brand</field>
+        <field name="arch" type="xml">
+            <form string="Trendyol Brand">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="trendyol_id" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Brand Tree View -->
+    <record id="view_trendyol_brand_tree" model="ir.ui.view">
+        <field name="name">trendyol.brand.tree</field>
+        <field name="model">trendyol.brand</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="trendyol_id" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Brand Search View -->
+    <record id="view_trendyol_brand_search" model="ir.ui.view">
+        <field name="name">trendyol.brand.search</field>
+        <field name="model">trendyol.brand</field>
+        <field name="arch" type="xml">
+            <search string="Search Brands">
+                <field name="name" />
+                <field name="trendyol_id" />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Brand Action -->
+    <record id="action_trendyol_brand" model="ir.actions.act_window">
+        <field name="name">Trendyol Brands</field>
+        <field name="res_model">trendyol.brand</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trendyol_brand_search" />
+    </record>
+</odoo>

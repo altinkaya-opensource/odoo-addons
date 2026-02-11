@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Category Form View -->
+    <record id="view_trendyol_category_form" model="ir.ui.view">
+        <field name="name">trendyol.category.form</field>
+        <field name="model">trendyol.category</field>
+        <field name="arch" type="xml">
+            <form string="Trendyol Category">
+                <header>
+                    <button
+                        name="action_sync_attributes"
+                        string="Sync Attributes"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('is_leaf', '=', False)]}"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                        <h3>
+                            <field name="full_path" class="text-muted" />
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="trendyol_id" />
+                            <field name="backend_id" />
+                            <field name="parent_id" />
+                            <field name="is_leaf" />
+                        </group>
+                        <group>
+                            <field name="odoo_category_id" />
+                        </group>
+                    </group>
+                    <notebook attrs="{'invisible': [('is_leaf', '=', False)]}">
+                        <page string="Attributes" name="attributes">
+                            <field name="attribute_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="trendyol_id" />
+                                    <field name="required" />
+                                    <field name="allow_custom" />
+                                    <field name="varianter" />
+                                    <field name="slicer" />
+                                    <field name="odoo_attribute_id" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page
+                            string="Subcategories"
+                            name="children"
+                            attrs="{'invisible': [('is_leaf', '=', True)]}"
+                        >
+                            <field name="child_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="trendyol_id" />
+                                    <field name="is_leaf" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Category Tree View -->
+    <record id="view_trendyol_category_tree" model="ir.ui.view">
+        <field name="name">trendyol.category.tree</field>
+        <field name="model">trendyol.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="full_path" />
+                <field name="trendyol_id" />
+                <field name="is_leaf" />
+                <field name="backend_id" />
+                <field name="odoo_category_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Category Search View -->
+    <record id="view_trendyol_category_search" model="ir.ui.view">
+        <field name="name">trendyol.category.search</field>
+        <field name="model">trendyol.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Categories">
+                <field name="name" />
+                <field name="full_path" />
+                <field name="trendyol_id" />
+                <filter
+                    name="leaf_only"
+                    string="Leaf Categories"
+                    domain="[('is_leaf', '=', True)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                    <filter
+                        name="group_parent"
+                        string="Parent"
+                        context="{'group_by': 'parent_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Category Action -->
+    <record id="action_trendyol_category" model="ir.actions.act_window">
+        <field name="name">Trendyol Categories</field>
+        <field name="res_model">trendyol.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trendyol_category_search" />
+        <field name="context">{'search_default_leaf_only': 1}</field>
+    </record>
+
+    <!-- Attribute Form View -->
+    <record id="view_trendyol_category_attribute_form" model="ir.ui.view">
+        <field name="name">trendyol.category.attribute.form</field>
+        <field name="model">trendyol.category.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Category Attribute">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="trendyol_id" />
+                            <field name="category_id" />
+                        </group>
+                        <group>
+                            <field name="required" />
+                            <field name="allow_custom" />
+                            <field name="varianter" />
+                            <field name="slicer" />
+                            <field name="odoo_attribute_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Values" name="values">
+                            <field name="value_ids">
+                                <tree editable="bottom">
+                                    <field name="name" />
+                                    <field name="trendyol_id" />
+                                    <field name="odoo_value_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
