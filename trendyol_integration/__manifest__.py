@@ -18,6 +18,7 @@
         "queue_job",
         "delivery",
         "delivery_state",
+        "delivery_integration_base",
     ],
     "data": [
         # Security

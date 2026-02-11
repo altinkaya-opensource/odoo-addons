@@ -256,9 +256,11 @@ class TrendyolSettlement(models.Model):
 
     def _reconcile_sale(self, sale_order):
         """Reconcile a Sale settlement: pay invoice + commission entry."""
-        invoice = sale_order.invoice_ids.filtered(
-            lambda i: i.state == "posted" and i.move_type == "out_invoice"
-        )[:1]
+        invoice = fields.first(
+            sale_order.invoice_ids.filtered(
+                lambda i: i.state == "posted" and i.move_type == "out_invoice"
+            )
+        )
 
         if not invoice:
             self.write(

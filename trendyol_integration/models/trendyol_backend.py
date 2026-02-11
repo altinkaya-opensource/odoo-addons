@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 import logging
+import secrets
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
@@ -178,6 +179,14 @@ class TrendyolBackend(models.Model):
         readonly=True,
     )
 
+    # Printing
+    label_printer_id = fields.Many2one(
+        "printing.printer",
+        string="Label Printer",
+        help="Default ZPL label printer for Trendyol shipping labels. "
+        "Used when the delivery carrier has no printer configured.",
+    )
+
     # Q&A Settings
     question_user_ids = fields.Many2many(
         "res.users",
@@ -194,9 +203,11 @@ class TrendyolBackend(models.Model):
         readonly=True,
         help="Webhook endpoint URL for this backend",
     )
-    webhook_secret = fields.Char(
+    webhook_api_key = fields.Char(
+        string="Webhook API Key",
         groups="trendyol_integration.group_trendyol_manager",
-        help="Secret key for webhook authentication",
+        help="API key that Trendyol sends in x-api-key header "
+        "when calling the webhook endpoint.",
     )
     webhook_id = fields.Char(
         string="Trendyol Webhook ID",
@@ -295,6 +306,115 @@ class TrendyolBackend(models.Model):
             "params": {
                 "title": _("Success"),
                 "message": _("Connection to Trendyol API successful!"),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def action_register_webhook(self):
+        """Register a webhook subscription on Trendyol."""
+        self.ensure_one()
+        if self.webhook_id:
+            raise UserError(_("A webhook is already registered for this backend."))
+
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        webhook_url = f"{base_url}/trendyol/webhook/{self.id}"
+
+        # Generate API key if not set
+        if not self.webhook_api_key:
+            self.webhook_api_key = secrets.token_urlsafe(32)
+
+        try:
+            client = self._get_api_client()
+            result = client.create_webhook(
+                webhook_url,
+                api_key=self.webhook_api_key,
+                authentication_type="API_KEY",
+            )
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to register webhook: %s") % str(e)) from e
+
+        self.webhook_id = str(result.get("id", ""))
+        self.webhook_url = webhook_url
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Webhook Registered"),
+                "message": _("Webhook has been registered on Trendyol."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def action_delete_webhook(self):
+        """Delete the webhook subscription from Trendyol."""
+        self.ensure_one()
+        if not self.webhook_id:
+            raise UserError(_("No webhook is registered for this backend."))
+
+        try:
+            client = self._get_api_client()
+            client.delete_webhook(self.webhook_id)
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to delete webhook: %s") % str(e)) from e
+
+        self.webhook_id = False
+        self.webhook_url = False
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Webhook Deleted"),
+                "message": _("Webhook has been deleted from Trendyol."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def action_activate_webhook(self):
+        """Activate a deactivated webhook on Trendyol."""
+        self.ensure_one()
+        if not self.webhook_id:
+            raise UserError(_("No webhook is registered for this backend."))
+
+        try:
+            client = self._get_api_client()
+            client.activate_webhook(self.webhook_id)
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to activate webhook: %s") % str(e)) from e
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Webhook Activated"),
+                "message": _("Webhook has been activated on Trendyol."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def action_deactivate_webhook(self):
+        """Deactivate an active webhook on Trendyol."""
+        self.ensure_one()
+        if not self.webhook_id:
+            raise UserError(_("No webhook is registered for this backend."))
+
+        try:
+            client = self._get_api_client()
+            client.deactivate_webhook(self.webhook_id)
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to deactivate webhook: %s") % str(e)) from e
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Webhook Deactivated"),
+                "message": _("Webhook has been deactivated on Trendyol."),
                 "type": "success",
                 "sticky": False,
             },

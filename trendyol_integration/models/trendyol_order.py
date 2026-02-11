@@ -192,7 +192,8 @@ class TrendyolOrder(models.Model):
 
             # Auto-confirm if configured
             if backend.auto_confirm_orders:
-                sale_order.action_confirm()
+                sale_order.ignore_exception = True
+                sale_order.with_context(bypass_risk=True).action_confirm()
                 # Set pre-assigned Trendyol tracking number on pickings
                 tracking_number = order_data.get("cargoTrackingNumber")
                 if tracking_number:
@@ -421,6 +422,8 @@ class TrendyolOrder(models.Model):
             "country_id": country.id if country else False,
             "state_id": state.id if state else False,
             "trendyol_address_id": str(address.get("id", "")),
+            # Default to blacklisted to prevent accidental marketing emails
+            "is_blacklisted": True,
         }
 
         if is_main:

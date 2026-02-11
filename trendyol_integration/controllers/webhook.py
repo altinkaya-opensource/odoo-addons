@@ -1,8 +1,6 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-import hashlib
-import hmac
 import json
 import logging
 
@@ -25,6 +23,8 @@ class TrendyolWebhookController(http.Controller):
     def webhook(self, backend_id):
         """Handle incoming webhooks from Trendyol.
 
+        Trendyol authenticates via the x-api-key header (API_KEY auth type).
+
         Args:
             backend_id: ID of the trendyol.backend record
 
@@ -44,13 +44,14 @@ class TrendyolWebhookController(http.Controller):
                 _logger.warning("Empty webhook data received")
                 return {"status": "error", "message": "Empty data"}
 
-            # Verify signature if secret is configured
-            if backend.webhook_secret:
-                if not self._verify_signature(backend.webhook_secret):
+            # Verify API key if configured
+            if backend.webhook_api_key:
+                api_key = request.httprequest.headers.get("x-api-key")
+                if api_key != backend.webhook_api_key:
                     _logger.warning(
-                        "Invalid webhook signature for backend %s", backend_id
+                        "Invalid webhook API key for backend %s", backend_id
                     )
-                    return {"status": "error", "message": "Invalid signature"}
+                    return {"status": "error", "message": "Invalid API key"}
 
             # Process webhook
             self._process_webhook(backend, data)
@@ -60,30 +61,6 @@ class TrendyolWebhookController(http.Controller):
         except Exception as e:
             _logger.exception("Error processing webhook: %s", str(e))
             return {"status": "error", "message": str(e)}
-
-    def _verify_signature(self, secret):
-        """Verify webhook signature.
-
-        Args:
-            secret: Webhook secret from backend configuration
-
-        Returns:
-            True if signature is valid
-        """
-        # Get signature from header
-        signature = request.httprequest.headers.get("X-Trendyol-Signature")
-        if not signature:
-            return False
-
-        # Calculate expected signature
-        body = request.httprequest.data
-        expected = hmac.new(
-            secret.encode("utf-8"),
-            body,
-            hashlib.sha256,
-        ).hexdigest()
-
-        return hmac.compare_digest(signature, expected)
 
     def _process_webhook(self, backend, data):
         """Process webhook data.

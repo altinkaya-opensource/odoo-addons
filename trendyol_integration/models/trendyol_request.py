@@ -492,6 +492,45 @@ class TrendyolRequest:
 
         return self._make_request("POST", endpoint, json_data=json_data)
 
+    # ==================== Shipping Label Methods ====================
+
+    def create_common_label(self, cargo_tracking_number, label_format="ZPL"):
+        """Request label creation for a cargo tracking number.
+
+        This is a two-step process: first create, then get.
+        Only works for TEX and Aras Kargo (Trendyol paid cargo model).
+
+        Args:
+            cargo_tracking_number: Cargo tracking number from the order
+            label_format: Label format (only "ZPL" is supported)
+
+        Returns:
+            Empty dict on success (HTTP 200)
+        """
+        endpoint = (
+            f"/integration/sellers/{self.seller_id}"
+            f"/common-label/{cargo_tracking_number}"
+        )
+        return self._make_request("POST", endpoint, json_data={"format": label_format})
+
+    def get_common_label(self, cargo_tracking_number):
+        """Retrieve the generated label (ZPL data).
+
+        Must be called after create_common_label().
+
+        Args:
+            cargo_tracking_number: Cargo tracking number from the order
+
+        Returns:
+            Dict with 'data' list containing label objects:
+            [{"label": "^XA...^XZ", "format": "ZPL"}]
+        """
+        endpoint = (
+            f"/integration/sellers/{self.seller_id}"
+            f"/common-label/{cargo_tracking_number}"
+        )
+        return self._make_request("GET", endpoint)
+
     # ==================== Webhook Methods ====================
 
     def create_webhook(
@@ -553,6 +592,67 @@ class TrendyolRequest:
             f"/integration/webhook/sellers/{self.seller_id}/webhooks/{webhook_id}"
         )
         return self._make_request("DELETE", endpoint)
+
+    def update_webhook(
+        self,
+        webhook_id,
+        webhook_url,
+        subscribed_statuses=None,
+        api_key=None,
+        authentication_type="API_KEY",
+    ):
+        """Update an existing webhook subscription.
+
+        Args:
+            webhook_id: Trendyol webhook ID to update
+            webhook_url: URL to receive webhooks
+            subscribed_statuses: List of statuses to subscribe to.
+                If empty, subscribes to all statuses.
+            api_key: API key for API_KEY authentication
+            authentication_type: "BASIC_AUTHENTICATION" or "API_KEY"
+
+        Returns:
+            Response data
+        """
+        endpoint = (
+            f"/integration/webhook/sellers/{self.seller_id}/webhooks/{webhook_id}"
+        )
+        json_data = {"url": webhook_url, "authenticationType": authentication_type}
+        if subscribed_statuses:
+            json_data["subscribedStatuses"] = subscribed_statuses
+        if authentication_type == "API_KEY" and api_key:
+            json_data["apiKey"] = api_key
+        return self._make_request("PUT", endpoint, json_data=json_data)
+
+    def activate_webhook(self, webhook_id):
+        """Activate a deactivated webhook.
+
+        Args:
+            webhook_id: Trendyol webhook ID to activate
+
+        Returns:
+            Response data
+        """
+        endpoint = (
+            f"/integration/webhook/sellers/{self.seller_id}"
+            f"/webhooks/{webhook_id}/activate"
+        )
+        return self._make_request("PUT", endpoint)
+
+    def deactivate_webhook(self, webhook_id):
+        """Deactivate an active webhook.
+
+        Args:
+            webhook_id: Trendyol webhook ID to deactivate
+
+        Returns:
+            Response data
+        """
+        endpoint = (
+            f"/integration/webhook/sellers/{self.seller_id}"
+            f"/webhooks/{webhook_id}/deactivate"
+        )
+        return self._make_request("PUT", endpoint)
 
     # ==================== Claims/Returns Methods ====================
 
