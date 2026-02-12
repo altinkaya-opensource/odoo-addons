@@ -24,7 +24,7 @@ class StockRule(models.Model):
                     or not rule.mts2_rule_id
                 ):
                     msg = _(
-                        "No MTS or MTO rule configured on procurement " "rule: %s!"
+                        "No MTS or MTO rule configured on procurement rule: %s!"
                     ) % (rule.name,)
                     raise ValidationError(msg)
                 if (

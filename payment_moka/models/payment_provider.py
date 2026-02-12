@@ -67,7 +67,7 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         key_string = (
-            f"{self.moka_dealer_code}MK" f"{self.moka_username}PD{self.moka_password}"
+            f"{self.moka_dealer_code}MK{self.moka_username}PD{self.moka_password}"
         )
 
         return sha256(key_string.encode("utf-8")).hexdigest()

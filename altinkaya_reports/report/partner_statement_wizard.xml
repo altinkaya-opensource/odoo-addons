@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="report_partner_statement_wizard_document">
         <!-- <t t-call="web.html_container">
@@ -91,24 +91,24 @@
                             <td>
                                 <strong>
 												Partner:
-												<span t-esc="o.partner_id.display_name" />
+												<span t-out="o.partner_id.display_name" />
 											</strong>
                                 <br />
                                 <span>
-                                    <span t-esc="o.partner_id._display_address()" />
-                                    <!-- <span t-esc="o.partner_id.street" /> , <span t-esc="o.partner_id.street2"
-													/> , <span t-esc="o.partner_id.city" /> <span t-esc="o.partner_id.state_id.name"
-													/> - <span t-esc="o.partner_id.zip" /> , <span t-esc="o.partner_id.country_id.name"
+                                    <span t-out="o.partner_id._display_address()" />
+                                    <!-- <span t-out="o.partner_id.street" /> , <span t-out="o.partner_id.street2"
+													/> , <span t-out="o.partner_id.city" /> <span t-out="o.partner_id.state_id.name"
+													/> - <span t-out="o.partner_id.zip" /> , <span t-out="o.partner_id.country_id.name"
 													/> -->
                                 </span>
                                 <br />
                                 <span>
                                     <strong>Tel:</strong>
-                                    <t t-esc="o.partner_id.phone" />
+                                    <t t-out="o.partner_id.phone" />
                                     <br />
                                     <t t-if="o.partner_id.fax">
                                         <strong>Fax:</strong>
-                                        <span t-esc="o.partner_id.fax" />
+                                        <span t-out="o.partner_id.fax" />
                                     </t>
                                 </span>
                             </td>
@@ -131,15 +131,15 @@
                             </td>
                             <td>
                                 <span
-                                    t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                                    t-out="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
                                     t-options="{'widget': 'date'}"
                                 />
                                 <br />
                                 <t t-if="o.partner_id.tax_office_name">
-                                    <span t-esc="o.partner_id.tax_office_name" />
+                                    <span t-out="o.partner_id.tax_office_name" />
                                     <br />
                                 </t>
-                                <span t-esc="o.partner_id.vat" />
+                                <span t-out="o.partner_id.vat" />
                                 <br />
                             </td>
                         </tr>
@@ -173,19 +173,19 @@
                         <t t-foreach="o.get_statement_data()" t-as="s">
                             <tr style="line-height:%80">
                                 <td style="padding:0">
-                                    <span t-esc="s['seq']" />
+                                    <span t-out="s['seq']" />
                                 </td>
                                 <td style="padding:0;">
-                                    <span t-esc="s['number']" />
+                                    <span t-out="s['number']" />
                                 </td>
                                 <td style="padding:0;">
-                                    <span t-esc="s['date']" />
+                                    <span t-out="s['date']" />
                                 </td>
                                 <td style="padding:0;">
-                                    <span t-esc="s['due_date']" />
+                                    <span t-out="s['due_date']" />
                                 </td>
                                 <td style="padding:0;">
-                                    <span t-esc="s['description']" />
+                                    <span t-out="s['description']" />
                                 </td>
                                 <td class="text-right" style="padding:0;">
                                     <span
@@ -205,7 +205,7 @@
                                     <!-- t-options='{"widget": "monetary", "display_currency": None}' -->
                                 </td>
                                 <td class="text-right" style="padding:0;">
-                                    <span t-esc="s['dc']" />
+                                    <span t-out="s['dc']" />
                                 </td>
                                 <t t-value="s['dc']" t-set="sdc" />
                                 <t
@@ -231,16 +231,16 @@
 												TOTAL
 											</td>
                             <td class="text-right" style="padding:0;">
-                                <span t-esc="'{:,.2f}'.format(float(toplamBorc))" />
+                                <span t-out="'{:,.2f}'.format(float(toplamBorc))" />
                             </td>
                             <td class="text-right" style="padding:0;">
-                                <span t-esc="'{:,.2f}'.format(float(toplamAlacak))" />
+                                <span t-out="'{:,.2f}'.format(float(toplamAlacak))" />
                             </td>
                             <td class="text-right" style="padding:0;">
-                                <span t-esc="'{:,}'.format(float(toplamBakiye))" />
+                                <span t-out="'{:,}'.format(float(toplamBakiye))" />
                             </td>
                             <td class="text-right" style="padding:0;">
-                                <span t-esc="sdc" />
+                                <span t-out="sdc" />
                             </td>
                         </tr>
                     </table>

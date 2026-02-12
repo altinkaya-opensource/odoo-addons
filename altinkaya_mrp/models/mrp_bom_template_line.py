@@ -69,7 +69,6 @@ class MrpBomTemplateLine(models.Model):
 
     factor_attribute_id = fields.Many2one(
         "product.attribute",
-        string="Factor Attribute",
         help="End product attribute to use for raw material calculation",
     )
     attribute_factor = fields.Float(
@@ -83,13 +82,11 @@ class MrpBomTemplateLine(models.Model):
 
     operation_id = fields.Many2one(
         "mrp.routing.workcenter",
-        string="Operation",
         help="Dummy field to make this model compatible with BoM lines",
     )
 
     product_id = fields.Many2one(
         "product.product",
-        string="Product",
         compute="_compute_product_id",
         help="Dummy field to make this model compatible with BoM lines",
     )
@@ -168,8 +165,10 @@ class MrpBomTemplateLine(models.Model):
             attr_val = attr_val_list[0]
             return match_products(
                 products.filtered(
-                    lambda p: attr_val
-                    in p.product_template_attribute_value_ids.product_attribute_value_id
+                    lambda p: (
+                        attr_val
+                        in p.product_template_attribute_value_ids.product_attribute_value_id  # noqa: E501
+                    )
                 ),
                 attr_val_list[1:],
             )
@@ -189,8 +188,10 @@ class MrpBomTemplateLine(models.Model):
         # Phase 2: match additional attributes
         if self.attribute_value_ids:
             matched_products = matched_products.filtered(
-                lambda p: self.target_attribute_value_ids
-                in p.product_template_attribute_value_ids.product_attribute_value_id
+                lambda p: (
+                    self.target_attribute_value_ids
+                    in p.product_template_attribute_value_ids.product_attribute_value_id
+                )
             )
         else:
             line_attribute_ids = self.mapped(

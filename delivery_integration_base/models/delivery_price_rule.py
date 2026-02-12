@@ -12,7 +12,7 @@ class DeliveryPriceRule(models.Model):
     variable_factor = fields.Selection(
         selection_add=[("deci", "Deci")], ondelete={"deci": "set default"}
     )
-    region_id = fields.Many2one("delivery.region", string="Region", required=True)
+    region_id = fields.Many2one("delivery.region", required=True)
     _order = "region_id, sequence, list_price, id"
 
     @api.onchange("variable")

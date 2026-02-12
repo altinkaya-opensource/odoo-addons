@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="sale_order_search_inherit_sale_altinkaya">
+    <record id="sale_order_search_inherit_sale_altinkaya" model="ir.ui.view">
         <field name="name">sale.order.search.inherit.sale</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale" />

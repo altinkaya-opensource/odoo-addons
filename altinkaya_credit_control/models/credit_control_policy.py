@@ -12,11 +12,13 @@ class CreditControlPolicy(models.Model):
         """
         res = super()._get_move_lines_to_process(credit_control_run)
         return res.filtered(
-            lambda a: not any(
-                name in a.journal_id.code
-                for name in [
-                    "KRFRK",
-                    "KFARK",
-                ]
+            lambda a: (
+                not any(
+                    name in a.journal_id.code
+                    for name in [
+                        "KRFRK",
+                        "KFARK",
+                    ]
+                )
             )
         )

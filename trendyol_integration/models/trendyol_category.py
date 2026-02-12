@@ -25,7 +25,6 @@ class TrendyolCategory(models.Model):
     )
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
         ondelete="cascade",
         index=True,
@@ -44,7 +43,6 @@ class TrendyolCategory(models.Model):
     )
     odoo_category_id = fields.Many2one(
         "product.category",
-        string="Odoo Category",
         help="Map to Odoo product category for filtering",
     )
     attribute_ids = fields.One2many(
@@ -228,7 +226,6 @@ class TrendyolCategoryAttribute(models.Model):
 
     category_id = fields.Many2one(
         "trendyol.category",
-        string="Category",
         required=True,
         ondelete="cascade",
         index=True,
@@ -259,7 +256,6 @@ class TrendyolCategoryAttribute(models.Model):
     )
     odoo_attribute_id = fields.Many2one(
         "product.attribute",
-        string="Odoo Attribute",
         help="Map to Odoo product attribute",
     )
 
@@ -270,7 +266,6 @@ class TrendyolAttributeValue(models.Model):
 
     attribute_id = fields.Many2one(
         "trendyol.category.attribute",
-        string="Attribute",
         required=True,
         ondelete="cascade",
         index=True,
@@ -283,6 +278,5 @@ class TrendyolAttributeValue(models.Model):
     name = fields.Char(required=True)
     odoo_value_id = fields.Many2one(
         "product.attribute.value",
-        string="Odoo Value",
         help="Map to Odoo product attribute value",
     )

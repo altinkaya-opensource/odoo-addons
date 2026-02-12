@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="printing_printer_printing_type" model="ir.ui.view">
         <field name="name">printing.printer.form.inherit.printer_type</field>

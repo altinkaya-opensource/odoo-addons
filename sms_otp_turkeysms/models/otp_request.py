@@ -19,7 +19,6 @@ class OTPRequest(models.TransientModel):
 
     user_id = fields.Many2one(
         comodel_name="res.users",
-        string="User",
     )
     user_lang = fields.Char(
         string="User Language",

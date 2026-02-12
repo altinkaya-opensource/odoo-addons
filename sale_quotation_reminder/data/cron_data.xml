@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
   Copyright (C) 2025 Ahmet Yiğit Budak (https://github.com/yibudak)
   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
@@ -9,9 +9,9 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="state">code</field>
         <field name="code">model._cron_send_quotation_reminders()</field>
-        <field name="interval_number">1</field>
+        <field name="interval_number" eval="1" />
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+        <field name="numbercall" eval="-1" />
         <field name="active" eval="True" />
         <field name="doall" eval="False" />
     </record>

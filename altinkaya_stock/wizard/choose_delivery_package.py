@@ -186,7 +186,6 @@ class ChooseDeliveryPackageMoveLines(models.TransientModel):
     )
     move_line_id = fields.Many2one(
         "stock.move.line",
-        string="Move Line",
     )
     lot_id = fields.Many2one(
         "stock.lot",

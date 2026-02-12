@@ -330,8 +330,8 @@ class ProductMergeAttributeLine(models.TransientModel):
     _name = "product.merge.wizard.attribute_line"
     _description = "Product merge wizard attribute line"
 
-    wizard_id = fields.Many2one("product.merge.wizard", string="Wizard")
-    attribute_id = fields.Many2one("product.attribute", string="Attribute")
+    wizard_id = fields.Many2one("product.merge.wizard")
+    attribute_id = fields.Many2one("product.attribute")
     required = fields.Boolean()
     value_ids = fields.Many2many(
         "product.attribute.value",
@@ -344,8 +344,8 @@ class ProductMergeProductLine(models.TransientModel):
     _name = "product.merge.wizard.product_line"
     _description = "Product Merge Wizard Line"
 
-    wizard_id = fields.Many2one("product.merge.wizard", string="Wizard")
-    product_id = fields.Many2one("product.product", string="Product")
+    wizard_id = fields.Many2one("product.merge.wizard")
+    product_id = fields.Many2one("product.product")
     possible_value_ids = fields.Many2many(
         "product.attribute.value",
         relation="product_merge_possible_value_ids_rel",

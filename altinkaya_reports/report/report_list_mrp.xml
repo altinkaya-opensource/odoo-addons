@@ -30,7 +30,7 @@
                                     <td class="text-right">
                                         Tarih :
                                         <span
-                    t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                    t-out="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
                     t-options="{'widget': 'date'}"
                   />
                                     </td>
@@ -71,7 +71,7 @@
             </tr>
             <tr t-foreach="docs" t-as="o">
                 <td class="text-center">
-                    <span t-esc="o.name" />
+                    <span t-out="o.name" />
                     <br />
                     <span t-field="o.priority" />
                 </td>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="res_users_allowed_ips">
+    <record id="res_users_allowed_ips" model="ir.ui.view">
         <field name="name">res.users</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form" />

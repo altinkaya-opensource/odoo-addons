@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!--  Checks -->
-    <record model="ir.ui.view" id="view_account_check_tree">
+    <record id="view_account_check_tree" model="ir.ui.view">
         <field name="name">account.check.tree</field>
         <field name="model">account.check</field>
-        <field name="priority">100</field>
+        <field name="priority" eval="100" />
         <field name="arch" type="xml">
             <!-- colors='{"draft":"primary", "handed":"secondary", "rejected":"danger", "cancel":"muted"}' -->
             <tree create="false">
@@ -35,7 +35,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_create_tree">
+    <record id="view_account_check_create_tree" model="ir.ui.view">
         <field name="name">account.check.create.tree</field>
         <field name="model">account.check</field>
         <field name="inherit_id" ref="view_account_check_tree" />
@@ -46,7 +46,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_form">
+    <record id="view_account_check_form" model="ir.ui.view">
         <field name="name">account.check.form</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
@@ -175,7 +175,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_create_form">
+    <record id="view_account_check_create_form" model="ir.ui.view">
         <field name="name">account.check.create.form</field>
         <field name="model">account.check</field>
         <field name="inherit_id" ref="view_account_check_form" />
@@ -209,7 +209,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_checks_search">
+    <record id="view_checks_search" model="ir.ui.view">
         <field name="name">check.search</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
@@ -271,7 +271,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_calendar">
+    <record id="view_account_check_calendar" model="ir.ui.view">
         <field name="name">account.check.calendar</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
@@ -286,7 +286,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_graph">
+    <record id="view_account_check_graph" model="ir.ui.view">
         <field name="name">account.check.graph</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
@@ -297,7 +297,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_check_pivot">
+    <record id="view_account_check_pivot" model="ir.ui.view">
         <field name="name">account.check.calendar</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
@@ -317,7 +317,7 @@
     />
 
     <!-- Third Check Menu -->
-    <record model="ir.actions.act_window" id="action_third_check">
+    <record id="action_third_check" model="ir.actions.act_window">
         <field name="name">Third Checks</field>
         <field name="res_model">account.check</field>
         <field name="view_mode">tree,form,calendar,graph,pivot</field>
@@ -327,14 +327,14 @@
 
     <!--TODO: Enable This-->
     <menuitem
-        action="action_third_check"
         id="menu_third_check"
+        action="action_third_check"
         sequence="40"
         parent="menu_account_check_root"
     />
 
     <!-- Issued Check Menu -->
-    <record model="ir.actions.act_window" id="action_issue_check">
+    <record id="action_issue_check" model="ir.actions.act_window">
         <field name="name">Issue Checks</field>
         <field name="res_model">account.check</field>
         <field name="view_mode">tree,form,calendar,graph,pivot</field>
@@ -343,14 +343,14 @@
     </record>
     <!--TODO: Enable This-->
     <menuitem
-        action="action_issue_check"
         id="menu_issue_check"
+        action="action_issue_check"
         sequence="50"
         parent="menu_account_check_root"
     />
 
     <!-- Deposit Promissory Note Menu -->
-    <!-- 	<record model="ir.actions.act_window" id="action_deposit_promissory_note"> -->
+    <!-- 	<record id="action_deposit_promissory_note" model="ir.actions.act_window"> -->
     <!-- 		<field name="name">Deposit Promissory Note</field> -->
     <!-- 		<field name="res_model">account.check</field> -->
     <!-- 		<field name="view_type">form</field> -->
@@ -358,7 +358,7 @@
     <!-- 		<field name="domain">[('type','=','deposit_promissory_note')]</field> -->
     <!-- 		<field name="context">{'default_type':'deposit_promissory_note'}</field> -->
     <!-- 	</record> -->
-    <!-- 	<menuitem action="action_deposit_promissory_note" id="menu_deposit_promissory_note" -->
+    <!-- 	<menuitem id="menu_deposit_promissory_note" action="action_deposit_promissory_note" -->
     <!-- 		sequence="60" parent="account_payment_fix.menu_finance_check_and_promissory_note" /> -->
 
     <!-- Issue Promissory Note Menu -->
@@ -371,6 +371,6 @@
     <!-- 		<field name="domain">[('type','=','issue_promissory_note')]</field> -->
     <!-- 		<field name="context">{'default_type':'issue_promissory_note'}</field> -->
     <!-- 	</record> -->
-    <!-- 	<menuitem action="action_issue_promissory_note" id="menu_issue_promissory_note" -->
+    <!-- 	<menuitem id="menu_issue_promissory_note" action="action_issue_promissory_note" -->
     <!-- 		sequence="70" parent="account_payment_fix.menu_finance_check_and_promissory_note" /> -->
 </odoo>

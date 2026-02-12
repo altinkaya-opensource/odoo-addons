@@ -29,8 +29,9 @@ class SaleOrder(models.Model):
         cancellation is propagated to the Trendyol API first.
         """
         trendyol_orders = self.filtered(
-            lambda o: o.trendyol_binding_ids
-            and o.trendyol_status not in (False, "cancelled")
+            lambda o: (
+                o.trendyol_binding_ids and o.trendyol_status not in (False, "cancelled")
+            )
         )
         if trendyol_orders and not self.env.context.get("from_trendyol_cancel"):
             raise UserError(

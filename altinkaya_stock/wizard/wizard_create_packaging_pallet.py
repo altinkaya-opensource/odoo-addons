@@ -20,7 +20,7 @@ class WizardCreatePackagingPallet(models.TransientModel):
     _name = "wizard.create.packaging.pallet"
     _description = "Wizard Create Packaging Pallet"
 
-    picking_id = fields.Many2one("stock.picking", string="Picking", required=True)
+    picking_id = fields.Many2one("stock.picking", required=True)
     packaging_line_ids = fields.One2many(
         comodel_name="wizard.create.packaging.pallet.line",
         inverse_name="wizard_id",
@@ -132,11 +132,9 @@ class WizardCreatePackagingPalletLine(models.TransientModel):
 
     wizard_id = fields.Many2one(
         comodel_name="wizard.create.packaging.pallet",
-        string="Wizard",
     )
     package_id = fields.Many2one(
         comodel_name="stock.quant.package",
-        string="Package",
         required=True,
     )
 

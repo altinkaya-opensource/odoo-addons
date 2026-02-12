@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Product Product Form Extension -->
     <record id="view_product_product_form_trendyol" model="ir.ui.view">

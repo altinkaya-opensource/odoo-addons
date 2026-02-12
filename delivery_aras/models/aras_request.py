@@ -126,10 +126,14 @@ class ArasRequest:
             response = response[0]
 
         if int(response.ResultCode) != 0:
+            error_msg = (
+                response.ResultMessage
+                if hasattr(response, "ResultMessage")
+                else response.Message
+            )
             raise ValidationError(
-                f"{response.ResultCode}: "
-                f"{hasattr(response, 'ResultMessage')
-                and response.ResultMessage or response.Message}"
+                _("%(code)s: %(message)s")
+                % {"code": response.ResultCode, "message": error_msg}
             )
 
         return response

@@ -14,7 +14,6 @@ class AccountMove(models.Model):
     # para otra cosa
     rejected_check_id = fields.Many2one(
         "account.check",
-        "Rejected Check",
     )
 
     def action_cancel(self):

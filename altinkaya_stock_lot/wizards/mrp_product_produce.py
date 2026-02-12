@@ -42,9 +42,11 @@ class MrpProductProduce(models.TransientModel):
         res = super()._onchange_product_qty()
         for line in self.produce_line_ids.filtered(lambda p: not p.lot_id):
             real_line = self.produce_line_ids.filtered(
-                lambda x: x.qty_to_consume == line.qty_to_consume
-                and x.product_id == line.product_id
-                and x.lot_id
+                lambda x: (
+                    x.qty_to_consume == line.qty_to_consume
+                    and x.product_id == line.product_id
+                    and x.lot_id
+                )
             )
             if real_line:
                 self.produce_line_ids -= line

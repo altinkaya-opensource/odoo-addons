@@ -11,7 +11,7 @@ class MakeMtsMove(models.TransientModel):
     _name = "make.mts.move"
     _description = "make MTS Move"
 
-    move_id = fields.Many2one("stock.move", "Move", readonly=True)
+    move_id = fields.Many2one("stock.move", readonly=True)
 
     def find_orig_move_ids(self, moves):
         orig_moves = moves

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="online_bank_statement_provider_form_finekra">
+    <record id="online_bank_statement_provider_form_finekra" model="ir.ui.view">
         <field name="name">online.bank.statement.provider.form.finekra</field>
         <field name="model">online.bank.statement.provider</field>
         <field

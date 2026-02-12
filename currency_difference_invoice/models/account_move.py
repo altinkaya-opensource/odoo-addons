@@ -81,8 +81,10 @@ class AccountInvoice(models.Model):
 
             if aml_to_reconcile:
                 diff_aml = invoice.move_id.line_ids.filtered(
-                    lambda r: not r.reconciled
-                    and r.account_id.internal_type in ("payable", "receivable")
+                    lambda r: (
+                        not r.reconciled
+                        and r.account_id.internal_type in ("payable", "receivable")
+                    )
                 )
                 aml_to_reconcile._reconcile(diff_aml=diff_aml)
         return res

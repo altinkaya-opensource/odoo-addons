@@ -11,7 +11,7 @@ class LoggingLinker(models.TransientModel):
         comodel_name="res.users",
         string="Assigned to",
     )
-    log_id = fields.Many2one(comodel_name="ir.logging", string="Log")
+    log_id = fields.Many2one(comodel_name="ir.logging")
 
     @api.model
     def default_get(self, fields_list):

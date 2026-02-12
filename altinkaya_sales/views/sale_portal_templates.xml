@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template
         id="sale_order_portal_content_configurations_inherit"
@@ -72,8 +72,8 @@
                 />
                 <ul t-if="trackable_pickings" class="list-unstyled">
                     <li t-foreach="trackable_pickings" t-as="picking">
-                        <span t-esc="picking.carrier_id.name" /> (<span
-                        t-esc="picking.shipping_number"
+                        <span t-out="picking.carrier_id.name" /> (<span
+                        t-out="picking.shipping_number"
                     />)
                         <a
                         class="btn btn-info mx-auto mb-1"

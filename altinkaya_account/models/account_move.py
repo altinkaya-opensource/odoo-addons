@@ -18,7 +18,7 @@ class AccountMove(models.Model):
             "Sadece zirve programi transferinde kullanilmaktadir."
         ),
     )
-    carrier_id = fields.Many2one("delivery.carrier", "Carrier")
+    carrier_id = fields.Many2one("delivery.carrier")
     x_serino = fields.Char("Fatura No", size=64)
     x_teslimat = fields.Char("Teslimat Kisaltmasi", size=64)
     address_contact_id = fields.Many2one("res.partner", "Shipping Address")
@@ -203,10 +203,12 @@ class AccountMove(models.Model):
                 aml_to_reconcile = reconciled_lines - old_difference_lines
 
                 new_currency_diff_line = invoice.line_ids.filtered(
-                    lambda ml: ml.account_id
-                    in (
-                        self.partner_id.property_account_payable_id,
-                        self.partner_id.property_account_receivable_id,
+                    lambda ml: (
+                        ml.account_id
+                        in (
+                            self.partner_id.property_account_payable_id,
+                            self.partner_id.property_account_receivable_id,
+                        )
                     )
                 )
 
@@ -248,11 +250,13 @@ class AccountMove(models.Model):
             if not invoice.picking_ids:
                 raise ValidationError(_("No picking linked to this invoice"))
             old_invoice_lines = invoice.invoice_line_ids.filtered(
-                lambda line: not (
-                    line.name_xml
-                    or line.SellersItemIdentification
-                    or line.ManufacturersItemIdentification
-                    or line.description
+                lambda line: (
+                    not (
+                        line.name_xml
+                        or line.SellersItemIdentification
+                        or line.ManufacturersItemIdentification
+                        or line.description
+                    )
                 )
             )
             old_invoice_lines.unlink()

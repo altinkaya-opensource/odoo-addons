@@ -12,30 +12,30 @@
 
 ^CF0,30
 <t t-set="delivery_type_label" t-value="delivery_type_label" />
-^FO25,34^FB740,1,0,L,0^FD<t t-esc="delivery_type_label" /><t
+^FO25,34^FB740,1,0,L,0^FD<t t-out="Markup(delivery_type_label)" /><t
                 t-if="o.carrier_id.payment_type=='sender_pays'"
             > Gönderici Ödemeli</t><t
                 t-elif="o.carrier_id.payment_type=='customer_pays'"
             > Alıcı Ödemeli</t>^FS
 
-^FO490,102^A0N,122,122^FB320,1,0,L,0^FD<t t-esc="package_label_info" />^FS
+^FO490,102^A0N,122,122^FB320,1,0,L,0^FD<t t-out="Markup(package_label_info)" />^FS
 
 <t t-set="carrier_ref" t-value="carrier_ref" />
-^FO25,75^FB740,1,0,L,0^FDSevk # <t t-esc="o.name" />^FS
+^FO25,75^FB740,1,0,L,0^FDSevk # <t t-out="Markup(o.name)" />^FS
 <t t-if="o.invoice_ids.filtered(lambda inv: inv.state == 'posted')">
     ^FO25,116^FB740,1,0,L,0^FDFatura # <t
-                t-esc="', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number'))"
+                t-out="Markup(', '.join(o.invoice_ids.filtered(lambda inv: inv.state == 'posted').mapped('number')))"
             />^FS
 </t>
 
 <t t-set="formatted_deci" t-value="round(o.picking_total_weight)" />
-^FO25,157^FB740,1,0,L,0^FDToplam <t t-esc="o.carrier_package_count" /> Paket <t
-                t-esc="formatted_deci"
+^FO25,157^FB740,1,0,L,0^FDToplam <t t-out="Markup(o.carrier_package_count)" /> Paket <t
+                t-out="Markup(formatted_deci)"
             /> Desi^FS
 
 ^BY3,3,149
 ^FO190,218^BCN,149,Y,N,N
-^FD<t t-esc="carrier_ref" />^FS
+^FD<t t-out="Markup(carrier_ref)" />^FS
 
 ^FO25,400^GB700,2,2^FS
 
@@ -59,20 +59,20 @@
                 t-value="o.partner_id.display_name[60:] if len(o.partner_id.display_name) > 60 else ''"
             />
 
-^FO25,444^FB740,1,0,L,0^FD<t t-esc="display_name_line1" />^FS
+^FO25,444^FB740,1,0,L,0^FD<t t-out="Markup(display_name_line1)" />^FS
 <t t-if="display_name_line2">
-    ^FO25,474^FB740,1,0,L,0^FD<t t-esc="display_name_line2" />^FS
+    ^FO25,474^FB740,1,0,L,0^FD<t t-out="Markup(display_name_line2)" />^FS
 </t>
 
-^FO25,504^FB740,1,0,L,0^FD<t t-esc="o.partner_id.neighbour_id.name" />^FS
-^FO25,534^FB740,1,0,L,0^FD<t t-esc="line1" />^FS
+^FO25,504^FB740,1,0,L,0^FD<t t-out="Markup(o.partner_id.neighbour_id.name)" />^FS
+^FO25,534^FB740,1,0,L,0^FD<t t-out="Markup(line1)" />^FS
 
 <t t-if="line2">
-    ^FO25,564^FB740,1,0,L,0^FD<t t-esc="line2" />^FS
-    ^FO25,594^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
-                t-esc="o.partner_id.country_id.name"
+    ^FO25,564^FB740,1,0,L,0^FD<t t-out="Markup(line2)" />^FS
+    ^FO25,594^FB740,1,0,L,0^FD<t t-out="Markup(o.partner_id.state_id.name)" /> / <t
+                t-out="Markup(o.partner_id.country_id.name)"
             />^FS
-    ^FO25,624^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
+    ^FO25,624^FB740,1,0,L,0^FD<t t-out="Markup(o.partner_id.phone)" />^FS
 
     ^FO25,660^GB700,2,2^FS
     ^FO25,672^FB740,1,0,L,0^FDGÖNDEREN^FS
@@ -81,10 +81,10 @@
     ^XZ
 </t>
 <t t-else="">
-    ^FO25,564^FB740,1,0,L,0^FD<t t-esc="o.partner_id.state_id.name" /> / <t
-                t-esc="o.partner_id.country_id.name"
+    ^FO25,564^FB740,1,0,L,0^FD<t t-out="Markup(o.partner_id.state_id.name)" /> / <t
+                t-out="Markup(o.partner_id.country_id.name)"
             />^FS
-    ^FO25,594^FB740,1,0,L,0^FD<t t-esc="o.partner_id.phone" />^FS
+    ^FO25,594^FB740,1,0,L,0^FD<t t-out="Markup(o.partner_id.phone)" />^FS
 
     ^FO25,630^GB700,2,2^FS
     ^FO25,642^FB740,1,0,L,0^FDGÖNDEREN^FS

@@ -21,9 +21,7 @@ class Product(models.Model):
     _inherit = "product.product"
 
     default_code = fields.Char(copy=False)
-    responsible_employee_id = fields.Many2one(
-        comodel_name="hr.employee", string="Responsible Employee"
-    )
+    responsible_employee_id = fields.Many2one(comodel_name="hr.employee")
 
     domain_attribute_value_ids = fields.Many2many(
         "product.template.attribute.value",
@@ -235,8 +233,10 @@ class Product(models.Model):
             if (
                 len(
                     other_variants.filtered(
-                        lambda p, product=product: p.product_template_variant_value_ids
-                        == product.product_template_variant_value_ids
+                        lambda p, product=product: (
+                            p.product_template_variant_value_ids
+                            == product.product_template_variant_value_ids
+                        )
                     )
                 )
                 > 1

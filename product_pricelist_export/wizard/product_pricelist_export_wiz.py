@@ -24,9 +24,7 @@ class ProductPricelistExportWiz(models.TransientModel):
         domain=[("active", "=", True)],
         required=True,
     )
-    pricelist_id = fields.Many2one(
-        "product.pricelist", string="Pricelist", required=True
-    )
+    pricelist_id = fields.Many2one("product.pricelist", required=True)
 
     def action_export(self):
         self.ensure_one()

@@ -55,7 +55,7 @@
                             t-att-value="s.id"
                             t-att-selected="s.id == ('district_id' in checkout and country and checkout['district_id'] != '' and int(checkout['district_id']))"
                         >
-                            <t t-esc="s.name" />
+                            <t t-out="s.name" />
                         </option>
                     </t>
                 </select>
@@ -78,7 +78,7 @@
                             t-att-value="s.id"
                             t-att-selected="s.id == ('neighbour_id' in checkout and country and checkout['neighbour_id'] != '' and int(checkout['neighbour_id']))"
                         >
-                            <t t-esc="s.name" />
+                            <t t-out="s.name" />
                         </option>
                     </t>
                 </select>
@@ -93,8 +93,8 @@
         priority="20"
     >
         <xpath expr="//span[@itemprop='streetAddress']" position="inside">
-            <span itemprop="addressCountry" t-esc="state_id" />
-            <span itemprop="addressCountry" t-esc="region_id" />
+            <span itemprop="addressCountry" t-out="state_id" />
+            <span itemprop="addressCountry" t-out="region_id" />
         </xpath>
     </template>
 </odoo>

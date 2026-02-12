@@ -3,7 +3,7 @@
     <template id="kolaygelsin_carrier_label">
         <t t-foreach="docs" t-as="o">
             <t t-translation="off">
-                <t t-esc="zpl_raw" />
+                <t t-out="Markup(zpl_raw)" />
             </t>
         </t>
     </template>

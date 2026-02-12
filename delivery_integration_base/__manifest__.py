@@ -35,4 +35,7 @@
         "report/carrier_label.xml",
     ],
     "installable": True,
+    "oca_data_manual": [
+        "wizards/sale_get_rates_wizard_views.xml",
+    ],
 }

@@ -12,7 +12,6 @@ class ResCompany(models.Model):
 
     bulutsantralim_connector_id = fields.Many2one(
         "bulutsantralim.connector",
-        string="Bulutsantralim Connector",
         copy=False,
         help="Bulutsantralim connector for this company.",
     )

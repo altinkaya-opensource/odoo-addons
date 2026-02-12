@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_account_payment_term_form_altinkaya_invoice" model="ir.ui.view">
         <field name="name">altinkaya.invoice.account.payment.term.form.inherit</field>

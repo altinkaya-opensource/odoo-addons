@@ -35,7 +35,6 @@ class StockQuantPackage(models.Model):
 
     picking_id = fields.Many2one(
         comodel_name="stock.picking",
-        string="Picking",
         help="Picking related to this package.",
         ondelete="restrict",
         index=True,
@@ -54,7 +53,6 @@ class StockQuantPackage(models.Model):
     )
     pallet_id = fields.Many2one(
         comodel_name="stock.quant.package",
-        string="Pallet",
         help="Pallet related to this package.",
         ondelete="restrict",
         index=True,

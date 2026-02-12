@@ -6,7 +6,7 @@ from odoo import api, fields, models
 class ProductPriceHistory(models.Model):
     _inherit = "product.price.history"
 
-    cost_currency_id = fields.Many2one("res.currency", string="Cost Currency")
+    cost_currency_id = fields.Many2one("res.currency")
 
     @api.model
     def create(self, vals):

@@ -14,7 +14,7 @@ class ProductMoveWizard(models.TransientModel):
     _description = "Product Move Wizard"
 
     product_id = fields.Many2one(
-        "product.product", "Product", default=lambda self: self._default_product()
+        "product.product", default=lambda self: self._default_product()
     )
     product_tmpl_id = fields.Many2one("product.template", "Product Name", required=True)
     value_ids = fields.Many2many(

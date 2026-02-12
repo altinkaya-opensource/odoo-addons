@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- TODO: Add l10n_eu_nace missing views, they migrated to res.partner.industry -->
     <record id="res_partner_form_view_marketing" model="ir.ui.view">
@@ -64,8 +64,8 @@
     </record>
 
     <menuitem
-        action="action_res_partner_worksector"
         id="menuitem_res_partner_worksector"
+        action="action_res_partner_worksector"
         parent="crm.crm_menu_root"
         sequence="20"
     />

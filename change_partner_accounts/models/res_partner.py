@@ -115,7 +115,6 @@ class ResPartner(models.Model):
 
     partner_currency_id = fields.Many2one(
         "res.currency",
-        string="Partner Currency",
         readonly=True,
         store=True,
         compute="_compute_partner_currency",

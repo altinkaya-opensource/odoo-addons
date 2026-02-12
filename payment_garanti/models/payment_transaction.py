@@ -18,9 +18,7 @@ class PaymentTransaction(models.Model):
 
     garanti_secure3d_hash = fields.Char(
         string="Garanti Secure 3D Hash",
-        help="The hash used to authenticate "
-        "the transaction with Garanti "
-        "Secure 3D",
+        help="The hash used to authenticate the transaction with Garanti Secure 3D",
         readonly=True,
         copy=False,
     )
@@ -115,7 +113,7 @@ class PaymentTransaction(models.Model):
         error_msg = notification_data.get("mderrormessage")
         if md_status not in ["1", "2", "3", "4", "5"]:
             _logger.warning(
-                "the transaction with reference %s underwent an error." " reason: %s",
+                "the transaction with reference %s underwent an error. reason: %s",
                 self.reference,
                 error_msg,
             )

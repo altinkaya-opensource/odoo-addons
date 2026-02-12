@@ -20,11 +20,10 @@ class AccountCheckActionWizard(models.TransientModel):
     )
     journal_id = fields.Many2one(
         "account.journal",
-        string="Journal",
         required=True,
     )
-    debit_account_id = fields.Many2one("account.account", string="Debit Account")
-    credit_account_id = fields.Many2one("account.account", string="Credit Account")
+    debit_account_id = fields.Many2one("account.account")
+    credit_account_id = fields.Many2one("account.account")
 
     @api.onchange("journal_id")
     def onchange_journal_id(self):

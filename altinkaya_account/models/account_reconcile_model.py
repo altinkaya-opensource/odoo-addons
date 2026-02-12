@@ -20,7 +20,6 @@ class AccountReconcileModel(models.Model):
 
     journal_id = fields.Many2one(
         "account.journal",
-        string="Journal",
         check_company=True,
         help=(
             "This journal will be used on the write-off "

@@ -10,20 +10,12 @@ class ProductTemplate(models.Model):
     @api.model
     @api.returns(
         "self",
-        upgrade=lambda self,
-        value,
-        domain,
-        offset=0,
-        limit=None,
-        order=None,
-        count=False: value if count else self.browse(value),
-        downgrade=lambda self,
-        value,
-        domain,
-        offset=0,
-        limit=None,
-        order=None,
-        count=False: value if count else value.ids,
+        upgrade=lambda self, value, domain, offset=0, limit=None, order=None, count=False: (  # noqa: E501
+            value if count else self.browse(value)
+        ),
+        downgrade=lambda self, value, domain, offset=0, limit=None, order=None, count=False: (  # noqa: E501
+            value if count else value.ids
+        ),
     )
     def search(
         self,

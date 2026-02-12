@@ -44,7 +44,6 @@ class ResPartner(models.Model):
     z_payable_export = fields.Char("Payable Export", size=64, required=False)
     purchase_default_account_id = fields.Many2one(
         "account.account",
-        string="Purchase Default Account",
         required=False,
         help="Satın alma işlemlerinde varsayılan muhasebe hesabı.",
     )

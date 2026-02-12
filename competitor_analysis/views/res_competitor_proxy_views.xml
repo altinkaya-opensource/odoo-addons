@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Competitor Analysis Webpage -->
     <record id="view_res_competitor_proxy_tree" model="ir.ui.view">

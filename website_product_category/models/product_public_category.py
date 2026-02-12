@@ -12,7 +12,6 @@ class ProductPublicCategory(models.Model):
     )
     description_page_id = fields.Many2one(
         comodel_name="website.page",
-        string="Description Page",
         help="Page that contains the description of this category",
         # domain="[('website_id', '=', website_id)]",
     )

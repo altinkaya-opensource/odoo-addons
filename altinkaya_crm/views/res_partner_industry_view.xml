@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="res_partner_industry_tree_inherit">
+    <record id="res_partner_industry_tree_inherit" model="ir.ui.view">
         <field name="name">res.partner.industry.tree.inherit</field>
         <field name="model">res.partner.industry</field>
         <field name="inherit_id" ref="base.res_partner_industry_view_tree" />
@@ -13,7 +13,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="res_partner_industry_form_inherit">
+    <record id="res_partner_industry_form_inherit" model="ir.ui.view">
         <field name="name">res.partner.industry.form.inherit</field>
         <field name="model">res.partner.industry</field>
         <field name="priority" eval="999" />

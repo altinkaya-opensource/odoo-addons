@@ -1,9 +1,9 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <menuitem
+        id="menu_product_category_on_sale"
         name="Product Categories"
         action="product.product_category_action_form"
-        id="menu_product_category_on_sale"
         parent="sale.product_menu_catalog"
         sequence="16"
     />

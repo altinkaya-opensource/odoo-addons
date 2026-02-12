@@ -27,7 +27,6 @@ class TrendyolProductBinding(models.Model):
     )
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
         ondelete="cascade",
         index=True,
@@ -53,13 +52,11 @@ class TrendyolProductBinding(models.Model):
     # Mappings
     trendyol_category_id = fields.Many2one(
         "trendyol.category",
-        string="Trendyol Category",
         required=True,
         domain="[('backend_id', '=', backend_id), ('is_leaf', '=', True)]",
     )
     trendyol_brand_id = fields.Many2one(
         "trendyol.brand",
-        string="Trendyol Brand",
         required=True,
         domain="[('backend_id', '=', backend_id)]",
     )

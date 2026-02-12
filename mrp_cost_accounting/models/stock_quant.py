@@ -11,7 +11,6 @@ class StockQuant(models.Model):
 
     cost_currency_id = fields.Many2one(
         "res.currency",
-        string="Cost Currency",
         default=lambda self: self.product_id.cost_currency_id.id,
     )
     # Todo: add currency_id default

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="product_attribute_table" inherit_id="sale.variants" priority="200">
         <xpath
@@ -58,7 +58,7 @@
                                             t-if="attr_val.attribute_id in product_attributes['header']"
                                         >
                                             <t t-set="is_printed" t-value="True" />
-                                            <td t-esc="attr_val.name" />
+                                            <td t-out="attr_val.name" />
                                         </t>
                                         <t t-if="not is_printed">
                                             <td>
@@ -85,7 +85,7 @@
                                                     >
                                                         <option
                                                             t-att-value="grouped_attr_val.id"
-                                                            t-esc="grouped_attr_val.name"
+                                                            t-out="grouped_attr_val.name"
                                                         />
                                                     </t>
                                                 </select>

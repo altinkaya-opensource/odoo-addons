@@ -18,7 +18,6 @@ class TrendyolBatchRequest(models.Model):
 
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
         ondelete="cascade",
         index=True,

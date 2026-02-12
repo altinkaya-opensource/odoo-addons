@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="survey_debranding" inherit_id="survey.layout" name="Survey Layout">
         <xpath expr="//div[hasclass('o_survey_brand_message')]" position="attributes">

@@ -139,8 +139,15 @@ class YurticiBarcodeRequest:
                     error_message = next(root.iter("message")).text
                     error_code = next(root.iter("code")).text
                     raise ValidationError(
-                        f"Error in the request to the Yurtiçi API: "
-                        f"[{error_text}] {error_code} - {error_message}"
+                        _(
+                            "Error in the request to the Yurtiçi API: "
+                            "[%(error_text)s] %(error_code)s - %(error_message)s"
+                        )
+                        % {
+                            "error_text": error_text,
+                            "error_code": error_code,
+                            "error_message": error_message,
+                        }
                     )
                 except ValidationError:
                     raise
