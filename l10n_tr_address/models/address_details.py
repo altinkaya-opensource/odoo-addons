@@ -6,7 +6,7 @@ class AddressDistrict(models.Model):
     _name = "address.district"
 
     name = fields.Char(string="District")
-    state_id = fields.Many2one("res.country.state", "State", required=True)
+    state_id = fields.Many2one("res.country.state", required=True)
 
     @api.model
     def _name_search(
@@ -33,7 +33,7 @@ class AddressRegion(models.Model):
     _description = "Regions"
 
     name = fields.Char(string="Region")
-    district_id = fields.Many2one("address.district", "District", required=True)
+    district_id = fields.Many2one("address.district", required=True)
     state_id = fields.Many2one(
         "res.country.state", "State", related="district_id.state_id", store=True
     )
@@ -63,7 +63,7 @@ class AddressNeighbour(models.Model):
     _description = "Neighbourhood"
 
     name = fields.Char(string="Neighbour")
-    region_id = fields.Many2one("address.region", "Region", required=True)
+    region_id = fields.Many2one("address.region", required=True)
     code = fields.Char("Postal Code")
     state_id = fields.Many2one(
         "res.country.state", "State", related="region_id.district_id.state_id"

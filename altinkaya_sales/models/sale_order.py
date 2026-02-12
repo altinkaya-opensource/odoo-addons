@@ -184,8 +184,10 @@ class SaleOrder(models.Model):
                     lambda p: p.picking_type_code == "outgoing" and p.state == "done"
                 )
                 incoming_pickings = sale.picking_ids.filtered(
-                    lambda p: p.picking_type_code == "incoming"
-                    and p.location_id.usage == "customer"
+                    lambda p: (
+                        p.picking_type_code == "incoming"
+                        and p.location_id.usage == "customer"
+                    )
                 )
                 invoiced_pickings = outgoing_pickings.filtered(
                     lambda p: p.invoice_state == "invoiced"

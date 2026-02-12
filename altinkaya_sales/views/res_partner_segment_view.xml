@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="res_partner_segment_form_view">
+    <record id="res_partner_segment_form_view" model="ir.ui.view">
         <field name="name">res.partner.segment.form</field>
         <field name="model">res.partner.segment</field>
         <field name="arch" type="xml">
@@ -27,7 +27,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="res_partner_segment_tree_view">
+    <record id="res_partner_segment_tree_view" model="ir.ui.view">
         <field name="name">res.partner.segment.tree</field>
         <field name="model">res.partner.segment</field>
         <field name="arch" type="xml">
@@ -38,13 +38,13 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="res_partner_segment_act_window">
+    <record id="res_partner_segment_act_window" model="ir.actions.act_window">
         <field name="name">Segments</field>
         <field name="res_model">res.partner.segment</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.ui.menu" id="res_partner_segment_menu">
+    <record id="res_partner_segment_menu" model="ir.ui.menu">
         <field name="name">Segments</field>
         <field name="parent_id" ref="crm.crm_menu_config" />
         <field name="action" ref="res_partner_segment_act_window" />

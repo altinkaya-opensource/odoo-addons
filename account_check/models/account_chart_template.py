@@ -14,20 +14,17 @@ class AccountChartTemplate(models.Model):
 
     rejected_check_account_id = fields.Many2one(
         "account.account.template",
-        "Rejected Check Account",
         help='Rejection Checks account, for eg. "Rejected Checks"',
         # domain=[('type', 'in', ['other'])],
     )
     deferred_check_account_id = fields.Many2one(
         "account.account.template",
-        "Deferred Check Account",
         help='Deferred Checks account, for eg. "Deferred Checks"',
         # domain=[('type', 'in', ['other'])],
     )
     holding_check_account_id = fields.Many2one(
         "account.account.template",
-        "Holding Check Account",
-        help="Holding Checks account for third checks, " 'for eg. "Holding Checks"',
+        help='Holding Checks account for third checks, for eg. "Holding Checks"',
         # domain=[('type', 'in', ['other'])],
     )
 

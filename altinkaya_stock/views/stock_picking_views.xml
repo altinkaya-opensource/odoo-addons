@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit_altinkaya</field>
@@ -165,7 +165,7 @@
     <record id="view_picking_form_inherit_carrier" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit.carrier</field>
         <field name="model">stock.picking</field>
-        <field name="priority">100</field>
+        <field name="priority" eval="100" />
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='carrier_id']" position="replace" />

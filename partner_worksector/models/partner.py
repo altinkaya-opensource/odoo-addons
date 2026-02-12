@@ -9,7 +9,7 @@ class PartnerWorksector(models.Model):
 
     name = fields.Char(string="US SIC Description", translate=True)
     partner_ids = fields.Many2many(
-        "res.partner", "table_worksector_partner_rel", "wid", "partid", string="Partner"
+        "res.partner", "table_worksector_partner_rel", "wid", "partid"
     )
     product_categ_ids = fields.Many2many("product.category", string="Category")
 
@@ -29,15 +29,12 @@ class ResPartner(models.Model):
                 set(lst)
             )
 
-    main_worksector_id = fields.Many2one(
-        "partner.worksector", string="Main Worksector", ondelete="restrict"
-    )
+    main_worksector_id = fields.Many2one("partner.worksector", ondelete="restrict")
     worksector_ids = fields.Many2many(
         "partner.worksector",
         "table_worksector_partner_rel",
         "partid",
         "wid",
-        string="Worksector",
     )
     target_product_categ_ids = fields.Many2many(
         "product.category",

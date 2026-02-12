@@ -35,8 +35,8 @@
     </record>
 
     <menuitem
-        action="action_x_makine"
         id="menuitem_action_x_makine"
+        action="action_x_makine"
         parent="mrp.menu_mrp_bom"
         sequence="20"
     />

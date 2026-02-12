@@ -49,10 +49,12 @@ class AccountMove(models.Model):
         """
         res = super().action_post()
         for move in self.filtered(
-            lambda m: m.state == "posted"
-            and m.picking_ids
-            and m.carrier_id
-            and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+            lambda m: (
+                m.state == "posted"
+                and m.picking_ids
+                and m.carrier_id
+                and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+            )
         ):
             move.send_to_shipper()
         return res
@@ -63,9 +65,11 @@ class AccountMove(models.Model):
         """
         res = super().button_draft()
         for move in self.filtered(
-            lambda m: m.picking_ids
-            and m.carrier_id
-            and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+            lambda m: (
+                m.picking_ids
+                and m.carrier_id
+                and m.carrier_id.delivery_type not in ["fixed", "base_on_rule"]
+            )
         ):
             for picking in move.picking_ids:
                 if picking.delivery_state != "shipping_recorded_in_carrier":

@@ -12,7 +12,7 @@ class CreateProcurementMove(models.TransientModel):
     _name = "create.procurement.move"
     _description = "Create procurement move"
 
-    move_id = fields.Many2one("stock.move", "Move", readonly=True)
+    move_id = fields.Many2one("stock.move", readonly=True)
     product_id = fields.Many2one(
         "product.product", string="Product", related="move_id.product_id", readonly=True
     )
@@ -187,8 +187,8 @@ class CreateProcurementMove(models.TransientModel):
         if not group_id:
             group_id = self.env["procurement.group"].create(
                 {
-                    "name": f"""{warehouse_id.name or ''}
-                    Açan: {self.env.user.name or ''}""",
+                    "name": f"""{warehouse_id.name or ""}
+                    Açan: {self.env.user.name or ""}""",
                 }
             )
         values = {

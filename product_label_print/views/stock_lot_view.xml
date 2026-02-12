@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="stock_production_lot_print_label_single_form" model="ir.ui.view">
         <field name="name">stock.production.lot.form.inherit.print.label</field>

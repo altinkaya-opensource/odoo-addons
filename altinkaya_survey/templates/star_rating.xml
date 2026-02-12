@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- STAR RATING RESULT TEMPLATE -->
     <template id="result_star" name="Star Rating Result">
@@ -61,12 +61,12 @@ Data
                             <tr t-foreach="table_data" t-as="choice_data">
                                 <td>
                                     <p>
-                                        <t t-esc="choice_data['value']" /> Star
+                                        <t t-out="choice_data['value']" /> Star
                                         </p>
                                 </td>
                                 <td class="o_survey_answer">
                                         <span
-                                    t-esc="round(choice_data['count'] * 100.0/ (len(question_data['answer_line_done_ids']) or 1), 2)"
+                                    t-out="round(choice_data['count'] * 100.0/ (len(question_data['answer_line_done_ids']) or 1), 2)"
                                 /> %
                                         <span
                                     t-out="choice_data['count_text']"

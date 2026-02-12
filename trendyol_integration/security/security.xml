@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Trendyol Module Category -->
     <record id="module_category_trendyol" model="ir.module.category">
         <field name="name">Trendyol Integration</field>
         <field name="description">Manage Trendyol marketplace integration</field>
-        <field name="sequence">100</field>
+        <field name="sequence" eval="100" />
     </record>
 
     <!-- User Group - Read access to bindings and orders -->

@@ -4,8 +4,8 @@ from odoo import api, fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    district_id = fields.Many2one("address.district", string="District")
-    region_id = fields.Many2one("address.region", string="Region")
+    district_id = fields.Many2one("address.district")
+    region_id = fields.Many2one("address.region")
     neighbour_id = fields.Many2one("address.neighbour", string="Neighbourhood")
 
     @api.onchange("state_id")

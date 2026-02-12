@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bank_statement_line_tree_finekra">
+    <record id="bank_statement_line_tree_finekra" model="ir.ui.view">
         <field name="name">account.bank.statement.line.tree.finekra</field>
         <field name="model">account.bank.statement.line</field>
         <field

@@ -7,9 +7,7 @@ from odoo.exceptions import ValidationError
 class StockLocation(models.Model):
     _inherit = "stock.location"
 
-    vertical_lift_kardex_id = fields.Many2one(
-        "stock.vertical.lift.kardex", string="Vertical Lift Kardex"
-    )
+    vertical_lift_kardex_id = fields.Many2one("stock.vertical.lift.kardex")
 
     def get_kardex_rack(self):
         if self.vertical_lift_kardex_id:

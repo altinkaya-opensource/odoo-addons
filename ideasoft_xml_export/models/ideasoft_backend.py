@@ -38,19 +38,16 @@ class IdeasoftBackend(models.Model):
     )
     tax_id = fields.Many2one(
         "account.tax",
-        string="Tax",
         help="Default tax to apply to products in the export.",
         required=True,
     )
     currency_id = fields.Many2one(
         "res.currency",
-        string="Currency",
         help="Currency to use for product prices in export.",
         required=True,
     )
     attachment_id = fields.Many2one(
         "ir.attachment",
-        string="Attachment",
         help="Attachment to store the exported XML file.",
     )
     lang_id = fields.Many2one(
@@ -212,7 +209,7 @@ class IdeasoftBackend(models.Model):
                 qty=product.volume, to_unit=litre, round=False
             )
 
-            etree.SubElement(product_element, "dm3").text = f"{litre_volume/3000:.8f}"
+            etree.SubElement(product_element, "dm3").text = f"{litre_volume / 3000:.8f}"
 
             etree.SubElement(product_element, "details").text = self._wrap_cdata(
                 str(product.public_description)

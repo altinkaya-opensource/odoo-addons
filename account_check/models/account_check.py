@@ -31,7 +31,6 @@ class AccountCheck(models.Model):
     )
     checkbook_id = fields.Many2one(
         "account.checkbook",
-        "Checkbook",
         readonly=True,
         states={"draft": [("readonly", False)]},
         auto_join=True,
@@ -92,7 +91,7 @@ class AccountCheck(models.Model):
     owner_vat = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
     owner_name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
     bank_id = fields.Many2one(
-        "res.bank", "Bank", readonly=True, states={"draft": [("readonly", False)]}
+        "res.bank", readonly=True, states={"draft": [("readonly", False)]}
     )
     amount = fields.Monetary(
         currency_field="currency_id",
@@ -121,7 +120,6 @@ class AccountCheck(models.Model):
     )
     journal_id = fields.Many2one(
         "account.journal",
-        string="Journal",
         required=True,
         domain=[("type", "in", ["cash", "bank"])],
         readonly=True,
@@ -694,9 +692,11 @@ class AccountCheck(models.Model):
                     continue
 
                 for ml in move_lines.filtered(
-                    lambda m: m.account_id.currency_id
-                    and m.account_id.currency_id != rec.company_currency_id
-                    and not m.full_reconcile_id
+                    lambda m: (
+                        m.account_id.currency_id
+                        and m.account_id.currency_id != rec.company_currency_id
+                        and not m.full_reconcile_id
+                    )
                 ):
                     amount = ml.debit or ml.credit
                     sign = 1 if ml.debit else -1

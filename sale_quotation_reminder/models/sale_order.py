@@ -34,10 +34,12 @@ class SaleOrder(models.Model):
         self.ensure_one()
         # Filter for outgoing emails only (author is an internal user)
         outgoing_emails = self.message_ids.filtered(
-            lambda m: m.message_type == "comment"
-            and m.message_id
-            and m.postmark_message_id
-            and m.author_id.user_ids
+            lambda m: (
+                m.message_type == "comment"
+                and m.message_id
+                and m.postmark_message_id
+                and m.author_id.user_ids
+            )
         )
         if outgoing_emails:  # Mails are already sorted by date descending
             return outgoing_emails[0]

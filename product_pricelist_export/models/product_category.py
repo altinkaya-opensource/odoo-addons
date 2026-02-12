@@ -9,7 +9,5 @@ class ProductCategory(models.Model):
 
     show_in_pricelist = fields.Boolean(string="Show in Pricelist")
     pricelist_discount_scales = fields.Char(
-        help="Pricelist Discount Scales"
-        " for this category. Example:"
-        " 50,100,150,200,250",
+        help="Pricelist Discount Scales for this category. Example: 50,100,150,200,250",
     )

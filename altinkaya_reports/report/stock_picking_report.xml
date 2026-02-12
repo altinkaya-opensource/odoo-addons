@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="1">
     <template
         id="report_picking_altinkaya"
@@ -79,13 +79,13 @@
                                         <span>
                                             <strong>Tedarikçi Adresi:</strong>
                                             <span style="font-size:14px;">
-                                                <t t-esc="o.partner_id.display_name" />
+                                                <t t-out="o.partner_id.display_name" />
                                             </span>
-                                            <t t-esc="o.partner_id.street" />
-                                            <t t-esc="o.partner_id.street2" />
-                                            <t t-esc="o.partner_id.city" />
-                                            <t t-esc="o.partner_id.state_id.name" />
-                                            <t t-esc="o.partner_id.country_id.name" />
+                                            <t t-out="o.partner_id.street" />
+                                            <t t-out="o.partner_id.street2" />
+                                            <t t-out="o.partner_id.city" />
+                                            <t t-out="o.partner_id.state_id.name" />
+                                            <t t-out="o.partner_id.country_id.name" />
                                         </span>
                                     </div>
                                     <div
@@ -94,13 +94,13 @@
                                         <span>
                                             <strong>Depo Adresi:</strong>
                                             <span style="font-size:14px;">
-                                                <t t-esc="o.partner_id.display_name" />
+                                                <t t-out="o.partner_id.display_name" />
                                             </span>
-                                            <t t-esc="o.partner_id.street" />
-                                            <t t-esc="o.partner_id.street2" />
-                                            <t t-esc="o.partner_id.city" />
-                                            <t t-esc="o.partner_id.state_id.name" />
-                                            <t t-esc="o.partner_id.country_id.name" />
+                                            <t t-out="o.partner_id.street" />
+                                            <t t-out="o.partner_id.street2" />
+                                            <t t-out="o.partner_id.city" />
+                                            <t t-out="o.partner_id.state_id.name" />
+                                            <t t-out="o.partner_id.country_id.name" />
                                         </span>
                                     </div>
                                     <div
@@ -109,13 +109,13 @@
                                         <span>
                                             <strong>Müşteri Adresi:</strong>
                                             <span style="font-size:14px;">
-                                                <t t-esc="o.partner_id.display_name" />
+                                                <t t-out="o.partner_id.display_name" />
                                             </span>
-                                            <t t-esc="o.partner_id.street" />
-                                            <t t-esc="o.partner_id.street2" />
-                                            <t t-esc="o.partner_id.city" />
-                                            <t t-esc="o.partner_id.state_id.name" />
-                                            <t t-esc="o.partner_id.country_id.name" />
+                                            <t t-out="o.partner_id.street" />
+                                            <t t-out="o.partner_id.street2" />
+                                            <t t-out="o.partner_id.city" />
+                                            <t t-out="o.partner_id.state_id.name" />
+                                            <t t-out="o.partner_id.country_id.name" />
                                         </span>
                                     </div>
                                     <div
@@ -125,20 +125,20 @@
                                             <strong>Teslimat Adresi:</strong>
                                             <span style="font-size:14px;">
                                                 <t
-                                                    t-esc="o.move_ids[0].partner_id.display_name"
+                                                    t-out="o.move_ids[0].partner_id.display_name"
                                                 />
                                             </span>
                                             <t
-                                                t-esc="o.move_ids[0].partner_id.street"
+                                                t-out="o.move_ids[0].partner_id.street"
                                             />
                                             <t
-                                                t-esc="o.move_ids[0].partner_id.street2"
+                                                t-out="o.move_ids[0].partner_id.street2"
                                             />
-                                            <t t-esc="o.move_ids[0].partner_id.city" />
+                                            <t t-out="o.move_ids[0].partner_id.city" />
                                             <t
-                                                t-esc="o.move_ids[0].partner_id.state_id.name"
+                                                t-out="o.move_ids[0].partner_id.state_id.name"
                                             />
-                                            <t t-esc="o.move_ids[0].partner_id.name" />
+                                            <t t-out="o.move_ids[0].partner_id.name" />
                                         </span>
                                     </div>
                                     <div
@@ -148,23 +148,23 @@
                                             <strong>Depo Adresi:</strong>
                                             <span style="font-size:14px;">
                                                 <t
-                                                    t-esc="o.picking_type_id.warehouse_id.partner_id.display_name"
+                                                    t-out="o.picking_type_id.warehouse_id.partner_id.display_name"
                                                 />
                                             </span>
                                             <t
-                                                t-esc="o.picking_type_id.warehouse_id.partner_id.street"
+                                                t-out="o.picking_type_id.warehouse_id.partner_id.street"
                                             />
                                             <t
-                                                t-esc="o.picking_type_id.warehouse_id.partner_id.street2"
+                                                t-out="o.picking_type_id.warehouse_id.partner_id.street2"
                                             />
                                             <t
-                                                t-esc="o.picking_type_id.warehouse_id.partner_id.city"
+                                                t-out="o.picking_type_id.warehouse_id.partner_id.city"
                                             />
                                             <t
-                                                t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name"
+                                                t-out="o.picking_type_id.warehouse_id.partner_id.state_id.name"
                                             />
                                             <t
-                                                t-esc="o.picking_type_id.warehouse_id.partner_id.country_id.name"
+                                                t-out="o.picking_type_id.warehouse_id.partner_id.country_id.name"
                                             />
                                         </span>
                                     </div>
@@ -281,7 +281,7 @@
                                             <td>
                                                 <span style="font-size:13px;">
                                                     <t
-                                                        t-esc="move.product_id.display_name"
+                                                        t-out="move.product_id.display_name"
                                                     />
                                                 </span>
                                             </td>
@@ -294,7 +294,7 @@
                                                         t-if="move.product_uom.category_id.id ==1"
                                                     >
                                                         <t
-                                                            t-esc="'%.0f'%move.product_uom_qty"
+                                                            t-out="'%.0f'%move.product_uom_qty"
                                                         />
                                                         <span
                                                             t-field="move.product_uom"
@@ -332,7 +332,7 @@
                                                             <br />
 Stokta:
                                                             <t
-                                                        t-esc="'%.0f'%move.product_id.qty_available"
+                                                        t-out="'%.0f'%move.product_id.qty_available"
                                                     />
                                                             <span />
                                                             <span
@@ -364,11 +364,11 @@ Stokta:
                                                                 style="font-size:11px;"
                                                             >
                                                                     <t
-                                                                t-esc="quant.location_id.name"
+                                                                t-out="quant.location_id.name"
                                                             />
 :
                                                                     <t
-                                                                t-esc="quant.reserved_uom_qty"
+                                                                t-out="quant.reserved_uom_qty"
                                                             />
                                                                 </span>
                                                         </li>
@@ -390,7 +390,7 @@ Stokta:
                                     <span t-field="user.name" />
                                     Tarih:
                                     <span
-                                t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"
+                                t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"
                             />
                                 </div>
                         </div>

@@ -19,7 +19,6 @@ class ResCompetitorWebPage(models.Model):
         help="Crawled web page URL",
     )
     competitor_id = fields.Many2one(
-        string="Competitor",
         comodel_name="res.competitor",
         required=True,
         readonly=True,

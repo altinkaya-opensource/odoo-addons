@@ -11,7 +11,6 @@ class TrendyolProductExportWizard(models.TransientModel):
 
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
     )
     product_ids = fields.Many2many(
@@ -21,13 +20,11 @@ class TrendyolProductExportWizard(models.TransientModel):
     )
     trendyol_category_id = fields.Many2one(
         "trendyol.category",
-        string="Trendyol Category",
         domain="[('backend_id', '=', backend_id), ('is_leaf', '=', True)]",
         help="Category to use for all selected products (optional)",
     )
     trendyol_brand_id = fields.Many2one(
         "trendyol.brand",
-        string="Trendyol Brand",
         domain="[('backend_id', '=', backend_id)]",
         help="Brand to use for all selected products (optional)",
     )

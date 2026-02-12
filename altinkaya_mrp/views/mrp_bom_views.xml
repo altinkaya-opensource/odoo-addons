@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <menuitem
+        id="menu_product_category_on_mrp"
         action="product.product_category_action_form"
         name="Product Categories"
-        id="menu_product_category_on_mrp"
         parent="mrp.menu_mrp_bom"
         sequence="16"
     />

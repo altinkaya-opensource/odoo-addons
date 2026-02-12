@@ -93,7 +93,6 @@ class MrpBoMLine(models.Model):
 
     factor_attribute_id = fields.Many2one(
         "product.attribute",
-        string="Factor Attribute",
         help="End product attribute to use for raw material calculation",
     )
     attribute_factor = fields.Float(

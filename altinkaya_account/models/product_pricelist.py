@@ -20,7 +20,6 @@ class ProductPricelist(models.Model):
 
     invoice_currency_id = fields.Many2one(
         "res.currency",
-        string="Invoice Currency",
         help="The currency in which the invoice will be converted.",
     )
 
@@ -30,8 +29,11 @@ class ProductPricelist(models.Model):
                 pricelist.id,
                 f"{pricelist.name} "
                 f"({pricelist.currency_id.name}"
-                f"{'-' + pricelist.invoice_currency_id.name
-                if pricelist.invoice_currency_id else ''})",
+                f"{
+                    '-' + pricelist.invoice_currency_id.name
+                    if pricelist.invoice_currency_id
+                    else ''
+                })",
             )
             for pricelist in self
         ]

@@ -79,7 +79,7 @@
                                     <br />
 
                                     <strong
-                                        t-esc="o.partner_id.commercial_partner_id._display_address(without_company=True)"
+                                        t-out="o.partner_id.commercial_partner_id._display_address(without_company=True)"
                                     />
 
                                     <br />
@@ -167,7 +167,7 @@
                     <div class="row">
                         <div class="col-12">
                             <p>YALNIZ:
-                                    <span t-esc="o.account_payment_amount_in_words" />
+                                    <span t-out="o.account_payment_amount_in_words" />
                                     <t
                                 t-if="o.journal_id.type=='cash' and o.payment_method_code != 'received_third_check'"
                             >
@@ -240,7 +240,7 @@
                     <div class="row">
                         <div class="col-12" style="padding:10px 150px">
                             <p>P.12.F.03 Yazdıran:
-                                    <span t-esc="user.name" />
+                                    <span t-out="user.name" />
                                     02.01.2013 Rev.No/Tar:00/00
                                 </p>
                         </div>

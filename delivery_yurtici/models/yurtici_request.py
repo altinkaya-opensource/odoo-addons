@@ -124,7 +124,11 @@ class YurticiRequest:
 
         if response.outFlag != "0":
             raise ValidationError(
-                f"{response.outResult}:\n{response.shippingOrderDetailVO[0].errMessage}"
+                _("%(result)s:\n%(error)s")
+                % {
+                    "result": response.outResult,
+                    "error": response.shippingOrderDetailVO[0].errMessage,
+                }
             )
 
         return response

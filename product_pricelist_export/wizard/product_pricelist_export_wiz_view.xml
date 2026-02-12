@@ -39,8 +39,8 @@
     </record>
 
     <menuitem
-        action="product_pricelist_export_wiz_action"
         id="menu_product_pricelist_export_wiz"
+        action="product_pricelist_export_wiz_action"
         parent="sale.product_menu_catalog"
         sequence="10"
         groups="product_pricelist_export.group_pricelist_export"

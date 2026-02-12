@@ -11,16 +11,16 @@
     </record>
 
     <menuitem
-        name="Dashboard"
         id="user_dashboard_view"
+        name="Dashboard"
         sequence="10"
         action="action_owl_user_dashboard"
         web_icon="sttl_dashboard,static/src/img/menu_icon.png"
     >
         <menuitem
+            id="menu_generator"
             groups="base.group_erp_manager"
             name="Configuration"
-            id="menu_generator"
             sequence="100"
             action="dashboard_menu_item_generate"
         />

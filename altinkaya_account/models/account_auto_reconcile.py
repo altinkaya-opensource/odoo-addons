@@ -69,9 +69,11 @@ class AccountAutoReconcile(models.AbstractModel):
             current_invoice_amount = abs(
                 sum(
                     current_move.line_ids.filtered(
-                        lambda l: l.account_id.account_type
-                        in ("asset_receivable", "liability_payable")
-                        and not l.reconciled
+                        lambda l: (
+                            l.account_id.account_type
+                            in ("asset_receivable", "liability_payable")
+                            and not l.reconciled
+                        )
                     ).mapped("amount_residual_currency")
                 )
             )
@@ -106,9 +108,11 @@ class AccountAutoReconcile(models.AbstractModel):
             if currency:
                 # Use pay term lines' residual_currency for accuracy
                 inv_pay_lines = inv.line_ids.filtered(
-                    lambda l: l.account_id.account_type
-                    in ("asset_receivable", "liability_payable")
-                    and not l.reconciled
+                    lambda l: (
+                        l.account_id.account_type
+                        in ("asset_receivable", "liability_payable")
+                        and not l.reconciled
+                    )
                 )
                 inv_amount = abs(sum(inv_pay_lines.mapped("amount_residual_currency")))
             else:
@@ -409,9 +413,11 @@ class AccountAutoReconcile(models.AbstractModel):
 
             for other_move in other_invoices:
                 other_lines = other_move.line_ids.filtered(
-                    lambda line: line.account_id.account_type
-                    in ("asset_receivable", "liability_payable")
-                    and not line.reconciled
+                    lambda line: (
+                        line.account_id.account_type
+                        in ("asset_receivable", "liability_payable")
+                        and not line.reconciled
+                    )
                 )
                 all_invoice_lines |= other_lines
                 if use_foreign:
@@ -494,9 +500,11 @@ class AccountAutoReconcile(models.AbstractModel):
         reconciled_any = False
         for move in invoices:
             pay_term_lines = move.line_ids.filtered(
-                lambda line: line.account_id.account_type
-                in ("asset_receivable", "liability_payable")
-                and not line.reconciled
+                lambda line: (
+                    line.account_id.account_type
+                    in ("asset_receivable", "liability_payable")
+                    and not line.reconciled
+                )
             )
             if not pay_term_lines:
                 continue
@@ -548,9 +556,11 @@ class AccountAutoReconcile(models.AbstractModel):
 
         for move in invoices:
             pay_term_lines = move.line_ids.filtered(
-                lambda line: line.account_id.account_type
-                in ("asset_receivable", "liability_payable")
-                and not line.reconciled
+                lambda line: (
+                    line.account_id.account_type
+                    in ("asset_receivable", "liability_payable")
+                    and not line.reconciled
+                )
             )
             if not pay_term_lines:
                 continue

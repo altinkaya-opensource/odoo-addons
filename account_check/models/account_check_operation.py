@@ -28,7 +28,6 @@ class AccountCheckOperation(models.Model):
     )
     check_id = fields.Many2one(
         "account.check",
-        "Check",
         required=True,
         ondelete="cascade",
         auto_join=True,
@@ -63,7 +62,6 @@ class AccountCheckOperation(models.Model):
     origin = fields.Reference(string="Origin Document", selection="_reference_models")
     partner_id = fields.Many2one(
         "res.partner",
-        string="Partner",
     )
     notes = fields.Text(string="Operation Note")
 

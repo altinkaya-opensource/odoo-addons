@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="crm_phonecall_form_inherit_altinkaya">
+    <record id="crm_phonecall_form_inherit_altinkaya" model="ir.ui.view">
         <field name="name">altinkaya.crm.phonecall.form.inherit</field>
         <field name="model">crm.phonecall</field>
         <field name="inherit_id" ref="crm_phonecall.crm_case_phone_form_view" />
@@ -21,7 +21,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="crm_phonecall_tree_inherit_altinkaya">
+    <record id="crm_phonecall_tree_inherit_altinkaya" model="ir.ui.view">
         <field name="name">altinkaya.crm.phonecall.tree.inherit</field>
         <field name="model">crm.phonecall</field>
         <field name="inherit_id" ref="crm_phonecall.crm_case_phone_tree_view" />

@@ -28,7 +28,6 @@ class AccountPayment(models.Model):
     check_id = fields.Many2one(
         "account.check",
         compute="_compute_check",
-        string="Check",
     )
     check_deposit_type = fields.Selection(
         [("consolidated", "Consolidated"), ("detailed", "Detailed")],
@@ -91,7 +90,6 @@ class AccountPayment(models.Model):
     )
     checkbook_id = fields.Many2one(
         "account.checkbook",
-        "Checkbook",
         readonly=True,
         states={"draft": [("readonly", False)]},
         auto_join=True,
@@ -101,7 +99,6 @@ class AccountPayment(models.Model):
     )
     check_bank_id = fields.Many2one(
         "res.bank",
-        "Check Bank",
         readonly=True,
         copy=False,
         states={"draft": [("readonly", False)]},
@@ -149,8 +146,10 @@ class AccountPayment(models.Model):
 
     def _compute_payment_method_description(self):
         check_payments = self.filtered(
-            lambda x: x.check_payment_type
-            in ["issue_check", "received_third_check", "delivered_third_check"]
+            lambda x: (
+                x.check_payment_type
+                in ["issue_check", "received_third_check", "delivered_third_check"]
+            )
         )
         for rec in check_payments:
             if rec.check_ids:
@@ -567,9 +566,11 @@ class AccountPayment(models.Model):
     def _create_payment_entry(self, amount):
         move = super()._create_payment_entry(amount)
         if self.filtered(
-            lambda x: x.payment_type == "transfer"
-            and x.check_payment_type == "delivered_third_check"
-            and x.check_deposit_type == "detailed"
+            lambda x: (
+                x.payment_type == "transfer"
+                and x.check_payment_type == "delivered_third_check"
+                and x.check_deposit_type == "detailed"
+            )
         ):
             self._split_aml_line_per_check(move)
         return move
@@ -577,9 +578,11 @@ class AccountPayment(models.Model):
     def _create_transfer_entry(self, amount):
         transfer_debit_aml = super()._create_transfer_entry(amount)
         if self.filtered(
-            lambda x: x.payment_type == "transfer"
-            and x.check_payment_type == "delivered_third_check"
-            and x.check_deposit_type == "detailed"
+            lambda x: (
+                x.payment_type == "transfer"
+                and x.check_payment_type == "delivered_third_check"
+                and x.check_deposit_type == "detailed"
+            )
         ):
             self._split_aml_line_per_check(transfer_debit_aml.move_id)
         return transfer_debit_aml

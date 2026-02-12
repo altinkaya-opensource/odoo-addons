@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="product_product_print_label_single_tree" model="ir.ui.view">
         <field name="name">product.product.tree.inherit.print_label</field>

@@ -192,8 +192,7 @@ class ChartGenerator(models.Model):
                                 [f"{field_name}:day"],
                                 limit=rec.dashboard_limit_value,
                                 orderby=(
-                                    f"{aggregate_field_name} "
-                                    f"{rec.dashboard_sort_by}"
+                                    f"{aggregate_field_name} {rec.dashboard_sort_by}"
                                 ),
                             )
                             for record in agg_data:
@@ -208,8 +207,7 @@ class ChartGenerator(models.Model):
                                 [field_name],
                                 limit=rec.dashboard_limit_value,
                                 orderby=(
-                                    f"{aggregate_field_name} "
-                                    f"{rec.dashboard_sort_by}"
+                                    f"{aggregate_field_name} {rec.dashboard_sort_by}"
                                 ),
                             )
                     else:

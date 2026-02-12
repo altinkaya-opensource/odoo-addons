@@ -20,8 +20,8 @@ class WizardChangePickingWarehouse(models.TransientModel):
     _name = "wizard.change.picking.warehouse"
     _description = "Wizard Change Picking Warehouse"
 
-    picking_id = fields.Many2one("stock.picking", string="Picking", required=True)
-    warehouse_id = fields.Many2one("stock.warehouse", string="Warehouse", required=True)
+    picking_id = fields.Many2one("stock.picking", required=True)
+    warehouse_id = fields.Many2one("stock.warehouse", required=True)
 
     def action_change(self):
         self.ensure_one()

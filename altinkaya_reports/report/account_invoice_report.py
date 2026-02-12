@@ -6,14 +6,13 @@ class AccountInvoiceReport(models.Model):
 
     acquirer_id = fields.Many2one(
         "res.partner",
-        string="Acquirer",
         help="The user who acquired this customer.",
         readonly=True,
     )
     seller_id = fields.Many2one(
         "res.users", string="Partner Salesperson", readonly=True
     )
-    state_id = fields.Many2one("res.country.state", string="State", readonly=True)
+    state_id = fields.Many2one("res.country.state", readonly=True)
     price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
     total_tax = fields.Float(string="Tax Total", readonly=True)
     price_average_usd = fields.Float(
@@ -96,9 +95,7 @@ class AccountInvoiceReport(models.Model):
         groups="altinkaya_sale_commission.group_sale_commission_user",
     )
     invoice_count = fields.Integer(string="Partner Invoice Count", readonly=True)
-    industry_id = fields.Many2one(
-        "res.partner.industry", string="Industry", readonly=True
-    )
+    industry_id = fields.Many2one("res.partner.industry", readonly=True)
     # Fields from account.move.line
     origin_price_usd = fields.Float(
         string="Pricelist Price USD",

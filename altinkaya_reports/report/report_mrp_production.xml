@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
         <template
@@ -102,7 +102,7 @@
                                     <td style="font-size:20px;">
                                         <t>
                                             <t
-                                                t-esc="int(round(o.product_qty, 2)) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"
+                                                t-out="int(round(o.product_qty, 2)) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"
                                             />
                                             <span t-field="o.product_uom_id.name" />
                                         </t>
@@ -227,7 +227,7 @@
                                         <td style="font-size:12px;" class="text-right">
                                             <t>
                                                 <t
-                                                    t-esc="int(round(line.product_uom_qty, 2)) if round(line.product_uom_qty, 2).is_integer() else '{:.2f}'.format(line.product_uom_qty)"
+                                                    t-out="int(round(line.product_uom_qty, 2)) if round(line.product_uom_qty, 2).is_integer() else '{:.2f}'.format(line.product_uom_qty)"
                                                 />
                                                 <span
                                                     t-field="line.product_uom.name"
@@ -384,13 +384,13 @@
                                 >&amp;bull;</li>
                                 <li class="list-inline-item">
                                     Yazdıran:
-                                    <span t-esc="user.name" />
+                                    <span t-out="user.name" />
                                 </li>
                                 <li class="list-inline-item">&amp;bull;</li>
                                 <li class="list-inline-item">
                                     Baskı Tarih Saat:
                                     <span
-                                    t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"
+                                    t-out="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"
                                 />
                                 </li>
 

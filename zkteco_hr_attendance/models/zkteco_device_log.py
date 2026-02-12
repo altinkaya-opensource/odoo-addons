@@ -21,7 +21,6 @@ class ZKTecoDeviceLog(models.Model):
 
     device_id = fields.Many2one(
         comodel_name="zkteco.device",
-        string="Device",
         required=True,
         ondelete="cascade",
     )

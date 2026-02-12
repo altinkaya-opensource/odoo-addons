@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="res_bank_view_form_inherit_altinkaya_sales">
+    <record id="res_bank_view_form_inherit_altinkaya_sales" model="ir.ui.view">
         <field name="name">res.bank.view.altinkaya.sales.form.inherit</field>
         <field name="model">res.bank</field>
         <field name="inherit_id" ref="base.view_res_bank_form" />

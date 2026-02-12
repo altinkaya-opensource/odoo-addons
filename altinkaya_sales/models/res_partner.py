@@ -70,7 +70,6 @@ class ResPartner(models.Model):
     country_id = fields.Many2one(required=True)
     segment_id = fields.Many2one(
         "res.partner.segment",
-        string="Segment",
     )
     email_invalid = fields.Boolean(
         default=False,

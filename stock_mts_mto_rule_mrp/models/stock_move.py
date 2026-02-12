@@ -101,15 +101,19 @@ class StockMove(models.Model):
         factor = 1.0
         mo = production_id
         split_mto_move = mo.move_raw_ids.filtered(
-            lambda m: m.bom_line_id == self.bom_line_id
-            and m.procure_method == "make_to_order"
-            and m.id != self.id
+            lambda m: (
+                m.bom_line_id == self.bom_line_id
+                and m.procure_method == "make_to_order"
+                and m.id != self.id
+            )
         )
 
         split_mts_move = mo.move_raw_ids.filtered(
-            lambda m: m.bom_line_id == self.bom_line_id
-            and m.procure_method == "make_to_stock"
-            and m.id != self.id
+            lambda m: (
+                m.bom_line_id == self.bom_line_id
+                and m.procure_method == "make_to_stock"
+                and m.id != self.id
+            )
         )
 
         production_qty = (
@@ -169,16 +173,20 @@ class StockMove(models.Model):
             mo = move.raw_material_production_id or move.production_id
             if mo:
                 split_mto_move = mo.move_raw_ids.filtered(
-                    lambda m: m.bom_line_id == move.bom_line_id
-                    and m.procure_method == "make_to_order"
-                    and m.id
-                    and m.id != move.id
+                    lambda m: (
+                        m.bom_line_id == move.bom_line_id
+                        and m.procure_method == "make_to_order"
+                        and m.id
+                        and m.id != move.id
+                    )
                 )
                 split_mts_move = mo.move_raw_ids.filtered(
-                    lambda m: m.bom_line_id == move.bom_line_id
-                    and m.procure_method == "make_to_stock"
-                    and m.id
-                    and m.id != move.id
+                    lambda m: (
+                        m.bom_line_id == move.bom_line_id
+                        and m.procure_method == "make_to_stock"
+                        and m.id
+                        and m.id != move.id
+                    )
                 )
                 if split_mts_move or split_mto_move:
                     if len(split_mts_move) > 1 or len(split_mto_move) > 1:

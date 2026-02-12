@@ -62,7 +62,6 @@ class TrendyolSettlement(models.Model):
     # Odoo links
     trendyol_order_id = fields.Many2one(
         "trendyol.order",
-        string="Trendyol Order",
         index=True,
     )
     odoo_invoice_id = fields.Many2one(
@@ -75,7 +74,6 @@ class TrendyolSettlement(models.Model):
     )
     commission_payment_id = fields.Many2one(
         "account.payment",
-        string="Commission Payment",
     )
 
     # Status

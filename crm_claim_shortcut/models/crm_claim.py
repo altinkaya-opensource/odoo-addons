@@ -14,8 +14,8 @@ APPLICABLE_MODELS.append("stock.picking")  # Add stock.picking to model_ref_id
 class CRMClaim(models.Model):
     _inherit = "crm.claim"
 
-    source_id = fields.Many2one("utm.source", string="Source")
-    carrier_id = fields.Many2one("delivery.carrier", string="Carrier")
+    source_id = fields.Many2one("utm.source")
+    carrier_id = fields.Many2one("delivery.carrier")
 
     @api.model_create_multi
     def create(self, vals_list):

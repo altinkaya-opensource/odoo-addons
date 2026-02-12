@@ -58,30 +58,30 @@
                         <td
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
-                            <span t-esc="line.move_line_id.date.strftime('%d.%m.%Y')" />
+                            <span t-out="line.move_line_id.date.strftime('%d.%m.%Y')" />
                         </td>
                         <td
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
-                            <span t-esc="line.move_line_id.journal_id.name or ''" />
+                            <span t-out="line.move_line_id.journal_id.name or ''" />
                         </td>
                         <td
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
                             <span
-                                t-esc="inv.name if inv else line.move_line_id.move_id.name"
+                                t-out="inv.name if inv else line.move_line_id.move_id.name"
                             />
                         </td>
                         <td
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
-                            <span t-esc="line.date_due.strftime('%d.%m.%Y')" />
+                            <span t-out="line.date_due.strftime('%d.%m.%Y')" />
                         </td>
                         <td
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
                             <span
-                                t-esc="line.amount_due"
+                                t-out="line.amount_due"
                                 t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
                             />
                         </td>
@@ -89,7 +89,7 @@
                             style="border: 1px solid black !important;padding: 0 2px;text-align: center;"
                         >
                             <span
-                                t-esc="line.balance_due"
+                                t-out="line.balance_due"
                                 t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
                             />
                         </td>

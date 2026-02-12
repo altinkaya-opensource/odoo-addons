@@ -99,7 +99,7 @@ class SurveyMapping(models.AbstractModel):
             survey_user_input = self.env["survey.user_input"].create(vals)
 
         survey_url = (
-            f"{base_url}/{survey_user_input.partner_id.lang or "tr_TR"}/survey/"
+            f"{base_url}/{survey_user_input.partner_id.lang or 'tr_TR'}/survey/"
             f"{survey.access_token}/{survey_user_input.access_token}"
         )
 

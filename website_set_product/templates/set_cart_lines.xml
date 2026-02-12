@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template
         id="set_cart_lines"
@@ -50,7 +50,7 @@
                                 </a>
                             </div>
                             <span
-                                t-esc="'[%s]' % parent.default_code"
+                                t-out="'[%s]' % parent.default_code"
                                 class="text-muted"
                             />
                         </td>
@@ -96,7 +96,7 @@
                                         </a>
                                     </div>
                                     <span
-                                        t-esc="'[%s]' % line.product_id.default_code"
+                                        t-out="'[%s]' % line.product_id.default_code"
                                         class="text-muted"
                                     />
                                 </td>
@@ -132,7 +132,7 @@
                                         <del
                                             t-attf-class="#{'text-danger mr8'}"
                                             style="white-space: nowrap;"
-                                            t-esc="combination_info['list_price']"
+                                            t-out="combination_info['list_price']"
                                             t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"
                                         />
                                     </t>
@@ -201,7 +201,7 @@
                                     <t t-else="">
                                         <span
                                             class="text-muted w-100"
-                                            t-esc="int(line.product_uom_qty)"
+                                            t-out="int(line.product_uom_qty)"
                                         />
                                         <input
                                             type="hidden"

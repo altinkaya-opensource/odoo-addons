@@ -26,7 +26,7 @@ class ResCompany(models.Model):
     holding_check_account_id = fields.Many2one(
         "account.account",
         "Holding Checks Account",
-        help="Holding Checks account for third checks, " 'for eg. "Holding Checks"',
+        help='Holding Checks account for third checks, for eg. "Holding Checks"',
     )
 
     def _get_check_account(self, check_type):

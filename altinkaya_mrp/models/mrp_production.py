@@ -30,7 +30,7 @@ class MrpProduction(models.Model):
         index=True,
         readonly=True,
     )
-    active_rule_id = fields.Many2one("stock.rule", string="Active Rule")
+    active_rule_id = fields.Many2one("stock.rule")
     date_planned = fields.Datetime("Planned Date")
     date_start2 = fields.Datetime("Date Start")
     date_finished2 = fields.Datetime("Date End")

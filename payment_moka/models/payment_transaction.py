@@ -76,7 +76,7 @@ class PaymentTransaction(models.Model):
         result_code = notification_data.get("resultCode")
         if result_code:
             _logger.warning(
-                "the transaction with reference %s underwent an error." " reason: %s",
+                "the transaction with reference %s underwent an error. reason: %s",
                 self.reference,
                 result_code,
             )

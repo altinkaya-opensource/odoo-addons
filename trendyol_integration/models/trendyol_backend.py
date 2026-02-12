@@ -22,7 +22,6 @@ class TrendyolBackend(models.Model):
     active = fields.Boolean(default=True)
     company_id = fields.Many2one(
         "res.company",
-        string="Company",
         required=True,
         default=lambda self: self.env.company,
     )
@@ -63,25 +62,21 @@ class TrendyolBackend(models.Model):
     )
     pricelist_id = fields.Many2one(
         "product.pricelist",
-        string="Pricelist",
         required=True,
         help="Pricelist to use for Trendyol prices (must be in TRY)",
     )
     sales_team_id = fields.Many2one(
         "crm.team",
-        string="Sales Team",
         help="Default sales team for Trendyol orders",
     )
     fiscal_position_id = fields.Many2one(
         "account.fiscal.position",
-        string="Fiscal Position",
         help="Default fiscal position for Trendyol orders",
     )
 
     # Default Settings
     default_cargo_company_id = fields.Many2one(
         "delivery.carrier",
-        string="Default Cargo Company",
         help="Default delivery carrier for Trendyol orders",
     )
     cargo_mapping_ids = fields.One2many(
@@ -92,7 +87,6 @@ class TrendyolBackend(models.Model):
     )
     default_product_id = fields.Many2one(
         "product.product",
-        string="Default Product",
         help="Fallback product for unmapped Trendyol items. "
         "If not set, unmapped items will be created as note lines.",
     )
@@ -156,7 +150,6 @@ class TrendyolBackend(models.Model):
     # Settlement / Accounting Settings
     trendyol_partner_id = fields.Many2one(
         "res.partner",
-        string="Trendyol Partner",
         help="Partner record representing Trendyol. Used as reference on "
         "settlement payments and for reporting purposes.",
     )
@@ -182,7 +175,6 @@ class TrendyolBackend(models.Model):
     # Printing
     label_printer_id = fields.Many2one(
         "printing.printer",
-        string="Label Printer",
         help="Default ZPL label printer for Trendyol shipping labels. "
         "Used when the delivery carrier has no printer configured.",
     )
@@ -284,8 +276,10 @@ class TrendyolBackend(models.Model):
         if cargo_provider_name:
             name_lower = cargo_provider_name.lower()
             mapping = self.cargo_mapping_ids.filtered(
-                lambda m: m.trendyol_cargo_provider_name
-                and m.trendyol_cargo_provider_name.lower() == name_lower
+                lambda m: (
+                    m.trendyol_cargo_provider_name
+                    and m.trendyol_cargo_provider_name.lower() == name_lower
+                )
             )
             if mapping:
                 return mapping[0].carrier_id

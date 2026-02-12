@@ -26,7 +26,6 @@ class PaymentTransaction(models.Model):
     )
     installment_fee_invoice_id = fields.Many2one(
         "account.move",
-        string="Installment Fee Invoice",
     )
 
     def action_cron_create_installment_fee_invoice(self, post_after_create=False):

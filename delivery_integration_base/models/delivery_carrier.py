@@ -37,8 +37,8 @@ class DeliveryCarrier(models.Model):
         default="sender_pays",
         required=True,
     )
-    default_printer_id = fields.Many2one("printing.printer", string="Default Printer")
-    currency_id = fields.Many2one("res.currency", string="Currency", required=True)
+    default_printer_id = fields.Many2one("printing.printer")
+    currency_id = fields.Many2one("res.currency", required=True)
     ref_sequence_id = fields.Many2one("ir.sequence", string="Reference Sequence")
     send_sms_customer = fields.Boolean(string="Send SMS to Customer", default=False)
     url_shortener_id = fields.Many2one("short.url.yourls", string="URL Shortener")
@@ -130,8 +130,10 @@ class DeliveryCarrier(models.Model):
         :return: delivery.price.rule recordset
         """
         rules = self.price_rule_ids.filtered(
-            lambda r: order.partner_shipping_id.state_id in r.region_id.state_ids
-            or order.partner_shipping_id.country_id in r.region_id.country_ids
+            lambda r: (
+                order.partner_shipping_id.state_id in r.region_id.state_ids
+                or order.partner_shipping_id.country_id in r.region_id.country_ids
+            )
         )
         return rules
 

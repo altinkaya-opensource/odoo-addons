@@ -40,7 +40,7 @@ class MRPBoM(models.Model):
     tool_product_id = fields.Many2one("product.product", string="Tool")
 
     # TODO: Delete this field in the future. Read mrp_routing.py
-    routing_id = fields.Many2one("mrp.routing", "Routing")
+    routing_id = fields.Many2one("mrp.routing")
 
     # @api.onchange("routing_id")
     # def onchange_routing_id(self):

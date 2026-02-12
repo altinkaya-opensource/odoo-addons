@@ -23,7 +23,6 @@ class Website404Errors(models.Model):
     hit_count = fields.Integer()
     website_id = fields.Many2one(
         comodel_name="website",
-        string="Website",
         ondelete="cascade",
     )
     resolved = fields.Boolean(default=False)

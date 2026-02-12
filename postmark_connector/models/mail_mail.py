@@ -47,7 +47,7 @@ class MailMail(models.Model):
         api_key = config.get("postmark_api_key")
         if outgoing and not api_key:
             _logger.error(
-                "Missing postmark_api_key in conf file. Skipping Postmark " "send."
+                "Missing postmark_api_key in conf file. Skipping Postmark send."
             )
             return
 

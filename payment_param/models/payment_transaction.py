@@ -77,7 +77,7 @@ class PaymentTransaction(models.Model):
         if result_code != "1":
             error_str = notification_data.get("TURKPOS_RETVAL_Sonuc_Str")
             _logger.warning(
-                "the transaction with reference %s underwent an error." " reason: %s",
+                "the transaction with reference %s underwent an error. reason: %s",
                 self.reference,
                 error_str,
             )

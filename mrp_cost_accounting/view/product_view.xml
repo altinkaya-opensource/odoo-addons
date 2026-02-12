@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="product_product_view_form_normal_inherit_extended2" model="ir.ui.view">
         <field name="name">product.product.view.form.normal.inherit.extended2</field>
         <field name="model">product.product</field>
-        <field name="priority">4</field>
+        <field name="priority" eval="4" />
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]" />
         <field name="arch" type="xml">

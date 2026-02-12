@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_account_reconcile_model_form_inherit" model="ir.ui.view">
         <field name="name">account.reconcile.model.form.inherit</field>

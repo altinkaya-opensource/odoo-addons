@@ -22,7 +22,6 @@ class WizardProductProductCopy(models.TransientModel):
 
     source_product_id = fields.Many2one(
         "product.product",
-        string="Source Product",
         required=True,
     )
 

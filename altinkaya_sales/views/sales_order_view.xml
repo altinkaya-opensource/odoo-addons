@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_quotation_tree" model="ir.ui.view">
         <field name="name">sale_altinkaya.view_quotation_tree</field>
@@ -17,7 +17,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_sales_order_tree_modifications">
+    <record id="view_sales_order_tree_modifications" model="ir.ui.view">
         <field name="name">sales order form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_tree" />
@@ -113,7 +113,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_sales_order_form_modifications">
+    <record id="view_sales_order_form_modifications" model="ir.ui.view">
         <field name="name">sales order form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
@@ -423,7 +423,7 @@
                 <field name="order_state" />
                 <progressbar
                     field="order_state"
-                    colors="{&quot;25_completed&quot;: &quot;success&quot;}"
+                    colors="{'25_completed': 'success'}"
                     sum_field="amount_untaxed_usd"
                 />
             </xpath>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="product_normal_form_view_altinkaya_stock" model="ir.ui.view">
         <field name="name">Altinkaya Product Customization</field>

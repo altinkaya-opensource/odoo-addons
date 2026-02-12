@@ -323,7 +323,7 @@ class DeliveryCarrier(models.Model):
                         zpl_data = cargo_data.docCargoZpl.replace("^XA", "^XA^POI")
                         self.env["ir.attachment"].create(
                             {
-                                "name": f"yurtici_barcode_{picking.name}_{idx+1}.zpl",
+                                "name": f"yurtici_barcode_{picking.name}_{idx + 1}.zpl",
                                 "datas": base64.b64encode(zpl_data.encode("utf-8")),
                                 "res_model": picking._name,
                                 "res_id": picking.id,

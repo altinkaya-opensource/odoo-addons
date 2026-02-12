@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="report_partner_statement_en_document">
         <!-- <t t-call="web.html_container">
@@ -114,20 +114,20 @@
                             <td class="col-8">
                                 <strong>
                                     Partner:
-                                    <span t-esc="o.display_name" />
+                                    <span t-out="o.display_name" />
                                 </strong>
                                 <br />
                                 <span>
-                                    <span t-esc="o._display_address()" />
+                                    <span t-out="o._display_address()" />
                                 </span>
                                 <br />
                                 <span>
                                     <strong>Phone:</strong>
-                                    <t t-esc="o.phone" />
+                                    <t t-out="o.phone" />
                                     <br />
                                     <t t-if="o.fax">
                                         <strong>Fax:</strong>
-                                        <span t-esc="o.fax" />
+                                        <span t-out="o.fax" />
                                     </t>
                                 </span>
                             </td>
@@ -146,12 +146,12 @@
                             </td>
                             <td>
                                 <span
-                                    t-esc="datetime.datetime.now().strftime('%d.%m.%Y')"
+                                    t-out="datetime.datetime.now().strftime('%d.%m.%Y')"
                                 />
                                 <br />
-                                <span t-esc="o.tax_office_name" />
+                                <span t-out="o.tax_office_name" />
                                 <br />
-                                <span t-esc="o.vat" />
+                                <span t-out="o.vat" />
                                 <br />
                             </td>
                         </tr>
@@ -191,7 +191,7 @@
 
     <template id="report_partner_statement_en_try_table">
         <strong style="margin:15px 0px;">
-            <span t-esc="x[0]['account_code']" />
+            <span t-out="x[0]['account_code']" />
             Account:
         </strong>
         <table class="table table-bordered" style="table-layout:auto;font-size:8pt;">
@@ -215,19 +215,19 @@
                 <tr>
                     <td class="text-center" style="min-width:15px;">
                         <span
-                            t-esc="s['seq']"
+                            t-out="s['seq']"
                             t-attf-style="font-weight:#{'bold' if s['full_reconcile_id'] else 'normal'};"
                         />
                     </td>
                     <td>
-                        <span t-esc="s['date']" />
+                        <span t-out="s['date']" />
                     </td>
                     <td>
-                        <span t-esc="s['due_date']" />
+                        <span t-out="s['due_date']" />
                     </td>
 
                     <td>
-                        <span t-esc="s['description']" />
+                        <span t-out="s['description']" />
                     </td>
                     <td class="text-end">
                         <span
@@ -246,7 +246,7 @@
                         <!-- t-options='{"widget": "monetary", "display_currency": None}' -->
                     </td>
                     <td class="text-center" style="min-width:15px;">
-                        <span t-esc="s['dc']" />
+                        <span t-out="s['dc']" />
                     </td>
                     <t t-value="s['dc']" t-set="sdc" />
                     <t t-value="'%.2f' %s['balance']" t-set="toplamBakiye" />
@@ -262,16 +262,16 @@
                     TOTAL
                 </td>
                 <td class="text-end">
-                    <span t-esc="'{:,.2f}'.format(float(toplamBorc))" />
+                    <span t-out="'{:,.2f}'.format(float(toplamBorc))" />
                 </td>
                 <td class="text-end">
-                    <span t-esc="'{:,.2f}'.format(float(toplamAlacak))" />
+                    <span t-out="'{:,.2f}'.format(float(toplamAlacak))" />
                 </td>
                 <td class="text-end">
-                    <span t-esc="'{:,.2f}'.format(float(toplamBakiye))" />
+                    <span t-out="'{:,.2f}'.format(float(toplamBakiye))" />
                 </td>
                 <td class="text-center">
-                    <span t-esc="sdc" />
+                    <span t-out="sdc" />
                 </td>
             </tr>
         </table>
@@ -284,7 +284,7 @@
         }
         </style>
         <strong style="margin:15px 0px;">
-            <span t-esc="x[0]['account_code']" />
+            <span t-out="x[0]['account_code']" />
             Account:
         </strong>
         <table class="table table-bordered">
@@ -295,12 +295,12 @@
                 <th>Due Date</th>
 
                 <th>
-                    <t t-esc="o.property_account_receivable_id.currency_id.symbol" />
+                    <t t-out="o.property_account_receivable_id.currency_id.symbol" />
                     Amount
                 </th>
 
                 <th>
-                    <t t-esc="o.property_account_receivable_id.currency_id.symbol" />
+                    <t t-out="o.property_account_receivable_id.currency_id.symbol" />
                     Balance
                 </th>
                 <th />
@@ -317,19 +317,19 @@
                 <tr>
                     <td class="text-center" style="min-width:15px">
                         <span
-                            t-esc="s['seq']"
+                            t-out="s['seq']"
                             t-attf-style="font-weight:#{'bold' if s['full_reconcile_id'] else 'normal'};"
                         />
                     </td>
                     <td>
-                        <span t-esc="s['date']" />
+                        <span t-out="s['date']" />
                     </td>
 
                     <td>
-                        <span t-esc="s['description']" />
+                        <span t-out="s['description']" />
                     </td>
                     <td>
-                        <span t-esc="s['due_date']" />
+                        <span t-out="s['due_date']" />
                     </td>
 
                     <td class="text-end">
@@ -343,7 +343,7 @@
                         />
                     </td>
                     <td class="text-center" style="min-width:15px">
-                        <span t-esc="'D' if s['currency_dc'] == 'B' else 'C'" />
+                        <span t-out="'D' if s['currency_dc'] == 'B' else 'C'" />
                     </td>
 
                     <t t-value="'D' if s['currency_dc'] == 'B' else 'C'" t-set="sdc" />
@@ -379,10 +379,10 @@
 
                 <td class="text-end" />
                 <td class="text-end">
-                    <span t-esc="'{:,.2f}'.format(float(currency_toplamBakiye))" />
+                    <span t-out="'{:,.2f}'.format(float(currency_toplamBakiye))" />
                 </td>
                 <td class="text-center">
-                    <span t-esc="sdc" />
+                    <span t-out="sdc" />
                 </td>
             </tr>
         </table>

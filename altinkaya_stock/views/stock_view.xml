@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_stock_move_line_tree_packaged" model="ir.ui.view">
         <field name="name">stock.move.line.tree.packaged</field>
@@ -44,9 +44,9 @@
     </record>
 
     <menuitem
+        id="menu_product_category_on_stock"
         name="Product Categories"
         action="product.product_category_action_form"
-        id="menu_product_category_on_stock"
         parent="stock.menu_stock_inventory_control"
         sequence="16"
     />

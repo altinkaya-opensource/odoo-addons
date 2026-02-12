@@ -93,8 +93,8 @@ class DeliveryCarrierLines(models.TransientModel):
     _name = "delivery.carrier.lines"
     _description = "Delivery Carrier Lines"
 
-    carrier_id = fields.Many2one("delivery.carrier", string="Carrier")
-    currency_id = fields.Many2one("res.currency", string="Currency")
+    carrier_id = fields.Many2one("delivery.carrier")
+    currency_id = fields.Many2one("res.currency")
     price = fields.Monetary(
         currency_field="currency_id",
     )

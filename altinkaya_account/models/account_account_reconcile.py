@@ -90,7 +90,7 @@ class AccountAccountReconcile(models.Model):
                         datum_new = {
                             # Save the model id in the reference field
                             "reference": (
-                                "reconcile_auxiliary;" f"{self.manual_model_id.id}"
+                                f"reconcile_auxiliary;{self.manual_model_id.id}"
                             ),
                             "id": False,
                             "name": self.manual_model_id.name,

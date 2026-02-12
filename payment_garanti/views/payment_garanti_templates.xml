@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="inline_form">
         <div class="row">
@@ -61,7 +61,7 @@
                                         </option>
                                         <t t-foreach="range(1, 13)" t-as="r">
                                             <option t-att-value="r">
-                                                <t t-esc="('%s' % r).zfill(2)" />
+                                                <t t-out="('%s' % r).zfill(2)" />
                                             </option>
                                         </t>
                                     </select>
@@ -77,7 +77,7 @@
                                             t-as="r"
                                         >
                                             <option t-att-value="r">
-                                                <t t-esc="r" />
+                                                <t t-out="r" />
                                             </option>
                                         </t>
                                     </select>

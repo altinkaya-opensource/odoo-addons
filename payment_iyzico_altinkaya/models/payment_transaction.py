@@ -24,7 +24,6 @@ class PaymentTransaction(models.Model):
     )
     iyzico_commission_currency_id = fields.Many2one(
         "res.currency",
-        string="Iyzico Commission Currency",
         help="Currency of the Iyzico commission amount",
         readonly=True,
         default=lambda self: self.env.ref("base.TRY"),

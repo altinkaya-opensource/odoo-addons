@@ -21,7 +21,6 @@ class TrendyolClaim(models.Model):
 
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
         ondelete="cascade",
         index=True,
@@ -33,7 +32,6 @@ class TrendyolClaim(models.Model):
     )
     trendyol_order_id = fields.Many2one(
         "trendyol.order",
-        string="Trendyol Order",
         index=True,
     )
     odoo_order_id = fields.Many2one(
@@ -389,7 +387,6 @@ class TrendyolClaimLine(models.Model):
 
     claim_id = fields.Many2one(
         "trendyol.claim",
-        string="Claim",
         required=True,
         ondelete="cascade",
         index=True,
@@ -400,7 +397,6 @@ class TrendyolClaimLine(models.Model):
     )
     product_binding_id = fields.Many2one(
         "trendyol.product.binding",
-        string="Product Binding",
     )
     barcode = fields.Char()
     product_name = fields.Char()

@@ -187,8 +187,8 @@ class GarantiConnector:
             "card_cvv": card_args.get("card_cvv"),
             "card_name": card_args.get("card_name"),
             "card_expire": (
-                f"{card_args.get("card_valid_month").zfill(2)}"
-                f"{card_args.get("card_valid_year")[2:]}"
+                f"{card_args.get('card_valid_month').zfill(2)}"
+                f"{card_args.get('card_valid_year')[2:]}"
             ),
             "oid": self.reference,
             "txntype": "sales",

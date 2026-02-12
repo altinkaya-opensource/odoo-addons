@@ -13,7 +13,6 @@ class SurveyUserInput(models.Model):
 
     invoice_id = fields.Many2one(
         comodel_name="account.move",
-        string="Invoice",
     )
 
     shortened_url = fields.Char(

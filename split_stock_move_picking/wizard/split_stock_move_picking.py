@@ -9,7 +9,7 @@ class SplitStockMovePicking(models.TransientModel):
     _name = "split.stock.move.picking"
     _description = "Splits stock.move in pickings"
 
-    move_id = fields.Many2one("stock.move", "Move", readonly=True)
+    move_id = fields.Many2one("stock.move", readonly=True)
     product_id = fields.Many2one(
         "product.product", string="Product", related="move_id.product_id", readonly=True
     )

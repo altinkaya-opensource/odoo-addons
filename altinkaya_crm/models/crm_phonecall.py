@@ -8,7 +8,6 @@ class CRMPhonecall(models.Model):
 
     activity_type_id = fields.Many2one(
         "mail.activity.type",
-        string="Activity Type",
         required=True,
     )
     state = fields.Selection(

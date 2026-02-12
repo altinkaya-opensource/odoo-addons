@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="wizard_create_redirect_from_404_form_view" model="ir.ui.view">
         <field name="name">wizard_create_redirect_from_404.form</field>

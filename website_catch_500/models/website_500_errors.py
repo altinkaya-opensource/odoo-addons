@@ -24,6 +24,5 @@ class Website500Errors(models.Model):
     hit_count = fields.Integer()
     website_id = fields.Many2one(
         comodel_name="website",
-        string="Website",
         ondelete="cascade",
     )

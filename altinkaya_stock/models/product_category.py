@@ -18,10 +18,6 @@ from odoo import fields, models
 class ProductTemplate(models.Model):
     _inherit = "product.category"
 
-    currency_id = fields.Many2one(
-        string="Currency", readonly=False, comodel_name="res.currency"
-    )
+    currency_id = fields.Many2one(readonly=False, comodel_name="res.currency")
 
-    barcode_rule_id = fields.Many2one(
-        string="Barcode Rule", readonly=False, comodel_name="barcode.rule"
-    )
+    barcode_rule_id = fields.Many2one(readonly=False, comodel_name="barcode.rule")

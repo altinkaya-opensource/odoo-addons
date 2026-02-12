@@ -32,8 +32,8 @@
     </record>
 
     <menuitem
-        action="update_quants_wizard_action"
         id="menu_update_quant_wizard"
+        action="update_quants_wizard_action"
         parent="stock.menu_warehouse_config"
         sequence="10"
     />

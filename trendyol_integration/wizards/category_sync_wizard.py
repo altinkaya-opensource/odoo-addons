@@ -11,7 +11,6 @@ class TrendyolCategorySyncWizard(models.TransientModel):
 
     backend_id = fields.Many2one(
         "trendyol.backend",
-        string="Backend",
         required=True,
     )
     sync_categories = fields.Boolean(

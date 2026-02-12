@@ -19,7 +19,6 @@ class AccountCheckbook(models.Model):
     )
     sequence_id = fields.Many2one(
         "ir.sequence",
-        "Sequence",
         copy=False,
         domain=[("code", "=", "issue_check")],
         help="Checks numbering sequence.",
@@ -45,7 +44,6 @@ class AccountCheckbook(models.Model):
     )
     journal_id = fields.Many2one(
         "account.journal",
-        "Journal",
         help="Journal where it is going to be used",
         readonly=True,
         required=True,
