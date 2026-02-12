@@ -3,10 +3,11 @@
 
 import json
 import logging
-from datetime import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+from .trendyol_backend import _trendyol_ts_to_utc
 
 _logger = logging.getLogger(__name__)
 
@@ -101,13 +102,8 @@ class TrendyolSettlement(models.Model):
 
     @api.model
     def _parse_timestamp(self, timestamp):
-        """Parse Trendyol timestamp (milliseconds) to datetime."""
-        if not timestamp:
-            return False
-        try:
-            return datetime.fromtimestamp(timestamp / 1000)
-        except (ValueError, TypeError):
-            return False
+        """Parse Trendyol timestamp (ms, GMT+3) to naive UTC datetime."""
+        return _trendyol_ts_to_utc(timestamp)
 
     @api.model
     def _import_settlement(self, backend, data):

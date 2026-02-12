@@ -105,6 +105,7 @@
                             <field name="pricelist_id" />
                             <field name="sales_team_id" />
                             <field name="fiscal_position_id" />
+                            <field name="source_id" />
                             <field name="default_cargo_company_id" />
                         </group>
                     </group>

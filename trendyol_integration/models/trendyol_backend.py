@@ -3,7 +3,7 @@
 
 import logging
 import secrets
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -11,6 +11,29 @@ from odoo.exceptions import UserError
 from .trendyol_request import TrendyolAPIError, TrendyolRequest
 
 _logger = logging.getLogger(__name__)
+
+
+# Trendyol API uses GMT+3 (Turkey time) for all timestamps
+TRENDYOL_UTC_OFFSET = timedelta(hours=3)
+
+
+def _utc_to_trendyol_ts(dt):
+    """Convert a naive UTC datetime to Trendyol timestamp (ms, GMT+3)."""
+    gmt3_dt = dt + TRENDYOL_UTC_OFFSET
+    return int(gmt3_dt.replace(tzinfo=UTC).timestamp() * 1000)
+
+
+def _trendyol_ts_to_utc(ts_ms):
+    """Convert a Trendyol timestamp (ms, GMT+3) to naive UTC datetime.
+
+    Returns False if the timestamp is falsy or invalid.
+    """
+    if not ts_ms:
+        return False
+    try:
+        return datetime.utcfromtimestamp(ts_ms / 1000) - TRENDYOL_UTC_OFFSET
+    except (ValueError, TypeError, OSError):
+        return False
 
 
 class TrendyolBackend(models.Model):
@@ -72,6 +95,10 @@ class TrendyolBackend(models.Model):
     fiscal_position_id = fields.Many2one(
         "account.fiscal.position",
         help="Default fiscal position for Trendyol orders",
+    )
+    source_id = fields.Many2one(
+        "utm.source",
+        help="UTM source to set on Trendyol orders",
     )
 
     # Default Settings
@@ -528,7 +555,7 @@ class TrendyolBackend(models.Model):
         Order = self.env["trendyol.order"]
 
         # Calculate date range
-        end_date = datetime.now()
+        end_date = fields.Datetime.now()
         if self.last_order_sync:
             start_date = self.last_order_sync
         else:
@@ -536,8 +563,8 @@ class TrendyolBackend(models.Model):
             start_date = end_date - timedelta(days=7)
 
         # Convert to milliseconds timestamp
-        start_ts = int(start_date.timestamp() * 1000)
-        end_ts = int(end_date.timestamp() * 1000)
+        start_ts = _utc_to_trendyol_ts(start_date)
+        end_ts = _utc_to_trendyol_ts(end_date)
 
         try:
             page = 0
@@ -670,14 +697,14 @@ class TrendyolBackend(models.Model):
         Claim = self.env["trendyol.claim"]
 
         # Calculate date range
-        end_date = datetime.now()
+        end_date = fields.Datetime.now()
         if self.last_claim_sync:
             start_date = self.last_claim_sync
         else:
             start_date = end_date - timedelta(days=30)
 
-        start_ts = int(start_date.timestamp() * 1000)
-        end_ts = int(end_date.timestamp() * 1000)
+        start_ts = _utc_to_trendyol_ts(start_date)
+        end_ts = _utc_to_trendyol_ts(end_date)
 
         try:
             page = 0
@@ -802,14 +829,14 @@ class TrendyolBackend(models.Model):
         Question = self.env["trendyol.question"]
 
         # Calculate date range (API max 2 weeks)
-        end_date = datetime.now()
+        end_date = fields.Datetime.now()
         if self.last_question_sync:
             start_date = self.last_question_sync
         else:
             start_date = end_date - timedelta(days=14)
 
-        start_ts = int(start_date.timestamp() * 1000)
-        end_ts = int(end_date.timestamp() * 1000)
+        start_ts = _utc_to_trendyol_ts(start_date)
+        end_ts = _utc_to_trendyol_ts(end_date)
 
         try:
             page = 0
@@ -904,7 +931,7 @@ class TrendyolBackend(models.Model):
         client = self._get_api_client()
         Settlement = self.env["trendyol.settlement"]
 
-        end_date = datetime.now()
+        end_date = fields.Datetime.now()
         if self.last_settlement_sync:
             start_date = self.last_settlement_sync
         else:
@@ -916,8 +943,8 @@ class TrendyolBackend(models.Model):
 
         while window_start < end_date:
             window_end = min(window_start + timedelta(days=15), end_date)
-            start_ts = int(window_start.timestamp() * 1000)
-            end_ts = int(window_end.timestamp() * 1000)
+            start_ts = _utc_to_trendyol_ts(window_start)
+            end_ts = _utc_to_trendyol_ts(window_end)
 
             try:
                 page = 0

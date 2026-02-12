@@ -3,14 +3,17 @@
 
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
 from .trendyol_request import TrendyolAPIError
 
 _logger = logging.getLogger(__name__)
+
+INDIVIDUAL_VAT = "11111111111"
 
 
 class TrendyolOrder(models.Model):
@@ -111,9 +114,7 @@ class TrendyolOrder(models.Model):
                     data = json.loads(order.raw_data)
                     order_date_ts = data.get("orderDate")
                     if order_date_ts:
-                        # Trendyol timestamps are in UTC+3
-                        dt = datetime.fromtimestamp(data["orderDate"] / 1000)
-                        order.order_date = dt - timedelta(hours=3)
+                        order.order_date = _trendyol_ts_to_utc(order_date_ts)
                         continue
                 except (json.JSONDecodeError, TypeError):
                     _logger.debug("Failed to parse order date from raw_data")
@@ -280,9 +281,10 @@ class TrendyolOrder(models.Model):
         is_commercial = bool(invoice_address.get("taxNumber"))
 
         # For commercial orders, try VAT matching first
+        # Skip matching for dummy/individual VAT to avoid address mismatches
         if is_commercial:
             vat = invoice_address.get("taxNumber", "").strip()
-            if vat:
+            if vat and vat != INDIVIDUAL_VAT:
                 partner = Partner.search(
                     [
                         ("vat", "=", vat),
@@ -322,6 +324,8 @@ class TrendyolOrder(models.Model):
             # Use company name if available
             if invoice_address.get("company"):
                 partner_vals["name"] = invoice_address["company"]
+        else:
+            partner_vals["vat"] = INDIVIDUAL_VAT
 
         return Partner.create(partner_vals)
 
@@ -495,15 +499,10 @@ class TrendyolOrder(models.Model):
         Returns:
             Dict of sale.order values
         """
-        # Parse order date
-        order_date = fields.Datetime.now()
-        if order_data.get("orderDate"):
-            try:
-                # Trendyol timestamps are in UTC+3
-                dt = datetime.fromtimestamp(order_data["orderDate"] / 1000)
-                order_date = dt - timedelta(hours=3)
-            except (ValueError, TypeError):
-                _logger.debug("Failed to parse order date timestamp")
+        # Parse order date (Trendyol timestamps are GMT+3)
+        order_date = _trendyol_ts_to_utc(order_data.get("orderDate"))
+        if not order_date:
+            order_date = fields.Datetime.now()
 
         vals = {
             "partner_id": main_partner.id,
@@ -520,6 +519,8 @@ class TrendyolOrder(models.Model):
             vals["team_id"] = backend.sales_team_id.id
         if backend.fiscal_position_id:
             vals["fiscal_position_id"] = backend.fiscal_position_id.id
+        if backend.source_id:
+            vals["source_id"] = backend.source_id.id
         carrier = backend._get_carrier_for_cargo_provider(
             order_data.get("cargoProviderName")
         )
@@ -765,10 +766,8 @@ class TrendyolOrder(models.Model):
         # Trendyol expects invoiceDateTime as Unix timestamp in milliseconds
         invoice_ts = None
         if invoice.invoice_date:
-            invoice_ts = int(
-                datetime.combine(invoice.invoice_date, datetime.min.time()).timestamp()
-                * 1000
-            )
+            invoice_dt = datetime.combine(invoice.invoice_date, datetime.min.time())
+            invoice_ts = _utc_to_trendyol_ts(invoice_dt)
 
         try:
             client.send_invoice_link(
