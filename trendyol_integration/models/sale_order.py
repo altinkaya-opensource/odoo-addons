@@ -1,8 +1,7 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-from odoo import _, fields, models
-from odoo.exceptions import UserError
+from odoo import fields, models
 
 
 class SaleOrder(models.Model):
@@ -22,26 +21,26 @@ class SaleOrder(models.Model):
         string="Trendyol Status",
     )
 
-    def action_cancel(self):
-        """Block direct cancellation of Trendyol orders.
+    # def action_cancel(self):
+    #     """Block direct cancellation of Trendyol orders.
 
-        Users must cancel from the Trendyol Orders section so the
-        cancellation is propagated to the Trendyol API first.
-        """
-        trendyol_orders = self.filtered(
-            lambda o: (
-                o.trendyol_binding_ids and o.trendyol_status not in (False, "cancelled")
-            )
-        )
-        if trendyol_orders and not self.env.context.get("from_trendyol_cancel"):
-            raise UserError(
-                _(
-                    "This order was created from Trendyol. Please cancel it"
-                    " from the Trendyol Orders section first so the"
-                    " cancellation is sent to Trendyol."
-                )
-            )
-        return super().action_cancel()
+    #     Users must cancel from the Trendyol Orders section so the
+    #     cancellation is propagated to the Trendyol API first.
+    #     """
+    #     trendyol_orders = self.filtered(
+    #         lambda o: (
+    #             o.trendyol_binding_ids and o.trendyol_status not in (False, "cancelled") # noqa
+    #         )
+    #     )
+    #     if trendyol_orders and not self.env.context.get("from_trendyol_cancel"):
+    #         raise UserError(
+    #             _(
+    #                 "This order was created from Trendyol. Please cancel it"
+    #                 " from the Trendyol Orders section first so the"
+    #                 " cancellation is sent to Trendyol."
+    #             )
+    #         )
+    #     return super().action_cancel()
 
     def action_view_trendyol_binding(self):
         """View Trendyol binding for this order."""
