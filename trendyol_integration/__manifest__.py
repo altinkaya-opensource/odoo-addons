@@ -19,6 +19,7 @@
         "delivery",
         "delivery_state",
         "delivery_integration_base",
+        "altinkaya_sales",
     ],
     "data": [
         # Security

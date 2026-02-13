@@ -166,14 +166,9 @@ class TrendyolOrder(models.Model):
             )
             sale_order = self.env["sale.order"].create(order_vals)
 
-            # Create order lines
-            lines = order_data.get("lines", [])
-            for line_data in lines:
-                line_vals = self._prepare_line_values(backend, sale_order, line_data)
-                if line_vals:
-                    self.env["sale.order.line"].create(line_vals)
-
-            # Create binding
+            # Create binding before lines so that trendyol_binding_ids
+            # exists when _compute_price_unit and explode_set_contents
+            # run on the new sale order lines.
             binding = self.create(
                 {
                     "odoo_id": sale_order.id,
@@ -189,6 +184,13 @@ class TrendyolOrder(models.Model):
                     "raw_data": json.dumps(order_data, indent=2, ensure_ascii=False),
                 }
             )
+
+            # Create order lines
+            lines = order_data.get("lines", [])
+            for line_data in lines:
+                line_vals = self._prepare_line_values(backend, sale_order, line_data)
+                if line_vals:
+                    self.env["sale.order.line"].create(line_vals)
 
             # Auto-confirm if configured
             if backend.auto_confirm_orders:

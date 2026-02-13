@@ -31,7 +31,10 @@ def _trendyol_ts_to_utc(ts_ms):
     if not ts_ms:
         return False
     try:
-        return datetime.utcfromtimestamp(ts_ms / 1000) - TRENDYOL_UTC_OFFSET
+        return (
+            datetime.fromtimestamp(ts_ms / 1000, UTC).replace(tzinfo=None)
+            - TRENDYOL_UTC_OFFSET
+        )
     except (ValueError, TypeError, OSError):
         return False
 
