@@ -29,6 +29,9 @@
         # Data
         "data/queue_job_channel_data.xml",
         "data/cron.xml",
+        # Reports
+        "report/reports.xml",
+        "report/trendyol_shipping_label.xml",
         # Views
         "views/trendyol_backend_views.xml",
         "views/trendyol_category_views.xml",
@@ -41,6 +44,7 @@
         "views/trendyol_batch_request_views.xml",
         "views/product_views.xml",
         "views/sale_order_views.xml",
+        "views/stock_picking_views.xml",
         # Wizards
         "wizards/product_export_wizard_views.xml",
         "wizards/category_sync_wizard_views.xml",

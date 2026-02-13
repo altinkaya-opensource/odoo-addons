@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-11 06:14+0000\n"
-"PO-Revision-Date: 2026-02-11 06:14+0000\n"
+"POT-Creation-Date: 2026-02-13 09:12+0000\n"
+"PO-Revision-Date: 2026-02-13 09:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_2016a_iscilik
+msgid " kullanılan eski Minimum İşcilik fiyatı TL"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__bom_count
@@ -55,6 +60,156 @@ msgid "%d product(s) skipped (already bound)."
 msgstr "%d ürün atlandı (zaten bağlı)."
 
 #. module: trendyol_integration
+#: model:ir.actions.report,print_report_name:trendyol_integration.trendyol_shipping_label_report
+msgid "'Trendyol Label - %s' % (object.name)"
+msgstr "'Trendyol Etiket - %s' % (object.name)"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_2014
+msgid "2014 Eski Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_2014_iscilik
+msgid "2014 Min İşçcilik Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_2014_iscilik
+msgid "2014 işçilik Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_2014_iscilik
+msgid "2014 yılında kullanılan birim işçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_2014_iscilik
+msgid "2014 yılında kullanılan eski Minimum İşçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_2014
+msgid "2014 yılında kullanılan eski fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_2016a
+msgid "2015 Ekim Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_2016a_iscilik
+msgid "2015 Ekim Min İscilik TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_2016a_iscilik
+msgid "2015 Ekim birim işçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_2016a
+msgid "2015 Ekim fiyati TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_2016a_iscilik
+msgid "2015 Ekim isçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_2015a
+msgid "2015 Ocak Eski Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_2015a_iscilik
+msgid "2015 Ocak Min İşçcilik TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_2015a
+msgid "2015 Ocak eski fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_2015a_iscilik
+msgid "2015 Ocak işçilik Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_2015a_iscilik
+msgid "2015 Ocak kullanılan birim işçilik fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_2015a_iscilik
+msgid "2015 Ocak kullanılan eski Minimum İşçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_2016b
+msgid "2016 Aralık Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_2016b_iscilik
+msgid "2016 Aralık Min İsçilik TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_2016b_iscilik
+msgid "2016 Aralık Minimum İşçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_2016b_iscilik
+msgid "2016 Aralık birim işçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_2016b
+msgid "2016 Aralık fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_2016b_iscilik
+msgid "2016 Aralık isçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_2017
+msgid "2017 Aralık Fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_2017_iscilik
+msgid "2017 Aralık Min İsçilik TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_2017_iscilik
+msgid "2017 Aralık Minimum İşçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_2017_iscilik
+msgid "2017 Aralık birim işçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_2017
+msgid "2017 Aralık fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_2017_iscilik
+msgid "2017 Aralık isçilik fiyatı TL"
+msgstr ""
+
+#. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_sale_order_form_trendyol
 msgid "<span class=\"o_stat_text\">Trendyol</span>"
 msgstr "<span class=\"o_stat_text\">Trendyol</span>"
@@ -70,7 +225,15 @@ msgid ""
 "                                Horoz Kargo Marketplace, CEVA Marketplace,\n"
 "                                Yurtiçi Kargo Marketplace, Aras Kargo Marketplace\n"
 "                            </span>"
-msgstr "<span class=\"text-muted\">\n                                <b>Bilinen Trendyol Kargo Sağlayıcıları:</b><br/>\n                                Kolay Gelsin Marketplace, Ceva Tedarik Marketplace,\n                                DHL eCommerce Marketplace, PTT Kargo Marketplace,\n                                Sürat Kargo Marketplace, Trendyol Express Marketplace,\n                                Horoz Kargo Marketplace, CEVA Marketplace,\n                                Yurtiçi Kargo Marketplace, Aras Kargo Marketplace\n                            </span>"
+msgstr ""
+"<span class=\"text-muted\">\n"
+"                                <b>Bilinen Trendyol Kargo Sağlayıcıları:</b><br/>\n"
+"                                Kolay Gelsin Marketplace, Ceva Tedarik Marketplace,\n"
+"                                DHL eCommerce Marketplace, PTT Kargo Marketplace,\n"
+"                                Sürat Kargo Marketplace, Trendyol Express Marketplace,\n"
+"                                Horoz Kargo Marketplace, CEVA Marketplace,\n"
+"                                Yurtiçi Kargo Marketplace, Aras Kargo Marketplace\n"
+"                            </span>"
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_claim_form
@@ -78,12 +241,20 @@ msgid "<span>Claim </span>"
 msgstr "<span>İade Talebi </span>"
 
 #. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.trendyol_shipping_label
+msgid "<strong>Trendyol Order:</strong>"
+msgstr "<strong>Trendyol Sipariş:</strong>"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__description_sale
 msgid ""
 "A description of the Product that you want to communicate to your customers."
 " This description will be copied to every Sales Order, Delivery Order and "
 "Customer Invoice/Credit Note"
-msgstr "Müşterilerinize iletmek istediğiniz ürün açıklaması. Bu açıklama her Satış Siparişi, Teslimat Siparişi ve Müşteri Faturası/Alacak Dekontuna kopyalanacaktır"
+msgstr ""
+"Müşterilerinize iletmek istediğiniz ürün açıklaması. Bu açıklama her Satış "
+"Siparişi, Teslimat Siparişi ve Müşteri Faturası/Alacak Dekontuna "
+"kopyalanacaktır"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__detailed_type
@@ -91,7 +262,10 @@ msgid ""
 "A storable product is a product for which you manage stock. The Inventory app has to be installed.\n"
 "A consumable product is a product for which stock is not managed.\n"
 "A service is a non-material product you provide."
-msgstr "Stoklanabilir ürün, stokunu yönettiğiniz bir üründür. Envanter uygulaması kurulu olmalıdır.\nSarf malzeme, stoku yönetilmeyen bir üründür.\nHizmet, sağladığınız maddi olmayan bir üründür."
+msgstr ""
+"Stoklanabilir ürün, stokunu yönettiğiniz bir üründür. Envanter uygulaması kurulu olmalıdır.\n"
+"Sarf malzeme, stoku yönetilmeyen bir üründür.\n"
+"Hizmet, sağladığınız maddi olmayan bir üründür."
 
 #. module: trendyol_integration
 #. odoo-python
@@ -120,7 +294,8 @@ msgstr "API Şifresi"
 msgid ""
 "API key that Trendyol sends in x-api-key header when calling the webhook "
 "endpoint."
-msgstr "Trendyol'un webhook çağrısında x-api-key başlığında gönderdiği API anahtarı."
+msgstr ""
+"Trendyol'un webhook çağrısında x-api-key başlığında gönderdiği API anahtarı."
 
 #. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__accepted
@@ -241,12 +416,21 @@ msgid ""
 "\n"
 " - 'Base Set Manually' : User should set manually the value of the barcode base\n"
 " - 'Base managed by Sequence': System will generate the base via a sequence"
-msgstr "Son barkodda bir sayı (taban) içeren barkod oluşturmaya izin verir.\n\n - 'Taban Manuel Ayarlama': Kullanıcı barkod tabanının değerini manuel olarak ayarlamalıdır\n - 'Taban Sıra ile Yönetilir': Sistem tabanı bir sıra aracılığıyla oluşturacaktır"
+msgstr ""
+"Son barkodda bir sayı (taban) içeren barkod oluşturmaya izin verir.\n"
+"\n"
+" - 'Taban Manuel Ayarlama': Kullanıcı barkod tabanının değerini manuel olarak ayarlamalıdır\n"
+" - 'Taban Sıra ile Yönetilir': Sistem tabanı bir sıra aracılığıyla oluşturacaktır"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__amount_undiscounted
 msgid "Amount Before Discount"
 msgstr "İndirim Öncesi Tutar"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_amount
+msgid "Amount Payment"
+msgstr "Ödeme Tutarı"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__amount_total_company_currency
@@ -369,9 +553,19 @@ msgid "Attachment Count"
 msgstr "Ek Sayısı"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__attr_price
+msgid "Attr. Value Price"
+msgstr "Özellik Değer Fiyatı"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__attribute_id
 msgid "Attribute"
 msgstr "Özellik"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__attribute_value_ids
+msgid "Attribute Value"
+msgstr "Özellik Değeri"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__product_template_attribute_value_ids
@@ -473,7 +667,8 @@ msgstr "Müşteri sorularını zamanlanmış görev ile otomatik olarak içe akt
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__auto_import_settlements
 msgid "Automatically import financial settlements via scheduled job"
-msgstr "Finansal hesaplaşmaları zamanlanmış görev ile otomatik olarak içe aktar"
+msgstr ""
+"Finansal hesaplaşmaları zamanlanmış görev ile otomatik olarak içe aktar"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__auto_import_orders
@@ -504,7 +699,9 @@ msgstr "Stok seviyelerini zamanlanmış görev ile otomatik olarak senkronize et
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_prices_auto_update
 msgid ""
 "Automatically update customization prices when customization lines change."
-msgstr "Özelleştirme satırları değiştiğinde özelleştirme fiyatlarını otomatik olarak güncelle."
+msgstr ""
+"Özelleştirme satırları değiştiğinde özelleştirme fiyatlarını otomatik olarak"
+" güncelle."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__trendyol_quantity
@@ -523,7 +720,11 @@ msgid ""
 "level BOM, the manufacturing lead times of the components will be added. In "
 "case the product is subcontracted, this can be used to determine the date at"
 " which components should be sent to the subcontractor."
-msgstr "Bu ürünü üretmek için ortalama teslim süresi (gün). Çok seviyeli ürün ağacı durumunda, bileşenlerin üretim teslim süreleri eklenecektir. Ürün fason üretim ise, bu değer bileşenlerin fason üreticiye gönderilmesi gereken tarihi belirlemek için kullanılabilir."
+msgstr ""
+"Bu ürünü üretmek için ortalama teslim süresi (gün). Çok seviyeli ürün ağacı "
+"durumunda, bileşenlerin üretim teslim süreleri eklenecektir. Ürün fason "
+"üretim ise, bu değer bileşenlerin fason üreticiye gönderilmesi gereken "
+"tarihi belirlemek için kullanılabilir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__sale_avg_price
@@ -576,7 +777,7 @@ msgstr "Ürün Ağacı Ürün Varyantları"
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_question_search
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
 msgid "Backend"
-msgstr "Backend"
+msgstr "Arka Uç"
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_form
@@ -621,6 +822,21 @@ msgid "Barcode used in Trendyol (usually same as Odoo barcode)"
 msgstr "Trendyol'da kullanılan barkod (genellikle Odoo barkoduyla aynı)"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_baski
+msgid "Baski Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_baski
+msgid "Baski Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_baski
+msgid "Baski Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_batch_request__batch_request_id
 msgid "Batch Request ID"
 msgstr "Toplu İstek ID"
@@ -663,9 +879,35 @@ msgid "Bindings Created"
 msgstr "Bağlantılar Oluşturuldu"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_iscilik_fiyat
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_tl_fiyat
+msgid "Birim işçilik Fiyatı USD"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__block_autoinvoicing
+msgid "Block Autoinvoicing"
+msgstr "Otomatik Faturalamayı Engelle"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__bom_line_ids
 msgid "BoM Components"
 msgstr "Ürün Ağacı Bileşenleri"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_boya
+msgid "Boya Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_boya
+msgid "Boya Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_boya
+msgid "Boya Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__product_brand_id
@@ -692,6 +934,26 @@ msgstr "Tüm seçili ürünler için kullanılacak marka (opsiyonel)"
 #, python-format
 msgid "Brands"
 msgstr "Markalar"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_guncel_fiyat
+msgid "Bu seçenek seçili ise fiyatı yenidir."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_cnc
+msgid "CNC Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_cnc
+msgid "CNC Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_cnc
+msgid "CNC Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__campaign_id
@@ -839,6 +1101,7 @@ msgstr "Tüm seçili ürünler için kullanılacak kategori (opsiyonel)"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__changeset_change_ids
@@ -863,6 +1126,7 @@ msgstr "Changeset Değişiklikleri"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__changeset_ids
@@ -1046,7 +1310,9 @@ msgstr "Yapılandırma"
 msgid ""
 "Configure API credentials and sync settings to connect your Odoo instance "
 "with Trendyol marketplace."
-msgstr "Odoo örneğinizi Trendyol pazaryerine bağlamak için API kimlik bilgilerini ve senkronizasyon ayarlarını yapılandırın."
+msgstr ""
+"Odoo örneğinizi Trendyol pazaryerine bağlamak için API kimlik bilgilerini ve"
+" senkronizasyon ayarlarını yapılandırın."
 
 #. module: trendyol_integration
 #. odoo-python
@@ -1092,6 +1358,7 @@ msgstr "Maliyetlendirme Yöntemi"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__count_changesets
@@ -1116,6 +1383,7 @@ msgstr "Sayım Değişiklik Setleri"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__count_pending_changeset_changes
@@ -1140,6 +1408,7 @@ msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__count_pending_changesets
@@ -1191,6 +1460,11 @@ msgid "Create Bindings"
 msgstr "Bağlantı Oluştur"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__create_ewaybill_within_invoice
+msgid "Create E-Waybill within Invoice"
+msgstr "Fatura ile Birlikte E-İrsaliye Oluştur"
+
+#. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_claim_form
 msgid "Create Return Picking"
 msgstr "İade Transferi Oluştur"
@@ -1200,7 +1474,9 @@ msgstr "İade Transferi Oluştur"
 msgid ""
 "Create and confirm Manufacturing Orders this many days in advance, to have enough time to replenish components or manufacture semi-finished products.\n"
 "Note that security lead times will also be considered when appropriate."
-msgstr "Bileşenleri tedarik etmek veya yarı mamul ürünleri üretmek için yeterli zaman bırakarak Üretim Emirlerini bu kadar gün önceden oluşturun ve onaylayın.\nUygun olduğunda güvenlik teslim süreleri de dikkate alınacaktır."
+msgstr ""
+"Bileşenleri tedarik etmek veya yarı mamul ürünleri üretmek için yeterli zaman bırakarak Üretim Emirlerini bu kadar gün önceden oluşturun ve onaylayın.\n"
+"Uygun olduğunda güvenlik teslim süreleri de dikkate alınacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__service_tracking
@@ -1280,7 +1556,9 @@ msgstr "Oluşturulma"
 msgid ""
 "Creation date of draft/sent orders,\n"
 "Confirmation date of confirmed orders."
-msgstr "Taslak/gönderilen siparişlerin oluşturulma tarihi,\nOnaylanan siparişlerin onay tarihi."
+msgstr ""
+"Taslak/gönderilen siparişlerin oluşturulma tarihi,\n"
+"Onaylanan siparişlerin onay tarihi."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__credit
@@ -1313,7 +1591,11 @@ msgid ""
 "In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
 "stored in the Stock Location of the Warehouse of this Shop, or any of its children.\n"
 "Otherwise, this includes goods stored in any Stock Location with 'internal' type."
-msgstr "Ürünlerin mevcut miktarı.\nTek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\nTek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\nAksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
+msgstr ""
+"Ürünlerin mevcut miktarı.\n"
+"Tek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\n"
+"Tek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\n"
+"Aksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__current_revision_id
@@ -1387,7 +1669,9 @@ msgstr "Müşteri sorusu..."
 msgid ""
 "Customer questions will appear here when imported from Trendyol.\n"
 "                Configure auto-import in backend settings or click \"Import Questions\" manually."
-msgstr "Trendyol'dan içe aktarıldığında müşteri soruları burada görüntülenecektir.\n                Backend ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak \"Soruları İçe Aktar\" butonuna tıklayın."
+msgstr ""
+"Trendyol'dan içe aktarıldığında müşteri soruları burada görüntülenecektir.\n"
+"                Backend ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak \"Soruları İçe Aktar\" butonuna tıklayın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_line_ids
@@ -1449,7 +1733,9 @@ msgstr "Vergisiz ürünler için varsayılan KDV oranı"
 msgid ""
 "Default ZPL label printer for Trendyol shipping labels. Used when the "
 "delivery carrier has no printer configured."
-msgstr "Trendyol kargo etiketleri için varsayılan ZPL etiket yazıcı. Nakliye firmasının yapılandırılmış yazıcısı olmadığında kullanılır."
+msgstr ""
+"Trendyol kargo etiketleri için varsayılan ZPL etiket yazıcı. Nakliye "
+"firmasının yapılandırılmış yazıcısı olmadığında kullanılır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__default_cargo_company_id
@@ -1486,7 +1772,9 @@ msgstr "Tüm stok işlemlerinde kullanılan varsayılan ölçü birimi."
 msgid ""
 "Default unit of measure used for purchase orders. It must be in the same "
 "category as the default unit of measure."
-msgstr "Satınalma siparişlerinde kullanılan varsayılan ölçü birimi. Varsayılan ölçü birimi ile aynı kategoride olmalıdır."
+msgstr ""
+"Satınalma siparişlerinde kullanılan varsayılan ölçü birimi. Varsayılan ölçü "
+"birimi ile aynı kategoride olmalıdır."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_form
@@ -1561,14 +1849,20 @@ msgid ""
 "lead time of the order lines in case of Service products. In case of "
 "shipping, the shipping policy of the order will be taken into account to "
 "either use the minimum or maximum lead time of the order lines."
-msgstr "Müşteriye taahhüt edebileceğiniz teslimat tarihi, Hizmet ürünleri durumunda sipariş satırlarının minimum teslim süresinden hesaplanır. Nakliye durumunda, minimum veya maksimum teslim süresini kullanmak için siparişin nakliye politikası dikkate alınacaktır."
+msgstr ""
+"Müşteriye taahhüt edebileceğiniz teslimat tarihi, Hizmet ürünleri durumunda "
+"sipariş satırlarının minimum teslim süresinden hesaplanır. Nakliye "
+"durumunda, minimum veya maksimum teslim süresini kullanmak için siparişin "
+"nakliye politikası dikkate alınacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__sale_delay
 msgid ""
 "Delivery lead time, in days. It's the number of days, promised to the "
 "customer, between the confirmation of the sales order and the delivery."
-msgstr "Teslimat süresi (gün). Satış siparişinin onayı ile teslimat arasında müşteriye taahhüt edilen gün sayısıdır."
+msgstr ""
+"Teslimat süresi (gün). Satış siparişinin onayı ile teslimat arasında "
+"müşteriye taahhüt edilen gün sayısıdır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__description
@@ -1626,6 +1920,21 @@ msgid "Display project"
 msgstr "Proje görüntüle"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_dolar
+msgid "Dolar Fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_dolar
+msgid "Dolarla satılan ürünlerin fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__domain_attribute_value_ids
+msgid "Domain Attribute Value"
+msgstr "Etki Alanı Özellik Değeri"
+
+#. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_product_binding__sync_state__draft
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_product_binding_search
 msgid "Draft"
@@ -1635,6 +1944,26 @@ msgstr "Taslak"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__effective_date
 msgid "Effective Date"
 msgstr "Geçerlilik Tarihi"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_iscilik_fiy
+msgid "En Az Toplam işçilik Fiyatı USD"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_enjeksiyon
+msgid "Enjeksiyon Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_enjeksiyon
+msgid "Enjeksiyon Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_enjeksiyon
+msgid "Enjeksiyon Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__tracking
@@ -1676,6 +2005,16 @@ msgstr "Hata Mesajları"
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
 msgid "Errors"
 msgstr "Hatalar"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_euro
+msgid "Euro Fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_euro
+msgid "Euro ile satılırken kullanılan temel fiyat"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__exception_ids
@@ -1733,7 +2072,10 @@ msgid ""
 "Expenses and vendor bills can be re-invoiced to a customer.With this option,"
 " a validated expense can be re-invoice to a customer at its cost or sales "
 "price."
-msgstr "Giderler ve tedarikçi faturaları müşteriye yeniden faturalanabilir. Bu seçenekle, onaylanmış bir gider maliyet veya satış fiyatından müşteriye yeniden faturalanabilir."
+msgstr ""
+"Giderler ve tedarikçi faturaları müşteriye yeniden faturalanabilir. Bu "
+"seçenekle, onaylanmış bir gider maliyet veya satış fiyatından müşteriye "
+"yeniden faturalanabilir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__validity_date
@@ -1825,7 +2167,9 @@ msgstr "Webhook kayıt başarısız: %s"
 msgid ""
 "Fallback product for unmapped Trendyol items. If not set, unmapped items "
 "will be created as note lines."
-msgstr "Eşleştirilmemiş Trendyol ürünleri için yedek ürün. Ayarlanmamışsa, eşleştirilmemiş ürünler not satırı olarak oluşturulur."
+msgstr ""
+"Eşleştirilmemiş Trendyol ürünleri için yedek ürün. Ayarlanmamışsa, "
+"eşleştirilmemiş ürünler not satırı olarak oluşturulur."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__priority
@@ -1838,16 +2182,10 @@ msgid "FedEx Shipment Purpose"
 msgstr "FedEx Gönderi Amacı"
 
 #. module: trendyol_integration
-#. odoo-python
-#: code:addons/trendyol_integration/models/stock_picking.py:0
-#, python-format
-msgid "Fetch Trendyol label: %s"
-msgstr "Trendyol etiketini al: %s"
-
-#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__carrier_id
 msgid "Fill this field if you plan to invoice the shipping based on picking."
-msgstr "Nakliyeyi transfere göre faturalamayı planlıyorsanız bu alanı doldurun."
+msgstr ""
+"Nakliyeyi transfere göre faturalamayı planlıyorsanız bu alanı doldurun."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
@@ -1871,7 +2209,15 @@ msgid ""
 "Fiscal positions are used to adapt taxes and accounts for particular "
 "customers or sales orders/invoices.The default value comes from the "
 "customer."
-msgstr "Mali koşullar, belirli müşteriler veya satış siparişleri/faturalar için vergileri ve hesapları uyarlamak için kullanılır. Varsayılan değer müşteriden gelir."
+msgstr ""
+"Mali koşullar, belirli müşteriler veya satış siparişleri/faturalar için "
+"vergileri ve hesapları uyarlamak için kullanılır. Varsayılan değer "
+"müşteriden gelir."
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_guncel_fiyat
+msgid "Fiyat Güncel"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__message_follower_ids
@@ -1909,7 +2255,11 @@ msgid ""
 "In a context with a single Stock Location, this includes goods stored in this location, or any of its children.\n"
 "In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
 "Otherwise, this includes goods stored in any Stock Location with 'internal' type."
-msgstr "Tahmini miktar (Eldeki Miktar - Çıkan + Gelen olarak hesaplanır)\nTek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\nTek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\nAksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
+msgstr ""
+"Tahmini miktar (Eldeki Miktar - Çıkan + Gelen olarak hesaplanır)\n"
+"Tek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\n"
+"Tek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\n"
+"Aksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__free_qty
@@ -1918,7 +2268,11 @@ msgid ""
 "In a context with a single Stock Location, this includes goods stored in this location, or any of its children.\n"
 "In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
 "Otherwise, this includes goods stored in any Stock Location with 'internal' type."
-msgstr "Tahmini miktar (Eldeki Miktar - rezerve edilmiş miktar olarak hesaplanır)\nTek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\nTek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\nAksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
+msgstr ""
+"Tahmini miktar (Eldeki Miktar - rezerve edilmiş miktar olarak hesaplanır)\n"
+"Tek bir Stok Konumu bağlamında, bu konumda veya alt konumlarında depolanan malları içerir.\n"
+"Tek bir Depo bağlamında, bu Deponun Stok Konumunda veya alt konumlarında depolanan malları içerir.\n"
+"Aksi takdirde, 'dahili' türündeki herhangi bir Stok Konumunda depolanan malları içerir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__virtual_available
@@ -1979,7 +2333,10 @@ msgid ""
 "Harmonised System Code. Nomenclature is available from the World Customs "
 "Organisation, see http://www.wcoomd.org/. You can leave this field empty and"
 " configure the H.S. code on the product category."
-msgstr "G.T.İ.P. Kodu. Nomenklatür Dünya Gümrük Örgütü'nden edinilebilir, bkz. http://www.wcoomd.org/. Bu alanı boş bırakıp G.T.İ.P. kodunu ürün kategorisinde yapılandırabilirsiniz."
+msgstr ""
+"G.T.İ.P. Kodu. Nomenklatür Dünya Gümrük Örgütü'nden edinilebilir, bkz. "
+"http://www.wcoomd.org/. Bu alanı boş bırakıp G.T.İ.P. kodunu ürün "
+"kategorisinde yapılandırabilirsiniz."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__show_update_fpos
@@ -2038,7 +2395,7 @@ msgstr "Yükseklik"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_question__id
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__activity_exception_icon
@@ -2091,7 +2448,10 @@ msgid ""
 " that this product is a stockable product, then the validation of the "
 "related stock moves will be blocked if the stock level becomes negative with"
 " the stock move."
-msgstr "Bu seçenek ne üründe ne de ürün kategorisinde etkin değilse ve ürün stoklanabilir bir ürünse, stok hareketi ile stok seviyesi negatife düşecekse ilgili stok hareketlerinin doğrulanması engellenecektir."
+msgstr ""
+"Bu seçenek ne üründe ne de ürün kategorisinde etkin değilse ve ürün "
+"stoklanabilir bir ürünse, stok hareketi ile stok seviyesi negatife düşecekse"
+" ilgili stok hareketlerinin doğrulanması engellenecektir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__service_to_purchase
@@ -2099,7 +2459,10 @@ msgid ""
 "If ticked, each time you sell this product through a SO, a RfQ is "
 "automatically created to buy the product. Tip: don't forget to set a vendor "
 "on the product."
-msgstr "İşaretlenirse, bu ürünü bir satış siparişi ile her sattığınızda, ürünü satın almak için otomatik olarak bir teklif talebi oluşturulur. İpucu: Üründe tedarikçi ayarlamayı unutmayın."
+msgstr ""
+"İşaretlenirse, bu ürünü bir satış siparişi ile her sattığınızda, ürünü satın"
+" almak için otomatik olarak bir teklif talebi oluşturulur. İpucu: Üründe "
+"tedarikçi ayarlamayı unutmayın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__active
@@ -2110,7 +2473,9 @@ msgstr "İşaretsiz bırakılırsa, ürünü silmeden gizlemenizi sağlar."
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__pricelist_id
 msgid "If you change the pricelist, only newly added lines will be affected."
-msgstr "Fiyat listesini değiştirirseniz, yalnızca yeni eklenen satırlar etkilenecektir."
+msgstr ""
+"Fiyat listesini değiştirirseniz, yalnızca yeni eklenen satırlar "
+"etkilenecektir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__picking_policy
@@ -2118,7 +2483,10 @@ msgid ""
 "If you deliver all products at once, the delivery order will be scheduled "
 "based on the greatest product lead time. Otherwise, it will be based on the "
 "shortest."
-msgstr "Tüm ürünleri aynı anda teslim ederseniz, teslimat siparişi en uzun ürün teslim süresine göre planlanacaktır. Aksi takdirde en kısasına göre planlanacaktır."
+msgstr ""
+"Tüm ürünleri aynı anda teslim ederseniz, teslimat siparişi en uzun ürün "
+"teslim süresine göre planlanacaktır. Aksi takdirde en kısasına göre "
+"planlanacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__ignore_exception
@@ -2240,7 +2608,11 @@ msgid ""
 "        In FIFO: value of the next unit that will leave the stock (automatically computed).\n"
 "        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n"
 "        Used to compute margins on sale orders."
-msgstr "Standart Fiyat ve AVCO'da: ürünün değeri (AVCO'da otomatik hesaplanır).\n        FIFO'da: stoktan çıkacak bir sonraki birimin değeri (otomatik hesaplanır).\n        Satınalma maliyeti bilinmediğinde ürünü değerlemek için kullanılır (ör. envanter düzeltmesi).\n        Satış siparişlerinde kâr marjlarını hesaplamak için kullanılır."
+msgstr ""
+"Standart Fiyat ve AVCO'da: ürünün değeri (AVCO'da otomatik hesaplanır).\n"
+"        FIFO'da: stoktan çıkacak bir sonraki birimin değeri (otomatik hesaplanır).\n"
+"        Satınalma maliyeti bilinmediğinde ürünü değerlemek için kullanılır (ör. envanter düzeltmesi).\n"
+"        Satış siparişlerinde kâr marjlarını hesaplamak için kullanılır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__property_account_income_id
@@ -2255,7 +2627,7 @@ msgstr "Gelen"
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__incoterm
 msgid "Incoterm"
-msgstr "Incoterm"
+msgstr "Teslim Şekli"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__incoterm_address_id
@@ -2273,6 +2645,11 @@ msgid "Indicates if the first quotation reminder has been sent."
 msgstr "İlk teklif hatırlatmasının gönderilip gönderilmediğini belirtir."
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__packed
+msgid "Indicates if the sale order has been packed."
+msgstr "Satış siparişinin paketlenip paketlenmediğini belirtir."
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__second_reminder_mail_sent
 msgid "Indicates if the second quotation reminder has been sent."
 msgstr "İkinci teklif hatırlatmasının gönderilip gönderilmediğini belirtir."
@@ -2287,7 +2664,9 @@ msgstr "Insert Yerleştirme Fiyatı"
 msgid ""
 "Intermediary bank-type journal for Trendyol payments. When a real bank "
 "transfer arrives, reconcile against this journal."
-msgstr "Trendyol ödemeleri için aracı banka tipi günlük. Gerçek banka transferi geldiğinde, bu günlüğe karşı uzlaştırın."
+msgstr ""
+"Trendyol ödemeleri için aracı banka tipi günlük. Gerçek banka transferi "
+"geldiğinde, bu günlüğe karşı uzlaştırın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__internal_note
@@ -2315,7 +2694,9 @@ msgstr "Ürün tanımlama için kullanılan Uluslararası Ürün Numarası."
 msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
 "used in international transactions."
-msgstr "Uluslararası Ticari Terimler, uluslararası işlemlerde kullanılan önceden tanımlanmış bir dizi ticari terimdir."
+msgstr ""
+"Uluslararası Ticari Terimler, uluslararası işlemlerde kullanılan önceden "
+"tanımlanmış bir dizi ticari terimdir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__property_stock_inventory
@@ -2455,10 +2836,26 @@ msgid "JSON data from batch request result"
 msgstr "Toplu istek sonucundan JSON verisi"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_kaplama
+msgid "Kaplama Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_kaplama
+msgid "Kaplama Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_kaplama
+msgid "Kaplama Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__property_account_income_id
 msgid ""
 "Keep this field empty to use the default value from the product category."
-msgstr "Ürün kategorisinden varsayılan değeri kullanmak için bu alanı boş bırakın."
+msgstr ""
+"Ürün kategorisinden varsayılan değeri kullanmak için bu alanı boş bırakın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__property_account_expense_id
@@ -2466,7 +2863,10 @@ msgid ""
 "Keep this field empty to use the default value from the product category. If"
 " anglo-saxon accounting with automated valuation method is configured, the "
 "expense account on the product category will be used."
-msgstr "Ürün kategorisinden varsayılan değeri kullanmak için bu alanı boş bırakın. Otomatik değerleme yöntemiyle Anglo-Sakson muhasebe yapılandırılmışsa, ürün kategorisindeki gider hesabı kullanılacaktır."
+msgstr ""
+"Ürün kategorisinden varsayılan değeri kullanmak için bu alanı boş bırakın. "
+"Otomatik değerleme yöntemiyle Anglo-Sakson muhasebe yapılandırılmışsa, ürün "
+"kategorisindeki gider hesabı kullanılacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__label_printer_id
@@ -2625,7 +3025,9 @@ msgstr "Satır Sayısı"
 msgid ""
 "Link Odoo products to Trendyol by creating product bindings. You can then "
 "export them to Trendyol marketplace."
-msgstr "Ürün bağlantıları oluşturarak Odoo ürünlerini Trendyol'a bağlayın. Ardından bunları Trendyol pazaryerine aktarabilirsiniz."
+msgstr ""
+"Ürün bağlantıları oluşturarak Odoo ürünlerini Trendyol'a bağlayın. Ardından "
+"bunları Trendyol pazaryerine aktarabilirsiniz."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__trendyol_list_price
@@ -2688,7 +3090,10 @@ msgid ""
 "Manual: The accounting entries to value the inventory are not posted automatically.\n"
 "        Automated: An accounting entry is automatically created to value the inventory when a product enters or leaves the company.\n"
 "        "
-msgstr "Manuel: Envanteri değerlemek için muhasebe kayıtları otomatik olarak kaydedilmez.\n        Otomatik: Bir ürün şirkete girdiğinde veya çıktığında envanteri değerlemek için otomatik olarak bir muhasebe kaydı oluşturulur.\n        "
+msgstr ""
+"Manuel: Envanteri değerlemek için muhasebe kayıtları otomatik olarak kaydedilmez.\n"
+"        Otomatik: Bir ürün şirkete girdiğinde veya çıktığında envanteri değerlemek için otomatik olarak bir muhasebe kaydı oluşturulur.\n"
+"        "
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__service_type
@@ -2696,7 +3101,10 @@ msgid ""
 "Manually set quantities on order: Invoice based on the manually entered quantity, without creating an analytic account.\n"
 "Timesheets on contract: Invoice based on the tracked hours on the related timesheet.\n"
 "Create a task and track hours: Create a task on the sales order validation and track the work hours."
-msgstr "Siparişte miktarı manuel ayarla: Analitik hesap oluşturmadan, manuel girilen miktara göre faturalandırma.\nSözleşme üzerinde zaman çizelgeleri: İlgili zaman çizelgesinde takip edilen saatlere göre faturalandırma.\nGörev oluştur ve saatleri takip et: Satış siparişi doğrulamasında bir görev oluşturur ve çalışma saatlerini takip eder."
+msgstr ""
+"Siparişte miktarı manuel ayarla: Analitik hesap oluşturmadan, manuel girilen miktara göre faturalandırma.\n"
+"Sözleşme üzerinde zaman çizelgeleri: İlgili zaman çizelgesinde takip edilen saatlere göre faturalandırma.\n"
+"Görev oluştur ve saatleri takip et: Satış siparişi doğrulamasında bir görev oluşturur ve çalışma saatlerini takip eder."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__mrp_product_qty
@@ -2764,9 +3172,39 @@ msgid "Margin Date To"
 msgstr "Kâr Marjı Bitiş Tarihi"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_maske
+msgid "Maske Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__medium_id
 msgid "Medium"
 msgstr "Araç"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_incoming_merkez
+msgid "Merkez Depo Gelen"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_outgoing_merkez
+msgid "Merkez Depo Giden"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_merkez
+msgid "Merkez Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_merkez
+msgid "Merkez Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_merkez
+msgid "Merkez Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__message_has_error
@@ -2799,6 +3237,21 @@ msgid "Messages"
 msgstr "Mesajlar"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_metal
+msgid "Metal Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_metal
+msgid "Metal Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_metal
+msgid "Metal Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__milestone_count
 msgid "Milestone Count"
 msgstr "Kilometre Taşı Sayısı"
@@ -2807,6 +3260,26 @@ msgstr "Kilometre Taşı Sayısı"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__orderpoint_ids
 msgid "Minimum Stock Rules"
 msgstr "Minimum Stok Kuralları"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_min_iscilik_fiy
+msgid "Minimum işçilik Fiyatı USD"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_montaj
+msgid "Montaj Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_montaj
+msgid "Montaj Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_montaj
+msgid "Montaj Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__my_activity_date_deadline
@@ -2828,6 +3301,16 @@ msgstr "Ekibim"
 #, python-format
 msgid "N/A"
 msgstr "Yok"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_nakliye
+msgid "Nakliye Fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_nakliye
+msgid "Nakliye fiyatı"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__name
@@ -3153,6 +3636,11 @@ msgid "Odoo return picking created for this claim"
 msgstr "Bu iade talebi için oluşturulan Odoo iade transferi"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__sale_line_history
+msgid "Old Sales"
+msgstr "Eski Satışlar"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__old_revision_ids
 msgid "Old revisions"
 msgstr "Eski revizyonlar"
@@ -3162,14 +3650,18 @@ msgstr "Eski revizyonlar"
 msgid ""
 "On Sales order confirmation, this product can generate a project and/or task.         From those, you can track the service you are selling.\n"
 "         'In sale order's project': Will use the sale order's configured project if defined or fallback to         creating a new project based on the selected template."
-msgstr "Satış siparişi onayında, bu ürün bir proje ve/veya görev oluşturabilir. Bunlardan sattığınız hizmeti takip edebilirsiniz.\n         'Satış siparişinin projesinde': Tanımlanmışsa satış siparişinin yapılandırılmış projesini kullanır, aksi takdirde seçili şablona dayalı yeni bir proje oluşturur."
+msgstr ""
+"Satış siparişi onayında, bu ürün bir proje ve/veya görev oluşturabilir. Bunlardan sattığınız hizmeti takip edebilirsiniz.\n"
+"         'Satış siparişinin projesinde': Tanımlanmışsa satış siparişinin yapılandırılmış projesini kullanır, aksi takdirde seçili şablona dayalı yeni bir proje oluşturur."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__purchase_method
 msgid ""
 "On ordered quantities: Control bills based on ordered quantities.\n"
 "On received quantities: Control bills based on received quantities."
-msgstr "Sipariş edilen miktarlara göre: Faturaları sipariş edilen miktarlara göre kontrol edin.\nTeslim alınan miktarlara göre: Faturaları teslim alınan miktarlara göre kontrol edin."
+msgstr ""
+"Sipariş edilen miktarlara göre: Faturaları sipariş edilen miktarlara göre kontrol edin.\n"
+"Teslim alınan miktarlara göre: Faturaları teslim alınan miktarlara göre kontrol edin."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__require_payment
@@ -3262,6 +3754,11 @@ msgid "Order Settings"
 msgstr "Sipariş Ayarları"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__order_state
+msgid "Order State"
+msgstr "Sipariş Durumu"
+
+#. module: trendyol_integration
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_order.py:0
 #, python-format
@@ -3280,7 +3777,9 @@ msgstr "Sipariş içe aktarımı kuyruğa alındı."
 msgid ""
 "Ordered Quantity: Invoice quantities ordered by the customer.\n"
 "Delivered Quantity: Invoice quantities delivered to the customer."
-msgstr "Sipariş Miktarı: Müşteri tarafından sipariş edilen fatura miktarları.\nTeslim Edilen Miktar: Müşteriye teslim edilen fatura miktarları."
+msgstr ""
+"Sipariş Miktarı: Müşteri tarafından sipariş edilen fatura miktarları.\n"
+"Teslim Edilen Miktar: Müşteriye teslim edilen fatura miktarları."
 
 #. module: trendyol_integration
 #. odoo-python
@@ -3297,7 +3796,10 @@ msgstr "Siparişler"
 msgid ""
 "Orders will appear here when imported from Trendyol. Configure auto-import "
 "in backend settings or click \"Import Orders\" manually."
-msgstr "Trendyol'dan içe aktarıldığında siparişler burada görüntülenecektir. Backend ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak \"Siparişleri İçe Aktar\" butonuna tıklayın."
+msgstr ""
+"Trendyol'dan içe aktarıldığında siparişler burada görüntülenecektir. Backend"
+" ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak "
+"\"Siparişleri İçe Aktar\" butonuna tıklayın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__country_of_origin
@@ -3337,6 +3839,11 @@ msgid "Package ID must be unique per backend!"
 msgstr "Paket ID her backend için benzersiz olmalıdır!"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__packed
+msgid "Packed"
+msgstr "Paketlendi"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__paint_price
 msgid "Paint Price"
 msgstr "Boya Fiyatı"
@@ -3362,16 +3869,28 @@ msgid "Partner Credit Warning"
 msgstr "İş Ortağı Kredi Uyarısı"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_cari_urun
+msgid "Partner Product"
+msgstr "Cari Ürün"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__trendyol_partner_id
 msgid ""
 "Partner record representing Trendyol. Used as reference on settlement "
 "payments and for reporting purposes."
-msgstr "Trendyol'u temsil eden iş ortağı kaydı. Hesaplaşma ödemeleri ve raporlama amacıyla referans olarak kullanılır."
+msgstr ""
+"Trendyol'u temsil eden iş ortağı kaydı. Hesaplaşma ödemeleri ve raporlama "
+"amacıyla referans olarak kullanılır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__odoo_payment_id
 msgid "Payment"
 msgstr "Ödeme"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_currency_id
+msgid "Payment Currency"
+msgstr "Ödeme Para Birimi"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__payment_date
@@ -3395,9 +3914,19 @@ msgid "Payment Ref."
 msgstr "Ödeme Ref."
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_status
+msgid "Payment Status"
+msgstr "Ödeme Durumu"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_term_id
 msgid "Payment Terms"
 msgstr "Ödeme Koşulları"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_ids
+msgid "Payments"
+msgstr "Ödemeler"
 
 #. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_batch_request__state__pending
@@ -3416,7 +3945,9 @@ msgstr "Onay Bekliyor"
 msgid ""
 "Percentage of time delivered compared to the prepaid amount that must be "
 "reached for the upselling opportunity activity to be triggered."
-msgstr "Ek satış fırsatı aktivitesinin tetiklenmesi için ön ödemeli tutara kıyasla ulaşılması gereken teslim edilen süre yüzdesi."
+msgstr ""
+"Ek satış fırsatı aktivitesinin tetiklenmesi için ön ödemeli tutara kıyasla "
+"ulaşılması gereken teslim edilen süre yüzdesi."
 
 #. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_order__trendyol_status__picking
@@ -3458,6 +3989,11 @@ msgstr "Fiyat ve Stok Güncelleme"
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__list_price
 msgid "Price at which the product is sold to customers."
 msgstr "Ürünün müşterilere satıldığı fiyat."
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__attr_price
+msgid "Price calculated based on the product's attribute values."
+msgstr "Ürünün özellik değerlerine göre hesaplanan fiyat."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_batch_request_search
@@ -3681,6 +4217,11 @@ msgid "Production Responsible"
 msgstr "Üretim Sorumlusu"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__production_ids
+msgid "Productions"
+msgstr "Üretimler"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__product_variant_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_export_wizard__product_ids
 #: model:ir.ui.menu,name:trendyol_integration.menu_trendyol_products
@@ -3712,10 +4253,17 @@ msgid "Projects used in this sales order."
 msgstr "Bu satış siparişinde kullanılan projeler."
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__provider_id
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_product_product__image_url
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__image_url
 msgid "Public HTTPS URL for product image (used for marketplace integrations)"
-msgstr "Ürün görseli için genel HTTPS URL'si (pazaryeri entegrasyonları için kullanılır)"
+msgstr ""
+"Ürün görseli için genel HTTPS URL'si (pazaryeri entegrasyonları için "
+"kullanılır)"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__description_purchase
@@ -3784,7 +4332,11 @@ msgid ""
 "In a context with a single Stock Location, this includes goods arriving to this Location, or any of its children.\n"
 "In a context with a single Warehouse, this includes goods arriving to the Stock Location of this Warehouse, or any of its children.\n"
 "Otherwise, this includes goods arriving to any Stock Location with 'internal' type."
-msgstr "Planlanan gelen ürünlerin miktarı.\nTek bir Stok Konumu bağlamında, bu Konuma veya alt konumlarına gelen malları içerir.\nTek bir Depo bağlamında, bu Deponun Stok Konumuna veya alt konumlarına gelen malları içerir.\nAksi takdirde, 'dahili' türündeki herhangi bir Stok Konumuna gelen malları içerir."
+msgstr ""
+"Planlanan gelen ürünlerin miktarı.\n"
+"Tek bir Stok Konumu bağlamında, bu Konuma veya alt konumlarına gelen malları içerir.\n"
+"Tek bir Depo bağlamında, bu Deponun Stok Konumuna veya alt konumlarına gelen malları içerir.\n"
+"Aksi takdirde, 'dahili' türündeki herhangi bir Stok Konumuna gelen malları içerir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__outgoing_qty
@@ -3793,7 +4345,11 @@ msgid ""
 "In a context with a single Stock Location, this includes goods leaving this Location, or any of its children.\n"
 "In a context with a single Warehouse, this includes goods leaving the Stock Location of this Warehouse, or any of its children.\n"
 "Otherwise, this includes goods leaving any Stock Location with 'internal' type."
-msgstr "Planlanan çıkan ürünlerin miktarı.\nTek bir Stok Konumu bağlamında, bu Konumdan veya alt konumlarından çıkan malları içerir.\nTek bir Depo bağlamında, bu Deponun Stok Konumundan veya alt konumlarından çıkan malları içerir.\nAksi takdirde, 'dahili' türündeki herhangi bir Stok Konumundan çıkan malları içerir."
+msgstr ""
+"Planlanan çıkan ürünlerin miktarı.\n"
+"Tek bir Stok Konumu bağlamında, bu Konumdan veya alt konumlarından çıkan malları içerir.\n"
+"Tek bir Depo bağlamında, bu Deponun Stok Konumundan veya alt konumlarından çıkan malları içerir.\n"
+"Aksi takdirde, 'dahili' türündeki herhangi bir Stok Konumundan çıkan malları içerir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__visible_qty_configurator
@@ -3910,6 +4466,11 @@ msgid "Receipt"
 msgstr "Alış"
 
 #. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.trendyol_shipping_label
+msgid "Recipient"
+msgstr "Alıcı"
+
+#. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
 msgid "Reconcile"
 msgstr "Uzlaştır"
@@ -3947,7 +4508,16 @@ msgid ""
 " When saved, the default code on variants will be something like \n"
 " `fancyA/l~r~l` (for variant with Color \"Red\" and Size \"L\")  `fancyA/x~y~x` (for variant with Color \"Yellow\" and Size \"XL\")\n"
 "Note: make sure characters \"[,]\" do not appear in your attribute name"
-msgstr "Bu şablondan oluşturulan bir varyantın iç referanslarını oluşturmak için referans maskesi.\nÖrnek:\n2 özelliğe sahip ABC adlı bir ürün: Boyut ve Renk:\nÜrün: ABC\nRenk: Kırmızı(k), Sarı(s), Siyah(si)\nBoyut: L (l), XL(x)\nVaryant referans maskesini `[Renk]-[Boyut]` olarak ayarladığınızda, varyantlardaki varsayılan kod `k-l` `si-l` `k-x` gibi olacaktır.\nİsterseniz, maskede özellik adının birden fazla görünmesini sağlayabilirsiniz.\nNot: \'[,]\' karakterlerinin özellik adınızda görünmediğinden emin olun"
+msgstr ""
+"Bu şablondan oluşturulan bir varyantın iç referanslarını oluşturmak için referans maskesi.\n"
+"Örnek:\n"
+"2 özelliğe sahip ABC adlı bir ürün: Boyut ve Renk:\n"
+"Ürün: ABC\n"
+"Renk: Kırmızı(k), Sarı(s), Siyah(si)\n"
+"Boyut: L (l), XL(x)\n"
+"Varyant referans maskesini `[Renk]-[Boyut]` olarak ayarladığınızda, varyantlardaki varsayılan kod `k-l` `si-l` `k-x` gibi olacaktır.\n"
+"İsterseniz, maskede özellik adının birden fazla görünmesini sağlayabilirsiniz.\n"
+"Not: \\'[,]\\' karakterlerinin özellik adınızda görünmediğinden emin olun"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__origin
@@ -4004,7 +4574,9 @@ msgstr "İstek Türü"
 msgid ""
 "Request a online signature and/or payment to the customer in order to "
 "confirm orders automatically."
-msgstr "Siparişleri otomatik olarak onaylamak için müşteriden online imza ve/veya ödeme talep edin."
+msgstr ""
+"Siparişleri otomatik olarak onaylamak için müşteriden online imza ve/veya "
+"ödeme talep edin."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category_attribute__required
@@ -4025,6 +4597,11 @@ msgstr "Taşıma türü gerektirir"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__responsible_id
 msgid "Responsible"
 msgstr "Sorumlu"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__responsible_employee_id
+msgid "Responsible Employee"
+msgstr "Sorumlu Çalışan"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__activity_user_id
@@ -4082,7 +4659,10 @@ msgstr "İade Takip Numarası"
 msgid ""
 "Return claims will appear here when imported from Trendyol. Configure auto-"
 "import in backend settings or click \"Import Claims\" manually."
-msgstr "Trendyol'dan içe aktarıldığında iade talepleri burada görüntülenecektir. Backend ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak \"İadeleri İçe Aktar\" butonuna tıklayın."
+msgstr ""
+"Trendyol'dan içe aktarıldığında iade talepleri burada görüntülenecektir. "
+"Backend ayarlarından otomatik içe aktarmayı yapılandırın veya manuel olarak "
+"\"İadeleri İçe Aktar\" butonuna tıklayın."
 
 #. module: trendyol_integration
 #. odoo-python
@@ -4128,7 +4708,9 @@ msgstr "Bu üründe rotalar seçilebilir"
 msgid ""
 "Rules of origin determine where goods originate, i.e. not where they have been shipped from, but where they have been produced or manufactured.\n"
 "As such, the ‘origin’ is the 'economic nationality' of goods traded in commerce."
-msgstr "Menşe kuralları, malların nereden geldiğini belirler, yani nereden sevk edildiklerini değil, nerede üretildiğini veya imal edildiğini.\nBu nedenle 'menşe', ticarette alınıp satılan malların 'ekonomik milliyeti'dir."
+msgstr ""
+"Menşe kuralları, malların nereden geldiğini belirler, yani nereden sevk edildiklerini değil, nerede üretildiğini veya imal edildiğini.\n"
+"Bu nedenle 'menşe', ticarette alınıp satılan malların 'ekonomik milliyeti'dir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__message_has_sms_error
@@ -4196,6 +4778,7 @@ msgid "Sales Order"
 msgstr "Satış Siparişi"
 
 #. module: trendyol_integration
+#: model:ir.model,name:trendyol_integration.model_sale_order_line
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__sale_line_warn
 msgid "Sales Order Line"
 msgstr "Satış Sipariş Satırı"
@@ -4225,6 +4808,12 @@ msgstr "Satış Temsilcisi"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__lst_price
 msgid "Sales Price"
 msgstr "Satış Fiyatı"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__purchase_price
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__purchase_price
+msgid "Satınalma Fiyatı"
+msgstr ""
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_search
@@ -4304,7 +4893,10 @@ msgid ""
 "Selecting the \"Warning\" option will notify user with the message, "
 "Selecting \"Blocking Message\" will throw an exception with the message and "
 "block the flow. The Message has to be written in the next field."
-msgstr "\"Uyarı\" seçeneğini seçmek kullanıcıyı mesajla bilgilendirir, \"Engelleyici Mesaj\" seçeneğini seçmek mesajla bir istisna fırlatır ve akışı engeller. Mesaj bir sonraki alana yazılmalıdır."
+msgstr ""
+"\"Uyarı\" seçeneğini seçmek kullanıcıyı mesajla bilgilendirir, \"Engelleyici"
+" Mesaj\" seçeneğini seçmek mesajla bir istisna fırlatır ve akışı engeller. "
+"Mesaj bir sonraki alana yazılmalıdır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__seller_id
@@ -4345,6 +4937,11 @@ msgstr "Gece toplu zamanlayıcı ile Trendyol'a fatura linklerini gönder"
 #, python-format
 msgid "Send invoice: %s"
 msgstr "Fatura gönder: %s"
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.trendyol_shipping_label
+msgid "Sender"
+msgstr "Gönderici"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__sequence
@@ -4411,7 +5008,9 @@ msgstr "Hesaplaşmalar"
 msgid ""
 "Settlements are imported from Trendyol's finance API and used\n"
 "                to reconcile invoices with marketplace payments."
-msgstr "Hesaplaşmalar Trendyol'un finans API'sinden içe aktarılır ve\n                faturaları pazaryeri ödemeleriyle uzlaştırmak için kullanılır."
+msgstr ""
+"Hesaplaşmalar Trendyol'un finans API'sinden içe aktarılır ve\n"
+"                faturaları pazaryeri ödemeleriyle uzlaştırmak için kullanılır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__shipment_package_id
@@ -4475,6 +5074,31 @@ msgid "Signed On"
 msgstr "İmza Tarihi"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_incoming_sincan
+msgid "Sincan Depo Gelen"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_outgoing_sincan
+msgid "Sincan Depo Giden"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_sincan
+msgid "Sincan Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_sincan
+msgid "Sincan Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_sincan
+msgid "Sincan Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_export_wizard__skip_existing
 msgid "Skip Existing Bindings"
 msgstr "Mevcut Bağlantıları Atla"
@@ -4494,6 +5118,7 @@ msgstr "Dilimleyici"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__smart_search
@@ -4519,6 +5144,7 @@ msgid "Sold"
 msgstr "Satıldı"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__source_id
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__source_id
 msgid "Source"
 msgstr "Kaynak"
@@ -4540,14 +5166,20 @@ msgid ""
 "        Average Cost (AVCO): The products are valued at weighted average cost.\n"
 "        First In First Out (FIFO): The products are valued supposing those that enter the company first will also leave it first.\n"
 "        "
-msgstr "Standart Fiyat: Ürünler, üründe tanımlanan standart maliyetleriyle değerlenir.\n        Ortalama Maliyet (AVCO): Ürünler ağırlıklı ortalama maliyetle değerlenir.\n        İlk Giren İlk Çıkar (FIFO): Ürünler, şirkete ilk girenlerin ilk çıkacağı varsayılarak değerlenir.\n        "
+msgstr ""
+"Standart Fiyat: Ürünler, üründe tanımlanan standart maliyetleriyle değerlenir.\n"
+"        Ortalama Maliyet (AVCO): Ürünler ağırlıklı ortalama maliyetle değerlenir.\n"
+"        İlk Giren İlk Çıkar (FIFO): Ürünler, şirkete ilk girenlerin ilk çıkacağı varsayılarak değerlenir.\n"
+"        "
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__hs_code
 msgid ""
 "Standardized code for international shipping and goods declaration. At the "
 "moment, only used for FedEx and USPS shipping providers."
-msgstr "Uluslararası nakliye ve mal beyanı için standartlaştırılmış kod. Şu anda yalnızca FedEx ve USPS nakliye sağlayıcıları için kullanılmaktadır."
+msgstr ""
+"Uluslararası nakliye ve mal beyanı için standartlaştırılmış kod. Şu anda "
+"yalnızca FedEx ve USPS nakliye sağlayıcıları için kullanılmaktadır."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_category_sync_wizard_form
@@ -4595,7 +5227,11 @@ msgid ""
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
-msgstr "Aktivitelere dayalı durum\nGecikmiş: Son tarih geçmiş\nBugün: Aktivite tarihi bugün\nPlanlanmış: Gelecek aktiviteler."
+msgstr ""
+"Aktivitelere dayalı durum\n"
+"Gecikmiş: Son tarih geçmiş\n"
+"Bugün: Aktivite tarihi bugün\n"
+"Planlanmış: Gelecek aktiviteler."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_product_binding_form
@@ -4684,7 +5320,8 @@ msgstr "Tedarikçi Faturalarının fatura fiyatı ve miktarı çarpımının top
 msgid ""
 "Sum of Multiplication of Sale Catalog price and quantity of Customer "
 "Invoices"
-msgstr "Müşteri Faturalarının satış katalog fiyatı ve miktarı çarpımının toplamı"
+msgstr ""
+"Müşteri Faturalarının satış katalog fiyatı ve miktarı çarpımının toplamı"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__sale_num_invoiced
@@ -4877,7 +5514,9 @@ msgstr "Etiketler"
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__account_tag_ids
 msgid ""
 "Tags to be set on the base and tax journal items created for this product."
-msgstr "Bu ürün için oluşturulan temel ve vergi günlük kalemlerine ayarlanacak etiketler."
+msgstr ""
+"Bu ürün için oluşturulan temel ve vergi günlük kalemlerine ayarlanacak "
+"etiketler."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__tasks_count
@@ -4914,28 +5553,36 @@ msgstr "Vergiler"
 msgid ""
 "Technical field to correctly show the currently selected company's currency "
 "that corresponds to the totaled value of the product's valuation layers"
-msgstr "Ürünün değerleme katmanlarının toplam değerine karşılık gelen, seçili şirketin para birimini doğru şekilde göstermek için teknik alan"
+msgstr ""
+"Ürünün değerleme katmanlarının toplam değerine karşılık gelen, seçili "
+"şirketin para birimini doğru şekilde göstermek için teknik alan"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__show_volume_uom_warning
 msgid ""
 "Technical field used to warn the user to change the volumeuom since the "
 "value for product_volume is too small and has beenrounded."
-msgstr "product_volume değeri çok küçük olduğundan ve yuvarlandığından, kullanıcıyı hacim ölçü birimini değiştirmesi konusunda uyarmak için teknik alan."
+msgstr ""
+"product_volume değeri çok küçük olduğundan ve yuvarlandığından, kullanıcıyı "
+"hacim ölçü birimini değiştirmesi konusunda uyarmak için teknik alan."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__show_weight_uom_warning
 msgid ""
 "Technical field used to warn the user to change the weightuom since the "
 "value for product_weight is too small and has beenrounded."
-msgstr "product_weight değeri çok küçük olduğundan ve yuvarlandığından, kullanıcıyı ağırlık ölçü birimini değiştirmesi konusunda uyarmak için teknik alan."
+msgstr ""
+"product_weight değeri çok küçük olduğundan ve yuvarlandığından, kullanıcıyı "
+"ağırlık ölçü birimini değiştirmesi konusunda uyarmak için teknik alan."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__state_id_domain
 msgid ""
 "Technical field, used to compute dynamically state domain depending on the "
 "country."
-msgstr "Ülkeye bağlı olarak il/eyalet alanını dinamik olarak hesaplamak için teknik alan."
+msgstr ""
+"Ülkeye bağlı olarak il/eyalet alanını dinamik olarak hesaplamak için teknik "
+"alan."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__terms_type
@@ -4957,13 +5604,16 @@ msgstr "Bağlantıyı Test Et"
 msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
-msgstr "İki karakterlik ISO ülke kodu. \nBu alanı hızlı arama için kullanabilirsiniz."
+msgstr ""
+"İki karakterlik ISO ülke kodu. \n"
+"Bu alanı hızlı arama için kullanabilirsiniz."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:trendyol_integration.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_stock_picking__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_attribute_value__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__count_pending_changeset_changes
@@ -4988,6 +5638,7 @@ msgstr "Bu kaydın bekleyen değişiklik sayısı"
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_stock_picking__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_attribute_value__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__count_pending_changesets
@@ -5012,6 +5663,7 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_sale_order__count_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_stock_picking__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_attribute_value__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__count_changesets
@@ -5037,6 +5689,11 @@ msgid "The payment communication of this sale order."
 msgstr "Bu satış siparişinin ödeme iletişimi."
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__payment_currency_id
+msgid "The payment's currency."
+msgstr "Ödemenin para birimi."
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__fedex_shipment_purpose
 msgid "The purpose of the shipment (FedEx)"
 msgstr "Gönderinin amacı (FedEx)"
@@ -5046,7 +5703,9 @@ msgstr "Gönderinin amacı (FedEx)"
 msgid ""
 "The sale price is managed from the product template. Click on the 'Configure"
 " Variants' button to set the extra attribute prices."
-msgstr "Satış fiyatı ürün şablonundan yönetilir. Ek özellik fiyatlarını ayarlamak için 'Varyantları Yapılandır' butonuna tıklayın."
+msgstr ""
+"Satış fiyatı ürün şablonundan yönetilir. Ek özellik fiyatlarını ayarlamak "
+"için 'Varyantları Yapılandır' butonuna tıklayın."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__product_volume
@@ -5078,14 +5737,18 @@ msgstr "Bu özellik ürün oluşturma için zorunludur"
 msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
 " e.g. Fall_Drive, Christmas_Special"
-msgstr "Bu, farklı kampanya çalışmalarınızı takip etmenize yardımcı olan bir addır, ör. Sonbahar_Kampanya, Noel_Özel"
+msgstr ""
+"Bu, farklı kampanya çalışmalarınızı takip etmenize yardımcı olan bir addır, "
+"ör. Sonbahar_Kampanya, Noel_Özel"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__commitment_date
 msgid ""
 "This is the delivery date promised to the customer. If set, the delivery "
 "order will be scheduled based on this date rather than product lead times."
-msgstr "Bu, müşteriye taahhüt edilen teslimat tarihidir. Ayarlanırsa, teslimat siparişi ürün teslim süreleri yerine bu tarihe göre planlanacaktır."
+msgstr ""
+"Bu, müşteriye taahhüt edilen teslimat tarihidir. Ayarlanırsa, teslimat "
+"siparişi ürün teslim süreleri yerine bu tarihe göre planlanacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__medium_id
@@ -5097,7 +5760,9 @@ msgstr "Bu, teslimat yöntemidir, ör. Kartpostal, E-posta veya Banner Reklam"
 msgid ""
 "This is the source of the link, e.g. Search Engine, another domain, or name "
 "of email list"
-msgstr "Bu, bağlantının kaynağıdır, ör. Arama Motoru, başka bir alan adı veya e-posta listesi adı"
+msgstr ""
+"Bu, bağlantının kaynağıdır, ör. Arama Motoru, başka bir alan adı veya "
+"e-posta listesi adı"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__price_extra
@@ -5105,20 +5770,13 @@ msgid "This is the sum of the extra price of all attributes"
 msgstr "Bu, tüm özelliklerin ek fiyatlarının toplamıdır"
 
 #. module: trendyol_integration
-#. odoo-python
-#: code:addons/trendyol_integration/models/sale_order.py:0
-#, python-format
-msgid ""
-"This order was created from Trendyol. Please cancel it from the Trendyol "
-"Orders section first so the cancellation is sent to Trendyol."
-msgstr "Bu sipariş Trendyol'dan oluşturuldu. Lütfen iptalin Trendyol'a gönderilmesi için önce Trendyol Siparişleri bölümünden iptal edin."
-
-#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__no_create_variants
 msgid ""
 "This selection defines if variants for all attribute combinations are going "
 "to be created automatically at saving time."
-msgstr "Bu seçim, tüm özellik kombinasyonları için varyantların kayıt sırasında otomatik olarak oluşturulup oluşturulmayacağını tanımlar."
+msgstr ""
+"Bu seçim, tüm özellik kombinasyonları için varyantların kayıt sırasında "
+"otomatik olarak oluşturulup oluşturulmayacağını tanımlar."
 
 #. module: trendyol_integration
 #. odoo-python
@@ -5132,33 +5790,42 @@ msgstr "Bu hesaplaşma zaten uzlaştırılmış."
 msgid ""
 "This stock location will be used, instead of the default one, as the source "
 "location for stock moves generated by manufacturing orders."
-msgstr "Bu stok konumu, varsayılan konum yerine, üretim emirleri tarafından oluşturulan stok hareketleri için kaynak konum olarak kullanılacaktır."
+msgstr ""
+"Bu stok konumu, varsayılan konum yerine, üretim emirleri tarafından "
+"oluşturulan stok hareketleri için kaynak konum olarak kullanılacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__property_stock_inventory
 msgid ""
 "This stock location will be used, instead of the default one, as the source "
 "location for stock moves generated when you do an inventory."
-msgstr "Bu stok konumu, varsayılan konum yerine, envanter sayımı yaptığınızda oluşturulan stok hareketleri için kaynak konum olarak kullanılacaktır."
+msgstr ""
+"Bu stok konumu, varsayılan konum yerine, envanter sayımı yaptığınızda "
+"oluşturulan stok hareketleri için kaynak konum olarak kullanılacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__responsible_id
 msgid ""
 "This user will be responsible of the next activities related to logistic "
 "operations for this product."
-msgstr "Bu kullanıcı, bu ürünün lojistik işlemleriyle ilgili sonraki aktivitelerden sorumlu olacaktır."
+msgstr ""
+"Bu kullanıcı, bu ürünün lojistik işlemleriyle ilgili sonraki aktivitelerden "
+"sorumlu olacaktır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__barcode_base
 msgid ""
 "This value is used to generate barcode according to the setting of the "
 "barcode rule."
-msgstr "Bu değer, barkod kuralı ayarına göre barkod oluşturmak için kullanılır."
+msgstr ""
+"Bu değer, barkod kuralı ayarına göre barkod oluşturmak için kullanılır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_category_sync_wizard__sync_attributes
 msgid "This will sync attributes for all leaf categories. May take some time."
-msgstr "Bu, tüm yaprak kategorilerin özelliklerini senkronize edecektir. Biraz zaman alabilir."
+msgstr ""
+"Bu, tüm yaprak kategorilerin özelliklerini senkronize edecektir. Biraz zaman"
+" alabilir."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__service_upsell_threshold
@@ -5189,6 +5856,21 @@ msgstr "Bu satışla ilişkili zaman çizelgesi aktiviteleri"
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
 msgid "To Reconcile"
 msgstr "Uzlaştırılacak"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_torna
+msgid "Torna Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_unreserved_torna
+msgid "Torna Depo Rezervesiz"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_torna
+msgid "Torna Depo Tahmini"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__amount_total
@@ -5250,7 +5932,8 @@ msgstr "USD cinsinden tüm özelleştirmeler için toplam fiyat."
 msgid ""
 "Total recorded duration, expressed in the encoding UoM, and rounded to the "
 "unit"
-msgstr "Kodlama ÖB'sinde ifade edilen ve birime yuvarlanan toplam kayıtlı süre"
+msgstr ""
+"Kodlama ÖB'sinde ifade edilen ve birime yuvarlanan toplam kayıtlı süre"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__service_type
@@ -5261,6 +5944,11 @@ msgstr "Hizmet Takibi"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__tracking
 msgid "Tracking"
 msgstr "İzleme"
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.trendyol_shipping_label
+msgid "Tracking Barcode"
+msgstr "Takip Barkodu"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__cargo_tracking_link
@@ -5341,7 +6029,7 @@ msgstr "Trendyol Özellikleri"
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_form
 msgid "Trendyol Backend"
-msgstr "Trendyol Backend"
+msgstr "Trendyol Arka Uç"
 
 #. module: trendyol_integration
 #: model:ir.model,name:trendyol_integration.model_trendyol_backend
@@ -5479,7 +6167,7 @@ msgstr "Trendyol Müşteri Sorusu"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category__trendyol_id
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category_attribute__trendyol_id
 msgid "Trendyol ID"
-msgstr "Trendyol ID"
+msgstr "Trendyol Kimliği"
 
 #. module: trendyol_integration
 #: model:ir.module.category,name:trendyol_integration.module_category_trendyol
@@ -5599,6 +6287,11 @@ msgid "Trendyol Settlement Transaction"
 msgstr "Trendyol Hesaplaşma İşlemi"
 
 #. module: trendyol_integration
+#: model:ir.actions.report,name:trendyol_integration.trendyol_shipping_label_report
+msgid "Trendyol Shipping Label"
+msgstr "Trendyol Kargo Etiketi"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__trendyol_status
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__trendyol_status
 msgid "Trendyol Status"
@@ -5607,7 +6300,7 @@ msgstr "Trendyol Durumu"
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__webhook_id
 msgid "Trendyol Webhook ID"
-msgstr "Trendyol Webhook ID"
+msgstr "Trendyol Webhook Kimliği"
 
 #. module: trendyol_integration
 #. odoo-python
@@ -5737,6 +6430,21 @@ msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
 msgstr "EŞLEŞTİRİLMEMİŞ: %(product)s (Miktar: %(qty)s, Fiyat: %(price)s)"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__currency_id_usd
+msgid "USD Currency"
+msgstr "USD Para Birimi"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_tl_fiyat
+msgid "USD Fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__source_id
+msgid "UTM source to set on Trendyol orders"
+msgstr "Trendyol siparişlerine atanacak UTM kaynağı"
+
+#. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_order__trendyol_status__undelivered
 msgid "Undelivered"
 msgstr "Teslim Edilmedi"
@@ -5814,6 +6522,11 @@ msgid "Untaxed Amount"
 msgstr "Vergisiz Tutar"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__amount_untaxed_usd
+msgid "Untaxed Total (USD)"
+msgstr "Vergisiz Toplam (USD)"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__dimensional_uom_id
 msgid "UoM for length, height, width"
 msgstr "Uzunluk, yükseklik, genişlik için ÖB"
@@ -5866,6 +6579,7 @@ msgstr "Kullanıcı"
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_stock_picking__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_attribute_value__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__user_can_see_changeset
@@ -5888,7 +6602,8 @@ msgstr "Kullanıcı Değişiklikleri Görebilir"
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__question_user_ids
 msgid "Users to notify when new customer questions are imported"
-msgstr "Yeni müşteri soruları içe aktarıldığında bilgilendirilecek kullanıcılar"
+msgstr ""
+"Yeni müşteri soruları içe aktarıldığında bilgilendirilecek kullanıcılar"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__vat_rate
@@ -5946,6 +6661,11 @@ msgstr "Varyant Görseli 256"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_variant_512
 msgid "Variant Image 512"
 msgstr "Varyant Görseli 512"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__name_variant
+msgid "Variant Name"
+msgstr "Varyant Adı"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__price_extra
@@ -6189,7 +6909,10 @@ msgid ""
 "When one or several automatic reordering rule is selected, a Scheduled "
 "Action will automatically generate or update the reordering rules of the "
 "product."
-msgstr "Bir veya birden fazla otomatik yeniden sipariş kuralı seçildiğinde, Zamanlanan İşlem ürünün yeniden sipariş kurallarını otomatik olarak oluşturur veya günceller."
+msgstr ""
+"Bir veya birden fazla otomatik yeniden sipariş kuralı seçildiğinde, "
+"Zamanlanan İşlem ürünün yeniden sipariş kurallarını otomatik olarak "
+"oluşturur veya günceller."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__product_width
@@ -6217,3 +6940,28 @@ msgstr "Cevabınız gönderim için kuyruğa alındı."
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__trendyol_stock_code
 msgid "Your internal stock/SKU code"
 msgstr "Dahili stok/SKU kodunuz"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_iscilik_fiyat
+msgid "işçilik Fiyatı USD"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki
+msgid "Önceki Fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki
+msgid "Önceki fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki_iscilik
+msgid "Önceki işçilik fiyatı"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki_iscilik
+msgid "Önceki İşçilik Fiyatı"
+msgstr ""

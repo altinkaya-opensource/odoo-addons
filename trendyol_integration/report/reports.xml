@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="trendyol_shipping_label_report" model="ir.actions.report">
+        <field name="name">Trendyol Shipping Label</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">trendyol_integration.trendyol_shipping_label</field>
+        <field name="print_report_name">'Trendyol Label - %s' % (object.name)</field>
+    </record>
+</odoo>

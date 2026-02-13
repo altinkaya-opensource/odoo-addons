@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="trendyol_shipping_label">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="label_data" t-value="o._get_trendyol_label_data()" />
+                <t t-if="label_data">
+                    <div class="page">
+                        <h2 class="text-center mt-3 mb-4">
+                            <t t-out="label_data['cargo_provider_name']" />
+                        </h2>
+
+                        <!-- Barcode -->
+                        <div class="text-center mb-2">
+                            <img
+                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', label_data['tracking_number'], 400, 80)"
+                                style="max-width:80%;"
+                                alt="Tracking Barcode"
+                            />
+                        </div>
+
+                        <!-- Tracking number text -->
+                        <h3 class="text-center mb-4">
+                            <t t-out="label_data['tracking_number']" />
+                        </h3>
+
+                        <hr />
+
+                        <!-- Order info -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <strong>Trendyol Order:</strong>
+                                <span t-out="label_data['trendyol_order_number']" />
+                            </div>
+                        </div>
+
+                        <!-- Sender / Recipient -->
+                        <div class="row">
+                            <!-- Sender -->
+                            <div class="col-6">
+                                <h4>Sender</h4>
+                                <div
+                                    t-if="o.picking_type_id.warehouse_id.partner_id"
+                                    t-field="o.picking_type_id.warehouse_id.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["name", "address", "phone"], "no_marker": True, "phone_icons": True}'
+                                />
+                                <div
+                                    t-elif="o.company_id.partner_id"
+                                    t-field="o.company_id.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["name", "address", "phone"], "no_marker": True, "phone_icons": True}'
+                                />
+                            </div>
+                            <!-- Recipient -->
+                            <div class="col-6">
+                                <h4>Recipient</h4>
+                                <div
+                                    t-field="o.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["name", "address", "phone"], "no_marker": True, "phone_icons": True}'
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

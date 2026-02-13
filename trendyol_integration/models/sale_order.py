@@ -7,6 +7,17 @@ from odoo import fields, models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    def action_confirm(self):
+        """Set Trendyol tracking number on newly created pickings."""
+        res = super().action_confirm()
+        for order in self:
+            binding = fields.first(order.trendyol_binding_ids)
+            if not binding or not binding.cargo_tracking_number:
+                continue
+            pickings = order.picking_ids.filtered(lambda p: not p.carrier_tracking_ref)
+            pickings.carrier_tracking_ref = binding.cargo_tracking_number
+        return res
+
     trendyol_binding_ids = fields.One2many(
         "trendyol.order",
         "odoo_id",

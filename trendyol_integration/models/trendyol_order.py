@@ -196,13 +196,6 @@ class TrendyolOrder(models.Model):
             if backend.auto_confirm_orders:
                 sale_order.ignore_exception = True
                 sale_order.with_context(bypass_risk=True).action_confirm()
-                # Set pre-assigned Trendyol tracking number on pickings
-                tracking_number = order_data.get("cargoTrackingNumber")
-                if tracking_number:
-                    pickings = sale_order.picking_ids.filtered(
-                        lambda p: not p.carrier_tracking_ref
-                    )
-                    pickings.carrier_tracking_ref = str(tracking_number)
 
             _logger.info(
                 "Imported order %s (package: %s)",

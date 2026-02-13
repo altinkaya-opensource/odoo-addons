@@ -6,8 +6,6 @@ import logging
 
 from odoo import _, fields, models
 
-from .trendyol_request import TrendyolAPIError
-
 _logger = logging.getLogger(__name__)
 
 
@@ -26,87 +24,45 @@ class StockPicking(models.Model):
             return False
         return fields.first(self.sale_id.sudo().trendyol_binding_ids)
 
-    def button_validate(self):
-        """Extend to auto-fetch Trendyol labels after validation."""
-        res = super().button_validate()
-        for picking in self:
-            if picking.picking_type_code != "outgoing" or picking.state != "done":
-                continue
-            trendyol_order = picking._get_trendyol_binding()
-            if not trendyol_order or not trendyol_order.cargo_tracking_number:
-                continue
-            picking.with_delay(
-                channel="root.trendyol.order",
-                description=_("Fetch Trendyol label: %s") % picking.name,
-            )._fetch_trendyol_label()
-        return res
+    def _get_trendyol_label_data(self):
+        """Return label data dict for the QWeb shipping label template.
 
-    def _fetch_trendyol_label(self):
-        """Fetch shipping label from Trendyol Common Label API."""
+        Returns False if no Trendyol binding or tracking number is available.
+        """
         self.ensure_one()
         trendyol_order = self._get_trendyol_binding()
-        if not trendyol_order:
-            _logger.warning(
-                "Picking %s is not linked to a Trendyol order, skipping label fetch.",
-                self.name,
-            )
+        if not trendyol_order or not trendyol_order.cargo_tracking_number:
+            return False
+        return {
+            "tracking_number": trendyol_order.cargo_tracking_number,
+            "cargo_provider_name": trendyol_order.cargo_provider_name or "",
+            "trendyol_order_number": trendyol_order.trendyol_order_number or "",
+        }
+
+    def _generate_trendyol_label(self):
+        """Render the Trendyol shipping label PDF and save as delivery document."""
+        self.ensure_one()
+        if not self._get_trendyol_label_data():
             return
-
-        tracking_number = trendyol_order.cargo_tracking_number
-        if not tracking_number:
-            _logger.warning(
-                "No cargo tracking number for Trendyol order %s, skipping label fetch.",
-                trendyol_order.trendyol_order_number,
-            )
-            return
-
-        backend = trendyol_order.backend_id
-        client = backend._get_api_client()
-
-        try:
-            # Step 1: Request label creation
-            client.create_common_label(tracking_number)
-            # Step 2: Retrieve the generated label
-            result = client.get_common_label(tracking_number)
-        except TrendyolAPIError as e:
-            _logger.error(
-                "Failed to fetch Trendyol label for picking %s: %s",
-                self.name,
-                str(e),
-            )
-            return
-
-        labels = result.get("data", [])
-        if not labels:
-            _logger.warning(
-                "No label data returned from Trendyol for picking %s.",
-                self.name,
-            )
-            return
-
-        Attachment = self.env["ir.attachment"]
-        for idx, label_data in enumerate(labels):
-            zpl_content = label_data.get("label", "")
-            if not zpl_content:
-                continue
-            Attachment.create(
-                {
-                    "name": f"{self.name}_trendyol_label_{idx + 1}.zpl",
-                    "datas": base64.b64encode(zpl_content.encode("utf-8")),
-                    "res_model": "stock.picking",
-                    "res_id": self.id,
-                    "is_delivery_document": True,
-                }
-            )
-
-        _logger.info(
-            "Fetched %d Trendyol label(s) for picking %s",
-            len(labels),
-            self.name,
+        report = self.env.ref("trendyol_integration.trendyol_shipping_label_report")
+        pdf_content, _ = report._render_qweb_pdf(
+            "trendyol_integration.trendyol_shipping_label", [self.id]
         )
+        self.env["ir.attachment"].create(
+            {
+                "name": f"{self.name}_trendyol_label.pdf",
+                "datas": base64.b64encode(pdf_content),
+                "res_model": "stock.picking",
+                "res_id": self.id,
+                "mimetype": "application/pdf",
+                "is_delivery_document": True,
+            }
+        )
+        _logger.info("Generated Trendyol shipping label for picking %s", self.name)
 
     def action_print_delivery_documents(self):
         """Print Trendyol labels via backend printer, delegate the rest to super."""
+        report = self.env.ref("trendyol_integration.trendyol_shipping_label_report")
         trendyol_pickings = self.browse()
         for picking in self:
             trendyol_order = picking._get_trendyol_binding()
@@ -124,7 +80,7 @@ class StockPicking(models.Model):
             )
             for doc in delivery_documents:
                 printer.print_document(
-                    report=None,
+                    report=report,
                     content=base64.b64decode(doc.datas),
                 )
             trendyol_pickings |= picking
@@ -145,6 +101,9 @@ class StockPicking(models.Model):
             trendyol_binding = picking._get_trendyol_binding()
             if not trendyol_binding:
                 continue
+
+            # Generate shipping label PDF
+            picking._generate_trendyol_label()
 
             backend = trendyol_binding.backend_id
             if not backend.auto_sync_tracking:
