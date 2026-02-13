@@ -323,6 +323,9 @@ class TrendyolOrder(models.Model):
         if is_commercial:
             partner_vals["vat"] = invoice_address.get("taxNumber", "").strip()
             partner_vals["company_type"] = "company"
+            tax_office = invoice_address.get("taxOffice", "").strip()
+            if tax_office:
+                partner_vals["tax_office_name"] = tax_office
             # Use company name if available
             if invoice_address.get("company"):
                 partner_vals["name"] = invoice_address["company"]
@@ -424,6 +427,7 @@ class TrendyolOrder(models.Model):
             "city": address.get("city", ""),
             "zip": address.get("postalCode", ""),
             "phone": address.get("phone", "") or order_data.get("customerEmail", ""),
+            "email": order_data.get("customerEmail", ""),
             "country_id": country.id if country else False,
             "state_id": state.id if state else False,
             "trendyol_address_id": str(address.get("id", "")),
