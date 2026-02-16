@@ -547,14 +547,14 @@ class TrendyolOrder(models.Model):
         product_name = line_data.get("productName", "")
         vat_rate = line_data.get("vatRate", 0)
 
-        # Find product by barcode or SKU
+        # Find product by stock code (default_code) or barcode
         Product = self.env["product.product"]
         product = None
 
-        if barcode:
-            product = Product.search([("barcode", "=", barcode)], limit=1)
-        if not product and merchant_sku:
+        if merchant_sku:
             product = Product.search([("default_code", "=", merchant_sku)], limit=1)
+        if not product and barcode:
+            product = Product.search([("barcode", "=", barcode)], limit=1)
 
         # Build line description
         sku_info = merchant_sku or barcode or _("N/A")
