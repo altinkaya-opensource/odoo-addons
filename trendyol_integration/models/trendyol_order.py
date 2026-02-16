@@ -419,7 +419,7 @@ class TrendyolOrder(models.Model):
             "street2": address2,
             "city": address.get("city", ""),
             "zip": address.get("postalCode", ""),
-            "phone": address.get("phone", "") or order_data.get("customerEmail", ""),
+            "phone": address.get("phone", ""),
             "email": order_data.get("customerEmail", ""),
             "country_id": country.id if country else False,
             "state_id": state.id if state else False,
