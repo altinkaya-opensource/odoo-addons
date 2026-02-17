@@ -775,21 +775,31 @@ class TrendyolOrder(models.Model):
                 invoice.name,
                 invoice_ts,
             )
-            self.invoice_link_sent = True
-            self.invoice_sent_date = fields.Datetime.now()
-            self.trendyol_status = "invoiced"
-            _logger.info(
-                "Sent invoice link for order %s: %s",
-                self.trendyol_order_number,
-                invoice.name,
-            )
         except TrendyolAPIError as e:
-            _logger.error(
-                "Failed to send invoice for %s: %s",
-                self.trendyol_order_number,
-                str(e),
-            )
-            raise
+            if e.status_code == 409:
+                # Invoice link already exists (e.g. manually uploaded)
+                _logger.info(
+                    "Invoice link already exists for order %s, "
+                    "marking as sent locally.",
+                    self.trendyol_order_number,
+                )
+            else:
+                _logger.error(
+                    "Failed to send invoice for %s: %s",
+                    self.trendyol_order_number,
+                    str(e),
+                )
+                raise
+
+        self.invoice_link_sent = True
+        self.invoice_sent_date = fields.Datetime.now()
+        if self.trendyol_status not in ("shipped", "delivered"):
+            self.trendyol_status = "invoiced"
+        _logger.info(
+            "Invoice link processed for order %s: %s",
+            self.trendyol_order_number,
+            invoice.name,
+        )
 
     def action_cancel_in_trendyol(self):
         """Cancel order in Trendyol."""
