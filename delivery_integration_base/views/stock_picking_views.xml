@@ -11,13 +11,7 @@
                     name="action_print_delivery_documents"
                     string="Print Delivery Documents"
                     type="object"
-                    attrs="{
-                        'invisible':[
-                            '|',
-                            ('carrier_tracking_ref', '=', False),
-                            ('state', '!=', 'done')
-                        ]
-                    }"
+                    attrs="{'invisible':[('carrier_tracking_ref', '=', False)]}"
                 />
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">
