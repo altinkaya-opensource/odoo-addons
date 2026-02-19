@@ -423,7 +423,7 @@
                 <field name="order_state" />
                 <progressbar
                     field="order_state"
-                    colors="{'25_completed': 'success'}"
+                    colors='{"25_completed": "success"}'
                     sum_field="amount_untaxed_usd"
                 />
             </xpath>
