@@ -18,9 +18,10 @@ TRENDYOL_UTC_OFFSET = timedelta(hours=3)
 
 
 def _utc_to_trendyol_ts(dt):
-    """Convert a naive UTC datetime to Trendyol timestamp (ms, GMT+3)."""
-    gmt3_dt = dt + TRENDYOL_UTC_OFFSET
-    return int(gmt3_dt.replace(tzinfo=UTC).timestamp() * 1000)
+    """Convert a naive UTC datetime to a millisecond timestamp
+    for Trendyol API queries.
+    """
+    return int(dt.replace(tzinfo=UTC).timestamp() * 1000)
 
 
 def _trendyol_ts_to_utc(ts_ms):
@@ -585,8 +586,16 @@ class TrendyolBackend(models.Model):
                     break
 
                 for order_data in orders:
-                    Order._import_order(self, order_data)
-                    total_imported += 1
+                    try:
+                        Order._import_order(self, order_data)
+                        total_imported += 1
+                    except Exception:
+                        package_id = order_data.get(
+                            "shipmentPackageId", order_data.get("id")
+                        )
+                        _logger.exception(
+                            "Failed to import order package %s", package_id
+                        )
 
                 page += 1
                 # Safety limit
@@ -594,7 +603,7 @@ class TrendyolBackend(models.Model):
                     _logger.warning("Order import safety limit reached")
                     break
 
-            self.last_order_sync = fields.Datetime.now()
+            self.last_order_sync = end_date
             _logger.info("Imported %d orders for backend %s", total_imported, self.name)
         except TrendyolAPIError as e:
             _logger.error("Failed to import orders: %s", str(e))
