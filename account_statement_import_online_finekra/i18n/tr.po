@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 12:48+0000\n"
-"PO-Revision-Date: 2025-03-28 12:48+0000\n"
+"POT-Creation-Date: 2026-02-20 07:48+0000\n"
+"PO-Revision-Date: 2026-02-20 07:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,35 +25,35 @@ msgstr "Banka Ekstresi Satırları"
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__changeset_change_ids
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Değişiklikler"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_bank_statement_line__changeset_ids
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__changeset_ids
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Değişiklikler"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_bank_statement_line__count_changesets
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__count_changesets
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Değişiklik Sayısı"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_bank_statement_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Bekleyen Değişiklik Sayısı"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_bank_statement_line__count_pending_changesets
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Bekleyen Değişiklikler Sayısı"
 
 #. module: account_statement_import_online_finekra
 #. odoo-python
@@ -106,6 +106,17 @@ msgstr "Online Banka Ekstresi Sağlayıcısı"
 
 #. module: account_statement_import_online_finekra
 #. odoo-python
+#: code:addons/account_statement_import_online_finekra/models/account_bank_statement_line.py:0
+#, python-format
+msgid ""
+"Order confirmed automatically. Exact payment match of %(amount)s "
+"%(currency)s received (%(ref)s)."
+msgstr ""
+"Ödeme otomatik olarak eşleşti. %(amount)s %(currency)s tutarında "
+"%(ref)s referanslı ödeme alındı."
+
+#. module: account_statement_import_online_finekra
+#. odoo-python
 #: code:addons/account_statement_import_online_finekra/models/online_bank_statement_provider_finekra.py:0
 #, python-format
 msgid "Please fill email, password and tenant code."
@@ -128,21 +139,21 @@ msgstr "Akıllı Arama"
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_account_journal__count_pending_changeset_changes
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_online_bank_statement_provider__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Bu kayıt için bekleyen değişiklikler"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_account_bank_statement_line__count_pending_changesets
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_account_journal__count_pending_changesets
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_online_bank_statement_provider__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Bu kayıt için bekleyen değişiklik sayısı"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_account_bank_statement_line__count_changesets
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_account_journal__count_changesets
 #: model:ir.model.fields,help:account_statement_import_online_finekra.field_online_bank_statement_provider__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Bu kayıt için bekleyen genel değişiklik sayısı"
 
 #. module: account_statement_import_online_finekra
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__finekra_token_interval
@@ -154,7 +165,7 @@ msgstr "Token Aralığı"
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_account_journal__user_can_see_changeset
 #: model:ir.model.fields,field_description:account_statement_import_online_finekra.field_online_bank_statement_provider__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Kullanıcı Yapılan Değişiklikleri Görebilir"
 
 #. module: account_statement_import_online_finekra
 #. odoo-python
