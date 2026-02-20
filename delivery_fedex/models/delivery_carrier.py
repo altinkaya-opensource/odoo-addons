@@ -4,7 +4,7 @@
 import base64
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import phonenumbers
 
@@ -204,19 +204,6 @@ class DeliveryCarrier(models.Model):
         help="If checked, the carrier will upload electronic trade documents to FedEx.",
         default=True,
     )
-
-    def _is_tr_business_day(self, dt):
-        """Check if a date is a Turkish business day (not weekend or Friday)."""
-        d = dt.date() if isinstance(dt, datetime) else dt
-        return d.weekday() < 4
-
-    def _get_next_tr_business_day(self, dt):
-        """Advance a datetime to the next business day (Mon-Fri) if needed."""
-        d = dt.date() if isinstance(dt, datetime) else dt
-        while d.weekday() > 4:
-            dt += timedelta(days=1)
-            d = dt.date() if isinstance(dt, datetime) else dt
-        return dt
 
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
