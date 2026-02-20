@@ -89,6 +89,19 @@ class DeliveryCarrier(models.Model):
         help="General shipment description to be used for DHL shipments.",
     )
 
+    def _is_tr_business_day(self, dt):
+        """Check if a date is a Turkish business day (not weekend or Friday)."""
+        d = dt.date() if isinstance(dt, datetime) else dt
+        return d.weekday() < 4
+
+    def _get_next_tr_business_day(self, dt):
+        """Advance a datetime to the next business day (Mon-Fri) if needed."""
+        d = dt.date() if isinstance(dt, datetime) else dt
+        while d.weekday() > 4:
+            dt += timedelta(days=1)
+            d = dt.date() if isinstance(dt, datetime) else dt
+        return dt
+
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
 
@@ -263,13 +276,13 @@ class DeliveryCarrier(models.Model):
             - cutoff_margin
         )
 
-        if now_local < cutoff_time:
+        if now_local < cutoff_time and self._is_tr_business_day(now_local):
             estimated = now_local.replace(
                 hour=cutoff_hour, minute=0, second=0, microsecond=0
             )
         else:
             tomorrow = now_local + timedelta(days=1)
-            estimated = tomorrow.replace(
+            estimated = self._get_next_tr_business_day(tomorrow).replace(
                 hour=cutoff_hour, minute=0, second=0, microsecond=0
             )
 
