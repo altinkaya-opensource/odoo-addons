@@ -4,7 +4,7 @@
 import base64
 import json
 import logging
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 import phonenumbers
 
@@ -12,6 +12,48 @@ from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 from .fedex_request import FedExRequest
+
+# Türkiye sabit resmi tatilleri (ay, gün)
+TR_FIXED_HOLIDAYS = [
+    (1, 1),    # Yılbaşı
+    (4, 23),   # Ulusal Egemenlik ve Çocuk Bayramı
+    (5, 1),    # Emek ve Dayanışma Günü
+    (5, 19),   # Atatürk'ü Anma, Gençlik ve Spor Bayramı
+    (7, 15),   # Demokrasi ve Milli Birlik Günü
+    (8, 30),   # Zafer Bayramı
+    (10, 29),  # Cumhuriyet Bayramı
+]
+
+# Türkiye dini bayramlar (Ramazan Bayramı + Kurban Bayramı)
+# Her yıl ~10-11 gün kayar, periyodik güncelleme gerektirir.
+TR_RELIGIOUS_HOLIDAYS = {
+    2025: [
+        # Ramazan Bayramı
+        date(2025, 3, 30), date(2025, 3, 31), date(2025, 4, 1),
+        # Kurban Bayramı
+        date(2025, 6, 6), date(2025, 6, 7), date(2025, 6, 8), date(2025, 6, 9),
+    ],
+    2026: [
+        date(2026, 3, 20), date(2026, 3, 21), date(2026, 3, 22),
+        date(2026, 5, 26), date(2026, 5, 27), date(2026, 5, 28), date(2026, 5, 29),
+    ],
+    2027: [
+        date(2027, 3, 9), date(2027, 3, 10), date(2027, 3, 11),
+        date(2027, 5, 16), date(2027, 5, 17), date(2027, 5, 18), date(2027, 5, 19),
+    ],
+    2028: [
+        date(2028, 2, 27), date(2028, 2, 28), date(2028, 2, 29),
+        date(2028, 5, 4), date(2028, 5, 5), date(2028, 5, 6), date(2028, 5, 7),
+    ],
+    2029: [
+        date(2029, 2, 14), date(2029, 2, 15), date(2029, 2, 16),
+        date(2029, 4, 24), date(2029, 4, 25), date(2029, 4, 26), date(2029, 4, 27),
+    ],
+    2030: [
+        date(2030, 2, 4), date(2030, 2, 5), date(2030, 2, 6),
+        date(2030, 4, 13), date(2030, 4, 14), date(2030, 4, 15), date(2030, 4, 16),
+    ],
+}
 
 FEDEX_SERVICES = [
     ("FEDEX_REGIONAL_ECONOMY", "Regional Economy"),
@@ -204,6 +246,26 @@ class DeliveryCarrier(models.Model):
         help="If checked, the carrier will upload electronic trade documents to FedEx.",
         default=True,
     )
+
+    def _is_tr_business_day(self, dt):
+        """Check if a date is a Turkish business day (not weekend or holiday)."""
+        d = dt.date() if isinstance(dt, datetime) else dt
+        # Hafta sonu kontrolü (5=Cumartesi, 6=Pazar)
+        if d.weekday() >= 5:
+            return False
+        # Sabit resmi tatil kontrolü
+        if (d.month, d.day) in TR_FIXED_HOLIDAYS:
+            return False
+        # Dini bayram kontrolü
+        if d in TR_RELIGIOUS_HOLIDAYS.get(d.year, []):
+            return False
+        return True
+
+    def _get_next_tr_business_day(self, dt):
+        """Advance a date to the next Turkish business day if needed."""
+        while not self._is_tr_business_day(dt):
+            dt += timedelta(days=1)
+        return dt
 
     def _get_estimated_weight_from_order_line(self, order_line):
         return order_line.product_id.weight * order_line.qty_to_deliver
@@ -1140,6 +1202,7 @@ class DeliveryCarrier(models.Model):
     def get_nearest_available_fedex_pickup(self, picking):
         """
         Get nearest available pickup for the given pickings.
+        Filters out Turkish weekends and public holidays.
         """
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
@@ -1156,9 +1219,27 @@ class DeliveryCarrier(models.Model):
         if not options:
             raise UserError(_("No available pickups found for the given pickings."))
 
+        # FedEx API'sinden dönen seçenekleri filtrele:
+        # Hem available olmalı hem de Türkiye'de iş günü olmalı
         nearest_pickup = next(
-            (opt for opt in options if opt.get("available")), options[0]
+            (
+                opt
+                for opt in options
+                if opt.get("available")
+                and self._is_tr_business_day(
+                    datetime.strptime(opt["pickupDate"], "%Y-%m-%d").date()
+                )
+            ),
+            None,
         )
+
+        if not nearest_pickup:
+            raise UserError(
+                _(
+                    "No available pickups found on a Turkish business day. "
+                    "All available dates fall on weekends or public holidays."
+                )
+            )
 
         return {
             "date": nearest_pickup["pickupDate"],
