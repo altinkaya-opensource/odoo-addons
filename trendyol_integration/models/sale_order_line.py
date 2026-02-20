@@ -68,9 +68,11 @@ class SaleOrderLine(models.Model):
                     cl.price_unit = (
                         original_subtotal * proportion
                     ) / cl.product_uom_qty
+                    cl.discount = 0.0
                 elif cl.product_uom_qty:
                     # Equal distribution fallback when costs are zero
                     total_qty = sum(l.product_uom_qty for l in component_lines)
                     cl.price_unit = original_subtotal / total_qty
+                    cl.discount = 0.0
 
         return result
