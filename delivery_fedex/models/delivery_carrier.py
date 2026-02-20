@@ -1157,8 +1157,29 @@ class DeliveryCarrier(models.Model):
             raise UserError(_("No available pickups found for the given pickings."))
 
         nearest_pickup = next(
-            (opt for opt in options if opt.get("available")), options[0]
+            (
+                opt
+                for opt in options
+                if opt.get("available")
+                and datetime.strptime(opt["pickupDate"], "%Y-%m-%d").date().weekday()
+                < 5
+                and (
+                    opt.get("scheduleDay") != "SAME_DAY"
+                    or self._is_tr_business_day(
+                        datetime.strptime(opt["pickupDate"], "%Y-%m-%d").date()
+                    )
+                )
+            ),
+            None,
         )
+
+        if not nearest_pickup:
+            raise UserError(
+                _(
+                    "No available pickups found on a business day. "
+                    "All available dates fall on weekends or Friday same-day."
+                )
+            )
 
         return {
             "date": nearest_pickup["pickupDate"],
