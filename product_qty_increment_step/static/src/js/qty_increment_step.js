@@ -15,13 +15,16 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
     VariantMixin.onClickAddCartJSON = function (ev) {
         ev.preventDefault();
         var $link = $(ev.currentTarget);
-        var $incrementSize = $link.closest('.input-group').find("span[data-increment-step]").data("increment-step");
+        var $span = $link.closest('.input-group').find("span[data-increment-step]");
+        var $incrementSize = $span.data("increment-step");
+        var minOrderQty = $span.data("min-order-qty") || 0;
         var $input = $link.closest('.input-group').find("input");
 
         var max = parseFloat($input.data("max") || Infinity);
         var previousQty = parseFloat($input.val() || 0, 10);
         var quantity = ($link.has(".fa-minus").length ? -$incrementSize : $incrementSize) + previousQty;
-        var newQty = quantity > $incrementSize ? (quantity < max ? quantity : max) : $incrementSize;
+        var minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
+        var newQty = quantity > minQty ? (quantity < max ? quantity : max) : minQty;
 
         if (newQty !== previousQty) {
             $input.val(newQty).trigger('change');
@@ -52,7 +55,10 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
             // Example: If the increment step is 50, the quantity will be 50, 100, 150, etc.
             // If the quantity is 75, it will be rounded to 100.
             const $input = $(ev.currentTarget);
-            const $incrementSize = $input.closest('.input-group').find("span[data-increment-step]").data("increment-step");
+            const $span = $input.closest('.input-group').find("span[data-increment-step]");
+            const $incrementSize = $span.data("increment-step");
+            const minOrderQty = $span.data("min-order-qty") || 0;
+            const minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
             let qty = parseInt($input.val(), 10); // Parse input value to integer
 
             // If the quantity is zero, return false (this means the user has deleted the input value)
@@ -60,20 +66,24 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
                 return false;
             }
 
-            qty = isNaN(qty) ? $incrementSize : qty;
+            qty = isNaN(qty) ? minQty : qty;
 
-            // Ensure the minimum quantity is equal to the increment size, and it's not zero or negative
-            if (qty <= $incrementSize) {
-                qty = $incrementSize;
+            // Ensure the minimum quantity respects both min_order_qty and increment size
+            if (qty <= minQty) {
+                qty = minQty;
             }
 
             const remainder = qty % $incrementSize;
             if (remainder > 0) {
                 // Round to the nearest increment step value based on whether the value is increasing or decreasing
-                const prevQty = parseInt($input.data("prevQty"), 10) || $incrementSize;
+                const prevQty = parseInt($input.data("prevQty"), 10) || minQty;
                 if (qty < prevQty) {
                     // Decreasing, round down to the nearest increment step value
                     qty -= remainder;
+                    // Ensure we don't go below minimum after rounding down
+                    if (qty < minQty) {
+                        qty += $incrementSize;
+                    }
                 } else {
                     // Increasing, round up to the nearest increment step value
                     qty += $incrementSize - remainder;

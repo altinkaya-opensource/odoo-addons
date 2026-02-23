@@ -10,6 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='altinkaya_ecommerce']/group" position="inside">
                 <field name="qty_increment_step" />
+                <field name="min_order_qty" />
             </xpath>
         </field>
     </record>
