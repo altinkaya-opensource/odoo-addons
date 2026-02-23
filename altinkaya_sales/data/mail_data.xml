@@ -398,4 +398,52 @@ Fax  :  <t t-out="object.company_id.partner_id.fax" />
         <!-- <field name="user_signature" eval="False"/>  -->
         <field name="auto_delete" eval="True" />
     </record>
+    <record id="email_template_portal_message_notification" model="mail.template">
+        <field name="name">Satış Siparişi: Portal Müşteri Mesajı Bildirimi</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field
+            name="subject"
+        >{{ ctx.get('customer_name', '') }} - {{ object.name }} hakkında portal mesajı</field>
+        <field name="email_to">{{ ctx.get('alias_email', '') }}</field>
+        <field name="lang">tr_TR</field>
+        <field name="auto_delete" eval="True" />
+        <field name="body_html" type="html">
+            <div
+                style="font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;"
+            >
+                <p>Merhaba,</p>
+                <p>
+                    <strong>
+                    <t t-out="ctx.get('customer_name', '')" />
+                </strong> müşterisi,
+                    <a t-attf-href="{{ ctx.get('order_url', '#') }}">
+                    <t t-out="object.name" />
+                </a>
+                    numaralı sipariş hakkında portaldan bir mesaj gönderdi:
+                </p>
+                <blockquote
+                    style="border-left: 3px solid #8e0000; padding: 8px 12px; margin: 12px 0; background-color: #f9f9f9;"
+                >
+                    <t t-out="ctx.get('message_body', '')" />
+                </blockquote>
+                <p>
+                    <strong>Sipariş Detayları:</strong><br />
+                    Sipariş No: <t t-out="object.name" /><br />
+                    Müşteri: <t t-out="object.partner_id.name" /><br />
+                    <t t-if="object.user_id">Satış Temsilcisi: <t
+                    t-out="object.user_id.name"
+                /><br /></t>
+                    Toplam: <t t-out="object.amount_total" /> <t
+                    t-out="object.currency_id.name"
+                />
+                </p>
+                <p>
+                    <a
+                        t-attf-href="{{ ctx.get('order_url', '#') }}"
+                        style="display: inline-block; padding: 8px 16px; background-color: #8e0000; color: #ffffff; text-decoration: none; border-radius: 4px;"
+                    >Siparişi Görüntüle</a>
+                </p>
+            </div>
+        </field>
+    </record>
 </odoo>

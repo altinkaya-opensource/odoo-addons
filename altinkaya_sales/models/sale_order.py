@@ -1,7 +1,10 @@
+import logging
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 def _match_production_with_route(production):  # noqa: C901
@@ -374,6 +377,77 @@ WHERE sale_order.id in %(ids)s;
         for so in res:
             so.order_line.explode_set_contents()
         return res
+
+    def _message_post_after_hook(self, message, msg_vals):
+        """Notify sales team alias when a customer posts a portal message."""
+        res = super()._message_post_after_hook(message, msg_vals)
+        if self._is_portal_customer_message(message, msg_vals):
+            self._notify_team_of_portal_message(message, msg_vals)
+        return res
+
+    def _is_portal_customer_message(self, message, msg_vals):
+        """Return True if the message is from a portal/external customer."""
+        self.ensure_one()
+        message_type = msg_vals.get("message_type") or message.message_type
+        if message_type != "comment":
+            return False
+
+        subtype_id = msg_vals.get("subtype_id")
+        mt_comment_id = self.env["ir.model.data"]._xmlid_to_res_id("mail.mt_comment")
+        if subtype_id != mt_comment_id:
+            return False
+
+        author_id = msg_vals.get("author_id") or message.author_id.id
+        if not author_id:
+            return False
+
+        author = self.env["res.partner"].browse(author_id)
+        if author.user_ids.filtered(lambda u: not u.share):
+            return False
+
+        return True
+
+    def _notify_team_of_portal_message(self, message, msg_vals):
+        """Send an email to the sales team alias about a customer portal message."""
+        self.ensure_one()
+        if not self.team_id:
+            return
+
+        alias = self.team_id.alias_id
+        if not alias or not alias.alias_name or not alias.alias_domain:
+            return
+
+        alias_email = f"{alias.alias_name}@{alias.alias_domain}"
+        author_id = msg_vals.get("author_id") or message.author_id.id
+        author = self.env["res.partner"].browse(author_id)
+        base_url = self.get_base_url()
+        order_url = f"{base_url}/web#id={self.id}&model=sale.order&view_type=form"
+        message_body = msg_vals.get("body") or message.body or ""
+
+        template = self.env.ref(
+            "altinkaya_sales.email_template_portal_message_notification",
+            raise_if_not_found=False,
+        )
+        if not template:
+            return
+
+        try:
+            template.with_context(
+                customer_name=author.name,
+                alias_email=alias_email,
+                order_url=order_url,
+                message_body=message_body,
+            ).send_mail(
+                self.id,
+                force_send=True,
+                email_values={"model": None, "res_id": False},
+            )
+        except Exception:
+            _logger.exception(
+                "Failed to send portal message notification to team alias %s for %s",
+                alias_email,
+                self.name,
+            )
 
     def action_cancel(self):
         """Force to call the cancel method on done picking for having the

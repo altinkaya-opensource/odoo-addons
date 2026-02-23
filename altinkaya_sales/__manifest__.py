@@ -24,6 +24,7 @@
     "depends": [
         "base",
         "sale",
+        "crm",
         "stock",
         "contacts",
         "sale_stock",
