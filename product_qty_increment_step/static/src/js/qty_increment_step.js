@@ -6,11 +6,14 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
 
     var publicWidget = require('web.public.widget');
     var VariantMixin = require('sale.VariantMixin');
-    var WebsiteSale = require('website_sale.website_sale');
+    var ajax = require('web.ajax');
+    // Ensure WebsiteSale is loaded before we .include() it
+    require('website_sale.website_sale');
 
     /*
-        * We need to override this method to prevent the default behavior of
-        * the website_sale module.
+     * Override onClickAddCartJSON on VariantMixin so that any widget
+     * using it (including theme_prime's CartSidebar) gets step-aware
+     * +/- button behavior.
      */
     VariantMixin.onClickAddCartJSON = function (ev) {
         ev.preventDefault();
@@ -32,67 +35,116 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
         return false;
     };
 
-    publicWidget.registry.QtyIncrementStep = publicWidget.Widget.extend(VariantMixin, WebsiteSale, {
-        selector: '.oe_website_sale',
-        events: {
-            'change form .js_product:first input[name="add_qty"]': '_formatQtyWithStep',
-            'change table input.js_quantity.form-control.quantity': '_formatQtyWithStep',
+    publicWidget.registry.WebsiteSale.include({
+        onClickAddCartJSON: VariantMixin.onClickAddCartJSON,
+
+        /**
+         * @override
+         * After variant changes, fetch min_order_qty for the selected
+         * variant and update the qty input accordingly.
+         * We use our own RPC because the base _onChangeCombination callback
+         * is unreachable via include due to _throttledGetCombinationInfo's
+         * _.memoize + .bind closure capturing function references.
+         */
+        onChangeVariant: function (ev) {
+            var self = this;
+            this._super.apply(this, arguments);
+
+            var $parent = $(ev.target).closest('.js_product');
+            if (!$parent.length) {
+                return;
+            }
+
+            var combination = this.getSelectedVariantValues($parent);
+            var productTemplateId = parseInt($parent.find('.product_template_id').val());
+
+            ajax.jsonRpc(this._getUri('/sale/get_combination_info'), 'call', {
+                'product_template_id': productTemplateId,
+                'product_id': this._getProductId($parent),
+                'combination': combination,
+                'add_qty': parseInt($parent.find('input[name="add_qty"]').val()),
+                'pricelist_id': this.pricelistId || false,
+            }).then(function (data) {
+                self._updateMinOrderQty($parent, data);
+            });
         },
 
         /**
-         * @constructor
+         * Update min_order_qty data attribute and enforce minimum quantity
+         * on the qty input based on combination info response.
          */
-        init: function ($parent) {
+        _updateMinOrderQty: function ($parent, combination) {
+            var minOrderQty = combination.min_order_qty || 0;
+            var $span = $parent.find('.input-group span[data-increment-step]');
+            if (!$span.length) {
+                return;
+            }
+            $span.data("min-order-qty", minOrderQty);
+            $span.attr("data-min-order-qty", minOrderQty);
+            var $input = $span.closest('.input-group').find("input[name='add_qty']");
+            if ($input.length) {
+                var step = $span.data("increment-step") || 1;
+                var minQty = minOrderQty > 0 ? Math.max(minOrderQty, step) : step;
+                // Always reset to new minimum on variant change
+                $input.val(minQty);
+            }
+        },
+
+        /**
+         * @override
+         * After the default add quantity change handler, format with step.
+         */
+        _onChangeAddQuantity: function (ev) {
             this._super.apply(this, arguments);
+            this._formatQtyWithStep(ev);
         },
 
-        start() {
-            return this._super(...arguments);
-        },
-
+        /**
+         * Format the quantity with the increment step value.
+         */
         _formatQtyWithStep: function (ev) {
-            // Format the quantity with the increment step value.
-            // Example: If the increment step is 50, the quantity will be 50, 100, 150, etc.
-            // If the quantity is 75, it will be rounded to 100.
-            const $input = $(ev.currentTarget);
-            const $span = $input.closest('.input-group').find("span[data-increment-step]");
-            const $incrementSize = $span.data("increment-step");
-            const minOrderQty = $span.data("min-order-qty") || 0;
-            const minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
-            let qty = parseInt($input.val(), 10); // Parse input value to integer
+            var $input = $(ev.currentTarget);
+            var $span = $input.closest('.input-group').find("span[data-increment-step]");
+            var $incrementSize = $span.data("increment-step");
+            var minOrderQty = $span.data("min-order-qty") || 0;
+            var minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
+            var qty = parseInt($input.val(), 10);
 
-            // If the quantity is zero, return false (this means the user has deleted the input value)
-            if(qty === 0) {
+            if (qty === 0) {
                 return false;
             }
 
             qty = isNaN(qty) ? minQty : qty;
 
-            // Ensure the minimum quantity respects both min_order_qty and increment size
             if (qty <= minQty) {
                 qty = minQty;
             }
 
-            const remainder = qty % $incrementSize;
+            var remainder = qty % $incrementSize;
             if (remainder > 0) {
-                // Round to the nearest increment step value based on whether the value is increasing or decreasing
-                const prevQty = parseInt($input.data("prevQty"), 10) || minQty;
+                var prevQty = parseInt($input.data("prevQty"), 10) || minQty;
                 if (qty < prevQty) {
-                    // Decreasing, round down to the nearest increment step value
                     qty -= remainder;
-                    // Ensure we don't go below minimum after rounding down
                     if (qty < minQty) {
                         qty += $incrementSize;
                     }
                 } else {
-                    // Increasing, round up to the nearest increment step value
                     qty += $incrementSize - remainder;
                 }
             }
 
-            $input.data("prevQty", qty); // Store the previous quantity value
-            $input.val(qty); // Update input value to formatted quantity
-        }
+            $input.data("prevQty", qty);
+            $input.val(qty);
+        },
+
+        /**
+         * @override
+         * Also format quantity with step on cart quantity change.
+         */
+        _onChangeCartQuantity: function (ev) {
+            this._formatQtyWithStep(ev);
+            this._super.apply(this, arguments);
+        },
     });
 
 });
