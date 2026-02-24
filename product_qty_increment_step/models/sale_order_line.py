@@ -27,7 +27,7 @@ class SaleOrderLine(models.Model):
                 continue
 
             # Check minimum order quantity
-            min_qty = line.product_id.product_tmpl_id.min_order_qty
+            min_qty = line.product_id.min_order_qty
             if min_qty and min_qty > 0 and line.product_uom_qty < min_qty:
                 raise ValidationError(
                     _(

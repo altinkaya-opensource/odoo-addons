@@ -7,7 +7,10 @@
     >
         <xpath expr="//input[@name='add_qty']" position="before">
             <t t-set="step" t-value="product.qty_increment_step or add_qty or 1" />
-            <t t-set="min_qty" t-value="product.min_order_qty or 0" />
+            <t
+                t-set="min_qty"
+                t-value="product.product_variant_id.min_order_qty or 0"
+            />
             <span
                 t-attf-data-increment-step="#{product.qty_increment_step}"
                 t-attf-data-min-order-qty="#{min_qty}"

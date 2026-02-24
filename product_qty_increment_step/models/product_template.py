@@ -11,8 +11,3 @@ class ProductTemplate(models.Model):
         help="Set a step for product quantity increment in the product page."
         " Set 0 to disable this feature.",
     )
-    min_order_qty = fields.Integer(
-        default=0,
-        help="Minimum order quantity for this product in the webshop."
-        " Set 0 to disable this feature.",
-    )
