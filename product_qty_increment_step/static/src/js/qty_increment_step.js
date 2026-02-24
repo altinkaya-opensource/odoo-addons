@@ -79,14 +79,21 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
             if (!$span.length) {
                 return;
             }
+            // Only reset qty when the variant (product_id) actually changed
+            var variantChanged = combination.product_id !== $span.data("last-product-id");
+            $span.data("last-product-id", combination.product_id);
             $span.data("min-order-qty", minOrderQty);
             $span.attr("data-min-order-qty", minOrderQty);
             var $input = $span.closest('.input-group').find("input[name='add_qty']");
             if ($input.length) {
                 var step = $span.data("increment-step") || 1;
                 var minQty = minOrderQty > 0 ? Math.max(minOrderQty, step) : step;
-                // Always reset to new minimum on variant change
-                $input.val(minQty);
+                var currentQty = parseInt($input.val(), 10) || 0;
+                if (variantChanged) {
+                    $input.val(minQty);
+                } else if (currentQty < minQty) {
+                    $input.val(minQty);
+                }
             }
         },
 
