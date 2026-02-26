@@ -9,12 +9,13 @@
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
-    "depends": ["website_sale", "altinkaya_ecommerce"],
+    "depends": ["website_sale", "sale_product_configurator", "altinkaya_ecommerce"],
     "data": [
         "views/product_template_view.xml",
         "views/product_product_view.xml",
         "templates/cart_lines.xml",
         "templates/product_quantity.xml",
+        "templates/product_configurator_quantity.xml",
     ],
     "assets": {
         "web.assets_frontend": [

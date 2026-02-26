@@ -7,8 +7,51 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
     var publicWidget = require('web.public.widget');
     var VariantMixin = require('sale.VariantMixin');
     var ajax = require('web.ajax');
+    var { OptionalProductsModal } = require('@sale_product_configurator/js/product_configurator_modal');
     // Ensure WebsiteSale is loaded before we .include() it
     require('website_sale.website_sale');
+
+    /**
+     * Format the quantity input to align with increment step and min order qty.
+     * Shared between WebsiteSale and OptionalProductsModal.
+     */
+    function formatQtyWithStep(ev) {
+        var $input = $(ev.currentTarget || ev.target);
+        var $span = $input.closest('.input-group').find("span[data-increment-step]");
+        var incrementSize = $span.data("increment-step");
+        if (!incrementSize) {
+            return;
+        }
+        var minOrderQty = $span.data("min-order-qty") || 0;
+        var minQty = minOrderQty > 0 ? Math.max(minOrderQty, incrementSize) : incrementSize;
+        var qty = parseInt($input.val(), 10);
+
+        if (qty === 0) {
+            return;
+        }
+
+        qty = isNaN(qty) ? minQty : qty;
+
+        if (qty <= minQty) {
+            qty = minQty;
+        }
+
+        var remainder = qty % incrementSize;
+        if (remainder > 0) {
+            var prevQty = parseInt($input.data("prevQty"), 10) || minQty;
+            if (qty < prevQty) {
+                qty -= remainder;
+                if (qty < minQty) {
+                    qty += incrementSize;
+                }
+            } else {
+                qty += incrementSize - remainder;
+            }
+        }
+
+        $input.data("prevQty", qty);
+        $input.val(qty);
+    }
 
     /*
      * Override onClickAddCartJSON on VariantMixin so that any widget
@@ -19,14 +62,27 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
         ev.preventDefault();
         var $link = $(ev.currentTarget);
         var $span = $link.closest('.input-group').find("span[data-increment-step]");
-        var $incrementSize = $span.data("increment-step");
+        var incrementSize = $span.data("increment-step");
         var minOrderQty = $span.data("min-order-qty") || 0;
         var $input = $link.closest('.input-group').find("input");
 
+        if (!incrementSize) {
+            // Fallback to default +/- 1 behavior
+            var min = parseFloat($input.data("min") || 0);
+            var max = parseFloat($input.data("max") || Infinity);
+            var prev = parseFloat($input.val() || 0, 10);
+            var quantity = ($link.has(".fa-minus").length ? -1 : 1) + prev;
+            var newVal = quantity > min ? (quantity < max ? quantity : max) : min;
+            if (newVal !== prev) {
+                $input.val(newVal).trigger('change');
+            }
+            return false;
+        }
+
         var max = parseFloat($input.data("max") || Infinity);
         var previousQty = parseFloat($input.val() || 0, 10);
-        var quantity = ($link.has(".fa-minus").length ? -$incrementSize : $incrementSize) + previousQty;
-        var minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
+        var quantity = ($link.has(".fa-minus").length ? -incrementSize : incrementSize) + previousQty;
+        var minQty = minOrderQty > 0 ? Math.max(minOrderQty, incrementSize) : incrementSize;
         var newQty = quantity > minQty ? (quantity < max ? quantity : max) : minQty;
 
         if (newQty !== previousQty) {
@@ -35,6 +91,9 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
         return false;
     };
 
+    // -------------------------------------------------------
+    // WebsiteSale (product detail page + cart)
+    // -------------------------------------------------------
     publicWidget.registry.WebsiteSale.include({
         onClickAddCartJSON: VariantMixin.onClickAddCartJSON,
 
@@ -103,53 +162,68 @@ odoo.define('product_qty_increment_step.qty_step', function (require) {
          */
         _onChangeAddQuantity: function (ev) {
             this._super.apply(this, arguments);
-            this._formatQtyWithStep(ev);
+            formatQtyWithStep(ev);
         },
 
-        /**
-         * Format the quantity with the increment step value.
-         */
-        _formatQtyWithStep: function (ev) {
-            var $input = $(ev.currentTarget);
-            var $span = $input.closest('.input-group').find("span[data-increment-step]");
-            var $incrementSize = $span.data("increment-step");
-            var minOrderQty = $span.data("min-order-qty") || 0;
-            var minQty = minOrderQty > 0 ? Math.max(minOrderQty, $incrementSize) : $incrementSize;
-            var qty = parseInt($input.val(), 10);
-
-            if (qty === 0) {
-                return false;
-            }
-
-            qty = isNaN(qty) ? minQty : qty;
-
-            if (qty <= minQty) {
-                qty = minQty;
-            }
-
-            var remainder = qty % $incrementSize;
-            if (remainder > 0) {
-                var prevQty = parseInt($input.data("prevQty"), 10) || minQty;
-                if (qty < prevQty) {
-                    qty -= remainder;
-                    if (qty < minQty) {
-                        qty += $incrementSize;
-                    }
-                } else {
-                    qty += $incrementSize - remainder;
-                }
-            }
-
-            $input.data("prevQty", qty);
-            $input.val(qty);
-        },
+        _formatQtyWithStep: formatQtyWithStep,
 
         /**
          * @override
          * Also format quantity with step on cart quantity change.
          */
         _onChangeCartQuantity: function (ev) {
-            this._formatQtyWithStep(ev);
+            formatQtyWithStep(ev);
+            this._super.apply(this, arguments);
+        },
+    });
+
+    // -------------------------------------------------------
+    // OptionalProductsModal (advanced configurator popup)
+    // -------------------------------------------------------
+    OptionalProductsModal.include({
+        onClickAddCartJSON: VariantMixin.onClickAddCartJSON,
+
+        /**
+         * @override
+         * Update min_order_qty data attributes when combination changes
+         * in the configurator modal.
+         */
+        _onChangeCombination: function (ev, $parent, combination) {
+            this._super.apply(this, arguments);
+            var minOrderQty = combination.min_order_qty || 0;
+            var $span = $parent.find('.input-group span[data-increment-step]');
+            if (!$span.length) {
+                return;
+            }
+            var variantChanged = combination.product_id !== $span.data("last-product-id");
+            $span.data("last-product-id", combination.product_id);
+            $span.data("min-order-qty", minOrderQty);
+            $span.attr("data-min-order-qty", minOrderQty);
+            var $input = $span.closest('.input-group').find("input[name='add_qty']");
+            if ($input.length) {
+                var step = $span.data("increment-step") || 1;
+                var minQty = minOrderQty > 0 ? Math.max(minOrderQty, step) : step;
+                var currentQty = parseInt($input.val(), 10) || 0;
+                if (variantChanged) {
+                    $input.val(minQty);
+                    if ($parent.hasClass('main_product')) {
+                        this.rootProduct.quantity = minQty;
+                    }
+                } else if (currentQty < minQty) {
+                    $input.val(minQty);
+                    if ($parent.hasClass('main_product')) {
+                        this.rootProduct.quantity = minQty;
+                    }
+                }
+            }
+        },
+
+        /**
+         * @override
+         * Format quantity with step before processing the change.
+         */
+        _onChangeQuantity: function (ev) {
+            formatQtyWithStep(ev);
             this._super.apply(this, arguments);
         },
     });
