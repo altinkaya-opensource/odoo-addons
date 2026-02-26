@@ -80,7 +80,7 @@ class ResPartner(models.Model):
             ("move_id.reversal_move_id", "=", False),
             ("move_id.reversed_entry_id", "=", False),
             ("difference_checked", "=", False),
-            ("full_reconcile_id", "!=", False),
+            ("move_id.state", "=", "posted"),
             ("account_id", "=", self.property_account_receivable_id.id),
         ]
 
