@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template
+        id="product_quantity_config_step"
+        inherit_id="sale_product_configurator.product_quantity_config"
+        name="Configurator Qty Increment Step"
+    >
+        <xpath expr="//input[@name='add_qty']" position="before">
+            <t
+                t-set="cfg_step"
+                t-value="product_variant.qty_increment_step if product_variant else 1"
+            />
+            <t
+                t-set="cfg_min_qty"
+                t-value="product_variant.min_order_qty if product_variant else 0"
+            />
+            <span
+                t-attf-data-increment-step="#{cfg_step or 1}"
+                t-attf-data-min-order-qty="#{cfg_min_qty or 0}"
+                class="d-none"
+            />
+        </xpath>
+
+        <xpath expr="//input[@name='add_qty']" position="attributes">
+            <attribute
+                name="t-att-value"
+            >max(cfg_min_qty or 0, cfg_step or 1)</attribute>
+        </xpath>
+    </template>
+</odoo>
