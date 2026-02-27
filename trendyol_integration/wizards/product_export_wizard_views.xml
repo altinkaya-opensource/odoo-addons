@@ -13,23 +13,56 @@
                         <field name="trendyol_brand_id" />
                     </group>
                     <group>
+                        <field name="odoo_category_id" />
+                        <field
+                            name="odoo_product_search"
+                            placeholder="Yazdıktan sonra Enter tuşuna basın"
+                        />
                         <field name="vat_rate" />
                         <field name="skip_existing" />
                     </group>
                 </group>
-                <group string="Products">
+                <div attrs="{'invisible': [('trendyol_category_id', '=', False)]}">
+                    <button
+                        name="action_sync_category_attributes"
+                        string="Özellikleri Getir"
+                        type="object"
+                        class="btn-secondary mb-2"
+                    />
+                    <field name="attribute_line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="category_attribute_id" invisible="1" />
+                            <field name="name" />
+                            <field name="required" />
+                            <field name="value_id" />
+                            <field name="allow_custom" invisible="1" />
+                            <field
+                                name="custom_value"
+                                attrs="{'invisible': [('allow_custom', '=', False)]}"
+                            />
+                        </tree>
+                    </field>
+                </div>
+                <div string="Products">
                     <field name="product_ids" nolabel="1">
                         <tree>
                             <field name="default_code" />
                             <field name="name" />
+                            <field name="categ_id" />
                             <field name="barcode" />
+                            <field name="list_price" />
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                options="{'size': [40, 40]}"
+                            />
                         </tree>
                     </field>
-                </group>
+                </div>
                 <footer>
                     <button
                         name="action_create_bindings"
-                        string="Create Bindings"
+                        string="Trendyol'a Aktar"
                         type="object"
                         class="btn-primary"
                     />
@@ -54,7 +87,7 @@
         id="action_trendyol_product_export_wizard_template"
         model="ir.actions.act_window"
     >
-        <field name="name">Export to Trendyol</field>
+        <field name="name">Trendyol'a aktar</field>
         <field name="res_model">trendyol.product.export.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

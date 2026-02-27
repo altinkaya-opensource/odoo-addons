@@ -90,15 +90,17 @@ class TrendyolCategory(models.Model):
         return result
 
     @api.model
-    def _name_search(self, name, domain=None, operator="ilike", limit=None, order=None):
-        domain = domain or []
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=None, order=None, **kwargs
+    ):
+        args = args or []
         if name:
-            domain = [
+            args = [
                 "|",
                 ("name", operator, name),
                 ("full_path", operator, name),
-            ] + domain
-        return self._search(domain, limit=limit, order=order)
+            ] + args
+        return self._search(args, limit=limit, order=order)
 
     @api.model
     def _sync_from_trendyol(self, backend, categories, parent=None):

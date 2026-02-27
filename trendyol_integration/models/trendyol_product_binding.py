@@ -209,9 +209,10 @@ class TrendyolProductBinding(models.Model):
         sale_price = self.trendyol_sale_price or list_price
 
         if not sale_price or sale_price <= 0:
-            raise UserError(
-                _("Product price must be greater than 0 for %s") % self.display_name
+            _logger.warning(
+                "Product price must be greater than 0 for product %s", self.display_name
             )
+            return None
 
         data = {
             "barcode": self.trendyol_barcode,
@@ -259,7 +260,9 @@ class TrendyolProductBinding(models.Model):
             # This assumes images are accessible via web
             return f"{base_url}/web/image/product.product/{self.odoo_id.id}/image_1920"
 
-        return None
+        # return None
+        return "https://www.altinkaya.com/web/image/product.brand/1/logo"
+        # export sırasında hata vermesin diye default bir logo döndürdüm
 
     def _get_description(self):
         """Get product description for Trendyol.

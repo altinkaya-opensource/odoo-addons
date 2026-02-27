@@ -27,3 +27,4 @@ access_trendyol_cargo_mapping_user,trendyol.cargo.mapping.user,model_trendyol_ca
 access_trendyol_cargo_mapping_manager,trendyol.cargo.mapping.manager,model_trendyol_cargo_mapping,group_trendyol_manager,1,1,1,1
 access_trendyol_product_export_wizard,trendyol.product.export.wizard,model_trendyol_product_export_wizard,group_trendyol_manager,1,1,1,1
 access_trendyol_category_sync_wizard,trendyol.category.sync.wizard,model_trendyol_category_sync_wizard,group_trendyol_manager,1,1,1,1
+access_trendyol_product_export_wizard_line,trendyol.product.export.wizard.line,model_trendyol_product_export_wizard_line,group_trendyol_manager,1,1,1,1

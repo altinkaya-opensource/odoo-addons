@@ -270,6 +270,13 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Toplu İşlemler" name="batch_actions">
+                            <button
+                                name="%(action_trendyol_product_export_wizard_template)d"
+                                string="Toplu Ürün Export"
+                                type="action"
+                            />
+                        </page>
                     </notebook>
                     <field name="active" invisible="1" />
                 </sheet>
