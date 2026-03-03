@@ -21,15 +21,6 @@
                     />
                 </button>
             </div>
-            <group name="packaging" position="after">
-                <group
-                    string="Trendyol"
-                    name="trendyol"
-                    groups="trendyol_integration.group_trendyol_user"
-                >
-                    <field name="image_url" />
-                </group>
-            </group>
         </field>
     </record>
 

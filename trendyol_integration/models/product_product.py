@@ -15,10 +15,6 @@ class ProductProduct(models.Model):
     trendyol_binding_count = fields.Integer(
         compute="_compute_trendyol_binding_count",
     )
-    image_url = fields.Char(
-        string="Image URL",
-        help="Public HTTPS URL for product image (used for marketplace integrations)",
-    )
 
     def _compute_trendyol_binding_count(self):
         for product in self:

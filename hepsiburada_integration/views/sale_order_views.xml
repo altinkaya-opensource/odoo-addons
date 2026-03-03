@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Sale Order Form Extension -->
+    <record id="view_sale_order_form_hepsiburada" model="ir.ui.view">
+        <field name="name">sale.order.form.hepsiburada</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <field name="hb_order_number" invisible="1" />
+                <button
+                    name="action_view_hb_binding"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-bag"
+                    attrs="{'invisible': [('hb_order_number', '=', False)]}"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Hepsiburada</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

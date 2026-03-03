@@ -107,6 +107,7 @@
                             <field name="fiscal_position_id" />
                             <field name="source_id" />
                             <field name="default_cargo_company_id" />
+                            <field name="trendyol_cargo_company_id" />
                         </group>
                     </group>
                     <notebook>
@@ -131,7 +132,7 @@
                                     />
                                 </group>
                                 <group string="Accounting">
-                                    <field name="trendyol_partner_id" />
+                                    <field name="marketplace_partner_id" />
                                     <field name="settlement_journal_id" />
                                     <field name="auto_import_settlements" />
                                     <field name="auto_reconcile_settlements" />
@@ -270,7 +271,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Toplu İşlemler" name="batch_actions">
+                        <page string="Toplu Ürün İşlemleri" name="batch_actions">
                             <button
                                 name="%(action_trendyol_product_export_wizard_template)d"
                                 string="Toplu Ürün Export"

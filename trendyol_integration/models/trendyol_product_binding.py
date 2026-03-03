@@ -14,17 +14,10 @@ _logger = logging.getLogger(__name__)
 
 class TrendyolProductBinding(models.Model):
     _name = "trendyol.product.binding"
+    _inherit = "marketplace.product.binding"
     _description = "Trendyol Product Binding"
     _inherits = {"product.product": "odoo_id"}
-    _order = "create_date desc"
 
-    odoo_id = fields.Many2one(
-        "product.product",
-        string="Odoo Product",
-        required=True,
-        ondelete="cascade",
-        index=True,
-    )
     backend_id = fields.Many2one(
         "trendyol.backend",
         required=True,
@@ -66,25 +59,24 @@ class TrendyolProductBinding(models.Model):
         help="JSON array of category attributes",
     )
 
-    # Sync state
-    sync_state = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("pending", "Pending Approval"),
-            ("approved", "Approved"),
-            ("rejected", "Rejected"),
-            ("error", "Error"),
-        ],
-        default="draft",
-        required=True,
-        index=True,
+    # Product-specific fields required by Trendyol API
+    origin = fields.Char(
+        string="Origin Country",
+        default="Türkiye",
+        help="Country where the product is manufactured (e.g. Türkiye)",
     )
-    sync_error = fields.Text(
-        readonly=True,
+    gtip = fields.Char(
+        string="GTIP",
+        help="GTIP/HS code (4–12 characters)",
     )
-    last_sync_date = fields.Datetime(
-        readonly=True,
+    trendyol_dimensional_weight = fields.Float(
+        string="Dimensional Weight (Desi)",
+        default=1.0,
+        help="Volumetric/dimensional weight in desi units",
     )
+
+    # sync_state, sync_error, last_sync_date, vat_rate, last_sent_quantity,
+    # last_sent_price inherited from marketplace.product.binding
 
     # Prices
     trendyol_list_price = fields.Float(
@@ -104,18 +96,6 @@ class TrendyolProductBinding(models.Model):
     trendyol_quantity = fields.Float(
         compute="_compute_trendyol_quantity",
         help="Available quantity for Trendyol",
-    )
-    last_sent_quantity = fields.Float(
-        readonly=True,
-    )
-    last_sent_price = fields.Float(
-        readonly=True,
-    )
-
-    # VAT
-    vat_rate = fields.Float(
-        string="VAT Rate (%)",
-        default=20.0,
     )
 
     _sql_constraints = [
@@ -184,7 +164,7 @@ class TrendyolProductBinding(models.Model):
         """Prepare product data for Trendyol API.
 
         Returns:
-            Dict with product data for API
+            Dict with product data for API, or None if product has no valid price
         """
         self.ensure_one()
 
@@ -192,120 +172,83 @@ class TrendyolProductBinding(models.Model):
             raise UserError(
                 _("Trendyol category is required for product %s") % self.display_name
             )
-        if not self.trendyol_brand_id:
+
+        if not self.backend_id.trendyol_cargo_company_id:
             raise UserError(
-                _("Trendyol brand is required for product %s") % self.display_name
+                _(
+                    "Default Cargo Company ID is not set on backend %s. "
+                    "Please configure it in the backend settings."
+                )
+                % self.backend_id.name
             )
 
-        # Get image URL
-        image_url = self._get_image_url()
-        if not image_url:
-            raise UserError(
-                _("Product image URL is required for %s") % self.display_name
-            )
-
-        # Calculate prices
-        list_price = self.trendyol_list_price
-        sale_price = self.trendyol_sale_price or list_price
-
+        sale_price = self.trendyol_sale_price or self.trendyol_list_price
         if not sale_price or sale_price <= 0:
             _logger.warning(
-                "Product price must be greater than 0 for product %s", self.display_name
+                "Product price must be greater than 0 for product %s",
+                self.display_name,
             )
             return None
 
+        list_price = self.trendyol_list_price or sale_price
+        if list_price < sale_price:
+            list_price = sale_price
+
+        description = self.odoo_id.description_sale or self.odoo_id.name
+        stock_code = self.trendyol_stock_code or self.trendyol_barcode
+
         data = {
             "barcode": self.trendyol_barcode,
-            "title": self.name[:100],  # Max 100 chars
-            "productMainId": self.trendyol_stock_code
-            or self.default_code
-            or self.trendyol_barcode,
+            "title": self.odoo_id.name,
+            "productMainId": stock_code,
             "brandId": self.trendyol_brand_id.trendyol_id,
             "categoryId": self.trendyol_category_id.trendyol_id,
             "quantity": int(max(0, self.trendyol_quantity)),
-            "stockCode": self.trendyol_stock_code
-            or self.default_code
-            or self.trendyol_barcode,
-            "dimensionalWeight": self._calculate_dimensional_weight(),
-            "description": self._get_description(),
+            "stockCode": stock_code,
+            "dimensionalWeight": self.trendyol_dimensional_weight or 1.0,
+            "description": description,
             "currencyType": "TRY",
             "listPrice": list_price,
             "salePrice": sale_price,
-            "vatRate": int(self.vat_rate),
-            "cargoCompanyId": self._get_cargo_company_id(),
-            "images": [{"url": image_url}],
+            "cargoCompanyId": int(self.backend_id.trendyol_cargo_company_id),
+            "images": self._get_images(),
+            "vatRate": int(self.vat_rate or 0),
             "attributes": self._get_attributes(),
         }
 
+        if self.origin:
+            data["origin"] = self.origin
+        if self.gtip:
+            data["gtip"] = self.gtip
+
+        _logger.info("Trendyol product payload for %s: %s", self.trendyol_barcode, data)
         return data
 
-    def _get_image_url(self):
-        """Get HTTPS image URL for the product.
+    def _get_images(self):
+        """Get product images list for Trendyol API.
 
         Returns:
-            Image URL string or None
+            List of image dicts: [{"url": "https://..."}]
         """
-        # Try to get public URL from product
-        # This would typically be set up to serve images via HTTPS
+        url = None
         if self.odoo_id.image_url:
             url = self.odoo_id.image_url
-            if url.startswith("https://"):
-                return url
             if url.startswith("http://"):
-                return url.replace("http://", "https://", 1)
+                url = url.replace("http://", "https://", 1)
+            if not url.startswith("https://"):
+                url = None
 
-        # Check if there's a website configured
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        if base_url and self.odoo_id.image_1920:
-            # This assumes images are accessible via web
-            return f"{base_url}/web/image/product.product/{self.odoo_id.id}/image_1920"
+        if not url:
+            base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+            if base_url and self.odoo_id.image_1920:
+                url = (
+                    f"{base_url}/web/image/product.product/{self.odoo_id.id}/image_1920"
+                )
 
-        # return None
-        return "https://www.altinkaya.com/web/image/product.brand/1/logo"
-        # export sırasında hata vermesin diye default bir logo döndürdüm
+        if not url:
+            url = "https://www.altinkaya.com/web/image/product.brand/1/logo"
 
-    def _get_description(self):
-        """Get product description for Trendyol.
-
-        Returns:
-            HTML description string
-        """
-        # Priority: public_description > description_sale > name
-        product = self.odoo_id
-        if hasattr(product, "public_description") and product.public_description:
-            return product.public_description[:30000]
-        if product.description_sale:
-            return product.description_sale[:30000]
-        return product.name[:30000]
-
-    def _calculate_dimensional_weight(self):
-        """Calculate dimensional weight for shipping.
-
-        Returns:
-            Dimensional weight as integer
-        """
-        product = self.odoo_id
-        if product.volume and product.volume > 0:
-            # Dimensional weight = volume (m3) * 1,000,000 / 5000
-            # Convert from m3 to cm3 and apply divisor
-            dim_weight = (product.volume * 1000000) / 5000
-            return max(1, int(dim_weight))
-
-        # Default to actual weight if available
-        if product.weight and product.weight > 0:
-            return max(1, int(product.weight * 1000))  # Convert kg to g
-
-        return 1  # Minimum weight
-
-    def _get_cargo_company_id(self):
-        """Get cargo company ID for Trendyol.
-
-        Returns:
-            Cargo company ID or default
-        """
-        # Would need mapping to Trendyol cargo company IDs
-        # Return None to use Trendyol's default
-        return None
+        return [{"url": url}]
 
     def _get_attributes(self):
         """Get category attributes for Trendyol.

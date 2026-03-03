@@ -61,13 +61,21 @@
                         <group string="Trendyol Mapping">
                             <field name="trendyol_category_id" />
                             <field name="trendyol_brand_id" />
-                            <field name="vat_rate" />
+                            <field name="origin" />
+                            <field name="gtip" />
+                            <field name="trendyol_dimensional_weight" />
                         </group>
                     </group>
                     <group>
                         <group string="Prices">
-                            <field name="trendyol_list_price" />
-                            <field name="trendyol_sale_price" />
+                            <field
+                                name="trendyol_sale_price"
+                                string="Buying Price (KDV dahil)"
+                            />
+                            <field
+                                name="trendyol_list_price"
+                                string="RRP (Tavsiye Fiyat)"
+                            />
                             <field name="last_sent_price" readonly="1" />
                         </group>
                         <group string="Stock">

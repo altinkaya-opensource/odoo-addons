@@ -19,9 +19,8 @@ TRANSACTION_TYPE_MAP = {
 
 class TrendyolSettlement(models.Model):
     _name = "trendyol.settlement"
+    _inherit = "marketplace.settlement"
     _description = "Trendyol Settlement Transaction"
-    _order = "transaction_date desc, id desc"
-    _inherit = ["mail.thread"]
 
     backend_id = fields.Many2one(
         "trendyol.backend",
@@ -34,30 +33,7 @@ class TrendyolSettlement(models.Model):
         required=True,
         index=True,
     )
-    transaction_type = fields.Selection(
-        [
-            ("sale", "Sale"),
-            ("return", "Return"),
-        ],
-        required=True,
-        index=True,
-    )
-    transaction_date = fields.Datetime(index=True)
-    order_number = fields.Char(index=True)
     shipment_package_id = fields.Char()
-    barcode = fields.Char()
-    description = fields.Char()
-
-    # Financial amounts
-    debt = fields.Float(digits=(16, 2))
-    credit = fields.Float(digits=(16, 2))
-    commission_rate = fields.Float(digits=(6, 2))
-    commission_amount = fields.Float(digits=(16, 2))
-    seller_revenue = fields.Float(digits=(16, 2))
-
-    # Payment grouping
-    payment_order_id = fields.Char(index=True)
-    payment_date = fields.Datetime()
     receipt_id = fields.Char()
 
     # Odoo links
@@ -65,32 +41,6 @@ class TrendyolSettlement(models.Model):
         "trendyol.order",
         index=True,
     )
-    odoo_invoice_id = fields.Many2one(
-        "account.move",
-        string="Invoice",
-    )
-    odoo_payment_id = fields.Many2one(
-        "account.payment",
-        string="Payment",
-    )
-    commission_payment_id = fields.Many2one(
-        "account.payment",
-    )
-
-    # Status
-    state = fields.Selection(
-        [
-            ("imported", "Imported"),
-            ("reconciled", "Reconciled"),
-            ("error", "Error"),
-        ],
-        default="imported",
-        required=True,
-        index=True,
-        tracking=True,
-    )
-    error_message = fields.Text()
-    raw_data = fields.Text()
 
     _sql_constraints = [
         (
@@ -177,22 +127,8 @@ class TrendyolSettlement(models.Model):
             _logger.error("Failed to import settlement %s: %s", settlement_id, str(e))
             raise
 
-    def action_reconcile(self):
-        """Manual reconcile button."""
-        self.ensure_one()
-        if self.state == "reconciled":
-            raise UserError(_("This settlement is already reconciled."))
-        self._reconcile()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Reconciled"),
-                "message": _("Settlement has been reconciled successfully."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+    def _get_settlement_id(self):
+        return self.trendyol_settlement_id
 
     def _reconcile(self):
         """Find invoice, create payment + commission JE, reconcile."""
@@ -247,158 +183,3 @@ class TrendyolSettlement(models.Model):
             self._reconcile_sale(sale_order)
         elif self.transaction_type == "return":
             self._reconcile_return(sale_order)
-
-    def _reconcile_sale(self, sale_order):
-        """Reconcile a Sale settlement: pay invoice + commission entry."""
-        invoice = fields.first(
-            sale_order.invoice_ids.filtered(
-                lambda i: i.state == "posted" and i.move_type == "out_invoice"
-            )
-        )
-
-        if not invoice:
-            self.write(
-                {
-                    "state": "error",
-                    "error_message": _("No posted invoice found for sale order %s")
-                    % sale_order.name,
-                }
-            )
-            return
-
-        if invoice.payment_state in ("paid", "in_payment"):
-            self.write(
-                {
-                    "state": "error",
-                    "error_message": _("Invoice %s is already paid.") % invoice.name,
-                }
-            )
-            return
-
-        payment = self._create_payment(invoice, "inbound")
-        commission_payment = self._create_commission_payment("outbound")
-
-        vals = {
-            "state": "reconciled",
-            "odoo_invoice_id": invoice.id,
-            "odoo_payment_id": payment.id,
-            "error_message": False,
-        }
-        if commission_payment:
-            vals["commission_payment_id"] = commission_payment.id
-        self.write(vals)
-
-    def _reconcile_return(self, sale_order):
-        """Reconcile a Return settlement: pay credit note + reverse commission."""
-        credit_note = sale_order.invoice_ids.filtered(
-            lambda i: i.state == "posted" and i.move_type == "out_refund"
-        )[:1]
-
-        if not credit_note:
-            self.write(
-                {
-                    "state": "error",
-                    "error_message": _("No posted credit note found for sale order %s")
-                    % sale_order.name,
-                }
-            )
-            return
-
-        if credit_note.payment_state in ("paid", "in_payment"):
-            self.write(
-                {
-                    "state": "error",
-                    "error_message": _("Credit note %s is already paid.")
-                    % credit_note.name,
-                }
-            )
-            return
-
-        payment = self._create_payment(credit_note, "outbound")
-        commission_payment = self._create_commission_payment("inbound")
-
-        vals = {
-            "state": "reconciled",
-            "odoo_invoice_id": credit_note.id,
-            "odoo_payment_id": payment.id,
-            "error_message": False,
-        }
-        if commission_payment:
-            vals["commission_payment_id"] = commission_payment.id
-        self.write(vals)
-
-    def _create_payment(self, invoice, payment_type):
-        """Create and post a payment for the full invoice amount.
-
-        Args:
-            invoice: account.move record
-            payment_type: 'inbound' for sale, 'outbound' for return
-
-        Returns:
-            account.payment record (posted)
-        """
-        backend = self.backend_id
-        journal = backend.settlement_journal_id
-
-        payment_vals = {
-            "payment_type": payment_type,
-            "partner_type": "customer",
-            "partner_id": invoice.partner_id.id,
-            "amount": invoice.amount_residual,
-            "currency_id": invoice.currency_id.id,
-            "journal_id": journal.id,
-            "ref": _("Trendyol Settlement %s") % self.trendyol_settlement_id,
-        }
-
-        payment = self.env["account.payment"].create(payment_vals)
-        payment.action_post()
-
-        # Reconcile payment with invoice via receivable lines
-        receivable_lines = (payment.move_id.line_ids + invoice.line_ids).filtered(
-            lambda l: l.account_type == "asset_receivable" and not l.reconciled
-        )
-        if receivable_lines:
-            receivable_lines.reconcile()
-
-        return payment
-
-    def _create_commission_payment(self, payment_type):
-        """Create a payment for the commission amount to the Trendyol partner.
-
-        This payment is not linked to a specific vendor bill. It accumulates
-        on the Trendyol partner's payable account. When the consolidated
-        commission vendor bill arrives (via e-fatura), the user reconciles
-        it against these accumulated payments.
-
-        Args:
-            payment_type: 'outbound' for sale (we owe commission),
-                         'inbound' for return (commission refunded)
-
-        Returns:
-            account.payment record (posted) or False if no commission
-        """
-        commission_amt = abs(self.commission_amount)
-        if not commission_amt:
-            return False
-
-        backend = self.backend_id
-        if not backend.trendyol_partner_id:
-            _logger.warning(
-                "Trendyol partner not configured, skipping commission payment"
-            )
-            return False
-
-        journal = backend.settlement_journal_id
-        payment_vals = {
-            "payment_type": payment_type,
-            "partner_type": "supplier",
-            "partner_id": backend.trendyol_partner_id.id,
-            "amount": commission_amt,
-            "currency_id": journal.currency_id.id or backend.company_id.currency_id.id,
-            "journal_id": journal.id,
-            "ref": _("Trendyol Commission - Order %s") % self.order_number,
-        }
-
-        payment = self.env["account.payment"].create(payment_vals)
-        payment.action_post()
-        return payment

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Product Product Form Extension - Image URL -->
+    <record id="view_product_product_form_marketplace" model="ir.ui.view">
+        <field name="name">product.product.form.marketplace</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <group name="packaging" position="after">
+                <group
+                    string="Marketplace"
+                    name="marketplace"
+                    groups="marketplace_integration_base.group_marketplace_user"
+                >
+                    <field name="image_url" />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -2,9 +2,12 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 import json
+import logging
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 class TrendyolProductExportWizard(models.TransientModel):
@@ -23,7 +26,6 @@ class TrendyolProductExportWizard(models.TransientModel):
     odoo_category_id = fields.Many2one(
         "product.category",
         help="Map to Odoo product category for filtering (optional)",
-        string="Odoo Category",
     )
     odoo_product_search = fields.Char(
         string="Product Search",
@@ -137,6 +139,63 @@ class TrendyolProductExportWizard(models.TransientModel):
 
         return res
 
+    def _create_binding_for_product(self, product):
+        """Create a product binding record for one product.
+
+        Returns the new binding, or raises UserError if not possible.
+        """
+        Binding = self.env["trendyol.product.binding"]
+        existing = Binding.search(
+            [("backend_id", "=", self.backend_id.id), ("odoo_id", "=", product.id)],
+            limit=1,
+        )
+        if existing:
+            if self.skip_existing:
+                return None
+            raise UserError(
+                _("Product %s already has a binding for this backend.")
+                % product.display_name
+            )
+
+        if not product.barcode and not product.default_code:
+            raise UserError(
+                _("Product %s has no barcode or internal reference.")
+                % product.display_name
+            )
+
+        vals = {
+            "backend_id": self.backend_id.id,
+            "odoo_id": product.id,
+            "trendyol_barcode": product.barcode or product.default_code,
+            "trendyol_stock_code": product.default_code,
+            "vat_rate": self.vat_rate,
+        }
+        if self.trendyol_category_id:
+            vals["trendyol_category_id"] = self.trendyol_category_id.id
+        if self.trendyol_brand_id:
+            vals["trendyol_brand_id"] = self.trendyol_brand_id.id
+
+        attrs = []
+        for line in self.attribute_line_ids:
+            if line.value_id:
+                attrs.append(
+                    {
+                        "attributeId": line.category_attribute_id.trendyol_id,
+                        "attributeValueId": line.value_id.trendyol_id,
+                    }
+                )
+            elif line.custom_value:
+                attrs.append(
+                    {
+                        "attributeId": line.category_attribute_id.trendyol_id,
+                        "customAttributeValue": line.custom_value,
+                    }
+                )
+        if attrs:
+            vals["trendyol_attributes"] = json.dumps(attrs)
+
+        return Binding.create(vals)
+
     def action_create_bindings(self):
         """Create product bindings and export to Trendyol."""
         self.ensure_one()
@@ -144,78 +203,62 @@ class TrendyolProductExportWizard(models.TransientModel):
         if not self.product_ids:
             raise UserError(_("Please select at least one product."))
 
-        Binding = self.env["trendyol.product.binding"]
         bindings = self.env["trendyol.product.binding"]
         created = 0
         skipped = 0
 
         for product in self.product_ids:
-            existing = Binding.search(
-                [
-                    ("backend_id", "=", self.backend_id.id),
-                    ("odoo_id", "=", product.id),
-                ],
-                limit=1,
-            )
-
-            if existing:
-                if self.skip_existing:
-                    skipped += 1
-                    continue
-                raise UserError(
-                    _("Product %s already has a binding for this backend.")
-                    % product.display_name
+            try:
+                with self.env.cr.savepoint():
+                    binding = self._create_binding_for_product(product)
+            except Exception as e:
+                _logger.warning(
+                    "Failed to create binding for product %s: %s",
+                    product.display_name,
+                    str(e),
                 )
-
-            if not product.barcode and not product.default_code:
-                raise UserError(
-                    _("Product %s has no barcode or internal reference.")
-                    % product.display_name
-                )
-
-            vals = {
-                "backend_id": self.backend_id.id,
-                "odoo_id": product.id,
-                "trendyol_barcode": product.barcode or product.default_code,
-                "trendyol_stock_code": product.default_code,
-                "vat_rate": self.vat_rate,
-            }
-
-            if self.trendyol_category_id:
-                vals["trendyol_category_id"] = self.trendyol_category_id.id
-            if self.trendyol_brand_id:
-                vals["trendyol_brand_id"] = self.trendyol_brand_id.id
-            if self.attribute_line_ids:
-                attrs = []
-                for line in self.attribute_line_ids:
-                    if line.value_id:
-                        attrs.append(
-                            {
-                                "attributeId": line.category_attribute_id.trendyol_id,
-                                "attributeValueId": line.value_id.trendyol_id,
-                            }
-                        )
-                    elif line.custom_value:
-                        attrs.append(
-                            {
-                                "attributeId": line.category_attribute_id.trendyol_id,
-                                "customAttributeValue": line.custom_value,
-                            }
-                        )
-                if attrs:
-                    vals["trendyol_attributes"] = json.dumps(attrs)
-
-            binding = Binding.create(vals)
-            bindings |= binding
-            created += 1
+                skipped += 1
+                continue
+            if binding:
+                bindings |= binding
+                created += 1
+            else:
+                skipped += 1
 
         if not bindings:
             raise UserError(_("No new bindings to export."))
 
-        # Toplu export
-        self._batch_export(bindings)
+        # Attempt export in a savepoint so binding records always persist.
+        # If the API call fails, bindings remain in draft state for manual retry.
+        export_error = None
+        try:
+            with self.env.cr.savepoint():
+                self._batch_export(bindings)
+        except Exception as e:
+            _logger.exception(
+                "Trendyol export failed for %d bindings: %s", len(bindings), str(e)
+            )
+            export_error = str(e)
 
-        message = _("%d product(s) exported to Trendyol.") % created
+        if export_error:
+            message = _(
+                "%(count)d binding(s) created but export failed: %(error)s. "
+                "Please retry from the Trendyol Products menu."
+            ) % {"count": created, "error": export_error}
+            if skipped:
+                message += " " + _("%d product(s) skipped (already bound).") % skipped
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("Bindings Created — Export Failed"),
+                    "message": message,
+                    "type": "warning",
+                    "sticky": True,
+                },
+            }
+
+        message = _("%d binding(s) created and export started.") % created
         if skipped:
             message += " " + _("%d product(s) skipped (already bound).") % skipped
 
@@ -245,25 +288,31 @@ class TrendyolProductExportWizard(models.TransientModel):
             raise UserError(_("No valid products to export."))
 
         result = client.create_products(items)
+        _logger.info("Trendyol create_products response: %s", result)
 
         batch_id = result.get("batchRequestId")
-        if batch_id:
-            BatchRequest.create(
-                {
-                    "backend_id": self.backend_id.id,
-                    "batch_request_id": batch_id,
-                    "request_type": "product_create",
-                    "state": "pending",
-                    "total_items": len(items),
-                    "product_binding_ids": [(6, 0, bindings.ids)],
-                }
+        if not batch_id:
+            raise UserError(
+                _("Trendyol API did not return a batchRequestId. Full response: %s")
+                % result
             )
-            bindings.write(
-                {
-                    "sync_state": "pending",
-                    "last_sync_date": fields.Datetime.now(),
-                }
-            )
+
+        BatchRequest.create(
+            {
+                "backend_id": self.backend_id.id,
+                "batch_request_id": batch_id,
+                "request_type": "product_create",
+                "state": "pending",
+                "total_items": len(items),
+                "product_binding_ids": [(6, 0, bindings.ids)],
+            }
+        )
+        bindings.write(
+            {
+                "sync_state": "pending",
+                "last_sync_date": fields.Datetime.now(),
+            }
+        )
 
 
 class TrendyolProductExportWizardLine(models.TransientModel):
@@ -286,7 +335,6 @@ class TrendyolProductExportWizardLine(models.TransientModel):
     )
     value_id = fields.Many2one(
         "trendyol.attribute.value",
-        string="Value",
         domain="[('attribute_id', '=', category_attribute_id)]",
     )
-    custom_value = fields.Char(string="Custom Value")
+    custom_value = fields.Char()

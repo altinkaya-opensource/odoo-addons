@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Product Export Wizard Form View -->
+    <record id="view_hepsiburada_product_export_wizard_form" model="ir.ui.view">
+        <field name="name">hepsiburada.product.export.wizard.form</field>
+        <field name="model">hepsiburada.product.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Products to Hepsiburada">
+                <group>
+                    <group>
+                        <field name="backend_id" />
+                        <field name="hb_category_id" />
+                        <field name="hb_brand_id" />
+                    </group>
+                    <group>
+                        <field name="odoo_category_id" />
+                        <field
+                            name="odoo_product_search"
+                            placeholder="Type and press Enter"
+                        />
+                        <field name="vat_rate" />
+                        <field name="skip_existing" />
+                    </group>
+                </group>
+                <div attrs="{'invisible': [('hb_category_id', '=', False)]}">
+                    <button
+                        name="action_sync_category_attributes"
+                        string="Fetch Attributes"
+                        type="object"
+                        class="btn-secondary mb-2"
+                    />
+                    <field name="attribute_line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="category_attribute_id" invisible="1" />
+                            <field name="attr_type" invisible="1" />
+                            <field name="allow_custom" invisible="1" />
+                            <field name="name" />
+                            <field name="required" />
+                            <field
+                                name="value_id"
+                                attrs="{'invisible': [('attr_type', '!=', 'enum')]}"
+                            />
+                            <field
+                                name="custom_value"
+                                attrs="{'invisible': [('attr_type', '=', 'enum')]}"
+                            />
+                        </tree>
+                    </field>
+                </div>
+                <div string="Products">
+                    <field name="product_ids" nolabel="1">
+                        <tree>
+                            <field name="default_code" />
+                            <field name="name" />
+                            <field name="categ_id" />
+                            <field name="barcode" />
+                            <field name="list_price" />
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                options="{'size': [40, 40]}"
+                            />
+                        </tree>
+                    </field>
+                </div>
+                <footer>
+                    <button
+                        name="action_create_bindings"
+                        string="Export to Hepsiburada"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Export Wizard Action (binding on product.product) -->
+    <record id="action_hepsiburada_product_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export to Hepsiburada</field>
+        <field name="res_model">hepsiburada.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <!-- Also bind to product.template -->
+    <record
+        id="action_hepsiburada_product_export_wizard_template"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Export to Hepsiburada</field>
+        <field name="res_model">hepsiburada.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

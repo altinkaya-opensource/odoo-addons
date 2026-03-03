@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Main Menu under Sales -->
+    <menuitem
+        id="menu_hepsiburada_root"
+        name="Hepsiburada"
+        parent="sale.sale_menu_root"
+        sequence="51"
+        groups="hepsiburada_integration.group_hepsiburada_user"
+    />
+
+    <!-- Configuration -->
+    <menuitem
+        id="menu_hepsiburada_config"
+        name="Configuration"
+        parent="menu_hepsiburada_root"
+        sequence="100"
+        groups="hepsiburada_integration.group_hepsiburada_manager"
+    />
+
+    <menuitem
+        id="menu_hepsiburada_backend"
+        name="Backends"
+        parent="menu_hepsiburada_config"
+        action="action_hepsiburada_backend"
+        sequence="10"
+    />
+
+    <!-- Orders -->
+    <menuitem
+        id="menu_hepsiburada_orders"
+        name="Orders"
+        parent="menu_hepsiburada_root"
+        action="action_hepsiburada_order"
+        sequence="10"
+    />
+
+    <!-- Customer Questions -->
+    <menuitem
+        id="menu_hepsiburada_questions"
+        name="Questions (Q&amp;A)"
+        parent="menu_hepsiburada_root"
+        action="action_hepsiburada_question"
+        sequence="15"
+    />
+
+    <!-- Claims/Returns -->
+    <menuitem
+        id="menu_hepsiburada_claims"
+        name="Claims / Returns"
+        parent="menu_hepsiburada_root"
+        action="action_hepsiburada_claim"
+        sequence="20"
+    />
+
+    <!-- Settlements -->
+    <menuitem
+        id="menu_hepsiburada_settlements"
+        name="Settlements"
+        parent="menu_hepsiburada_root"
+        action="action_hepsiburada_settlement"
+        sequence="25"
+    />
+
+    <!-- Products -->
+    <menuitem
+        id="menu_hepsiburada_products"
+        name="Products"
+        parent="menu_hepsiburada_root"
+        action="action_hepsiburada_product_binding"
+        sequence="30"
+    />
+
+    <!-- Configuration sub-items -->
+    <menuitem
+        id="menu_hepsiburada_categories"
+        name="Categories"
+        parent="menu_hepsiburada_config"
+        action="action_hepsiburada_category"
+        sequence="20"
+    />
+
+    <menuitem
+        id="menu_hepsiburada_brands"
+        name="Brands"
+        parent="menu_hepsiburada_config"
+        action="action_hepsiburada_brand"
+        sequence="30"
+    />
+
+    <menuitem
+        id="menu_hepsiburada_batch_requests"
+        name="Batch Requests"
+        parent="menu_hepsiburada_config"
+        action="action_hepsiburada_batch_request"
+        sequence="40"
+    />
+</odoo>

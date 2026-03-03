@@ -42,17 +42,9 @@ def _trendyol_ts_to_utc(ts_ms):
 class TrendyolBackend(models.Model):
     _name = "trendyol.backend"
     _description = "Trendyol Backend Configuration"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["marketplace.backend", "mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(required=True, tracking=True)
-    active = fields.Boolean(default=True)
-    company_id = fields.Many2one(
-        "res.company",
-        required=True,
-        default=lambda self: self.env.company,
-    )
-
-    # API Credentials
+    # API Credentials (Trendyol-specific)
     seller_id = fields.Char(
         string="Seller ID",
         required=True,
@@ -69,144 +61,49 @@ class TrendyolBackend(models.Model):
         required=True,
         groups="trendyol_integration.group_trendyol_manager",
     )
-    environment = fields.Selection(
-        [
-            ("stage", "Stage (Testing)"),
-            ("prod", "Production"),
-        ],
-        default="stage",
-        required=True,
-        tracking=True,
-    )
 
-    # Odoo Mappings
-    warehouse_ids = fields.Many2many(
-        "stock.warehouse",
-        string="Warehouses",
-        required=True,
-        help="Warehouses to use for stock calculations and order fulfillment",
-    )
-    pricelist_id = fields.Many2one(
-        "product.pricelist",
-        required=True,
-        help="Pricelist to use for Trendyol prices (must be in TRY)",
-    )
-    sales_team_id = fields.Many2one(
-        "crm.team",
-        help="Default sales team for Trendyol orders",
-    )
-    fiscal_position_id = fields.Many2one(
-        "account.fiscal.position",
-        help="Default fiscal position for Trendyol orders",
-    )
-    source_id = fields.Many2one(
-        "utm.source",
-        help="UTM source to set on Trendyol orders",
-    )
-
-    # Default Settings
-    default_cargo_company_id = fields.Many2one(
-        "delivery.carrier",
-        help="Default delivery carrier for Trendyol orders",
-    )
+    # Trendyol-specific mappings
     cargo_mapping_ids = fields.One2many(
         "trendyol.cargo.mapping",
         "backend_id",
         string="Cargo Mappings",
         help="Map Trendyol cargo providers to Odoo delivery carriers",
     )
-    default_product_id = fields.Many2one(
-        "product.product",
-        help="Fallback product for unmapped Trendyol items. "
-        "If not set, unmapped items will be created as note lines.",
-    )
-    default_vat_rate = fields.Float(
-        string="Default VAT Rate (%)",
-        default=20.0,
-        help="Default VAT rate for products without tax",
-    )
-    auto_confirm_orders = fields.Boolean(
-        string="Auto-confirm Orders",
-        default=True,
-        help="Automatically confirm imported orders",
+
+    # Product export settings
+    trendyol_cargo_company_id = fields.Selection(
+        selection=[
+            ("38", "Kolay Gelsin Marketplace"),
+            ("30", "Ceva Tedarik Marketplace"),
+            ("10", "DHL eCommerce Marketplace"),
+            ("19", "PTT Kargo Marketplace"),
+            ("9", "Sürat Kargo Marketplace"),
+            ("17", "Trendyol Express Marketplace"),
+            ("6", "Horoz Kargo Marketplace"),
+            ("20", "CEVA Marketplace"),
+            ("4", "Yurtiçi Kargo Marketplace"),
+            ("7", "Aras Kargo Marketplace"),
+        ],
+        required=True,
+        string="Default Cargo Company",
+        help="Trendyol cargo company used for product exports.",
     )
 
-    # Sync Settings
-    auto_import_orders = fields.Boolean(
-        default=True,
-        help="Automatically import orders via scheduled job",
-    )
-    auto_sync_stock = fields.Boolean(
-        default=True,
-        help="Automatically sync stock levels via scheduled job",
-    )
-    auto_sync_tracking = fields.Boolean(
-        default=True,
-        help="Automatically send tracking numbers when delivery is done",
-    )
-    auto_send_invoice = fields.Boolean(
-        default=True,
-        help="Send invoice links to Trendyol via nightly batch cron",
-    )
-    auto_import_claims = fields.Boolean(
-        default=True,
-        help="Automatically import returns/claims via scheduled job",
-    )
+    # Trendyol-specific sync settings
     auto_import_questions = fields.Boolean(
         default=True,
         help="Automatically import customer questions via scheduled job",
     )
 
-    # Last Sync Timestamps
-    last_order_sync = fields.Datetime(
-        readonly=True,
-    )
-    last_stock_sync = fields.Datetime(
-        readonly=True,
-    )
+    # Trendyol-specific sync timestamps
     last_category_sync = fields.Datetime(
         readonly=True,
     )
     last_brand_sync = fields.Datetime(
         readonly=True,
     )
-    last_claim_sync = fields.Datetime(
-        readonly=True,
-    )
     last_question_sync = fields.Datetime(
         readonly=True,
-    )
-
-    # Settlement / Accounting Settings
-    trendyol_partner_id = fields.Many2one(
-        "res.partner",
-        help="Partner record representing Trendyol. Used as reference on "
-        "settlement payments and for reporting purposes.",
-    )
-    settlement_journal_id = fields.Many2one(
-        "account.journal",
-        string="Trendyol Payment Journal",
-        domain="[('type', '=', 'bank')]",
-        help="Intermediary bank-type journal for Trendyol payments. "
-        "When a real bank transfer arrives, reconcile against this journal.",
-    )
-    auto_import_settlements = fields.Boolean(
-        default=True,
-        help="Automatically import financial settlements via scheduled job",
-    )
-    auto_reconcile_settlements = fields.Boolean(
-        default=True,
-        help="Automatically reconcile imported settlements with invoices",
-    )
-    last_settlement_sync = fields.Datetime(
-        readonly=True,
-    )
-
-    # Printing
-    label_printer_id = fields.Many2one(
-        "printing.printer",
-        help="Default ZPL label printer for Trendyol shipping labels. "
-        "Used when the delivery carrier has no printer configured.",
     )
 
     # Q&A Settings

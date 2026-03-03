@@ -15,9 +15,8 @@ _logger = logging.getLogger(__name__)
 
 class TrendyolClaim(models.Model):
     _name = "trendyol.claim"
+    _inherit = "marketplace.claim"
     _description = "Trendyol Claim (Return)"
-    _order = "claim_date desc, id desc"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     backend_id = fields.Many2one(
         "trendyol.backend",
@@ -41,56 +40,25 @@ class TrendyolClaim(models.Model):
         store=True,
     )
 
-    # Dates
-    claim_date = fields.Datetime(
-        help="Date when customer requested return",
-    )
-    last_modified_date = fields.Datetime(
-        string="Last Modified",
-    )
-
-    # Status
-    claim_status = fields.Selection(
-        [
-            ("created", "Created"),
-            ("waiting_in_action", "Waiting In Action"),
-            ("accepted", "Accepted"),
-            ("rejected", "Rejected"),
-            ("cancelled", "Cancelled"),
-            ("unresolved", "Unresolved"),
-        ],
-        default="created",
-        required=True,
-        index=True,
-        tracking=True,
-    )
+    # Trendyol-specific
     auto_accepted = fields.Boolean(
         help="Claim was automatically accepted after 48 hours",
     )
-
-    # Cargo info
-    cargo_tracking_number = fields.Char(string="Return Tracking Number")
-    cargo_tracking_link = fields.Char(string="Return Tracking Link")
-    cargo_provider_name = fields.Char(string="Cargo Provider")
     cargo_sender_number = fields.Char()
 
-    # Claim lines
+    # Trendyol has extra status beyond base
+    claim_status = fields.Selection(
+        selection_add=[
+            ("unresolved", "Unresolved"),
+        ],
+        ondelete={"unresolved": "set default"},
+    )
+
+    # Claim lines (marketplace-specific comodel)
     line_ids = fields.One2many(
         "trendyol.claim.line",
         "claim_id",
         string="Claim Lines",
-    )
-
-    # Return picking
-    odoo_return_picking_id = fields.Many2one(
-        "stock.picking",
-        string="Return Picking",
-        help="Odoo return picking created for this claim",
-    )
-
-    # Raw data
-    raw_data = fields.Text(
-        help="Original JSON data from Trendyol",
     )
 
     # Computed
@@ -378,6 +346,7 @@ class TrendyolClaim(models.Model):
 
 class TrendyolClaimLine(models.Model):
     _name = "trendyol.claim.line"
+    _inherit = "marketplace.claim.line"
     _description = "Trendyol Claim Line"
 
     claim_id = fields.Many2one(
@@ -393,13 +362,6 @@ class TrendyolClaimLine(models.Model):
     product_binding_id = fields.Many2one(
         "trendyol.product.binding",
     )
-    barcode = fields.Char()
-    product_name = fields.Char()
-    quantity = fields.Float(default=1.0)
-    customer_reason = fields.Char(
-        help="Reason stated by customer for return",
-    )
     trendyol_reason = fields.Char(
         help="Reason assessed by Trendyol",
     )
-    status = fields.Char()

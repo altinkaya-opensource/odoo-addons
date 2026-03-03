@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Brand Form View -->
+    <record id="view_hepsiburada_brand_form" model="ir.ui.view">
+        <field name="name">hepsiburada.brand.form</field>
+        <field name="model">hepsiburada.brand</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Brand">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="hb_brand_id" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Brand Tree View -->
+    <record id="view_hepsiburada_brand_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.brand.tree</field>
+        <field name="model">hepsiburada.brand</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="hb_brand_id" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Brand Search View -->
+    <record id="view_hepsiburada_brand_search" model="ir.ui.view">
+        <field name="name">hepsiburada.brand.search</field>
+        <field name="model">hepsiburada.brand</field>
+        <field name="arch" type="xml">
+            <search string="Search Brands">
+                <field name="name" />
+                <field name="hb_brand_id" />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Brand Action -->
+    <record id="action_hepsiburada_brand" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Brands</field>
+        <field name="res_model">hepsiburada.brand</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_brand_search" />
+    </record>
+</odoo>

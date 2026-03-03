@@ -12,12 +12,9 @@ _logger = logging.getLogger(__name__)
 
 class TrendyolCategory(models.Model):
     _name = "trendyol.category"
+    _inherit = "marketplace.category"
     _description = "Trendyol Category"
-    _parent_name = "parent_id"
-    _parent_store = True
-    _order = "parent_path, name"
 
-    name = fields.Char(required=True, index=True)
     trendyol_id = fields.Integer(
         string="Trendyol ID",
         required=True,
@@ -35,31 +32,15 @@ class TrendyolCategory(models.Model):
         index=True,
         ondelete="cascade",
     )
-    parent_path = fields.Char(index=True, unaccent=False)
     child_ids = fields.One2many(
         "trendyol.category",
         "parent_id",
         string="Child Categories",
     )
-    odoo_category_id = fields.Many2one(
-        "product.category",
-        help="Map to Odoo product category for filtering",
-    )
     attribute_ids = fields.One2many(
         "trendyol.category.attribute",
         "category_id",
         string="Attributes",
-    )
-    full_path = fields.Char(
-        compute="_compute_full_path",
-        store=True,
-        recursive=True,
-    )
-    is_leaf = fields.Boolean(
-        string="Is Leaf Category",
-        compute="_compute_is_leaf",
-        store=True,
-        help="Only leaf categories can be used for products",
     )
 
     _sql_constraints = [
@@ -69,38 +50,6 @@ class TrendyolCategory(models.Model):
             "Trendyol category ID must be unique per backend!",
         ),
     ]
-
-    @api.depends("name", "parent_id.full_path")
-    def _compute_full_path(self):
-        for category in self:
-            if category.parent_id:
-                category.full_path = f"{category.parent_id.full_path} > {category.name}"
-            else:
-                category.full_path = category.name
-
-    @api.depends("child_ids")
-    def _compute_is_leaf(self):
-        for category in self:
-            category.is_leaf = not category.child_ids
-
-    def name_get(self):
-        result = []
-        for category in self:
-            result.append((category.id, category.full_path or category.name))
-        return result
-
-    @api.model
-    def _name_search(
-        self, name, args=None, operator="ilike", limit=None, order=None, **kwargs
-    ):
-        args = args or []
-        if name:
-            args = [
-                "|",
-                ("name", operator, name),
-                ("full_path", operator, name),
-            ] + args
-        return self._search(args, limit=limit, order=order)
 
     @api.model
     def _sync_from_trendyol(self, backend, categories, parent=None):
@@ -224,6 +173,7 @@ class TrendyolCategory(models.Model):
 
 class TrendyolCategoryAttribute(models.Model):
     _name = "trendyol.category.attribute"
+    _inherit = "marketplace.category.attribute"
     _description = "Trendyol Category Attribute"
 
     category_id = fields.Many2one(
@@ -237,33 +187,16 @@ class TrendyolCategoryAttribute(models.Model):
         required=True,
         index=True,
     )
-    name = fields.Char(required=True)
-    required = fields.Boolean(
-        help="This attribute is required for product creation",
-    )
-    allow_custom = fields.Boolean(
-        string="Allow Custom Value",
-        help="Custom values can be entered for this attribute",
-    )
-    varianter = fields.Boolean(
-        help="This attribute creates product variants",
-    )
-    slicer = fields.Boolean(
-        help="This attribute is a slicer attribute",
-    )
     value_ids = fields.One2many(
         "trendyol.attribute.value",
         "attribute_id",
         string="Values",
     )
-    odoo_attribute_id = fields.Many2one(
-        "product.attribute",
-        help="Map to Odoo product attribute",
-    )
 
 
 class TrendyolAttributeValue(models.Model):
     _name = "trendyol.attribute.value"
+    _inherit = "marketplace.attribute.value"
     _description = "Trendyol Attribute Value"
 
     attribute_id = fields.Many2one(
@@ -276,9 +209,4 @@ class TrendyolAttributeValue(models.Model):
         string="Trendyol ID",
         required=True,
         index=True,
-    )
-    name = fields.Char(required=True)
-    odoo_value_id = fields.Many2one(
-        "product.attribute.value",
-        help="Map to Odoo product attribute value",
     )

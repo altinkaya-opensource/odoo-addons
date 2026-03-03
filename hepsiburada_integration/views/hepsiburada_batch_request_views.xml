@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Batch Request Form View -->
+    <record id="view_hepsiburada_batch_request_form" model="ir.ui.view">
+        <field name="name">hepsiburada.batch.request.form</field>
+        <field name="model">hepsiburada.batch.request</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Batch Request">
+                <header>
+                    <button
+                        name="action_check_status"
+                        string="Check Status"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', 'in', ['completed', 'failed'])]}"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="pending,processing,completed"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="batch_request_id" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Request Info">
+                            <field name="backend_id" />
+                            <field name="request_type" />
+                            <field name="create_date" />
+                        </group>
+                        <group string="Results">
+                            <field name="total_items" />
+                            <field name="success_count" />
+                            <field name="fail_count" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="product_binding_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="hb_sku" />
+                                    <field name="sync_state" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page
+                            string="Errors"
+                            name="errors"
+                            attrs="{'invisible': [('error_messages', '=', False)]}"
+                        >
+                            <field name="error_messages" />
+                        </page>
+                        <page string="Raw Result" name="raw_result">
+                            <field
+                                name="result_data"
+                                widget="ace"
+                                options="{'mode': 'json'}"
+                                readonly="1"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Batch Request Tree View -->
+    <record id="view_hepsiburada_batch_request_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.batch.request.tree</field>
+        <field name="model">hepsiburada.batch.request</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="state == 'failed'"
+                decoration-success="state == 'completed'"
+                decoration-info="state == 'processing'"
+            >
+                <field name="batch_request_id" />
+                <field name="request_type" />
+                <field name="state" />
+                <field name="total_items" />
+                <field name="success_count" />
+                <field name="fail_count" />
+                <field name="create_date" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Batch Request Search View -->
+    <record id="view_hepsiburada_batch_request_search" model="ir.ui.view">
+        <field name="name">hepsiburada.batch.request.search</field>
+        <field name="model">hepsiburada.batch.request</field>
+        <field name="arch" type="xml">
+            <search string="Search Batch Requests">
+                <field name="batch_request_id" />
+                <separator />
+                <filter
+                    name="pending"
+                    string="Pending"
+                    domain="[('state', '=', 'pending')]"
+                />
+                <filter
+                    name="processing"
+                    string="Processing"
+                    domain="[('state', '=', 'processing')]"
+                />
+                <filter
+                    name="completed"
+                    string="Completed"
+                    domain="[('state', '=', 'completed')]"
+                />
+                <filter
+                    name="failed"
+                    string="Failed"
+                    domain="[('state', '=', 'failed')]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="group_type"
+                        string="Request Type"
+                        context="{'group_by': 'request_type'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Date"
+                        context="{'group_by': 'create_date:day'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Batch Request Action -->
+    <record id="action_hepsiburada_batch_request" model="ir.actions.act_window">
+        <field name="name">Batch Requests</field>
+        <field name="res_model">hepsiburada.batch.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_batch_request_search" />
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="channel_hepsiburada" model="queue.job.channel">
+        <field name="name">hepsiburada</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+
+    <record id="channel_hepsiburada_order" model="queue.job.channel">
+        <field name="name">order</field>
+        <field name="parent_id" ref="channel_hepsiburada" />
+    </record>
+
+    <record id="channel_hepsiburada_product" model="queue.job.channel">
+        <field name="name">product</field>
+        <field name="parent_id" ref="channel_hepsiburada" />
+    </record>
+</odoo>

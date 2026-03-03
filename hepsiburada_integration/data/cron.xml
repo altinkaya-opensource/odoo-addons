@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <!-- Import paid orders every 15 minutes -->
+    <record id="ir_cron_hb_import_orders" model="ir.cron">
+        <field name="name">Hepsiburada: Import Orders</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_orders()</field>
+        <field name="interval_number" eval="15" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Sync cancelled orders every 30 minutes -->
+    <record id="ir_cron_hb_sync_cancelled" model="ir.cron">
+        <field name="name">Hepsiburada: Sync Cancelled Orders</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_cancelled_orders()</field>
+        <field name="interval_number" eval="30" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Import claims every hour -->
+    <record id="ir_cron_hb_import_claims" model="ir.cron">
+        <field name="name">Hepsiburada: Import Claims</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_claims()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">hours</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Import questions every hour -->
+    <record id="ir_cron_hb_import_questions" model="ir.cron">
+        <field name="name">Hepsiburada: Import Questions</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_questions()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">hours</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Import settlements daily -->
+    <record id="ir_cron_hb_import_settlements" model="ir.cron">
+        <field name="name">Hepsiburada: Import Settlements</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_settlements()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">days</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Sync stock/prices every 30 minutes -->
+    <record id="ir_cron_hb_sync_stock_prices" model="ir.cron">
+        <field name="name">Hepsiburada: Sync Stock/Prices</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_stock_prices()</field>
+        <field name="interval_number" eval="30" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Check batch requests every 15 minutes -->
+    <record id="ir_cron_hb_check_batch_requests" model="ir.cron">
+        <field name="name">Hepsiburada: Check Batch Requests</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_check_batch_requests()</field>
+        <field name="interval_number" eval="15" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- Sync categories and brands daily -->
+    <record id="ir_cron_hb_sync_metadata" model="ir.cron">
+        <field name="name">Hepsiburada: Sync Categories &amp; Brands</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_metadata()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">days</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+</odoo>

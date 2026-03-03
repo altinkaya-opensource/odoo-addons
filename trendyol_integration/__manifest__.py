@@ -10,18 +10,11 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "depends": [
-        "base",
-        "product",
-        "sale",
-        "stock",
-        "account",
-        "queue_job",
-        "delivery",
-        "delivery_state",
-        "delivery_integration_base",
+        "marketplace_integration_base",
         "altinkaya_sales",
         "altinkaya_account",
     ],
+    "pre_init_hook": "pre_init_hook",
     "data": [
         # Security
         "security/security.xml",

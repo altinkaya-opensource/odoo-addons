@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Marketplace Module Category -->
+    <record id="module_category_marketplace" model="ir.module.category">
+        <field name="name">Marketplace Integration</field>
+        <field name="description">Manage marketplace integrations</field>
+        <field name="sequence" eval="100" />
+    </record>
+
+    <!-- User Group - Read access to marketplace data -->
+    <record id="group_marketplace_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_marketplace" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!-- Manager Group - Full access, can configure backends -->
+    <record id="group_marketplace_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_marketplace" />
+        <field name="implied_ids" eval="[(4, ref('group_marketplace_user'))]" />
+        <field
+            name="users"
+            eval="[(4, ref('base.user_admin')), (4, ref('base.user_root'))]"
+        />
+    </record>
+</odoo>

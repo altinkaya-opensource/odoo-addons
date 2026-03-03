@@ -23,10 +23,8 @@ QUESTION_STATUS_MAP = {
 
 class TrendyolQuestion(models.Model):
     _name = "trendyol.question"
+    _inherit = "marketplace.question"
     _description = "Trendyol Customer Question"
-    _order = "question_date desc, id desc"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
-    _rec_name = "question_text"
 
     backend_id = fields.Many2one(
         "trendyol.backend",
@@ -39,29 +37,16 @@ class TrendyolQuestion(models.Model):
         required=True,
         index=True,
     )
-    product_name = fields.Char()
-    product_image_url = fields.Char(string="Product Image URL")
-    customer_name = fields.Char()
-    question_text = fields.Text(string="Question")
-    answer_text = fields.Text(string="Answer")
+    # Trendyol has extra statuses beyond the base
     status = fields.Selection(
-        [
-            ("waiting_for_answer", "Waiting for Answer"),
+        selection_add=[
             ("waiting_for_approve", "Waiting for Approve"),
-            ("answered", "Answered"),
             ("reported", "Reported"),
-            ("rejected", "Rejected"),
         ],
-        default="waiting_for_answer",
-        required=True,
-        index=True,
-        tracking=True,
-    )
-    question_date = fields.Datetime()
-    answer_date = fields.Datetime()
-    web_url = fields.Char(string="Web URL")
-    raw_data = fields.Text(
-        help="Original JSON data from Trendyol",
+        ondelete={
+            "waiting_for_approve": "set default",
+            "reported": "set default",
+        },
     )
 
     _sql_constraints = [

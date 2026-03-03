@@ -13,8 +13,8 @@ _logger = logging.getLogger(__name__)
 
 class TrendyolBatchRequest(models.Model):
     _name = "trendyol.batch.request"
+    _inherit = "marketplace.batch.request"
     _description = "Trendyol Batch Request"
-    _order = "create_date desc"
 
     backend_id = fields.Many2one(
         "trendyol.backend",
@@ -22,47 +22,12 @@ class TrendyolBatchRequest(models.Model):
         ondelete="cascade",
         index=True,
     )
-    batch_request_id = fields.Char(
-        string="Batch Request ID",
-        required=True,
-        index=True,
-    )
-    request_type = fields.Selection(
-        [
-            ("product_create", "Product Create"),
-            ("product_update", "Product Update"),
-            ("product_delete", "Product Delete"),
-            ("price_inventory", "Price & Inventory Update"),
-        ],
-        required=True,
-    )
-    state = fields.Selection(
-        [
-            ("pending", "Pending"),
-            ("processing", "Processing"),
-            ("completed", "Completed"),
-            ("failed", "Failed"),
-        ],
-        string="Status",
-        default="pending",
-        required=True,
-        index=True,
-    )
-    total_items = fields.Integer()
-    success_count = fields.Integer()
-    fail_count = fields.Integer()
     product_binding_ids = fields.Many2many(
         "trendyol.product.binding",
         "trendyol_batch_product_rel",
         "batch_id",
         "binding_id",
         string="Product Bindings",
-    )
-    result_data = fields.Text(
-        help="JSON data from batch request result",
-    )
-    error_messages = fields.Text(
-        help="Summary of errors from failed items",
     )
 
     _sql_constraints = [
@@ -98,22 +63,31 @@ class TrendyolBatchRequest(models.Model):
         self.ensure_one()
         Binding = self.env["trendyol.product.binding"]
 
-        status = result.get("status")
         items = result.get("items", [])
+        item_count = result.get("itemCount")
+        failed_item_count = result.get("failedItemCount")
+        # "COMPLETED" or "PROCESSING" from official API
+        api_status = result.get("status")
 
-        # Calculate counts
-        success_count = sum(1 for item in items if item.get("status") == "SUCCESS")
-        fail_count = sum(1 for item in items if item.get("status") == "FAILED")
+        # Derive state: prefer top-level status field when present
+        if api_status == "PROCESSING":
+            new_state = "processing"
+        elif api_status == "COMPLETED" or item_count is not None:
+            if (failed_item_count or 0) == 0:
+                new_state = "completed"
+            elif failed_item_count == item_count:
+                new_state = "failed"
+            else:
+                new_state = "completed"
+        else:
+            new_state = "pending"
 
-        # Map API status to our state
-        state_map = {
-            "IN_PROGRESS": "processing",
-            "COMPLETED": "completed",
-            "FAILED": "failed",
-        }
-        new_state = state_map.get(status, "pending")
+        success_count = (item_count or 0) - (failed_item_count or 0)
+        fail_count = failed_item_count or 0
 
-        # Collect error messages
+        # Collect error messages from items
+        # NOTE: per-item field names (status, barcode, failureReasons) to be
+        # confirmed once a real batch response with items is available
         errors = []
         for item in items:
             if item.get("status") == "FAILED":
@@ -142,7 +116,6 @@ class TrendyolBatchRequest(models.Model):
 
                 if item.get("status") == "SUCCESS":
                     binding.sync_state = "approved"
-                    # Store Trendyol product ID if returned
                     product_id = item.get("requestItem", {}).get("productMainId")
                     if product_id:
                         binding.trendyol_product_id = str(product_id)

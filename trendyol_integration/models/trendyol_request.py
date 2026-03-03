@@ -4,11 +4,13 @@
 import base64
 import json
 import logging
-import time
-from collections import deque
-from threading import Lock
 
 import requests
+
+from odoo.addons.marketplace_integration_base.models.marketplace_request import (
+    MarketplaceAPIError,
+    MarketplaceRateLimiter,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -19,43 +21,15 @@ TRENDYOL_API_URLS = {
 }
 
 
-class TrendyolRateLimiter:
+class TrendyolRateLimiter(MarketplaceRateLimiter):
     """Rate limiter for Trendyol API (50 requests per 10 seconds)."""
 
-    def __init__(self, max_requests=50, time_window=10):
-        self.max_requests = max_requests
-        self.time_window = time_window
-        self.requests = deque()
-        self.lock = Lock()
-
-    def acquire(self):
-        """Wait until a request can be made within rate limits."""
-        with self.lock:
-            now = time.time()
-            # Remove old requests outside the time window
-            while self.requests and self.requests[0] < now - self.time_window:
-                self.requests.popleft()
-
-            if len(self.requests) >= self.max_requests:
-                # Wait until oldest request expires
-                sleep_time = self.requests[0] + self.time_window - now
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                # Clean up again after sleeping
-                now = time.time()
-                while self.requests and self.requests[0] < now - self.time_window:
-                    self.requests.popleft()
-
-            self.requests.append(time.time())
+    def __init__(self):
+        super().__init__(max_requests=50, time_window=10)
 
 
-class TrendyolAPIError(Exception):
+class TrendyolAPIError(MarketplaceAPIError):
     """Exception raised for Trendyol API errors."""
-
-    def __init__(self, message, status_code=None, response_data=None):
-        super().__init__(message)
-        self.status_code = status_code
-        self.response_data = response_data
 
 
 class TrendyolRequest:
@@ -118,7 +92,7 @@ class TrendyolRequest:
         url = f"{self.base_url}{endpoint}"
         headers = self._get_headers()
 
-        _logger.debug(
+        _logger.info(
             "Trendyol API %s %s - params: %s, body: %s",
             method,
             url,
@@ -138,7 +112,7 @@ class TrendyolRequest:
         except requests.RequestException as e:
             raise TrendyolAPIError(f"Request failed: {str(e)}") from e
 
-        _logger.debug(
+        _logger.info(
             "Trendyol API response: %s - %s",
             response.status_code,
             response.text[:500] if response.text else "",
@@ -239,7 +213,7 @@ class TrendyolRequest:
         return self._make_request("POST", endpoint, json_data={"items": items})
 
     def update_products(self, items):
-        """Update existing products in Trendyol.
+        """Update unapproved products in Trendyol.
 
         Args:
             items: List of product update data dicts (max 1000)
@@ -250,8 +224,11 @@ class TrendyolRequest:
         if len(items) > 1000:
             raise TrendyolAPIError("Maximum 1000 items per batch")
 
-        endpoint = f"/integration/product/sellers/{self.seller_id}/products"
-        return self._make_request("PUT", endpoint, json_data={"items": items})
+        endpoint = (
+            f"/integration/product/sellers/{self.seller_id}"
+            "/products/unapproved-bulk-update"
+        )
+        return self._make_request("POST", endpoint, json_data={"items": items})
 
     def update_price_and_inventory(self, items):
         """Update product prices and inventory.

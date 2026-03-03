@@ -10,10 +10,9 @@ _logger = logging.getLogger(__name__)
 
 class TrendyolBrand(models.Model):
     _name = "trendyol.brand"
+    _inherit = "marketplace.brand"
     _description = "Trendyol Brand"
-    _order = "name"
 
-    name = fields.Char(required=True, index=True)
     trendyol_id = fields.Integer(
         string="Trendyol ID",
         required=True,

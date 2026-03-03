@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_hepsiburada_settlement_form" model="ir.ui.view">
+        <field name="name">hepsiburada.settlement.form</field>
+        <field name="model">hepsiburada.settlement</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Settlement">
+                <header>
+                    <button
+                        name="action_reconcile"
+                        string="Reconcile"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '=', 'reconciled')]}"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div
+                        class="alert alert-danger"
+                        role="alert"
+                        attrs="{'invisible': [('state', '!=', 'error')]}"
+                    >
+                        <field name="error_message" />
+                    </div>
+                    <group>
+                        <group string="Transaction Info">
+                            <field name="backend_id" />
+                            <field name="hb_settlement_id" />
+                            <field name="transaction_type" />
+                            <field name="transaction_date" />
+                            <field name="order_number" />
+                            <field name="barcode" />
+                            <field name="description" />
+                        </group>
+                        <group string="Financial">
+                            <field name="debt" />
+                            <field name="credit" />
+                            <field name="commission_rate" />
+                            <field name="commission_amount" />
+                            <field name="seller_revenue" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Payment Info">
+                            <field name="payment_order_id" />
+                            <field name="payment_date" />
+                        </group>
+                        <group string="Odoo Links">
+                            <field name="hb_order_id" />
+                            <field name="odoo_invoice_id" />
+                            <field name="odoo_payment_id" />
+                            <field name="commission_payment_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Raw Data" name="raw_data">
+                            <field name="raw_data" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_hepsiburada_settlement_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.settlement.tree</field>
+        <field name="model">hepsiburada.settlement</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="state == 'error'"
+                decoration-success="state == 'reconciled'"
+            >
+                <field name="order_number" />
+                <field name="transaction_type" />
+                <field name="transaction_date" />
+                <field name="credit" />
+                <field name="commission_amount" />
+                <field name="seller_revenue" />
+                <field name="payment_order_id" />
+                <field name="state" />
+                <field name="odoo_invoice_id" optional="show" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_hepsiburada_settlement_search" model="ir.ui.view">
+        <field name="name">hepsiburada.settlement.search</field>
+        <field name="model">hepsiburada.settlement</field>
+        <field name="arch" type="xml">
+            <search string="Search Settlements">
+                <field name="order_number" />
+                <field name="barcode" />
+                <field name="payment_order_id" />
+                <field name="hb_settlement_id" />
+                <separator />
+                <filter
+                    name="imported"
+                    string="To Reconcile"
+                    domain="[('state', '=', 'imported')]"
+                />
+                <filter
+                    name="reconciled"
+                    string="Reconciled"
+                    domain="[('state', '=', 'reconciled')]"
+                />
+                <filter
+                    name="errors"
+                    string="Errors"
+                    domain="[('state', '=', 'error')]"
+                />
+                <separator />
+                <filter
+                    name="sale"
+                    string="Sales"
+                    domain="[('transaction_type', '=', 'sale')]"
+                />
+                <filter
+                    name="return"
+                    string="Returns"
+                    domain="[('transaction_type', '=', 'return')]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="group_type"
+                        string="Transaction Type"
+                        context="{'group_by': 'transaction_type'}"
+                    />
+                    <filter
+                        name="group_payment_order"
+                        string="Payment Order"
+                        context="{'group_by': 'payment_order_id'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hepsiburada_settlement" model="ir.actions.act_window">
+        <field name="name">Settlements</field>
+        <field name="res_model">hepsiburada.settlement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_settlement_search" />
+        <field name="context">{'search_default_imported': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No settlements imported yet
+            </p>
+            <p>
+                Settlements are imported from Hepsiburada's finance API and used
+                to reconcile invoices with marketplace payments.
+            </p>
+        </field>
+    </record>
+</odoo>
