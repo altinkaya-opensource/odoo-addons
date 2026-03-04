@@ -158,9 +158,13 @@ class AccountInvoiceReport(models.Model):
                line.laser_marking_price as laser_marking_price,
                line.lasercut_price as lasercut_price,
                line.insert_installation_price as insert_installation_price,
-               CASE WHEN first_line.move_id IS NOT NULL
-                    THEN 1 ELSE 0
-               END AS invoice_count,
+               CASE WHEN NOT EXISTS (
+                   SELECT 1 FROM account_move_line prev
+                   WHERE prev.move_id = line.move_id
+                     AND prev.id < line.id
+                     AND prev.display_type = 'product'
+                     AND prev.account_id IS NOT NULL
+               ) THEN 1 ELSE 0 END AS invoice_count,
                partner.industry_id as industry_id,
                line.origin_price_usd * line.quantity as origin_price_usd,
                CASE
@@ -211,12 +215,5 @@ class AccountInvoiceReport(models.Model):
                 GROUP BY move_line_id
             ) scl ON scl.move_line_id = line.id
 
-            LEFT JOIN (
-                SELECT move_id, MIN(id) AS first_line_id
-                FROM account_move_line
-                WHERE display_type = 'product'
-                    AND account_id IS NOT NULL
-                GROUP BY move_id
-            ) first_line ON first_line.first_line_id = line.id
             """
         )
