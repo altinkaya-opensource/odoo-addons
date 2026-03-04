@@ -13,12 +13,8 @@ class SaleOrderLine(models.Model):
         Marketplace prices come from the marketplace API and must not
         be overwritten by the Odoo pricelist engine.
         """
-        marketplace_lines = self.filtered(
-            lambda l: l.order_id.is_marketplace_order
-        )
-        return super(
-            SaleOrderLine, self - marketplace_lines
-        )._compute_price_unit()
+        marketplace_lines = self.filtered(lambda l: l.order_id.is_marketplace_order)
+        return super(SaleOrderLine, self - marketplace_lines)._compute_price_unit()
 
     def explode_set_contents(self):
         """Distribute marketplace pack prices across exploded component lines.
@@ -46,9 +42,7 @@ class SaleOrderLine(models.Model):
         price_map = {}
         for line in marketplace_set_lines:
             subtotal = (
-                line.price_unit
-                * line.product_uom_qty
-                * (1 - line.discount / 100)
+                line.price_unit * line.product_uom_qty * (1 - line.discount / 100)
             )
             price_map[(line.order_id.id, line.product_id.id)] = {
                 "subtotal": subtotal,
@@ -68,17 +62,14 @@ class SaleOrderLine(models.Model):
         for (order_id, parent_product_id), line_data in price_map.items():
             order = self.env["sale.order"].browse(order_id)
             component_lines = order.order_line.filtered(
-                lambda l, pid=parent_product_id: (
-                    l.set_parent_product_id.id == pid
-                )
+                lambda l, pid=parent_product_id: l.set_parent_product_id.id == pid
             )
             if not component_lines:
                 continue
 
             original_subtotal = line_data["subtotal"]
             total_cost = sum(
-                l.product_id.standard_price * l.product_uom_qty
-                for l in component_lines
+                l.product_id.standard_price * l.product_uom_qty for l in component_lines
             )
 
             for cl in component_lines:
@@ -92,9 +83,7 @@ class SaleOrderLine(models.Model):
                     ) / cl.product_uom_qty
                 elif cl.product_uom_qty:
                     # Equal distribution fallback when costs are zero
-                    total_qty = sum(
-                        l.product_uom_qty for l in component_lines
-                    )
+                    total_qty = sum(l.product_uom_qty for l in component_lines)
                     cl.price_unit = original_subtotal / total_qty
 
         return result

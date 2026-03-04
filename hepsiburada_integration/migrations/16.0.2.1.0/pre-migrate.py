@@ -24,6 +24,5 @@ def migrate(cr, version):
             """
         )
         _logger.info(
-            "Renamed hepsiburada_cargo_mapping.hb_cargo_short_name "
-            "to provider_name"
+            "Renamed hepsiburada_cargo_mapping.hb_cargo_short_name to provider_name"
         )

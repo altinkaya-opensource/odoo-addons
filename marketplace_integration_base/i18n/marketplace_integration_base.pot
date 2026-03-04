@@ -1,0 +1,630 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* marketplace_integration_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-04 07:34+0000\n"
+"PO-Revision-Date: 2026-03-04 07:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_claim__claim_status__accepted
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_claim__claim_status__accepted
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_claim__claim_status__accepted
+msgid "Accepted"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__allow_custom
+msgid "Allow Custom Value"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_question__answer_text
+msgid "Answer"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_question__status__answered
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_question__status__answered
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_question__status__answered
+msgid "Answered"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__approved
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__approved
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__approved
+msgid "Approved"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_confirm_orders
+msgid "Auto-confirm Orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_confirm_orders
+msgid "Automatically confirm imported orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_settlements
+msgid "Automatically import financial settlements via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_orders
+msgid "Automatically import orders via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_claims
+msgid "Automatically import returns/claims via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_reconcile_settlements
+msgid "Automatically reconcile imported settlements with invoices"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_sync_tracking
+msgid "Automatically send tracking numbers when delivery is done"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_sync_stock
+msgid "Automatically sync stock levels via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_batch_request__batch_request_id
+msgid "Batch Request ID"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_claim__claim_status__cancelled
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_claim__claim_status__cancelled
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_claim__claim_status__cancelled
+msgid "Cancelled"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_provider_name
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_claim__cargo_provider_name
+msgid "Cargo Provider"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_cargo_mapping__provider_name
+msgid "Cargo provider name or short code from the marketplace API"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__completed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__state__completed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__completed
+msgid "Completed"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_claim__claim_status__created
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_claim__claim_status__created
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_claim__claim_status__created
+msgid "Created"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Credit note %s is already paid."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__allow_custom
+msgid "Custom values can be entered for this attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_claim__claim_date
+msgid "Date when customer requested return"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT Rate (%)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT rate for products without tax"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_cargo_company_id
+msgid "Default delivery carrier for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__fiscal_position_id
+msgid "Default fiscal position for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__sales_team_id
+msgid "Default sales team for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__label_printer_id
+msgid "Default ZPL label printer for marketplace shipping labels."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_cargo_mapping__carrier_id
+msgid "Delivery Carrier"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__draft
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__draft
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__state__error
+msgid "Error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__failed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__state__failed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__failed
+msgid "Failed"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_product_id
+msgid "Fallback product for unmapped marketplace items."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_product_product__image_url
+msgid "Image URL"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__state__imported
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__state__imported
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__state__imported
+msgid "Imported"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__settlement_journal_id
+msgid "Intermediary bank-type journal for marketplace payments."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__odoo_invoice_id
+msgid "Invoice"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Invoice %s is already paid."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__is_leaf
+msgid "Is Leaf Category"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_batch_request__result_data
+msgid "JSON data from batch request result"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_claim__last_modified_date
+msgid "Last Modified"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.module.category,description:marketplace_integration_base.module_category_marketplace
+msgid "Manage marketplace integrations"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:res.groups,name:marketplace_integration_base.group_marketplace_manager
+msgid "Manager"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__odoo_attribute_id
+msgid "Map to Odoo product attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_attribute_value__odoo_value_id
+msgid "Map to Odoo product attribute value"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__odoo_category_id
+msgid "Map to Odoo product category for filtering"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model_terms:ir.ui.view,arch_db:marketplace_integration_base.view_product_product_form_marketplace
+msgid "Marketplace"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_attribute_value
+msgid "Marketplace Attribute Value"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_backend
+msgid "Marketplace Backend"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_batch_request
+msgid "Marketplace Batch Request"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_brand
+msgid "Marketplace Brand"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_cargo_mapping
+msgid "Marketplace Cargo Provider Mapping"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_category
+msgid "Marketplace Category"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_category_attribute
+msgid "Marketplace Category Attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_claim
+msgid "Marketplace Claim (Return)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_claim_line
+msgid "Marketplace Claim Line"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace Commission - Order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_question
+msgid "Marketplace Customer Question"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.module.category,name:marketplace_integration_base.module_category_marketplace
+msgid "Marketplace Integration"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_order
+msgid "Marketplace Order"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__settlement_journal_id
+msgid "Marketplace Payment Journal"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_product_binding
+msgid "Marketplace Product Binding"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace Settlement %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_settlement
+msgid "Marketplace Settlement Transaction"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "No posted credit note found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "No posted invoice found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_cargo_mapping__carrier_id
+msgid "Odoo delivery carrier to assign for this cargo provider"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__odoo_id
+msgid "Odoo Product"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_claim__odoo_return_picking_id
+msgid "Odoo return picking created for this claim"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__is_leaf
+msgid "Only leaf categories can be used for products"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_claim__raw_data
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_question__raw_data
+msgid "Original JSON data from marketplace"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order__raw_data
+msgid "Original JSON data from the marketplace"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__marketplace_partner_id
+msgid "Partner record representing the marketplace. Used as reference on"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__odoo_payment_id
+msgid "Payment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__pending
+msgid "Pending"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__pending
+msgid "Pending Approval"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__request_type__price_inventory
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__request_type__price_inventory
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__request_type__price_inventory
+msgid "Price & Inventory Update"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__pricelist_id
+msgid "Pricelist to use for marketplace prices (must be in TRY)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__request_type__product_create
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__request_type__product_create
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__request_type__product_create
+msgid "Product Create"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__request_type__product_delete
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_batch_request__request_type__product_delete
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__request_type__product_delete
+msgid "Product Delete"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_question__product_image_url
+msgid "Product Image URL"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_product_product
+msgid "Product Variant"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_backend__environment__prod
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_backend__environment__prod
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_backend__environment__prod
+msgid "Production"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_cargo_mapping__provider_name
+msgid "Provider Name"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_product_product__image_url
+msgid "Public HTTPS URL for product image (used for marketplace integrations)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_question__question_text
+msgid "Question"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_claim_line__customer_reason
+msgid "Reason stated by customer for return"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Reconciled"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_claim__claim_status__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_question__status__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_claim__claim_status__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_question__status__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_claim__claim_status__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_question__status__rejected
+msgid "Rejected"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__transaction_type__return
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__transaction_type__return
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__transaction_type__return
+msgid "Return"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_claim__odoo_return_picking_id
+msgid "Return Picking"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_claim__cargo_tracking_link
+msgid "Return Tracking Link"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_claim__cargo_tracking_number
+msgid "Return Tracking Number"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_send_invoice
+msgid "Send invoice links via nightly batch cron"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_sale_order__is_marketplace_order
+msgid "Set automatically when this order is created"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Settlement has been reconciled successfully."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_batch_request__state
+msgid "Status"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_batch_request__error_messages
+msgid "Summary of errors from failed items"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__varianter
+msgid "This attribute creates product variants"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__slicer
+msgid "This attribute is a slicer attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__required
+msgid "This attribute is required for product creation"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "This settlement is already reconciled."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_tracking_link
+msgid "Tracking Link"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_tracking_number
+msgid "Tracking Number"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__source_id
+msgid "UTM source to set on marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:res.groups,name:marketplace_integration_base.group_marketplace_user
+msgid "User"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__warehouse_ids
+msgid "Warehouses"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__warehouse_ids
+msgid "Warehouses to use for stock calculations and order fulfillment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_question__web_url
+msgid "Web URL"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
+#, python-format
+msgid "_get_api_client() must be implemented by %s"
+msgstr ""

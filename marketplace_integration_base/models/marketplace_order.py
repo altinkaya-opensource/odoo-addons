@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -73,9 +73,7 @@ class MarketplaceOrder(models.AbstractModel):
             res.country record or empty recordset.
         """
         country_code = address.get("countryCode", "TR")
-        return self.env["res.country"].search(
-            [("code", "=", country_code)], limit=1
-        )
+        return self.env["res.country"].search([("code", "=", country_code)], limit=1)
 
     @api.model
     def _get_state(self, country, address):

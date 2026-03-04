@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Form View -->
     <record id="view_hepsiburada_order_form" model="ir.ui.view">
@@ -12,12 +12,10 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <span class="oe_edit_only">Sipariş No: </span>
-                            <field
-                                name="hb_order_number"
-                                readonly="1"
-                                class="oe_inline"
-                            />
+                            <span class="oe_edit_only" style="font-weight: bold; color: #A9A9A9;">
+                                Sipariş No:
+                            </span>
+                            <field name="hb_order_number" readonly="1" class="oe_inline" />
                         </h1>
                     </div>
                     <group>
@@ -41,7 +39,7 @@
                         <field name="odoo_id" />
                     </group>
                     <notebook>
-                        <page string="Line Items" name="line_items">
+                        <page name="line_items" string="Line Items">
                             <field name="hb_line_item_ids">
                                 <tree>
                                     <field name="hb_line_item_id" />
@@ -58,7 +56,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Raw Data" name="raw_data">
+                        <page name="raw_data" string="Raw Data">
                             <field name="raw_data" readonly="1" />
                         </page>
                     </notebook>
@@ -66,7 +64,6 @@
             </form>
         </field>
     </record>
-
     <!-- Tree View -->
     <record id="view_hepsiburada_order_tree" model="ir.ui.view">
         <field name="name">hepsiburada.order.tree</field>
@@ -86,7 +83,6 @@
             </tree>
         </field>
     </record>
-
     <!-- Search View -->
     <record id="view_hepsiburada_order_search" model="ir.ui.view">
         <field name="name">hepsiburada.order.search</field>
@@ -96,42 +92,17 @@
                 <field name="hb_order_number" />
                 <field name="cargo_tracking_number" />
                 <field name="hb_package_number" />
-                <filter
-                    name="open"
-                    string="Open"
-                    domain="[('hb_status', '=', 'open')]"
-                />
-                <filter
-                    name="in_transit"
-                    string="In Transit"
-                    domain="[('hb_status', '=', 'in_transit')]"
-                />
-                <filter
-                    name="delivered"
-                    string="Delivered"
-                    domain="[('hb_status', '=', 'delivered')]"
-                />
-                <filter
-                    name="cancelled"
-                    string="Cancelled"
-                    domain="[('hb_status', '=', 'cancelled')]"
-                />
-                <group expand="0" string="Group By">
-                    <filter
-                        name="group_status"
-                        string="Status"
-                        context="{'group_by': 'hb_status'}"
-                    />
-                    <filter
-                        name="group_backend"
-                        string="Backend"
-                        context="{'group_by': 'backend_id'}"
-                    />
+                <filter name="open" string="Open" domain="[('hb_status', '=', 'open')]" />
+                <filter name="in_transit" string="In Transit" domain="[('hb_status', '=', 'in_transit')]" />
+                <filter name="delivered" string="Delivered" domain="[('hb_status', '=', 'delivered')]" />
+                <filter name="cancelled" string="Cancelled" domain="[('hb_status', '=', 'cancelled')]" />
+                <group string="Group By" expand="0">
+                    <filter name="group_status" string="Status" context="{'group_by': 'hb_status'}" />
+                    <filter name="group_backend" string="Backend" context="{'group_by': 'backend_id'}" />
                 </group>
             </search>
         </field>
     </record>
-
     <!-- Action -->
     <record id="action_hepsiburada_order" model="ir.actions.act_window">
         <field name="name">Hepsiburada Orders</field>
