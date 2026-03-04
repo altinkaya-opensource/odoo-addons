@@ -160,27 +160,18 @@ class HepsiburadaBackend(models.Model):
         }
 
     def action_import_orders(self):
-        """Manually trigger order import from the packages endpoint.
-
-        Uses the user-supplied limit and offset values from the form.
-        """
+        """Manually trigger order import from the orders endpoint."""
         self.ensure_one()
-        limit = max(1, min(self.import_orders_limit or 5, 10))
-        offset = max(0, self.import_orders_offset or 0)
         self.with_delay(
             channel="root.hepsiburada.order",
             description=_("Import Hepsiburada orders: %s") % self.name,
-        )._import_packages(limit=limit, offset=offset)
+        )._import_orders()
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
                 "title": _("Import Started"),
-                "message": _(
-                    "Order import queued (offset=%(offset)d, limit=%(limit)d).",
-                    offset=offset,
-                    limit=limit,
-                ),
+                "message": _("Order import has been queued."),
                 "type": "info",
                 "sticky": False,
             },

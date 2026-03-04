@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Form View -->
     <record id="view_hepsiburada_order_form" model="ir.ui.view">
@@ -12,10 +12,17 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <span class="oe_edit_only" style="font-weight: bold; color: #A9A9A9;">
+                            <span
+                                class="oe_edit_only"
+                                style="font-weight: bold; color: #A9A9A9;"
+                            >
                                 Sipariş No:
                             </span>
-                            <field name="hb_order_number" readonly="1" class="oe_inline" />
+                            <field
+                                name="hb_order_number"
+                                readonly="1"
+                                class="oe_inline"
+                            />
                         </h1>
                     </div>
                     <group>
@@ -92,13 +99,37 @@
                 <field name="hb_order_number" />
                 <field name="cargo_tracking_number" />
                 <field name="hb_package_number" />
-                <filter name="open" string="Open" domain="[('hb_status', '=', 'open')]" />
-                <filter name="in_transit" string="In Transit" domain="[('hb_status', '=', 'in_transit')]" />
-                <filter name="delivered" string="Delivered" domain="[('hb_status', '=', 'delivered')]" />
-                <filter name="cancelled" string="Cancelled" domain="[('hb_status', '=', 'cancelled')]" />
+                <filter
+                    name="open"
+                    string="Open"
+                    domain="[('hb_status', '=', 'open')]"
+                />
+                <filter
+                    name="in_transit"
+                    string="In Transit"
+                    domain="[('hb_status', '=', 'in_transit')]"
+                />
+                <filter
+                    name="delivered"
+                    string="Delivered"
+                    domain="[('hb_status', '=', 'delivered')]"
+                />
+                <filter
+                    name="cancelled"
+                    string="Cancelled"
+                    domain="[('hb_status', '=', 'cancelled')]"
+                />
                 <group string="Group By" expand="0">
-                    <filter name="group_status" string="Status" context="{'group_by': 'hb_status'}" />
-                    <filter name="group_backend" string="Backend" context="{'group_by': 'backend_id'}" />
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'hb_status'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
                 </group>
             </search>
         </field>

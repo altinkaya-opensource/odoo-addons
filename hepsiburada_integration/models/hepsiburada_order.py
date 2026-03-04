@@ -157,8 +157,16 @@ class HepsiburadaOrder(models.Model):
             )
             sale_order = self.env["sale.order"].create(order_vals)
 
-            # Extract cargo info from the first line item
+            # Extract cargo and address info from the first line item
             cargo_model = first_item.get("cargoCompanyModel", {})
+            shipping_addr = first_item.get("shippingAddress", {})
+            addr_parts = [
+                shipping_addr.get("address", ""),
+                shipping_addr.get("district", ""),
+                shipping_addr.get("town", ""),
+                shipping_addr.get("city", ""),
+            ]
+            full_address = " ".join(p.strip() for p in addr_parts if p and p.strip())
 
             # Create binding before lines
             binding = self.create(
@@ -171,8 +179,10 @@ class HepsiburadaOrder(models.Model):
                     "hb_status": self._map_status(first_item.get("status")),
                     "cargo_provider_name": cargo_model.get("name", ""),
                     "hb_customer_name": first_item.get("customerName", ""),
+                    "hb_full_address": full_address,
+                    "hb_package_number": first_item.get("packageNumber", ""),
                     "delivery_type": first_item.get("deliveryType", ""),
-                    "due_date": first_item.get("dueDate"),
+                    "due_date": backend._parse_hb_datetime(first_item.get("dueDate")),
                     "raw_data": json.dumps(
                         line_items_data, indent=2, ensure_ascii=False
                     ),
@@ -483,11 +493,7 @@ class HepsiburadaOrder(models.Model):
             backend, item, main_partner, shipping_partner
         )
 
-        order_date = item.get("orderDate")
-        if not order_date:
-            order_date = fields.Datetime.now()
-
-        vals["date_order"] = order_date
+        vals["date_order"] = backend._parse_hb_datetime(item.get("orderDate"))
         vals["client_order_ref"] = str(item.get("orderNumber", ""))
 
         # Get carrier from cargo company mapping
