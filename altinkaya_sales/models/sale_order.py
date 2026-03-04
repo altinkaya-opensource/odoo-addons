@@ -149,6 +149,8 @@ class SaleOrder(models.Model):
         "picking_ids.delivery_state",
         "picking_ids.invoice_state",
         "picking_ids.is_packaged",
+        "order_line.invoice_lines.parent_state",
+        "order_line.invoice_lines.move_id.picking_ids.delivery_state",
     )
     def _compute_order_state(self):
         deadline = datetime.now() - timedelta(days=360)
@@ -181,19 +183,45 @@ class SaleOrder(models.Model):
             )
             if ongoing_productions:
                 sale.order_state = _match_production_with_route(ongoing_productions)
-            # PICKING
-            elif sale.picking_ids.filtered(lambda p: p.state != "cancel"):
-                outgoing_pickings = sale.picking_ids.filtered(
-                    lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+                continue
+
+            # Collect posted out_invoices through sale order lines
+            posted_invoices = sale.order_line.invoice_lines.filtered(
+                lambda il: (
+                    il.parent_state == "posted"
+                    and il.move_id.move_type == "out_invoice"
                 )
-                incoming_pickings = sale.picking_ids.filtered(
-                    lambda p: (
-                        p.picking_type_code == "incoming"
-                        and p.location_id.usage == "customer"
+            ).mapped("move_id")
+
+            # Get outgoing done pickings from invoices (handles merged pickings)
+            invoice_pickings = posted_invoices.picking_ids.filtered(
+                lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+            )
+
+            # Direct pickings from the sale order
+            active_pickings = sale.picking_ids.filtered(lambda p: p.state != "cancel")
+            outgoing_pickings = sale.picking_ids.filtered(
+                lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+            )
+            incoming_pickings = sale.picking_ids.filtered(
+                lambda p: (
+                    p.picking_type_code == "incoming"
+                    and p.location_id.usage == "customer"
+                )
+            )
+
+            # Union of outgoing done pickings from both sources
+            all_outgoing = outgoing_pickings | invoice_pickings
+
+            # PICKING / INVOICE evaluation
+            if active_pickings or posted_invoices:
+                # Determine invoiced pickings by checking actual invoice links
+                invoiced_pickings = all_outgoing.filtered(
+                    lambda p: p.invoice_ids.filtered(
+                        lambda inv: (
+                            inv.state == "posted" and inv.move_type == "out_invoice"
+                        )
                     )
-                )
-                invoiced_pickings = outgoing_pickings.filtered(
-                    lambda p: p.invoice_state == "invoiced"
                 )
 
                 # Check the dispatched pickings
@@ -208,9 +236,7 @@ class SaleOrder(models.Model):
                         sale.order_state = "23_on_transit"
 
                 # Check the packaged pickings
-                elif outgoing_pickings and any(
-                    p.is_packaged for p in outgoing_pickings
-                ):
+                elif all_outgoing and any(p.is_packaged for p in all_outgoing):
                     sale.order_state = "22_packaged"
                 # If there is no packaged or dispatched pickings
                 # set the order state to at_warehouse
