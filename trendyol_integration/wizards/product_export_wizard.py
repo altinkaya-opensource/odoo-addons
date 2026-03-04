@@ -163,11 +163,22 @@ class TrendyolProductExportWizard(models.TransientModel):
                 % product.display_name
             )
 
+        # list_price = product's base price (strikethrough on Trendyol)
+        # sale_price = pricelist price (actual selling price on Trendyol)
+        list_price = product.lst_price
+        pricelist = self.backend_id.pricelist_id
+        if pricelist:
+            sale_price = pricelist._get_product_price(product, 1.0)
+        else:
+            sale_price = list_price
+
         vals = {
             "backend_id": self.backend_id.id,
             "odoo_id": product.id,
             "trendyol_barcode": product.barcode or product.default_code,
             "trendyol_stock_code": product.default_code,
+            "trendyol_sale_price": sale_price,
+            "trendyol_list_price": list_price,
             "vat_rate": self.vat_rate,
         }
         if self.trendyol_category_id:
@@ -290,7 +301,7 @@ class TrendyolProductExportWizard(models.TransientModel):
         result = client.create_products(items)
         _logger.info("Trendyol create_products response: %s", result)
 
-        batch_id = result.get("batchRequestId")
+        batch_id = result.get("batchRequestId") or result.get("batchId")
         if not batch_id:
             raise UserError(
                 _("Trendyol API did not return a batchRequestId. Full response: %s")

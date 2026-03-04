@@ -146,7 +146,7 @@
                         <page string="Cargo Mapping" name="cargo_mapping">
                             <field name="cargo_mapping_ids">
                                 <tree editable="bottom">
-                                    <field name="hb_cargo_short_name" />
+                                    <field name="provider_name" />
                                     <field name="carrier_id" />
                                 </tree>
                             </field>

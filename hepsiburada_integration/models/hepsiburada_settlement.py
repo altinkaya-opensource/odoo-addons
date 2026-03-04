@@ -3,7 +3,7 @@
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from odoo import _, api, fields, models
 
@@ -53,9 +53,9 @@ class HepsiburadaSettlement(models.Model):
             return False
         try:
             if isinstance(timestamp, (int, float)):
-                return datetime.fromtimestamp(
-                    timestamp / 1000, tz=timezone.utc
-                ).replace(tzinfo=None)
+                return datetime.fromtimestamp(timestamp / 1000, tz=UTC).replace(
+                    tzinfo=None
+                )
             return fields.Datetime.from_string(timestamp)
         except (ValueError, TypeError, OSError):
             return False
@@ -97,9 +97,7 @@ class HepsiburadaSettlement(models.Model):
                 limit=1,
             )
 
-        transaction_type = TRANSACTION_TYPE_MAP.get(
-            data.get("transactionType"), "sale"
-        )
+        transaction_type = TRANSACTION_TYPE_MAP.get(data.get("transactionType"), "sale")
 
         try:
             settlement = self.create(

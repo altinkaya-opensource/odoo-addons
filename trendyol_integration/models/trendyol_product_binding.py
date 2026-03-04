@@ -199,7 +199,7 @@ class TrendyolProductBinding(models.Model):
 
         data = {
             "barcode": self.trendyol_barcode,
-            "title": self.odoo_id.name,
+            "title": self.odoo_id.name[:100],
             "productMainId": stock_code,
             "brandId": self.trendyol_brand_id.trendyol_id,
             "categoryId": self.trendyol_category_id.trendyol_id,

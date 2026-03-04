@@ -33,9 +33,7 @@ class MarketplaceCategory(models.AbstractModel):
     def _compute_full_path(self):
         for category in self:
             if category.parent_id:
-                category.full_path = (
-                    f"{category.parent_id.full_path} > {category.name}"
-                )
+                category.full_path = f"{category.parent_id.full_path} > {category.name}"
             else:
                 category.full_path = category.name
 

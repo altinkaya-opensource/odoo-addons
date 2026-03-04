@@ -31,10 +31,7 @@
     </record>
 
     <!-- Category Sync Wizard Action -->
-    <record
-        id="action_hepsiburada_category_sync_wizard"
-        model="ir.actions.act_window"
-    >
+    <record id="action_hepsiburada_category_sync_wizard" model="ir.actions.act_window">
         <field name="name">Sync Categories &amp; Brands</field>
         <field name="res_model">hepsiburada.category.sync.wizard</field>
         <field name="view_mode">form</field>

@@ -5,7 +5,6 @@ import json
 import logging
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 from .trendyol_backend import _trendyol_ts_to_utc
 

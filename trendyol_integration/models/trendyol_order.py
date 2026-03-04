@@ -8,17 +8,20 @@ from datetime import datetime
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from odoo.addons.marketplace_integration_base.models.marketplace_order import (
+    INDIVIDUAL_VAT,
+)
+
 from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
 from .trendyol_request import TrendyolAPIError
 
 _logger = logging.getLogger(__name__)
 
-INDIVIDUAL_VAT = "11111111111"
-
 
 class TrendyolOrder(models.Model):
     _name = "trendyol.order"
     _description = "Trendyol Order"
+    _inherit = ["marketplace.order"]
     _inherits = {"sale.order": "odoo_id"}
     _order = "create_date desc"
 
@@ -73,10 +76,8 @@ class TrendyolOrder(models.Model):
         index=True,
     )
 
-    # Shipping info
-    cargo_tracking_number = fields.Char(string="Tracking Number")
-    cargo_tracking_link = fields.Char(string="Tracking Link")
-    cargo_provider_name = fields.Char(string="Cargo Provider")
+    # Shipping info (cargo_tracking_number, cargo_tracking_link,
+    # cargo_provider_name come from marketplace.order)
     cargo_provider_id = fields.Integer(string="Cargo Provider ID")
 
     # Invoice
@@ -87,10 +88,7 @@ class TrendyolOrder(models.Model):
         readonly=True,
     )
 
-    # Raw data
-    raw_data = fields.Text(
-        help="Original JSON data from Trendyol",
-    )
+    # raw_data comes from marketplace.order
 
     # Computed fields
     order_date = fields.Datetime(
@@ -434,92 +432,30 @@ class TrendyolOrder(models.Model):
 
         return partner_vals
 
-    @api.model
-    def _get_country(self, address):
-        """Get country from address data.
-
-        Args:
-            address: Address dict from API
-
-        Returns:
-            res.country record or None
-        """
-        Country = self.env["res.country"]
-
-        # Trendyol is Turkey-only for now
-        country_code = address.get("countryCode", "TR")
-        return Country.search([("code", "=", country_code)], limit=1)
-
-    @api.model
-    def _get_state(self, country, address):
-        """Get state/province from address data.
-
-        Args:
-            country: res.country record
-            address: Address dict from API
-
-        Returns:
-            res.country.state record or None
-        """
-        if not country:
-            return None
-
-        State = self.env["res.country.state"]
-
-        # Try city name as state (Turkish provinces)
-        city = address.get("city", "")
-        if city:
-            state = State.search(
-                [
-                    ("country_id", "=", country.id),
-                    "|",
-                    ("name", "=ilike", city),
-                    ("code", "=ilike", city),
-                ],
-                limit=1,
-            )
-            if state:
-                return state
-
-        return None
+    # _get_country() and _get_state() come from marketplace.order
 
     @api.model
     def _prepare_order_values(
         self, backend, order_data, main_partner, shipping_partner
     ):
-        """Prepare sale.order values.
+        """Prepare sale.order values for Trendyol orders.
 
-        Args:
-            backend: trendyol.backend record
-            order_data: Dict from API
-            main_partner: res.partner record (invoice partner)
-            shipping_partner: res.partner record (delivery address)
-
-        Returns:
-            Dict of sale.order values
+        Extends the base marketplace values with Trendyol-specific
+        fields: date_order (parsed from Trendyol timestamp),
+        client_order_ref, and carrier_id.
         """
+        vals = super()._prepare_order_values(
+            backend, order_data, main_partner, shipping_partner
+        )
+
         # Parse order date (Trendyol timestamps are GMT+3)
         order_date = _trendyol_ts_to_utc(order_data.get("orderDate"))
         if not order_date:
             order_date = fields.Datetime.now()
 
-        vals = {
-            "partner_id": main_partner.id,
-            "partner_invoice_id": main_partner.id,
-            "partner_shipping_id": shipping_partner.id,
-            "date_order": order_date,
-            "company_id": backend.company_id.id,
-            "warehouse_id": backend.warehouse_ids[:1].id,
-            "pricelist_id": backend.pricelist_id.id,
-            "client_order_ref": str(order_data.get("orderNumber", "")),
-        }
+        vals["date_order"] = order_date
+        vals["client_order_ref"] = str(order_data.get("orderNumber", ""))
 
-        if backend.sales_team_id:
-            vals["team_id"] = backend.sales_team_id.id
-        if backend.fiscal_position_id:
-            vals["fiscal_position_id"] = backend.fiscal_position_id.id
-        if backend.source_id:
-            vals["source_id"] = backend.source_id.id
         carrier = backend._get_carrier_for_cargo_provider(
             order_data.get("cargoProviderName")
         )
@@ -621,32 +557,7 @@ class TrendyolOrder(models.Model):
 
         return vals
 
-    @api.model
-    def _get_tax_for_rate(self, backend, vat_rate):
-        """Find sale tax matching the given VAT rate.
-
-        Args:
-            backend: trendyol.backend record
-            vat_rate: VAT rate percentage (e.g., 10, 18, 20)
-
-        Returns:
-            account.tax record or None
-        """
-        if not vat_rate:
-            return None
-
-        Tax = self.env["account.tax"]
-        # Search for price-included tax with matching rate
-        tax = Tax.search(
-            [
-                ("type_tax_use", "=", "sale"),
-                ("amount", "=", vat_rate),
-                ("price_include", "=", True),
-                ("company_id", "=", backend.company_id.id),
-            ],
-            limit=1,
-        )
-        return tax
+    # _get_tax_for_rate() comes from marketplace.order
 
     def action_update_tracking(self):
         """Update tracking number in Trendyol."""
@@ -842,17 +753,11 @@ class TrendyolOrder(models.Model):
             if line.get("id")
         ]
 
-    def _update_picking_delivery_state(self, trendyol_status):
-        """Update stock.picking delivery_state from Trendyol status.
+    # _update_picking_delivery_state() comes from marketplace.order
+    # with hook methods below.
 
-        Maps Trendyol status to OCA delivery_state values and writes
-        to related outgoing pickings.
-
-        Args:
-            trendyol_status: Mapped status string (e.g., 'shipped', 'delivered')
-        """
-        self.ensure_one()
-        state_map = {
+    def _get_delivery_state_mapping(self):
+        return {
             "picking": "shipping_recorded_in_carrier",
             "invoiced": "shipping_recorded_in_carrier",
             "shipped": "in_transit",
@@ -861,19 +766,12 @@ class TrendyolOrder(models.Model):
             "undelivered": "incident",
             "returned": "warehouse_delivered",
         }
-        delivery_state = state_map.get(trendyol_status)
-        if not delivery_state:
-            return
-        pickings = self.odoo_id.picking_ids.filtered(
-            lambda p: p.picking_type_code == "outgoing"
-        )
-        for picking in pickings:
-            vals = {"delivery_state": delivery_state}
-            if trendyol_status == "shipped":
-                vals["date_shipped"] = fields.Date.today()
-            if trendyol_status == "delivered":
-                vals["date_delivered"] = fields.Datetime.now()
-            picking.write(vals)
+
+    def _get_shipped_status(self):
+        return "shipped"
+
+    def _get_delivered_status(self):
+        return "delivered"
 
     def _notify_picking_status(self):
         """Notify Trendyol that the package is being prepared (Picking status)."""

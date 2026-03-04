@@ -246,9 +246,7 @@ class HepsiburadaProductExportWizard(models.TransientModel):
         data = result.get("data") or {}
         batch_id = data.get("trackingId") or result.get("trackingId")
         if not batch_id:
-            _logger.error(
-                "HB API did not return trackingId. Response: %s", result
-            )
+            _logger.error("HB API did not return trackingId. Response: %s", result)
             raise UserError(
                 _("Hepsiburada API did not return a tracking ID. Response: %s")
                 % str(result)

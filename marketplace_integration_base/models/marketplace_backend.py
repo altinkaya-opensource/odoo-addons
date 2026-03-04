@@ -146,12 +146,11 @@ class MarketplaceBackend(models.AbstractModel):
     def _get_carrier_for_cargo_provider(self, cargo_provider_name):
         """Get delivery carrier for a marketplace cargo provider name.
 
-        Searches cargo_mapping_ids by the provider name field
-        (case-insensitive). Falls back to default_cargo_company_id
-        if no mapping is found.
+        Searches cargo_mapping_ids by provider_name (case-insensitive).
+        Falls back to default_cargo_company_id if no mapping is found.
 
-        Subclass must define cargo_mapping_ids and the corresponding
-        mapping model with a provider name field.
+        Subclass must define cargo_mapping_ids pointing to a model
+        that inherits marketplace.cargo.mapping.
 
         Args:
             cargo_provider_name: Cargo provider name from the marketplace API.
@@ -172,21 +171,13 @@ class MarketplaceBackend(models.AbstractModel):
             return self.default_cargo_company_id
 
         provider_lower = cargo_provider_name.strip().lower()
-        for mapping in self.cargo_mapping_ids:
-            # Each mapping model should have a char field for the provider name
-            # and a Many2one to delivery.carrier
-            provider_field = None
-            for fname in mapping._fields:
-                if fname.endswith("_provider_name") or fname.endswith("_short_name"):
-                    provider_field = fname
-                    break
-                if fname.startswith("hb_cargo") or fname.startswith("trendyol_cargo"):
-                    provider_field = fname
-                    break
-            if provider_field:
-                val = getattr(mapping, provider_field, "")
-                if val and val.strip().lower() == provider_lower:
-                    return mapping.carrier_id
+        mapping = self.cargo_mapping_ids.filtered(
+            lambda m: (
+                m.provider_name and m.provider_name.strip().lower() == provider_lower
+            )
+        )
+        if mapping:
+            return mapping[0].carrier_id
 
         _logger.info(
             "No cargo mapping found for '%s' on %s (id=%s), using default carrier.",

@@ -10,4 +10,8 @@ from . import marketplace_product_binding
 from . import marketplace_claim
 from . import marketplace_question
 from . import marketplace_settlement
+from . import marketplace_order
+from . import marketplace_cargo_mapping
 from . import product_product
+from . import sale_order
+from . import sale_order_line

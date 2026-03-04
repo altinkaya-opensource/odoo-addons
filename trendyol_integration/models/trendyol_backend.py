@@ -186,32 +186,6 @@ class TrendyolBackend(models.Model):
             environment=self.environment,
         )
 
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Trendyol cargo provider name.
-
-        Searches cargo_mapping_ids by trendyol_cargo_provider_name (exact match,
-        case-insensitive). Falls back to default_cargo_company_id if no mapping
-        is found.
-
-        Args:
-            cargo_provider_name: Cargo provider name from Trendyol API
-
-        Returns:
-            delivery.carrier record or False
-        """
-        self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.trendyol_cargo_provider_name
-                    and m.trendyol_cargo_provider_name.lower() == name_lower
-                )
-            )
-            if mapping:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
-
     def action_test_connection(self):
         """Test API connection."""
         self.ensure_one()

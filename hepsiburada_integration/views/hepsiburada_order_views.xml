@@ -12,22 +12,29 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="hb_order_number" readonly="1" />
+                            <span class="oe_edit_only">Sipariş No: </span>
+                            <field
+                                name="hb_order_number"
+                                readonly="1"
+                                class="oe_inline"
+                            />
                         </h1>
                     </div>
                     <group>
                         <group string="Hepsiburada Info">
-                            <field name="hb_order_id" />
-                            <field name="hb_customer_id" />
-                            <field name="backend_id" />
-                            <field name="delivery_type" />
-                            <field name="due_date" />
+                            <field name="hb_order_id" readonly="1" />
+                            <field name="hb_customer_id" readonly="1" />
+                            <field name="hb_customer_name" readonly="1" />
+                            <field name="backend_id" readonly="1" />
+                            <field name="delivery_type" readonly="1" />
+                            <field name="due_date" readonly="1" />
                         </group>
                         <group string="Shipping">
-                            <field name="cargo_provider_name" />
-                            <field name="hb_package_number" />
-                            <field name="cargo_tracking_number" />
-                            <field name="cargo_tracking_link" widget="url" />
+                            <field name="hb_full_address" readonly="1" />
+                            <field name="cargo_provider_name" readonly="1" />
+                            <field name="hb_package_number" readonly="1" />
+                            <!-- <field name="cargo_tracking_number" /> -->
+                            <!-- <field name="cargo_tracking_link" widget="url" /> -->
                         </group>
                     </group>
                     <group string="Odoo Order">
@@ -70,8 +77,9 @@
                 <field name="hb_status" />
                 <field name="odoo_id" />
                 <field name="hb_customer_name" />
+                <field name="hb_full_address" />
                 <field name="cargo_provider_name" />
-                <field name="cargo_tracking_number" />
+                <!-- <field name="cargo_tracking_number" /> -->
                 <field name="hb_package_number" />
                 <field name="backend_id" />
                 <field name="create_date" />

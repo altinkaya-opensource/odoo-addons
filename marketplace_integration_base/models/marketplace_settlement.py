@@ -144,9 +144,7 @@ class MarketplaceSettlement(models.AbstractModel):
             self.write(
                 {
                     "state": "error",
-                    "error_message": _(
-                        "No posted credit note found for sale order %s"
-                    )
+                    "error_message": _("No posted credit note found for sale order %s")
                     % sale_order.name,
                 }
             )

@@ -137,21 +137,6 @@ class HepsiburadaBackend(models.Model):
             environment=self.environment,
         )
 
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Hepsiburada cargo provider name."""
-        self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.hb_cargo_short_name
-                    and m.hb_cargo_short_name.lower() == name_lower
-                )
-            )
-            if mapping:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
-
     # ==================== Action Buttons ====================
 
     def action_test_connection(self):
@@ -876,6 +861,13 @@ class HepsiburadaBackend(models.Model):
         ):
             return False
 
+        # ── Address ─────────────────────────────
+
+        full_address = item.get("shippingAddressDetail") or ""
+        line_items = item.get("items") or []
+        first_line = line_items[0] if line_items else {}
+        delivery_type = first_line.get("deliveryType") or ""
+
         # ── Partner ──────────────────────────────────────────────────────
         customer_id = str(item.get("customerId") or "")
         recipient_name = (item.get("customerName") or "").strip() or _(
@@ -959,7 +951,9 @@ class HepsiburadaBackend(models.Model):
                 "hb_order_id": str(item.get("id") or ""),
                 "hb_customer_id": customer_id,
                 "hb_customer_name": recipient_name,
+                "hb_full_address": full_address,
                 "hb_package_number": package_number,
+                "delivery_type": delivery_type,
                 "hb_status": Order._map_status(item.get("status")),
                 "cargo_provider_name": item.get("cargoCompany") or "",
                 "due_date": self._parse_hb_datetime(item.get("dueDate")),

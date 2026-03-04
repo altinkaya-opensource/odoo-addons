@@ -308,14 +308,10 @@ class HepsiburadaProductBinding(models.Model):
                 return
             result = client.upload_products([data])
             result_data = result.get("data") or {}
-            tracking_id = result_data.get("trackingId") or result.get(
-                "trackingId"
-            )
+            tracking_id = result_data.get("trackingId") or result.get("trackingId")
             if not tracking_id:
                 self.sync_state = "error"
-                self.sync_error = _(
-                    "API did not return tracking ID: %s"
-                ) % str(result)
+                self.sync_error = _("API did not return tracking ID: %s") % str(result)
                 _logger.error(
                     "HB API missing trackingId for %s: %s",
                     self.display_name,
