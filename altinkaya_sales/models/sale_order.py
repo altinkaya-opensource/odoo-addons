@@ -251,6 +251,16 @@ class SaleOrder(models.Model):
 
         return True
 
+    stock_move_ids = fields.Many2many(
+        "stock.move",
+        string="Stok Hareketleri",
+        compute="_compute_stock_move_ids",
+    )
+    account_move_line_ids = fields.Many2many(
+        "account.move.line",
+        string="Fatura Satırları",
+        compute="_compute_account_move_line_ids",
+    )
     sale_line_history = fields.Many2many(
         "sale.order.line", string="Old Sales", compute="_compute_sale_line_history"
     )
@@ -378,6 +388,14 @@ WHERE sale_order.id in %(ids)s;
             "altinkaya_sales.email_template_edi_sale_altinkaya1",
             raise_if_not_found=False,
         )
+
+    def _compute_stock_move_ids(self):
+        for sale in self:
+            sale.stock_move_ids = sale.order_line.move_ids
+
+    def _compute_account_move_line_ids(self):
+        for sale in self:
+            sale.account_move_line_ids = sale.order_line.invoice_lines
 
     def _compute_sale_line_history(self):
         for sale in self:

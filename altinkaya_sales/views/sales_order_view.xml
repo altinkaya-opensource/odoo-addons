@@ -295,6 +295,35 @@
                             <field name="state" />
                         </tree>
                     </field>
+                    <label for="stock_move_ids" />
+                    <field name="stock_move_ids">
+                        <tree>
+                            <field name="date" />
+                            <field name="reference" />
+                            <field name="product_id" />
+                            <field name="product_uom_qty" string="Demand" />
+                            <field name="quantity_done" />
+                            <field name="product_uom" string="UoM" />
+                            <field name="location_id" />
+                            <field name="location_dest_id" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+                    <label for="account_move_line_ids" />
+                    <field name="account_move_line_ids">
+                        <tree>
+                            <field name="move_id" string="Invoice" />
+                            <field name="move_name" optional="hide" />
+                            <field name="product_id" />
+                            <field name="name" string="Description" optional="hide" />
+                            <field name="quantity" />
+                            <field name="product_uom_id" string="UoM" />
+                            <field name="price_unit" />
+                            <field name="discount" optional="hide" />
+                            <field name="price_subtotal" />
+                            <field name="parent_state" string="Status" />
+                        </tree>
+                    </field>
                 </page>
             </xpath>
 
