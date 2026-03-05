@@ -159,11 +159,20 @@ class HepsiburadaBackend(models.Model):
         }
 
     def action_import_orders(self):
-        """Manually trigger order import from the orders endpoint."""
+        """Manually trigger order import from both endpoints.
+
+        Queues two jobs:
+        1. _import_packages() — fetches packaged orders
+        2. _import_orders() — fetches open/unpacked orders
+        """
         self.ensure_one()
         self.with_delay(
             channel="root.hepsiburada.order",
-            description=_("Import Hepsiburada orders: %s") % self.name,
+            description=_("Import HB packages: %s") % self.name,
+        )._import_packages()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import HB orders: %s") % self.name,
         )._import_orders()
         return {
             "type": "ir.actions.client",
@@ -847,7 +856,6 @@ class HepsiburadaBackend(models.Model):
                     limit,
                     self.name,
                 )
-                self.last_order_sync = fields.Datetime.now()
                 return
 
             total_imported = 0
@@ -862,7 +870,6 @@ class HepsiburadaBackend(models.Model):
                         exc_info=True,
                     )
 
-            self.last_order_sync = fields.Datetime.now()
             _logger.info(
                 "Imported %d packages (offset=%d, limit=%d) for HB backend %s",
                 total_imported,
@@ -983,27 +990,16 @@ class HepsiburadaBackend(models.Model):
         return imported
 
     def _import_orders(self):
-        """Import paid orders from Hepsiburada API.
+        """Import open/unpacked orders from Hepsiburada API.
 
         Paginates through GET /orders/merchantid/{merchantId}.
-        Groups line items by orderNumber and delegates to
-        hepsiburada.order._import_order().
-        Uses last_order_sync for date filtering (same as Trendyol).
+        The endpoint already filters to Open + Unpacked orders,
+        so no date range is needed. Groups line items by orderNumber
+        and delegates to hepsiburada.order._import_order().
         """
         self.ensure_one()
         client = self._get_api_client()
         Order = self.env["hepsiburada.order"]
-
-        # Calculate date range (same pattern as Trendyol)
-        end_date = fields.Datetime.now()
-        if self.last_order_sync:
-            start_date = self.last_order_sync
-        else:
-            # First sync: get last 7 days
-            start_date = end_date - timedelta(days=7)
-
-        begin_date_str = start_date.strftime("%Y-%m-%d %H:%M")
-        end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
 
         try:
             offset = 0
@@ -1012,12 +1008,7 @@ class HepsiburadaBackend(models.Model):
             orders_by_number = {}
 
             while True:
-                result = client.get_paid_orders(
-                    offset=offset,
-                    limit=10,
-                    begin_date=begin_date_str,
-                    end_date=end_date_str,
-                )
+                result = client.get_paid_orders(offset=offset, limit=10)
                 items = result.get("items", [])
                 if not items:
                     break

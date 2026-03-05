@@ -18,6 +18,7 @@
         "security/ir.model.access.csv",
         # Data
         "data/queue_job_channel_data.xml",
+        "data/ir_sequence_data.xml",
         "data/cron.xml",
         # Wizards (must load before backend views that reference wizard actions)
         "wizards/product_export_wizard_views.xml",

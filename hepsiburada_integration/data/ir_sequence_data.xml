@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="seq_hepsiburada_package_number" model="ir.sequence">
+        <field name="name">Hepsiburada Package Number</field>
+        <field name="code">hepsiburada.package.number</field>
+        <field name="prefix">HB-PKG-</field>
+        <field name="padding">6</field>
+    </record>
+</odoo>

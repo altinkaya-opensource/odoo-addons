@@ -5,6 +5,7 @@ import json
 import logging
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 from odoo.addons.marketplace_integration_base.models.marketplace_order import (
     INDIVIDUAL_VAT,
@@ -153,7 +154,8 @@ class HepsiburadaOrder(models.Model):
             new_items = [
                 item
                 for item in line_items_data
-                if str(item.get("id", "")) not in existing_line_ids
+                if str(item.get("lineItemId") or item.get("id") or "")
+                not in existing_line_ids
             ]
             if new_items:
                 for item in new_items:
@@ -198,7 +200,7 @@ class HepsiburadaOrder(models.Model):
                     "cargo_provider_name": cargo_model.get("name", ""),
                     "hb_customer_name": first_item.get("customerName", ""),
                     "hb_full_address": full_address,
-                    "hb_package_number": first_item.get("packageNumber", ""),
+                    "hb_package_number": first_item.get("packageNumber") or False,
                     "delivery_type": first_item.get("deliveryType", ""),
                     "due_date": backend._parse_hb_datetime(first_item.get("dueDate")),
                     "raw_data": json.dumps(
@@ -242,9 +244,10 @@ class HepsiburadaOrder(models.Model):
             binding: hepsiburada.order record.
             item: Line item dict from HB API.
         """
-        line_item_id = str(item.get("id", ""))
+        # Order detail uses "lineItemId", list endpoint uses "id"
+        line_item_id = str(item.get("lineItemId") or item.get("id") or "")
         if not line_item_id:
-            _logger.warning("HB line item missing id, skipping")
+            _logger.warning("HB line item missing lineItemId/id, skipping")
             return
 
         # Create sale.order.line
@@ -787,6 +790,186 @@ class HepsiburadaOrder(models.Model):
             "Invoice link sent for HB order %s: %s",
             self.hb_order_number,
             invoice.name,
+        )
+
+    # ── Package Creation ─────────────────────────────────────────────────
+
+    def action_create_package(self):
+        """Manual button: queue package creation in Hepsiburada."""
+        self.ensure_one()
+        if self.hb_package_number:
+            raise models.UserError(_("Package already created for this order."))
+        if self.hb_status not in ("open", "unpacked"):
+            raise models.UserError(
+                _("Only orders with 'Open' or 'Unpacked' status can be packaged.")
+            )
+        if not self.hb_line_item_ids:
+            raise models.UserError(_("No line items found to package."))
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Create package: %s") % self.hb_order_number,
+        )._create_package()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Package Creation Queued"),
+                "message": _("Package creation has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _create_package(self):
+        """Create a package in Hepsiburada for all line items.
+
+        The list endpoint (get_paid_orders) returns an 'id' field that is
+        NOT the lineItemId the packaging API expects. We must re-fetch via
+        get_order_detail() to get the real lineItemId values.
+        """
+        self.ensure_one()
+        from .hepsiburada_request import HepsiburadaAPIError
+
+        client = self.backend_id._get_api_client()
+
+        # Re-fetch order detail to get the real lineItemId values
+        # (the 'id' from get_paid_orders is a different identifier)
+        detail = client.get_order_detail(self.hb_order_number)
+        detail_items = detail.get("items", [])
+        if not detail_items:
+            detail_items = detail if isinstance(detail, list) else []
+
+        if not detail_items:
+            raise UserError(_("No line items returned from order detail API."))
+
+        # Build line item requests from the detail response
+        line_item_requests = []
+        for item in detail_items:
+            line_item_id = str(item.get("lineItemId") or item.get("id") or "")
+            quantity = item.get("quantity", 1)
+            if line_item_id:
+                line_item_requests.append(
+                    {"lineItemId": line_item_id, "quantity": quantity}
+                )
+
+        if not line_item_requests:
+            raise UserError(_("No valid line item IDs found in order detail."))
+
+        _logger.info(
+            "HB create_package for order %s: %s",
+            self.hb_order_number,
+            line_item_requests,
+        )
+
+        # Generate package number via sequence
+        package_number = self.env["ir.sequence"].next_by_code(
+            "hepsiburada.package.number"
+        )
+
+        try:
+            result = client.create_package(line_item_requests, package_number)
+        except HepsiburadaAPIError:
+            _logger.error(
+                "Failed to create package for HB order %s",
+                self.hb_order_number,
+                exc_info=True,
+            )
+            raise
+
+        # Use HB-returned packageNumber if available, otherwise our generated one
+        actual_pkg = package_number
+        if isinstance(result, dict) and result.get("packageNumber"):
+            actual_pkg = str(result["packageNumber"])
+        elif isinstance(result, list) and result:
+            first = result[0]
+            if isinstance(first, dict) and first.get("packageNumber"):
+                actual_pkg = str(first["packageNumber"])
+
+        self.hb_package_number = actual_pkg
+        self.hb_status = "packaged"
+        _logger.info(
+            "Created package %s for HB order %s",
+            actual_pkg,
+            self.hb_order_number,
+        )
+
+        # Fetch package details (cargo info, tracking) immediately
+        self._fetch_package_details()
+
+    def action_fetch_package_details(self):
+        """Manual button: queue fetching package details from Hepsiburada."""
+        self.ensure_one()
+        if not self.hb_package_number:
+            raise models.UserError(
+                _("No package number found. Create a package first.")
+            )
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Fetch package details: %s") % self.hb_order_number,
+        )._fetch_package_details()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Package Refresh Queued"),
+                "message": _("Package details refresh has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _fetch_package_details(self):
+        """Fetch package details from Hepsiburada and store cargo info."""
+        self.ensure_one()
+        from .hepsiburada_request import HepsiburadaAPIError
+
+        client = self.backend_id._get_api_client()
+
+        try:
+            result = client.get_package_detail(self.hb_package_number)
+        except HepsiburadaAPIError:
+            _logger.error(
+                "Failed to fetch package details for HB order %s, package %s",
+                self.hb_order_number,
+                self.hb_package_number,
+                exc_info=True,
+            )
+            raise
+
+        # Response is a list of package detail dicts
+        if isinstance(result, list) and result:
+            pkg = result[0]
+        elif isinstance(result, dict):
+            pkg = result
+        else:
+            _logger.warning(
+                "Empty package detail response for HB order %s",
+                self.hb_order_number,
+            )
+            return
+
+        # Store cargo details
+        cargo_company = pkg.get("cargoCompany", "")
+        tracking_code = pkg.get("trackingInfoCode", "")
+        tracking_url = pkg.get("trackingInfoUrl", "")
+
+        if cargo_company:
+            self.cargo_provider_name = cargo_company
+            # Try to match Odoo delivery carrier
+            carrier = self.backend_id._get_carrier_for_cargo_provider(cargo_company)
+            if carrier and not self.odoo_id.carrier_id:
+                self.odoo_id.carrier_id = carrier
+
+        if tracking_code:
+            self.cargo_tracking_number = tracking_code
+        if tracking_url:
+            self.cargo_tracking_link = tracking_url
+
+        _logger.info(
+            "Fetched package details for HB order %s: cargo=%s, tracking=%s",
+            self.hb_order_number,
+            cargo_company,
+            tracking_code,
         )
 
     # ── Order Cancellation ───────────────────────────────────────────────

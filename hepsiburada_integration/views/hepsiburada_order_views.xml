@@ -8,6 +8,19 @@
             <form string="Hepsiburada Order" create="false">
                 <header>
                     <button
+                        name="action_create_package"
+                        string="Create Package"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('hb_package_number', '!=', False), ('hb_status', 'not in', ['open', 'unpacked'])]}"
+                    />
+                    <button
+                        name="action_fetch_package_details"
+                        string="Refresh Package"
+                        type="object"
+                        attrs="{'invisible': [('hb_package_number', '=', False)]}"
+                    />
+                    <button
                         name="action_send_invoice"
                         string="Send Invoice"
                         type="object"
@@ -124,6 +137,16 @@
                     name="open"
                     string="Open"
                     domain="[('hb_status', '=', 'open')]"
+                />
+                <filter
+                    name="unpacked"
+                    string="Unpacked"
+                    domain="[('hb_status', '=', 'unpacked')]"
+                />
+                <filter
+                    name="packaged"
+                    string="Packaged"
+                    domain="[('hb_status', '=', 'packaged')]"
                 />
                 <filter
                     name="in_transit"
