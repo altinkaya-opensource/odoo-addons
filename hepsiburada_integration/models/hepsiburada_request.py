@@ -479,6 +479,46 @@ class HepsiburadaRequest:
             params["timespan"] = timespan
         return self._make_request("GET", url, params=params)
 
+    def get_shipped_packages(
+        self, offset=0, limit=10, begin_date=None, end_date=None, timespan=None
+    ):
+        """GET /packages/merchantid/{merchantId}/shipped
+
+        Same pagination as get_packages(). Returns packages in transit.
+        """
+        url = (
+            f"{self._get_base_url('oms')}"
+            f"/packages/merchantid/{self.merchant_id}/shipped"
+        )
+        params = {"offset": offset, "limit": min(limit, 10)}
+        if begin_date:
+            params["beginDate"] = begin_date
+        if end_date:
+            params["endDate"] = end_date
+        if timespan:
+            params["timespan"] = timespan
+        return self._make_request("GET", url, params=params)
+
+    def get_delivered_packages(
+        self, offset=0, limit=10, begin_date=None, end_date=None, timespan=None
+    ):
+        """GET /packages/merchantid/{merchantId}/delivered
+
+        Same pagination as get_packages(). Returns delivered packages.
+        """
+        url = (
+            f"{self._get_base_url('oms')}"
+            f"/packages/merchantid/{self.merchant_id}/delivered"
+        )
+        params = {"offset": offset, "limit": min(limit, 10)}
+        if begin_date:
+            params["beginDate"] = begin_date
+        if end_date:
+            params["endDate"] = end_date
+        if timespan:
+            params["timespan"] = timespan
+        return self._make_request("GET", url, params=params)
+
     def get_package_detail(self, package_number):
         """GET /packages/merchantid/{merchantId}/packagenumber/{packageNumber}"""
         url = (

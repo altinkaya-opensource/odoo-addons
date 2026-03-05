@@ -831,55 +831,70 @@ class HepsiburadaBackend(models.Model):
     # ==================== Order Import ====================
 
     def _import_packages(self, limit=5, offset=0):
-        """Import orders from GET /packages/merchantid/{merchantId}.
+        """Import orders from multiple package endpoints.
 
-        Called by the manual 'Import Orders' button with user-supplied
-        limit and offset. Each package's lineItems are fed into the
-        standard _import_order() routine so the result lands in the
-        hepsiburada.order list (the 'Orders' tab).
+        Fetches from three HB endpoints to cover all package states:
+        1. /packages/merchantid/{merchantId} — open/unpacked packages
+        2. /packages/merchantid/{merchantId}/shipped — in-transit packages
+        3. /packages/merchantid/{merchantId}/delivered — delivered packages
+
+        Each package's lineItems are fed into the standard _import_order()
+        routine so the result lands in the hepsiburada.order list.
 
         Args:
-            limit: Number of packages to fetch (clamped to 1–10 by HB API).
+            limit: Number of packages to fetch per endpoint (clamped 1–10).
             offset: Pagination offset.
         """
         self.ensure_one()
         client = self._get_api_client()
 
-        try:
-            result = client.get_packages(offset=offset, limit=limit)
-            items = result if isinstance(result, list) else result.get("items") or []
+        endpoints = [
+            ("packages", client.get_packages),
+            ("shipped", client.get_shipped_packages),
+            ("delivered", client.get_delivered_packages),
+        ]
 
-            if not items:
-                _logger.info(
-                    "No packages found at offset=%d limit=%d for HB backend %s",
-                    offset,
-                    limit,
-                    self.name,
+        total_imported = 0
+        for label, fetch_fn in endpoints:
+            try:
+                result = fetch_fn(offset=offset, limit=limit)
+                items = (
+                    result if isinstance(result, list) else result.get("items") or []
                 )
-                return
 
-            total_imported = 0
-            for item in items:
-                try:
-                    if self._import_single_package(item):
-                        total_imported += 1
-                except Exception:
-                    _logger.error(
-                        "Failed to import HB package %s",
-                        item.get("packageNumber") or item.get("id"),
-                        exc_info=True,
+                if not items:
+                    _logger.info(
+                        "No %s packages at offset=%d limit=%d for HB backend %s",
+                        label,
+                        offset,
+                        limit,
+                        self.name,
                     )
+                    continue
 
-            _logger.info(
-                "Imported %d packages (offset=%d, limit=%d) for HB backend %s",
-                total_imported,
-                offset,
-                limit,
-                self.name,
-            )
-        except HepsiburadaAPIError as e:
-            _logger.error("Failed to import HB packages: %s", str(e))
-            raise
+                for item in items:
+                    try:
+                        if self._import_single_package(item):
+                            total_imported += 1
+                    except Exception:
+                        _logger.error(
+                            "Failed to import HB %s package %s",
+                            label,
+                            item.get("packageNumber") or item.get("id"),
+                            exc_info=True,
+                        )
+
+            except HepsiburadaAPIError as e:
+                _logger.error("Failed to import HB %s packages: %s", label, str(e))
+                raise
+
+        _logger.info(
+            "Imported %d packages total (offset=%d, limit=%d) for HB backend %s",
+            total_imported,
+            offset,
+            limit,
+            self.name,
+        )
 
     def _parse_hb_datetime(self, value):
         """Parse HB ISO 8601 datetime string to a naive datetime.
