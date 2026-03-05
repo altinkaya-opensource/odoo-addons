@@ -64,13 +64,13 @@ class HepsiburadaOrder(models.Model):
     # Status (aggregated from line items)
     hb_status = fields.Selection(
         [
-            ("open", "Open"),
-            ("unpacked", "Unpacked"),
-            ("packaged", "Packaged"),
-            ("in_transit", "In Transit"),
-            ("delivered", "Delivered"),
-            ("cancelled", "Cancelled"),
-            ("undelivered", "Undelivered"),
+            ("open", "Paketlenecek"),
+            ("packaged", "Gönderime Hazır"),
+            ("in_transit", "Kargoda"),
+            ("delivered", "Teslim Edildi"),
+            ("undelivered", "Teslim Edilemedi"),
+            ("payment_awaiting", "Ödemesi Bekliyor"),
+            ("cancelled", "İptal Edildi"),
         ],
         default="open",
         required=True,
@@ -291,7 +291,7 @@ class HepsiburadaOrder(models.Model):
         """
         status_map = {
             "Open": "open",
-            "Unpacked": "unpacked",
+            "Unpacked": "open",
             "Packaged": "packaged",
             "InTransit": "in_transit",
             "Delivered": "delivered",
@@ -299,6 +299,7 @@ class HepsiburadaOrder(models.Model):
             "CancelledByCustomer": "cancelled",
             "CancelledBySap": "cancelled",
             "ClaimCreated": "undelivered",
+            "PaymentAwaiting": "payment_awaiting",
         }
         return status_map.get(hb_status, "open")
 

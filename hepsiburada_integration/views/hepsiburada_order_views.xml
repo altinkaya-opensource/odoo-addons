@@ -12,7 +12,7 @@
                         string="Create Package"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': ['|', ('hb_package_number', '!=', False), ('hb_status', 'not in', ['open', 'unpacked'])]}"
+                        attrs="{'invisible': ['|', ('hb_package_number', '!=', False), ('hb_status', 'not in', ['open'])]}"
                     />
                     <button
                         name="action_fetch_package_details"
@@ -135,32 +135,37 @@
                 <field name="hb_package_number" />
                 <filter
                     name="open"
-                    string="Open"
+                    string="Paketlenecek"
                     domain="[('hb_status', '=', 'open')]"
                 />
                 <filter
-                    name="unpacked"
-                    string="Unpacked"
-                    domain="[('hb_status', '=', 'unpacked')]"
-                />
-                <filter
                     name="packaged"
-                    string="Packaged"
+                    string="Gönderime Hazır"
                     domain="[('hb_status', '=', 'packaged')]"
                 />
                 <filter
                     name="in_transit"
-                    string="In Transit"
+                    string="Kargoda"
                     domain="[('hb_status', '=', 'in_transit')]"
                 />
                 <filter
                     name="delivered"
-                    string="Delivered"
+                    string="Teslim Edildi"
                     domain="[('hb_status', '=', 'delivered')]"
                 />
                 <filter
+                    name="undelivered"
+                    string="Teslim Edilemedi"
+                    domain="[('hb_status', '=', 'undelivered')]"
+                />
+                <filter
+                    name="payment_awaiting"
+                    string="Ödemesi Bekliyor"
+                    domain="[('hb_status', '=', 'payment_awaiting')]"
+                />
+                <filter
                     name="cancelled"
-                    string="Cancelled"
+                    string="İptal Edildi"
                     domain="[('hb_status', '=', 'cancelled')]"
                 />
                 <group string="Group By" expand="0">

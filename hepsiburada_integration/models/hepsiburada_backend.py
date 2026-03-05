@@ -159,11 +159,13 @@ class HepsiburadaBackend(models.Model):
         }
 
     def action_import_orders(self):
-        """Manually trigger order import from both endpoints.
+        """Manually trigger order import from all endpoints.
 
-        Queues two jobs:
-        1. _import_packages() — fetches packaged orders
+        Queues four jobs:
+        1. _import_packages() — fetches packaged/shipped/delivered orders
         2. _import_orders() — fetches open/unpacked orders
+        3. _sync_cancelled_orders() — updates cancelled order statuses
+        4. _import_payment_awaiting_orders() — fetches payment awaiting orders
         """
         self.ensure_one()
         self.with_delay(
@@ -174,6 +176,14 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import HB orders: %s") % self.name,
         )._import_orders()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Sync HB cancelled orders: %s") % self.name,
+        )._sync_cancelled_orders()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import HB payment awaiting orders: %s") % self.name,
+        )._import_payment_awaiting_orders()
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
@@ -1120,6 +1130,61 @@ class HepsiburadaBackend(models.Model):
             _logger.error("Failed to sync HB cancelled orders: %s", str(e))
             raise
 
+    def _import_payment_awaiting_orders(self):
+        """Import orders awaiting payment from Hepsiburada API.
+
+        Paginates through GET /orders/merchantid/{merchantId}/paymentawaiting.
+        Groups line items by orderNumber and delegates to
+        hepsiburada.order._import_order() which creates new or updates
+        existing orders.
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        Order = self.env["hepsiburada.order"]
+
+        try:
+            offset = 0
+            total_imported = 0
+            orders_by_number = {}
+
+            while True:
+                result = client.get_payment_awaiting_orders(offset=offset, limit=50)
+                items = result.get("items", [])
+                if not items:
+                    break
+
+                for item in items:
+                    order_number = item.get("orderNumber")
+                    if not order_number:
+                        continue
+                    orders_by_number.setdefault(order_number, []).append(item)
+
+                offset += len(items)
+                if offset >= 2500:
+                    _logger.warning("HB payment awaiting orders safety limit reached")
+                    break
+
+            for order_number, line_items in orders_by_number.items():
+                try:
+                    Order._import_order(self, line_items)
+                    total_imported += 1
+                except Exception:
+                    _logger.error(
+                        "Failed to import HB payment awaiting order %s",
+                        order_number,
+                        exc_info=True,
+                    )
+                    continue
+
+            _logger.info(
+                "Imported %d payment awaiting orders for HB backend %s",
+                total_imported,
+                self.name,
+            )
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to import HB payment awaiting orders: %s", str(e))
+            raise
+
     # ==================== Cron Methods ====================
 
     @api.model
@@ -1133,6 +1198,14 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Import Hepsiburada orders: %s") % backend.name,
             )._import_orders()
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import HB packages: %s") % backend.name,
+            )._import_packages()
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import HB payment awaiting orders: %s") % backend.name,
+            )._import_payment_awaiting_orders()
 
     @api.model
     def _cron_sync_cancelled_orders(self):

@@ -436,6 +436,24 @@ class HepsiburadaRequest:
             params["endDate"] = end_date
         return self._make_request("GET", url, params=params)
 
+    def get_payment_awaiting_orders(
+        self, offset=0, limit=50, begin_date=None, end_date=None
+    ):
+        """GET /orders/merchantid/{merchantId}/paymentawaiting
+
+        Returns orders awaiting payment. Limit max 50.
+        """
+        url = (
+            f"{self._get_base_url('oms')}"
+            f"/orders/merchantid/{self.merchant_id}/paymentawaiting"
+        )
+        params = {"offset": offset, "limit": min(limit, 50)}
+        if begin_date:
+            params["beginDate"] = begin_date
+        if end_date:
+            params["endDate"] = end_date
+        return self._make_request("GET", url, params=params)
+
     def get_packageable_items(self, line_item_id):
         """GET /lineitems/merchantid/{merchantId}/packageablewith/lineitemid/{id}"""
         url = (
