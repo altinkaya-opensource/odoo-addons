@@ -90,6 +90,10 @@ class HepsiburadaOrder(models.Model):
         string="HB Line Items",
     )
 
+    # Invoice tracking
+    invoice_link_sent = fields.Boolean(default=False)
+    invoice_sent_date = fields.Datetime()
+
     _sql_constraints = [
         (
             "order_number_backend_uniq",
@@ -130,6 +134,20 @@ class HepsiburadaOrder(models.Model):
         )
 
         if existing:
+            # Update status and raw data only if changed (like Trendyol)
+            new_status = self._map_status(first_item.get("status"))
+            if existing.hb_status != new_status:
+                existing.hb_status = new_status
+                existing.raw_data = json.dumps(
+                    line_items_data, indent=2, ensure_ascii=False
+                )
+                existing._update_picking_delivery_state(new_status)
+
+            # Update package number if it was empty and now available
+            pkg_number = first_item.get("packageNumber", "")
+            if pkg_number and not existing.hb_package_number:
+                existing.hb_package_number = pkg_number
+
             # Add only NEW line items (idempotency)
             existing_line_ids = set(existing.hb_line_item_ids.mapped("hb_line_item_id"))
             new_items = [
@@ -246,7 +264,7 @@ class HepsiburadaOrder(models.Model):
                 "hb_order_id": binding.id,
                 "hb_line_item_id": line_item_id,
                 "hb_sku": item.get("sku", ""),
-                "merchant_sku": item.get("merchantSku", ""),
+                "merchant_sku": item.get("merchantSKU", ""),
                 "sale_line_id": sale_line.id,
                 "quantity": item.get("quantity", 1),
                 "unit_price": unit_price_data.get("amount", 0),
@@ -525,18 +543,25 @@ class HepsiburadaOrder(models.Model):
         Returns:
             Dict of sale.order.line values, or None.
         """
-        merchant_sku = item.get("merchantSku", "")
+        merchant_sku = item.get("merchantSKU", "")
         hb_sku = item.get("sku", "")
         quantity = item.get("quantity", 1)
         unit_price_data = item.get("unitPrice", {})
         price_unit = unit_price_data.get("amount", 0)
-        vat_rate = item.get("vatRate", 0)
+        vat_rate = item.get("vat", 0)
+
+        # Calculate discount from hbDiscount + merchantDiscount
+        hb_discount = item.get("hbDiscount", {}).get("unitPrice", {}).get("amount", 0)
+        merchant_discount = (
+            item.get("merchantDiscount", {}).get("unitPrice", {}).get("amount", 0)
+        )
+        total_discount = hb_discount + merchant_discount
 
         # Product matching cascade
         Product = self.env["product.product"]
         product = False
 
-        # 1. Match by barcode (merchantSku is often the barcode)
+        # 1. Match by barcode (merchantSKU is often the barcode)
         if merchant_sku:
             product = Product.search([("barcode", "=", merchant_sku)], limit=1)
         # 2. Match by default_code
@@ -590,6 +615,10 @@ class HepsiburadaOrder(models.Model):
             "product_uom_qty": quantity,
             "price_unit": price_unit,
         }
+
+        # Convert absolute discount to percentage (like Trendyol)
+        if total_discount and price_unit and quantity:
+            vals["discount"] = (total_discount / price_unit) * 100
 
         # Find and apply matching tax
         tax = self._get_tax_for_rate(backend, vat_rate)
@@ -653,6 +682,169 @@ class HepsiburadaOrder(models.Model):
                 str(e),
             )
             raise
+
+    # ── Invoice Sending ──────────────────────────────────────────────────
+
+    def action_send_invoice(self):
+        """Manual button: queue invoice sending to Hepsiburada."""
+        self.ensure_one()
+        if self.invoice_link_sent:
+            raise models.UserError(_("Invoice link already sent."))
+        if self.hb_status == "cancelled":
+            raise models.UserError(_("Cannot send invoice for cancelled orders."))
+        if not self.odoo_id.invoice_ids.filtered(lambda i: i.state == "posted"):
+            raise models.UserError(_("No posted invoice found for this order."))
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Send invoice: %s") % self.hb_order_number,
+        )._send_invoice()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Invoice Send Queued"),
+                "message": _("Invoice sending has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _send_invoice(self):
+        """Send delivered status and invoice link to Hepsiburada API.
+
+        Two-step process (HB requirement):
+        1. Mark package as delivered via set_package_delivered()
+        2. Upload invoice link via upload_invoice_link()
+        """
+        self.ensure_one()
+        from .hepsiburada_request import HepsiburadaAPIError
+
+        # Get posted invoice
+        invoice = self.odoo_id.invoice_ids.filtered(
+            lambda i: i.state == "posted" and i.move_type == "out_invoice"
+        )[:1]
+
+        if not invoice:
+            _logger.warning(
+                "No posted invoice found for HB order %s, skipping.",
+                self.hb_order_number,
+            )
+            return
+
+        client = self.backend_id._get_api_client()
+
+        # Step 1: Mark package as delivered (if not already)
+        if self.hb_status != "delivered":
+            data = {
+                "packageNumber": self.hb_package_number,
+                "receivedDate": fields.Datetime.now().isoformat(),
+                "receivedBy": self.hb_customer_name or "",
+            }
+            try:
+                client.set_package_delivered(data)
+                self.hb_status = "delivered"
+            except HepsiburadaAPIError as e:
+                if e.status_code == 409:
+                    # Already delivered — mark locally and continue
+                    _logger.info(
+                        "Package %s already delivered in HB, continuing.",
+                        self.hb_package_number,
+                    )
+                    self.hb_status = "delivered"
+                else:
+                    _logger.error(
+                        "Failed to set delivered for HB order %s: %s",
+                        self.hb_order_number,
+                        str(e),
+                    )
+                    raise
+
+        # Step 2: Send invoice link
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        invoice_url = f"{base_url}{invoice.get_portal_url()}"
+
+        try:
+            client.upload_invoice_link(self.hb_package_number, invoice_url)
+        except HepsiburadaAPIError as e:
+            if e.status_code == 409:
+                # Invoice link already exists (e.g. manually uploaded or retry)
+                _logger.info(
+                    "Invoice link already exists for HB order %s, "
+                    "marking as sent locally.",
+                    self.hb_order_number,
+                )
+            else:
+                _logger.error(
+                    "Failed to send invoice link for HB order %s: %s",
+                    self.hb_order_number,
+                    str(e),
+                )
+                raise
+
+        self.invoice_link_sent = True
+        self.invoice_sent_date = fields.Datetime.now()
+        _logger.info(
+            "Invoice link sent for HB order %s: %s",
+            self.hb_order_number,
+            invoice.name,
+        )
+
+    # ── Order Cancellation ───────────────────────────────────────────────
+
+    def action_cancel_in_hepsiburada(self):
+        """Manual button: queue order cancellation in Hepsiburada."""
+        self.ensure_one()
+        if self.hb_status != "open":
+            raise models.UserError(
+                _("Only orders with 'Open' status can be cancelled in Hepsiburada.")
+            )
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Cancel order: %s") % self.hb_order_number,
+        )._cancel_in_hepsiburada()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Cancel Queued"),
+                "message": _("Order cancellation has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _cancel_in_hepsiburada(self):
+        """Cancel all line items in Hepsiburada API."""
+        self.ensure_one()
+        from .hepsiburada_request import HepsiburadaAPIError
+
+        client = self.backend_id._get_api_client()
+
+        if not self.hb_line_item_ids:
+            raise models.UserError(_("No line items found to cancel."))
+
+        for line in self.hb_line_item_ids:
+            try:
+                client.cancel_line_item(line.hb_line_item_id)
+            except HepsiburadaAPIError as e:
+                _logger.error(
+                    "Failed to cancel line item %s for HB order %s: %s",
+                    line.hb_line_item_id,
+                    self.hb_order_number,
+                    str(e),
+                )
+                raise
+
+        self.hb_status = "cancelled"
+
+        # Cancel Odoo sale order
+        if self.odoo_id.state not in ("done", "cancel"):
+            self.odoo_id.with_context(
+                from_hepsiburada_cancel=True,
+                disable_cancel_warning=True,
+            ).action_cancel()
+
+        _logger.info("Cancelled HB order %s", self.hb_order_number)
 
 
 class HepsiburadaOrderLine(models.Model):

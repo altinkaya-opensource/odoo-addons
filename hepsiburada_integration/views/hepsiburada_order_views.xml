@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Form View -->
     <record id="view_hepsiburada_order_form" model="ir.ui.view">
@@ -7,6 +7,20 @@
         <field name="arch" type="xml">
             <form string="Hepsiburada Order" create="false">
                 <header>
+                    <button
+                        name="action_send_invoice"
+                        string="Send Invoice"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('invoice_link_sent', '=', True), ('hb_status', '=', 'cancelled')]}"
+                    />
+                    <button
+                        name="action_cancel_in_hepsiburada"
+                        string="Cancel in HB"
+                        type="object"
+                        class="btn-danger"
+                        attrs="{'invisible': [('hb_status', '!=', 'open')]}"
+                    />
                     <field name="hb_status" widget="statusbar" />
                 </header>
                 <sheet>
@@ -33,16 +47,23 @@
                             <field name="backend_id" readonly="1" />
                             <field name="delivery_type" readonly="1" />
                             <field name="due_date" readonly="1" />
+                            <field name="invoice_link_sent" readonly="1" />
+                            <field name="invoice_sent_date" readonly="1" />
                         </group>
                         <group string="Shipping">
                             <field name="hb_full_address" readonly="1" />
                             <field name="cargo_provider_name" readonly="1" />
                             <field name="hb_package_number" readonly="1" />
-                            <!-- <field name="cargo_tracking_number" /> -->
-                            <!-- <field name="cargo_tracking_link" widget="url" /> -->
+                            <field name="cargo_tracking_number" readonly="1" />
+                            <field
+                                name="cargo_tracking_link"
+                                widget="url"
+                                readonly="1"
+                            />
                         </group>
                     </group>
                     <group string="Odoo Order">
+                        <field name="partner_id" readonly="1" />
                         <field name="odoo_id" />
                     </group>
                     <notebook>
@@ -80,7 +101,7 @@
                 <field name="hb_order_number" />
                 <field name="hb_status" />
                 <field name="odoo_id" />
-                <field name="hb_customer_name" />
+                <field name="partner_id" />
                 <field name="hb_full_address" />
                 <field name="cargo_provider_name" />
                 <!-- <field name="cargo_tracking_number" /> -->

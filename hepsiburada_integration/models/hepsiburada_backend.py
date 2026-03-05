@@ -1,9 +1,8 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -525,18 +524,81 @@ class HepsiburadaBackend(models.Model):
         }
 
     def _import_settlements(self):
-        """Import settlements from Hepsiburada finance API."""
+        """Import settlements from Hepsiburada finance API.
+
+        Uses 15-day windows with offset/limit pagination
+        (same pattern as Trendyol).
+        """
         self.ensure_one()
-        # TODO: implement when seller account is available
-        # client = self._get_api_client()
-        # Settlement = self.env["hepsiburada.settlement"]
-        # result = client.get_settlements(...)
-        # for item in result:
-        #     settlement = Settlement._import_settlement(self, item)
-        #     if settlement and self.auto_reconcile_settlements:
-        #         settlement._reconcile()
+        client = self._get_api_client()
+        Settlement = self.env["hepsiburada.settlement"]
+
+        end_date = fields.Datetime.now()
+        if self.last_settlement_sync:
+            start_date = self.last_settlement_sync
+        else:
+            start_date = end_date - timedelta(days=15)
+
+        window_start = start_date
+        total_imported = 0
+
+        while window_start < end_date:
+            window_end = min(window_start + timedelta(days=15), end_date)
+
+            try:
+                offset = 0
+                while True:
+                    result = client.get_transactions(
+                        offset=offset,
+                        limit=100,
+                        record_date_start=window_start.strftime("%Y-%m-%d"),
+                        record_date_end=window_end.strftime("%Y-%m-%d"),
+                    )
+                    items = (
+                        result if isinstance(result, list) else result.get("items", [])
+                    )
+                    if not items:
+                        break
+
+                    for item in items:
+                        settlement = Settlement._import_settlement(self, item)
+                        if (
+                            settlement
+                            and settlement.state == "imported"
+                            and self.auto_reconcile_settlements
+                        ):
+                            try:
+                                settlement._reconcile()
+                            except Exception as e:
+                                settlement.write(
+                                    {
+                                        "state": "error",
+                                        "error_message": str(e),
+                                    }
+                                )
+                        total_imported += 1
+
+                    offset += len(items)
+                    if len(items) < 100 or offset > 5000:
+                        break
+
+            except HepsiburadaAPIError as e:
+                _logger.error(
+                    "Failed to import HB settlements for window %s-%s: %s",
+                    window_start,
+                    window_end,
+                    str(e),
+                )
+                raise
+
+            window_start = window_end
+
         self.last_settlement_sync = fields.Datetime.now()
-        _logger.info("Imported settlements for HB backend %s (stub)", self.name)
+        _logger.info(
+            "Imported %d settlements for HB backend %s",
+            total_imported,
+            self.name,
+        )
 
     def action_check_batch_requests(self):
         """Check status of pending batch requests."""
@@ -829,139 +891,96 @@ class HepsiburadaBackend(models.Model):
             return fields.Datetime.now()
 
     def _import_single_package(self, item):
-        """Import one flat package record from GET /packages/merchantid/{id}.
+        """Import one package by fetching full order details and delegating
+        to hepsiburada.order._import_order().
 
-        The packages endpoint returns shipping-level data (no product lines),
-        so we build a minimal sale.order + hepsiburada.order from the flat
-        address and cargo fields.  packageNumber is used as hb_order_number.
+        The packages endpoint returns shipping-level data without full
+        product lines. We extract order numbers, call get_order_detail()
+        for the full line items, and route through the standard import path.
 
         Returns the hepsiburada.order binding, or False if skipped.
         """
         self.ensure_one()
+        Order = self.env["hepsiburada.order"]
+
         package_number = str(item.get("packageNumber") or item.get("id") or "")
         if not package_number:
             _logger.warning("HB package item has no packageNumber/id, skipping")
             return False
 
-        Order = self.env["hepsiburada.order"]
-
-        # Idempotency — skip if already imported
-        if Order.search(
-            [("backend_id", "=", self.id), ("hb_order_number", "=", package_number)],
-            limit=1,
-        ):
-            return False
-
-        # ── Address ─────────────────────────────
-
-        full_address = item.get("shippingAddressDetail") or ""
+        # Extract order numbers from the package's line items
         line_items = item.get("items") or []
-        first_line = line_items[0] if line_items else {}
-        delivery_type = first_line.get("deliveryType") or ""
+        order_numbers = {
+            str(li.get("orderNumber") or "")
+            for li in line_items
+            if li.get("orderNumber")
+        }
 
-        # ── Partner ──────────────────────────────────────────────────────
-        customer_id = str(item.get("customerId") or "")
-        recipient_name = (item.get("customerName") or "").strip() or _(
-            "Hepsiburada Customer"
-        )
+        if not order_numbers:
+            # Fallback: try orderNumber at the package level
+            order_number = str(item.get("orderNumber") or "")
+            if order_number:
+                order_numbers = {order_number}
+            else:
+                _logger.warning(
+                    "HB package %s has no orderNumber, skipping",
+                    package_number,
+                )
+                return False
 
-        Partner = self.env["res.partner"]
-        partner = False
-        if customer_id:
-            partner = Partner.search(
+        client = self._get_api_client()
+        imported = False
+
+        for order_number in order_numbers:
+            # Skip if already imported
+            if Order.search(
                 [
-                    ("hb_customer_id", "=", customer_id),
-                    ("company_id", "in", [False, self.company_id.id]),
+                    ("backend_id", "=", self.id),
+                    ("hb_order_number", "=", order_number),
                 ],
                 limit=1,
-            )
+            ):
+                continue
 
-        if not partner:
-            country_code = item.get("shippingCountryCode") or "TR"
-            country = self.env["res.country"].search(
-                [("code", "=", country_code)], limit=1
-            )
-            city = (item.get("shippingCity") or "").strip()
-            state = False
-            if country and city:
-                state = self.env["res.country.state"].search(
-                    [
-                        ("country_id", "=", country.id),
-                        "|",
-                        ("name", "=ilike", city),
-                        ("code", "=ilike", city),
-                    ],
-                    limit=1,
+            # Fetch full order detail with line items
+            try:
+                detail = client.get_order_detail(order_number)
+            except HepsiburadaAPIError:
+                _logger.error(
+                    "Failed to fetch order detail for %s, skipping",
+                    order_number,
+                    exc_info=True,
                 )
-            district = (item.get("shippingDistrict") or "").strip()
-            town = (item.get("shippingTown") or "").strip()
-            street2 = f"{district} / {town}" if district and town else district or town
-            email_raw = (item.get("email") or "").strip()
-            partner_vals = {
-                "name": recipient_name,
-                "street": (item.get("shippingAddressDetail") or "").strip(),
-                "street2": street2,
-                "city": city,
-                "country_id": country.id if country else False,
-                "state_id": state.id if state else False,
-                "hb_customer_id": customer_id,
-                "company_id": self.company_id.id,
-                "customer_rank": 1,
-                "is_blacklisted": True,
-            }
-            if "@" in email_raw:
-                partner_vals["email"] = email_raw
-            partner = Partner.create(partner_vals)
+                continue
 
-        # ── Sale order ───────────────────────────────────────────────────
-        sale_vals = {
-            "partner_id": partner.id,
-            "partner_invoice_id": partner.id,
-            "partner_shipping_id": partner.id,
-            "date_order": self._parse_hb_datetime(item.get("orderDate")),
-            "company_id": self.company_id.id,
-            "warehouse_id": self.warehouse_ids[:1].id,
-            "pricelist_id": self.pricelist_id.id,
-            "client_order_ref": package_number,
-        }
-        if self.sales_team_id:
-            sale_vals["team_id"] = self.sales_team_id.id
-        if self.fiscal_position_id:
-            sale_vals["fiscal_position_id"] = self.fiscal_position_id.id
-        if self.source_id:
-            sale_vals["source_id"] = self.source_id.id
+            # get_order_detail returns line items in the same format
+            detail_items = detail.get("items", [])
+            if not detail_items:
+                detail_items = detail if isinstance(detail, list) else []
 
-        sale_order = self.env["sale.order"].create(sale_vals)
+            if not detail_items:
+                _logger.warning(
+                    "No line items in order detail for %s, skipping",
+                    order_number,
+                )
+                continue
 
-        # ── Binding ──────────────────────────────────────────────────────
-        binding = Order.create(
-            {
-                "odoo_id": sale_order.id,
-                "backend_id": self.id,
-                "hb_order_number": package_number,
-                "hb_order_id": str(item.get("id") or ""),
-                "hb_customer_id": customer_id,
-                "hb_customer_name": recipient_name,
-                "hb_full_address": full_address,
-                "hb_package_number": package_number,
-                "delivery_type": delivery_type,
-                "hb_status": Order._map_status(item.get("status")),
-                "cargo_provider_name": item.get("cargoCompany") or "",
-                "due_date": self._parse_hb_datetime(item.get("dueDate")),
-                "raw_data": json.dumps(item, indent=2, ensure_ascii=False),
-            }
-        )
+            try:
+                binding = Order._import_order(self, detail_items)
+                if binding:
+                    # Set package number if not already set
+                    if package_number and not binding.hb_package_number:
+                        binding.hb_package_number = package_number
+                    imported = binding
+            except Exception:
+                _logger.error(
+                    "Failed to import HB order %s from package %s",
+                    order_number,
+                    package_number,
+                    exc_info=True,
+                )
 
-        if self.auto_confirm_orders:
-            sale_order.ignore_exception = True
-            sale_order.with_context(bypass_risk=True).action_confirm()
-
-        _logger.info(
-            "Imported HB package %s as sale order %s",
-            package_number,
-            sale_order.name,
-        )
-        return binding
+        return imported
 
     def _import_orders(self):
         """Import paid orders from Hepsiburada API.
@@ -969,10 +988,22 @@ class HepsiburadaBackend(models.Model):
         Paginates through GET /orders/merchantid/{merchantId}.
         Groups line items by orderNumber and delegates to
         hepsiburada.order._import_order().
+        Uses last_order_sync for date filtering (same as Trendyol).
         """
         self.ensure_one()
         client = self._get_api_client()
         Order = self.env["hepsiburada.order"]
+
+        # Calculate date range (same pattern as Trendyol)
+        end_date = fields.Datetime.now()
+        if self.last_order_sync:
+            start_date = self.last_order_sync
+        else:
+            # First sync: get last 7 days
+            start_date = end_date - timedelta(days=7)
+
+        begin_date_str = start_date.strftime("%Y-%m-%d %H:%M")
+        end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
 
         try:
             offset = 0
@@ -981,7 +1012,12 @@ class HepsiburadaBackend(models.Model):
             orders_by_number = {}
 
             while True:
-                result = client.get_paid_orders(offset=offset, limit=10)
+                result = client.get_paid_orders(
+                    offset=offset,
+                    limit=10,
+                    begin_date=begin_date_str,
+                    end_date=end_date_str,
+                )
                 items = result.get("items", [])
                 if not items:
                     break
@@ -1139,6 +1175,49 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Import Hepsiburada settlements: %s") % backend.name,
             )._import_settlements()
+
+    @api.model
+    def _cron_send_invoices(self):
+        """Cron job to send pending invoices for all active backends."""
+        backends = self.search(
+            [("active", "=", True), ("auto_send_invoice", "=", True)]
+        )
+        for backend in backends:
+            backend._send_pending_invoices()
+
+    def _send_pending_invoices(self):
+        """Find orders with posted invoices and queue invoice sending.
+
+        Same pattern as Trendyol: search orders where invoice_link_sent=False,
+        check if a posted invoice exists, then queue _send_invoice().
+        """
+        self.ensure_one()
+        orders = self.env["hepsiburada.order"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("invoice_link_sent", "=", False),
+                ("hb_status", "!=", "cancelled"),
+            ]
+        )
+        queued = 0
+        for order in orders:
+            # Check if there's a posted invoice
+            has_invoice = order.odoo_id.invoice_ids.filtered(
+                lambda i: i.state == "posted" and i.move_type == "out_invoice"
+            )
+            if has_invoice:
+                order.with_delay(
+                    channel="root.hepsiburada.order",
+                    description=_("Send invoice: %s") % order.hb_order_number,
+                )._send_invoice()
+                queued += 1
+
+        if queued:
+            _logger.info(
+                "Queued %d invoice sends for HB backend %s",
+                queued,
+                self.name,
+            )
 
     @api.model
     def _cron_sync_stock_prices(self):
