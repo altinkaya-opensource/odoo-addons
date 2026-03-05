@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Order Form View -->
+    <record id="view_hepsiburada_order_form" model="ir.ui.view">
+        <field name="name">hepsiburada.order.form</field>
+        <field name="model">hepsiburada.order</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Order">
+                <header>
+                    <button
+                        name="action_create_package"
+                        string="Create Package"
+                        type="object"
+                        attrs="{'invisible': ['|', ('hb_package_number', '!=', False), ('hb_status', '!=', 'open')]}"
+                    />
+                    <button
+                        name="action_send_invoice"
+                        string="Send Invoice"
+                        type="object"
+                        attrs="{'invisible': [('invoice_link_sent', '=', True)]}"
+                    />
+                    <button
+                        name="action_cancel_in_hepsiburada"
+                        string="Cancel in Hepsiburada"
+                        type="object"
+                        class="btn-danger"
+                        attrs="{'invisible': [('hb_status', '!=', 'open')]}"
+                        confirm="Are you sure you want to cancel this order in Hepsiburada?"
+                    />
+                    <field
+                        name="hb_status"
+                        widget="statusbar"
+                        statusbar_visible="open,packaged,in_transit,delivered"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="hb_order_number" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Order Info">
+                            <field name="odoo_id" />
+                            <field name="backend_id" />
+                            <field name="hb_order_id" />
+                            <field name="hb_customer_id" />
+                            <field name="hb_customer_name" />
+                            <field name="hb_package_number" />
+                            <field name="delivery_type" />
+                            <field name="due_date" />
+                        </group>
+                        <group string="Shipping">
+                            <field name="cargo_provider_name" />
+                            <field name="cargo_tracking_number" />
+                            <field name="cargo_tracking_link" widget="url" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Invoice">
+                            <field name="invoice_link_sent" />
+                            <field name="invoice_sent_date" />
+                        </group>
+                        <group string="Address">
+                            <field name="hb_full_address" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="HB Line Items" name="hb_lines">
+                            <field name="hb_line_item_ids" readonly="1">
+                                <tree>
+                                    <field name="hb_line_item_id" />
+                                    <field name="hb_sku" />
+                                    <field name="merchant_sku" />
+                                    <field name="quantity" />
+                                    <field name="unit_price" />
+                                    <field name="total_price" />
+                                    <field name="vat_rate" />
+                                    <field name="commission_amount" />
+                                    <field name="status" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Odoo Order" name="odoo_order">
+                            <field name="partner_id" readonly="1" />
+                            <field name="order_line" readonly="1">
+                                <tree>
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_uom_qty" />
+                                    <field name="price_unit" />
+                                    <field name="discount" />
+                                    <field name="price_subtotal" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Raw Data" name="raw_data">
+                            <field name="raw_data" readonly="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Order Tree View -->
+    <record id="view_hepsiburada_order_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.order.tree</field>
+        <field name="model">hepsiburada.order</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="hb_status == 'cancelled'"
+                decoration-success="hb_status == 'delivered'"
+                decoration-info="hb_status == 'in_transit'"
+            >
+                <field name="hb_order_number" />
+                <field name="odoo_id" />
+                <field name="partner_id" />
+                <field name="hb_customer_name" />
+                <field name="create_date" string="Import Date" />
+                <field name="hb_status" />
+                <field name="hb_package_number" />
+                <field name="cargo_tracking_number" />
+                <field name="invoice_link_sent" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Order Search View -->
+    <record id="view_hepsiburada_order_search" model="ir.ui.view">
+        <field name="name">hepsiburada.order.search</field>
+        <field name="model">hepsiburada.order</field>
+        <field name="arch" type="xml">
+            <search string="Search Orders">
+                <field name="hb_order_number" />
+                <field name="hb_package_number" />
+                <field name="odoo_id" />
+                <field name="partner_id" />
+                <field name="hb_customer_name" />
+                <field name="cargo_tracking_number" />
+                <field name="hb_full_address" />
+                <separator />
+                <filter
+                    name="open"
+                    string="Open"
+                    domain="[('hb_status', '=', 'open')]"
+                />
+                <filter
+                    name="packaged"
+                    string="Packaged"
+                    domain="[('hb_status', '=', 'packaged')]"
+                />
+                <filter
+                    name="in_transit"
+                    string="In Transit"
+                    domain="[('hb_status', '=', 'in_transit')]"
+                />
+                <filter
+                    name="delivered"
+                    string="Delivered"
+                    domain="[('hb_status', '=', 'delivered')]"
+                />
+                <filter
+                    name="cancelled"
+                    string="Cancelled"
+                    domain="[('hb_status', '=', 'cancelled')]"
+                />
+                <separator />
+                <filter
+                    name="no_package"
+                    string="No Package"
+                    domain="[('hb_package_number', '=', False)]"
+                />
+                <filter
+                    name="no_invoice"
+                    string="No Invoice Sent"
+                    domain="[('invoice_link_sent', '=', False)]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'hb_status'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Import Date"
+                        context="{'group_by': 'create_date:day'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Order Action -->
+    <record id="action_hepsiburada_order" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Orders</field>
+        <field name="res_model">hepsiburada.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_order_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Hepsiburada orders yet
+            </p>
+            <p>
+                Orders will appear here when imported from Hepsiburada.
+                Configure auto-import in backend settings or click
+                "Import Orders" manually.
+            </p>
+        </field>
+    </record>
+</odoo>

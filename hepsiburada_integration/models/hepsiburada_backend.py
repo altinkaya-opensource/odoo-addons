@@ -1,0 +1,595 @@
+# Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
+
+import logging
+
+from dateutil import parser as dateutil_parser
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
+
+_logger = logging.getLogger(__name__)
+
+
+def _parse_hb_datetime(dt_string):
+    """Parse a Hepsiburada datetime string to naive UTC datetime.
+
+    HB sends ISO 8601 strings like '2026-01-15T10:30:00'.
+    Returns False if the input is falsy or unparseable.
+    """
+    if not dt_string:
+        return False
+    try:
+        dt = dateutil_parser.isoparse(str(dt_string))
+        if dt.tzinfo:
+            from datetime import UTC
+
+            dt = dt.astimezone(UTC).replace(tzinfo=None)
+        return dt
+    except (ValueError, TypeError):
+        return False
+
+
+class HepsiburadaBackend(models.Model):
+    _name = "hepsiburada.backend"
+    _description = "Hepsiburada Backend Configuration"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    name = fields.Char(required=True, tracking=True)
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
+
+    # API Credentials
+    merchant_id = fields.Char(
+        string="Merchant ID",
+        required=True,
+        tracking=True,
+        help="Your Hepsiburada merchant ID",
+    )
+    api_username = fields.Char(
+        string="API Username",
+        required=True,
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+    )
+    api_password = fields.Char(
+        string="API Password",
+        required=True,
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+    )
+    environment = fields.Selection(
+        [
+            ("stage", "Stage (Testing)"),
+            ("prod", "Production"),
+        ],
+        default="stage",
+        required=True,
+        tracking=True,
+    )
+
+    # Odoo Mappings
+    warehouse_ids = fields.Many2many(
+        "stock.warehouse",
+        string="Warehouses",
+        required=True,
+        help="Warehouses to use for order fulfillment",
+    )
+    pricelist_id = fields.Many2one(
+        "product.pricelist",
+        required=True,
+        help="Pricelist to use for Hepsiburada prices (must be in TRY)",
+    )
+    sales_team_id = fields.Many2one(
+        "crm.team",
+        help="Default sales team for Hepsiburada orders",
+    )
+    fiscal_position_id = fields.Many2one(
+        "account.fiscal.position",
+        help="Default fiscal position for Hepsiburada orders",
+    )
+    source_id = fields.Many2one(
+        "utm.source",
+        help="UTM source to set on Hepsiburada orders",
+    )
+
+    # Default Settings
+    default_cargo_company_id = fields.Many2one(
+        "delivery.carrier",
+        help="Default delivery carrier for Hepsiburada orders",
+    )
+    cargo_mapping_ids = fields.One2many(
+        "hepsiburada.cargo.mapping",
+        "backend_id",
+        string="Cargo Mappings",
+        help="Map Hepsiburada cargo providers to Odoo delivery carriers",
+    )
+    default_product_id = fields.Many2one(
+        "product.product",
+        help="Fallback product for unmapped items. "
+        "If not set, unmapped items will be created as note lines.",
+    )
+    user_agent = fields.Char(
+        string="User-Agent",
+        required=True,
+        help="User-Agent header sent with every API request to Hepsiburada",
+    )
+
+    default_vat_rate = fields.Float(
+        string="Default VAT Rate (%)",
+        default=20.0,
+        help="Default VAT rate for products without tax",
+    )
+    auto_confirm_orders = fields.Boolean(
+        string="Auto-confirm Orders",
+        default=True,
+        help="Automatically confirm imported orders",
+    )
+
+    # Sync Settings
+    auto_import_orders = fields.Boolean(
+        default=True,
+        help="Automatically import orders via scheduled job",
+    )
+    auto_sync_tracking = fields.Boolean(
+        default=True,
+        help="Automatically send tracking numbers when delivery is done",
+    )
+    auto_send_invoice = fields.Boolean(
+        default=True,
+        help="Send invoice links to Hepsiburada via nightly batch cron",
+    )
+
+    # Last Sync Timestamps
+    last_order_sync = fields.Datetime(readonly=True)
+
+    # Statistics
+    order_count = fields.Integer(
+        compute="_compute_counts",
+        string="Orders",
+    )
+
+    @api.depends()
+    def _compute_counts(self):
+        Order = self.env["hepsiburada.order"]
+        for backend in self:
+            backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
+
+    def _get_api_client(self):
+        """Get configured API client for this backend."""
+        self.ensure_one()
+        return HepsiburadaRequest(
+            merchant_id=self.merchant_id,
+            username=self.api_username,
+            password=self.api_password,
+            environment=self.environment,
+            user_agent=self.user_agent,
+        )
+
+    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
+        """Get delivery carrier for a Hepsiburada cargo provider name.
+
+        Args:
+            cargo_provider_name: Cargo provider name from Hepsiburada API
+
+        Returns:
+            delivery.carrier record or False
+        """
+        self.ensure_one()
+        if cargo_provider_name:
+            name_lower = cargo_provider_name.lower()
+            mapping = self.cargo_mapping_ids.filtered(
+                lambda m: (
+                    m.hepsiburada_cargo_provider_name
+                    and m.hepsiburada_cargo_provider_name.lower() == name_lower
+                )
+            )
+            if mapping:
+                return mapping[0].carrier_id
+        return self.default_cargo_company_id
+
+    # ==================== Connection Test ====================
+
+    def action_test_connection(self):
+        """Test API connection."""
+        self.ensure_one()
+        try:
+            client = self._get_api_client()
+            client.test_connection()
+        except HepsiburadaAPIError as e:
+            raise UserError(_("Connection failed: %s") % str(e)) from e
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Success"),
+                "message": _("Connection to Hepsiburada API successful!"),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    # ==================== Order Import ====================
+
+    def action_import_orders(self):
+        """Manually trigger order import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import Hepsiburada orders: %s") % self.name,
+        )._import_orders()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Order import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _fetch_all_packages(self, fetch_method):
+        """Paginate through a package endpoint until exhausted.
+
+        Args:
+            fetch_method: API client method (e.g. client.get_packages)
+
+        Returns:
+            List of package dicts
+        """
+        all_packages = []
+        offset = 0
+        limit = 50
+
+        while True:
+            result = fetch_method(offset=offset, limit=limit)
+            packages = (
+                result
+                if isinstance(result, list)
+                else result.get("items", result.get("content", []))
+            )
+            if not packages:
+                break
+            all_packages.extend(packages)
+            offset += limit
+            if offset > 5000:
+                _logger.warning("Import safety limit reached")
+                break
+
+        return all_packages
+
+    @staticmethod
+    def _normalize_order_item(item):
+        """Normalize a flat /orders line item to match /packages format.
+
+        The /orders endpoint uses different field names and nested structures
+        compared to /packages.  This converts the item in-place so the rest
+        of the import pipeline can work with a single format.
+        """
+        # lineItemId ← id
+        if "lineItemId" not in item and "id" in item:
+            item["lineItemId"] = item["id"]
+
+        # merchantSku ← merchantSKU
+        if "merchantSku" not in item and "merchantSKU" in item:
+            item["merchantSku"] = item["merchantSKU"]
+
+        # hbSku ← sku
+        if "hbSku" not in item and "sku" in item:
+            item["hbSku"] = item["sku"]
+
+        # price ← unitPrice (both are {currency, amount} objects)
+        if "price" not in item and "unitPrice" in item:
+            item["price"] = item["unitPrice"]
+        if "merchantUnitPrice" not in item and "unitPrice" in item:
+            item["merchantUnitPrice"] = item["unitPrice"]
+
+        # unitHBDiscount ← hbDiscount.unitPrice
+        hb_disc = item.get("hbDiscount", {})
+        if "unitHBDiscount" not in item and isinstance(hb_disc, dict):
+            item["unitHBDiscount"] = hb_disc.get("unitPrice", {})
+
+        # unitMerchantDiscount ← merchantDiscount.unitPrice
+        m_disc = item.get("merchantDiscount", {})
+        if "unitMerchantDiscount" not in item and isinstance(m_disc, dict):
+            item["unitMerchantDiscount"] = m_disc.get("unitPrice", {})
+
+        return item
+
+    def _group_flat_items_as_packages(self, flat_items, hb_status, api_status):
+        """Group flat order line items by orderNumber into pseudo-package dicts.
+
+        The /orders and /orders/paymentawaiting endpoints return flat line items
+        with nested shippingAddress/invoice objects.  This helper normalizes
+        field names and groups them by orderNumber so the same _import_order()
+        pipeline can process them.
+
+        Args:
+            flat_items: List of flat line-item dicts from HB /orders endpoints
+            hb_status: Internal status tag (e.g. "open", "payment_awaiting")
+            api_status: Original HB status string (e.g. "Open", "PaymentAwaiting")
+
+        Returns:
+            List of pseudo-package dicts in /packages-compatible format
+        """
+        by_number = {}
+        for item in flat_items:
+            self._normalize_order_item(item)
+            order_number = str(item.get("orderNumber", ""))
+            if order_number:
+                by_number.setdefault(order_number, []).append(item)
+
+        packages = []
+        for _order_number, items in by_number.items():
+            first = items[0]
+
+            # Extract package-level fields from nested structures
+            shipping = first.get("shippingAddress", {})
+            invoice = first.get("invoice", {})
+            billing_addr = invoice.get("address", {})
+
+            packages.append(
+                {
+                    "items": items,
+                    "customerName": first.get("customerName", ""),
+                    "customerId": first.get("customerId", ""),
+                    "orderDate": first.get("orderDate", ""),
+                    "dueDate": first.get("dueDate", ""),
+                    "cargoCompany": first.get("cargoCompany", ""),
+                    "packageNumber": first.get("packageNumber", ""),
+                    # Billing / invoice fields
+                    "taxNumber": invoice.get("taxNumber", ""),
+                    "identityNo": invoice.get("turkishIdentityNumber", ""),
+                    "taxOffice": invoice.get("taxOffice", ""),
+                    "billingAddress": billing_addr.get("address", ""),
+                    "billingCity": billing_addr.get("city", ""),
+                    "billingDistrict": billing_addr.get("district", ""),
+                    "billingTown": billing_addr.get("town", ""),
+                    "billingPostalCode": billing_addr.get("postalCode", ""),
+                    "billingCountryCode": billing_addr.get("countryCode", "TR"),
+                    # Shipping fields
+                    "recipientName": shipping.get("name", ""),
+                    "shippingAddressDetail": shipping.get("address", ""),
+                    "shippingCity": shipping.get("city", ""),
+                    "shippingDistrict": shipping.get("district", ""),
+                    "shippingTown": shipping.get("town", ""),
+                    "shippingCountryCode": shipping.get("countryCode", "TR"),
+                    # Contact
+                    "email": shipping.get("email", "") or billing_addr.get("email", ""),
+                    "phoneNumber": shipping.get("phoneNumber", ""),
+                    # Status
+                    "status": api_status,
+                    "_hb_status": hb_status,
+                }
+            )
+        return packages
+
+    def _import_orders(self):
+        """Import orders from all Hepsiburada endpoints.
+
+        Endpoints:
+        - /orders (paketlenecek - flat line items, grouped by orderNumber)
+        - /orders/paymentawaiting (ödemesi bekleniyor - flat line items)
+        - /packages (paketlenmiş / gönderime hazır)
+        - /packages/shipped (kargoda)
+        - /packages/delivered (teslim edildi)
+        - /packages/undelivered (teslim edilemedi)
+        - /packages/cancelled (iptal edildi)
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        Order = self.env["hepsiburada.order"]
+
+        try:
+            all_packages = []
+
+            # 1. Flat order endpoints → group into pseudo-packages
+            flat_endpoints = [
+                (client.get_paid_orders, "open", "Open"),
+                (
+                    client.get_payment_awaiting_orders,
+                    "payment_awaiting",
+                    "PaymentAwaiting",
+                ),
+            ]
+            for fetch_method, hb_status, api_status in flat_endpoints:
+                try:
+                    flat_items = self._fetch_all_packages(fetch_method)
+                    all_packages.extend(
+                        self._group_flat_items_as_packages(
+                            flat_items, hb_status, api_status
+                        )
+                    )
+                except HepsiburadaAPIError:
+                    _logger.exception("Failed to fetch %s orders", hb_status)
+
+            # 2. Package endpoints (already in package format)
+            package_endpoints = [
+                (client.get_packages, "packaged"),
+                (client.get_shipped_packages, "in_transit"),
+                (client.get_delivered_packages, "delivered"),
+                (client.get_undelivered_packages, "undelivered"),
+                (client.get_cancelled_packages, "cancelled"),
+            ]
+
+            for fetch_method, status in package_endpoints:
+                try:
+                    packages = self._fetch_all_packages(fetch_method)
+                    for pkg in packages:
+                        pkg["_hb_status"] = status
+                    all_packages.extend(packages)
+                except HepsiburadaAPIError:
+                    _logger.exception("Failed to fetch %s packages", status)
+
+            if not all_packages:
+                _logger.info("No packages to import for backend %s", self.name)
+                self.last_order_sync = fields.Datetime.now()
+                return
+
+            total_imported = 0
+            for package_data in all_packages:
+                items = package_data.get("items", [])
+                if not items:
+                    continue
+                order_number = str(items[0].get("orderNumber", ""))
+                try:
+                    Order._import_order(self, package_data)
+                    total_imported += 1
+                except Exception:
+                    _logger.exception("Failed to import HB order %s", order_number)
+
+            self.last_order_sync = fields.Datetime.now()
+            _logger.info(
+                "Imported %d orders for backend %s",
+                total_imported,
+                self.name,
+            )
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to import orders: %s", str(e))
+            raise
+
+    def action_import_cancelled_orders(self):
+        """Manually trigger cancelled order status update."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import HB cancelled orders: %s") % self.name,
+        )._import_cancelled_orders()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Cancelled order sync has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_cancelled_orders(self):
+        """Import cancelled packages to update existing order statuses."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Order = self.env["hepsiburada.order"]
+
+        try:
+            packages = self._fetch_all_packages(client.get_cancelled_packages)
+            total_updated = 0
+
+            for pkg in packages:
+                items = pkg.get("items", [])
+                if not items:
+                    continue
+                order_number = str(items[0].get("orderNumber", ""))
+                if not order_number:
+                    continue
+                existing = Order.search(
+                    [
+                        ("backend_id", "=", self.id),
+                        ("hb_order_number", "=", order_number),
+                    ],
+                    limit=1,
+                )
+                if existing and existing.hb_status != "cancelled":
+                    existing.hb_status = "cancelled"
+                    existing._update_picking_delivery_state("cancelled")
+                    if existing.odoo_id.state not in ("done", "cancel"):
+                        existing.odoo_id.with_context(
+                            from_hepsiburada_cancel=True,
+                            disable_cancel_warning=True,
+                        ).action_cancel()
+                    total_updated += 1
+
+            _logger.info(
+                "Updated %d cancelled orders for backend %s",
+                total_updated,
+                self.name,
+            )
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to import cancelled orders: %s", str(e))
+            raise
+
+    # ==================== View Actions ====================
+
+    def action_view_orders(self):
+        """View orders for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Orders"),
+            "res_model": "hepsiburada.order",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    # ==================== Cron Methods ====================
+
+    @api.model
+    def _cron_import_orders(self):
+        """Cron job to import orders from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_orders", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import Hepsiburada orders: %s") % backend.name,
+            )._import_orders()
+
+    @api.model
+    def _cron_import_cancelled_orders(self):
+        """Cron job to sync cancelled orders from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_orders", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Sync HB cancelled orders: %s") % backend.name,
+            )._import_cancelled_orders()
+
+    @api.model
+    def _cron_send_invoices(self):
+        """Cron job to send invoice links for all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_send_invoice", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend._send_pending_invoices()
+
+    def _send_pending_invoices(self):
+        """Find Hepsiburada orders with pending invoices and queue sends."""
+        self.ensure_one()
+        orders = self.env["hepsiburada.order"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("invoice_link_sent", "=", False),
+                ("hb_status", "!=", "cancelled"),
+            ]
+        )
+        for order in orders:
+            posted_invoice = order.odoo_id.invoice_ids.filtered(
+                lambda i: i.state == "posted" and i.move_type == "out_invoice"
+            )
+            if not posted_invoice:
+                continue
+            order.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Send invoice: %s") % order.hb_order_number,
+            )._send_invoice()
