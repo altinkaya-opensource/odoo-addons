@@ -9,6 +9,7 @@
             <span
                 class="d-none"
                 t-attf-data-increment-step="#{line.product_id.product_tmpl_id.qty_increment_step}"
+                t-attf-data-min-order-qty="#{line.product_id.min_order_qty or 0}"
             />
         </xpath>
     </template>

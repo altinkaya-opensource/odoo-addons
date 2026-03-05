@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import re
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.tools import float_compare
 
 
@@ -90,4 +90,17 @@ class AccountBankStatementLine(models.Model):
                 },
             )
             orders.with_context(bypass_risk=True).action_confirm()
+
+            # Post a message on the sale order about the payment match
+            for order in orders:
+                order.message_post(
+                    body=_(
+                        "Order confirmed automatically. "
+                        "Exact payment match of %(amount)s %(currency)s "
+                        "received (%(ref)s).",
+                        amount=r.amount,
+                        currency=r.currency_id.name,
+                        ref=r.payment_ref,
+                    ),
+                )
         return res

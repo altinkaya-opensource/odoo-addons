@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 11:01+0000\n"
-"PO-Revision-Date: 2025-10-30 11:01+0000\n"
+"POT-Creation-Date: 2026-02-23 13:32+0000\n"
+"PO-Revision-Date: 2026-02-23 13:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,36 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: product_qty_increment_step
+#: model:ir.model.fields,field_description:product_qty_increment_step.field_product_product__min_order_qty
+#: model:ir.model.fields,field_description:product_qty_increment_step.field_product_template__min_order_qty
+msgid "Min Order Qty"
+msgstr "Min ilość zamówienia"
+
+#. module: product_qty_increment_step
+#: model:ir.model.fields,help:product_qty_increment_step.field_product_product__min_order_qty
+#: model:ir.model.fields,help:product_qty_increment_step.field_product_template__min_order_qty
+msgid ""
+"Minimum order quantity for this product in the webshop. Set 0 to disable "
+"this feature."
+msgstr ""
+"Minimalna ilość zamówienia dla tego produktu w sklepie internetowym. Ustaw "
+"0, aby wyłączyć tę funkcję."
+
+#. module: product_qty_increment_step
 #: model:ir.model,name:product_qty_increment_step.model_product_template
 msgid "Product"
 msgstr "Produkt"
+
+#. module: product_qty_increment_step
+#. odoo-python
+#: code:addons/product_qty_increment_step/models/sale_order_line.py:0
+#, python-format
+msgid ""
+"Product \"%(product)s\" has a minimum order quantity of %(min_qty)s.\n"
+"Your quantity %(quantity)s is below the minimum."
+msgstr ""
+"Produkt \"%(product)s\" ma minimalną ilość zamówienia %(min_qty)s.\n"
+"Wprowadzona ilość %(quantity)s jest poniżej minimum."
 
 #. module: product_qty_increment_step
 #. odoo-python

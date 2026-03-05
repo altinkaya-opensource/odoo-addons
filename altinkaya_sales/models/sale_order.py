@@ -1,7 +1,10 @@
+import logging
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 def _match_production_with_route(production):  # noqa: C901
@@ -146,6 +149,8 @@ class SaleOrder(models.Model):
         "picking_ids.delivery_state",
         "picking_ids.invoice_state",
         "picking_ids.is_packaged",
+        "order_line.invoice_lines.parent_state",
+        "order_line.invoice_lines.move_id.picking_ids.delivery_state",
     )
     def _compute_order_state(self):
         deadline = datetime.now() - timedelta(days=360)
@@ -178,19 +183,45 @@ class SaleOrder(models.Model):
             )
             if ongoing_productions:
                 sale.order_state = _match_production_with_route(ongoing_productions)
-            # PICKING
-            elif sale.picking_ids.filtered(lambda p: p.state != "cancel"):
-                outgoing_pickings = sale.picking_ids.filtered(
-                    lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+                continue
+
+            # Collect posted out_invoices through sale order lines
+            posted_invoices = sale.order_line.invoice_lines.filtered(
+                lambda il: (
+                    il.parent_state == "posted"
+                    and il.move_id.move_type == "out_invoice"
                 )
-                incoming_pickings = sale.picking_ids.filtered(
-                    lambda p: (
-                        p.picking_type_code == "incoming"
-                        and p.location_id.usage == "customer"
+            ).mapped("move_id")
+
+            # Get outgoing done pickings from invoices (handles merged pickings)
+            invoice_pickings = posted_invoices.picking_ids.filtered(
+                lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+            )
+
+            # Direct pickings from the sale order
+            active_pickings = sale.picking_ids.filtered(lambda p: p.state != "cancel")
+            outgoing_pickings = sale.picking_ids.filtered(
+                lambda p: p.picking_type_code == "outgoing" and p.state == "done"
+            )
+            incoming_pickings = sale.picking_ids.filtered(
+                lambda p: (
+                    p.picking_type_code == "incoming"
+                    and p.location_id.usage == "customer"
+                )
+            )
+
+            # Union of outgoing done pickings from both sources
+            all_outgoing = outgoing_pickings | invoice_pickings
+
+            # PICKING / INVOICE evaluation
+            if active_pickings or posted_invoices:
+                # Determine invoiced pickings by checking actual invoice links
+                invoiced_pickings = all_outgoing.filtered(
+                    lambda p: p.invoice_ids.filtered(
+                        lambda inv: (
+                            inv.state == "posted" and inv.move_type == "out_invoice"
+                        )
                     )
-                )
-                invoiced_pickings = outgoing_pickings.filtered(
-                    lambda p: p.invoice_state == "invoiced"
                 )
 
                 # Check the dispatched pickings
@@ -205,9 +236,7 @@ class SaleOrder(models.Model):
                         sale.order_state = "23_on_transit"
 
                 # Check the packaged pickings
-                elif outgoing_pickings and any(
-                    p.is_packaged for p in outgoing_pickings
-                ):
+                elif all_outgoing and any(p.is_packaged for p in all_outgoing):
                     sale.order_state = "22_packaged"
                 # If there is no packaged or dispatched pickings
                 # set the order state to at_warehouse
@@ -222,6 +251,16 @@ class SaleOrder(models.Model):
 
         return True
 
+    stock_move_ids = fields.Many2many(
+        "stock.move",
+        string="Stok Hareketleri",
+        compute="_compute_stock_move_ids",
+    )
+    account_move_line_ids = fields.Many2many(
+        "account.move.line",
+        string="Fatura Satırları",
+        compute="_compute_account_move_line_ids",
+    )
     sale_line_history = fields.Many2many(
         "sale.order.line", string="Old Sales", compute="_compute_sale_line_history"
     )
@@ -350,6 +389,14 @@ WHERE sale_order.id in %(ids)s;
             raise_if_not_found=False,
         )
 
+    def _compute_stock_move_ids(self):
+        for sale in self:
+            sale.stock_move_ids = sale.order_line.move_ids
+
+    def _compute_account_move_line_ids(self):
+        for sale in self:
+            sale.account_move_line_ids = sale.order_line.invoice_lines
+
     def _compute_sale_line_history(self):
         for sale in self:
             last_sale_lines = sale.env["sale.order.line"].search(
@@ -374,6 +421,77 @@ WHERE sale_order.id in %(ids)s;
         for so in res:
             so.order_line.explode_set_contents()
         return res
+
+    def _message_post_after_hook(self, message, msg_vals):
+        """Notify sales team alias when a customer posts a portal message."""
+        res = super()._message_post_after_hook(message, msg_vals)
+        if self._is_portal_customer_message(message, msg_vals):
+            self._notify_team_of_portal_message(message, msg_vals)
+        return res
+
+    def _is_portal_customer_message(self, message, msg_vals):
+        """Return True if the message is from a portal/external customer."""
+        self.ensure_one()
+        message_type = msg_vals.get("message_type") or message.message_type
+        if message_type != "comment":
+            return False
+
+        subtype_id = msg_vals.get("subtype_id")
+        mt_comment_id = self.env["ir.model.data"]._xmlid_to_res_id("mail.mt_comment")
+        if subtype_id != mt_comment_id:
+            return False
+
+        author_id = msg_vals.get("author_id") or message.author_id.id
+        if not author_id:
+            return False
+
+        author = self.env["res.partner"].browse(author_id)
+        if author.user_ids.filtered(lambda u: not u.share):
+            return False
+
+        return True
+
+    def _notify_team_of_portal_message(self, message, msg_vals):
+        """Send an email to the sales team alias about a customer portal message."""
+        self.ensure_one()
+        if not self.team_id:
+            return
+
+        alias = self.team_id.alias_id
+        if not alias or not alias.alias_name or not alias.alias_domain:
+            return
+
+        alias_email = f"{alias.alias_name}@{alias.alias_domain}"
+        author_id = msg_vals.get("author_id") or message.author_id.id
+        author = self.env["res.partner"].browse(author_id)
+        base_url = self.get_base_url()
+        order_url = f"{base_url}/web#id={self.id}&model=sale.order&view_type=form"
+        message_body = msg_vals.get("body") or message.body or ""
+
+        template = self.env.ref(
+            "altinkaya_sales.email_template_portal_message_notification",
+            raise_if_not_found=False,
+        )
+        if not template:
+            return
+
+        try:
+            template.with_context(
+                customer_name=author.name,
+                alias_email=alias_email,
+                order_url=order_url,
+                message_body=message_body,
+            ).send_mail(
+                self.id,
+                force_send=True,
+                email_values={"model": None, "res_id": False},
+            )
+        except Exception:
+            _logger.exception(
+                "Failed to send portal message notification to team alias %s for %s",
+                alias_email,
+                self.name,
+            )
 
     def action_cancel(self):
         """Force to call the cancel method on done picking for having the

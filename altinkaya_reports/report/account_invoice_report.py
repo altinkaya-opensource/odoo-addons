@@ -1,8 +1,20 @@
 from odoo import fields, models
+from odoo.tools import sql
 
 
 class AccountInvoiceReport(models.Model):
     _inherit = "account.invoice.report"
+
+    def init(self):
+        res = super().init()
+        sql.create_index(
+            self._cr,
+            "account_move_line_product_move_min_idx",
+            "account_move_line",
+            ["move_id", "id"],
+            where="display_type = 'product' AND account_id IS NOT NULL",
+        )
+        return res
 
     acquirer_id = fields.Many2one(
         "res.partner",
@@ -146,7 +158,13 @@ class AccountInvoiceReport(models.Model):
                line.laser_marking_price as laser_marking_price,
                line.lasercut_price as lasercut_price,
                line.insert_installation_price as insert_installation_price,
-               inv_count_sub.invoice_count,
+               CASE WHEN NOT EXISTS (
+                   SELECT 1 FROM account_move_line prev
+                   WHERE prev.move_id = line.move_id
+                     AND prev.id < line.id
+                     AND prev.display_type = 'product'
+                     AND prev.account_id IS NOT NULL
+               ) THEN 1 ELSE 0 END AS invoice_count,
                partner.industry_id as industry_id,
                line.origin_price_usd * line.quantity as origin_price_usd,
                CASE
@@ -197,13 +215,5 @@ class AccountInvoiceReport(models.Model):
                 GROUP BY move_line_id
             ) scl ON scl.move_line_id = line.id
 
-            LEFT JOIN (
-                SELECT
-                    line.id AS invoice_line_id,
-                    COUNT(DISTINCT move.id) AS invoice_count
-                FROM account_move_line line
-                JOIN account_move move ON move.id = line.move_id
-                GROUP BY line.id
-            ) inv_count_sub ON inv_count_sub.invoice_line_id = line.id
             """
         )

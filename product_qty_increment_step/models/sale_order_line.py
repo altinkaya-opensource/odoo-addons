@@ -26,6 +26,22 @@ class SaleOrderLine(models.Model):
             if not line.product_id:
                 continue
 
+            # Check minimum order quantity
+            min_qty = line.product_id.min_order_qty
+            if min_qty and min_qty > 0 and line.product_uom_qty < min_qty:
+                raise ValidationError(
+                    _(
+                        'Product "%(product)s" has a minimum order'
+                        " quantity of %(min_qty)s.\n"
+                        "Your quantity %(quantity)s is below the minimum."
+                    )
+                    % {
+                        "product": line.product_id.display_name,
+                        "min_qty": int(min_qty),
+                        "quantity": int(line.product_uom_qty),
+                    }
+                )
+
             # Get the increment step from the product template
             step = line.product_id.product_tmpl_id.qty_increment_step
 

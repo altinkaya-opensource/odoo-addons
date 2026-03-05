@@ -263,13 +263,13 @@ class DeliveryCarrier(models.Model):
             - cutoff_margin
         )
 
-        if now_local < cutoff_time:
+        if now_local < cutoff_time and self._is_tr_business_day(now_local):
             estimated = now_local.replace(
                 hour=cutoff_hour, minute=0, second=0, microsecond=0
             )
         else:
             tomorrow = now_local + timedelta(days=1)
-            estimated = tomorrow.replace(
+            estimated = self._get_next_tr_business_day(tomorrow).replace(
                 hour=cutoff_hour, minute=0, second=0, microsecond=0
             )
 
