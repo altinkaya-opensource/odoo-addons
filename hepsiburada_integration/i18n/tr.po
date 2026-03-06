@@ -1,0 +1,3403 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hepsiburada_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-06 13:25+0000\n"
+"PO-Revision-Date: 2026-03-06 13:25+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__currency_code
+msgid "949=TRY, 840=USD"
+msgstr "949=TRY, 840=USD"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_sale_order_form_hepsiburada
+msgid "<span class=\"o_stat_text\">Hepsiburada</span>"
+msgstr "<span class=\"o_stat_text\">Hepsiburada</span>"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "API Configuration"
+msgstr "API Yapılandırması"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__api_password
+msgid "API Password"
+msgstr "API Şifresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__api_username
+msgid "API Username"
+msgstr "API Kullanıcı Adı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Accept"
+msgstr "Kabul Et"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Accept / Reject"
+msgstr "Kabul Et / Reddet"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Accept Claim"
+msgstr "Talebi Kabul Et"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__acception_reason
+msgid "Acceptance Reason"
+msgstr "Kabul Nedeni"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__accepted
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Accepted"
+msgstr "Kabul Edildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_warning
+msgid "Access warning"
+msgstr "Erişim uyarısı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Accounting"
+msgstr "Muhasebe"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__action_expire_date
+msgid "Action Expire Date"
+msgstr "İşlem Son Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_needaction
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_needaction
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_needaction
+msgid "Action Needed"
+msgstr "İşlem Gerekli"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__active
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__active
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+msgid "Active"
+msgstr "Aktif"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_ids
+msgid "Activities"
+msgstr "Aktiviteler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_exception_decoration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Aktivite İstisna Gösterimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_state
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_state
+msgid "Activity State"
+msgstr "Aktivite Durumu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_type_icon
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Aktivite Türü Simgesi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Address"
+msgstr "Adres"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__hb_address_id
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_users__hb_address_id
+msgid "Address ID from Hepsiburada for delivery address matching"
+msgstr "Teslimat adresi eşleştirmesi için Hepsiburada adres kimliği"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__amount
+msgid "Amount"
+msgstr "Tutar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_undiscounted
+msgid "Amount Before Discount"
+msgstr "İndirim Öncesi Tutar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_total_company_currency
+msgid "Amount Total in Company Currency"
+msgstr "Şirket Para Biriminde Toplam Tutar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_amount_in_words
+msgid "Amount to Text"
+msgstr "Tutarın Yazılı Hali"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__analytic_account_id
+msgid "Analytic Account"
+msgstr "Analitik Hesap"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__answer_text
+msgid "Answer"
+msgstr "Yanıt"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Answer sent to Hepsiburada successfully."
+msgstr "Yanıt Hepsiburada'ya başarıyla gönderildi."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+msgid "Archived"
+msgstr "Arşivlenmiş"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Are you sure you want to accept this claim?"
+msgstr "Bu talebi kabul etmek istediğinize emin misiniz?"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Are you sure you want to cancel this order in Hepsiburada?"
+msgstr "Bu siparişi Hepsiburada'da iptal etmek istediğinize emin misiniz?"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Are you sure you want to reject this claim?"
+msgstr "Bu talebi reddetmek istediğinize emin misiniz?"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_attachment_count
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_attachment_count
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_attachment_count
+msgid "Attachment Count"
+msgstr "Ek Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__authorized_transaction_ids
+msgid "Authorized Transactions"
+msgstr "Onaylı İşlemler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_claims
+msgid "Auto Import Claims"
+msgstr "Otomatik Talep İçe Aktarma"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_orders
+msgid "Auto Import Orders"
+msgstr "Otomatik Sipariş İçe Aktarma"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_questions
+msgid "Auto Import Questions"
+msgstr "Otomatik Soru İçe Aktarma"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_settlements
+msgid "Auto Import Settlements"
+msgstr "Otomatik Hesap Kesimi İçe Aktarma"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_reconcile_settlements
+msgid "Auto Reconcile Settlements"
+msgstr "Otomatik Hesap Kesimi Mutabakatı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_send_invoice
+msgid "Auto Send Invoice"
+msgstr "Otomatik Fatura Gönderimi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Auto Sync"
+msgstr "Otomatik Senkronizasyon"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_sync_tracking
+msgid "Auto Sync Tracking"
+msgstr "Otomatik Takip Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_confirm_orders
+msgid "Auto-confirm Orders"
+msgstr "Otomatik Sipariş Onaylama"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_confirm_orders
+msgid "Automatically confirm imported orders"
+msgstr "İçe aktarılan siparişleri otomatik onayla"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_claims
+msgid "Automatically import customer claims via scheduled job"
+msgstr "Zamanlanmış görev ile müşteri taleplerini otomatik içe aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_questions
+msgid "Automatically import customer questions via scheduled job"
+msgstr "Zamanlanmış görev ile müşteri sorularını otomatik içe aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_settlements
+msgid "Automatically import financial settlements via scheduled job"
+msgstr "Zamanlanmış görev ile hesap kesimlerini otomatik içe aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_orders
+msgid "Automatically import orders via scheduled job"
+msgstr "Zamanlanmış görev ile siparişleri otomatik içe aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_reconcile_settlements
+msgid "Automatically reconcile imported settlements with invoices"
+msgstr "İçe aktarılan hesap kesimlerini faturalarla otomatik mutabakat yap"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_sync_tracking
+msgid "Automatically send tracking numbers when delivery is done"
+msgstr "Teslimat tamamlandığında takip numaralarını otomatik gönder"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__awaiting_action
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Awaiting Action"
+msgstr "İşlem Bekliyor"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__backend_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__backend_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__backend_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__backend_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__backend_id
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Backend"
+msgstr "Arka Uç"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Backend Name"
+msgstr "Arka Uç Adı"
+
+#. module: hepsiburada_integration
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_backends
+msgid "Backends"
+msgstr "Arka Uçlar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__campaign_id
+msgid "Campaign"
+msgstr "Kampanya"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Cancel Queued"
+msgstr "İptal Kuyruğa Alındı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Cancel in Hepsiburada"
+msgstr "Hepsiburada'da İptal Et"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Cancel order: %s"
+msgstr "Siparişi iptal et: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__cancelled
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "Cancelled"
+msgstr "İptal Edildi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Cancelled order sync has been queued."
+msgstr "İptal edilen sipariş senkronizasyonu kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Cannot fetch tracking: no package number on this order."
+msgstr "Takip bilgisi alınamıyor: bu siparişte paket numarası yok."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Cannot send invoice for cancelled orders."
+msgstr "İptal edilen siparişler için fatura gönderilemez."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Cargo Mapping"
+msgstr "Kargo Eşleştirme"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__cargo_mapping_ids
+msgid "Cargo Mappings"
+msgstr "Kargo Eşleştirmeleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_provider_name
+msgid "Cargo Provider"
+msgstr "Kargo Sağlayıcı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__hepsiburada_cargo_provider_name
+msgid "Cargo provider name from Hepsiburada API"
+msgstr "Hepsiburada API'sinden kargo sağlayıcı adı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__carrier_payment_type
+msgid "Carrier Payment Type"
+msgstr "Taşıyıcı Ödeme Türü"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklikler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__claim_date
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Claim Date"
+msgstr "Talep Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_claim_id
+msgid "Claim ID"
+msgstr "Talep ID"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Claim Info"
+msgstr "Talep Bilgisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_claim_number
+msgid "Claim Number"
+msgstr "Talep Numarası"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Claim accepted in Hepsiburada."
+msgstr "Talep Hepsiburada'da kabul edildi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Claim import has been queued."
+msgstr "Talep içe aktarma kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_claim_unique_claim_per_backend
+msgid "Claim number must be unique per backend."
+msgstr "Talep numarası arka uç başına benzersiz olmalıdır."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Claim rejected in Hepsiburada."
+msgstr "Talep Hepsiburada'da reddedildi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__claim_count
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_claims
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+#, python-format
+msgid "Claims"
+msgstr "Talepler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__closed
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Closed"
+msgstr "Kapatıldı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__commission
+msgid "Commission"
+msgstr "Komisyon"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__commission_amount
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__commission_amount
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_amount
+msgid "Commission Amount"
+msgstr "Komisyon Tutarı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_payment_id
+msgid "Commission Payment"
+msgstr "Komisyon Ödemesi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_rate
+msgid "Commission Rate"
+msgstr "Komisyon Oranı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Commissions"
+msgstr "Komisyonlar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__company_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__company_id
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+msgid "Company"
+msgstr "Şirket"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__company_currency_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_id_try
+msgid "Company Currency"
+msgstr "Şirket Para Birimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__effective_date
+msgid "Completion date of the first delivery order."
+msgstr "İlk teslimat emrinin tamamlanma tarihi."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_full_address
+msgid "Concatenated address for easy searching"
+msgstr "Kolay arama için birleştirilmiş adres"
+
+#. module: hepsiburada_integration
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_config
+msgid "Configuration"
+msgstr "Yapılandırma"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_backend
+msgid ""
+"Configure API credentials and sync settings to connect\n"
+"                your Odoo instance with Hepsiburada marketplace."
+msgstr ""
+"Odoo kurulumunuzu Hepsiburada pazar yeri ile bağlamak için\n"
+"                API bilgilerini ve senkronizasyon ayarlarını yapılandırın."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Connection failed: %s"
+msgstr "Bağlantı başarısız: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Connection to Hepsiburada API successful!"
+msgstr "Hepsiburada API bağlantısı başarılı!"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_res_partner
+msgid "Contact"
+msgstr "İletişim"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__conversation_ids
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Conversations"
+msgstr "Konuşmalar"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Conversations updated."
+msgstr "Konuşmalar güncellendi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid ""
+"Could not create commission payment. Check HB partner and journal "
+"configuration."
+msgstr ""
+"Komisyon ödemesi oluşturulamadı. HB iş ortağı ve günlük yapılandırmasını "
+"kontrol edin."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__mrp_production_count
+msgid "Count of MO generated"
+msgstr "Oluşturulan Üretim Emri Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__country_code
+msgid "Country code"
+msgstr "Ülke kodu"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Create Package"
+msgstr "Paket Oluştur"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Create package: %s"
+msgstr "Paket oluştur: %s"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_backend
+msgid "Create your first Hepsiburada backend"
+msgstr "İlk Hepsiburada arka ucunuzu oluşturun"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__create_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__create_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__create_date
+msgid "Created on"
+msgstr "Oluşturma Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__date_order
+msgid ""
+"Creation date of draft/sent orders,\n"
+"Confirmation date of confirmed orders."
+msgstr ""
+"Taslak/gönderilmiş siparişlerin oluşturulma tarihi,\n"
+"Onaylanmış siparişlerin onay tarihi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Credit note %s is already paid."
+msgstr "Alacak dekontu %s zaten ödenmiş."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_id
+msgid "Currency"
+msgstr "Para Birimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__currency_code
+msgid "Currency Code"
+msgstr "Para Birimi Kodu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_rate
+msgid "Currency Rate"
+msgstr "Döviz Kuru"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__current_revision_id
+msgid "Current revision"
+msgstr "Mevcut revizyon"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_id
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question_message__sender__customer
+msgid "Customer"
+msgstr "Müşteri"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_claim
+msgid "Customer Claims"
+msgstr "Müşteri Talepleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__explanation
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Customer Explanation"
+msgstr "Müşteri Açıklaması"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_customer_id
+msgid "Customer ID"
+msgstr "Müşteri ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__customer_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_customer_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__customer_name
+msgid "Customer Name"
+msgstr "Müşteri Adı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__access_url
+msgid "Customer Portal URL"
+msgstr "Müşteri Portal URL"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_question
+msgid "Customer Questions"
+msgstr "Müşteri Soruları"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__client_order_ref
+msgid "Customer Reference"
+msgstr "Müşteri Referansı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_claim
+msgid ""
+"Customer claims (returns, missing items, etc.) will appear\n"
+"                here when imported from Hepsiburada."
+msgstr ""
+"Müşteri talepleri (iadeler, eksik ürünler vb.) Hepsiburada'dan\n"
+"                içe aktarıldığında burada görünecektir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__hb_customer_id
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_users__hb_customer_id
+msgid "Customer identifier from Hepsiburada marketplace"
+msgstr "Hepsiburada pazar yerinden müşteri tanımlayıcısı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_question
+msgid ""
+"Customer questions will appear here when imported from\n"
+"                Hepsiburada. Configure auto-import in backend settings."
+msgstr ""
+"Müşteri soruları Hepsiburada'dan içe aktarıldığında burada\n"
+"                görünecektir. Arka uç ayarlarında otomatik içe aktarmayı yapılandırın."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__damaged_with_report
+msgid "Damaged With Report"
+msgstr "Raporlu Hasarlı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__message_date
+msgid "Date"
+msgstr "Tarih"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_cargo_company_id
+msgid "Default Cargo Company"
+msgstr "Varsayılan Kargo Şirketi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_product_id
+msgid "Default Product"
+msgstr "Varsayılan Ürün"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_vat_rate
+msgid "Default VAT Rate (%)"
+msgstr "Varsayılan KDV Oranı (%)"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_vat_rate
+msgid "Default VAT rate for products without tax"
+msgstr "Vergisiz ürünler için varsayılan KDV oranı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_cargo_company_id
+msgid "Default delivery carrier for Hepsiburada orders"
+msgstr "Hepsiburada siparişleri için varsayılan teslimat taşıyıcısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__fiscal_position_id
+msgid "Default fiscal position for Hepsiburada orders"
+msgstr "Hepsiburada siparişleri için varsayılan mali durum"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__sales_team_id
+msgid "Default sales team for Hepsiburada orders"
+msgstr "Hepsiburada siparişleri için varsayılan satış ekibi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "Delivered"
+msgstr "Teslim Edildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_shipping_id
+msgid "Delivery Address"
+msgstr "Teslimat Adresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__carrier_id
+msgid "Delivery Carrier"
+msgstr "Teslimat Taşıyıcısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__commitment_date
+msgid "Delivery Date"
+msgstr "Teslimat Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_message
+msgid "Delivery Message"
+msgstr "Teslimat Mesajı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__carrier_id
+msgid "Delivery Method"
+msgstr "Teslimat Yöntemi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_count
+msgid "Delivery Orders"
+msgstr "Teslimat Emirleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_price_try
+msgid "Delivery Price (TRY)"
+msgstr "Teslimat Fiyatı (TRY)"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_rating_success
+msgid "Delivery Rating Success"
+msgstr "Teslimat Değerlendirme Başarısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_set
+msgid "Delivery Set"
+msgstr "Teslimat Seti"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_status
+msgid "Delivery Status"
+msgstr "Teslimat Durumu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_type
+msgid "Delivery Type"
+msgstr "Teslimat Türü"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__recompute_delivery_price
+msgid "Delivery cost should be recomputed"
+msgstr "Teslimat maliyeti yeniden hesaplanmalı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__expected_date
+msgid ""
+"Delivery date you can promise to the customer, computed from the minimum "
+"lead time of the order lines in case of Service products. In case of "
+"shipping, the shipping policy of the order will be taken into account to "
+"either use the minimum or maximum lead time of the order lines."
+msgstr ""
+"Müşteriye vaat edebileceğiniz teslimat tarihi; hizmet ürünlerinde sipariş "
+"kalemlerinin minimum temin süresinden hesaplanır. Sevkiyat durumunda, "
+"sipariş kalemlerinin minimum veya maksimum temin süresini kullanmak için "
+"siparişin sevkiyat politikası dikkate alınır."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__description
+msgid "Description"
+msgstr "Açıklama"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__destination_port
+msgid "Destination port"
+msgstr "Varış limanı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__display_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__display_name
+msgid "Display Name"
+msgstr "Görüntülenen Ad"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__visible_project
+msgid "Display project"
+msgstr "Projeyi göster"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__due_date
+msgid "Due Date"
+msgstr "Vade Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__effective_date
+msgid "Effective Date"
+msgstr "Geçerlilik Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__environment
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+msgid "Environment"
+msgstr "Ortam"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__error
+msgid "Error"
+msgstr "Hata"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__error_message
+msgid "Error Message"
+msgstr "Hata Mesajı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Errors"
+msgstr "Hatalar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__exception_ids
+msgid "Exceptions"
+msgstr "İstisnalar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__exceptions_summary
+msgid "Exceptions Summary"
+msgstr "İstisna Özeti"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__expected_date
+msgid "Expected Date"
+msgstr "Beklenen Tarih"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__validity_date
+msgid "Expiration"
+msgstr "Son Kullanma"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__extra_product
+msgid "Extra Product"
+msgstr "Ekstra Ürün"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__failed_message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__failed_message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__failed_message_ids
+msgid "Failed Messages"
+msgstr "Başarısız Mesajlar"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Failed to accept claim: %s"
+msgstr "Talep kabul edilemedi: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Failed to reject claim: %s"
+msgstr "Talep reddedilemedi: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Failed to send answer: %s"
+msgstr "Yanıt gönderilemedi: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_product_id
+msgid ""
+"Fallback product for unmapped items. If not set, unmapped items will be "
+"created as note lines."
+msgstr ""
+"Eşleştirilmemiş ürünler için yedek ürün. Ayarlanmazsa eşleştirilmemiş "
+"kalemler not satırı olarak oluşturulur."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Fetch Tracking"
+msgstr "Takip Bilgisi Getir"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__carrier_id
+msgid "Fill this field if you plan to invoice the shipping based on picking."
+msgstr ""
+"Sevkiyatı toplama bazında faturalamayı planlıyorsanız bu alanı doldurun."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__finalized_with
+msgid "Finalized With"
+msgstr "Sonuçlandırma"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Financial"
+msgstr "Finans"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__first_reminder_mail_sent
+msgid "First Reminder Sent"
+msgstr "İlk Hatırlatma Gönderildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__fiscal_position_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__fiscal_position_id
+msgid "Fiscal Position"
+msgstr "Mali Durum"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__fiscal_position_id
+msgid ""
+"Fiscal positions are used to adapt taxes and accounts for particular "
+"customers or sales orders/invoices.The default value comes from the "
+"customer."
+msgstr ""
+"Mali durumlar, belirli müşteriler veya satış siparişleri/faturaları için "
+"vergileri ve hesapları uyarlamak için kullanılır. Varsayılan değer "
+"müşteriden gelir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_follower_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_follower_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_follower_ids
+msgid "Followers"
+msgstr "Takipçiler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_partner_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_partner_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Takipçiler (İş Ortakları)"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_type_icon
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Font awesome simgesi ör. fa-tasks"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_full_address
+msgid "Full Address"
+msgstr "Tam Adres"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Group By"
+msgstr "Grupla"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "HB Commission - Order %s"
+msgstr "HB Komisyon - Sipariş %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__customer_id
+msgid "HB Customer ID"
+msgstr "HB Müşteri ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_line_item_id
+msgid "HB Line Item ID"
+msgstr "HB Kalem ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_line_item_ids
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "HB Line Items"
+msgstr "HB Kalemleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__hb_message_id
+msgid "HB Message ID"
+msgstr "HB Mesaj ID"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "HB Missing Invoice"
+msgstr "HB Eksik Fatura"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_order_id
+msgid "HB Order"
+msgstr "HB Siparişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hepsiburada_order_number
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_order_number
+msgid "HB Order Number"
+msgstr "HB Sipariş Numarası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_sku
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_sku
+msgid "HB SKU"
+msgstr "HB SKU"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "HB Settlement - Order %s"
+msgstr "HB Hesap Kesimi - Sipariş %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hepsiburada_status
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_status
+msgid "HB Status"
+msgstr "HB Durumu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_sku
+msgid "HBSKU"
+msgstr "HBSKU"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_update_fpos
+msgid "Has Fiscal Position Changed"
+msgstr "Mali Durum Değişti mi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__has_message
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__has_message
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__has_message
+msgid "Has Message"
+msgstr "Mesaj Var"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__has_old_revisions
+msgid "Has Old Revisions"
+msgstr "Eski Revizyonları Var"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_update_pricelist
+msgid "Has Pricelist Changed"
+msgstr "Fiyat Listesi Değişti mi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_json_popover
+msgid "Has late picking"
+msgstr "Gecikmiş toplama var"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_missing_invoice
+msgid "Hb Missing Invoice"
+msgstr "HB Eksik Fatura"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_order_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__hb_order_id
+msgid "Hb Order"
+msgstr "HB Siparişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_status
+msgid "Hb Status"
+msgstr "HB Durumu"
+
+#. module: hepsiburada_integration
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_root
+msgid "Hepsiburada"
+msgstr "Hepsiburada"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__hb_address_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_users__hb_address_id
+msgid "Hepsiburada Address ID"
+msgstr "Hepsiburada Adres ID"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Hepsiburada Backend"
+msgstr "Hepsiburada Arka Uç"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_backend
+msgid "Hepsiburada Backend Configuration"
+msgstr "Hepsiburada Arka Uç Yapılandırması"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_backend
+msgid "Hepsiburada Backends"
+msgstr "Hepsiburada Arka Uçları"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_cargo_mapping
+msgid "Hepsiburada Cargo Provider Mapping"
+msgstr "Hepsiburada Kargo Sağlayıcı Eşleştirmesi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__hepsiburada_cargo_provider_name
+msgid "Hepsiburada Cargo Provider Name"
+msgstr "Hepsiburada Kargo Sağlayıcı Adı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Hepsiburada Claim"
+msgstr "Hepsiburada Talebi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Hepsiburada Customer"
+msgstr "Hepsiburada Müşterisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_claim
+msgid "Hepsiburada Customer Claim"
+msgstr "Hepsiburada Müşteri Talebi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__hb_customer_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_users__hb_customer_id
+msgid "Hepsiburada Customer ID"
+msgstr "Hepsiburada Müşteri ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_question
+msgid "Hepsiburada Customer Question"
+msgstr "Hepsiburada Müşteri Sorusu"
+
+#. module: hepsiburada_integration
+#: model:ir.module.category,name:hepsiburada_integration.module_category_hepsiburada
+msgid "Hepsiburada Integration"
+msgstr "Hepsiburada Entegrasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_order
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Hepsiburada Order"
+msgstr "Hepsiburada Siparişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_order_line
+msgid "Hepsiburada Order Line Item"
+msgstr "Hepsiburada Sipariş Kalemi"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_order
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hepsiburada_binding_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_binding_ids
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_sale_order_search_hepsiburada
+msgid "Hepsiburada Orders"
+msgstr "Hepsiburada Siparişleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__hb_partner_id
+msgid "Hepsiburada Partner"
+msgstr "Hepsiburada İş Ortağı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__settlement_journal_id
+msgid "Hepsiburada Payment Journal"
+msgstr "Hepsiburada Ödeme Günlüğü"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Hepsiburada Payment Journal not configured on backend."
+msgstr "Arka uçta Hepsiburada ödeme günlüğü yapılandırılmamış."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Hepsiburada Question"
+msgstr "Hepsiburada Sorusu"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_question_message
+msgid "Hepsiburada Question Conversation Message"
+msgstr "Hepsiburada Soru Konuşma Mesajı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Hepsiburada Settlement"
+msgstr "Hepsiburada Hesap Kesimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_hepsiburada_settlement
+msgid "Hepsiburada Settlement Transaction"
+msgstr "Hepsiburada Hesap Kesimi İşlemi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Hepsiburada order not found for order number: %s"
+msgstr "Sipariş numarası için Hepsiburada siparişi bulunamadı: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_order_id
+msgid "Hepsiburada orderId GUID"
+msgstr "Hepsiburada sipariş GUID'i"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_missing_invoice
+msgid "Hepsiburada reports this package as missing invoice"
+msgstr "Hepsiburada bu paketi eksik fatura olarak bildiriyor"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_import_claims_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_import_claims
+msgid "Hepsiburada: Import Claims"
+msgstr "Hepsiburada: Talepleri İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_import_orders_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_import_orders
+msgid "Hepsiburada: Import Orders"
+msgstr "Hepsiburada: Siparişleri İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_import_questions_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_import_questions
+msgid "Hepsiburada: Import Questions"
+msgstr "Hepsiburada: Soruları İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_import_settlements_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_import_settlements
+msgid "Hepsiburada: Import Settlements"
+msgstr "Hepsiburada: Hesap Kesimlerini İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_send_invoices_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_send_invoices
+msgid "Hepsiburada: Send Invoice Links"
+msgstr "Hepsiburada: Fatura Bağlantılarını Gönder"
+
+#. module: hepsiburada_integration
+#: model:ir.actions.server,name:hepsiburada_integration.cron_import_cancelled_orders_ir_actions_server
+#: model:ir.cron,cron_name:hepsiburada_integration.cron_import_cancelled_orders
+msgid "Hepsiburada: Sync Cancelled Orders"
+msgstr "Hepsiburada: İptal Siparişleri Senkronize Et"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__id
+msgid "ID"
+msgstr "ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_exception_icon
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_exception_icon
+msgid "Icon"
+msgstr "Simge"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_exception_icon
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "İstisna aktivitesini belirten simge."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_needaction
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_needaction
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "İşaretliyse yeni mesajlar ilginizi gerektiriyor."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_has_error
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_has_sms_error
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_has_error
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_has_sms_error
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_error
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "İşaretliyse bazı mesajlarda teslim hatası var."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__pricelist_id
+msgid "If you change the pricelist, only newly added lines will be affected."
+msgstr ""
+"Fiyat listesini değiştirirseniz sadece yeni eklenen kalemler etkilenir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__picking_policy
+msgid ""
+"If you deliver all products at once, the delivery order will be scheduled "
+"based on the greatest product lead time. Otherwise, it will be based on the "
+"shortest."
+msgstr ""
+"Tüm ürünleri tek seferde teslim ederseniz teslimat emri en uzun temin "
+"süresine göre planlanır. Aksi halde en kısa süreye göre planlanır."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__ignore_exception
+msgid "Ignore Exceptions"
+msgstr "İstisnaları Yoksay"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Import"
+msgstr "İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Import Claims"
+msgstr "Talepleri İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_tree
+msgid "Import Date"
+msgstr "İçe Aktarma Tarihi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import HB cancelled orders: %s"
+msgstr "HB iptal siparişlerini içe aktar: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import Hepsiburada claims: %s"
+msgstr "Hepsiburada taleplerini içe aktar: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import Hepsiburada orders: %s"
+msgstr "Hepsiburada siparişlerini içe aktar: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import Hepsiburada questions: %s"
+msgstr "Hepsiburada sorularını içe aktar: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import Hepsiburada settlements: %s"
+msgstr "Hepsiburada hesap kesimlerini içe aktar: %s"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Import Orders"
+msgstr "Siparişleri İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Import Questions"
+msgstr "Soruları İçe Aktar"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Import Settlements"
+msgstr "Hesap Kesimlerini İçe Aktar"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Import Started"
+msgstr "İçe Aktarma Başlatıldı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__imported
+msgid "Imported"
+msgstr "İçe Aktarıldı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__in_dispute
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "In Dispute"
+msgstr "İhtilaf"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "In Transit"
+msgstr "Transfer Halinde"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm
+msgid "Incoterm"
+msgstr "Incoterm"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm_address_id
+msgid "Incoterm Address"
+msgstr "Incoterm Adresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm_location
+msgid "Incoterm Location"
+msgstr "Incoterm Konumu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__first_reminder_mail_sent
+msgid "Indicates if the first quotation reminder has been sent."
+msgstr "İlk teklif hatırlatmasının gönderilip gönderilmediğini belirtir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__second_reminder_mail_sent
+msgid "Indicates if the second quotation reminder has been sent."
+msgstr "İkinci teklif hatırlatmasının gönderilip gönderilmediğini belirtir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__settlement_journal_id
+msgid ""
+"Intermediary bank-type journal for Hepsiburada payments. When a real bank "
+"transfer arrives, reconcile against this journal."
+msgstr ""
+"Hepsiburada ödemeleri için ara banka tipi günlük. Gerçek banka transferi "
+"geldiğinde bu günlükle mutabakat yapın."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__internal_note
+msgid "Internal Note"
+msgstr "Dahili Not"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__internal_note
+msgid ""
+"Internal note for the order. This field is not visible to the customer."
+msgstr "Sipariş için dahili not. Bu alan müşteriye görünmez."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__incoterm
+msgid ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
+msgstr ""
+"Uluslararası Ticari Terimler, uluslararası işlemlerde kullanılan önceden "
+"tanımlanmış ticari terimler dizisidir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__odoo_invoice_id
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Invoice"
+msgstr "Fatura"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Invoice %s is already paid."
+msgstr "Fatura %s zaten ödenmiş."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_invoice_id
+msgid "Invoice Address"
+msgstr "Fatura Adresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_count
+msgid "Invoice Count"
+msgstr "Fatura Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_link_sent
+msgid "Invoice Link Sent"
+msgstr "Fatura Bağlantısı Gönderildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__invoice_number
+msgid "Invoice Number"
+msgstr "Fatura Numarası"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Invoice Send Queued"
+msgstr "Fatura Gönderimi Kuyruğa Alındı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_sent_date
+msgid "Invoice Sent Date"
+msgstr "Fatura Gönderim Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_status
+msgid "Invoice Status"
+msgstr "Fatura Durumu"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Invoice link already sent."
+msgstr "Fatura bağlantısı zaten gönderildi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Invoice sending has been queued."
+msgstr "Fatura gönderimi kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_ids
+msgid "Invoices"
+msgstr "Faturalar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__is_answered
+msgid "Is Answered"
+msgstr "Yanıtlandı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_expired
+msgid "Is Expired"
+msgstr "Süresi Doldu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_is_follower
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_is_follower
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_is_follower
+msgid "Is Follower"
+msgstr "Takipçi mi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_overdue
+msgid "Is Overdue"
+msgstr "Gecikmiş mi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_product_milestone
+msgid "Is Product Milestone"
+msgstr "Ürün Kilometre Taşı mı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_issue_id
+msgid "Issue ID"
+msgstr "Sorun ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_issue_number
+msgid "Issue Number"
+msgstr "Sorun Numarası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_question_unique_issue_per_backend
+msgid "Issue number must be unique per backend."
+msgstr "Sorun numarası arka uç başına benzersiz olmalıdır."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__json_popover
+msgid "JSON data for the popover widget"
+msgstr "Açılır pencere bileşeni için JSON verisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__in_transit
+msgid "Kargoda"
+msgstr "Kargoda"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_claim_sync
+msgid "Last Claim Sync"
+msgstr "Son Talep Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_last_deci
+msgid "Last Confirmed Deci"
+msgstr "Son Onaylanan Desi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message____last_update
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement____last_update
+msgid "Last Modified on"
+msgstr "Son Değiştirilme Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_order_sync
+msgid "Last Order Sync"
+msgstr "Son Sipariş Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_question_sync
+msgid "Last Question Sync"
+msgstr "Son Soru Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_settlement_sync
+msgid "Last Settlement Sync"
+msgstr "Son Hesap Kesimi Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Last Sync Times"
+msgstr "Son Senkronizasyon Zamanları"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__write_uid
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__write_date
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__due_date
+msgid "Last date to ship"
+msgstr "Son sevk tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_order_line_line_item_id_order_uniq
+msgid "Line item ID must be unique per order!"
+msgstr "Kalem ID'si sipariş başına benzersiz olmalıdır!"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_main_attachment_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_main_attachment_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Ana Ek"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__main_exception_id
+msgid "Main Exception"
+msgstr "Ana İstisna"
+
+#. module: hepsiburada_integration
+#: model:ir.module.category,description:hepsiburada_integration.module_category_hepsiburada
+msgid "Manage Hepsiburada marketplace integration"
+msgstr "Hepsiburada pazar yeri entegrasyonunu yönetin"
+
+#. module: hepsiburada_integration
+#: model:res.groups,name:hepsiburada_integration.group_hepsiburada_manager
+msgid "Manager"
+msgstr "Yönetici"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Manual Actions"
+msgstr "Manuel İşlemler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__mrp_production_ids
+msgid "Manufacturing orders associated with this sales order."
+msgstr "Bu satış siparişi ile ilişkili üretim emirleri."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__cargo_mapping_ids
+msgid "Map Hepsiburada cargo providers to Odoo delivery carriers"
+msgstr ""
+"Hepsiburada kargo sağlayıcılarını Odoo teslimat taşıyıcılarıyla eşleştirin"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__medium_id
+msgid "Medium"
+msgstr "Ortam"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question_message__sender__merchant
+msgid "Merchant"
+msgstr "Satıcı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__merchant_id
+msgid "Merchant ID"
+msgstr "Satıcı ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__merchant_sku
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__merchant_sku
+msgid "Merchant SKU"
+msgstr "Satıcı SKU"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__merchant_sku
+msgid "Merchant Sku"
+msgstr "Satıcı SKU"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__merchant_statement
+msgid "Merchant Statement"
+msgstr "Satıcı Ekstresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__message_text
+msgid "Message"
+msgstr "Mesaj"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_error
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_error
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_error
+msgid "Message Delivery error"
+msgstr "Mesaj Teslim Hatası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_ids
+msgid "Messages"
+msgstr "Mesajlar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__milestone_count
+msgid "Milestone Count"
+msgstr "Kilometre Taşı Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_invoice
+msgid "Missing Invoice"
+msgstr "Eksik Fatura"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_item
+msgid "Missing Item"
+msgstr "Eksik Ürün"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_part
+msgid "Missing Part"
+msgstr "Eksik Parça"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_warranty
+msgid "Missing Warranty"
+msgstr "Eksik Garanti"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Missing invoice sync has been queued."
+msgstr "Eksik fatura senkronizasyonu kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__my_activity_date_deadline
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Aktivite Son Tarihim"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__my_team
+msgid "My Team"
+msgstr "Ekibim"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "N/A"
+msgstr "Yok"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__name
+msgid "Name"
+msgstr "Ad"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_volume
+msgid "Net Sale Volume"
+msgstr "Net Satış Hacmi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_weight
+msgid "Net Sale Weight"
+msgstr "Net Satış Ağırlığı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__new_request
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "New Request"
+msgstr "Yeni Talep"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_calendar_event_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Sonraki Aktivite Takvim Etkinliği"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_date_deadline
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Sonraki Aktivite Son Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_summary
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sonraki Aktivite Özeti"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_type_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_type_id
+msgid "Next Activity Type"
+msgstr "Sonraki Aktivite Türü"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_order
+msgid "No Hepsiburada orders yet"
+msgstr "Henüz Hepsiburada siparişi yok"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "No Invoice Sent"
+msgstr "Fatura Gönderilmedi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "No Package"
+msgstr "Paket Yok"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_claim
+msgid "No customer claims yet"
+msgstr "Henüz müşteri talebi yok"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_question
+msgid "No customer questions yet"
+msgstr "Henüz müşteri sorusu yok"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "No line items found to cancel."
+msgstr "İptal edilecek kalem bulunamadı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "No line items returned from order detail API."
+msgstr "Sipariş detay API'sinden kalem dönmedi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "No linked Odoo sale order found."
+msgstr "Bağlı Odoo satış siparişi bulunamadı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "No posted credit note found for sale order %s"
+msgstr "Satış siparişi %s için onaylanmış alacak dekontu bulunamadı"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "No posted invoice found for sale order %s"
+msgstr "Satış siparişi %s için onaylanmış fatura bulunamadı"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "No posted invoice found for this order."
+msgstr "Bu sipariş için onaylanmış fatura bulunamadı."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_settlement
+msgid "No settlements imported yet"
+msgstr "Henüz hesap kesimi içe aktarılmadı"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "No valid line item IDs found in order detail."
+msgstr "Sipariş detayında geçerli kalem ID'si bulunamadı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/stock_picking.py:0
+#, python-format
+msgid "Notify HB intransit: %s"
+msgstr "HB transit bildirimi: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_needaction_counter
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_needaction_counter
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_needaction_counter
+msgid "Number of Actions"
+msgstr "İşlem Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_count
+msgid "Number of Projects"
+msgstr "Proje Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__purchase_order_count
+msgid "Number of Purchase Order Generated"
+msgstr "Oluşturulan Satın Alma Siparişi Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_error_counter
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_error_counter
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_error_counter
+msgid "Number of errors"
+msgstr "Hata sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_needaction_counter
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_needaction_counter
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "İşlem gerektiren mesaj sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_has_error_counter
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_has_error_counter
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Teslim hatası olan mesaj sayısı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Odoo Configuration"
+msgstr "Odoo Yapılandırması"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Odoo Links"
+msgstr "Odoo Bağlantıları"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__odoo_id
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Odoo Order"
+msgstr "Odoo Siparişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__carrier_id
+msgid "Odoo delivery carrier to assign for this cargo provider"
+msgstr "Bu kargo sağlayıcısı için atanacak Odoo teslimat taşıyıcısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__old_revision_ids
+msgid "Old revisions"
+msgstr "Eski revizyonlar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__require_payment
+msgid "Online Payment"
+msgstr "Çevrimiçi Ödeme"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__require_signature
+msgid "Online Signature"
+msgstr "Çevrimiçi İmza"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Only claims with status New/Awaiting/Dispute can be accepted."
+msgstr "Sadece Yeni/Beklemede/İhtilaf durumundaki talepler kabul edilebilir."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Only claims with status New/Awaiting/Dispute can be rejected."
+msgstr "Sadece Yeni/Beklemede/İhtilaf durumundaki talepler reddedilebilir."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Only orders with 'Open' status can be cancelled in Hepsiburada."
+msgstr "Sadece 'Açık' durumundaki siparişler Hepsiburada'da iptal edilebilir."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Only orders with 'Open' status can be packaged."
+msgstr "Sadece 'Açık' durumundaki siparişler paketlenebilir."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__open
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Open"
+msgstr "Açık"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__opportunity_id
+msgid "Opportunity"
+msgstr "Fırsat"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_option_ids
+msgid "Optional Products Lines"
+msgstr "Opsiyonel Ürün Kalemleri"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Order & Customer"
+msgstr "Sipariş ve Müşteri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__date_order
+msgid "Order Date"
+msgstr "Sipariş Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_order_id
+msgid "Order ID"
+msgstr "Sipariş ID"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Order Info"
+msgstr "Sipariş Bilgisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__order_line
+msgid "Order Lines"
+msgstr "Sipariş Kalemleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_order_number
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_order_number
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__order_number
+msgid "Order Number"
+msgstr "Sipariş Numarası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__name
+msgid "Order Reference"
+msgstr "Sipariş Referansı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Order Settings"
+msgstr "Sipariş Ayarları"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Order cancellation has been queued."
+msgstr "Sipariş iptali kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Order import has been queued."
+msgstr "Sipariş içe aktarma kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_order_order_number_backend_uniq
+msgid "Order number must be unique per backend!"
+msgstr "Sipariş numarası arka uç başına benzersiz olmalıdır!"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__order_count
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_orders
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+#, python-format
+msgid "Orders"
+msgstr "Siparişler"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_order
+msgid ""
+"Orders will appear here when imported from Hepsiburada.\n"
+"                Configure auto-import in backend settings or click\n"
+"                \"Import Orders\" manually."
+msgstr ""
+"Hepsiburada'dan içe aktarıldığında siparişler burada görünecektir.\n"
+"                Arka uç ayarlarında otomatik içe aktarmayı yapılandırın veya\n"
+"                \"Siparişleri İçe Aktar\" butonuna tıklayın."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__raw_data
+msgid "Original JSON data from Hepsiburada"
+msgstr "Hepsiburada'dan gelen orijinal JSON verisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__unrevisioned_name
+msgid "Original Reference"
+msgstr "Orijinal Referans"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "Overdue"
+msgstr "Gecikmiş"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Package Creation Queued"
+msgstr "Paket Oluşturma Kuyruğa Alındı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_package_number
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__package_number
+msgid "Package Number"
+msgstr "Paket Numarası"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Package already created for this order."
+msgstr "Bu sipariş için paket zaten oluşturuldu."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Package creation has been queued."
+msgstr "Paket oluşturma kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "Packaged"
+msgstr "Paketlendi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__payment_status
+msgid "Paid / WillBePaid"
+msgstr "Ödendi / Ödenecek"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__packaged
+msgid "Paketlendi"
+msgstr "Paketlendi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__open
+msgid "Paketlenecek"
+msgstr "Paketlenecek"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_credit_warning
+msgid "Partner Credit Warning"
+msgstr "İş Ortağı Kredi Uyarısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__hb_partner_id
+msgid ""
+"Partner record for Hepsiburada. Used for commission settlement payments and "
+"for reporting purposes."
+msgstr ""
+"Hepsiburada için iş ortağı kaydı. Komisyon hesap kesimi ödemeleri ve "
+"raporlama amacıyla kullanılır."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__odoo_payment_id
+msgid "Payment"
+msgstr "Ödeme"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__payment_date
+msgid "Payment Date"
+msgstr "Ödeme Tarihi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Payment Info"
+msgstr "Ödeme Bilgisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__reference
+msgid "Payment Ref."
+msgstr "Ödeme Ref."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__payment_status
+msgid "Payment Status"
+msgstr "Ödeme Durumu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__payment_term_id
+msgid "Payment Terms"
+msgstr "Ödeme Koşulları"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#, python-format
+msgid "Please enter a rejection reason before rejecting."
+msgstr "Reddetmeden önce lütfen bir ret nedeni girin."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Please enter an answer before sending."
+msgstr "Göndermeden önce lütfen bir yanıt girin."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_url
+msgid "Portal Access URL"
+msgstr "Portal Erişim URL"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__revision_count
+msgid "Previous versions count"
+msgstr "Önceki sürüm sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__pricelist_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__pricelist_id
+msgid "Pricelist"
+msgstr "Fiyat Listesi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__pricelist_id
+msgid "Pricelist to use for Hepsiburada prices (must be in TRY)"
+msgstr "Hepsiburada fiyatları için kullanılacak fiyat listesi (TRY olmalı)"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__procurement_group_id
+msgid "Procurement Group"
+msgstr "Tedarik Grubu"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Product"
+msgstr "Ürün"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_image_url
+msgid "Product Image URL"
+msgstr "Ürün Resmi URL"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Product Info"
+msgstr "Ürün Bilgisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__product_name
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_name
+msgid "Product Name"
+msgstr "Ürün Adı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_url
+msgid "Product URL"
+msgstr "Ürün URL"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_backend__environment__prod
+msgid "Production"
+msgstr "Üretim"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_id
+msgid "Project"
+msgstr "Proje"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_ids
+msgid "Projects"
+msgstr "Projeler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__project_ids
+msgid "Projects used in this sales order."
+msgstr "Bu satış siparişinde kullanılan projeler."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__quantity
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__quantity
+msgid "Quantity"
+msgstr "Miktar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__question_text
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__question_id
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Question"
+msgstr "Soru"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_created_date
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Question Date"
+msgstr "Soru Tarihi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Question Info"
+msgstr "Soru Bilgisi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Question import has been queued."
+msgstr "Soru içe aktarma kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__question_count
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_questions
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+#, python-format
+msgid "Questions"
+msgstr "Sorular"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_template_id
+msgid "Quotation Template"
+msgstr "Teklif Şablonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__raw_data
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__raw_data
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__raw_data
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__raw_data
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Raw Data"
+msgstr "Ham Veri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cancel_reason_id
+msgid "Reason for cancellation"
+msgstr "İptal nedeni"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Reconcile"
+msgstr "Mutabakat Yap"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__reconciled
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+#, python-format
+msgid "Reconciled"
+msgstr "Mutabakat Yapıldı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__origin
+msgid "Reference of the document that generated this sales order request"
+msgstr "Bu satış siparişi talebini oluşturan belgenin referansı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Refresh Conversations"
+msgstr "Konuşmaları Yenile"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__refund_amount
+msgid "Refund Amount"
+msgstr "İade Tutarı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__refunded
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Refunded"
+msgstr "İade Edildi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Reject"
+msgstr "Reddet"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
+msgid "Reject Claim"
+msgstr "Talebi Reddet"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__rejected
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Rejected"
+msgstr "Reddedildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__rejection_reason
+msgid "Rejection Reason"
+msgstr "Ret Nedeni"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__require_signature
+msgid ""
+"Request a online signature and/or payment to the customer in order to "
+"confirm orders automatically."
+msgstr ""
+"Siparişleri otomatik onaylamak için müşteriden çevrimiçi imza ve/veya ödeme "
+"talep edin."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__req_destination_port
+msgid "Requires destination port"
+msgstr "Varış limanı gerekli"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__req_transport_type
+msgid "Requires transport type"
+msgstr "Taşıma türü gerekli"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_user_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_user_id
+msgid "Responsible User"
+msgstr "Sorumlu Kullanıcı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__return
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__return
+msgid "Return"
+msgstr "İade"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Returns"
+msgstr "İadeler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__revision_number
+msgid "Revision"
+msgstr "Revizyon"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_sms_error
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_sms_error
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS Teslim Hatası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__sale
+msgid "Sale"
+msgstr "Satış"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_deci
+msgid "Sale Deci"
+msgstr "Satış Desisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__sale_line_id
+msgid "Sale Line"
+msgstr "Satış Kalemi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Sales"
+msgstr "Satışlar"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_sale_order
+msgid "Sales Order"
+msgstr "Satış Siparişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Satış Sipariş Satırı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__sales_team_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__team_id
+msgid "Sales Team"
+msgstr "Satış Ekibi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__user_id
+msgid "Salesperson"
+msgstr "Satış Temsilcisi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
+msgid "Search Backends"
+msgstr "Arka Uç Ara"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Search Claims"
+msgstr "Talep Ara"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+msgid "Search Orders"
+msgstr "Sipariş Ara"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Search Questions"
+msgstr "Soru Ara"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Search Settlements"
+msgstr "Hesap Kesimi Ara"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__second_reminder_mail_sent
+msgid "Second Reminder Sent"
+msgstr "İkinci Hatırlatma Gönderildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_token
+msgid "Security Token"
+msgstr "Güvenlik Anahtarı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__project_id
+msgid "Select a non billable project on which tasks can be created."
+msgstr "Görevlerin oluşturulabileceği faturalandırılmayan bir proje seçin."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Send Answer"
+msgstr "Yanıt Gönder"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Send Invoice"
+msgstr "Fatura Gönder"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_send_invoice
+msgid "Send invoice links to Hepsiburada via nightly batch cron"
+msgstr "Gece toplu iş ile Hepsiburada'ya fatura bağlantılarını gönder"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Send invoice: %s"
+msgstr "Fatura gönder: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__sender
+msgid "Sender"
+msgstr "Gönderen"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_all_service
+msgid "Service Product"
+msgstr "Hizmet Ürünü"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Settlement has been reconciled successfully."
+msgstr "Hesap kesimi başarıyla mutabakat edildi."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Settlement import has been queued."
+msgstr "Hesap kesimi içe aktarma kuyruğa alındı."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_settlement
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__settlement_count
+#: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_settlements
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+#, python-format
+msgid "Settlements"
+msgstr "Hesap Kesimleri"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_settlement
+msgid ""
+"Settlements are imported from Hepsiburada's finance API and used\n"
+"                to reconcile invoices with marketplace payments."
+msgstr ""
+"Hesap kesimleri Hepsiburada'nın finans API'sinden içe aktarılır ve\n"
+"                faturaların pazar yeri ödemeleri ile mutabakatı için kullanılır."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
+msgid "Shipping"
+msgstr "Sevkiyat"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__picking_policy
+msgid "Shipping Policy"
+msgstr "Sevkiyat Politikası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signature
+msgid "Signature"
+msgstr "İmza"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signed_by
+msgid "Signed By"
+msgstr "İmzalayan"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signed_on
+msgid "Signed On"
+msgstr "İmza Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__sku
+msgid "Sku"
+msgstr "SKU"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__source_id
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__source_id
+msgid "Source"
+msgstr "Kaynak"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__origin
+msgid "Source Document"
+msgstr "Kaynak Belge"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_backend__environment__stage
+msgid "Stage (Testing)"
+msgstr "Test Ortamı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__delivery_type
+msgid "StandardDelivery / BT / YT"
+msgstr "StandardDelivery / BT / YT"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__state
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "State"
+msgstr "Durum"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_status
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__state
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__status
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_status
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Status"
+msgstr "Durum"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_state
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Aktivitelere dayalı durum\n"
+"Gecikmiş: Son tarih geçmiş\n"
+"Bugün: Aktivite tarihi bugün\n"
+"Planlanmış: Gelecek aktiviteler."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__subject
+msgid "Subject"
+msgstr "Konu"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Success"
+msgstr "Başarılı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_count
+msgid "Survey Count"
+msgstr "Anket Sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_url
+msgid "Survey URL"
+msgstr "Anket URL"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_url_qr
+msgid "Survey URL QR"
+msgstr "Anket URL QR"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_ids
+msgid "Surveys"
+msgstr "Anketler"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Sync Cancelled Orders"
+msgstr "İptal Edilen Siparişleri Senkronize Et"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Sync HB cancelled orders: %s"
+msgstr "HB iptal siparişlerini senkronize et: %s"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Sync Missing Invoices"
+msgstr "Eksik Faturaları Senkronize Et"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Sync Settings"
+msgstr "Senkronizasyon Ayarları"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Sync Started"
+msgstr "Senkronizasyon Başlatıldı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Sync Status"
+msgstr "Senkronizasyon Durumu"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Sync missing invoices: %s"
+msgstr "Eksik faturaları senkronize et: %s"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tag_ids
+msgid "Tags"
+msgstr "Etiketler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tasks_count
+msgid "Tasks"
+msgstr "Görevler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tasks_ids
+msgid "Tasks associated to this sale"
+msgstr "Bu satışla ilişkili görevler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tax_country_id
+msgid "Tax Country"
+msgstr "Vergi Ülkesi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tax_totals
+msgid "Tax Totals"
+msgstr "Vergi Toplamları"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_tax
+msgid "Taxes"
+msgstr "Vergiler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__terms_type
+msgid "Terms & Conditions format"
+msgstr "Şartlar ve Koşullar biçimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__note
+msgid "Terms and conditions"
+msgstr "Şartlar ve koşullar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__delivered
+msgid "Teslim Edildi"
+msgstr "Teslim Edildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__undelivered
+msgid "Teslim Edilemedi"
+msgstr "Teslim Edilemedi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Test Connection"
+msgstr "Bağlantıyı Test Et"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__country_code
+msgid ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
+msgstr ""
+"İki karakterlik ISO ülke kodu.\n"
+"Hızlı arama için bu alanı kullanabilirsiniz."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question_message__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order_line__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question_message__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order_line__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_question_message__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__reference
+msgid "The payment communication of this sale order."
+msgstr "Bu satış siparişinin ödeme iletişimi."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__campaign_id
+msgid ""
+"This is a name that helps you keep track of your different campaign efforts,"
+" e.g. Fall_Drive, Christmas_Special"
+msgstr ""
+"Bu, farklı kampanya çalışmalarınızı takip etmenize yardımcı olan bir "
+"isimdir, ör. Sonbahar_Kampanyası, Yılbaşı_Özel"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__commitment_date
+msgid ""
+"This is the delivery date promised to the customer. If set, the delivery "
+"order will be scheduled based on this date rather than product lead times."
+msgstr ""
+"Bu müşteriye vaat edilen teslimat tarihidir. Ayarlanırsa teslimat emri ürün "
+"temin süreleri yerine bu tarihe göre planlanır."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__medium_id
+msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
+msgstr "Bu teslimat yöntemidir, ör. Kartpostal, E-posta veya Banner Reklam"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__source_id
+msgid ""
+"This is the source of the link, e.g. Search Engine, another domain, or name "
+"of email list"
+msgstr ""
+"Bu bağlantının kaynağıdır, ör. Arama Motoru, başka bir alan adı veya e-posta"
+" listesi adı"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "This settlement is already reconciled."
+msgstr "Bu hesap kesimi zaten mutabakat yapılmış."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_encode_uom_id
+msgid "Timesheet Encoding Unit"
+msgstr "Zaman Çizelgesi Kodlama Birimi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_total_duration
+msgid "Timesheet Total Duration"
+msgstr "Zaman Çizelgesi Toplam Süresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_count
+msgid "Timesheet activities"
+msgstr "Zaman çizelgesi aktiviteleri"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_ids
+msgid "Timesheet activities associated to this sale"
+msgstr "Bu satışla ilişkili zaman çizelgesi aktiviteleri"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "To Reconcile"
+msgstr "Mutabakat Yapılacak"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_total
+msgid "Total"
+msgstr "Toplam"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__total_price
+msgid "Total Price"
+msgstr "Toplam Fiyat"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__commission_amount
+msgid "Total commission amount for the sale order."
+msgstr "Satış siparişi için toplam komisyon tutarı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__timesheet_total_duration
+msgid ""
+"Total recorded duration, expressed in the encoding UoM, and rounded to the "
+"unit"
+msgstr ""
+"Kodlama birimiyle ifade edilen ve birime yuvarlanmış toplam kayıtlı süre"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_tracking_link
+msgid "Tracking Link"
+msgstr "Takip Bağlantısı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_tracking_number
+msgid "Tracking Number"
+msgstr "Takip Numarası"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Tracking Updated"
+msgstr "Takip Güncellendi"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "Tracking info has been fetched from Hepsiburada."
+msgstr "Takip bilgisi Hepsiburada'dan alındı."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__transaction_date
+msgid "Transaction Date"
+msgstr "İşlem Tarihi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__hb_transaction_id
+msgid "Transaction ID"
+msgstr "İşlem ID"
+
+#. module: hepsiburada_integration
+#: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_settlement_transaction_uniq
+msgid "Transaction ID must be unique per backend!"
+msgstr "İşlem ID'si arka uç başına benzersiz olmalıdır!"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Transaction Info"
+msgstr "İşlem Bilgisi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__transaction_type
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Transaction Type"
+msgstr "İşlem Türü"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__transaction_ids
+msgid "Transactions"
+msgstr "İşlemler"
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_stock_picking
+msgid "Transfer"
+msgstr "Transfer"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__picking_ids
+msgid "Transfers"
+msgstr "Transferler"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__transport_type
+msgid "Transport type"
+msgstr "Taşıma türü"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__claim_type
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
+msgid "Type"
+msgstr "Tür"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__type_name
+msgid "Type Name"
+msgstr "Tür Adı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_exception_decoration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Kayıttaki istisna aktivitesinin türü."
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Type your answer here..."
+msgstr "Yanıtınızı buraya yazın..."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#, python-format
+msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
+msgstr "EŞLEŞTİRİLMEMİŞ: %(product)s (Adet: %(qty)s, Fiyat: %(price)s)"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__source_id
+msgid "UTM source to set on Hepsiburada orders"
+msgstr "Hepsiburada siparişlerinde ayarlanacak UTM kaynağı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order_line__hb_line_item_id
+msgid "UUID from HB items[].id"
+msgstr "HB items[].id alanından UUID"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Unanswered"
+msgstr "Yanıtsız"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__undelivered_product
+msgid "Undelivered Product"
+msgstr "Teslim Edilmeyen Ürün"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__unit_price
+msgid "Unit Price"
+msgstr "Birim Fiyat"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_untaxed
+msgid "Untaxed Amount"
+msgstr "Vergisiz Tutar"
+
+#. module: hepsiburada_integration
+#: model:res.groups,name:hepsiburada_integration.group_hepsiburada_user
+msgid "User"
+msgstr "Kullanıcı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__user_agent
+msgid "User-Agent"
+msgstr "User-Agent"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__user_agent
+msgid "User-Agent header sent with every API request to Hepsiburada"
+msgstr "Hepsiburada API isteklerinde gönderilen User-Agent başlığı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__vat_amount
+msgid "Vat Amount"
+msgstr "KDV Tutarı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__vat_rate
+msgid "Vat Rate"
+msgstr "KDV Oranı"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__waiting_customer
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Waiting Customer"
+msgstr "Müşteri Bekleniyor"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__waiting_merchant
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
+msgid "Waiting Merchant"
+msgstr "Satıcı Bekleniyor"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__warehouse_id
+msgid "Warehouse"
+msgstr "Depo"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__warehouse_ids
+msgid "Warehouses"
+msgstr "Depolar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__warehouse_ids
+msgid "Warehouses to use for order fulfillment"
+msgstr "Sipariş karşılama için kullanılacak depolar"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__website_message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__website_message_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__website_message_ids
+msgid "Website Messages"
+msgstr "Web Sitesi Mesajları"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__website_message_ids
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__website_message_ids
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__website_message_ids
+msgid "Website communication history"
+msgstr "Web sitesi iletişim geçmişi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__wrong_product
+msgid "Wrong Product"
+msgstr "Yanlış Ürün"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
+msgid "Your Answer"
+msgstr "Yanıtınız"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__merchant_id
+msgid "Your Hepsiburada merchant ID"
+msgstr "Hepsiburada satıcı kimliğiniz"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__payment_awaiting
+msgid "Ödeme Bekliyor"
+msgstr "Ödeme Bekliyor"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
+msgid "İptal Edildi"
+msgstr "İptal Edildi"
