@@ -64,6 +64,7 @@
                     </group>
                     <group>
                         <group string="Invoice">
+                            <field name="hb_missing_invoice" />
                             <field name="invoice_link_sent" />
                             <field name="invoice_sent_date" />
                         </group>
@@ -128,6 +129,7 @@
                 <field name="hb_status" />
                 <field name="hb_package_number" />
                 <field name="cargo_tracking_number" />
+                <field name="hb_missing_invoice" />
                 <field name="invoice_link_sent" />
                 <field name="backend_id" />
                 <field name="is_overdue" invisible="1" />
@@ -189,6 +191,11 @@
                     name="no_invoice"
                     string="No Invoice Sent"
                     domain="[('invoice_link_sent', '=', False)]"
+                />
+                <filter
+                    name="hb_missing_invoice"
+                    string="HB Missing Invoice"
+                    domain="[('hb_missing_invoice', '=', True)]"
                 />
                 <separator />
                 <group expand="0" string="Group By">

@@ -98,6 +98,10 @@ class HepsiburadaOrder(models.Model):
     )
 
     # Invoice tracking
+    hb_missing_invoice = fields.Boolean(
+        default=False,
+        help="Hepsiburada reports this package as missing invoice",
+    )
     invoice_link_sent = fields.Boolean(default=False)
     invoice_sent_date = fields.Datetime(readonly=True)
 

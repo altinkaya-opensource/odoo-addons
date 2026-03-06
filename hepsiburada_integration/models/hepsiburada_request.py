@@ -438,6 +438,20 @@ class HepsiburadaRequest:
             json_data["MerchantStatement"] = merchant_statement
         return self._make_request("POST", "oms", endpoint, json_data=json_data)
 
+    def get_missing_invoice_packages(self, offset=0, limit=50):
+        """Get packages with missing invoices.
+
+        Args:
+            offset: Pagination offset
+            limit: Page size (max 50)
+
+        Returns:
+            Dict with items list and pagination info
+        """
+        endpoint = f"/packages/merchantid/{self.merchant_id}/missing-invoice"
+        params = {"offset": offset, "limit": min(limit, 50)}
+        return self._make_request("GET", "oms", endpoint, params=params)
+
     # ==================== Finance Methods ====================
 
     def get_transactions(

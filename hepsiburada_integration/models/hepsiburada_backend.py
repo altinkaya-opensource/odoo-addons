@@ -893,7 +893,7 @@ class HepsiburadaBackend(models.Model):
 
     @api.model
     def _cron_send_invoices(self):
-        """Cron job to send invoice links for all active backends."""
+        """Cron job to sync missing invoices and send invoice links."""
         backends = self.search(
             [
                 ("active", "=", True),
@@ -901,6 +901,10 @@ class HepsiburadaBackend(models.Model):
             ]
         )
         for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Sync missing invoices: %s") % backend.name,
+            )._sync_missing_invoices()
             backend._send_pending_invoices()
 
     @api.model
@@ -968,3 +972,109 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Send invoice: %s") % order.hb_order_number,
             )._send_invoice()
+
+    # ==================== Missing Invoice Sync ====================
+
+    def action_sync_missing_invoices(self):
+        """Manually trigger missing invoice sync."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Sync missing invoices: %s") % self.name,
+        )._sync_missing_invoices()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Sync Started"),
+                "message": _("Missing invoice sync has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _sync_missing_invoices(self):
+        """Fetch packages with missing invoices from HB and mark orders."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Order = self.env["hepsiburada.order"]
+
+        # Collect all package numbers that HB reports as missing invoice
+        missing_package_numbers = set()
+        missing_order_numbers = set()
+        offset = 0
+
+        while True:
+            try:
+                result = client.get_missing_invoice_packages(offset=offset, limit=50)
+            except HepsiburadaAPIError as e:
+                _logger.error(
+                    "Failed to fetch missing invoices at offset %d: %s",
+                    offset,
+                    e,
+                )
+                raise
+
+            items = result if isinstance(result, list) else result.get("items", [])
+            if not items:
+                break
+
+            for item in items:
+                pkg_number = item.get("packageNumber", "")
+                if pkg_number:
+                    missing_package_numbers.add(str(pkg_number))
+                for order_num in item.get("orderNumbers", []):
+                    if order_num:
+                        missing_order_numbers.add(str(order_num))
+
+            total_count = result.get("totalCount", 0) if isinstance(result, dict) else 0
+            offset += 50
+            if offset >= total_count or offset > 5000:
+                break
+
+        # Build domain to find matching orders
+        domain_parts = []
+        if missing_package_numbers:
+            domain_parts.append(
+                ("hb_package_number", "in", list(missing_package_numbers))
+            )
+        if missing_order_numbers:
+            domain_parts.append(("hb_order_number", "in", list(missing_order_numbers)))
+
+        if domain_parts:
+            # Combine with OR if both exist
+            search_domain = [("backend_id", "=", self.id)]
+            if len(domain_parts) == 2:
+                search_domain += ["|"] + domain_parts
+            else:
+                search_domain += domain_parts
+
+            orders_to_mark = Order.search(search_domain)
+            orders_to_mark.filtered(lambda o: not o.hb_missing_invoice).write(
+                {"hb_missing_invoice": True}
+            )
+
+            # Clear flag for orders no longer in the missing list
+            orders_to_clear = Order.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("hb_missing_invoice", "=", True),
+                    ("id", "not in", orders_to_mark.ids),
+                ]
+            )
+            if orders_to_clear:
+                orders_to_clear.write({"hb_missing_invoice": False})
+        else:
+            # No missing invoices — clear all flags
+            Order.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("hb_missing_invoice", "=", True),
+                ]
+            ).write({"hb_missing_invoice": False})
+
+        _logger.info(
+            "Missing invoice sync done for backend %s: %d packages missing",
+            self.name,
+            len(missing_package_numbers) + len(missing_order_numbers),
+        )

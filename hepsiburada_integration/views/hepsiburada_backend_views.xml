@@ -167,6 +167,13 @@
                                         class="btn-secondary d-block mb-2"
                                         icon="fa-download"
                                     />
+                                    <button
+                                        name="action_sync_missing_invoices"
+                                        string="Sync Missing Invoices"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-file-text-o"
+                                    />
                                 </div>
                             </div>
                         </page>
