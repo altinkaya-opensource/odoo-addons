@@ -37,6 +37,11 @@
                     widget="uom"
                     options="{'uom_field': 'product_uom'}"
                 />
+                <field
+                    name="producible_qty"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
             </xpath>
 
             <xpath
@@ -52,6 +57,12 @@
                 <field
                     name="qty_unreserved_sincan"
                     string="Sincan"
+                    widget="uom"
+                    options="{'uom_field': 'product_uom'}"
+                />
+                <field
+                    name="producible_qty"
+                    string="Producible"
                     widget="uom"
                     options="{'uom_field': 'product_uom'}"
                 />
