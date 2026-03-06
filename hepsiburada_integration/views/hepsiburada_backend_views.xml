@@ -52,6 +52,18 @@
                                 string="Questions"
                             />
                         </button>
+                        <button
+                            name="action_view_claims"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-exclamation-triangle"
+                        >
+                            <field
+                                name="claim_count"
+                                widget="statinfo"
+                                string="Claims"
+                            />
+                        </button>
                     </div>
                     <widget
                         name="web_ribbon"
@@ -96,6 +108,7 @@
                                     <field name="auto_import_settlements" />
                                     <field name="auto_reconcile_settlements" />
                                     <field name="auto_import_questions" />
+                                    <field name="auto_import_claims" />
                                 </group>
                                 <group string="Order Settings">
                                     <field name="auto_confirm_orders" />
@@ -147,6 +160,13 @@
                                         class="btn-secondary d-block mb-2"
                                         icon="fa-download"
                                     />
+                                    <button
+                                        name="action_import_claims"
+                                        string="Import Claims"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
                                 </div>
                             </div>
                         </page>
@@ -156,6 +176,7 @@
                                     <field name="last_order_sync" readonly="0" />
                                     <field name="last_settlement_sync" readonly="0" />
                                     <field name="last_question_sync" readonly="0" />
+                                    <field name="last_claim_sync" readonly="0" />
                                 </group>
                             </group>
                         </page>

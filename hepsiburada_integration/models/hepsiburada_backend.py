@@ -174,12 +174,17 @@ class HepsiburadaBackend(models.Model):
         help="Automatically import customer questions via scheduled job",
     )
 
+    # Claims
+    auto_import_claims = fields.Boolean(
+        default=True,
+        help="Automatically import customer claims via scheduled job",
+    )
+
     # Last Sync Timestamps
     last_order_sync = fields.Datetime(readonly=True)
     last_settlement_sync = fields.Datetime(readonly=True)
-
-    # Last Sync - Questions
     last_question_sync = fields.Datetime(readonly=True)
+    last_claim_sync = fields.Datetime(readonly=True)
 
     # Statistics
     order_count = fields.Integer(
@@ -194,12 +199,17 @@ class HepsiburadaBackend(models.Model):
         compute="_compute_counts",
         string="Questions",
     )
+    claim_count = fields.Integer(
+        compute="_compute_counts",
+        string="Claims",
+    )
 
     @api.depends()
     def _compute_counts(self):
         Order = self.env["hepsiburada.order"]
         Settlement = self.env["hepsiburada.settlement"]
         Question = self.env["hepsiburada.question"]
+        Claim = self.env["hepsiburada.claim"]
         for backend in self:
             backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
             backend.settlement_count = Settlement.search_count(
@@ -208,6 +218,7 @@ class HepsiburadaBackend(models.Model):
             backend.question_count = Question.search_count(
                 [("backend_id", "=", backend.id)]
             )
+            backend.claim_count = Claim.search_count([("backend_id", "=", backend.id)])
 
     def _get_api_client(self):
         """Get configured API client for this backend."""
@@ -709,6 +720,80 @@ class HepsiburadaBackend(models.Model):
             "context": {"default_backend_id": self.id},
         }
 
+    def action_view_claims(self):
+        """View claims for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Claims"),
+            "res_model": "hepsiburada.claim",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    # ==================== Claim Import ====================
+
+    def action_import_claims(self):
+        """Manually trigger claim import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import Hepsiburada claims: %s") % self.name,
+        )._import_claims()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Claim import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_claims(self):
+        """Import customer claims from Hepsiburada OMS API."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Claim = self.env["hepsiburada.claim"]
+
+        total_imported = 0
+        offset = 0
+
+        while True:
+            try:
+                result = client.get_claims(offset=offset, limit=50)
+            except HepsiburadaAPIError as e:
+                _logger.error("Failed to fetch claims at offset %d: %s", offset, e)
+                raise
+
+            claims = (
+                result
+                if isinstance(result, list)
+                else result.get("items", result.get("content", []))
+            )
+            if not claims:
+                break
+
+            for claim_data in claims:
+                try:
+                    Claim._import_claim(self, claim_data)
+                    total_imported += 1
+                except Exception:
+                    _logger.exception(
+                        "Failed to import claim %s",
+                        claim_data.get("claimNumber", "?"),
+                    )
+
+            offset += 50
+            if offset > 5000:
+                _logger.warning("Claim import safety limit reached")
+                break
+
+        self.last_claim_sync = fields.Datetime.now()
+        _logger.info("Imported %d claims for backend %s", total_imported, self.name)
+
     # ==================== Question Import ====================
 
     def action_import_questions(self):
@@ -847,6 +932,21 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Import Hepsiburada questions: %s") % backend.name,
             )._import_questions()
+
+    @api.model
+    def _cron_import_claims(self):
+        """Cron job to import claims from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_claims", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import Hepsiburada claims: %s") % backend.name,
+            )._import_claims()
 
     def _send_pending_invoices(self):
         """Find Hepsiburada orders with pending invoices and queue sends."""

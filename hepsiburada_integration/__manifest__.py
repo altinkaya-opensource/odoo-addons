@@ -32,6 +32,7 @@
         "views/hepsiburada_order_views.xml",
         "views/hepsiburada_settlement_views.xml",
         "views/hepsiburada_question_views.xml",
+        "views/hepsiburada_claim_views.xml",
         "views/sale_order_views.xml",
         "views/menus.xml",
     ],

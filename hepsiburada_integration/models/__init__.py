@@ -11,3 +11,4 @@ from . import res_partner
 from . import stock_picking
 from . import hepsiburada_settlement
 from . import hepsiburada_question
+from . import hepsiburada_claim

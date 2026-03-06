@@ -376,6 +376,68 @@ class HepsiburadaRequest:
         endpoint = f"/cargoFirms/{self.merchant_id}"
         return self._make_request("GET", "shipping", endpoint)
 
+    # ==================== Claim Methods (OMS) ====================
+
+    def get_claims(self, offset=0, limit=50, status=None):
+        """Get all claims for this merchant.
+
+        Args:
+            offset: Pagination offset
+            limit: Page size
+            status: Optional status filter
+
+        Returns:
+            List of claim dicts
+        """
+        endpoint = f"/claims/merchantId/{self.merchant_id}"
+        params = {"offset": offset, "limit": min(limit, 50)}
+        if status:
+            params["status"] = status
+        return self._make_request("GET", "oms", endpoint, params=params)
+
+    def accept_claim(
+        self, claim_number, finalized_with="", invoice_link="", acception_reason=""
+    ):
+        """Accept a claim.
+
+        Args:
+            claim_number: Claim number
+            finalized_with: Finalization type (e.g. "Refund", "Change")
+            invoice_link: Invoice URL
+            acception_reason: Reason for acceptance
+
+        Returns:
+            Response data
+        """
+        endpoint = f"/claims/number/{claim_number}/accept"
+        json_data = {}
+        if finalized_with:
+            json_data["FinalizedWith"] = finalized_with
+        if invoice_link:
+            json_data["InvoiceLink"] = invoice_link
+        if acception_reason:
+            json_data["AcceptionReason"] = acception_reason
+        return self._make_request("POST", "oms", endpoint, json_data=json_data)
+
+    def reject_claim(self, claim_number, rejection_reason="", merchant_statement=""):
+        """Reject a claim.
+
+        Args:
+            claim_number: Claim number
+            rejection_reason: Reason for rejection
+            merchant_statement: Merchant's statement
+
+        Returns:
+            Response data
+        """
+        endpoint = f"/claims/number/{claim_number}/reject"
+        json_data = {}
+        if rejection_reason:
+            json_data["ClaimRejectionReason"] = rejection_reason
+        if merchant_statement:
+            json_data["MerchantStatement"] = merchant_statement
+        return self._make_request("POST", "oms", endpoint, json_data=json_data)
+
     # ==================== Finance Methods ====================
 
     def get_transactions(

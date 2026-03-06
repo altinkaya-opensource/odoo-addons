@@ -27,6 +27,15 @@
         action="action_hepsiburada_question"
     />
 
+    <!-- Claims Menu -->
+    <menuitem
+        id="menu_hepsiburada_claims"
+        name="Claims"
+        parent="menu_hepsiburada_root"
+        sequence="22"
+        action="action_hepsiburada_claim"
+    />
+
     <!-- Settlements Menu -->
     <menuitem
         id="menu_hepsiburada_settlements"
