@@ -940,6 +940,13 @@ class HepsiburadaOrder(models.Model):
                     )
                     raise
 
+        if not self.hb_package_number:
+            _logger.warning(
+                "No package number for HB order %s, skipping invoice mark.",
+                self.hb_order_number,
+            )
+            return
+
         self.invoice_link_sent = True
         self.invoice_sent_date = fields.Datetime.now()
         _logger.info(
