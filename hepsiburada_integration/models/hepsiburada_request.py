@@ -17,10 +17,12 @@ HEPSIBURADA_SERVICE_URLS = {
     "stage": {
         "oms": "https://oms-external-sit.hepsiburada.com",
         "shipping": "https://shipping-external-sit.hepsiburada.com",
+        "finance": "https://mpfinance-external-sit.hepsiburada.com",
     },
     "prod": {
         "oms": "https://oms-external.hepsiburada.com",
         "shipping": "https://shipping-external.hepsiburada.com",
+        "finance": "https://mpfinance-external.hepsiburada.com",
     },
 }
 
@@ -367,6 +369,42 @@ class HepsiburadaRequest:
         """
         endpoint = f"/cargoFirms/{self.merchant_id}"
         return self._make_request("GET", "shipping", endpoint)
+
+    # ==================== Finance Methods ====================
+
+    def get_transactions(
+        self,
+        record_date_start=None,
+        record_date_end=None,
+        transaction_types=None,
+        offset=0,
+        limit=100,
+    ):
+        """Get financial transactions from the accounting API.
+
+        Args:
+            record_date_start: Start date string (YYYY-MM-DD)
+            record_date_end: End date string (YYYY-MM-DD)
+            transaction_types: Comma-separated types (e.g. "Payment,Commission")
+            offset: Pagination offset
+            limit: Page size (max 100)
+
+        Returns:
+            Dict with transaction records
+        """
+        endpoint = f"/transactions/merchantid/{self.merchant_id}"
+        params = {
+            "offset": offset,
+            "limit": min(limit, 100),
+        }
+        if record_date_start:
+            params["recordDateStart"] = record_date_start
+        if record_date_end:
+            params["recordDateEnd"] = record_date_end
+        if transaction_types:
+            params["transactionTypes"] = transaction_types
+
+        return self._make_request("GET", "finance", endpoint, params=params)
 
     # ==================== Utility Methods ====================
 

@@ -20,6 +20,12 @@
                         attrs="{'invisible': [('invoice_link_sent', '=', True)]}"
                     />
                     <button
+                        name="action_fetch_tracking"
+                        string="Fetch Tracking"
+                        type="object"
+                        attrs="{'invisible': [('hb_package_number', '=', False)]}"
+                    />
+                    <button
                         name="action_cancel_in_hepsiburada"
                         string="Cancel in Hepsiburada"
                         type="object"

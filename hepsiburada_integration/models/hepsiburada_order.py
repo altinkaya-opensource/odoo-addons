@@ -182,6 +182,14 @@ class HepsiburadaOrder(models.Model):
             if pkg_number and not existing.hb_package_number:
                 existing.hb_package_number = str(pkg_number)
 
+            # Fetch tracking info for shipped/delivered packages
+            if (
+                existing.hb_package_number
+                and not existing.cargo_tracking_number
+                and new_status in ("packaged", "in_transit", "delivered", "undelivered")
+            ):
+                existing._fetch_tracking_from_api()
+
             # Add only NEW line items (idempotency)
             existing_line_ids = set(existing.hb_line_item_ids.mapped("hb_line_item_id"))
             new_items = [
@@ -756,6 +764,80 @@ class HepsiburadaOrder(models.Model):
                 str(e),
             )
             raise
+
+    # ── Tracking Fetch ────────────────────────────────────────────────────
+
+    def action_fetch_tracking(self):
+        """Manual button: fetch tracking info from Hepsiburada API."""
+        self.ensure_one()
+        if not self.hb_package_number:
+            raise UserError(
+                _("Cannot fetch tracking: no package number on this order.")
+            )
+        self._fetch_tracking_from_api()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Tracking Updated"),
+                "message": _("Tracking info has been fetched from Hepsiburada."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def _fetch_tracking_from_api(self):
+        """Fetch package detail from HB API and update tracking fields."""
+        self.ensure_one()
+        if not self.hb_package_number:
+            return
+
+        client = self.backend_id._get_api_client()
+        try:
+            result = client.get_package_detail(self.hb_package_number)
+        except HepsiburadaAPIError:
+            _logger.warning(
+                "Failed to fetch package detail for %s",
+                self.hb_package_number,
+                exc_info=True,
+            )
+            return
+
+        # API returns a list; take the first element
+        if isinstance(result, list):
+            data = result[0] if result else {}
+        else:
+            data = result or {}
+
+        vals = {}
+        tracking_number = data.get("trackingInfoCode", "")
+        tracking_url = data.get("trackingInfoUrl", "")
+        cargo_company = data.get("cargoCompany", "")
+
+        if tracking_number and not self.cargo_tracking_number:
+            vals["cargo_tracking_number"] = tracking_number
+        if tracking_url and not self.cargo_tracking_link:
+            vals["cargo_tracking_link"] = tracking_url
+        if cargo_company and not self.cargo_provider_name:
+            vals["cargo_provider_name"] = cargo_company
+
+        # Also update stock.picking carrier_tracking_ref
+        if tracking_number:
+            pickings = self.odoo_id.picking_ids.filtered(
+                lambda p: (
+                    p.picking_type_code == "outgoing" and not p.carrier_tracking_ref
+                )
+            )
+            if pickings:
+                pickings.write({"carrier_tracking_ref": tracking_number})
+
+        if vals:
+            self.write(vals)
+            _logger.info(
+                "Updated tracking for HB order %s: %s",
+                self.hb_order_number,
+                vals,
+            )
 
     # ── Invoice Sending ──────────────────────────────────────────────────
 

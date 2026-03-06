@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 import logging
+from datetime import timedelta
 
 from dateutil import parser as dateutil_parser
 
@@ -144,20 +145,52 @@ class HepsiburadaBackend(models.Model):
         help="Send invoice links to Hepsiburada via nightly batch cron",
     )
 
+    # Settlement / Accounting
+    hb_partner_id = fields.Many2one(
+        "res.partner",
+        string="Hepsiburada Partner",
+        help="Partner record for Hepsiburada. Used for commission "
+        "settlement payments and for reporting purposes.",
+    )
+    settlement_journal_id = fields.Many2one(
+        "account.journal",
+        string="Hepsiburada Payment Journal",
+        domain="[('type', '=', 'bank')]",
+        help="Intermediary bank-type journal for Hepsiburada payments. "
+        "When a real bank transfer arrives, reconcile against this journal.",
+    )
+    auto_import_settlements = fields.Boolean(
+        default=True,
+        help="Automatically import financial settlements via scheduled job",
+    )
+    auto_reconcile_settlements = fields.Boolean(
+        default=True,
+        help="Automatically reconcile imported settlements with invoices",
+    )
+
     # Last Sync Timestamps
     last_order_sync = fields.Datetime(readonly=True)
+    last_settlement_sync = fields.Datetime(readonly=True)
 
     # Statistics
     order_count = fields.Integer(
         compute="_compute_counts",
         string="Orders",
     )
+    settlement_count = fields.Integer(
+        compute="_compute_counts",
+        string="Settlements",
+    )
 
     @api.depends()
     def _compute_counts(self):
         Order = self.env["hepsiburada.order"]
+        Settlement = self.env["hepsiburada.settlement"]
         for backend in self:
             backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
+            backend.settlement_count = Settlement.search_count(
+                [("backend_id", "=", backend.id)]
+            )
 
     def _get_api_client(self):
         """Get configured API client for this backend."""
@@ -515,6 +548,112 @@ class HepsiburadaBackend(models.Model):
             _logger.error("Failed to import cancelled orders: %s", str(e))
             raise
 
+    # ==================== Settlement Import ====================
+
+    def action_import_settlements(self):
+        """Manually trigger settlement import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import Hepsiburada settlements: %s") % self.name,
+        )._import_settlements()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Settlement import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_settlements(self):
+        """Import settlements from Hepsiburada finance API.
+
+        The API has a max 15-day date range. We iterate in 15-day windows
+        from last_settlement_sync (or 15 days ago) to now.
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        Settlement = self.env["hepsiburada.settlement"]
+
+        end_date = fields.Datetime.now()
+        if self.last_settlement_sync:
+            start_date = self.last_settlement_sync
+        else:
+            start_date = end_date - timedelta(days=15)
+
+        window_start = start_date
+        total_imported = 0
+
+        while window_start < end_date:
+            window_end = min(window_start + timedelta(days=15), end_date)
+            start_str = window_start.strftime("%Y-%m-%d")
+            end_str = window_end.strftime("%Y-%m-%d")
+
+            try:
+                offset = 0
+                while True:
+                    result = client.get_transactions(
+                        record_date_start=start_str,
+                        record_date_end=end_str,
+                        transaction_types="Payment,Return,Commission",
+                        offset=offset,
+                        limit=100,
+                    )
+                    content = (
+                        result
+                        if isinstance(result, list)
+                        else result.get("content", result.get("items", []))
+                    )
+                    if not content:
+                        break
+
+                    for item in content:
+                        settlement = Settlement._import_settlement(self, item)
+                        if (
+                            settlement
+                            and settlement.state == "imported"
+                            and self.auto_reconcile_settlements
+                        ):
+                            try:
+                                settlement._reconcile()
+                            except Exception as e:
+                                settlement.write(
+                                    {
+                                        "state": "error",
+                                        "error_message": str(e),
+                                    }
+                                )
+                                _logger.warning(
+                                    "Auto-reconcile failed for settlement %s: %s",
+                                    settlement.hb_transaction_id,
+                                    str(e),
+                                )
+                        total_imported += 1
+
+                    offset += 100
+                    if offset > 5000:
+                        _logger.warning("Settlement import safety limit reached")
+                        break
+
+            except HepsiburadaAPIError as e:
+                _logger.error(
+                    "Failed to import settlements for window %s - %s: %s",
+                    window_start,
+                    window_end,
+                    str(e),
+                )
+                raise
+
+            window_start = window_end
+
+        self.last_settlement_sync = fields.Datetime.now()
+        _logger.info(
+            "Imported %d settlements for backend %s", total_imported, self.name
+        )
+
     # ==================== View Actions ====================
 
     def action_view_orders(self):
@@ -524,6 +663,18 @@ class HepsiburadaBackend(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Orders"),
             "res_model": "hepsiburada.order",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    def action_view_settlements(self):
+        """View settlements for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Settlements"),
+            "res_model": "hepsiburada.settlement",
             "view_mode": "tree,form",
             "domain": [("backend_id", "=", self.id)],
             "context": {"default_backend_id": self.id},
@@ -572,6 +723,21 @@ class HepsiburadaBackend(models.Model):
         )
         for backend in backends:
             backend._send_pending_invoices()
+
+    @api.model
+    def _cron_import_settlements(self):
+        """Cron job to import settlements from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_settlements", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import Hepsiburada settlements: %s") % backend.name,
+            )._import_settlements()
 
     def _send_pending_invoices(self):
         """Find Hepsiburada orders with pending invoices and queue sends."""
