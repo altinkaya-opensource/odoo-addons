@@ -80,6 +80,10 @@ class HepsiburadaOrder(models.Model):
     # Delivery info
     delivery_type = fields.Char(help="StandardDelivery / BT / YT")
     due_date = fields.Datetime(help="Last date to ship")
+    is_overdue = fields.Boolean(
+        compute="_compute_is_overdue",
+        search="_search_is_overdue",
+    )
 
     # Shipping info
     cargo_tracking_number = fields.Char(string="Tracking Number")
@@ -107,6 +111,21 @@ class HepsiburadaOrder(models.Model):
             "Order number must be unique per backend!",
         ),
     ]
+
+    @api.depends("due_date")
+    def _compute_is_overdue(self):
+        now = fields.Datetime.now()
+        for rec in self:
+            rec.is_overdue = bool(rec.due_date and rec.due_date < now)
+
+    def _search_is_overdue(self, operator, value):
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            return [("due_date", "<", fields.Datetime.now())]
+        return [
+            "|",
+            ("due_date", "=", False),
+            ("due_date", ">=", fields.Datetime.now()),
+        ]
 
     # ── Order Import ─────────────────────────────────────────────────────
 
@@ -371,7 +390,13 @@ class HepsiburadaOrder(models.Model):
                 return partner
 
         # 4. Create new partner from billing data
-        full_name = (pkg.get("companyName") or "").strip()
+        # For commercial orders use companyName, for individuals use customerName.
+        # HB sends its own company name (e.g. "Hepsiburada Office") as
+        # companyName for individual orders, which is not the real customer.
+        if is_commercial:
+            full_name = (pkg.get("companyName") or "").strip()
+        else:
+            full_name = ""
         if not full_name:
             full_name = (pkg.get("customerName") or "").strip()
         if not full_name:
@@ -893,9 +918,7 @@ class HepsiburadaOrder(models.Model):
             quantity = item.get("quantity", 1)
             if line_item_id:
                 # HB API expects "id" key inside lineItemRequests, not "lineItemId"
-                line_item_requests.append(
-                    {"id": line_item_id, "quantity": quantity}
-                )
+                line_item_requests.append({"id": line_item_id, "quantity": quantity})
 
         if not line_item_requests:
             raise UserError(_("No valid line item IDs found in order detail."))

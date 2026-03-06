@@ -109,20 +109,22 @@
         <field name="model">hepsiburada.order</field>
         <field name="arch" type="xml">
             <tree
-                decoration-danger="hb_status == 'cancelled'"
-                decoration-success="hb_status == 'delivered'"
-                decoration-info="hb_status == 'in_transit'"
+                decoration-danger="hb_status == 'cancelled' or is_overdue"
+                decoration-success="hb_status == 'delivered' and not is_overdue"
+                decoration-info="hb_status == 'in_transit' and not is_overdue"
             >
                 <field name="hb_order_number" />
                 <field name="odoo_id" />
                 <field name="partner_id" />
                 <field name="hb_customer_name" />
                 <field name="create_date" string="Import Date" />
+                <field name="due_date" widget="remaining_days" />
                 <field name="hb_status" />
                 <field name="hb_package_number" />
                 <field name="cargo_tracking_number" />
                 <field name="invoice_link_sent" />
                 <field name="backend_id" />
+                <field name="is_overdue" invisible="1" />
             </tree>
         </field>
     </record>
@@ -167,6 +169,11 @@
                     domain="[('hb_status', '=', 'cancelled')]"
                 />
                 <separator />
+                <filter
+                    name="overdue"
+                    string="Overdue"
+                    domain="[('is_overdue', '=', True)]"
+                />
                 <filter
                     name="no_package"
                     string="No Package"
