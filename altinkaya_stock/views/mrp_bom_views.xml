@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_bom_form_inherit_free_qty" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit.free.qty</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='bom_line_ids']/tree/field[@name='product_uom_id']"
+                position="after"
+            >
+                <field name="free_qty" optional="hide" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -39,6 +39,7 @@
         "wizard/wizard_create_packaging_pallet_views.xml",
         "views/stock_warehouse_orderpoint_view.xml",
         "views/mrp_production_view.xml",
+        "views/mrp_bom_views.xml",
         "views/stock_package_type_view.xml",
         "security/security_group.xml",
         "security/ir.model.access.csv",
