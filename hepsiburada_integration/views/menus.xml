@@ -18,6 +18,15 @@
         action="action_hepsiburada_order"
     />
 
+    <!-- Questions Menu -->
+    <menuitem
+        id="menu_hepsiburada_questions"
+        name="Questions"
+        parent="menu_hepsiburada_root"
+        sequence="20"
+        action="action_hepsiburada_question"
+    />
+
     <!-- Settlements Menu -->
     <menuitem
         id="menu_hepsiburada_settlements"

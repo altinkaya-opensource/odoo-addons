@@ -39,6 +39,19 @@
         <field name="doall" eval="False" />
     </record>
 
+    <!-- Import Questions Cron - Every 30 minutes -->
+    <record id="cron_import_questions" model="ir.cron">
+        <field name="name">Hepsiburada: Import Questions</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_import_questions()</field>
+        <field name="interval_number" eval="30" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+        <field name="doall" eval="False" />
+    </record>
+
     <!-- Import Settlements Cron - Daily -->
     <record id="cron_import_settlements" model="ir.cron">
         <field name="name">Hepsiburada: Import Settlements</field>

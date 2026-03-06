@@ -168,9 +168,18 @@ class HepsiburadaBackend(models.Model):
         help="Automatically reconcile imported settlements with invoices",
     )
 
+    # Questions
+    auto_import_questions = fields.Boolean(
+        default=True,
+        help="Automatically import customer questions via scheduled job",
+    )
+
     # Last Sync Timestamps
     last_order_sync = fields.Datetime(readonly=True)
     last_settlement_sync = fields.Datetime(readonly=True)
+
+    # Last Sync - Questions
+    last_question_sync = fields.Datetime(readonly=True)
 
     # Statistics
     order_count = fields.Integer(
@@ -181,14 +190,22 @@ class HepsiburadaBackend(models.Model):
         compute="_compute_counts",
         string="Settlements",
     )
+    question_count = fields.Integer(
+        compute="_compute_counts",
+        string="Questions",
+    )
 
     @api.depends()
     def _compute_counts(self):
         Order = self.env["hepsiburada.order"]
         Settlement = self.env["hepsiburada.settlement"]
+        Question = self.env["hepsiburada.question"]
         for backend in self:
             backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
             backend.settlement_count = Settlement.search_count(
+                [("backend_id", "=", backend.id)]
+            )
+            backend.question_count = Question.search_count(
                 [("backend_id", "=", backend.id)]
             )
 
@@ -680,6 +697,83 @@ class HepsiburadaBackend(models.Model):
             "context": {"default_backend_id": self.id},
         }
 
+    def action_view_questions(self):
+        """View questions for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Questions"),
+            "res_model": "hepsiburada.question",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    # ==================== Question Import ====================
+
+    def action_import_questions(self):
+        """Manually trigger question import."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.order",
+            description=_("Import Hepsiburada questions: %s") % self.name,
+        )._import_questions()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Import Started"),
+                "message": _("Question import has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _import_questions(self):
+        """Import customer questions from Hepsiburada AskToSeller API."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Question = self.env["hepsiburada.question"]
+
+        total_imported = 0
+        current_page = 1
+
+        while True:
+            try:
+                result = client.get_issues(current_page=current_page, page_size=50)
+            except HepsiburadaAPIError as e:
+                _logger.error("Failed to fetch questions page %d: %s", current_page, e)
+                raise
+
+            issues = result.get("data", result.get("items", []))
+            if not issues:
+                break
+
+            for issue_data in issues:
+                try:
+                    question = Question._import_question(self, issue_data)
+                    if question:
+                        # Conversations may be inline in list response
+                        convs = issue_data.get("conversations", [])
+                        if convs:
+                            question._import_conversations(convs)
+                        else:
+                            question._import_conversations()
+                        total_imported += 1
+                except Exception:
+                    _logger.exception(
+                        "Failed to import question %s",
+                        issue_data.get("number", "?"),
+                    )
+
+            total_pages = result.get("totalPageCount", 1)
+            if current_page >= total_pages:
+                break
+            current_page += 1
+
+        self.last_question_sync = fields.Datetime.now()
+        _logger.info("Imported %d questions for backend %s", total_imported, self.name)
+
     # ==================== Cron Methods ====================
 
     @api.model
@@ -738,6 +832,21 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Import Hepsiburada settlements: %s") % backend.name,
             )._import_settlements()
+
+    @api.model
+    def _cron_import_questions(self):
+        """Cron job to import questions from all active backends."""
+        backends = self.search(
+            [
+                ("active", "=", True),
+                ("auto_import_questions", "=", True),
+            ]
+        )
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.order",
+                description=_("Import Hepsiburada questions: %s") % backend.name,
+            )._import_questions()
 
     def _send_pending_invoices(self):
         """Find Hepsiburada orders with pending invoices and queue sends."""

@@ -18,11 +18,13 @@ HEPSIBURADA_SERVICE_URLS = {
         "oms": "https://oms-external-sit.hepsiburada.com",
         "shipping": "https://shipping-external-sit.hepsiburada.com",
         "finance": "https://mpfinance-external-sit.hepsiburada.com",
+        "asktoseller": "https://api-asktoseller-merchant-sit.hepsiburada.com",
     },
     "prod": {
         "oms": "https://oms-external.hepsiburada.com",
         "shipping": "https://shipping-external.hepsiburada.com",
         "finance": "https://mpfinance-external.hepsiburada.com",
+        "asktoseller": "https://api-asktoseller-merchant.hepsiburada.com",
     },
 }
 
@@ -132,6 +134,10 @@ class HepsiburadaRequest:
 
         url = f"{base_url}{endpoint}"
         headers = self._get_headers()
+
+        # AskToSeller API requires merchantId header on all requests
+        if service == "asktoseller":
+            headers["merchantId"] = self.merchant_id
 
         _logger.debug(
             "HB API %s %s - params: %s, body: %s",
@@ -405,6 +411,94 @@ class HepsiburadaRequest:
             params["transactionTypes"] = transaction_types
 
         return self._make_request("GET", "finance", endpoint, params=params)
+
+    # ==================== Ask to Seller (Questions) Methods ====================
+
+    def get_issues(self, current_page=1, page_size=50):
+        """Get customer questions (issues) list.
+
+        Args:
+            current_page: Page number (1-based)
+            page_size: Number of items per page
+
+        Returns:
+            Dict with issues list and pagination info
+        """
+        endpoint = "/api/v1.0/issues"
+        params = {"currentPage": current_page, "pageSize": page_size}
+        return self._make_request("GET", "asktoseller", endpoint, params=params)
+
+    def get_issue_detail(self, issue_number):
+        """Get issue detail with conversation history.
+
+        Args:
+            issue_number: Issue number from HB
+
+        Returns:
+            Dict with issue detail and conversations
+        """
+        endpoint = f"/api/v1.0/issues/{issue_number}"
+        return self._make_request("GET", "asktoseller", endpoint)
+
+    def answer_issue(self, issue_number, answer_text):
+        """Answer a customer question using multipart/form-data.
+
+        Args:
+            issue_number: Issue number
+            answer_text: Answer text to send
+
+        Returns:
+            Response data
+        """
+        self.rate_limiter.acquire()
+
+        base_url = self.service_urls.get("asktoseller")
+        if not base_url:
+            raise HepsiburadaAPIError("AskToSeller service URL not configured")
+
+        url = f"{base_url}/api/v1.0/issues/{issue_number}/answer"
+        headers = {
+            "Authorization": self.auth_header,
+            "User-Agent": self.user_agent,
+            "merchantId": self.merchant_id,
+        }
+
+        _logger.debug("HB API POST %s (multipart/form-data)", url)
+
+        try:
+            response = requests.post(
+                url=url,
+                headers=headers,
+                data={"Answer": answer_text},
+                timeout=60,
+            )
+        except requests.RequestException as e:
+            raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
+
+        _logger.debug(
+            "HB API response: %s - %s",
+            response.status_code,
+            response.text[:500] if response.text else "",
+        )
+
+        if response.status_code in (200, 201, 204):
+            try:
+                return response.json() if response.text else {}
+            except json.JSONDecodeError:
+                return {"raw": response.text}
+
+        try:
+            error_data = response.json()
+            error_msg = error_data.get("message", response.text)
+        except json.JSONDecodeError:
+            error_data = None
+            error_msg = response.text
+
+        raise HepsiburadaAPIError(
+            f"API error ({response.status_code}): {error_msg}",
+            status_code=response.status_code,
+            response_data=error_data,
+        )
 
     # ==================== Utility Methods ====================
 

@@ -40,6 +40,18 @@
                                 string="Settlements"
                             />
                         </button>
+                        <button
+                            name="action_view_questions"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-question-circle"
+                        >
+                            <field
+                                name="question_count"
+                                widget="statinfo"
+                                string="Questions"
+                            />
+                        </button>
                     </div>
                     <widget
                         name="web_ribbon"
@@ -83,6 +95,7 @@
                                     <field name="auto_send_invoice" />
                                     <field name="auto_import_settlements" />
                                     <field name="auto_reconcile_settlements" />
+                                    <field name="auto_import_questions" />
                                 </group>
                                 <group string="Order Settings">
                                     <field name="auto_confirm_orders" />
@@ -127,6 +140,13 @@
                                         class="btn-secondary d-block mb-2"
                                         icon="fa-download"
                                     />
+                                    <button
+                                        name="action_import_questions"
+                                        string="Import Questions"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-download"
+                                    />
                                 </div>
                             </div>
                         </page>
@@ -135,6 +155,7 @@
                                 <group string="Last Sync Times">
                                     <field name="last_order_sync" readonly="0" />
                                     <field name="last_settlement_sync" readonly="0" />
+                                    <field name="last_question_sync" readonly="0" />
                                 </group>
                             </group>
                         </page>
