@@ -53,6 +53,7 @@
                             <field name="hb_customer_id" />
                             <field name="hb_customer_name" />
                             <field name="hb_package_number" />
+                            <field name="hb_cargo_barcode" />
                             <field name="delivery_type" />
                             <field name="due_date" />
                         </group>

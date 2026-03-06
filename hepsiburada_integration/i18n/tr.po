@@ -3401,3 +3401,31 @@ msgstr "Ödeme Bekliyor"
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
 msgstr "İptal Edildi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_cargo_barcode
+msgid "Cargo Barcode"
+msgstr "Kargo Barkodu"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Fetch Cargo Firms from HB"
+msgstr "HB'den Kargo Firmalarını Çek"
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Cargo Firms"
+msgstr "Kargo Firmaları"
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "%d new cargo firm(s) added."
+msgstr "%d yeni kargo firması eklendi."
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "No cargo firms returned from Hepsiburada."
+msgstr "Hepsiburada'dan kargo firması döndürülemedi."

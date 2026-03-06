@@ -76,6 +76,7 @@ class HepsiburadaOrder(models.Model):
 
     # Package info
     hb_package_number = fields.Char(string="Package Number")
+    hb_cargo_barcode = fields.Char(string="Cargo Barcode")
 
     # Delivery info
     delivery_type = fields.Char(help="StandardDelivery / BT / YT")
@@ -247,6 +248,7 @@ class HepsiburadaOrder(models.Model):
                     "hb_full_address": full_address,
                     "hb_package_number": str(package_data.get("packageNumber", ""))
                     or False,
+                    "hb_cargo_barcode": package_data.get("barcode", "") or False,
                     "delivery_type": first_item.get("deliveryType", ""),
                     "due_date": _parse_hb_datetime(package_data.get("dueDate")),
                     "raw_data": json.dumps(package_data, indent=2, ensure_ascii=False),

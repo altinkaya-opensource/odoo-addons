@@ -3351,3 +3351,31 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
 msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_cargo_barcode
+msgid "Cargo Barcode"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Fetch Cargo Firms from HB"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Cargo Firms"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "%d new cargo firm(s) added."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "No cargo firms returned from Hepsiburada."
+msgstr ""

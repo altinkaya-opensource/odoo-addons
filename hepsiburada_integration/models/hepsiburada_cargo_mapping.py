@@ -20,6 +20,5 @@ class HepsiburadaCargoMapping(models.Model):
     carrier_id = fields.Many2one(
         "delivery.carrier",
         string="Delivery Carrier",
-        required=True,
         help="Odoo delivery carrier to assign for this cargo provider",
     )

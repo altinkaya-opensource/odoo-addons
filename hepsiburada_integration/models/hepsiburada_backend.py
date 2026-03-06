@@ -249,9 +249,50 @@ class HepsiburadaBackend(models.Model):
                     and m.hepsiburada_cargo_provider_name.lower() == name_lower
                 )
             )
-            if mapping:
+            if mapping and mapping[0].carrier_id:
                 return mapping[0].carrier_id
         return self.default_cargo_company_id
+
+    # ==================== Cargo Firms ====================
+
+    def action_fetch_cargo_firms(self):
+        """Fetch cargo firms from HB API and auto-create missing mappings."""
+        self.ensure_one()
+        client = self._get_api_client()
+        firms = client.get_cargo_firms()
+        if not firms:
+            raise UserError(_("No cargo firms returned from Hepsiburada."))
+
+        existing_names = set(
+            self.cargo_mapping_ids.mapped("hepsiburada_cargo_provider_name")
+        )
+        created = 0
+        for firm in firms:
+            name = firm.get("name") or firm.get("cargoFirmName") or ""
+            if not name or name in existing_names:
+                continue
+            self.env["hepsiburada.cargo.mapping"].create(
+                {
+                    "backend_id": self.id,
+                    "hepsiburada_cargo_provider_name": name,
+                    "carrier_id": self.default_cargo_company_id.id
+                    if self.default_cargo_company_id
+                    else False,
+                }
+            )
+            existing_names.add(name)
+            created += 1
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Cargo Firms"),
+                "message": _("%d new cargo firm(s) added.") % created,
+                "type": "success" if created else "info",
+                "sticky": False,
+            },
+        }
 
     # ==================== Connection Test ====================
 
@@ -404,6 +445,7 @@ class HepsiburadaBackend(models.Model):
                     "dueDate": first.get("dueDate", ""),
                     "cargoCompany": first.get("cargoCompany", ""),
                     "packageNumber": first.get("packageNumber", ""),
+                    "barcode": first.get("barcode", ""),
                     # Billing / invoice fields
                     "taxNumber": invoice.get("taxNumber", ""),
                     "identityNo": invoice.get("turkishIdentityNumber", ""),

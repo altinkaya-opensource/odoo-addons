@@ -121,6 +121,13 @@
                             </group>
                         </page>
                         <page string="Cargo Mapping" name="cargo_mapping">
+                            <button
+                                name="action_fetch_cargo_firms"
+                                string="Fetch Cargo Firms from HB"
+                                type="object"
+                                class="btn-secondary mb-2"
+                                icon="fa-download"
+                            />
                             <field name="cargo_mapping_ids">
                                 <tree editable="bottom">
                                     <field name="hepsiburada_cargo_provider_name" />
