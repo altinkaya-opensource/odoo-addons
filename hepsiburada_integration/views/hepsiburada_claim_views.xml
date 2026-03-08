@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Claim Form View -->
+    <record id="view_hepsiburada_claim_form" model="ir.ui.view">
+        <field name="name">hepsiburada.claim.form</field>
+        <field name="model">hepsiburada.claim</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Claim">
+                <header>
+                    <button
+                        name="action_accept_claim"
+                        string="Accept Claim"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('hb_status', 'not in', ['new_request', 'awaiting_action', 'in_dispute'])]}"
+                        confirm="Are you sure you want to accept this claim?"
+                    />
+                    <button
+                        name="action_reject_claim"
+                        string="Reject Claim"
+                        type="object"
+                        class="btn-danger"
+                        attrs="{'invisible': [('hb_status', 'not in', ['new_request', 'awaiting_action', 'in_dispute'])]}"
+                        confirm="Are you sure you want to reject this claim?"
+                    />
+                    <field
+                        name="hb_status"
+                        widget="statusbar"
+                        statusbar_visible="new_request,awaiting_action,accepted,refunded"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="hb_claim_number" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Claim Info">
+                            <field name="backend_id" />
+                            <field name="claim_type" />
+                            <field name="claim_date" />
+                            <field name="action_expire_date" widget="remaining_days" />
+                            <field name="quantity" />
+                            <field name="refund_amount" />
+                            <field name="finalized_with" />
+                        </group>
+                        <group string="Order &amp; Customer">
+                            <field name="hb_order_number" />
+                            <field name="hb_order_id" />
+                            <field name="customer_name" />
+                            <field name="customer_id" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Product">
+                            <field name="product_name" />
+                            <field name="hb_sku" />
+                            <field name="merchant_sku" />
+                        </group>
+                    </group>
+                    <group string="Customer Explanation">
+                        <field name="explanation" nolabel="1" colspan="2" />
+                    </group>
+                    <notebook>
+                        <page
+                            string="Accept / Reject"
+                            name="action"
+                            attrs="{'invisible': [('hb_status', 'not in', ['new_request', 'awaiting_action', 'in_dispute'])]}"
+                        >
+                            <group>
+                                <group string="Accept">
+                                    <field name="acception_reason" />
+                                </group>
+                                <group string="Reject">
+                                    <field name="rejection_reason" />
+                                    <field name="merchant_statement" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Raw Data" name="raw_data">
+                            <field name="raw_data" readonly="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Claim Tree View -->
+    <record id="view_hepsiburada_claim_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.claim.tree</field>
+        <field name="model">hepsiburada.claim</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="hb_status == 'awaiting_action'"
+                decoration-success="hb_status in ('accepted', 'refunded')"
+                decoration-muted="hb_status in ('rejected', 'cancelled')"
+                decoration-info="hb_status == 'in_dispute'"
+            >
+                <field name="hb_claim_number" />
+                <field name="claim_type" />
+                <field name="hb_order_number" />
+                <field name="customer_name" />
+                <field name="product_name" />
+                <field name="merchant_sku" />
+                <field name="quantity" />
+                <field name="refund_amount" />
+                <field name="claim_date" />
+                <field name="action_expire_date" widget="remaining_days" />
+                <field name="hb_status" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Claim Search View -->
+    <record id="view_hepsiburada_claim_search" model="ir.ui.view">
+        <field name="name">hepsiburada.claim.search</field>
+        <field name="model">hepsiburada.claim</field>
+        <field name="arch" type="xml">
+            <search string="Search Claims">
+                <field name="hb_claim_number" />
+                <field name="hb_order_number" />
+                <field name="customer_name" />
+                <field name="product_name" />
+                <field name="merchant_sku" />
+                <field name="explanation" />
+                <separator />
+                <filter
+                    name="awaiting_action"
+                    string="Awaiting Action"
+                    domain="[('hb_status', '=', 'awaiting_action')]"
+                />
+                <filter
+                    name="new_request"
+                    string="New Request"
+                    domain="[('hb_status', '=', 'new_request')]"
+                />
+                <filter
+                    name="in_dispute"
+                    string="In Dispute"
+                    domain="[('hb_status', '=', 'in_dispute')]"
+                />
+                <filter
+                    name="accepted"
+                    string="Accepted"
+                    domain="[('hb_status', '=', 'accepted')]"
+                />
+                <filter
+                    name="rejected"
+                    string="Rejected"
+                    domain="[('hb_status', '=', 'rejected')]"
+                />
+                <filter
+                    name="refunded"
+                    string="Refunded"
+                    domain="[('hb_status', '=', 'refunded')]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'hb_status'}"
+                    />
+                    <filter
+                        name="group_type"
+                        string="Type"
+                        context="{'group_by': 'claim_type'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Claim Date"
+                        context="{'group_by': 'claim_date:day'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Claim Action -->
+    <record id="action_hepsiburada_claim" model="ir.actions.act_window">
+        <field name="name">Customer Claims</field>
+        <field name="res_model">hepsiburada.claim</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_claim_search" />
+        <field name="context">{'search_default_awaiting_action': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No customer claims yet
+            </p>
+            <p>
+                Customer claims (returns, missing items, etc.) will appear
+                here when imported from Hepsiburada.
+            </p>
+        </field>
+    </record>
+</odoo>

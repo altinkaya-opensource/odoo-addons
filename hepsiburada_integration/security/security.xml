@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Hepsiburada Module Category -->
+    <record id="module_category_hepsiburada" model="ir.module.category">
+        <field name="name">Hepsiburada Integration</field>
+        <field name="description">Manage Hepsiburada marketplace integration</field>
+        <field name="sequence" eval="101" />
+    </record>
+
+    <!-- User Group - Read access to orders -->
+    <record id="group_hepsiburada_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_hepsiburada" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!-- Manager Group - Full access, can configure backends -->
+    <record id="group_hepsiburada_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_hepsiburada" />
+        <field name="implied_ids" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="users"
+            eval="[(4, ref('base.user_admin')), (4, ref('base.user_root'))]"
+        />
+    </record>
+
+    <!-- Record Rules -->
+
+    <!-- Backend: Only managers can see all backends -->
+    <record id="rule_hepsiburada_backend_manager" model="ir.rule">
+        <field name="name">Hepsiburada Backend: Manager Access</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_manager'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Backend: Users can only see active backends in their company -->
+    <record id="rule_hepsiburada_backend_user" model="ir.rule">
+        <field name="name">Hepsiburada Backend: User Access</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('active', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Order: All users with group can see all orders -->
+    <record id="rule_hepsiburada_order" model="ir.rule">
+        <field name="name">Hepsiburada Order: Access</field>
+        <field name="model_id" ref="model_hepsiburada_order" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

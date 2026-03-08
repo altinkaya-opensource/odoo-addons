@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Question Form View -->
+    <record id="view_hepsiburada_question_form" model="ir.ui.view">
+        <field name="name">hepsiburada.question.form</field>
+        <field name="model">hepsiburada.question</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Question">
+                <header>
+                    <button
+                        name="action_answer_question"
+                        string="Send Answer"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('hb_status', '=', 'closed')]}"
+                    />
+                    <button
+                        name="action_fetch_conversations"
+                        string="Refresh Conversations"
+                        type="object"
+                    />
+                    <field
+                        name="hb_status"
+                        widget="statusbar"
+                        statusbar_visible="open,waiting_merchant,waiting_customer,closed"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="hb_issue_number" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Question Info">
+                            <field name="backend_id" />
+                            <field name="subject" />
+                            <field name="customer_name" />
+                            <field name="hb_created_date" />
+                            <field name="is_answered" />
+                        </group>
+                        <group string="Product Info">
+                            <field name="product_name" />
+                            <field name="hb_sku" />
+                            <field name="merchant_sku" />
+                            <field name="product_url" widget="url" />
+                        </group>
+                    </group>
+                    <group string="Question">
+                        <field name="question_text" nolabel="1" colspan="2" />
+                    </group>
+                    <group string="Your Answer">
+                        <field
+                            name="answer_text"
+                            nolabel="1"
+                            colspan="2"
+                            placeholder="Type your answer here..."
+                            attrs="{'invisible': [('hb_status', '=', 'closed')]}"
+                        />
+                    </group>
+                    <notebook>
+                        <page string="Conversations" name="conversations">
+                            <field name="conversation_ids" readonly="1">
+                                <tree>
+                                    <field name="message_date" />
+                                    <field name="sender" />
+                                    <field name="message_text" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Raw Data" name="raw_data">
+                            <field name="raw_data" readonly="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Question Tree View -->
+    <record id="view_hepsiburada_question_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.question.tree</field>
+        <field name="model">hepsiburada.question</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="hb_status == 'waiting_merchant'"
+                decoration-success="hb_status == 'closed'"
+                decoration-info="hb_status == 'waiting_customer'"
+            >
+                <field name="hb_issue_number" />
+                <field name="subject" />
+                <field name="customer_name" />
+                <field name="product_name" />
+                <field name="merchant_sku" />
+                <field name="hb_created_date" />
+                <field name="hb_status" />
+                <field name="is_answered" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Question Search View -->
+    <record id="view_hepsiburada_question_search" model="ir.ui.view">
+        <field name="name">hepsiburada.question.search</field>
+        <field name="model">hepsiburada.question</field>
+        <field name="arch" type="xml">
+            <search string="Search Questions">
+                <field name="hb_issue_number" />
+                <field name="subject" />
+                <field name="customer_name" />
+                <field name="product_name" />
+                <field name="merchant_sku" />
+                <field name="question_text" />
+                <separator />
+                <filter
+                    name="waiting_merchant"
+                    string="Waiting Merchant"
+                    domain="[('hb_status', '=', 'waiting_merchant')]"
+                />
+                <filter
+                    name="waiting_customer"
+                    string="Waiting Customer"
+                    domain="[('hb_status', '=', 'waiting_customer')]"
+                />
+                <filter
+                    name="open"
+                    string="Open"
+                    domain="[('hb_status', '=', 'open')]"
+                />
+                <filter
+                    name="closed"
+                    string="Closed"
+                    domain="[('hb_status', '=', 'closed')]"
+                />
+                <separator />
+                <filter
+                    name="unanswered"
+                    string="Unanswered"
+                    domain="[('is_answered', '=', False)]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'hb_status'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Question Date"
+                        context="{'group_by': 'hb_created_date:day'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Question Action -->
+    <record id="action_hepsiburada_question" model="ir.actions.act_window">
+        <field name="name">Customer Questions</field>
+        <field name="res_model">hepsiburada.question</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_question_search" />
+        <field name="context">{'search_default_waiting_merchant': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No customer questions yet
+            </p>
+            <p>
+                Customer questions will appear here when imported from
+                Hepsiburada. Configure auto-import in backend settings.
+            </p>
+        </field>
+    </record>
+</odoo>

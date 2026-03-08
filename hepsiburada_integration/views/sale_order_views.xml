@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Sale Order Form Extension -->
+    <record id="view_sale_order_form_hepsiburada" model="ir.ui.view">
+        <field name="name">sale.order.form.hepsiburada</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_hepsiburada_binding"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-bag"
+                    attrs="{'invisible': [('hepsiburada_binding_ids', '!=', False)]}"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Hepsiburada</span>
+                        <span class="o_stat_value">
+                            <field name="hepsiburada_order_number" />
+                        </span>
+                    </div>
+                </button>
+                <field name="hepsiburada_binding_ids" invisible="1" />
+            </div>
+        </field>
+    </record>
+
+    <!-- Sale Order Tree Extension -->
+    <record id="view_sale_order_tree_hepsiburada" model="ir.ui.view">
+        <field name="name">sale.order.tree.hepsiburada</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="hepsiburada_order_number" optional="hide" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Sale Order Search Extension -->
+    <record id="view_sale_order_search_hepsiburada" model="ir.ui.view">
+        <field name="name">sale.order.search.hepsiburada</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <separator />
+                <filter
+                    name="hepsiburada_orders"
+                    string="Hepsiburada Orders"
+                    domain="[('hepsiburada_binding_ids', '!=', False)]"
+                />
+            </filter>
+            <field name="name" position="after">
+                <field name="hepsiburada_order_number" />
+            </field>
+        </field>
+    </record>
+</odoo>

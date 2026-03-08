@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Main Menu under Sales -->
+    <menuitem
+        id="menu_hepsiburada_root"
+        name="Hepsiburada"
+        parent="sale.sale_menu_root"
+        sequence="51"
+        groups="group_hepsiburada_user"
+    />
+
+    <!-- Orders Menu -->
+    <menuitem
+        id="menu_hepsiburada_orders"
+        name="Orders"
+        parent="menu_hepsiburada_root"
+        sequence="10"
+        action="action_hepsiburada_order"
+    />
+
+    <!-- Questions Menu -->
+    <menuitem
+        id="menu_hepsiburada_questions"
+        name="Questions"
+        parent="menu_hepsiburada_root"
+        sequence="20"
+        action="action_hepsiburada_question"
+    />
+
+    <!-- Claims Menu -->
+    <menuitem
+        id="menu_hepsiburada_claims"
+        name="Claims"
+        parent="menu_hepsiburada_root"
+        sequence="22"
+        action="action_hepsiburada_claim"
+    />
+
+    <!-- Settlements Menu -->
+    <menuitem
+        id="menu_hepsiburada_settlements"
+        name="Settlements"
+        parent="menu_hepsiburada_root"
+        sequence="25"
+        action="action_hepsiburada_settlement"
+    />
+
+    <!-- Configuration Menu -->
+    <menuitem
+        id="menu_hepsiburada_config"
+        name="Configuration"
+        parent="menu_hepsiburada_root"
+        sequence="100"
+        groups="group_hepsiburada_manager"
+    />
+
+    <!-- Backends -->
+    <menuitem
+        id="menu_hepsiburada_backends"
+        name="Backends"
+        parent="menu_hepsiburada_config"
+        sequence="10"
+        action="action_hepsiburada_backend"
+    />
+</odoo>
