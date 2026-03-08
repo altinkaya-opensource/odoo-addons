@@ -301,6 +301,64 @@ class HepsiburadaRequest:
         )
         return self._make_request("GET", "oms", endpoint)
 
+    def get_package_label(self, package_number, label_format="pdf"):
+        """Get shipping label (Ortak Barkod) PDF for a package.
+
+        Cannot use _make_request() because the response is binary PDF,
+        not JSON. Handles HTTP directly (same pattern as answer_issue).
+
+        Args:
+            package_number: Package number
+            label_format: Label format, defaults to 'pdf'
+
+        Returns:
+            Raw bytes of the PDF label
+
+        Raises:
+            HepsiburadaAPIError: If the API returns an error
+        """
+        self.rate_limiter.acquire()
+
+        base_url = self.service_urls.get("oms")
+        if not base_url:
+            raise HepsiburadaAPIError("OMS service URL not configured")
+
+        endpoint = (
+            f"/packages/merchantid/{self.merchant_id}"
+            f"/packagenumber/{package_number}/labels"
+        )
+        url = f"{base_url}{endpoint}"
+        headers = self._get_headers()
+        headers["Accept"] = "application/pdf"
+
+        _logger.debug("HB API GET %s (label)", url)
+
+        try:
+            response = requests.get(
+                url=url,
+                headers=headers,
+                params={"format": label_format},
+                timeout=60,
+            )
+        except requests.RequestException as e:
+            raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
+
+        if response.status_code == 200:
+            return response.content
+
+        try:
+            error_data = response.json()
+            error_msg = error_data.get("message", response.text)
+        except (json.JSONDecodeError, ValueError):
+            error_data = None
+            error_msg = response.text
+
+        raise HepsiburadaAPIError(
+            f"Label API error ({response.status_code}): {error_msg}",
+            status_code=response.status_code,
+            response_data=error_data,
+        )
+
     def set_package_intransit(self, data):
         """Mark a package as in-transit (shipped).
 
@@ -364,17 +422,6 @@ class HepsiburadaRequest:
             f"/id/{line_item_id}/cancelbymerchant"
         )
         return self._make_request("POST", "oms", endpoint)
-
-    # ==================== Shipping Methods ====================
-
-    def get_cargo_firms(self):
-        """Get available cargo firms for this merchant.
-
-        Returns:
-            List of cargo firm dicts
-        """
-        endpoint = f"/cargoFirms/{self.merchant_id}"
-        return self._make_request("GET", "shipping", endpoint)
 
     # ==================== Claim Methods (OMS) ====================
 

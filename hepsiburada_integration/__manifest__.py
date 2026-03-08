@@ -17,6 +17,7 @@
         "account",
         "queue_job",
         "delivery",
+        "delivery_integration_base",
         "delivery_state",
         "sale_exception",
     ],

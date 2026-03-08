@@ -118,22 +118,25 @@
                                     <field name="hb_partner_id" />
                                     <field name="settlement_journal_id" />
                                 </group>
+                                <group string="Printing">
+                                    <field name="label_printer_id" />
+                                </group>
                             </group>
                         </page>
                         <page string="Cargo Mapping" name="cargo_mapping">
-                            <button
-                                name="action_fetch_cargo_firms"
-                                string="Fetch Cargo Firms from HB"
-                                type="object"
-                                class="btn-secondary mb-2"
-                                icon="fa-download"
-                            />
                             <field name="cargo_mapping_ids">
                                 <tree editable="bottom">
                                     <field name="hepsiburada_cargo_provider_name" />
                                     <field name="carrier_id" />
                                 </tree>
                             </field>
+                            <span class="text-muted">
+                                <b>Known Hepsiburada Cargo Providers:</b><br />
+                                Aras Kargo, Borusan Lojistik, Ceva Lojistik,
+                                DHL E-commerce, HepsiJet, hepsiJET XL,
+                                Horoz Lojistik, Kolay Gelsin, MNG Kargo,
+                                PTT Kargo, Sürat Kargo, UPS, Yurtiçi Kargo
+                            </span>
                         </page>
                         <page string="Manual Actions" name="manual_actions">
                             <div class="row mt-3">
