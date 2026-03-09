@@ -1,0 +1,297 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* marketplace_integration_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-09 00:00+0000\n"
+"PO-Revision-Date: 2026-03-09 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_backend
+msgid "Marketplace Backend Base"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_order
+msgid "Marketplace Order Base"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_settlement
+msgid "Marketplace Settlement Base"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_confirm_orders
+msgid "Auto-confirm Orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_confirm_orders
+msgid "Automatically confirm imported orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_claims
+msgid "Automatically import customer claims"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_questions
+msgid "Automatically import customer questions"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_settlements
+msgid "Automatically import financial settlements"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_import_orders
+msgid "Automatically import orders via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_reconcile_settlements
+msgid "Automatically reconcile imported settlements with invoices"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_sync_tracking
+msgid "Automatically send tracking numbers when delivery is done"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_provider_name
+msgid "Cargo Provider"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
+#, python-format
+msgid "Connection failed: %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
+#, python-format
+msgid "Connection to marketplace API successful!"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Credit note %s is already paid."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_cargo_company_id
+msgid "Default delivery carrier for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__fiscal_position_id
+msgid "Default fiscal position for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__label_printer_id
+msgid "Default printer for marketplace shipping labels"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__sales_team_id
+msgid "Default sales team for marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT Rate (%)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT rate for products without tax"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__state__error
+msgid "Error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_product_id
+msgid "Fallback product for unmapped items. If not set, unmapped items will be created as note lines."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__state__imported
+msgid "Imported"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__settlement_journal_id
+msgid "Intermediary bank-type journal for marketplace payments."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__odoo_invoice_id
+msgid "Invoice"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Invoice %s is already paid."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace Commission - Order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace order not found for order number: %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__settlement_journal_id
+msgid "Marketplace Payment Journal"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace Settlement - Order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "No linked Odoo sale order found."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "No posted credit note found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "No posted invoice found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__odoo_id
+msgid "Odoo Order"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__odoo_payment_id
+msgid "Payment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Payment Journal not configured on backend."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__pricelist_id
+msgid "Pricelist for marketplace prices (must be in TRY)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_backend__environment__prod
+msgid "Production"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Reconciled"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__transaction_type__return
+msgid "Return"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__transaction_type__sale
+msgid "Sale"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__auto_send_invoice
+msgid "Send invoice links via scheduled job"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Settlement has been reconciled successfully."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_backend__environment__stage
+msgid "Stage (Testing)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
+#, python-format
+msgid "Success"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "This settlement is already reconciled."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_tracking_link
+msgid "Tracking Link"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__cargo_tracking_number
+msgid "Tracking Number"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: code:addons/marketplace_integration_base/models/marketplace_order.py:0
+#, python-format
+msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__source_id
+msgid "UTM source to set on marketplace orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__warehouse_ids
+msgid "Warehouses"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__warehouse_ids
+msgid "Warehouses to use for order fulfillment"
+msgstr ""
