@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Batch Export Wizard Form View -->
+    <record id="view_hepsiburada_batch_export_wizard_form" model="ir.ui.view">
+        <field name="name">hepsiburada.batch.export.wizard.form</field>
+        <field name="model">hepsiburada.batch.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Batch Export to Hepsiburada">
+                <sheet>
+                    <!-- Row 1: Marketplace config + Odoo filter + Search -->
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <group string="Marketplace">
+                                <field name="backend_id" />
+                                <field name="hb_category_id" />
+                                <field name="hb_brand_name" />
+                                <field name="vat_rate" />
+                            </group>
+                        </div>
+                        <div class="col-lg-4">
+                            <group string="Product Filter">
+                                <field name="category_filter_id" />
+                                <field name="product_search" />
+                                <field name="skip_existing" />
+                            </group>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info mt-4" role="alert">
+                                <strong>Selected:</strong>
+                                <field name="product_count" class="d-inline" />
+                                product(s)
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 2: Attributes -->
+                    <group string="Category Attributes">
+                        <field name="attribute_line_ids" nolabel="1" colspan="2">
+                            <tree editable="bottom">
+                                <field name="attribute_name" readonly="1" />
+                                <field name="required" readonly="1" />
+                                <field
+                                    name="value_id"
+                                    attrs="{'invisible': ['|', ('has_values', '=', False), ('is_auto_filled', '=', True)], 'required': [('has_values', '=', True), ('required', '=', True), ('is_auto_filled', '=', False)]}"
+                                />
+                                <field
+                                    name="value"
+                                    attrs="{'invisible': [('has_values', '=', True), ('is_auto_filled', '=', False)], 'readonly': [('is_auto_filled', '=', True)], 'required': [('has_values', '=', False), ('required', '=', True), ('is_auto_filled', '=', False)]}"
+                                />
+                                <field name="has_values" invisible="1" />
+                                <field name="is_auto_filled" invisible="1" />
+                                <field name="attribute_id" invisible="1" />
+                                <field
+                                    name="allowed_values_json"
+                                    widget="text"
+                                    optional="hide"
+                                />
+                                <field name="attribute_marketplace_id" invisible="1" />
+                            </tree>
+                        </field>
+                    </group>
+                    <!-- Row 3: Products -->
+                    <group string="Products">
+                        <field name="product_ids" nolabel="1" colspan="2">
+                            <tree>
+                                <field
+                                    name="image_128"
+                                    widget="image"
+                                    options="{'size': [50, 50]}"
+                                />
+                                <field name="default_code" />
+                                <field name="name" />
+                                <field name="barcode" />
+                                <field name="list_price" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        name="action_export"
+                        string="Export"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Batch Export Wizard Action -->
+    <record id="action_hepsiburada_batch_export_wizard" model="ir.actions.act_window">
+        <field name="name">Batch Export to Hepsiburada</field>
+        <field name="res_model">hepsiburada.batch.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

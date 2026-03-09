@@ -7,6 +7,7 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from .hepsiburada_backend import _parse_hb_datetime
 from .hepsiburada_request import HepsiburadaAPIError
 
 _logger = logging.getLogger(__name__)
@@ -151,7 +152,7 @@ class HepsiburadaQuestion(models.Model):
             "subject": subject_val,
             "question_text": question_text,
             "customer_name": customer_name,
-            "hb_created_date": self._parse_hb_date(
+            "hb_created_date": _parse_hb_datetime(
                 issue_data.get("createdAt", issue_data.get("createdDate", ""))
             ),
             "raw_data": json.dumps(issue_data, indent=2, ensure_ascii=False),
@@ -213,7 +214,7 @@ class HepsiburadaQuestion(models.Model):
                     "hb_message_id": msg_id,
                     "sender": "merchant" if is_merchant else "customer",
                     "message_text": conv.get("content", conv.get("text", "")),
-                    "message_date": self._parse_hb_date(
+                    "message_date": _parse_hb_datetime(
                         conv.get("createdAt", conv.get("createdDate", ""))
                     ),
                 }
@@ -276,23 +277,6 @@ class HepsiburadaQuestion(models.Model):
                 "sticky": False,
             },
         }
-
-    @staticmethod
-    def _parse_hb_date(dt_string):
-        """Parse HB datetime string."""
-        if not dt_string:
-            return False
-        try:
-            from dateutil import parser as dateutil_parser
-
-            dt = dateutil_parser.isoparse(str(dt_string))
-            if dt.tzinfo:
-                from datetime import UTC
-
-                dt = dt.astimezone(UTC).replace(tzinfo=None)
-            return dt
-        except (ValueError, TypeError):
-            return False
 
 
 class HepsiburadaQuestionMessage(models.Model):

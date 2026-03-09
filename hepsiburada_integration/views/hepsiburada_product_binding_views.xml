@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_hepsiburada_product_binding_form" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.form</field>
+        <field name="model">hepsiburada.product.binding</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Product Binding">
+                <header>
+                    <button
+                        name="action_export_to_hepsiburada"
+                        string="Export to Hepsiburada"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('sync_state', 'not in', ['draft', 'error'])]}"
+                    />
+                    <button
+                        name="action_check_status"
+                        string="Check Status"
+                        type="object"
+                        class="btn-secondary"
+                        attrs="{'invisible': [('sync_state', '!=', 'pending')]}"
+                    />
+                    <button
+                        name="action_set_draft"
+                        string="Set to Draft"
+                        type="object"
+                        class="btn-secondary"
+                        attrs="{'invisible': [('sync_state', '=', 'draft')]}"
+                    />
+                    <field
+                        name="sync_state"
+                        widget="statusbar"
+                        statusbar_visible="draft,pending,approved"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Product Info">
+                            <field name="odoo_id" />
+                            <field name="backend_id" />
+                            <field name="hb_merchant_sku" />
+                        </group>
+                        <group string="Hepsiburada Mapping">
+                            <field name="hb_category_id" />
+                            <field name="hb_brand_name" />
+                            <field name="vat_rate" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Pricing &amp; Stock">
+                            <field name="hb_list_price" />
+                            <field name="hb_quantity" />
+                        </group>
+                        <group string="Tracking">
+                            <field name="hb_tracking_id" />
+                            <field name="last_sync_date" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attributes" name="attributes">
+                            <field
+                                name="hb_attributes"
+                                widget="ace"
+                                options="{'mode': 'json'}"
+                            />
+                        </page>
+                        <page string="Sync Info" name="sync_info">
+                            <group>
+                                <field name="sync_error" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_hepsiburada_product_binding_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.tree</field>
+        <field name="model">hepsiburada.product.binding</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="sync_state == 'error'"
+                decoration-warning="sync_state == 'rejected'"
+                decoration-success="sync_state == 'approved'"
+                decoration-info="sync_state == 'pending'"
+            >
+                <field name="name" string="Product" />
+                <field name="hb_merchant_sku" />
+                <field name="hb_category_id" />
+                <field name="hb_brand_name" />
+                <field name="hb_quantity" />
+                <field name="hb_list_price" />
+                <field name="sync_state" />
+                <field name="backend_id" />
+                <field name="last_sync_date" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_hepsiburada_product_binding_search" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.search</field>
+        <field name="model">hepsiburada.product.binding</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Bindings">
+                <field name="name" />
+                <field name="hb_merchant_sku" />
+                <field name="hb_brand_name" />
+                <filter
+                    name="draft"
+                    string="Draft"
+                    domain="[('sync_state', '=', 'draft')]"
+                />
+                <filter
+                    name="pending"
+                    string="Pending"
+                    domain="[('sync_state', '=', 'pending')]"
+                />
+                <filter
+                    name="approved"
+                    string="Approved"
+                    domain="[('sync_state', '=', 'approved')]"
+                />
+                <filter
+                    name="error"
+                    string="Error"
+                    domain="[('sync_state', '=', 'error')]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_state"
+                        string="State"
+                        context="{'group_by': 'sync_state'}"
+                    />
+                    <filter
+                        name="group_category"
+                        string="Category"
+                        context="{'group_by': 'hb_category_id'}"
+                    />
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hepsiburada_product_binding" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Products</field>
+        <field name="res_model">hepsiburada.product.binding</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_product_binding_search" />
+    </record>
+</odoo>

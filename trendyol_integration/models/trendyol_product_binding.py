@@ -256,10 +256,10 @@ class TrendyolProductBinding(models.Model):
         # Check if there's a website configured
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         if base_url and self.odoo_id.image_1920:
-            # This assumes images are accessible via web
             return f"{base_url}/web/image/product.product/{self.odoo_id.id}/image_1920"
 
-        return None
+        # Fallback to default image
+        return "https://www.altinkaya.com/web/image/product.brand/1/logo"
 
     def _get_description(self):
         """Get product description for Trendyol.

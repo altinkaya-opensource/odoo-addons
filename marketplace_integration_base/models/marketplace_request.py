@@ -157,10 +157,17 @@ class MarketplaceRequest:
         except requests.RequestException as e:
             raise MarketplaceAPIError(f"Request failed: {str(e)}") from e
 
-        _logger.debug(
-            "Marketplace API response: %s - %s",
-            response.status_code,
-            response.text[:500] if response.text else "",
+        log_level = (
+            logging.DEBUG
+            if response.status_code in (200, 201, 204)
+            else logging.WARNING
+        )
+        _logger.log(
+            log_level,
+            "Marketplace API response: %s %s - %s",
+            method,
+            url,
+            response.text[:1000] if response.text else "",
         )
 
         if response.status_code in (200, 201, 204):

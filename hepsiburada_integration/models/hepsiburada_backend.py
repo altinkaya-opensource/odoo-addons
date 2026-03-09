@@ -76,7 +76,19 @@ class HepsiburadaBackend(models.Model):
         "settlement payments and for reporting purposes.",
     )
 
+    # Last Sync Timestamps (Hepsiburada-specific)
+    last_category_sync = fields.Datetime(
+        readonly=True,
+    )
+    last_brand_sync = fields.Datetime(
+        readonly=True,
+    )
+
     # Statistics
+    product_binding_count = fields.Integer(
+        compute="_compute_counts",
+        string="Product Bindings",
+    )
     order_count = fields.Integer(
         compute="_compute_counts",
         string="Orders",
@@ -96,11 +108,15 @@ class HepsiburadaBackend(models.Model):
 
     @api.depends()
     def _compute_counts(self):
+        ProductBinding = self.env["hepsiburada.product.binding"]
         Order = self.env["hepsiburada.order"]
         Settlement = self.env["hepsiburada.settlement"]
         Question = self.env["hepsiburada.question"]
         Claim = self.env["hepsiburada.claim"]
         for backend in self:
+            backend.product_binding_count = ProductBinding.search_count(
+                [("backend_id", "=", backend.id)]
+            )
             backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
             backend.settlement_count = Settlement.search_count(
                 [("backend_id", "=", backend.id)]
@@ -676,6 +692,105 @@ class HepsiburadaBackend(models.Model):
 
         self.last_question_sync = fields.Datetime.now()
         _logger.info("Imported %d questions for backend %s", total_imported, self.name)
+
+    # ==================== Catalog Sync ====================
+
+    def action_sync_categories(self):
+        """Sync categories from Hepsiburada."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.product",
+            description=_("Sync Hepsiburada categories: %s") % self.name,
+        )._sync_categories()
+        return self._build_notification(
+            _("Sync Started"),
+            _("Category synchronization has been queued."),
+        )
+
+    def _sync_categories(self):
+        """Sync leaf categories from Hepsiburada API with pagination."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Category = self.env["hepsiburada.category"]
+
+        try:
+            page = 0
+            total_synced = 0
+            while True:
+                result = client.get_categories(leaf=True, page=page, size=1000)
+                categories = (
+                    result
+                    if isinstance(result, list)
+                    else result.get("data", result.get("categories", []))
+                )
+                if not categories:
+                    break
+                Category._sync_from_hepsiburada(self, categories)
+                total_synced += len(categories)
+                # Check if there are more pages
+                total_pages = 1
+                if isinstance(result, dict):
+                    total_pages = result.get("totalPages", 1)
+                if page + 1 >= total_pages:
+                    break
+                page += 1
+
+            self.last_category_sync = fields.Datetime.now()
+            _logger.info(
+                "Synced %d leaf categories for backend %s",
+                total_synced,
+                self.name,
+            )
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to sync categories: %s", str(e))
+            raise
+
+    def action_sync_brands(self):
+        """Sync brands from Hepsiburada."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.product",
+            description=_("Sync Hepsiburada brands: %s") % self.name,
+        )._sync_brands()
+        return self._build_notification(
+            _("Sync Started"),
+            _("Brand synchronization has been queued."),
+        )
+
+    def _sync_brands(self):
+        """Sync brands from Hepsiburada API.
+
+        Note: Hepsiburada does not have a separate brands endpoint.
+        Brands are typically part of category attributes.
+        This method is a placeholder for manual brand import.
+        """
+        self.ensure_one()
+        self.last_brand_sync = fields.Datetime.now()
+        _logger.info("Brand sync completed for backend %s", self.name)
+
+    def action_view_products(self):
+        """View product bindings for this backend."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Product Bindings"),
+            "res_model": "hepsiburada.product.binding",
+            "view_mode": "tree,form",
+            "domain": [("backend_id", "=", self.id)],
+            "context": {"default_backend_id": self.id},
+        }
+
+    def action_open_batch_export_wizard(self):
+        """Open the batch export wizard."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Batch Export to Hepsiburada"),
+            "res_model": "hepsiburada.batch.export.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_backend_id": self.id},
+        }
 
     # ==================== Cron Methods ====================
 

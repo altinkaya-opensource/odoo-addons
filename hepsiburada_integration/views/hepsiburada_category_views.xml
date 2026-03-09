@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Category Tree View -->
+    <record id="view_hepsiburada_category_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.category.tree</field>
+        <field name="model">hepsiburada.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="full_path" />
+                <field name="marketplace_id" string="HB ID" />
+                <field name="is_leaf" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Category Form View -->
+    <record id="view_hepsiburada_category_form" model="ir.ui.view">
+        <field name="name">hepsiburada.category.form</field>
+        <field name="model">hepsiburada.category</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Category">
+                <header>
+                    <button
+                        name="action_sync_attributes"
+                        string="Sync Attributes"
+                        type="object"
+                        class="btn-secondary"
+                        attrs="{'invisible': [('is_leaf', '=', False)]}"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="marketplace_id" string="HB ID" />
+                            <field name="is_leaf" />
+                        </group>
+                        <group>
+                            <field name="parent_id" />
+                            <field name="backend_id" />
+                            <field name="odoo_category_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page
+                            string="Attributes"
+                            name="attributes"
+                            attrs="{'invisible': [('is_leaf', '=', False)]}"
+                        >
+                            <field name="attribute_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="hb_attribute_code" />
+                                    <field name="required" />
+                                    <field name="allow_custom" />
+                                    <field name="hb_type" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Subcategories" name="subcategories">
+                            <field name="child_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="marketplace_id" string="HB ID" />
+                                    <field name="is_leaf" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Category Search View -->
+    <record id="view_hepsiburada_category_search" model="ir.ui.view">
+        <field name="name">hepsiburada.category.search</field>
+        <field name="model">hepsiburada.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Categories">
+                <field name="name" />
+                <field name="full_path" />
+                <filter
+                    name="leaf_only"
+                    string="Leaf Categories"
+                    domain="[('is_leaf', '=', True)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <!-- Category Action -->
+    <record id="action_hepsiburada_category" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Categories</field>
+        <field name="res_model">hepsiburada.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hepsiburada_category_search" />
+        <field name="context">{'search_default_leaf_only': 1}</field>
+    </record>
+</odoo>

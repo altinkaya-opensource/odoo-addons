@@ -605,6 +605,18 @@ class TrendyolBackend(models.Model):
             "context": {"default_backend_id": self.id},
         }
 
+    def action_open_batch_export_wizard(self):
+        """Open the batch export wizard."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Batch Export to Trendyol"),
+            "res_model": "trendyol.batch.export.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_backend_id": self.id},
+        }
+
     def action_view_orders(self):
         """View orders for this backend."""
         self.ensure_one()

@@ -64,6 +64,18 @@
                                 string="Claims"
                             />
                         </button>
+                        <button
+                            name="action_view_products"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-cube"
+                        >
+                            <field
+                                name="product_binding_count"
+                                widget="statinfo"
+                                string="Products"
+                            />
+                        </button>
                     </div>
                     <widget
                         name="web_ribbon"
@@ -138,6 +150,23 @@
                                 PTT Kargo, Sürat Kargo, UPS, Yurtiçi Kargo
                             </span>
                         </page>
+                        <page string="Batch Export" name="batch_export">
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <p class="text-muted">
+                                        Export multiple Odoo products to Hepsiburada in bulk.
+                                        Select a category, brand, fill attributes, and pick products.
+                                    </p>
+                                    <button
+                                        name="action_open_batch_export_wizard"
+                                        string="Open Batch Export Wizard"
+                                        type="object"
+                                        class="btn-primary mb-3"
+                                        icon="fa-upload"
+                                    />
+                                </div>
+                            </div>
+                        </page>
                         <page string="Manual Actions" name="manual_actions">
                             <div class="row mt-3">
                                 <div class="col-6">
@@ -185,6 +214,23 @@
                                         icon="fa-file-text-o"
                                     />
                                 </div>
+                                <div class="col-6">
+                                    <h3>Sync</h3>
+                                    <button
+                                        name="action_sync_categories"
+                                        string="Sync Categories"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                    <button
+                                        name="action_sync_brands"
+                                        string="Sync Brands"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                </div>
                             </div>
                         </page>
                         <page string="Sync Status" name="sync_status">
@@ -194,6 +240,8 @@
                                     <field name="last_settlement_sync" readonly="0" />
                                     <field name="last_question_sync" readonly="0" />
                                     <field name="last_claim_sync" readonly="0" />
+                                    <field name="last_category_sync" />
+                                    <field name="last_brand_sync" />
                                 </group>
                             </group>
                         </page>

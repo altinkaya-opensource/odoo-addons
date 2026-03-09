@@ -7,6 +7,7 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from .hepsiburada_backend import _parse_hb_datetime
 from .hepsiburada_request import HepsiburadaAPIError
 
 _logger = logging.getLogger(__name__)
@@ -189,10 +190,10 @@ class HepsiburadaClaim(models.Model):
             "merchant_sku": claim_data.get("merchantSku", ""),
             "quantity": claim_data.get("quantity", 1) or 1,
             "explanation": claim_data.get("explanation", ""),
-            "claim_date": self._parse_hb_date(
+            "claim_date": _parse_hb_datetime(
                 claim_data.get("claimDate", claim_data.get("createdAt", ""))
             ),
-            "action_expire_date": self._parse_hb_date(
+            "action_expire_date": _parse_hb_datetime(
                 claim_data.get(
                     "AwaitingActionExpireDate",
                     claim_data.get("awaitingActionExpireDate", ""),
@@ -274,20 +275,3 @@ class HepsiburadaClaim(models.Model):
                 "sticky": False,
             },
         }
-
-    @staticmethod
-    def _parse_hb_date(dt_string):
-        """Parse HB datetime string."""
-        if not dt_string:
-            return False
-        try:
-            from dateutil import parser as dateutil_parser
-
-            dt = dateutil_parser.isoparse(str(dt_string))
-            if dt.tzinfo:
-                from datetime import UTC
-
-                dt = dt.astimezone(UTC).replace(tzinfo=None)
-            return dt
-        except (ValueError, TypeError):
-            return False

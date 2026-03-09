@@ -49,6 +49,7 @@
         # Wizards
         "wizards/product_export_wizard_views.xml",
         "wizards/category_sync_wizard_views.xml",
+        "wizards/batch_export_wizard_views.xml",
         "views/menus.xml",
     ],
     "installable": True,

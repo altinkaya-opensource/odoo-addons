@@ -2,6 +2,9 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 from . import marketplace_backend
+from . import marketplace_brand
+from . import marketplace_category
 from . import marketplace_order
+from . import marketplace_product_binding
 from . import marketplace_request
 from . import marketplace_settlement

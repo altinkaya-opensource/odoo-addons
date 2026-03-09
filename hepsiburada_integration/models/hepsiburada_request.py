@@ -21,12 +21,14 @@ HEPSIBURADA_SERVICE_URLS = {
         "shipping": "https://shipping-external-sit.hepsiburada.com",
         "finance": "https://mpfinance-external-sit.hepsiburada.com",
         "asktoseller": "https://api-asktoseller-merchant-sit.hepsiburada.com",
+        "mpop": "https://mpop-sit.hepsiburada.com",
     },
     "prod": {
         "oms": "https://oms-external.hepsiburada.com",
         "shipping": "https://shipping-external.hepsiburada.com",
         "finance": "https://mpfinance-external.hepsiburada.com",
         "asktoseller": "https://api-asktoseller-merchant.hepsiburada.com",
+        "mpop": "https://mpop.hepsiburada.com",
     },
 }
 
@@ -534,6 +536,155 @@ class HepsiburadaRequest(MarketplaceRequest):
             status_code=response.status_code,
             response_data=error_data,
         )
+
+    # ==================== Catalog / Product Methods (MPOP) ====================
+
+    def get_categories(self, leaf=True, page=0, size=1000):
+        """Get categories from Hepsiburada.
+
+        Args:
+            leaf: If True, return only leaf categories
+            page: Page number (0-based)
+            size: Page size (max 1000)
+
+        Returns:
+            Response dict with category data and pagination info
+        """
+        endpoint = "/product/api/categories/get-all-categories"
+        params = {
+            "leaf": str(leaf).lower(),
+            "status": "ACTIVE",
+            "available": "true",
+            "version": 1,
+            "page": page,
+            "size": min(size, 1000),
+        }
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
+    def get_category_attributes(self, category_id):
+        """Get attributes for a specific category.
+
+        Args:
+            category_id: Hepsiburada category ID
+
+        Returns:
+            List of attribute dicts
+        """
+        endpoint = f"/product/api/categories/{category_id}/attributes"
+        return self._make_request("GET", "mpop", endpoint, params={"version": 2})
+
+    def get_attribute_values(self, category_id, attribute_id):
+        """Get allowed values for an enum attribute.
+
+        Args:
+            category_id: Hepsiburada category ID
+            attribute_id: Attribute ID
+
+        Returns:
+            List of value dicts
+        """
+        endpoint = (
+            f"/product/api/categories/{category_id}/attribute/{attribute_id}/values"
+        )
+        return self._make_request("GET", "mpop", endpoint)
+
+    def _upload_multipart(self, endpoint, products_data, label="upload"):
+        """Upload products via multipart file upload to MPOP API.
+
+        The API expects a JSON file uploaded as multipart/form-data.
+
+        Args:
+            endpoint: API endpoint path (e.g. /product/api/products/import)
+            products_data: List of product data dicts
+            label: Label for log messages
+
+        Returns:
+            Dict with trackingId for status checking
+
+        Raises:
+            HepsiburadaAPIError: If the API returns an error
+        """
+        self.rate_limiter.acquire()
+
+        base_url = self.service_urls.get("mpop")
+        if not base_url:
+            raise HepsiburadaAPIError("MPOP service URL not configured")
+
+        url = f"{base_url}{endpoint}"
+        payload_json = json.dumps(products_data, ensure_ascii=False)
+        _logger.info(
+            "HB %s: %d products, payload: %s",
+            label,
+            len(products_data),
+            payload_json[:3000],
+        )
+
+        headers = {
+            "Authorization": self.auth_header,
+            "User-Agent": self.user_agent,
+            "Accept": "application/json",
+        }
+        files = {
+            "file": (
+                "products.json",
+                payload_json.encode("utf-8"),
+                "application/json",
+            ),
+        }
+
+        try:
+            response = requests.post(
+                url=url,
+                headers=headers,
+                files=files,
+                timeout=120,
+            )
+        except requests.RequestException as e:
+            raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
+
+        _logger.info(
+            "HB %s response: %s - %s",
+            label,
+            response.status_code,
+            response.text[:1000] if response.text else "",
+        )
+
+        if response.status_code in (200, 201, 204):
+            try:
+                return response.json() if response.text else {}
+            except json.JSONDecodeError:
+                return {"raw": response.text}
+
+        error_msg, error_data = self._parse_error_response(response)
+        raise HepsiburadaAPIError(
+            f"{label} error ({response.status_code}): {error_msg}",
+            status_code=response.status_code,
+            response_data=error_data,
+        )
+
+    def upload_products(self, products_data):
+        """Upload products to Hepsiburada catalog."""
+        return self._upload_multipart(
+            "/product/api/products/import", products_data, "product upload"
+        )
+
+    def fast_listing_products(self, products_data):
+        """Fast listing for products already in Hepsiburada catalog."""
+        return self._upload_multipart(
+            "/product/api/products/fastlisting", products_data, "fast listing"
+        )
+
+    def get_product_status(self, tracking_id):
+        """Check product upload status by tracking ID.
+
+        Args:
+            tracking_id: Tracking ID from upload response
+
+        Returns:
+            Dict with product status information
+        """
+        endpoint = f"/product/api/products/status/{tracking_id}"
+        return self._make_request("GET", "mpop", endpoint)
 
     # ==================== Utility Methods ====================
 

@@ -45,6 +45,15 @@
         action="action_hepsiburada_settlement"
     />
 
+    <!-- Products Menu -->
+    <menuitem
+        id="menu_hepsiburada_products"
+        name="Products"
+        parent="menu_hepsiburada_root"
+        sequence="30"
+        action="action_hepsiburada_product_binding"
+    />
+
     <!-- Configuration Menu -->
     <menuitem
         id="menu_hepsiburada_config"
@@ -62,4 +71,31 @@
         sequence="10"
         action="action_hepsiburada_backend"
     />
+
+    <!-- Categories -->
+    <menuitem
+        id="menu_hepsiburada_categories"
+        name="Categories"
+        parent="menu_hepsiburada_config"
+        sequence="20"
+        action="action_hepsiburada_category"
+    />
+
+    <!-- Batch Requests Menu -->
+    <menuitem
+        id="menu_hepsiburada_batch_requests"
+        name="Batch Requests"
+        parent="menu_hepsiburada_config"
+        sequence="35"
+        action="action_hepsiburada_batch_request"
+    />
+
+    <!-- Brands -->
+    <!-- <menuitem
+        id="menu_hepsiburada_brands"
+        name="Brands"
+        parent="menu_hepsiburada_config"
+        sequence="30"
+        action="action_hepsiburada_brand"
+    /> -->
 </odoo>
