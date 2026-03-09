@@ -1,14 +1,13 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-import base64
-import json
 import logging
-import time
-from collections import deque
-from threading import Lock
 
-import requests
+from odoo.addons.marketplace_integration_base.models.marketplace_request import (
+    MarketplaceAPIError,
+    MarketplaceRateLimiter,
+    MarketplaceRequest,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -19,46 +18,13 @@ TRENDYOL_API_URLS = {
 }
 
 
-class TrendyolRateLimiter:
-    """Rate limiter for Trendyol API (50 requests per 10 seconds)."""
-
-    def __init__(self, max_requests=50, time_window=10):
-        self.max_requests = max_requests
-        self.time_window = time_window
-        self.requests = deque()
-        self.lock = Lock()
-
-    def acquire(self):
-        """Wait until a request can be made within rate limits."""
-        with self.lock:
-            now = time.time()
-            # Remove old requests outside the time window
-            while self.requests and self.requests[0] < now - self.time_window:
-                self.requests.popleft()
-
-            if len(self.requests) >= self.max_requests:
-                # Wait until oldest request expires
-                sleep_time = self.requests[0] + self.time_window - now
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                # Clean up again after sleeping
-                now = time.time()
-                while self.requests and self.requests[0] < now - self.time_window:
-                    self.requests.popleft()
-
-            self.requests.append(time.time())
-
-
-class TrendyolAPIError(Exception):
+class TrendyolAPIError(MarketplaceAPIError):
     """Exception raised for Trendyol API errors."""
 
-    def __init__(self, message, status_code=None, response_data=None):
-        super().__init__(message)
-        self.status_code = status_code
-        self.response_data = response_data
+    pass
 
 
-class TrendyolRequest:
+class TrendyolRequest(MarketplaceRequest):
     """API client for Trendyol marketplace integration.
 
     Handles authentication, rate limiting, and all API communication.
@@ -73,26 +39,14 @@ class TrendyolRequest:
             api_secret: API secret from Trendyol seller panel
             environment: 'stage' for testing, 'prod' for production
         """
+        super().__init__(
+            username=api_key,
+            password=api_secret,
+            user_agent=f"{seller_id} - Odoo Trendyol Integration",
+            rate_limiter=MarketplaceRateLimiter(max_requests=50, time_window=10),
+        )
         self.seller_id = seller_id
-        self.api_key = api_key
-        self.api_secret = api_secret
-        self.environment = environment
         self.base_url = TRENDYOL_API_URLS.get(environment, TRENDYOL_API_URLS["stage"])
-        self.rate_limiter = TrendyolRateLimiter()
-
-        # Build auth header
-        auth_string = f"{api_key}:{api_secret}"
-        auth_bytes = auth_string.encode("utf-8")
-        auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
-        self.auth_header = f"Basic {auth_b64}"
-
-    def _get_headers(self):
-        """Get common headers for API requests."""
-        return {
-            "Authorization": self.auth_header,
-            "User-Agent": f"{self.seller_id} - Odoo Trendyol Integration",
-            "Content-Type": "application/json",
-        }
 
     def _make_request(
         self, method, endpoint, params=None, json_data=None, skip_rate_limit=False
@@ -112,62 +66,21 @@ class TrendyolRequest:
         Raises:
             TrendyolAPIError: If the API returns an error
         """
-        if not skip_rate_limit:
-            self.rate_limiter.acquire()
-
         url = f"{self.base_url}{endpoint}"
-        headers = self._get_headers()
-
-        _logger.debug(
-            "Trendyol API %s %s - params: %s, body: %s",
-            method,
-            url,
-            params,
-            json_data,
-        )
-
         try:
-            response = requests.request(
+            return self._send_request(
                 method=method,
                 url=url,
-                headers=headers,
                 params=params,
-                json=json_data,
-                timeout=60,
+                json_data=json_data,
+                skip_rate_limit=skip_rate_limit,
             )
-        except requests.RequestException as e:
-            raise TrendyolAPIError(f"Request failed: {str(e)}") from e
-
-        _logger.debug(
-            "Trendyol API response: %s - %s",
-            response.status_code,
-            response.text[:500] if response.text else "",
-        )
-
-        # Handle response
-        if response.status_code in (200, 201):
-            try:
-                return response.json() if response.text else {}
-            except json.JSONDecodeError:
-                return {"raw": response.text}
-
-        # Handle errors
-        try:
-            error_data = response.json()
-            error_msg = error_data.get("message", response.text)
-            if "errors" in error_data:
-                error_msg = "; ".join(
-                    e.get("message", str(e)) for e in error_data["errors"]
-                )
-        except json.JSONDecodeError:
-            error_data = None
-            error_msg = response.text
-
-        raise TrendyolAPIError(
-            f"API error ({response.status_code}): {error_msg}",
-            status_code=response.status_code,
-            response_data=error_data,
-        )
+        except MarketplaceAPIError as e:
+            raise TrendyolAPIError(
+                str(e),
+                status_code=e.status_code,
+                response_data=e.response_data,
+            ) from e
 
     # ==================== Brand Methods ====================
 

@@ -21,6 +21,7 @@
         "delivery_integration_base",
         "altinkaya_sales",
         "altinkaya_account",
+        "marketplace_integration_base",
     ],
     "data": [
         # Security

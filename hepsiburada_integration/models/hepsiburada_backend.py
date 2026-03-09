@@ -7,7 +7,6 @@ from datetime import timedelta
 from dateutil import parser as dateutil_parser
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
 
@@ -36,15 +35,7 @@ def _parse_hb_datetime(dt_string):
 class HepsiburadaBackend(models.Model):
     _name = "hepsiburada.backend"
     _description = "Hepsiburada Backend Configuration"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
-
-    name = fields.Char(required=True, tracking=True)
-    active = fields.Boolean(default=True)
-    company_id = fields.Many2one(
-        "res.company",
-        required=True,
-        default=lambda self: self.env.company,
-    )
+    _inherit = ["marketplace.backend"]
 
     # API Credentials
     merchant_id = fields.Char(
@@ -63,134 +54,27 @@ class HepsiburadaBackend(models.Model):
         required=True,
         groups="hepsiburada_integration.group_hepsiburada_manager",
     )
-    environment = fields.Selection(
-        [
-            ("stage", "Stage (Testing)"),
-            ("prod", "Production"),
-        ],
-        default="stage",
-        required=True,
-        tracking=True,
-    )
-
-    # Odoo Mappings
-    warehouse_ids = fields.Many2many(
-        "stock.warehouse",
-        string="Warehouses",
-        required=True,
-        help="Warehouses to use for order fulfillment",
-    )
-    pricelist_id = fields.Many2one(
-        "product.pricelist",
-        required=True,
-        help="Pricelist to use for Hepsiburada prices (must be in TRY)",
-    )
-    sales_team_id = fields.Many2one(
-        "crm.team",
-        help="Default sales team for Hepsiburada orders",
-    )
-    fiscal_position_id = fields.Many2one(
-        "account.fiscal.position",
-        help="Default fiscal position for Hepsiburada orders",
-    )
-    source_id = fields.Many2one(
-        "utm.source",
-        help="UTM source to set on Hepsiburada orders",
-    )
-
-    # Default Settings
-    default_cargo_company_id = fields.Many2one(
-        "delivery.carrier",
-        help="Default delivery carrier for Hepsiburada orders",
-    )
-    cargo_mapping_ids = fields.One2many(
-        "hepsiburada.cargo.mapping",
-        "backend_id",
-        string="Cargo Mappings",
-        help="Map Hepsiburada cargo providers to Odoo delivery carriers",
-    )
-    default_product_id = fields.Many2one(
-        "product.product",
-        help="Fallback product for unmapped items. "
-        "If not set, unmapped items will be created as note lines.",
-    )
     user_agent = fields.Char(
         string="User-Agent",
         required=True,
         help="User-Agent header sent with every API request to Hepsiburada",
     )
 
-    label_printer_id = fields.Many2one(
-        "printing.printer",
-        help="Default printer for Hepsiburada shipping labels (Ortak Barkod). "
-        "Used when the delivery carrier has no printer configured.",
+    # Cargo mappings
+    cargo_mapping_ids = fields.One2many(
+        "hepsiburada.cargo.mapping",
+        "backend_id",
+        string="Cargo Mappings",
+        help="Map Hepsiburada cargo providers to Odoo delivery carriers",
     )
 
-    default_vat_rate = fields.Float(
-        string="Default VAT Rate (%)",
-        default=20.0,
-        help="Default VAT rate for products without tax",
-    )
-    auto_confirm_orders = fields.Boolean(
-        string="Auto-confirm Orders",
-        default=True,
-        help="Automatically confirm imported orders",
-    )
-
-    # Sync Settings
-    auto_import_orders = fields.Boolean(
-        default=True,
-        help="Automatically import orders via scheduled job",
-    )
-    auto_sync_tracking = fields.Boolean(
-        default=True,
-        help="Automatically send tracking numbers when delivery is done",
-    )
-    auto_send_invoice = fields.Boolean(
-        default=True,
-        help="Send invoice links to Hepsiburada via nightly batch cron",
-    )
-
-    # Settlement / Accounting
+    # Settlement partner
     hb_partner_id = fields.Many2one(
         "res.partner",
         string="Hepsiburada Partner",
         help="Partner record for Hepsiburada. Used for commission "
         "settlement payments and for reporting purposes.",
     )
-    settlement_journal_id = fields.Many2one(
-        "account.journal",
-        string="Hepsiburada Payment Journal",
-        domain="[('type', '=', 'bank')]",
-        help="Intermediary bank-type journal for Hepsiburada payments. "
-        "When a real bank transfer arrives, reconcile against this journal.",
-    )
-    auto_import_settlements = fields.Boolean(
-        default=True,
-        help="Automatically import financial settlements via scheduled job",
-    )
-    auto_reconcile_settlements = fields.Boolean(
-        default=True,
-        help="Automatically reconcile imported settlements with invoices",
-    )
-
-    # Questions
-    auto_import_questions = fields.Boolean(
-        default=True,
-        help="Automatically import customer questions via scheduled job",
-    )
-
-    # Claims
-    auto_import_claims = fields.Boolean(
-        default=True,
-        help="Automatically import customer claims via scheduled job",
-    )
-
-    # Last Sync Timestamps
-    last_order_sync = fields.Datetime(readonly=True)
-    last_settlement_sync = fields.Datetime(readonly=True)
-    last_question_sync = fields.Datetime(readonly=True)
-    last_claim_sync = fields.Datetime(readonly=True)
 
     # Statistics
     order_count = fields.Integer(
@@ -226,6 +110,8 @@ class HepsiburadaBackend(models.Model):
             )
             backend.claim_count = Claim.search_count([("backend_id", "=", backend.id)])
 
+    # ==================== Hook Implementations ====================
+
     def _get_api_client(self):
         """Get configured API client for this backend."""
         self.ensure_one()
@@ -237,49 +123,19 @@ class HepsiburadaBackend(models.Model):
             user_agent=self.user_agent,
         )
 
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Hepsiburada cargo provider name.
-
-        Args:
-            cargo_provider_name: Cargo provider name from Hepsiburada API
-
-        Returns:
-            delivery.carrier record or False
-        """
+    def _get_marketplace_partner(self):
+        """Return the Hepsiburada partner for commission payments."""
         self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.hepsiburada_cargo_provider_name
-                    and m.hepsiburada_cargo_provider_name.lower() == name_lower
-                )
-            )
-            if mapping and mapping[0].carrier_id:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
+        return self.hb_partner_id or False
 
-    # ==================== Connection Test ====================
-
-    def action_test_connection(self):
-        """Test API connection."""
+    def _get_cargo_mappings(self):
+        """Return cargo mapping recordset."""
         self.ensure_one()
-        try:
-            client = self._get_api_client()
-            client.test_connection()
-        except HepsiburadaAPIError as e:
-            raise UserError(_("Connection failed: %s") % str(e)) from e
+        return self.cargo_mapping_ids
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Connection to Hepsiburada API successful!"),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+    def _get_cargo_mapping_name(self, mapping):
+        """Get cargo provider name from a mapping record."""
+        return mapping.hepsiburada_cargo_provider_name
 
     # ==================== Order Import ====================
 
@@ -290,16 +146,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import Hepsiburada orders: %s") % self.name,
         )._import_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Order import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Order import has been queued."),
+        )
 
     def _fetch_all_packages(self, fetch_method):
         """Paginate through a package endpoint until exhausted.
@@ -372,11 +222,6 @@ class HepsiburadaBackend(models.Model):
     def _group_flat_items_as_packages(self, flat_items, hb_status, api_status):
         """Group flat order line items by orderNumber into pseudo-package dicts.
 
-        The /orders and /orders/paymentawaiting endpoints return flat line items
-        with nested shippingAddress/invoice objects.  This helper normalizes
-        field names and groups them by orderNumber so the same _import_order()
-        pipeline can process them.
-
         Args:
             flat_items: List of flat line-item dicts from HB /orders endpoints
             hb_status: Internal status tag (e.g. "open", "payment_awaiting")
@@ -439,17 +284,7 @@ class HepsiburadaBackend(models.Model):
         return packages
 
     def _import_orders(self):
-        """Import orders from all Hepsiburada endpoints.
-
-        Endpoints:
-        - /orders (paketlenecek - flat line items, grouped by orderNumber)
-        - /orders/paymentawaiting (ödemesi bekleniyor - flat line items)
-        - /packages (paketlenmiş / gönderime hazır)
-        - /packages/shipped (kargoda)
-        - /packages/delivered (teslim edildi)
-        - /packages/undelivered (teslim edilemedi)
-        - /packages/cancelled (iptal edildi)
-        """
+        """Import orders from all Hepsiburada endpoints."""
         self.ensure_one()
         client = self._get_api_client()
         Order = self.env["hepsiburada.order"]
@@ -529,16 +364,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import HB cancelled orders: %s") % self.name,
         )._import_cancelled_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Cancelled order sync has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Cancelled order sync has been queued."),
+        )
 
     def _import_cancelled_orders(self):
         """Import cancelled packages to update existing order statuses."""
@@ -592,16 +421,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import Hepsiburada settlements: %s") % self.name,
         )._import_settlements()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Settlement import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Settlement import has been queued."),
+        )
 
     def _import_settlements(self):
         """Import settlements from Hepsiburada finance API.
@@ -748,16 +571,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import Hepsiburada claims: %s") % self.name,
         )._import_claims()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Claim import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Claim import has been queued."),
+        )
 
     def _import_claims(self):
         """Import customer claims from Hepsiburada OMS API."""
@@ -810,16 +627,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Import Hepsiburada questions: %s") % self.name,
         )._import_questions()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Question import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Question import has been queued."),
+        )
 
     def _import_questions(self):
         """Import customer questions from Hepsiburada AskToSeller API."""
@@ -989,16 +800,10 @@ class HepsiburadaBackend(models.Model):
             channel="root.hepsiburada.order",
             description=_("Sync missing invoices: %s") % self.name,
         )._sync_missing_invoices()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Missing invoice sync has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Sync Started"),
+            _("Missing invoice sync has been queued."),
+        )
 
     def _sync_missing_invoices(self):
         """Fetch packages with missing invoices from HB and mark orders."""

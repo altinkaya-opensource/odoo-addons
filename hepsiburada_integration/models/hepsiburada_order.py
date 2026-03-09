@@ -7,27 +7,22 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from odoo.addons.marketplace_integration_base.models.marketplace_order import (
+    INDIVIDUAL_VAT,
+)
+
 from .hepsiburada_backend import _parse_hb_datetime
 from .hepsiburada_request import HepsiburadaAPIError
 
 _logger = logging.getLogger(__name__)
 
-INDIVIDUAL_VAT = "11111111111"
-
 
 class HepsiburadaOrder(models.Model):
     _name = "hepsiburada.order"
     _description = "Hepsiburada Order"
-    _inherits = {"sale.order": "odoo_id"}
+    _inherit = ["marketplace.order"]
     _order = "create_date desc"
 
-    odoo_id = fields.Many2one(
-        "sale.order",
-        string="Odoo Order",
-        required=True,
-        ondelete="cascade",
-        index=True,
-    )
     backend_id = fields.Many2one(
         "hepsiburada.backend",
         required=True,
@@ -86,11 +81,6 @@ class HepsiburadaOrder(models.Model):
         search="_search_is_overdue",
     )
 
-    # Shipping info
-    cargo_tracking_number = fields.Char(string="Tracking Number")
-    cargo_tracking_link = fields.Char(string="Tracking Link")
-    cargo_provider_name = fields.Char(string="Cargo Provider")
-
     # Line item tracking for idempotency
     hb_line_item_ids = fields.One2many(
         "hepsiburada.order.line",
@@ -103,11 +93,6 @@ class HepsiburadaOrder(models.Model):
         default=False,
         help="Hepsiburada reports this package as missing invoice",
     )
-    invoice_link_sent = fields.Boolean(default=False)
-    invoice_sent_date = fields.Datetime(readonly=True)
-
-    # Raw data
-    raw_data = fields.Text(help="Original JSON data from Hepsiburada")
 
     _sql_constraints = [
         (
@@ -131,6 +116,17 @@ class HepsiburadaOrder(models.Model):
             ("due_date", "=", False),
             ("due_date", ">=", fields.Datetime.now()),
         ]
+
+    # ── Delivery State Map Hook ──────────────────────────────────────────
+
+    def _get_delivery_state_map(self):
+        return {
+            "packaged": "shipping_recorded_in_carrier",
+            "in_transit": "in_transit",
+            "delivered": "customer_delivered",
+            "cancelled": "canceled_shipment",
+            "undelivered": "incident",
+        }
 
     # ── Order Import ─────────────────────────────────────────────────────
 
@@ -515,30 +511,6 @@ class HepsiburadaOrder(models.Model):
 
         return Partner.create(partner_vals)
 
-    @api.model
-    def _get_country(self, country_code):
-        """Get country from country code (defaults to Turkey)."""
-        Country = self.env["res.country"]
-        return Country.search([("code", "=", country_code or "TR")], limit=1)
-
-    @api.model
-    def _get_state(self, country, city_name):
-        """Get state/province from city name."""
-        if not country or not city_name:
-            return None
-
-        State = self.env["res.country.state"]
-        state = State.search(
-            [
-                ("country_id", "=", country.id),
-                "|",
-                ("name", "=ilike", city_name),
-                ("code", "=ilike", city_name),
-            ],
-            limit=1,
-        )
-        return state or None
-
     # ── Order Values ─────────────────────────────────────────────────────
 
     @api.model
@@ -548,33 +520,17 @@ class HepsiburadaOrder(models.Model):
         """Prepare sale.order values from package data."""
         first_item = package_data.get("items", [{}])[0]
         order_number = str(first_item.get("orderNumber", ""))
-
-        vals = {
-            "partner_id": main_partner.id,
-            "partner_invoice_id": main_partner.id,
-            "partner_shipping_id": shipping_partner.id,
-            "date_order": _parse_hb_datetime(package_data.get("orderDate"))
-            or fields.Datetime.now(),
-            "company_id": backend.company_id.id,
-            "warehouse_id": backend.warehouse_ids[:1].id,
-            "pricelist_id": backend.pricelist_id.id,
-            "client_order_ref": order_number,
-        }
-
-        if backend.sales_team_id:
-            vals["team_id"] = backend.sales_team_id.id
-        if backend.fiscal_position_id:
-            vals["fiscal_position_id"] = backend.fiscal_position_id.id
-        if backend.source_id:
-            vals["source_id"] = backend.source_id.id
-
-        # Get carrier from cargo company mapping
+        order_date = _parse_hb_datetime(package_data.get("orderDate"))
         cargo_company = package_data.get("cargoCompany", "")
-        carrier = backend._get_carrier_for_cargo_provider(cargo_company)
-        if carrier:
-            vals["carrier_id"] = carrier.id
 
-        return vals
+        return self._prepare_base_order_values(
+            backend,
+            order_date,
+            order_number,
+            main_partner,
+            shipping_partner,
+            cargo_provider_name=cargo_company,
+        )
 
     # ── Line Values ──────────────────────────────────────────────────────
 
@@ -686,50 +642,6 @@ class HepsiburadaOrder(models.Model):
             vals["tax_id"] = [(6, 0, [tax.id])]
 
         return vals
-
-    @api.model
-    def _get_tax_for_rate(self, backend, vat_rate):
-        """Find sale tax matching the given VAT rate."""
-        if not vat_rate:
-            return None
-
-        Tax = self.env["account.tax"]
-        return Tax.search(
-            [
-                ("type_tax_use", "=", "sale"),
-                ("amount", "=", vat_rate),
-                ("price_include", "=", True),
-                ("company_id", "=", backend.company_id.id),
-            ],
-            limit=1,
-        )
-
-    # ── Picking Delivery State ───────────────────────────────────────────
-
-    def _update_picking_delivery_state(self, hb_status):
-        """Update stock.picking delivery_state from Hepsiburada status."""
-        self.ensure_one()
-        state_map = {
-            "packaged": "shipping_recorded_in_carrier",
-            "in_transit": "in_transit",
-            "delivered": "customer_delivered",
-            "cancelled": "canceled_shipment",
-            "undelivered": "incident",
-        }
-        delivery_state = state_map.get(hb_status)
-        if not delivery_state:
-            return
-
-        pickings = self.odoo_id.picking_ids.filtered(
-            lambda p: p.picking_type_code == "outgoing"
-        )
-        for picking in pickings:
-            vals = {"delivery_state": delivery_state}
-            if hb_status == "in_transit":
-                vals["date_shipped"] = fields.Date.today()
-            if hb_status == "delivered":
-                vals["date_delivered"] = fields.Datetime.now()
-            picking.write(vals)
 
     # ── Picking Notification ─────────────────────────────────────────────
 

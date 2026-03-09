@@ -43,15 +43,7 @@ def _trendyol_ts_to_utc(ts_ms):
 class TrendyolBackend(models.Model):
     _name = "trendyol.backend"
     _description = "Trendyol Backend Configuration"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
-
-    name = fields.Char(required=True, tracking=True)
-    active = fields.Boolean(default=True)
-    company_id = fields.Many2one(
-        "res.company",
-        required=True,
-        default=lambda self: self.env.company,
-    )
+    _inherit = ["marketplace.backend"]
 
     # API Credentials
     seller_id = fields.Char(
@@ -70,98 +62,22 @@ class TrendyolBackend(models.Model):
         required=True,
         groups="trendyol_integration.group_trendyol_manager",
     )
-    environment = fields.Selection(
-        [
-            ("stage", "Stage (Testing)"),
-            ("prod", "Production"),
-        ],
-        default="stage",
-        required=True,
-        tracking=True,
-    )
 
-    # Odoo Mappings
-    warehouse_ids = fields.Many2many(
-        "stock.warehouse",
-        string="Warehouses",
-        required=True,
-        help="Warehouses to use for stock calculations and order fulfillment",
-    )
-    pricelist_id = fields.Many2one(
-        "product.pricelist",
-        required=True,
-        help="Pricelist to use for Trendyol prices (must be in TRY)",
-    )
-    sales_team_id = fields.Many2one(
-        "crm.team",
-        help="Default sales team for Trendyol orders",
-    )
-    fiscal_position_id = fields.Many2one(
-        "account.fiscal.position",
-        help="Default fiscal position for Trendyol orders",
-    )
-    source_id = fields.Many2one(
-        "utm.source",
-        help="UTM source to set on Trendyol orders",
-    )
-
-    # Default Settings
-    default_cargo_company_id = fields.Many2one(
-        "delivery.carrier",
-        help="Default delivery carrier for Trendyol orders",
-    )
+    # Cargo Mappings
     cargo_mapping_ids = fields.One2many(
         "trendyol.cargo.mapping",
         "backend_id",
         string="Cargo Mappings",
         help="Map Trendyol cargo providers to Odoo delivery carriers",
     )
-    default_product_id = fields.Many2one(
-        "product.product",
-        help="Fallback product for unmapped Trendyol items. "
-        "If not set, unmapped items will be created as note lines.",
-    )
-    default_vat_rate = fields.Float(
-        string="Default VAT Rate (%)",
-        default=20.0,
-        help="Default VAT rate for products without tax",
-    )
-    auto_confirm_orders = fields.Boolean(
-        string="Auto-confirm Orders",
-        default=True,
-        help="Automatically confirm imported orders",
-    )
 
     # Sync Settings
-    auto_import_orders = fields.Boolean(
-        default=True,
-        help="Automatically import orders via scheduled job",
-    )
     auto_sync_stock = fields.Boolean(
         default=True,
         help="Automatically sync stock levels via scheduled job",
     )
-    auto_sync_tracking = fields.Boolean(
-        default=True,
-        help="Automatically send tracking numbers when delivery is done",
-    )
-    auto_send_invoice = fields.Boolean(
-        default=True,
-        help="Send invoice links to Trendyol via nightly batch cron",
-    )
-    auto_import_claims = fields.Boolean(
-        default=True,
-        help="Automatically import returns/claims via scheduled job",
-    )
-    auto_import_questions = fields.Boolean(
-        default=True,
-        help="Automatically import customer questions via scheduled job",
-    )
 
-    # Last Sync Timestamps
-    last_order_sync = fields.Datetime(
-        readonly=True,
-    )
+    # Last Sync Timestamps (Trendyol-specific)
     last_stock_sync = fields.Datetime(
         readonly=True,
     )
@@ -171,43 +87,12 @@ class TrendyolBackend(models.Model):
     last_brand_sync = fields.Datetime(
         readonly=True,
     )
-    last_claim_sync = fields.Datetime(
-        readonly=True,
-    )
-    last_question_sync = fields.Datetime(
-        readonly=True,
-    )
 
     # Settlement / Accounting Settings
     trendyol_partner_id = fields.Many2one(
         "res.partner",
         help="Partner record representing Trendyol. Used as reference on "
         "settlement payments and for reporting purposes.",
-    )
-    settlement_journal_id = fields.Many2one(
-        "account.journal",
-        string="Trendyol Payment Journal",
-        domain="[('type', '=', 'bank')]",
-        help="Intermediary bank-type journal for Trendyol payments. "
-        "When a real bank transfer arrives, reconcile against this journal.",
-    )
-    auto_import_settlements = fields.Boolean(
-        default=True,
-        help="Automatically import financial settlements via scheduled job",
-    )
-    auto_reconcile_settlements = fields.Boolean(
-        default=True,
-        help="Automatically reconcile imported settlements with invoices",
-    )
-    last_settlement_sync = fields.Datetime(
-        readonly=True,
-    )
-
-    # Printing
-    label_printer_id = fields.Many2one(
-        "printing.printer",
-        help="Default ZPL label printer for Trendyol shipping labels. "
-        "Used when the delivery carrier has no printer configured.",
     )
 
     # Q&A Settings
@@ -280,6 +165,8 @@ class TrendyolBackend(models.Model):
                 [("backend_id", "=", backend.id)]
             )
 
+    # ==================== Base Hooks ====================
+
     def _get_api_client(self):
         """Get configured API client for this backend."""
         self.ensure_one()
@@ -290,51 +177,21 @@ class TrendyolBackend(models.Model):
             environment=self.environment,
         )
 
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Trendyol cargo provider name.
-
-        Searches cargo_mapping_ids by trendyol_cargo_provider_name (exact match,
-        case-insensitive). Falls back to default_cargo_company_id if no mapping
-        is found.
-
-        Args:
-            cargo_provider_name: Cargo provider name from Trendyol API
-
-        Returns:
-            delivery.carrier record or False
-        """
+    def _get_marketplace_partner(self):
+        """Return the partner record representing Trendyol."""
         self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.trendyol_cargo_provider_name
-                    and m.trendyol_cargo_provider_name.lower() == name_lower
-                )
-            )
-            if mapping:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
+        return self.trendyol_partner_id or False
 
-    def action_test_connection(self):
-        """Test API connection."""
+    def _get_cargo_mappings(self):
+        """Return cargo mapping recordset."""
         self.ensure_one()
-        try:
-            client = self._get_api_client()
-            client.test_connection()
-        except TrendyolAPIError as e:
-            raise UserError(_("Connection failed: %s") % str(e)) from e
+        return self.cargo_mapping_ids
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Connection to Trendyol API successful!"),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+    def _get_cargo_mapping_name(self, mapping):
+        """Get cargo provider name string from a mapping record."""
+        return mapping.trendyol_cargo_provider_name
+
+    # ==================== Webhook Methods ====================
 
     def action_register_webhook(self):
         """Register a webhook subscription on Trendyol."""
@@ -362,16 +219,11 @@ class TrendyolBackend(models.Model):
         self.webhook_id = str(result.get("id", ""))
         self.webhook_url = webhook_url
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Webhook Registered"),
-                "message": _("Webhook has been registered on Trendyol."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Webhook Registered"),
+            _("Webhook has been registered on Trendyol."),
+            "success",
+        )
 
     def action_delete_webhook(self):
         """Delete the webhook subscription from Trendyol."""
@@ -388,16 +240,11 @@ class TrendyolBackend(models.Model):
         self.webhook_id = False
         self.webhook_url = False
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Webhook Deleted"),
-                "message": _("Webhook has been deleted from Trendyol."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Webhook Deleted"),
+            _("Webhook has been deleted from Trendyol."),
+            "success",
+        )
 
     def action_activate_webhook(self):
         """Activate a deactivated webhook on Trendyol."""
@@ -411,16 +258,11 @@ class TrendyolBackend(models.Model):
         except TrendyolAPIError as e:
             raise UserError(_("Failed to activate webhook: %s") % str(e)) from e
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Webhook Activated"),
-                "message": _("Webhook has been activated on Trendyol."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Webhook Activated"),
+            _("Webhook has been activated on Trendyol."),
+            "success",
+        )
 
     def action_deactivate_webhook(self):
         """Deactivate an active webhook on Trendyol."""
@@ -434,16 +276,13 @@ class TrendyolBackend(models.Model):
         except TrendyolAPIError as e:
             raise UserError(_("Failed to deactivate webhook: %s") % str(e)) from e
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Webhook Deactivated"),
-                "message": _("Webhook has been deactivated on Trendyol."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Webhook Deactivated"),
+            _("Webhook has been deactivated on Trendyol."),
+            "success",
+        )
+
+    # ==================== Sync Methods ====================
 
     def action_sync_categories(self):
         """Sync categories from Trendyol."""
@@ -452,16 +291,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.product",
             description=_("Sync Trendyol categories: %s") % self.name,
         )._sync_categories()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Category synchronization has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Sync Started"),
+            _("Category synchronization has been queued."),
+        )
 
     def _sync_categories(self):
         """Sync categories from Trendyol API."""
@@ -488,16 +321,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.product",
             description=_("Sync Trendyol brands: %s") % self.name,
         )._sync_brands()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Brand synchronization has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Sync Started"),
+            _("Brand synchronization has been queued."),
+        )
 
     def _sync_brands(self):
         """Sync all brands from Trendyol API."""
@@ -529,6 +356,8 @@ class TrendyolBackend(models.Model):
             _logger.error("Failed to sync brands: %s", str(e))
             raise
 
+    # ==================== Order Methods ====================
+
     def action_import_orders(self):
         """Manually trigger order import."""
         self.ensure_one()
@@ -536,16 +365,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.order",
             description=_("Import Trendyol orders: %s") % self.name,
         )._import_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Order import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Order import has been queued."),
+        )
 
     def _import_orders(self, status=None):
         """Import orders from Trendyol API.
@@ -609,6 +432,8 @@ class TrendyolBackend(models.Model):
             _logger.error("Failed to import orders: %s", str(e))
             raise
 
+    # ==================== Stock/Price Methods ====================
+
     def action_sync_stock_prices(self):
         """Manually trigger stock/price sync."""
         self.ensure_one()
@@ -616,16 +441,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.stock",
             description=_("Sync Trendyol stock/prices: %s") % self.name,
         )._sync_stock_prices()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Stock/price synchronization has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Sync Started"),
+            _("Stock/price synchronization has been queued."),
+        )
 
     def _sync_stock_prices(self):
         """Sync stock and prices to Trendyol."""
@@ -684,6 +503,8 @@ class TrendyolBackend(models.Model):
             _logger.error("Failed to sync stock/prices: %s", str(e))
             raise
 
+    # ==================== Claims Methods ====================
+
     def action_import_claims(self):
         """Manually trigger claims import."""
         self.ensure_one()
@@ -691,16 +512,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.order",
             description=_("Import Trendyol claims: %s") % self.name,
         )._import_claims()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Claims import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Claims import has been queued."),
+        )
 
     def _import_claims(self):
         """Import claims/returns from Trendyol API."""
@@ -747,6 +562,8 @@ class TrendyolBackend(models.Model):
             _logger.error("Failed to import claims: %s", str(e))
             raise
 
+    # ==================== Batch Request Methods ====================
+
     def action_check_batch_requests(self):
         """Check status of pending batch requests."""
         self.ensure_one()
@@ -754,16 +571,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.product",
             description=_("Check Trendyol batch requests: %s") % self.name,
         )._check_batch_requests()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Check Started"),
-                "message": _("Batch request check has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Check Started"),
+            _("Batch request check has been queued."),
+        )
 
     def _check_batch_requests(self):
         """Check status of pending batch requests."""
@@ -779,6 +590,8 @@ class TrendyolBackend(models.Model):
 
         for request in pending_requests:
             request._check_status()
+
+    # ==================== View Actions ====================
 
     def action_view_products(self):
         """View product bindings for this backend."""
@@ -816,6 +629,8 @@ class TrendyolBackend(models.Model):
             "context": {"default_backend_id": self.id},
         }
 
+    # ==================== Question Methods ====================
+
     def action_import_questions(self):
         """Manually trigger question import."""
         self.ensure_one()
@@ -823,16 +638,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.order",
             description=_("Import Trendyol questions: %s") % self.name,
         )._import_questions()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Question import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Question import has been queued."),
+        )
 
     def _import_questions(self):
         """Import customer questions from Trendyol API."""
@@ -922,16 +731,10 @@ class TrendyolBackend(models.Model):
             channel="root.trendyol.order",
             description=_("Import Trendyol settlements: %s") % self.name,
         )._import_settlements()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Settlement import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._build_notification(
+            _("Import Started"),
+            _("Settlement import has been queued."),
+        )
 
     def _import_settlements(self):
         """Import settlements from Trendyol finance API.

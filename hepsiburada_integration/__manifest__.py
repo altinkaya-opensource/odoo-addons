@@ -20,6 +20,7 @@
         "delivery_integration_base",
         "delivery_state",
         "sale_exception",
+        "marketplace_integration_base",
     ],
     "data": [
         # Security

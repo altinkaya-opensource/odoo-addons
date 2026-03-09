@@ -1,14 +1,16 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-import base64
 import json
 import logging
-import time
-from collections import deque
-from threading import Lock
 
 import requests
+
+from odoo.addons.marketplace_integration_base.models.marketplace_request import (
+    MarketplaceAPIError,
+    MarketplaceRateLimiter,
+    MarketplaceRequest,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -29,43 +31,11 @@ HEPSIBURADA_SERVICE_URLS = {
 }
 
 
-class HepsiburadaRateLimiter:
-    """Rate limiter for Hepsiburada API (100 requests per second)."""
-
-    def __init__(self, max_requests=100, time_window=1):
-        self.max_requests = max_requests
-        self.time_window = time_window
-        self.requests = deque()
-        self.lock = Lock()
-
-    def acquire(self):
-        """Wait until a request can be made within rate limits."""
-        with self.lock:
-            now = time.time()
-            while self.requests and self.requests[0] < now - self.time_window:
-                self.requests.popleft()
-
-            if len(self.requests) >= self.max_requests:
-                sleep_time = self.requests[0] + self.time_window - now
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                now = time.time()
-                while self.requests and self.requests[0] < now - self.time_window:
-                    self.requests.popleft()
-
-            self.requests.append(time.time())
-
-
-class HepsiburadaAPIError(Exception):
+class HepsiburadaAPIError(MarketplaceAPIError):
     """Exception raised for Hepsiburada API errors."""
 
-    def __init__(self, message, status_code=None, response_data=None):
-        super().__init__(message)
-        self.status_code = status_code
-        self.response_data = response_data
 
-
-class HepsiburadaRequest:
+class HepsiburadaRequest(MarketplaceRequest):
     """API client for Hepsiburada marketplace integration.
 
     Handles authentication, rate limiting, and all API communication.
@@ -85,37 +55,24 @@ class HepsiburadaRequest:
             environment: 'stage' for testing, 'prod' for production
             user_agent: User-Agent header value
         """
+        super().__init__(
+            username=username,
+            password=password,
+            user_agent=user_agent or merchant_id,
+            rate_limiter=MarketplaceRateLimiter(max_requests=100, time_window=1),
+        )
         self.merchant_id = merchant_id
-        self.username = username
-        self.password = password
         self.environment = environment
-        self.user_agent = user_agent or merchant_id
         self.service_urls = HEPSIBURADA_SERVICE_URLS.get(
             environment, HEPSIBURADA_SERVICE_URLS["stage"]
         )
-        self.rate_limiter = HepsiburadaRateLimiter()
-
-        # Build auth header (Basic Auth)
-        auth_string = f"{username}:{password}"
-        auth_bytes = auth_string.encode("utf-8")
-        auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
-        self.auth_header = f"Basic {auth_b64}"
-
-    def _get_headers(self):
-        """Get common headers for API requests."""
-        return {
-            "Authorization": self.auth_header,
-            "User-Agent": self.user_agent,
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
 
     def _make_request(self, method, service, endpoint, params=None, json_data=None):
         """Make an API request with rate limiting and error handling.
 
         Args:
             method: HTTP method (GET, POST, PUT, DELETE)
-            service: Service name ('oms', 'shipping')
+            service: Service name ('oms', 'shipping', 'finance', 'asktoseller')
             endpoint: API endpoint path
             params: Query parameters
             json_data: JSON body data
@@ -126,76 +83,31 @@ class HepsiburadaRequest:
         Raises:
             HepsiburadaAPIError: If the API returns an error
         """
-        self.rate_limiter.acquire()
-
         base_url = self.service_urls.get(service)
         if not base_url:
             raise HepsiburadaAPIError(f"Unknown service: {service}")
 
         url = f"{base_url}{endpoint}"
-        headers = self._get_headers()
 
         # AskToSeller API requires merchantId header on all requests
+        extra_headers = None
         if service == "asktoseller":
-            headers["merchantId"] = self.merchant_id
-
-        _logger.debug(
-            "HB API %s %s - params: %s, body: %s",
-            method,
-            url,
-            params,
-            json_data,
-        )
+            extra_headers = {"merchantId": self.merchant_id}
 
         try:
-            response = requests.request(
-                method=method,
-                url=url,
-                headers=headers,
+            return self._send_request(
+                method,
+                url,
                 params=params,
-                json=json_data,
-                timeout=60,
+                json_data=json_data,
+                extra_headers=extra_headers,
             )
-        except requests.RequestException as e:
-            raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
-
-        _logger.debug(
-            "HB API response: %s - %s",
-            response.status_code,
-            response.text[:500] if response.text else "",
-        )
-
-        if response.status_code in (200, 201, 204):
-            try:
-                return response.json() if response.text else {}
-            except json.JSONDecodeError:
-                return {"raw": response.text}
-
-        # Handle rate limiting
-        if response.status_code == 429:
-            retry_after = response.headers.get("Retry-After", "1")
+        except MarketplaceAPIError as e:
             raise HepsiburadaAPIError(
-                f"Rate limit exceeded. Retry after {retry_after}s",
-                status_code=429,
-            )
-
-        # Handle errors
-        try:
-            error_data = response.json()
-            error_msg = error_data.get("message", response.text)
-            if "errors" in error_data:
-                error_msgs = error_data["errors"]
-                if isinstance(error_msgs, list):
-                    error_msg = "; ".join(str(e) for e in error_msgs)
-        except json.JSONDecodeError:
-            error_data = None
-            error_msg = response.text
-
-        raise HepsiburadaAPIError(
-            f"API error ({response.status_code}): {error_msg}",
-            status_code=response.status_code,
-            response_data=error_data,
-        )
+                str(e),
+                status_code=e.status_code,
+                response_data=e.response_data,
+            ) from e
 
     # ==================== Order Methods (OMS) ====================
 
