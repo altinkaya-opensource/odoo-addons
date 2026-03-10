@@ -37,9 +37,17 @@
                     <group string="Category Attributes">
                         <field name="attribute_line_ids" nolabel="1" colspan="2">
                             <tree editable="bottom">
-                                <field name="attribute_name" readonly="1" />
-                                <field name="required" readonly="1" />
-                                <field name="allow_custom" readonly="1" />
+                                <field
+                                    name="attribute_name"
+                                    readonly="1"
+                                    force_save="1"
+                                />
+                                <field name="required" readonly="1" force_save="1" />
+                                <field
+                                    name="allow_custom"
+                                    readonly="1"
+                                    force_save="1"
+                                />
                                 <field
                                     name="value_id"
                                     attrs="{'invisible': [('has_values', '=', False)], 'required': [('has_values', '=', True), ('required', '=', True)]}"
@@ -48,14 +56,22 @@
                                     name="value"
                                     attrs="{'invisible': [('has_values', '=', True)], 'required': [('has_values', '=', False), ('required', '=', True)]}"
                                 />
-                                <field name="has_values" invisible="1" />
-                                <field name="attribute_id" invisible="1" />
+                                <field name="has_values" invisible="1" force_save="1" />
+                                <field
+                                    name="attribute_id"
+                                    invisible="1"
+                                    force_save="1"
+                                />
                                 <field
                                     name="allowed_values_json"
                                     widget="text"
                                     optional="hide"
                                 />
-                                <field name="attribute_marketplace_id" invisible="1" />
+                                <field
+                                    name="attribute_marketplace_id"
+                                    invisible="1"
+                                    force_save="1"
+                                />
                             </tree>
                         </field>
                     </group>

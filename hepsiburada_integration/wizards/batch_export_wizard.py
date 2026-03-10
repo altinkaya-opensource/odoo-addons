@@ -437,26 +437,17 @@ class HepsiburadaExportWizardAttributeLine(models.TransientModel):
         required=True,
         ondelete="cascade",
     )
-    attribute_name = fields.Char(
-        readonly=True,
-    )
+    attribute_name = fields.Char()
     attribute_marketplace_id = fields.Char(
         string="Attribute Code",
-        readonly=True,
     )
     attribute_id = fields.Many2one(
         "hepsiburada.category.attribute",
-        readonly=True,
     )
-    required = fields.Boolean(
-        readonly=True,
-    )
-    has_values = fields.Boolean(
-        readonly=True,
-    )
+    required = fields.Boolean()
+    has_values = fields.Boolean()
     is_auto_filled = fields.Boolean(
         string="Auto-filled",
-        readonly=True,
         help="This attribute is automatically filled from product data",
     )
     value = fields.Char()

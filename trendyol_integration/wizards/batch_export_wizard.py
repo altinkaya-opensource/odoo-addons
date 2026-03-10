@@ -366,25 +366,14 @@ class TrendyolExportWizardAttributeLine(models.TransientModel):
         required=True,
         ondelete="cascade",
     )
-    attribute_name = fields.Char(
-        readonly=True,
-    )
-    attribute_marketplace_id = fields.Integer(
-        readonly=True,
-    )
+    attribute_name = fields.Char()
+    attribute_marketplace_id = fields.Integer()
     attribute_id = fields.Many2one(
         "trendyol.category.attribute",
-        readonly=True,
     )
-    required = fields.Boolean(
-        readonly=True,
-    )
-    allow_custom = fields.Boolean(
-        readonly=True,
-    )
-    has_values = fields.Boolean(
-        readonly=True,
-    )
+    required = fields.Boolean()
+    allow_custom = fields.Boolean()
+    has_values = fields.Boolean()
     value = fields.Char()
     value_id = fields.Many2one(
         "trendyol.attribute.value",
