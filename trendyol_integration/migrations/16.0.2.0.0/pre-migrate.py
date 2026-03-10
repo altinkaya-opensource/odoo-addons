@@ -124,11 +124,13 @@ def migrate(cr, version):
                 table,
                 new_col,
             )
-            cr.execute(
-                "UPDATE %s SET %s = %s WHERE %s IS NULL AND %s IS NOT NULL"
-                % (table, new_col, old_col, new_col, old_col)
+            cr.execute(  # pylint: disable=sql-injection
+                f"UPDATE {table} SET {new_col} = {old_col} "
+                f"WHERE {new_col} IS NULL AND {old_col} IS NOT NULL"
             )
-            cr.execute("ALTER TABLE %s DROP COLUMN %s" % (table, old_col))
+            cr.execute(  # pylint: disable=sql-injection
+                f"ALTER TABLE {table} DROP COLUMN {old_col}"
+            )
         elif old_exists:
             _logger.info("Renaming column %s.%s -> %s", table, old_col, new_col)
             rename_column(cr, table, old_col, new_col)
@@ -143,9 +145,8 @@ def migrate(cr, version):
     for table, old_name, new_name in CONSTRAINT_RENAMES:
         if _constraint_exists(cr, table, old_name):
             _logger.info("Renaming constraint %s -> %s", old_name, new_name)
-            cr.execute(
-                "ALTER TABLE %s RENAME CONSTRAINT %s TO %s"
-                % (table, old_name, new_name)
+            cr.execute(  # pylint: disable=sql-injection
+                f"ALTER TABLE {table} RENAME CONSTRAINT {old_name} TO {new_name}"
             )
 
     # 4. Update ir_model_constraint metadata
@@ -159,6 +160,4 @@ def migrate(cr, version):
             (new_name, old_name),
         )
         if cr.rowcount:
-            _logger.info(
-                "Updated ir_model_constraint: %s -> %s", old_name, new_name
-            )
+            _logger.info("Updated ir_model_constraint: %s -> %s", old_name, new_name)
