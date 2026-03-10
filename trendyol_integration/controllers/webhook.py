@@ -14,7 +14,7 @@ class TrendyolWebhookController(http.Controller):
     """Controller for Trendyol webhook endpoints."""
 
     @http.route(
-        "/trendyol/webhook/<int:backend_id>",
+        "/ty/wh/<int:backend_id>",
         type="json",
         auth="none",
         methods=["POST"],
@@ -82,7 +82,7 @@ class TrendyolWebhookController(http.Controller):
         )._process_webhook_data(data)
 
     @http.route(
-        "/trendyol/webhook/<int:backend_id>/test",
+        "/ty/wh/<int:backend_id>/test",
         type="http",
         auth="user",
         methods=["GET"],
