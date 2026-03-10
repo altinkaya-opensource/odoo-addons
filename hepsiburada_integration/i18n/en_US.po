@@ -18,273 +18,273 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__currency_code
 msgid "949=TRY, 840=USD"
-msgstr ""
+msgstr "949=TRY, 840=USD"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_sale_order_form_hepsiburada
 msgid "<span class=\"o_stat_text\">Hepsiburada</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Hepsiburada</span>"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "API Configuration"
-msgstr ""
+msgstr "API Configuration"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__api_password
 msgid "API Password"
-msgstr ""
+msgstr "API Password"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__api_username
 msgid "API Username"
-msgstr ""
+msgstr "API Username"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Accept"
-msgstr ""
+msgstr "Accept"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Accept / Reject"
-msgstr ""
+msgstr "Accept / Reject"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Accept Claim"
-msgstr ""
+msgstr "Accept Claim"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__acception_reason
 msgid "Acceptance Reason"
-msgstr ""
+msgstr "Acceptance Reason"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__accepted
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Accepted"
-msgstr ""
+msgstr "Accepted"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "Access warning"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Accounting"
-msgstr ""
+msgstr "Accounting"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__action_expire_date
 msgid "Action Expire Date"
-msgstr ""
+msgstr "Action Expire Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_needaction
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_needaction
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Action Needed"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__active
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__active
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Active"
-msgstr ""
+msgstr "Active"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Activities"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_exception_decoration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Activity Exception Decoration"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_state
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Activity State"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_type_icon
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Activity Type Icon"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Address"
-msgstr ""
+msgstr "Address"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__hb_address_id
 #: model:ir.model.fields,help:hepsiburada_integration.field_res_users__hb_address_id
 msgid "Address ID from Hepsiburada for delivery address matching"
-msgstr ""
+msgstr "Address ID from Hepsiburada for delivery address matching"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__amount
 msgid "Amount"
-msgstr ""
+msgstr "Amount"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_undiscounted
 msgid "Amount Before Discount"
-msgstr ""
+msgstr "Amount Before Discount"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_total_company_currency
 msgid "Amount Total in Company Currency"
-msgstr ""
+msgstr "Amount Total in Company Currency"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_amount_in_words
 msgid "Amount to Text"
-msgstr ""
+msgstr "Amount to Text"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Analytic Account"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__answer_text
 msgid "Answer"
-msgstr ""
+msgstr "Answer"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Answer sent to Hepsiburada successfully."
-msgstr ""
+msgstr "Answer sent to Hepsiburada successfully."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Archived"
-msgstr ""
+msgstr "Archived"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Are you sure you want to accept this claim?"
-msgstr ""
+msgstr "Are you sure you want to accept this claim?"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Are you sure you want to cancel this order in Hepsiburada?"
-msgstr ""
+msgstr "Are you sure you want to cancel this order in Hepsiburada?"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Are you sure you want to reject this claim?"
-msgstr ""
+msgstr "Are you sure you want to reject this claim?"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_attachment_count
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_attachment_count
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Attachment Count"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__authorized_transaction_ids
 msgid "Authorized Transactions"
-msgstr ""
+msgstr "Authorized Transactions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_claims
 msgid "Auto Import Claims"
-msgstr ""
+msgstr "Auto Import Claims"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_orders
 msgid "Auto Import Orders"
-msgstr ""
+msgstr "Auto Import Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_questions
 msgid "Auto Import Questions"
-msgstr ""
+msgstr "Auto Import Questions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_import_settlements
 msgid "Auto Import Settlements"
-msgstr ""
+msgstr "Auto Import Settlements"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_reconcile_settlements
 msgid "Auto Reconcile Settlements"
-msgstr ""
+msgstr "Auto Reconcile Settlements"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_send_invoice
 msgid "Auto Send Invoice"
-msgstr ""
+msgstr "Auto Send Invoice"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Auto Sync"
-msgstr ""
+msgstr "Auto Sync"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_sync_tracking
 msgid "Auto Sync Tracking"
-msgstr ""
+msgstr "Auto Sync Tracking"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__auto_confirm_orders
 msgid "Auto-confirm Orders"
-msgstr ""
+msgstr "Auto-confirm Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_confirm_orders
 msgid "Automatically confirm imported orders"
-msgstr ""
+msgstr "Automatically confirm imported orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_claims
 msgid "Automatically import customer claims via scheduled job"
-msgstr ""
+msgstr "Automatically import customer claims via scheduled job"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_questions
 msgid "Automatically import customer questions via scheduled job"
-msgstr ""
+msgstr "Automatically import customer questions via scheduled job"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_settlements
 msgid "Automatically import financial settlements via scheduled job"
-msgstr ""
+msgstr "Automatically import financial settlements via scheduled job"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_import_orders
 msgid "Automatically import orders via scheduled job"
-msgstr ""
+msgstr "Automatically import orders via scheduled job"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_reconcile_settlements
 msgid "Automatically reconcile imported settlements with invoices"
-msgstr ""
+msgstr "Automatically reconcile imported settlements with invoices"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_sync_tracking
 msgid "Automatically send tracking numbers when delivery is done"
-msgstr ""
+msgstr "Automatically send tracking numbers when delivery is done"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__awaiting_action
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Awaiting Action"
-msgstr ""
+msgstr "Awaiting Action"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__backend_id
@@ -297,93 +297,93 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Backend Name"
-msgstr ""
+msgstr "Backend Name"
 
 #. module: hepsiburada_integration
 #: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_backends
 msgid "Backends"
-msgstr ""
+msgstr "Backends"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__campaign_id
 msgid "Campaign"
-msgstr ""
+msgstr "Campaign"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Cancel Queued"
-msgstr ""
+msgstr "Cancel Queued"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Cancel in Hepsiburada"
-msgstr ""
+msgstr "Cancel in Hepsiburada"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Cancel order: %s"
-msgstr ""
+msgstr "Cancel order: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__cancelled
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancelled"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Cancelled order sync has been queued."
-msgstr ""
+msgstr "Cancelled order sync has been queued."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Cannot fetch tracking: no package number on this order."
-msgstr ""
+msgstr "Cannot fetch tracking: no package number on this order."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Cannot send invoice for cancelled orders."
-msgstr ""
+msgstr "Cannot send invoice for cancelled orders."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Cargo Mapping"
-msgstr ""
+msgstr "Cargo Mapping"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__cargo_mapping_ids
 msgid "Cargo Mappings"
-msgstr ""
+msgstr "Cargo Mappings"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_provider_name
 msgid "Cargo Provider"
-msgstr ""
+msgstr "Cargo Provider"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__hepsiburada_cargo_provider_name
 msgid "Cargo provider name from Hepsiburada API"
-msgstr ""
+msgstr "Cargo provider name from Hepsiburada API"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__carrier_payment_type
 msgid "Carrier Payment Type"
-msgstr ""
+msgstr "Carrier Payment Type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_change_ids
@@ -399,7 +399,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__changeset_change_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Changeset Changes"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_ids
@@ -415,54 +415,54 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Changesets"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__claim_date
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Claim Date"
-msgstr ""
+msgstr "Claim Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_claim_id
 msgid "Claim ID"
-msgstr ""
+msgstr "Claim ID"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Claim Info"
-msgstr ""
+msgstr "Claim Info"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_claim_number
 msgid "Claim Number"
-msgstr ""
+msgstr "Claim Number"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Claim accepted in Hepsiburada."
-msgstr ""
+msgstr "Claim accepted in Hepsiburada."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Claim import has been queued."
-msgstr ""
+msgstr "Claim import has been queued."
 
 #. module: hepsiburada_integration
 #: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_claim_unique_claim_per_backend
 msgid "Claim number must be unique per backend."
-msgstr ""
+msgstr "Claim number must be unique per backend."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Claim rejected in Hepsiburada."
-msgstr ""
+msgstr "Claim rejected in Hepsiburada."
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -472,68 +472,68 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Claims"
-msgstr ""
+msgstr "Claims"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__closed
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Closed"
-msgstr ""
+msgstr "Closed"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__commission
 msgid "Commission"
-msgstr ""
+msgstr "Commission"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__commission_amount
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__commission_amount
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_amount
 msgid "Commission Amount"
-msgstr ""
+msgstr "Commission Amount"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_payment_id
 msgid "Commission Payment"
-msgstr ""
+msgstr "Commission Payment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_rate
 msgid "Commission Rate"
-msgstr ""
+msgstr "Commission Rate"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Commissions"
-msgstr ""
+msgstr "Commissions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__company_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__company_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Company"
-msgstr ""
+msgstr "Company"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__company_currency_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_id_try
 msgid "Company Currency"
-msgstr ""
+msgstr "Company Currency"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__effective_date
 msgid "Completion date of the first delivery order."
-msgstr ""
+msgstr "Completion date of the first delivery order."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_full_address
 msgid "Concatenated address for easy searching"
-msgstr ""
+msgstr "Concatenated address for easy searching"
 
 #. module: hepsiburada_integration
 #: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_config
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_backend
@@ -541,38 +541,40 @@ msgid ""
 "Configure API credentials and sync settings to connect\n"
 "                your Odoo instance with Hepsiburada marketplace."
 msgstr ""
+"Configure API credentials and sync settings to connect\n"
+"                your Odoo instance with Hepsiburada marketplace."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Connection failed: %s"
-msgstr ""
+msgstr "Connection failed: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Connection to Hepsiburada API successful!"
-msgstr ""
+msgstr "Connection to Hepsiburada API successful!"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__conversation_ids
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Conversations"
-msgstr ""
+msgstr "Conversations"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Conversations updated."
-msgstr ""
+msgstr "Conversations updated."
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -582,6 +584,8 @@ msgid ""
 "Could not create commission payment. Check HB partner and journal "
 "configuration."
 msgstr ""
+"Could not create commission payment. Check HB partner and journal "
+"configuration."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_changesets
@@ -597,7 +601,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Count Changesets"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
@@ -613,7 +617,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Count Pending Changeset Changes"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
@@ -629,34 +633,34 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Count Pending Changesets"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__mrp_production_count
 msgid "Count of MO generated"
-msgstr ""
+msgstr "Count of MO generated"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__country_code
 msgid "Country code"
-msgstr ""
+msgstr "Country code"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Create Package"
-msgstr ""
+msgstr "Create Package"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Create package: %s"
-msgstr ""
+msgstr "Create package: %s"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_backend
 msgid "Create your first Hepsiburada backend"
-msgstr ""
+msgstr "Create your first Hepsiburada backend"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__create_uid
@@ -668,7 +672,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__create_uid
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Created by"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__create_date
@@ -680,7 +684,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__create_date
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Created on"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__date_order
@@ -688,77 +692,79 @@ msgid ""
 "Creation date of draft/sent orders,\n"
 "Confirmation date of confirmed orders."
 msgstr ""
+"Creation date of draft/sent orders,\n"
+"Confirmation date of confirmed orders."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Credit note %s is already paid."
-msgstr ""
+msgstr "Credit note %s is already paid."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Currency"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__currency_code
 msgid "Currency Code"
-msgstr ""
+msgstr "Currency Code"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__currency_rate
 msgid "Currency Rate"
-msgstr ""
+msgstr "Currency Rate"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__current_revision_id
 msgid "Current revision"
-msgstr ""
+msgstr "Current revision"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_id
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question_message__sender__customer
 msgid "Customer"
-msgstr ""
+msgstr "Customer"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_claim
 msgid "Customer Claims"
-msgstr ""
+msgstr "Customer Claims"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__explanation
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Customer Explanation"
-msgstr ""
+msgstr "Customer Explanation"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_customer_id
 msgid "Customer ID"
-msgstr ""
+msgstr "Customer ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__customer_name
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_customer_name
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__customer_name
 msgid "Customer Name"
-msgstr ""
+msgstr "Customer Name"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__access_url
 msgid "Customer Portal URL"
-msgstr ""
+msgstr "Customer Portal URL"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_question
 msgid "Customer Questions"
-msgstr ""
+msgstr "Customer Questions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__client_order_ref
 msgid "Customer Reference"
-msgstr ""
+msgstr "Customer Reference"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_claim
@@ -766,12 +772,14 @@ msgid ""
 "Customer claims (returns, missing items, etc.) will appear\n"
 "                here when imported from Hepsiburada."
 msgstr ""
+"Customer claims (returns, missing items, etc.) will appear\n"
+"                here when imported from Hepsiburada."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_res_partner__hb_customer_id
 #: model:ir.model.fields,help:hepsiburada_integration.field_res_users__hb_customer_id
 msgid "Customer identifier from Hepsiburada marketplace"
-msgstr ""
+msgstr "Customer identifier from Hepsiburada marketplace"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_question
@@ -779,116 +787,118 @@ msgid ""
 "Customer questions will appear here when imported from\n"
 "                Hepsiburada. Configure auto-import in backend settings."
 msgstr ""
+"Customer questions will appear here when imported from\n"
+"                Hepsiburada. Configure auto-import in backend settings."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__damaged_with_report
 msgid "Damaged With Report"
-msgstr ""
+msgstr "Damaged With Report"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__message_date
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_cargo_company_id
 msgid "Default Cargo Company"
-msgstr ""
+msgstr "Default Cargo Company"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_product_id
 msgid "Default Product"
-msgstr ""
+msgstr "Default Product"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__default_vat_rate
 msgid "Default VAT Rate (%)"
-msgstr ""
+msgstr "Default VAT Rate (%)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_vat_rate
 msgid "Default VAT rate for products without tax"
-msgstr ""
+msgstr "Default VAT rate for products without tax"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_cargo_company_id
 msgid "Default delivery carrier for Hepsiburada orders"
-msgstr ""
+msgstr "Default delivery carrier for Hepsiburada orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__fiscal_position_id
 msgid "Default fiscal position for Hepsiburada orders"
-msgstr ""
+msgstr "Default fiscal position for Hepsiburada orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__sales_team_id
 msgid "Default sales team for Hepsiburada orders"
-msgstr ""
+msgstr "Default sales team for Hepsiburada orders"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "Delivered"
-msgstr ""
+msgstr "Delivered"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_shipping_id
 msgid "Delivery Address"
-msgstr ""
+msgstr "Delivery Address"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__carrier_id
 msgid "Delivery Carrier"
-msgstr ""
+msgstr "Delivery Carrier"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__commitment_date
 msgid "Delivery Date"
-msgstr ""
+msgstr "Delivery Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_message
 msgid "Delivery Message"
-msgstr ""
+msgstr "Delivery Message"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__carrier_id
 msgid "Delivery Method"
-msgstr ""
+msgstr "Delivery Method"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_count
 msgid "Delivery Orders"
-msgstr ""
+msgstr "Delivery Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_price_try
 msgid "Delivery Price (TRY)"
-msgstr ""
+msgstr "Delivery Price (TRY)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_rating_success
 msgid "Delivery Rating Success"
-msgstr ""
+msgstr "Delivery Rating Success"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_set
 msgid "Delivery Set"
-msgstr ""
+msgstr "Delivery Set"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_status
 msgid "Delivery Status"
-msgstr ""
+msgstr "Delivery Status"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__delivery_type
 msgid "Delivery Type"
-msgstr ""
+msgstr "Delivery Type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__recompute_delivery_price
 msgid "Delivery cost should be recomputed"
-msgstr ""
+msgstr "Delivery cost should be recomputed"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__expected_date
@@ -898,16 +908,20 @@ msgid ""
 "shipping, the shipping policy of the order will be taken into account to "
 "either use the minimum or maximum lead time of the order lines."
 msgstr ""
+"Delivery date you can promise to the customer, computed from the minimum "
+"lead time of the order lines in case of Service products. In case of "
+"shipping, the shipping policy of the order will be taken into account to "
+"either use the minimum or maximum lead time of the order lines."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__description
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__destination_port
 msgid "Destination port"
-msgstr ""
+msgstr "Destination port"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__display_name
@@ -919,96 +933,96 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__display_name
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Display Name"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__visible_project
 msgid "Display project"
-msgstr ""
+msgstr "Display project"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Due Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__effective_date
 msgid "Effective Date"
-msgstr ""
+msgstr "Effective Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__environment
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Environment"
-msgstr ""
+msgstr "Environment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__error
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__error_message
 msgid "Error Message"
-msgstr ""
+msgstr "Error Message"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Errors"
-msgstr ""
+msgstr "Errors"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__exception_ids
 msgid "Exceptions"
-msgstr ""
+msgstr "Exceptions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__exceptions_summary
 msgid "Exceptions Summary"
-msgstr ""
+msgstr "Exceptions Summary"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__expected_date
 msgid "Expected Date"
-msgstr ""
+msgstr "Expected Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__validity_date
 msgid "Expiration"
-msgstr ""
+msgstr "Expiration"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__extra_product
 msgid "Extra Product"
-msgstr ""
+msgstr "Extra Product"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__failed_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__failed_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__failed_message_ids
 msgid "Failed Messages"
-msgstr ""
+msgstr "Failed Messages"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Failed to accept claim: %s"
-msgstr ""
+msgstr "Failed to accept claim: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Failed to reject claim: %s"
-msgstr ""
+msgstr "Failed to reject claim: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Failed to send answer: %s"
-msgstr ""
+msgstr "Failed to send answer: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__default_product_id
@@ -1016,37 +1030,39 @@ msgid ""
 "Fallback product for unmapped items. If not set, unmapped items will be "
 "created as note lines."
 msgstr ""
+"Fallback product for unmapped items. If not set, unmapped items will be "
+"created as note lines."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Fetch Tracking"
-msgstr ""
+msgstr "Fetch Tracking"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__carrier_id
 msgid "Fill this field if you plan to invoice the shipping based on picking."
-msgstr ""
+msgstr "Fill this field if you plan to invoice the shipping based on picking."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__finalized_with
 msgid "Finalized With"
-msgstr ""
+msgstr "Finalized With"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Financial"
-msgstr ""
+msgstr "Financial"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__first_reminder_mail_sent
 msgid "First Reminder Sent"
-msgstr ""
+msgstr "First Reminder Sent"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__fiscal_position_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__fiscal_position_id
 msgid "Fiscal Position"
-msgstr ""
+msgstr "Fiscal Position"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__fiscal_position_id
@@ -1055,31 +1071,34 @@ msgid ""
 "customers or sales orders/invoices.The default value comes from the "
 "customer."
 msgstr ""
+"Fiscal positions are used to adapt taxes and accounts for particular "
+"customers or sales orders/invoices.The default value comes from the "
+"customer."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_follower_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_follower_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Followers"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_partner_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_partner_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Followers (Partners)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_type_icon
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Font awesome icon e.g. fa-tasks"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_full_address
 msgid "Full Address"
-msgstr ""
+msgstr "Full Address"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
@@ -1088,198 +1107,198 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Group By"
-msgstr ""
+msgstr "Group By"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "HB Commission - Order %s"
-msgstr ""
+msgstr "HB Commission - Order %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__customer_id
 msgid "HB Customer ID"
-msgstr ""
+msgstr "HB Customer ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_line_item_id
 msgid "HB Line Item ID"
-msgstr ""
+msgstr "HB Line Item ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_line_item_ids
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "HB Line Items"
-msgstr ""
+msgstr "HB Line Items"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__hb_message_id
 msgid "HB Message ID"
-msgstr ""
+msgstr "HB Message ID"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "HB Missing Invoice"
-msgstr ""
+msgstr "HB Missing Invoice"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_order_id
 msgid "HB Order"
-msgstr ""
+msgstr "HB Order"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hepsiburada_order_number
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_order_number
 msgid "HB Order Number"
-msgstr ""
+msgstr "HB Order Number"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_sku
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_sku
 msgid "HB SKU"
-msgstr ""
+msgstr "HB SKU"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "HB Settlement - Order %s"
-msgstr ""
+msgstr "HB Settlement - Order %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hepsiburada_status
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_status
 msgid "HB Status"
-msgstr ""
+msgstr "HB Status"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_sku
 msgid "HBSKU"
-msgstr ""
+msgstr "HBSKU"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_update_fpos
 msgid "Has Fiscal Position Changed"
-msgstr ""
+msgstr "Has Fiscal Position Changed"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__has_message
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__has_message
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Has Message"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__has_old_revisions
 msgid "Has Old Revisions"
-msgstr ""
+msgstr "Has Old Revisions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_update_pricelist
 msgid "Has Pricelist Changed"
-msgstr ""
+msgstr "Has Pricelist Changed"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__show_json_popover
 msgid "Has late picking"
-msgstr ""
+msgstr "Has late picking"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_missing_invoice
 msgid "Hb Missing Invoice"
-msgstr ""
+msgstr "Hb Missing Invoice"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__hb_order_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__hb_order_id
 msgid "Hb Order"
-msgstr ""
+msgstr "Hb Order"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_status
 msgid "Hb Status"
-msgstr ""
+msgstr "Hb Status"
 
 #. module: hepsiburada_integration
 #: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_root
 msgid "Hepsiburada"
-msgstr ""
+msgstr "Hepsiburada"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__hb_address_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_res_users__hb_address_id
 msgid "Hepsiburada Address ID"
-msgstr ""
+msgstr "Hepsiburada Address ID"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Hepsiburada Backend"
-msgstr ""
+msgstr "Hepsiburada Backend"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_backend
 msgid "Hepsiburada Backend Configuration"
-msgstr ""
+msgstr "Hepsiburada Backend Configuration"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_backend
 msgid "Hepsiburada Backends"
-msgstr ""
+msgstr "Hepsiburada Backends"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_cargo_mapping
 msgid "Hepsiburada Cargo Provider Mapping"
-msgstr ""
+msgstr "Hepsiburada Cargo Provider Mapping"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__hepsiburada_cargo_provider_name
 msgid "Hepsiburada Cargo Provider Name"
-msgstr ""
+msgstr "Hepsiburada Cargo Provider Name"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Hepsiburada Claim"
-msgstr ""
+msgstr "Hepsiburada Claim"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Hepsiburada Customer"
-msgstr ""
+msgstr "Hepsiburada Customer"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_claim
 msgid "Hepsiburada Customer Claim"
-msgstr ""
+msgstr "Hepsiburada Customer Claim"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_res_partner__hb_customer_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_res_users__hb_customer_id
 msgid "Hepsiburada Customer ID"
-msgstr ""
+msgstr "Hepsiburada Customer ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_question
 msgid "Hepsiburada Customer Question"
-msgstr ""
+msgstr "Hepsiburada Customer Question"
 
 #. module: hepsiburada_integration
 #: model:ir.module.category,name:hepsiburada_integration.module_category_hepsiburada
 msgid "Hepsiburada Integration"
-msgstr ""
+msgstr "Hepsiburada Integration"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_order
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Hepsiburada Order"
-msgstr ""
+msgstr "Hepsiburada Order"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_order_line
 msgid "Hepsiburada Order Line Item"
-msgstr ""
+msgstr "Hepsiburada Order Line Item"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.act_window,name:hepsiburada_integration.action_hepsiburada_order
@@ -1287,97 +1306,97 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order__hepsiburada_binding_ids
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_sale_order_search_hepsiburada
 msgid "Hepsiburada Orders"
-msgstr ""
+msgstr "Hepsiburada Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__hb_partner_id
 msgid "Hepsiburada Partner"
-msgstr ""
+msgstr "Hepsiburada Partner"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__settlement_journal_id
 msgid "Hepsiburada Payment Journal"
-msgstr ""
+msgstr "Hepsiburada Payment Journal"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Hepsiburada Payment Journal not configured on backend."
-msgstr ""
+msgstr "Hepsiburada Payment Journal not configured on backend."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Hepsiburada Question"
-msgstr ""
+msgstr "Hepsiburada Question"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_question_message
 msgid "Hepsiburada Question Conversation Message"
-msgstr ""
+msgstr "Hepsiburada Question Conversation Message"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Hepsiburada Settlement"
-msgstr ""
+msgstr "Hepsiburada Settlement"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_hepsiburada_settlement
 msgid "Hepsiburada Settlement Transaction"
-msgstr ""
+msgstr "Hepsiburada Settlement Transaction"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Hepsiburada order not found for order number: %s"
-msgstr ""
+msgstr "Hepsiburada order not found for order number: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_order_id
 msgid "Hepsiburada orderId GUID"
-msgstr ""
+msgstr "Hepsiburada orderId GUID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_missing_invoice
 msgid "Hepsiburada reports this package as missing invoice"
-msgstr ""
+msgstr "Hepsiburada reports this package as missing invoice"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_import_claims_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_import_claims
 msgid "Hepsiburada: Import Claims"
-msgstr ""
+msgstr "Hepsiburada: Import Claims"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_import_orders_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_import_orders
 msgid "Hepsiburada: Import Orders"
-msgstr ""
+msgstr "Hepsiburada: Import Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_import_questions_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_import_questions
 msgid "Hepsiburada: Import Questions"
-msgstr ""
+msgstr "Hepsiburada: Import Questions"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_import_settlements_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_import_settlements
 msgid "Hepsiburada: Import Settlements"
-msgstr ""
+msgstr "Hepsiburada: Import Settlements"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_send_invoices_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_send_invoices
 msgid "Hepsiburada: Send Invoice Links"
-msgstr ""
+msgstr "Hepsiburada: Send Invoice Links"
 
 #. module: hepsiburada_integration
 #: model:ir.actions.server,name:hepsiburada_integration.cron_import_cancelled_orders_ir_actions_server
 #: model:ir.cron,cron_name:hepsiburada_integration.cron_import_cancelled_orders
 msgid "Hepsiburada: Sync Cancelled Orders"
-msgstr ""
+msgstr "Hepsiburada: Sync Cancelled Orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__id
@@ -1389,26 +1408,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_exception_icon
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Icon"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_exception_icon
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Icon to indicate an exception activity."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_needaction
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_needaction
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_has_error
@@ -1418,12 +1437,12 @@ msgstr ""
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_error
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "If checked, some messages have a delivery error."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__pricelist_id
 msgid "If you change the pricelist, only newly added lines will be affected."
-msgstr ""
+msgstr "If you change the pricelist, only newly added lines will be affected."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__picking_policy
@@ -1432,34 +1451,37 @@ msgid ""
 "based on the greatest product lead time. Otherwise, it will be based on the "
 "shortest."
 msgstr ""
+"If you deliver all products at once, the delivery order will be scheduled "
+"based on the greatest product lead time. Otherwise, it will be based on the "
+"shortest."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__ignore_exception
 msgid "Ignore Exceptions"
-msgstr ""
+msgstr "Ignore Exceptions"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Import Claims"
-msgstr ""
+msgstr "Import Claims"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_tree
 msgid "Import Date"
-msgstr ""
+msgstr "Import Date"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import HB cancelled orders: %s"
-msgstr ""
+msgstr "Import HB cancelled orders: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1467,7 +1489,7 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import Hepsiburada claims: %s"
-msgstr ""
+msgstr "Import Hepsiburada claims: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1475,7 +1497,7 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import Hepsiburada orders: %s"
-msgstr ""
+msgstr "Import Hepsiburada orders: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1483,7 +1505,7 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import Hepsiburada questions: %s"
-msgstr ""
+msgstr "Import Hepsiburada questions: %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1491,22 +1513,22 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import Hepsiburada settlements: %s"
-msgstr ""
+msgstr "Import Hepsiburada settlements: %s"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Import Orders"
-msgstr ""
+msgstr "Import Orders"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Import Questions"
-msgstr ""
+msgstr "Import Questions"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Import Settlements"
-msgstr ""
+msgstr "Import Settlements"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1517,48 +1539,48 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Import Started"
-msgstr ""
+msgstr "Import Started"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__imported
 msgid "Imported"
-msgstr ""
+msgstr "Imported"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__in_dispute
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "In Dispute"
-msgstr ""
+msgstr "In Dispute"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "In Transit"
-msgstr ""
+msgstr "In Transit"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm
 msgid "Incoterm"
-msgstr ""
+msgstr "Incoterm"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm_address_id
 msgid "Incoterm Address"
-msgstr ""
+msgstr "Incoterm Address"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__incoterm_location
 msgid "Incoterm Location"
-msgstr ""
+msgstr "Incoterm Location"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__first_reminder_mail_sent
 msgid "Indicates if the first quotation reminder has been sent."
-msgstr ""
+msgstr "Indicates if the first quotation reminder has been sent."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__second_reminder_mail_sent
 msgid "Indicates if the second quotation reminder has been sent."
-msgstr ""
+msgstr "Indicates if the second quotation reminder has been sent."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__settlement_journal_id
@@ -1566,17 +1588,20 @@ msgid ""
 "Intermediary bank-type journal for Hepsiburada payments. When a real bank "
 "transfer arrives, reconcile against this journal."
 msgstr ""
+"Intermediary bank-type journal for Hepsiburada payments. When a real bank "
+"transfer arrives, reconcile against this journal."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__internal_note
 msgid "Internal Note"
-msgstr ""
+msgstr "Internal Note"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__internal_note
 msgid ""
 "Internal note for the order. This field is not visible to the customer."
 msgstr ""
+"Internal note for the order. This field is not visible to the customer."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__incoterm
@@ -1584,137 +1609,139 @@ msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
 "used in international transactions."
 msgstr ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__odoo_invoice_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Invoice"
-msgstr ""
+msgstr "Invoice"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Invoice %s is already paid."
-msgstr ""
+msgstr "Invoice %s is already paid."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_invoice_id
 msgid "Invoice Address"
-msgstr ""
+msgstr "Invoice Address"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_count
 msgid "Invoice Count"
-msgstr ""
+msgstr "Invoice Count"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_link_sent
 msgid "Invoice Link Sent"
-msgstr ""
+msgstr "Invoice Link Sent"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__invoice_number
 msgid "Invoice Number"
-msgstr ""
+msgstr "Invoice Number"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Invoice Send Queued"
-msgstr ""
+msgstr "Invoice Send Queued"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_sent_date
 msgid "Invoice Sent Date"
-msgstr ""
+msgstr "Invoice Sent Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "Invoice Status"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Invoice link already sent."
-msgstr ""
+msgstr "Invoice link already sent."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Invoice sending has been queued."
-msgstr ""
+msgstr "Invoice sending has been queued."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_ids
 msgid "Invoices"
-msgstr ""
+msgstr "Invoices"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__is_answered
 msgid "Is Answered"
-msgstr ""
+msgstr "Is Answered"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_expired
 msgid "Is Expired"
-msgstr ""
+msgstr "Is Expired"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_is_follower
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_is_follower
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_overdue
 msgid "Is Overdue"
-msgstr ""
+msgstr "Is Overdue"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_product_milestone
 msgid "Is Product Milestone"
-msgstr ""
+msgstr "Is Product Milestone"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_issue_id
 msgid "Issue ID"
-msgstr ""
+msgstr "Issue ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_issue_number
 msgid "Issue Number"
-msgstr ""
+msgstr "Issue Number"
 
 #. module: hepsiburada_integration
 #: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_question_unique_issue_per_backend
 msgid "Issue number must be unique per backend."
-msgstr ""
+msgstr "Issue number must be unique per backend."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__json_popover
 msgid "JSON data for the popover widget"
-msgstr ""
+msgstr "JSON data for the popover widget"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__in_transit
 msgid "Kargoda"
-msgstr ""
+msgstr "Kargoda"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_claim_sync
 msgid "Last Claim Sync"
-msgstr ""
+msgstr "Last Claim Sync"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_last_deci
 msgid "Last Confirmed Deci"
-msgstr ""
+msgstr "Last Confirmed Deci"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend____last_update
@@ -1726,27 +1753,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message____last_update
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Last Modified on"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_order_sync
 msgid "Last Order Sync"
-msgstr ""
+msgstr "Last Order Sync"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_question_sync
 msgid "Last Question Sync"
-msgstr ""
+msgstr "Last Question Sync"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_settlement_sync
 msgid "Last Settlement Sync"
-msgstr ""
+msgstr "Last Settlement Sync"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Last Sync Times"
-msgstr ""
+msgstr "Last Sync Times"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__write_uid
@@ -1758,7 +1785,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__write_uid
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Last Updated by"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__write_date
@@ -1770,465 +1797,465 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__write_date
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Last Updated on"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__due_date
 msgid "Last date to ship"
-msgstr ""
+msgstr "Last date to ship"
 
 #. module: hepsiburada_integration
 #: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_order_line_line_item_id_order_uniq
 msgid "Line item ID must be unique per order!"
-msgstr ""
+msgstr "Line item ID must be unique per order!"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_main_attachment_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_main_attachment_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Main Attachment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__main_exception_id
 msgid "Main Exception"
-msgstr ""
+msgstr "Main Exception"
 
 #. module: hepsiburada_integration
 #: model:ir.module.category,description:hepsiburada_integration.module_category_hepsiburada
 msgid "Manage Hepsiburada marketplace integration"
-msgstr ""
+msgstr "Manage Hepsiburada marketplace integration"
 
 #. module: hepsiburada_integration
 #: model:res.groups,name:hepsiburada_integration.group_hepsiburada_manager
 msgid "Manager"
-msgstr ""
+msgstr "Manager"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Manual Actions"
-msgstr ""
+msgstr "Manual Actions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__mrp_production_ids
 msgid "Manufacturing orders associated with this sales order."
-msgstr ""
+msgstr "Manufacturing orders associated with this sales order."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__cargo_mapping_ids
 msgid "Map Hepsiburada cargo providers to Odoo delivery carriers"
-msgstr ""
+msgstr "Map Hepsiburada cargo providers to Odoo delivery carriers"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__medium_id
 msgid "Medium"
-msgstr ""
+msgstr "Medium"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question_message__sender__merchant
 msgid "Merchant"
-msgstr ""
+msgstr "Merchant"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__merchant_id
 msgid "Merchant ID"
-msgstr ""
+msgstr "Merchant ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__merchant_sku
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__merchant_sku
 msgid "Merchant SKU"
-msgstr ""
+msgstr "Merchant SKU"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__merchant_sku
 msgid "Merchant Sku"
-msgstr ""
+msgstr "Merchant Sku"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__merchant_statement
 msgid "Merchant Statement"
-msgstr ""
+msgstr "Merchant Statement"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__message_text
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_error
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_error
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Message Delivery error"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__milestone_count
 msgid "Milestone Count"
-msgstr ""
+msgstr "Milestone Count"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_invoice
 msgid "Missing Invoice"
-msgstr ""
+msgstr "Missing Invoice"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_item
 msgid "Missing Item"
-msgstr ""
+msgstr "Missing Item"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_part
 msgid "Missing Part"
-msgstr ""
+msgstr "Missing Part"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__missing_warranty
 msgid "Missing Warranty"
-msgstr ""
+msgstr "Missing Warranty"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Missing invoice sync has been queued."
-msgstr ""
+msgstr "Missing invoice sync has been queued."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__my_activity_date_deadline
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "My Activity Deadline"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__my_team
 msgid "My Team"
-msgstr ""
+msgstr "My Team"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__name
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_volume
 msgid "Net Sale Volume"
-msgstr ""
+msgstr "Net Sale Volume"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_weight
 msgid "Net Sale Weight"
-msgstr ""
+msgstr "Net Sale Weight"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__new_request
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "New Request"
-msgstr ""
+msgstr "New Request"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_calendar_event_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Next Activity Calendar Event"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_date_deadline
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Next Activity Deadline"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_summary
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Next Activity Summary"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_type_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Next Activity Type"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_order
 msgid "No Hepsiburada orders yet"
-msgstr ""
+msgstr "No Hepsiburada orders yet"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "No Invoice Sent"
-msgstr ""
+msgstr "No Invoice Sent"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "No Package"
-msgstr ""
+msgstr "No Package"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_claim
 msgid "No customer claims yet"
-msgstr ""
+msgstr "No customer claims yet"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_question
 msgid "No customer questions yet"
-msgstr ""
+msgstr "No customer questions yet"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "No line items found to cancel."
-msgstr ""
+msgstr "No line items found to cancel."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "No line items returned from order detail API."
-msgstr ""
+msgstr "No line items returned from order detail API."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "No linked Odoo sale order found."
-msgstr ""
+msgstr "No linked Odoo sale order found."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "No posted credit note found for sale order %s"
-msgstr ""
+msgstr "No posted credit note found for sale order %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "No posted invoice found for sale order %s"
-msgstr ""
+msgstr "No posted invoice found for sale order %s"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "No posted invoice found for this order."
-msgstr ""
+msgstr "No posted invoice found for this order."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_settlement
 msgid "No settlements imported yet"
-msgstr ""
+msgstr "No settlements imported yet"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "No valid line item IDs found in order detail."
-msgstr ""
+msgstr "No valid line item IDs found in order detail."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/stock_picking.py:0
 #, python-format
 msgid "Notify HB intransit: %s"
-msgstr ""
+msgstr "Notify HB intransit: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_needaction_counter
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_needaction_counter
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Number of Actions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_count
 msgid "Number of Projects"
-msgstr ""
+msgstr "Number of Projects"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__purchase_order_count
 msgid "Number of Purchase Order Generated"
-msgstr ""
+msgstr "Number of Purchase Order Generated"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_error_counter
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_error_counter
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Number of errors"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_needaction_counter
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_needaction_counter
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Number of messages requiring action"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__message_has_error_counter
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__message_has_error_counter
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Number of messages with delivery error"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Odoo Configuration"
-msgstr ""
+msgstr "Odoo Configuration"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Odoo Links"
-msgstr ""
+msgstr "Odoo Links"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__odoo_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Odoo Order"
-msgstr ""
+msgstr "Odoo Order"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__carrier_id
 msgid "Odoo delivery carrier to assign for this cargo provider"
-msgstr ""
+msgstr "Odoo delivery carrier to assign for this cargo provider"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__old_revision_ids
 msgid "Old revisions"
-msgstr ""
+msgstr "Old revisions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__require_payment
 msgid "Online Payment"
-msgstr ""
+msgstr "Online Payment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__require_signature
 msgid "Online Signature"
-msgstr ""
+msgstr "Online Signature"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Only claims with status New/Awaiting/Dispute can be accepted."
-msgstr ""
+msgstr "Only claims with status New/Awaiting/Dispute can be accepted."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Only claims with status New/Awaiting/Dispute can be rejected."
-msgstr ""
+msgstr "Only claims with status New/Awaiting/Dispute can be rejected."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Only orders with 'Open' status can be cancelled in Hepsiburada."
-msgstr ""
+msgstr "Only orders with 'Open' status can be cancelled in Hepsiburada."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Only orders with 'Open' status can be packaged."
-msgstr ""
+msgstr "Only orders with 'Open' status can be packaged."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__open
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Open"
-msgstr ""
+msgstr "Open"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__opportunity_id
 msgid "Opportunity"
-msgstr ""
+msgstr "Opportunity"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_option_ids
 msgid "Optional Products Lines"
-msgstr ""
+msgstr "Optional Products Lines"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Order & Customer"
-msgstr ""
+msgstr "Order & Customer"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__date_order
 msgid "Order Date"
-msgstr ""
+msgstr "Order Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_order_id
 msgid "Order ID"
-msgstr ""
+msgstr "Order ID"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Order Info"
-msgstr ""
+msgstr "Order Info"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__order_line
 msgid "Order Lines"
-msgstr ""
+msgstr "Order Lines"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_order_number
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_order_number
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__order_number
 msgid "Order Number"
-msgstr ""
+msgstr "Order Number"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__name
 msgid "Order Reference"
-msgstr ""
+msgstr "Order Reference"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Order Settings"
-msgstr ""
+msgstr "Order Settings"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Order cancellation has been queued."
-msgstr ""
+msgstr "Order cancellation has been queued."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Order import has been queued."
-msgstr ""
+msgstr "Order import has been queued."
 
 #. module: hepsiburada_integration
 #: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_order_order_number_backend_uniq
 msgid "Order number must be unique per backend!"
-msgstr ""
+msgstr "Order number must be unique per backend!"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2238,7 +2265,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Orders"
-msgstr ""
+msgstr "Orders"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_order
@@ -2247,73 +2274,76 @@ msgid ""
 "                Configure auto-import in backend settings or click\n"
 "                \"Import Orders\" manually."
 msgstr ""
+"Orders will appear here when imported from Hepsiburada.\n"
+"                Configure auto-import in backend settings or click\n"
+"                \"Import Orders\" manually."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__raw_data
 msgid "Original JSON data from Hepsiburada"
-msgstr ""
+msgstr "Original JSON data from Hepsiburada"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__unrevisioned_name
 msgid "Original Reference"
-msgstr ""
+msgstr "Original Reference"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "Overdue"
-msgstr ""
+msgstr "Overdue"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Package Creation Queued"
-msgstr ""
+msgstr "Package Creation Queued"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_package_number
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__package_number
 msgid "Package Number"
-msgstr ""
+msgstr "Package Number"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Package already created for this order."
-msgstr ""
+msgstr "Package already created for this order."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Package creation has been queued."
-msgstr ""
+msgstr "Package creation has been queued."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "Packaged"
-msgstr ""
+msgstr "Packaged"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__payment_status
 msgid "Paid / WillBePaid"
-msgstr ""
+msgstr "Paid / WillBePaid"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__packaged
 msgid "Paketlendi"
-msgstr ""
+msgstr "Paketlendi"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__open
 msgid "Paketlenecek"
-msgstr ""
+msgstr "Paketlenecek"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__partner_credit_warning
 msgid "Partner Credit Warning"
-msgstr ""
+msgstr "Partner Credit Warning"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__hb_partner_id
@@ -2321,153 +2351,155 @@ msgid ""
 "Partner record for Hepsiburada. Used for commission settlement payments and "
 "for reporting purposes."
 msgstr ""
+"Partner record for Hepsiburada. Used for commission settlement payments and "
+"for reporting purposes."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__odoo_payment_id
 msgid "Payment"
-msgstr ""
+msgstr "Payment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__payment_date
 msgid "Payment Date"
-msgstr ""
+msgstr "Payment Date"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Payment Info"
-msgstr ""
+msgstr "Payment Info"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__reference
 msgid "Payment Ref."
-msgstr ""
+msgstr "Payment Ref."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__payment_status
 msgid "Payment Status"
-msgstr ""
+msgstr "Payment Status"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__payment_term_id
 msgid "Payment Terms"
-msgstr ""
+msgstr "Payment Terms"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Please enter a rejection reason before rejecting."
-msgstr ""
+msgstr "Please enter a rejection reason before rejecting."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Please enter an answer before sending."
-msgstr ""
+msgstr "Please enter an answer before sending."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_url
 msgid "Portal Access URL"
-msgstr ""
+msgstr "Portal Access URL"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__revision_count
 msgid "Previous versions count"
-msgstr ""
+msgstr "Previous versions count"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__pricelist_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Pricelist"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__pricelist_id
 msgid "Pricelist to use for Hepsiburada prices (must be in TRY)"
-msgstr ""
+msgstr "Pricelist to use for Hepsiburada prices (must be in TRY)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__procurement_group_id
 msgid "Procurement Group"
-msgstr ""
+msgstr "Procurement Group"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Product"
-msgstr ""
+msgstr "Product"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_image_url
 msgid "Product Image URL"
-msgstr ""
+msgstr "Product Image URL"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Product Info"
-msgstr ""
+msgstr "Product Info"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__product_name
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_name
 msgid "Product Name"
-msgstr ""
+msgstr "Product Name"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__product_url
 msgid "Product URL"
-msgstr ""
+msgstr "Product URL"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_backend__environment__prod
 msgid "Production"
-msgstr ""
+msgstr "Production"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_id
 msgid "Project"
-msgstr ""
+msgstr "Project"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__project_ids
 msgid "Projects"
-msgstr ""
+msgstr "Projects"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__project_ids
 msgid "Projects used in this sales order."
-msgstr ""
+msgstr "Projects used in this sales order."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__quantity
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__quantity
 msgid "Quantity"
-msgstr ""
+msgstr "Quantity"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__question_text
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__question_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Question"
-msgstr ""
+msgstr "Question"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__hb_created_date
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Question Date"
-msgstr ""
+msgstr "Question Date"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Question Info"
-msgstr ""
+msgstr "Question Info"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Question import has been queued."
-msgstr ""
+msgstr "Question import has been queued."
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2477,12 +2509,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Questions"
-msgstr ""
+msgstr "Questions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_template_id
 msgid "Quotation Template"
-msgstr ""
+msgstr "Quotation Template"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__raw_data
@@ -2494,17 +2526,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Raw Data"
-msgstr ""
+msgstr "Raw Data"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cancel_reason_id
 msgid "Reason for cancellation"
-msgstr ""
+msgstr "Reason for cancellation"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Reconcile"
-msgstr ""
+msgstr "Reconcile"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2513,49 +2545,49 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 #, python-format
 msgid "Reconciled"
-msgstr ""
+msgstr "Reconciled"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__origin
 msgid "Reference of the document that generated this sales order request"
-msgstr ""
+msgstr "Reference of the document that generated this sales order request"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Refresh Conversations"
-msgstr ""
+msgstr "Refresh Conversations"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__refund_amount
 msgid "Refund Amount"
-msgstr ""
+msgstr "Refund Amount"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__refunded
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Refunded"
-msgstr ""
+msgstr "Refunded"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Reject"
-msgstr ""
+msgstr "Reject"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 msgid "Reject Claim"
-msgstr ""
+msgstr "Reject Claim"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__hb_status__rejected
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Rejected"
-msgstr ""
+msgstr "Rejected"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__rejection_reason
 msgid "Rejection Reason"
-msgstr ""
+msgstr "Rejection Reason"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__require_signature
@@ -2563,141 +2595,143 @@ msgid ""
 "Request a online signature and/or payment to the customer in order to "
 "confirm orders automatically."
 msgstr ""
+"Request a online signature and/or payment to the customer in order to "
+"confirm orders automatically."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__req_destination_port
 msgid "Requires destination port"
-msgstr ""
+msgstr "Requires destination port"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__req_transport_type
 msgid "Requires transport type"
-msgstr ""
+msgstr "Requires transport type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__activity_user_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Responsible User"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__return
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__return
 msgid "Return"
-msgstr ""
+msgstr "Return"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Returns"
-msgstr ""
+msgstr "Returns"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__revision_number
 msgid "Revision"
-msgstr ""
+msgstr "Revision"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__message_has_sms_error
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_has_sms_error
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS Delivery error"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__sale
 msgid "Sale"
-msgstr ""
+msgstr "Sale"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_deci
 msgid "Sale Deci"
-msgstr ""
+msgstr "Sale Deci"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__sale_line_id
 msgid "Sale Line"
-msgstr ""
+msgstr "Sale Line"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Sales"
-msgstr ""
+msgstr "Sales"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Sales Order"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Sales Order Line"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__sales_team_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__team_id
 msgid "Sales Team"
-msgstr ""
+msgstr "Sales Team"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__user_id
 msgid "Salesperson"
-msgstr ""
+msgstr "Salesperson"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Search Backends"
-msgstr ""
+msgstr "Search Backends"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Search Claims"
-msgstr ""
+msgstr "Search Claims"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 msgid "Search Orders"
-msgstr ""
+msgstr "Search Orders"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Search Questions"
-msgstr ""
+msgstr "Search Questions"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Search Settlements"
-msgstr ""
+msgstr "Search Settlements"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__second_reminder_mail_sent
 msgid "Second Reminder Sent"
-msgstr ""
+msgstr "Second Reminder Sent"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Security Token"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__project_id
 msgid "Select a non billable project on which tasks can be created."
-msgstr ""
+msgstr "Select a non billable project on which tasks can be created."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Send Answer"
-msgstr ""
+msgstr "Send Answer"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Send Invoice"
-msgstr ""
+msgstr "Send Invoice"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__auto_send_invoice
 msgid "Send invoice links to Hepsiburada via nightly batch cron"
-msgstr ""
+msgstr "Send invoice links to Hepsiburada via nightly batch cron"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2705,31 +2739,31 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Send invoice: %s"
-msgstr ""
+msgstr "Send invoice: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question_message__sender
 msgid "Sender"
-msgstr ""
+msgstr "Sender"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__is_all_service
 msgid "Service Product"
-msgstr ""
+msgstr "Service Product"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Settlement has been reconciled successfully."
-msgstr ""
+msgstr "Settlement has been reconciled successfully."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Settlement import has been queued."
-msgstr ""
+msgstr "Settlement import has been queued."
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2740,7 +2774,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Settlements"
-msgstr ""
+msgstr "Settlements"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.actions.act_window,help:hepsiburada_integration.action_hepsiburada_settlement
@@ -2748,36 +2782,38 @@ msgid ""
 "Settlements are imported from Hepsiburada's finance API and used\n"
 "                to reconcile invoices with marketplace payments."
 msgstr ""
+"Settlements are imported from Hepsiburada's finance API and used\n"
+"                to reconcile invoices with marketplace payments."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Shipping"
-msgstr ""
+msgstr "Shipping"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__picking_policy
 msgid "Shipping Policy"
-msgstr ""
+msgstr "Shipping Policy"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signature
 msgid "Signature"
-msgstr ""
+msgstr "Signature"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signed_by
 msgid "Signed By"
-msgstr ""
+msgstr "Signed By"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__signed_on
 msgid "Signed On"
-msgstr ""
+msgstr "Signed On"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__sku
 msgid "Sku"
-msgstr ""
+msgstr "Sku"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__smart_search
@@ -2793,34 +2829,34 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__smart_search
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__smart_search
 msgid "Smart Search"
-msgstr ""
+msgstr "Smart Search"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__source_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__source_id
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__origin
 msgid "Source Document"
-msgstr ""
+msgstr "Source Document"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_backend__environment__stage
 msgid "Stage (Testing)"
-msgstr ""
+msgstr "Stage (Testing)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__delivery_type
 msgid "StandardDelivery / BT / YT"
-msgstr ""
+msgstr "StandardDelivery / BT / YT"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__state
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "State"
-msgstr ""
+msgstr "State"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__hb_status
@@ -2831,7 +2867,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_state
@@ -2842,11 +2878,15 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__subject
 msgid "Subject"
-msgstr ""
+msgstr "Subject"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2857,61 +2897,61 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Success"
-msgstr ""
+msgstr "Success"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_count
 msgid "Survey Count"
-msgstr ""
+msgstr "Survey Count"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_url
 msgid "Survey URL"
-msgstr ""
+msgstr "Survey URL"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_url_qr
 msgid "Survey URL QR"
-msgstr ""
+msgstr "Survey URL QR"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__survey_ids
 msgid "Surveys"
-msgstr ""
+msgstr "Surveys"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Sync Cancelled Orders"
-msgstr ""
+msgstr "Sync Cancelled Orders"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Sync HB cancelled orders: %s"
-msgstr ""
+msgstr "Sync HB cancelled orders: %s"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Sync Missing Invoices"
-msgstr ""
+msgstr "Sync Missing Invoices"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Sync Settings"
-msgstr ""
+msgstr "Sync Settings"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Sync Started"
-msgstr ""
+msgstr "Sync Started"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Sync Status"
-msgstr ""
+msgstr "Sync Status"
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -2919,62 +2959,62 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Sync missing invoices: %s"
-msgstr ""
+msgstr "Sync missing invoices: %s"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tasks_count
 msgid "Tasks"
-msgstr ""
+msgstr "Tasks"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tasks_ids
 msgid "Tasks associated to this sale"
-msgstr ""
+msgstr "Tasks associated to this sale"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tax_country_id
 msgid "Tax Country"
-msgstr ""
+msgstr "Tax Country"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__tax_totals
 msgid "Tax Totals"
-msgstr ""
+msgstr "Tax Totals"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_tax
 msgid "Taxes"
-msgstr ""
+msgstr "Taxes"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__terms_type
 msgid "Terms & Conditions format"
-msgstr ""
+msgstr "Terms & Conditions format"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__note
 msgid "Terms and conditions"
-msgstr ""
+msgstr "Terms and conditions"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__delivered
 msgid "Teslim Edildi"
-msgstr ""
+msgstr "Teslim Edildi"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__undelivered
 msgid "Teslim Edilemedi"
-msgstr ""
+msgstr "Teslim Edilemedi"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Test Connection"
-msgstr ""
+msgstr "Test Connection"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__country_code
@@ -2982,6 +3022,8 @@ msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
 msgstr ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
@@ -2997,7 +3039,7 @@ msgstr ""
 #: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "The number of pending changes of this record"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
@@ -3013,7 +3055,7 @@ msgstr ""
 #: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_pending_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "The number of pending changesets of this record"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_changesets
@@ -3029,12 +3071,12 @@ msgstr ""
 #: model:ir.model.fields,help:hepsiburada_integration.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_stock_picking__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "The overall number of changesets of this record"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__reference
 msgid "The payment communication of this sale order."
-msgstr ""
+msgstr "The payment communication of this sale order."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__campaign_id
@@ -3042,6 +3084,8 @@ msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
 " e.g. Fall_Drive, Christmas_Special"
 msgstr ""
+"This is a name that helps you keep track of your different campaign efforts,"
+" e.g. Fall_Drive, Christmas_Special"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__commitment_date
@@ -3049,11 +3093,13 @@ msgid ""
 "This is the delivery date promised to the customer. If set, the delivery "
 "order will be scheduled based on this date rather than product lead times."
 msgstr ""
+"This is the delivery date promised to the customer. If set, the delivery "
+"order will be scheduled based on this date rather than product lead times."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__medium_id
 msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
-msgstr ""
+msgstr "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__source_id
@@ -3061,53 +3107,55 @@ msgid ""
 "This is the source of the link, e.g. Search Engine, another domain, or name "
 "of email list"
 msgstr ""
+"This is the source of the link, e.g. Search Engine, another domain, or name "
+"of email list"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "This settlement is already reconciled."
-msgstr ""
+msgstr "This settlement is already reconciled."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_encode_uom_id
 msgid "Timesheet Encoding Unit"
-msgstr ""
+msgstr "Timesheet Encoding Unit"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_total_duration
 msgid "Timesheet Total Duration"
-msgstr ""
+msgstr "Timesheet Total Duration"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_count
 msgid "Timesheet activities"
-msgstr ""
+msgstr "Timesheet activities"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_ids
 msgid "Timesheet activities associated to this sale"
-msgstr ""
+msgstr "Timesheet activities associated to this sale"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "To Reconcile"
-msgstr ""
+msgstr "To Reconcile"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_total
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__total_price
 msgid "Total Price"
-msgstr ""
+msgstr "Total Price"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__commission_amount
 msgid "Total commission amount for the sale order."
-msgstr ""
+msgstr "Total commission amount for the sale order."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__timesheet_total_duration
@@ -3115,140 +3163,142 @@ msgid ""
 "Total recorded duration, expressed in the encoding UoM, and rounded to the "
 "unit"
 msgstr ""
+"Total recorded duration, expressed in the encoding UoM, and rounded to the "
+"unit"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_tracking_link
 msgid "Tracking Link"
-msgstr ""
+msgstr "Tracking Link"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__cargo_tracking_number
 msgid "Tracking Number"
-msgstr ""
+msgstr "Tracking Number"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Tracking Updated"
-msgstr ""
+msgstr "Tracking Updated"
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Tracking info has been fetched from Hepsiburada."
-msgstr ""
+msgstr "Tracking info has been fetched from Hepsiburada."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__transaction_date
 msgid "Transaction Date"
-msgstr ""
+msgstr "Transaction Date"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__hb_transaction_id
 msgid "Transaction ID"
-msgstr ""
+msgstr "Transaction ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.constraint,message:hepsiburada_integration.constraint_hepsiburada_settlement_transaction_uniq
 msgid "Transaction ID must be unique per backend!"
-msgstr ""
+msgstr "Transaction ID must be unique per backend!"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
 msgid "Transaction Info"
-msgstr ""
+msgstr "Transaction Info"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__transaction_type
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 msgid "Transaction Type"
-msgstr ""
+msgstr "Transaction Type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__transaction_ids
 msgid "Transactions"
-msgstr ""
+msgstr "Transactions"
 
 #. module: hepsiburada_integration
 #: model:ir.model,name:hepsiburada_integration.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Transfer"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__picking_ids
 msgid "Transfers"
-msgstr ""
+msgstr "Transfers"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__transport_type
 msgid "Transport type"
-msgstr ""
+msgstr "Transport type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__claim_type
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_search
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__type_name
 msgid "Type Name"
-msgstr ""
+msgstr "Type Name"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__activity_exception_decoration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Type of the exception activity on record."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Type your answer here..."
-msgstr ""
+msgstr "Type your answer here..."
 
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
-msgstr ""
+msgstr "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__source_id
 msgid "UTM source to set on Hepsiburada orders"
-msgstr ""
+msgstr "UTM source to set on Hepsiburada orders"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order_line__hb_line_item_id
 msgid "UUID from HB items[].id"
-msgstr ""
+msgstr "UUID from HB items[].id"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Unanswered"
-msgstr ""
+msgstr "Unanswered"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__undelivered_product
 msgid "Undelivered Product"
-msgstr ""
+msgstr "Undelivered Product"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__unit_price
 msgid "Unit Price"
-msgstr ""
+msgstr "Unit Price"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_untaxed
 msgid "Untaxed Amount"
-msgstr ""
+msgstr "Untaxed Amount"
 
 #. module: hepsiburada_integration
 #: model:res.groups,name:hepsiburada_integration.group_hepsiburada_user
 msgid "User"
-msgstr ""
+msgstr "User"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__user_can_see_changeset
@@ -3264,118 +3314,118 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "User Can See Changeset"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__user_agent
 msgid "User-Agent"
-msgstr ""
+msgstr "User-Agent"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__user_agent
 msgid "User-Agent header sent with every API request to Hepsiburada"
-msgstr ""
+msgstr "User-Agent header sent with every API request to Hepsiburada"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__vat_amount
 msgid "Vat Amount"
-msgstr ""
+msgstr "Vat Amount"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__vat_rate
 msgid "Vat Rate"
-msgstr ""
+msgstr "Vat Rate"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__waiting_customer
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Waiting Customer"
-msgstr ""
+msgstr "Waiting Customer"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__waiting_merchant
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_search
 msgid "Waiting Merchant"
-msgstr ""
+msgstr "Waiting Merchant"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__warehouse_id
 msgid "Warehouse"
-msgstr ""
+msgstr "Warehouse"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__warehouse_ids
 msgid "Warehouses"
-msgstr ""
+msgstr "Warehouses"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__warehouse_ids
 msgid "Warehouses to use for order fulfillment"
-msgstr ""
+msgstr "Warehouses to use for order fulfillment"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__website_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__website_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Website Messages"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__website_message_ids
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__website_message_ids
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_settlement__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website communication history"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__claim_type__wrong_product
 msgid "Wrong Product"
-msgstr ""
+msgstr "Wrong Product"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Your Answer"
-msgstr ""
+msgstr "Your Answer"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__merchant_id
 msgid "Your Hepsiburada merchant ID"
-msgstr ""
+msgstr "Your Hepsiburada merchant ID"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__payment_awaiting
 msgid "Ödeme Bekliyor"
-msgstr ""
+msgstr "Ödeme Bekliyor"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
-msgstr ""
+msgstr "İptal Edildi"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_cargo_barcode
 msgid "Cargo Barcode"
-msgstr ""
+msgstr "Cargo Barcode"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Fetch Cargo Firms from HB"
-msgstr ""
+msgstr "Fetch Cargo Firms from HB"
 
 #. module: hepsiburada_integration
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Cargo Firms"
-msgstr ""
+msgstr "Cargo Firms"
 
 #. module: hepsiburada_integration
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "%d new cargo firm(s) added."
-msgstr ""
+msgstr "%d new cargo firm(s) added."
 
 #. module: hepsiburada_integration
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "No cargo firms returned from Hepsiburada."
-msgstr ""
+msgstr "No cargo firms returned from Hepsiburada."

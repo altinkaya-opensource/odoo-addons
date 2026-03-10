@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-09 00:00+0000\n"
-"PO-Revision-Date: 2026-03-09 00:00+0000\n"
+"POT-Creation-Date: 2026-03-10 05:11+0000\n"
+"PO-Revision-Date: 2026-03-10 05:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,18 +16,111 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: marketplace_integration_base
-#: model:ir.model,name:marketplace_integration_base.model_marketplace_backend
-msgid "Marketplace Backend Base"
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_attribute_value
+msgid "Abstract Marketplace Attribute Value"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model,name:marketplace_integration_base.model_marketplace_order
-msgid "Marketplace Order Base"
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_brand
+msgid "Abstract Marketplace Brand"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model,name:marketplace_integration_base.model_marketplace_settlement
-msgid "Marketplace Settlement Base"
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_category
+msgid "Abstract Marketplace Category"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_category_attribute
+msgid "Abstract Marketplace Category Attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_product_binding
+msgid "Abstract Marketplace Product Binding"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_needaction
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__active
+msgid "Active"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__allow_custom
+msgid "Allow Custom Value"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__approved
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__approved
+msgid "Approved"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_attachment_count
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_import_claims
+msgid "Auto Import Claims"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_import_orders
+msgid "Auto Import Orders"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_import_questions
+msgid "Auto Import Questions"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_import_settlements
+msgid "Auto Import Settlements"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_reconcile_settlements
+msgid "Auto Reconcile Settlements"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_send_invoice
+msgid "Auto Send Invoice"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__auto_sync_tracking
+msgid "Auto Sync Tracking"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -76,21 +169,134 @@ msgid "Cargo Provider"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__changeset_change_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__changeset_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__child_ids
+msgid "Child Categories"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__commission_amount
+msgid "Commission Amount"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__commission_payment_id
+msgid "Commission Payment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__commission_rate
+msgid "Commission Rate"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__company_id
+msgid "Company"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
 #, python-format
 msgid "Connection failed: %s"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
 #, python-format
 msgid "Connection to marketplace API successful!"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__count_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__count_pending_changesets
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Credit note %s is already paid."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__allow_custom
+msgid "Custom values can be entered for this attribute"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_cargo_company_id
+msgid "Default Cargo Company"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_product_id
+msgid "Default Product"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT Rate (%)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_vat_rate
+msgid "Default VAT rate for products without tax"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -114,27 +320,104 @@ msgid "Default sales team for marketplace orders"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__default_vat_rate
-msgid "Default VAT Rate (%)"
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__draft
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__draft
+msgid "Draft"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_vat_rate
-msgid "Default VAT rate for products without tax"
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__environment
+msgid "Environment"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__state__error
 msgid "Error"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_product_id
-msgid "Fallback product for unmapped items. If not set, unmapped items will be created as note lines."
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__error_message
+msgid "Error Message"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__state__imported
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__failed_message_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__failed_message_ids
+msgid "Failed Messages"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__default_product_id
+msgid ""
+"Fallback product for unmapped items. If not set, unmapped items will be "
+"created as note lines."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__fiscal_position_id
+msgid "Fiscal Position"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_follower_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_partner_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__full_path
+msgid "Full Path"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__has_message
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__message_needaction
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__message_has_error
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__message_has_sms_error
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__message_has_error
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__state__imported
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__state__imported
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__state__imported
 msgid "Imported"
 msgstr ""
 
@@ -149,21 +432,97 @@ msgid "Invoice"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Invoice %s is already paid."
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__invoice_link_sent
+msgid "Invoice Link Sent"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__invoice_sent_date
+msgid "Invoice Sent Date"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_is_follower
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__is_leaf
+msgid "Is Leaf Category"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__label_printer_id
+msgid "Label Printer"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__last_claim_sync
+msgid "Last Claim Sync"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__last_order_sync
+msgid "Last Order Sync"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__last_question_sync
+msgid "Last Question Sync"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__last_settlement_sync
+msgid "Last Settlement Sync"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__last_sync_date
+msgid "Last Sync Date"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_main_attachment_id
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__odoo_category_id
+msgid "Map to Odoo product category for filtering"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_backend
+msgid "Marketplace Backend Base"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Marketplace Commission - Order %s"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
-#, python-format
-msgid "Marketplace order not found for order number: %s"
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__marketplace_id
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__marketplace_id
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__marketplace_id
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__marketplace_id
+msgid "Marketplace ID"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_order
+msgid "Marketplace Order Base"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -172,27 +531,118 @@ msgid "Marketplace Payment Journal"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Marketplace Settlement - Order %s"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_marketplace_settlement
+msgid "Marketplace Settlement Base"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Marketplace order not found for order number: %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_has_error
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__name
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__name
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__name
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__name
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__name
+msgid "Name"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "No linked Odoo sale order found."
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "No posted credit note found for sale order %s"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "No posted invoice found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_needaction_counter
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_has_error_counter
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__message_needaction_counter
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__message_has_error_counter
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__odoo_category_id
+msgid "Odoo Category"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -201,14 +651,46 @@ msgid "Odoo Order"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__is_leaf
+msgid "Only leaf categories can be used for products"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__order_number
+msgid "Order Number"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__parent_id
+msgid "Parent Category"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__parent_path
+msgid "Parent Path"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__odoo_payment_id
 msgid "Payment"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Payment Journal not configured on backend."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__pending
+msgid "Pending Approval"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__pricelist_id
+msgid "Pricelist"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -217,24 +699,67 @@ msgid "Pricelist for marketplace prices (must be in TRY)"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_backend__environment__prod
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_backend__environment__prod
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_backend__environment__prod
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_backend__environment__prod
 msgid "Production"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__raw_data
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__raw_data
+msgid "Raw Data"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__state__reconciled
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__state__reconciled
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__state__reconciled
 #, python-format
 msgid "Reconciled"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__transaction_type__return
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_product_binding__sync_state__rejected
+msgid "Rejected"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__required
+msgid "Required"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__transaction_type__return
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__transaction_type__return
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__transaction_type__return
 msgid "Return"
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_settlement__transaction_type__sale
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__message_has_sms_error
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__transaction_type__sale
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement__transaction_type__sale
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__transaction_type__sale
 msgid "Sale"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__sales_team_id
+msgid "Sales Team"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -243,23 +768,110 @@ msgid "Send invoice links via scheduled job"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "Settlement has been reconciled successfully."
 msgstr ""
 
 #. module: marketplace_integration_base
-#: model:ir.model.fields.selection,name:marketplace_integration_base.field_marketplace_backend__environment__stage
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__smart_search
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__source_id
+msgid "Source"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_backend__environment__stage
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_backend__environment__stage
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_backend__environment__stage
 msgid "Stage (Testing)"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__state
+msgid "State"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
 #, python-format
 msgid "Success"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__sync_error
+msgid "Sync Error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__sync_state
+msgid "Sync State"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_attribute_value__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_brand__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_product_binding__count_pending_changeset_changes
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_attribute_value__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_brand__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_product_binding__count_pending_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_attribute_value__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_brand__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_product_binding__count_changesets
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_category_attribute__required
+msgid "This attribute is required for product creation"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "This settlement is already reconciled."
@@ -276,6 +888,22 @@ msgid "Tracking Number"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__transaction_date
+msgid "Transaction Date"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__transaction_type
+msgid "Transaction Type"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_order.py:0
 #, python-format
 msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
@@ -287,6 +915,23 @@ msgid "UTM source to set on marketplace orders"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_attribute_value__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_brand__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_category_attribute__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__user_can_see_changeset
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_product_binding__vat_rate
+msgid "VAT Rate (%)"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__warehouse_ids
 msgid "Warehouses"
 msgstr ""
@@ -294,4 +939,16 @@ msgstr ""
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__warehouse_ids
 msgid "Warehouses to use for order fulfillment"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend__website_message_ids
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend__website_message_ids
+#: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement__website_message_ids
+msgid "Website communication history"
 msgstr ""
