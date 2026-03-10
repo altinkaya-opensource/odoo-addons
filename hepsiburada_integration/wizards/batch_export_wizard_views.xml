@@ -65,6 +65,7 @@
                                 <field
                                     name="image_128"
                                     widget="image"
+                                    string=" "
                                     options="{'size': [50, 50]}"
                                 />
                                 <field name="default_code" />

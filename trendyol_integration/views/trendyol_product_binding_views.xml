@@ -106,6 +106,12 @@
                 decoration-success="sync_state == 'approved'"
                 decoration-info="sync_state == 'pending'"
             >
+                <field
+                    name="image_128"
+                    widget="image"
+                    string=" "
+                    options="{'size': [64, 64]}"
+                />
                 <field name="name" />
                 <field name="trendyol_barcode" />
                 <field name="trendyol_category_id" />

@@ -1,11 +1,16 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-from odoo import models
+from odoo import fields, models
 
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
+
+    product_image = fields.Binary(
+        related="product_id.image_128",
+        string="Image",
+    )
 
     def _compute_price_unit(self):
         trendyol_lines = self.filtered(lambda l: l.order_id.trendyol_binding_ids)

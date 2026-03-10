@@ -80,6 +80,7 @@
                                     <field
                                         name="product_image"
                                         widget="image"
+                                        string=" "
                                         options="{'size': [64, 64]}"
                                     />
                                     <field name="product_id" />

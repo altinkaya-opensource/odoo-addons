@@ -2527,27 +2527,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_1920
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_ids
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_1024
 msgid "Image 1024"
-msgstr ""
+msgstr "Image 1024"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_128
 msgid "Image 128"
-msgstr ""
+msgstr "Image 128"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_256
 msgid "Image 256"
-msgstr ""
+msgstr "Image 256"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_512
 msgid "Image 512"
-msgstr ""
+msgstr "Image 512"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form

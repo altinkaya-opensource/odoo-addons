@@ -87,8 +87,14 @@
                 decoration-success="sync_state == 'approved'"
                 decoration-info="sync_state == 'pending'"
             >
+                <field
+                    name="image_128"
+                    widget="image"
+                    string=" "
+                    options="{'size': [64, 64]}"
+                />
                 <field name="name" string="Product" />
-                <field name="hb_merchant_sku" />
+                <field name="barcode" />
                 <field name="hb_category_id" />
                 <field name="hb_brand_name" />
                 <field name="hb_quantity" />

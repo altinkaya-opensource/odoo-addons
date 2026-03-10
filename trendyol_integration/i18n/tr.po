@@ -2603,6 +2603,7 @@ msgid "Ignore Exceptions"
 msgstr "İstisnaları Yoksay"
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_sale_order_line__product_image
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_1920
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_ids
 msgid "Image"
