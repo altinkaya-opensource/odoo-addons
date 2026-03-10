@@ -104,7 +104,7 @@ class TrendyolBatchExportWizard(models.TransientModel):
         for attr in self.trendyol_category_id.attribute_ids:
             values_list = []
             for val in attr.value_ids:
-                values_list.append({"id": val.trendyol_id, "name": val.name})
+                values_list.append({"id": val.marketplace_id, "name": val.name})
 
             lines.append(
                 (
@@ -112,7 +112,7 @@ class TrendyolBatchExportWizard(models.TransientModel):
                     0,
                     {
                         "attribute_name": attr.name,
-                        "attribute_marketplace_id": attr.trendyol_id,
+                        "attribute_marketplace_id": attr.marketplace_id,
                         "attribute_id": attr.id,
                         "required": attr.required,
                         "allow_custom": attr.allow_custom,
@@ -205,7 +205,7 @@ class TrendyolBatchExportWizard(models.TransientModel):
             attr_dict = {"attributeId": line.attribute_marketplace_id}
 
             if line.value_id:
-                attr_dict["attributeValueId"] = line.value_id.trendyol_id
+                attr_dict["attributeValueId"] = line.value_id.marketplace_id
             elif line.value:
                 attr_dict["customAttributeValue"] = line.value
 

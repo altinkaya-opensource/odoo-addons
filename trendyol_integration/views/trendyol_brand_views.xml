@@ -10,7 +10,7 @@
                     <group>
                         <group>
                             <field name="name" />
-                            <field name="trendyol_id" />
+                            <field name="marketplace_id" />
                         </group>
                         <group>
                             <field name="backend_id" />
@@ -28,7 +28,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
-                <field name="trendyol_id" />
+                <field name="marketplace_id" />
                 <field name="backend_id" />
             </tree>
         </field>
@@ -41,7 +41,7 @@
         <field name="arch" type="xml">
             <search string="Search Brands">
                 <field name="name" />
-                <field name="trendyol_id" />
+                <field name="marketplace_id" />
                 <group expand="0" string="Group By">
                     <filter
                         name="group_backend"

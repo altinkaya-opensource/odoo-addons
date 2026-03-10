@@ -26,7 +26,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="trendyol_id" />
+                            <field name="marketplace_id" />
                             <field name="backend_id" />
                             <field name="parent_id" />
                             <field name="is_leaf" />
@@ -40,7 +40,7 @@
                             <field name="attribute_ids">
                                 <tree>
                                     <field name="name" />
-                                    <field name="trendyol_id" />
+                                    <field name="marketplace_id" />
                                     <field name="required" />
                                     <field name="allow_custom" />
                                     <field name="varianter" />
@@ -57,7 +57,7 @@
                             <field name="child_ids">
                                 <tree>
                                     <field name="name" />
-                                    <field name="trendyol_id" />
+                                    <field name="marketplace_id" />
                                     <field name="is_leaf" />
                                 </tree>
                             </field>
@@ -75,7 +75,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="full_path" />
-                <field name="trendyol_id" />
+                <field name="marketplace_id" />
                 <field name="is_leaf" />
                 <field name="backend_id" />
                 <field name="odoo_category_id" />
@@ -91,7 +91,7 @@
             <search string="Search Categories">
                 <field name="name" />
                 <field name="full_path" />
-                <field name="trendyol_id" />
+                <field name="marketplace_id" />
                 <filter
                     name="leaf_only"
                     string="Leaf Categories"
@@ -132,7 +132,7 @@
                     <group>
                         <group>
                             <field name="name" />
-                            <field name="trendyol_id" />
+                            <field name="marketplace_id" />
                             <field name="category_id" />
                         </group>
                         <group>
@@ -148,7 +148,7 @@
                             <field name="value_ids">
                                 <tree editable="bottom">
                                     <field name="name" />
-                                    <field name="trendyol_id" />
+                                    <field name="marketplace_id" />
                                     <field name="odoo_value_id" />
                                 </tree>
                             </field>

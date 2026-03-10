@@ -749,11 +749,7 @@ class HepsiburadaBackend(models.Model):
                 _logger.error("Failed to fetch merchant products page %d: %s", page, e)
                 raise
 
-            products = (
-                result
-                if isinstance(result, list)
-                else result.get("data", [])
-            )
+            products = result if isinstance(result, list) else result.get("data", [])
             if not products:
                 break
 
@@ -778,17 +774,13 @@ class HepsiburadaBackend(models.Model):
                         # Update existing binding sync state
                         vals = {"last_sync_date": fields.Datetime.now()}
                         if status:
-                            sync_state = (
-                                "approved" if status == "MATCHED" else "draft"
-                            )
+                            sync_state = "approved" if status == "MATCHED" else "draft"
                             if binding.sync_state != sync_state:
                                 vals["sync_state"] = sync_state
                         binding.write(vals)
                     else:
                         # Try to find matching Odoo product
-                        product = self._find_product_for_sync(
-                            merchant_sku, barcode
-                        )
+                        product = self._find_product_for_sync(merchant_sku, barcode)
                         if not product:
                             _logger.info(
                                 "No matching Odoo product for HB merchantSku %s "
@@ -826,8 +818,7 @@ class HepsiburadaBackend(models.Model):
                             )
                         if not hb_category:
                             _logger.info(
-                                "Category %s not synced for merchantSku %s, "
-                                "skipping",
+                                "Category %s not synced for merchantSku %s, skipping",
                                 category_id,
                                 merchant_sku,
                             )
@@ -859,8 +850,7 @@ class HepsiburadaBackend(models.Model):
                                 total_created += 1
                         except Exception as e:
                             _logger.warning(
-                                "Failed to create binding for "
-                                "merchantSku %s: %s",
+                                "Failed to create binding for merchantSku %s: %s",
                                 merchant_sku,
                                 e,
                             )
@@ -908,19 +898,13 @@ class HepsiburadaBackend(models.Model):
 
         # 1. merchantSku → default_code (primary match)
         if merchant_sku:
-            product = Product.search(
-                [("default_code", "=", merchant_sku)], limit=1
-            )
+            product = Product.search([("default_code", "=", merchant_sku)], limit=1)
         # 2. barcode → barcode
         if not product and barcode:
-            product = Product.search(
-                [("barcode", "=", barcode)], limit=1
-            )
+            product = Product.search([("barcode", "=", barcode)], limit=1)
         # 3. merchantSku → barcode (fallback)
         if not product and merchant_sku:
-            product = Product.search(
-                [("barcode", "=", merchant_sku)], limit=1
-            )
+            product = Product.search([("barcode", "=", merchant_sku)], limit=1)
 
         return product
 

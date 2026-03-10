@@ -11,14 +11,8 @@ _logger = logging.getLogger(__name__)
 class TrendyolBrand(models.Model):
     _name = "trendyol.brand"
     _description = "Trendyol Brand"
-    _order = "name"
+    _inherit = ["marketplace.brand"]
 
-    name = fields.Char(required=True, index=True)
-    trendyol_id = fields.Integer(
-        string="Trendyol ID",
-        required=True,
-        index=True,
-    )
     backend_id = fields.Many2one(
         "trendyol.backend",
         required=True,
@@ -28,8 +22,8 @@ class TrendyolBrand(models.Model):
 
     _sql_constraints = [
         (
-            "trendyol_id_backend_uniq",
-            "unique(trendyol_id, backend_id)",
+            "marketplace_id_backend_uniq",
+            "unique(marketplace_id, backend_id)",
             "Trendyol brand ID must be unique per backend!",
         ),
     ]
@@ -43,24 +37,24 @@ class TrendyolBrand(models.Model):
             brands: List of brand dicts from API
         """
         for brand_data in brands:
-            trendyol_id = brand_data.get("id")
+            marketplace_id = brand_data.get("id")
             name = brand_data.get("name")
 
-            if not trendyol_id or not name:
+            if not marketplace_id or not name:
                 continue
 
             # Find or create brand
             brand = self.search(
                 [
                     ("backend_id", "=", backend.id),
-                    ("trendyol_id", "=", trendyol_id),
+                    ("marketplace_id", "=", marketplace_id),
                 ],
                 limit=1,
             )
 
             vals = {
                 "name": name,
-                "trendyol_id": trendyol_id,
+                "marketplace_id": marketplace_id,
                 "backend_id": backend.id,
             }
 

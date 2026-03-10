@@ -685,9 +685,7 @@ class HepsiburadaRequest(MarketplaceRequest):
             Dict with 'data' list and pagination info
                 (totalElements, totalPages, number, first, last)
         """
-        endpoint = (
-            f"/product/api/products/all-products-of-merchant/{self.merchant_id}"
-        )
+        endpoint = f"/product/api/products/all-products-of-merchant/{self.merchant_id}"
         params = {"page": page, "size": min(size, 1000)}
         return self._make_request("GET", "mpop", endpoint, params=params)
 

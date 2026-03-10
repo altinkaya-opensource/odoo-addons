@@ -15,6 +15,7 @@ _logger = logging.getLogger(__name__)
 class TrendyolProductBinding(models.Model):
     _name = "trendyol.product.binding"
     _description = "Trendyol Product Binding"
+    _inherit = ["marketplace.product.binding"]
     _inherits = {"product.product": "odoo_id"}
     _order = "create_date desc"
 
@@ -66,26 +67,6 @@ class TrendyolProductBinding(models.Model):
         help="JSON array of category attributes",
     )
 
-    # Sync state
-    sync_state = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("pending", "Pending Approval"),
-            ("approved", "Approved"),
-            ("rejected", "Rejected"),
-            ("error", "Error"),
-        ],
-        default="draft",
-        required=True,
-        index=True,
-    )
-    sync_error = fields.Text(
-        readonly=True,
-    )
-    last_sync_date = fields.Datetime(
-        readonly=True,
-    )
-
     # Prices
     trendyol_list_price = fields.Float(
         string="List Price",
@@ -110,12 +91,6 @@ class TrendyolProductBinding(models.Model):
     )
     last_sent_price = fields.Float(
         readonly=True,
-    )
-
-    # VAT
-    vat_rate = fields.Float(
-        string="VAT Rate (%)",
-        default=20.0,
     )
 
     _sql_constraints = [
@@ -197,8 +172,10 @@ class TrendyolProductBinding(models.Model):
                 _("Trendyol brand is required for product %s") % self.display_name
             )
 
-        # Get image URL
-        image_url = self._get_image_url()
+        product = self.odoo_id
+
+        # Get image URL (from base)
+        image_url = self._get_image_url(product)
         if not image_url:
             raise UserError(
                 _("Product image URL is required for %s") % self.display_name
@@ -219,14 +196,14 @@ class TrendyolProductBinding(models.Model):
             "productMainId": self.trendyol_stock_code
             or self.default_code
             or self.trendyol_barcode,
-            "brandId": self.trendyol_brand_id.trendyol_id,
-            "categoryId": self.trendyol_category_id.trendyol_id,
+            "brandId": self.trendyol_brand_id.marketplace_id,
+            "categoryId": self.trendyol_category_id.marketplace_id,
             "quantity": int(max(0, self.trendyol_quantity)),
             "stockCode": self.trendyol_stock_code
             or self.default_code
             or self.trendyol_barcode,
             "dimensionalWeight": self._calculate_dimensional_weight(),
-            "description": self._get_description(),
+            "description": self._get_description(product),
             "currencyType": "TRY",
             "listPrice": list_price,
             "salePrice": sale_price,
@@ -237,43 +214,6 @@ class TrendyolProductBinding(models.Model):
         }
 
         return data
-
-    def _get_image_url(self):
-        """Get HTTPS image URL for the product.
-
-        Returns:
-            Image URL string or None
-        """
-        # Try to get public URL from product
-        # This would typically be set up to serve images via HTTPS
-        if self.odoo_id.image_url:
-            url = self.odoo_id.image_url
-            if url.startswith("https://"):
-                return url
-            if url.startswith("http://"):
-                return url.replace("http://", "https://", 1)
-
-        # Check if there's a website configured
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        if base_url and self.odoo_id.image_1920:
-            return f"{base_url}/web/image/product.product/{self.odoo_id.id}/image_1920"
-
-        # Fallback to default image
-        return "https://www.altinkaya.com/web/image/product.brand/1/logo"
-
-    def _get_description(self):
-        """Get product description for Trendyol.
-
-        Returns:
-            HTML description string
-        """
-        # Priority: public_description > description_sale > name
-        product = self.odoo_id
-        if hasattr(product, "public_description") and product.public_description:
-            return product.public_description[:30000]
-        if product.description_sale:
-            return product.description_sale[:30000]
-        return product.name[:30000]
 
     def _calculate_dimensional_weight(self):
         """Calculate dimensional weight for shipping.
@@ -517,10 +457,3 @@ class TrendyolProductBinding(models.Model):
             "url": url,
             "target": "new",
         }
-
-    def action_set_draft(self):
-        """Reset binding to draft state."""
-        self.ensure_one()
-        self.sync_state = "draft"
-        self.sync_error = False
-        return True
