@@ -25,6 +25,7 @@ class HepsiburadaBatchExportWizard(models.TransientModel):
     )
     hb_brand_name = fields.Char(
         string="Brand Name",
+        default="Altınkaya",
     )
     vat_rate = fields.Float(
         string="VAT Rate (%)",

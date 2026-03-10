@@ -257,6 +257,19 @@
                                 </div>
                             </div>
                         </page>
+                        <page string="Sync Status" name="sync_status">
+                            <group>
+                                <group string="Last Sync Times">
+                                    <field name="last_order_sync" readonly="0" />
+                                    <field name="last_claim_sync" />
+                                    <field name="last_question_sync" readonly="0" />
+                                    <field name="last_settlement_sync" readonly="0" />
+                                    <field name="last_stock_sync" />
+                                    <field name="last_category_sync" />
+                                    <field name="last_brand_sync" />
+                                </group>
+                            </group>
+                        </page>
                         <page string="Batch Export" name="batch_export">
                             <div class="row mt-3">
                                 <div class="col-12">
@@ -273,19 +286,6 @@
                                     />
                                 </div>
                             </div>
-                        </page>
-                        <page string="Sync Status" name="sync_status">
-                            <group>
-                                <group string="Last Sync Times">
-                                    <field name="last_order_sync" readonly="0" />
-                                    <field name="last_claim_sync" />
-                                    <field name="last_question_sync" readonly="0" />
-                                    <field name="last_settlement_sync" readonly="0" />
-                                    <field name="last_stock_sync" />
-                                    <field name="last_category_sync" />
-                                    <field name="last_brand_sync" />
-                                </group>
-                            </group>
                         </page>
                     </notebook>
                     <field name="active" invisible="1" />
