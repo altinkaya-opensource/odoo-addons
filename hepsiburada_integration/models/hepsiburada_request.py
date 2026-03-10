@@ -245,9 +245,9 @@ class HepsiburadaRequest:
         params = {"offset": offset, "limit": min(limit, 50)}
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_cancelled_packages(self, offset=0, limit=50):
-        """Get cancelled packages."""
-        endpoint = f"/packages/merchantid/{self.merchant_id}/cancelled"
+    def get_cancelled_orders(self, offset=0, limit=50):
+        """Get cancelled orders."""
+        endpoint = f"/orders/merchantid/{self.merchant_id}/cancelled"
         params = {"offset": offset, "limit": min(limit, 50)}
         return self._make_request("GET", "oms", endpoint, params=params)
 

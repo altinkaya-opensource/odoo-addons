@@ -465,6 +465,7 @@ class HepsiburadaBackend(models.Model):
                     "payment_awaiting",
                     "PaymentAwaiting",
                 ),
+                (client.get_cancelled_orders, "cancelled", "Cancelled"),
             ]
             for fetch_method, hb_status, api_status in flat_endpoints:
                 try:
@@ -483,7 +484,6 @@ class HepsiburadaBackend(models.Model):
                 (client.get_shipped_packages, "in_transit"),
                 (client.get_delivered_packages, "delivered"),
                 (client.get_undelivered_packages, "undelivered"),
-                (client.get_cancelled_packages, "cancelled"),
             ]
 
             for fetch_method, status in package_endpoints:
@@ -520,67 +520,6 @@ class HepsiburadaBackend(models.Model):
             )
         except HepsiburadaAPIError as e:
             _logger.error("Failed to import orders: %s", str(e))
-            raise
-
-    def action_import_cancelled_orders(self):
-        """Manually trigger cancelled order status update."""
-        self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Import HB cancelled orders: %s") % self.name,
-        )._import_cancelled_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Cancelled order sync has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
-
-    def _import_cancelled_orders(self):
-        """Import cancelled packages to update existing order statuses."""
-        self.ensure_one()
-        client = self._get_api_client()
-        Order = self.env["hepsiburada.order"]
-
-        try:
-            packages = self._fetch_all_packages(client.get_cancelled_packages)
-            total_updated = 0
-
-            for pkg in packages:
-                items = pkg.get("items", [])
-                if not items:
-                    continue
-                order_number = str(items[0].get("orderNumber", ""))
-                if not order_number:
-                    continue
-                existing = Order.search(
-                    [
-                        ("backend_id", "=", self.id),
-                        ("hb_order_number", "=", order_number),
-                    ],
-                    limit=1,
-                )
-                if existing and existing.hb_status != "cancelled":
-                    existing.hb_status = "cancelled"
-                    existing._update_picking_delivery_state("cancelled")
-                    if existing.odoo_id.state not in ("done", "cancel"):
-                        existing.odoo_id.with_context(
-                            from_hepsiburada_cancel=True,
-                            disable_cancel_warning=True,
-                        ).action_cancel()
-                    total_updated += 1
-
-            _logger.info(
-                "Updated %d cancelled orders for backend %s",
-                total_updated,
-                self.name,
-            )
-        except HepsiburadaAPIError as e:
-            _logger.error("Failed to import cancelled orders: %s", str(e))
             raise
 
     # ==================== Settlement Import ====================
@@ -882,21 +821,6 @@ class HepsiburadaBackend(models.Model):
                 channel="root.hepsiburada.order",
                 description=_("Import Hepsiburada orders: %s") % backend.name,
             )._import_orders()
-
-    @api.model
-    def _cron_import_cancelled_orders(self):
-        """Cron job to sync cancelled orders from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_orders", "=", True),
-            ]
-        )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Sync HB cancelled orders: %s") % backend.name,
-            )._import_cancelled_orders()
 
     @api.model
     def _cron_send_invoices(self):

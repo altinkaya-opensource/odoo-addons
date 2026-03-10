@@ -154,6 +154,15 @@ class TrendyolOrder(models.Model):
                 existing.trendyol_status = new_status
                 existing.raw_data = json.dumps(order_data, indent=2, ensure_ascii=False)
                 existing._update_picking_delivery_state(new_status)
+                # Cancel the Odoo sale order if Trendyol status is cancelled
+                if new_status == "cancelled" and existing.odoo_id.state not in (
+                    "done",
+                    "cancel",
+                ):
+                    existing.odoo_id.with_context(
+                        from_trendyol_cancel=True,
+                        disable_cancel_warning=True,
+                    ).action_cancel()
             return existing
 
         # Create new order
