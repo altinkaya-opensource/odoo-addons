@@ -217,6 +217,13 @@
                                 <div class="col-6">
                                     <h3>Sync</h3>
                                     <button
+                                        name="action_sync_products"
+                                        string="Sync Products"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                    <button
                                         name="action_sync_categories"
                                         string="Sync Categories"
                                         type="object"
@@ -240,6 +247,7 @@
                                     <field name="last_settlement_sync" readonly="0" />
                                     <field name="last_question_sync" readonly="0" />
                                     <field name="last_claim_sync" readonly="0" />
+                                    <field name="last_product_sync" />
                                     <field name="last_category_sync" />
                                     <field name="last_brand_sync" />
                                 </group>

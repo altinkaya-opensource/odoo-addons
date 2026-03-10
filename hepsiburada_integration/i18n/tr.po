@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-09 14:16+0000\n"
-"PO-Revision-Date: 2026-03-09 14:16+0000\n"
+"POT-Creation-Date: 2026-03-10 05:46+0000\n"
+"PO-Revision-Date: 2026-03-10 05:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -645,7 +645,7 @@ msgstr "Backend Adı"
 #. module: hepsiburada_integration
 #: model:ir.ui.menu,name:hepsiburada_integration.menu_hepsiburada_backends
 msgid "Backends"
-msgstr "Backends"
+msgstr "Backend'ler"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__barcode
@@ -2600,6 +2600,7 @@ msgid "Ignore Exceptions"
 msgstr "İstisnaları Yoksay"
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__product_image
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_1920
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__image_ids
 msgid "Image"
@@ -2720,10 +2721,6 @@ msgid ""
 "        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n"
 "        Used to compute margins on sale orders."
 msgstr ""
-"In Standard Price & AVCO: value of the product (automatically computed in AVCO).\n"
-"        In FIFO: value of the next unit that will leave the stock (automatically computed).\n"
-"        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n"
-"        Used to compute margins on sale orders."
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_search
@@ -3054,6 +3051,11 @@ msgstr "Son Değiştirilme Tarihi"
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_order_sync
 msgid "Last Order Sync"
 msgstr "Son Sipariş Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_product_sync
+msgid "Last Product Sync"
+msgstr "Son Ürün Senkronizasyonu"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_question_sync
@@ -4086,6 +4088,7 @@ msgid "Procurement Group"
 msgstr "Tedarik Grubu"
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order_line__product_id
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__product_variant_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_claim_form
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_product_binding_tree
@@ -4228,6 +4231,13 @@ msgstr "Ürün aktarımı kuyruğa alındı."
 #, python-format
 msgid "Product price must be greater than 0 for %s"
 msgstr "%s için ürün fiyatı 0'dan büyük olmalıdır"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Product synchronization has been queued."
+msgstr "Ürün senkronizasyonu kuyruğa alındı."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_product_binding__property_stock_production
@@ -5217,6 +5227,13 @@ msgid "Sync Hepsiburada categories: %s"
 msgstr "Hepsiburada kategorilerini senkronize et: %s"
 
 #. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Sync Hepsiburada products: %s"
+msgstr "Hepsiburada ürünlerini senkronize et: %s"
+
+#. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_product_binding_form
 msgid "Sync Info"
 msgstr "Senkronizasyon Bilgisi"
@@ -5228,11 +5245,17 @@ msgstr "Eksik Faturaları Senkronize Et"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Sync Products"
+msgstr "Ürünleri Senkronize Et"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 msgid "Sync Settings"
 msgstr "Senkronizasyon Ayarları"
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0

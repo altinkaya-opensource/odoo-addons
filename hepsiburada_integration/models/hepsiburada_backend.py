@@ -83,6 +83,9 @@ class HepsiburadaBackend(models.Model):
     last_brand_sync = fields.Datetime(
         readonly=True,
     )
+    last_product_sync = fields.Datetime(
+        readonly=True,
+    )
 
     # Statistics
     product_binding_count = fields.Integer(
@@ -767,6 +770,214 @@ class HepsiburadaBackend(models.Model):
         self.ensure_one()
         self.last_brand_sync = fields.Datetime.now()
         _logger.info("Brand sync completed for backend %s", self.name)
+
+    def action_sync_products(self):
+        """Manually trigger product sync from Hepsiburada catalog."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.product",
+            description=_("Sync Hepsiburada products: %s") % self.name,
+        )._sync_products()
+        return self._build_notification(
+            _("Sync Started"),
+            _("Product synchronization has been queued."),
+        )
+
+    def _sync_products(self):
+        """Sync merchant products from Hepsiburada MPOP API.
+
+        Fetches all products from the merchant catalog and creates or updates
+        product bindings. Uses merchantSku as the unique identifier.
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        ProductBinding = self.env["hepsiburada.product.binding"]
+
+        page = 0
+        total_synced = 0
+        total_created = 0
+
+        while True:
+            try:
+                result = client.get_merchant_products(page=page, size=1000)
+            except HepsiburadaAPIError as e:
+                _logger.error("Failed to fetch merchant products page %d: %s", page, e)
+                raise
+
+            products = (
+                result
+                if isinstance(result, list)
+                else result.get("data", [])
+            )
+            if not products:
+                break
+
+            for product_data in products:
+                merchant_sku = product_data.get("merchantSku", "")
+                if not merchant_sku:
+                    continue
+
+                try:
+                    binding = ProductBinding.search(
+                        [
+                            ("backend_id", "=", self.id),
+                            ("hb_merchant_sku", "=", merchant_sku),
+                        ],
+                        limit=1,
+                    )
+
+                    barcode = product_data.get("barcode", "")
+                    status = product_data.get("status", "")
+
+                    if binding:
+                        # Update existing binding sync state
+                        vals = {"last_sync_date": fields.Datetime.now()}
+                        if status:
+                            sync_state = (
+                                "approved" if status == "MATCHED" else "draft"
+                            )
+                            if binding.sync_state != sync_state:
+                                vals["sync_state"] = sync_state
+                        binding.write(vals)
+                    else:
+                        # Try to find matching Odoo product
+                        product = self._find_product_for_sync(
+                            merchant_sku, barcode
+                        )
+                        if not product:
+                            _logger.info(
+                                "No matching Odoo product for HB merchantSku %s "
+                                "(barcode: %s), skipping binding creation",
+                                merchant_sku,
+                                barcode,
+                            )
+                            continue
+
+                        # Check if product already has a binding
+                        existing_binding = ProductBinding.search(
+                            [
+                                ("backend_id", "=", self.id),
+                                ("odoo_id", "=", product.id),
+                            ],
+                            limit=1,
+                        )
+                        if existing_binding:
+                            _logger.info(
+                                "Product %s already bound as %s, "
+                                "skipping merchantSku %s",
+                                product.default_code,
+                                existing_binding.hb_merchant_sku,
+                                merchant_sku,
+                            )
+                            continue
+
+                        # Get category (required field)
+                        category_id = product_data.get("categoryId")
+                        hb_category = False
+                        if category_id:
+                            hb_category = self.env["hepsiburada.category"].search(
+                                [("marketplace_id", "=", category_id)],
+                                limit=1,
+                            )
+                        if not hb_category:
+                            _logger.info(
+                                "Category %s not synced for merchantSku %s, "
+                                "skipping",
+                                category_id,
+                                merchant_sku,
+                            )
+                            continue
+
+                        brand_name = product_data.get("brand", "")
+                        if not brand_name:
+                            _logger.info(
+                                "No brand for merchantSku %s, skipping",
+                                merchant_sku,
+                            )
+                            continue
+
+                        try:
+                            with self.env.cr.savepoint():
+                                ProductBinding.create(
+                                    {
+                                        "backend_id": self.id,
+                                        "odoo_id": product.id,
+                                        "hb_merchant_sku": merchant_sku,
+                                        "hb_category_id": hb_category.id,
+                                        "hb_brand_name": brand_name,
+                                        "sync_state": "approved"
+                                        if status == "MATCHED"
+                                        else "draft",
+                                        "last_sync_date": fields.Datetime.now(),
+                                    }
+                                )
+                                total_created += 1
+                        except Exception as e:
+                            _logger.warning(
+                                "Failed to create binding for "
+                                "merchantSku %s: %s",
+                                merchant_sku,
+                                e,
+                            )
+
+                    total_synced += 1
+                except Exception:
+                    _logger.exception(
+                        "Failed to sync product binding for merchantSku %s",
+                        merchant_sku,
+                    )
+
+            # Check pagination
+            total_pages = 1
+            if isinstance(result, dict):
+                total_pages = result.get("totalPages", 1)
+            if page + 1 >= total_pages:
+                break
+            page += 1
+
+        self.last_product_sync = fields.Datetime.now()
+        _logger.info(
+            "Product sync done for backend %s: %d synced, %d created",
+            self.name,
+            total_synced,
+            total_created,
+        )
+
+    def _find_product_for_sync(self, merchant_sku, barcode):
+        """Find matching Odoo product by merchant SKU or barcode.
+
+        Matching cascade:
+            1. merchantSku as default_code (most reliable for Altınkaya)
+            2. barcode as barcode
+            3. merchantSku as barcode (fallback)
+
+        Args:
+            merchant_sku: Merchant SKU from HB (typically = default_code)
+            barcode: Product barcode from HB
+
+        Returns:
+            product.product record or False
+        """
+        Product = self.env["product.product"]
+        product = False
+
+        # 1. merchantSku → default_code (primary match)
+        if merchant_sku:
+            product = Product.search(
+                [("default_code", "=", merchant_sku)], limit=1
+            )
+        # 2. barcode → barcode
+        if not product and barcode:
+            product = Product.search(
+                [("barcode", "=", barcode)], limit=1
+            )
+        # 3. merchantSku → barcode (fallback)
+        if not product and merchant_sku:
+            product = Product.search(
+                [("barcode", "=", merchant_sku)], limit=1
+            )
+
+        return product
 
     def action_view_products(self):
         """View product bindings for this backend."""

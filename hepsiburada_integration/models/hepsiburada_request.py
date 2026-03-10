@@ -674,6 +674,23 @@ class HepsiburadaRequest(MarketplaceRequest):
             "/product/api/products/fastlisting", products_data, "fast listing"
         )
 
+    def get_merchant_products(self, page=0, size=1000):
+        """Get all products of the merchant from Hepsiburada catalog.
+
+        Args:
+            page: Page number (0-based)
+            size: Page size (max 1000)
+
+        Returns:
+            Dict with 'data' list and pagination info
+                (totalElements, totalPages, number, first, last)
+        """
+        endpoint = (
+            f"/product/api/products/all-products-of-merchant/{self.merchant_id}"
+        )
+        params = {"page": page, "size": min(size, 1000)}
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
     def get_product_status(self, tracking_id):
         """Check product upload status by tracking ID.
 

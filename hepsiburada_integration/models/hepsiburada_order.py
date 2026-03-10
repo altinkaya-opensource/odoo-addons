@@ -1033,6 +1033,15 @@ class HepsiburadaOrderLine(models.Model):
     hb_sku = fields.Char(string="HBSKU")
     merchant_sku = fields.Char()
     sale_line_id = fields.Many2one("sale.order.line")
+    product_id = fields.Many2one(
+        related="sale_line_id.product_id",
+        string="Product",
+        store=True,
+    )
+    product_image = fields.Binary(
+        related="product_id.image_128",
+        string="Image",
+    )
     quantity = fields.Integer()
     unit_price = fields.Float()
     total_price = fields.Float()
