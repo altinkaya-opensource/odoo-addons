@@ -177,6 +177,15 @@ class HepsiburadaOrder(models.Model):
                     package_data, indent=2, ensure_ascii=False
                 )
                 existing._update_picking_delivery_state(new_status)
+                # Cancel the Odoo sale order if HB status is cancelled
+                if new_status == "cancelled" and existing.odoo_id.state not in (
+                    "done",
+                    "cancel",
+                ):
+                    existing.odoo_id.with_context(
+                        from_hepsiburada_cancel=True,
+                        disable_cancel_warning=True,
+                    ).action_cancel()
 
             # Update package number if it was empty and now available
             pkg_number = package_data.get("packageNumber", "")

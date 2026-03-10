@@ -200,7 +200,7 @@ class TrendyolBackend(models.Model):
             raise UserError(_("A webhook is already registered for this backend."))
 
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        webhook_url = f"{base_url}/trendyol/webhook/{self.id}"
+        webhook_url = f"{base_url}/ty/wh/{self.id}"
 
         # Generate API key if not set
         if not self.webhook_api_key:

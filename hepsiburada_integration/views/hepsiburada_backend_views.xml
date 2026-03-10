@@ -179,13 +179,6 @@
                                         icon="fa-download"
                                     />
                                     <button
-                                        name="action_import_cancelled_orders"
-                                        string="Sync Cancelled Orders"
-                                        type="object"
-                                        class="btn-secondary d-block mb-2"
-                                        icon="fa-download"
-                                    />
-                                    <button
                                         name="action_import_settlements"
                                         string="Import Settlements"
                                         type="object"
