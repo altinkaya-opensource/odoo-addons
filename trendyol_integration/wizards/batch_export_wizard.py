@@ -51,6 +51,10 @@ class TrendyolBatchExportWizard(models.TransientModel):
         string="Skip Existing Bindings",
         default=True,
     )
+    website_published_filter = fields.Boolean(
+        string="Website Published Only",
+        help="Filter only products published on the website",
+    )
 
     # Products
     product_ids = fields.Many2many(
@@ -132,6 +136,19 @@ class TrendyolBatchExportWizard(models.TransientModel):
         else:
             self.product_ids = [(5, 0, 0)]
         self.product_search = False
+
+    @api.onchange("website_published_filter")
+    def _onchange_website_published_filter(self):
+        """Filter current product list by website publish status."""
+        if self.website_published_filter:
+            if self.product_ids:
+                published = self.product_ids.filtered("is_published")
+                self.product_ids = [(6, 0, published.ids)]
+        elif self.category_filter_id:
+            products = self.env["product.product"].search(
+                [("categ_id", "child_of", self.category_filter_id.id)]
+            )
+            self.product_ids = [(6, 0, products.ids)]
 
     @api.onchange("product_search")
     def _onchange_product_search(self):

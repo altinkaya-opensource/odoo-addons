@@ -1001,7 +1001,7 @@ msgstr "Talep Hepsiburada'da reddedildi."
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Claims"
-msgstr "Talepler"
+msgstr "İade Talepleri / İadeler"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_question__hb_status__closed
@@ -4395,7 +4395,7 @@ msgstr "Soru içe aktarma kuyruğa alındı."
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
 #, python-format
 msgid "Questions"
-msgstr "Sorular"
+msgstr "Sorular (S&C)"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__sale_order_template_id
@@ -4933,6 +4933,11 @@ msgstr "İmza Tarihi"
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_batch_export_wizard__skip_existing
 msgid "Skip Existing Bindings"
 msgstr "Mevcut Bağlantıları Atla"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_batch_export_wizard__website_published_filter
+msgid "Website Published Only"
+msgstr "Website Ürünlerini Filtrele"
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__sku

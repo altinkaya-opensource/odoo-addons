@@ -5228,9 +5228,13 @@ msgstr "Sincan Depo Tahmini"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_batch_export_wizard__skip_existing
-#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_export_wizard__skip_existing
 msgid "Skip Existing Bindings"
-msgstr "Skip Existing Bindings"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_batch_export_wizard__website_published_filter
+msgid "Website Published Only"
+msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_export_wizard__skip_existing

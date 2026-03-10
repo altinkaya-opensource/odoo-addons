@@ -4811,6 +4811,11 @@ msgid "Skip Existing Bindings"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_batch_export_wizard__website_published_filter
+msgid "Website Published Only"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__sku
 msgid "Sku"
 msgstr ""

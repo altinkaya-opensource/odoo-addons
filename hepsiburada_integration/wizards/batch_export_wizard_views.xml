@@ -9,7 +9,7 @@
                 <sheet>
                     <!-- Row 1: Marketplace config + Odoo filter + Search -->
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <group string="Marketplace">
                                 <field name="backend_id" />
                                 <field name="hb_category_id" />
@@ -17,14 +17,15 @@
                                 <field name="vat_rate" />
                             </group>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <group string="Product Filter">
                                 <field name="category_filter_id" />
                                 <field name="product_search" />
                                 <field name="skip_existing" />
+                                <field name="website_published_filter" />
                             </group>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             <div class="alert alert-info mt-4" role="alert">
                                 <strong>Selected:</strong>
                                 <field name="product_count" class="d-inline" />
