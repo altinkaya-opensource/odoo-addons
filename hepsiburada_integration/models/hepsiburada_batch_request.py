@@ -162,7 +162,7 @@ class HepsiburadaBatchRequest(models.Model):
             binding.sync_state = "pending"
             binding.sync_error = f"{product_status}\n" + "\n".join(item_errors)
         else:
-            binding.sync_state = "done"
+            binding.sync_state = "approved"
             binding.sync_error = False
 
     def _process_result(self, result):
