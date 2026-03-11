@@ -13,7 +13,7 @@
                         type="object"
                         class="btn-primary"
                         attrs="{'invisible': [('status', '!=', 'waiting_for_answer')]}"
-                        groups="trendyol_integration.group_trendyol_manager"
+                        groups="trendyol_integration.group_trendyol_user"
                     />
                     <button
                         name="action_open_in_trendyol"
