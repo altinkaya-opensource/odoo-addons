@@ -770,6 +770,9 @@ class HepsiburadaBackend(models.Model):
                     barcode = product_data.get("barcode", "")
                     status = product_data.get("status", "")
 
+                    images = product_data.get("images") or []
+                    image_url = images[0] if images else ""
+
                     if binding:
                         # Update existing binding sync state
                         vals = {"last_sync_date": fields.Datetime.now()}
@@ -777,6 +780,8 @@ class HepsiburadaBackend(models.Model):
                             sync_state = "approved" if status == "MATCHED" else "draft"
                             if binding.sync_state != sync_state:
                                 vals["sync_state"] = sync_state
+                        if image_url and not binding.marketplace_image_url:
+                            vals["marketplace_image_url"] = image_url
                         binding.write(vals)
                     else:
                         created = self._create_binding_from_sync(
@@ -864,6 +869,8 @@ class HepsiburadaBackend(models.Model):
 
         try:
             with self.env.cr.savepoint():
+                images = product_data.get("images") or []
+                image_url = images[0] if images else ""
                 ProductBinding.create(
                     {
                         "backend_id": self.id,
@@ -871,6 +878,7 @@ class HepsiburadaBackend(models.Model):
                         "hb_merchant_sku": merchant_sku,
                         "hb_category_id": hb_category.id,
                         "hb_brand_name": brand_name,
+                        "marketplace_image_url": image_url,
                         "sync_state": "approved" if status == "MATCHED" else "draft",
                         "last_sync_date": fields.Datetime.now(),
                     }

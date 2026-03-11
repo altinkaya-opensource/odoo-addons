@@ -31,6 +31,12 @@ class MarketplaceProductBinding(models.AbstractModel):
         readonly=True,
     )
 
+    # Image
+    marketplace_image_url = fields.Char(
+        string="Image URL",
+        help="Product image URL from marketplace",
+    )
+
     # VAT
     vat_rate = fields.Float(
         string="VAT Rate (%)",

@@ -356,6 +356,195 @@ class TrendyolBackend(models.Model):
             _logger.error("Failed to sync brands: %s", str(e))
             raise
 
+    # ==================== Product Sync Methods ====================
+
+    def action_sync_products(self):
+        """Manually trigger product image sync from Trendyol."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.trendyol.product",
+            description=_("Sync Trendyol product images: %s") % self.name,
+        )._sync_products()
+        return self._build_notification(
+            _("Sync Started"),
+            _("Product synchronization has been queued."),
+        )
+
+    def _sync_products(self):
+        """Sync products from Trendyol API.
+
+        Fetches all products from the seller catalog and creates or updates
+        product bindings. Uses barcode/stockCode as the unique identifier.
+        """
+        self.ensure_one()
+        client = self._get_api_client()
+        Binding = self.env["trendyol.product.binding"]
+
+        page = 0
+        total_synced = 0
+        total_created = 0
+
+        while True:
+            try:
+                result = client.filter_products(page=page, size=200)
+            except TrendyolAPIError as e:
+                _logger.error("Failed to fetch products page %d: %s", page, e)
+                raise
+
+            products = result.get("content", [])
+            if not products:
+                break
+
+            for product_data in products:
+                barcode = product_data.get("barcode", "")
+                if not barcode:
+                    continue
+
+                try:
+                    binding = Binding.search(
+                        [
+                            ("backend_id", "=", self.id),
+                            ("trendyol_barcode", "=", barcode),
+                        ],
+                        limit=1,
+                    )
+
+                    images = product_data.get("images") or []
+                    image_url = images[0].get("url", "") if images else ""
+
+                    if binding:
+                        vals = {"last_sync_date": fields.Datetime.now()}
+                        if image_url and not binding.marketplace_image_url:
+                            vals["marketplace_image_url"] = image_url
+                        binding.write(vals)
+                    else:
+                        created = self._create_binding_from_sync(
+                            product_data, barcode, image_url
+                        )
+                        if created:
+                            total_created += 1
+
+                    total_synced += 1
+                except Exception:
+                    _logger.exception(
+                        "Failed to sync product binding for barcode %s",
+                        barcode,
+                    )
+
+            total_pages = result.get("totalPages", 1)
+            if page + 1 >= total_pages:
+                break
+            page += 1
+
+        _logger.info(
+            "Product sync done for backend %s: %d synced, %d created",
+            self.name,
+            total_synced,
+            total_created,
+        )
+
+    def _create_binding_from_sync(self, product_data, barcode, image_url):
+        """Create a new product binding from synced Trendyol product data.
+
+        Returns:
+            True if binding was created, False otherwise
+        """
+        Binding = self.env["trendyol.product.binding"]
+        Product = self.env["product.product"]
+
+        # Find matching Odoo product by barcode or default_code
+        stock_code = product_data.get("stockCode", "")
+        product = False
+        if stock_code:
+            product = Product.search([("default_code", "=", stock_code)], limit=1)
+        if not product and barcode:
+            product = Product.search([("barcode", "=", barcode)], limit=1)
+        if not product and stock_code:
+            product = Product.search([("barcode", "=", stock_code)], limit=1)
+
+        if not product:
+            _logger.info(
+                "No matching Odoo product for Trendyol barcode %s "
+                "(stockCode: %s), skipping binding creation",
+                barcode,
+                stock_code,
+            )
+            return False
+
+        # Check if product is already bound
+        existing = Binding.search(
+            [("backend_id", "=", self.id), ("odoo_id", "=", product.id)],
+            limit=1,
+        )
+        if existing:
+            _logger.info(
+                "Product %s already bound as %s, skipping barcode %s",
+                product.default_code,
+                existing.trendyol_barcode,
+                barcode,
+            )
+            return False
+
+        # Find category
+        category_name = product_data.get("categoryName", "")
+        pim_category_id = product_data.get("pimCategoryId")
+        ty_category = False
+        if pim_category_id:
+            ty_category = self.env["trendyol.category"].search(
+                [("marketplace_id", "=", pim_category_id)],
+                limit=1,
+            )
+        if not ty_category:
+            _logger.info(
+                "Category %s (id: %s) not synced for barcode %s, skipping",
+                category_name,
+                pim_category_id,
+                barcode,
+            )
+            return False
+
+        # Find brand
+        brand_id = product_data.get("brandId")
+        ty_brand = False
+        if brand_id:
+            ty_brand = self.env["trendyol.brand"].search(
+                [("marketplace_id", "=", brand_id)],
+                limit=1,
+            )
+        if not ty_brand:
+            _logger.info(
+                "Brand %s (id: %s) not synced for barcode %s, skipping",
+                product_data.get("brand", ""),
+                brand_id,
+                barcode,
+            )
+            return False
+
+        approved = product_data.get("approved", False)
+        try:
+            with self.env.cr.savepoint():
+                Binding.create(
+                    {
+                        "backend_id": self.id,
+                        "odoo_id": product.id,
+                        "trendyol_barcode": barcode,
+                        "trendyol_stock_code": stock_code,
+                        "trendyol_category_id": ty_category.id,
+                        "trendyol_brand_id": ty_brand.id,
+                        "marketplace_image_url": image_url,
+                        "sync_state": "approved" if approved else "draft",
+                        "last_sync_date": fields.Datetime.now(),
+                    }
+                )
+                return True
+        except Exception as e:
+            _logger.warning(
+                "Failed to create binding for barcode %s: %s",
+                barcode,
+                e,
+            )
+            return False
+
     # ==================== Order Methods ====================
 
     def action_import_orders(self):

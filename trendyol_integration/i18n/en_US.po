@@ -5513,7 +5513,13 @@ msgstr "Sync Attributes for Leaf Categories"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category_sync_wizard__sync_brands
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_form
 msgid "Sync Brands"
-msgstr "Sync Brands"
+msgstr "Sync "
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category_sync_wizard__sync_products
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_backend_form
+msgid "Sync Products"
+msgstr "Sync Products"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_category_sync_wizard__sync_categories

@@ -107,8 +107,8 @@
                 decoration-info="sync_state == 'pending'"
             >
                 <field
-                    name="image_128"
-                    widget="image"
+                    name="marketplace_image_url"
+                    widget="image_url"
                     string=" "
                     options="{'size': [64, 64]}"
                 />
