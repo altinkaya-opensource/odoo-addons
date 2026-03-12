@@ -1,6 +1,6 @@
 import logging
 
-from odoo import Command, _, api, fields, models
+from odoo import _, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
 
@@ -9,75 +9,6 @@ _logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-
-    def _compute_currency_difference_amls(self):
-        for partner in self:
-            difference_aml_domain = [
-                ("partner_id", "=", partner.id),
-                ("journal_id", "=", self.env.company.currency_exchange_journal_id.id),
-                ("difference_checked", "=", False),
-                ("full_reconcile_id", "!=", False),
-            ]
-
-            difference_amls = self.env["account.move.line"].search_read(
-                domain=difference_aml_domain, fields=["id"]
-            )
-            if len(difference_amls) > 0:
-                partner.write(
-                    {
-                        "currency_difference_amls": [
-                            Command.set([x["id"] for x in difference_amls])
-                        ]
-                    }
-                )
-            else:
-                partner.write({"currency_difference_amls": [Command.clear()]})
-
-    @api.depends("currency_difference_amls")
-    def _compute_difference_to_invoice(self):
-        for partner in self:
-            if len(partner.currency_difference_amls) > 0:
-                partner.currency_difference_to_invoice = True
-            else:
-                partner.currency_difference_to_invoice = False
-
-    def _search_diff_check(self, operator, value):
-        AccountMoveLine = self.env["account.move.line"]
-        domain = [
-            ("difference_checked", "=", False),
-            (
-                "journal_id",
-                "=",
-                self.env.company.currency_exchange_journal_id.id,
-            ),
-        ]
-
-        result = [
-            res["partner_id"][0]
-            for res in AccountMoveLine.read_group(
-                domain, ["partner_id"], ["partner_id"]
-            )
-        ]
-        return [("id", "in", result)]
-
-    currency_difference_amls = fields.Many2many(
-        "account.move.line",
-        string="Currency Difference Move Lines",
-        compute="_compute_currency_difference_amls",
-    )
-
-    currency_difference_to_invoice = fields.Boolean(
-        string="Currency Difference to invoice",
-        compute="_compute_difference_to_invoice",
-        default=False,
-        store=False,
-        search="_search_diff_check",
-    )
-
-    currency_difference_checked = fields.Boolean(
-        default=False,
-        help="Manual check for currency difference",
-    )
 
     def unreconcile_partners_amls(self):
         if (
@@ -91,204 +22,193 @@ class ResPartner(models.Model):
                 reconciled_amls.remove_move_reconcile()
 
     def calc_difference_invoice(self, date, payment_term, billing_point):
-        if (
-            self.property_account_receivable_id.currency_id
-            and self.property_account_payable_id.currency_id
-        ):
-            inv_obj = self.env["account.invoice"]
-            diff_inv_journal = self.env["account.journal"].search(
-                [("code", "=", "KFARK")], limit=1
-            )
-            draft_dif_inv = inv_obj.search(
-                [
-                    ("state", "=", "draft"),
-                    ("journal_id", "=", diff_inv_journal.id),
-                    ("partner_id", "=", self.id),
-                    ("currency_id", "=", self.env.company.currency_id.id),
-                ]
-            )
-            if draft_dif_inv:
-                for x in draft_dif_inv:
-                    x.action_invoice_cancel()
+        """Aggregate yöntemle kur farkı faturası oluşturur.
 
-            difference_aml_domain = [
+        KRFRK kayıtları yerine doğrudan fatura ve ödemelerden hesaplar:
+        Kur farkı = Σ(TL ödemeler) - Σ(FIFO eşleşen faturaların TL'si)
+        """
+        self.ensure_one()
+        inv_obj = self.env["account.move"]
+        aml_obj = self.env["account.move.line"]
+        diff_inv_journal = self.env["account.journal"].search(
+            [("code", "=", "KFARK")], limit=1
+        )
+        if not diff_inv_journal:
+            raise UserError(_("KFARK günlüğü bulunamadı!"))
+
+        # Mevcut taslak KFARK faturaları iptal et
+        draft_dif_invs = inv_obj.search(
+            [
+                ("state", "=", "draft"),
+                ("journal_id", "=", diff_inv_journal.id),
                 ("partner_id", "=", self.id),
-                ("journal_id", "=", self.company_id.currency_exchange_journal_id.id),
-                ("difference_checked", "=", False),
-                ("full_reconcile_id", "!=", False),
+                ("currency_id", "=", self.env.company.currency_id.id),
             ]
+        )
+        if draft_dif_invs:
+            draft_dif_invs.button_cancel()
 
-            difference_amls = self.env["account.move.line"].search(
-                difference_aml_domain
+        # Aggregate kur farkı hesapla
+        net_kur_farki, matched_invoices = self._get_aggregate_kur_farki()
+        _logger.info(
+            "KURFARK [%s] net_kur_farki=%.2f, "
+            "matched_invoices=%d (currency_difference_invoice)",
+            self.name,
+            net_kur_farki,
+            len(matched_invoices),
+        )
+
+        if abs(net_kur_farki) < 0.01:
+            return False
+
+        inv_type = "out_refund" if net_kur_farki < 0 else "out_invoice"
+
+        # Güncel KDV oranları (fatura satırlarında kullanılacak)
+        current_kdv_rates = [20, 10]
+        # Eski oranları güncel oranlarla eşleştir (18→20, 8→10)
+        rate_mapping = {18: 20, 8: 10, 20: 20, 10: 10}
+        all_kdv_rates = list(rate_mapping.keys())
+
+        taxes_dict = {}
+        for kdv_rate in current_kdv_rates:
+            tax = self.env["account.tax"].search(
+                [
+                    ("type_tax_use", "=", "sale"),
+                    ("amount", "=", kdv_rate),
+                    ("include_base_amount", "=", False),
+                ],
+                limit=1,
             )
-            if (
-                difference_amls
-                and round(
-                    (
-                        sum(difference_amls.mapped("debit"))
-                        - sum(difference_amls.mapped("credit"))
-                    ),
-                    2,
-                )
-                < 0
-            ):
-                inv_type = "out_refund"
+            if tax:
+                taxes_dict[kdv_rate] = tax
             else:
-                inv_type = "out_invoice"
-            if difference_amls:
-                # Get taxes
-                created_inv_lines = self.env["account.invoice.line"]
-                kdv_rates = [20, 10, 18, 8]
-                taxes_dict = {}
-                for kdv_rate in kdv_rates:
-                    tax = self.env["account.tax"].search(
-                        [
-                            ("type_tax_use", "=", "sale"),
-                            ("amount", "=", kdv_rate),
-                            ("include_base_amount", "=", False),
-                        ],
-                        limit=1,
+                raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
+
+        # Vergi dağılımı ve fatura satırları
+        inv_lines_to_create = []
+        comment_einvoice = ""
+
+        sale_invoices = matched_invoices.filtered(lambda m: m.is_invoice())
+        if sale_invoices:
+            comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
+            comment_einvoice += ", ".join(
+                inv_id.supplier_invoice_number or inv_id.name
+                for inv_id in sale_invoices
+            )
+
+            tax_lines = sale_invoices.mapped("tax_line_ids")
+
+            # Vergi tutarlarından TL bazında oran hesapla
+            # Eski oranları (18, 8) güncel oranlarla (20, 10) birleştir
+            base_per_rate = {}
+            for rate in all_kdv_rates:
+                invoice_taxes = tax_lines.filtered(
+                    lambda txl, r=rate: txl.tax_line_id.amount == r
+                )
+                tax_tl = sum(abs(bal) for bal in invoice_taxes.mapped("balance"))
+                if tax_tl > 0:
+                    current_rate = rate_mapping[rate]
+                    base_tl = tax_tl / (rate / 100.0)
+                    base_per_rate[current_rate] = (
+                        base_per_rate.get(current_rate, 0.0) + base_tl
                     )
-                    if tax:
-                        taxes_dict[kdv_rate] = tax
-                    else:
-                        raise UserError(
-                            _("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate
-                        )
 
-                comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
-                for diff_aml in difference_amls:
-                    inv_lines_to_create = []
-                    base_ail_dict = {
-                        "difference_base_aml_id": diff_aml.id,
-                        "name": _("Currency Difference"),
-                        "uom_id": 1,
-                        "account_id": self.env.company.currency_diff_inv_account_id.id,
-                    }
-                    amount_untaxed = diff_aml.debit or diff_aml.credit
-                    inv_ids = diff_aml.full_reconcile_id.reconciled_line_ids.filtered(
-                        lambda r: r.invoice_id
-                    ).mapped("invoice_id")
-                    if len(inv_ids) > 0:
-                        comment_einvoice += ", ".join(
-                            inv_id.supplier_invoice_number
-                            if inv_id.supplier_invoice_number
-                            else inv_id.number
-                            for inv_id in inv_ids
-                        )
+            total_base_tl = sum(base_per_rate.values())
+            if total_base_tl > 0:
+                distribution = {
+                    rate: round(base_tl / total_base_tl, 4)
+                    for rate, base_tl in base_per_rate.items()
+                }
 
-                        # Calculate tax distribution
-                        total_amount = amount_untaxed
-                        for rate in kdv_rates:
-                            total_tax_amount = sum(
-                                inv_ids.mapped("tax_line_ids")
-                                .filtered(lambda r: r.tax_id.amount == rate)
-                                .mapped("amount")
-                            )
-                            tax_rate = round(
-                                100.0
-                                * (total_tax_amount / rate)
-                                / sum(inv_ids.mapped("amount_untaxed")),
-                                4,
-                            )
-                            if tax_rate > 0:
-                                tax_id = taxes_dict[rate]
-                                amount_untaxed = round(
-                                    total_amount
-                                    * tax_rate
-                                    / (1 + tax_id.amount / 100.0),
+                diff_account = self.env.company.currency_diff_inv_account_id
+                for rate, tax_ratio in distribution.items():
+                    inv_lines_to_create.append(
+                        {
+                            "name": _("Currency Difference"),
+                            "product_uom_id": 1,
+                            "account_id": diff_account.id,
+                            "price_unit": abs(
+                                round(
+                                    net_kur_farki * tax_ratio / (1 + rate / 100.0),
                                     2,
                                 )
-                                tax_ids = [(6, False, [tax_id.id])]
-                                # else:
-                                #     tax_ids = [(6, False, [taxes_dict[20].id])]
-                                #     amount_untaxed = amount_untaxed / (
-                                #         1 + taxes_dict[20].amount / 100.0
-                                #     )
-
-                                if inv_type == "out_refund" and diff_aml.debit > 0:
-                                    amount_untaxed = -amount_untaxed
-
-                                if inv_type == "out_invoice" and diff_aml.credit > 0:
-                                    amount_untaxed = -amount_untaxed
-
-                                inv_lines_to_create.append(
-                                    dict(
-                                        **base_ail_dict,
-                                        **{
-                                            "price_unit": amount_untaxed,
-                                            "invoice_line_tax_ids": tax_ids,
-                                        },
-                                    )
-                                )
-                    else:
-                        # If there is no invoice, then it is a difference between
-                        # the exchange rate of the invoice and the payment
-                        # Set the tax rate to 20%
-                        comment_einvoice = ""
-                        amount_untaxed = amount_untaxed / (
-                            1 + taxes_dict[20].amount / 100.0
-                        )
-                        tax_ids = [(6, False, [taxes_dict[20].id])]
-
-                        if inv_type == "out_refund" and diff_aml.debit > 0:
-                            amount_untaxed = -amount_untaxed
-
-                        if inv_type == "out_invoice" and diff_aml.credit > 0:
-                            amount_untaxed = -amount_untaxed
-
-                        inv_lines_to_create.append(
-                            dict(
-                                **base_ail_dict,
-                                **{
-                                    "price_unit": amount_untaxed,
-                                    "invoice_line_tax_ids": tax_ids,
-                                },
-                            )
-                        )
-
-                    diff_aml.write({"difference_checked": True})
-
-                    created_inv_lines |= self.env["account.invoice.line"].create(
-                        inv_lines_to_create
+                            ),
+                            "tax_ids": [(6, False, [taxes_dict[rate].id])],
+                        }
                     )
 
-                dif_inv = inv_obj.create(
-                    {
-                        "partner_id": self.id,
-                        "date_invoice": date,
-                        "journal_id": diff_inv_journal.id,
-                        "currency_id": self.env.company.currency_id.id,
-                        "type": inv_type,
-                        "billing_point_id": billing_point.id,
-                        "payment_term_id": payment_term.id,
-                        "comment_einvoice": comment_einvoice,
-                    }
-                )
+        if not inv_lines_to_create:
+            diff_account = self.env.company.currency_diff_inv_account_id
+            inv_lines_to_create.append(
+                {
+                    "name": _("Currency Difference"),
+                    "product_uom_id": 1,
+                    "account_id": diff_account.id,
+                    "price_unit": abs(
+                        round(
+                            net_kur_farki / (1 + taxes_dict[20].amount / 100.0),
+                            2,
+                        )
+                    ),
+                    "tax_ids": [(6, False, [taxes_dict[20].id])],
+                }
+            )
 
-                dif_inv.invoice_line_ids = [
-                    (6, False, [x.id for x in created_inv_lines])
-                ]
-                dif_inv._onchange_invoice_line_ids()
-                return dif_inv
+        dif_inv = inv_obj.create(
+            {
+                "partner_id": self.id,
+                "invoice_date": date,
+                "journal_id": diff_inv_journal.id,
+                "currency_id": self.env.company.currency_id.id,
+                "move_type": inv_type,
+                "billing_point_id": billing_point.id,
+                "invoice_payment_term_id": payment_term.id,
+                "comment_einvoice": comment_einvoice,
+                "line_ids": [(0, 0, line) for line in inv_lines_to_create],
+            }
+        )
 
-        return False
+        # KRFRK kayıtlarını işaretle ve KFARK faturasına bağla
+        receivable_account = self.property_account_receivable_id
+        krfrk_journal = self.env.company.currency_exchange_journal_id
+        unchecked_krfrk = aml_obj.search(
+            [
+                ("partner_id", "=", self.id),
+                ("account_id", "=", receivable_account.id),
+                ("journal_id", "=", krfrk_journal.id),
+                ("difference_checked", "=", False),
+                ("move_id.state", "=", "posted"),
+                ("move_id.reversal_move_id", "=", False),
+                ("move_id.reversed_entry_id", "=", False),
+            ]
+        )
+        if unchecked_krfrk:
+            unchecked_krfrk.write({"difference_checked": True})
+            dif_inv.write(
+                {
+                    "currency_difference_line_ids": [(6, 0, unchecked_krfrk.ids)],
+                }
+            )
+
+        # Receivable satırında amount_currency temizle
+        self.env.cr.execute(
+            """
+            UPDATE account_move_line
+            SET amount_currency = 0.0, currency_id = %s
+            WHERE move_id = %s AND account_id = %s
+        """,
+            (
+                dif_inv.company_id.currency_id.id,
+                dif_inv.id,
+                receivable_account.id,
+            ),
+        )
+        dif_inv.line_ids.invalidate_recordset(["amount_currency", "currency_id"])
+        return dif_inv
 
     def action_generate_currency_diff_invoice(self):
-        view = self.env.ref(
-            "currency_difference_invoice.res_partner_create_difference_inv"
-        )
-        return {
-            "name": _("Create Currency Difference Invoice"),
-            "type": "ir.actions.act_window",
-            "view_type": "form",
-            "view_mode": "form",
-            "res_model": "create.currency.difference.invoices",
-            "views": [(view.id, "form")],
-            "view_id": view.id,
-            "target": "new",
-            "context": self.env.context,
-        }
+        """altinkaya_account'taki wizard'a yönlendir."""
+        return super().action_generate_currency_diff_invoice()
 
     def calc_currency_valuation(self, move_date):
         """

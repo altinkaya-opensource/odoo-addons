@@ -1,43 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="partner_currency_difference_view" model="ir.ui.view">
-        <field name="name">partner.currency.diff.form.view</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="arch" type="xml">
-            <page name="einvoice" position="before">
-                <group
-                    name="currency_difference"
-                    string="Currency Difference"
-                    colspan="2"
-                    col="2"
-                >
-                    <group>
-                        <field name="currency_difference_checked" />
-                        <button
-                            name="action_generate_currency_diff_invoice"
-                            type="object"
-                            string="Calculate Difference Invoice"
-                            attrs="{'invisible': [('parent_id','!=',False)]}"
-                            options="{}"
-                        />
-                    </group>
-                    <field name="currency_difference_amls">
-                        <tree editable="bottom">
-                            <field name="date" />
-                            <field name="move_id" />
-                            <field name="journal_id" />
-                            <field name="name" />
-                            <field name="account_id" />
-                            <field name="partner_id" />
-                            <field name="full_reconcile_id" />
-                            <field name="debit" sum="Toplam Borç" />
-                            <field name="credit" sum="Toplam Alacak" />
-                            <field name="amount_currency" />
-                        </tree>
-                    </field>
-                </group>
-            </page>
-        </field>
-    </record>
+    <!-- View content moved to altinkaya_account/views/partner_view.xml -->
 </odoo>
