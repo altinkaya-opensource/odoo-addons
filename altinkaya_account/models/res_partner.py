@@ -315,7 +315,7 @@ class ResPartner(models.Model):
         # Calculate aggregate currency difference
         net_currency_diff, matched_invoices = self._get_aggregate_currency_difference()
         _logger.info(
-            "KURFARK [%s] net_currency_diff=%.2f, matched_invoices=%d (altinkaya_account)",
+            "KURFARK [%s] net_diff=%.2f, matched=%d",
             self.name,
             net_currency_diff,
             len(matched_invoices),
