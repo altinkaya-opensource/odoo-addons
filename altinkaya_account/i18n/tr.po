@@ -501,8 +501,22 @@ msgstr "Yevmiye Adı"
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
-msgid "KDV %s oranlı vergi tanımlanmamış!"
-msgstr ""
+msgid "KFARK journal not found!"
+msgstr "KFARK günlüğü bulunamadı!"
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "VAT tax with %s%% rate not found!"
+msgstr "KDV %%%s oranlı vergi tanımlanmamış!"
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Currency difference for the following invoices:\n"
+msgstr "Aşağıdaki faturaların kur farkıdır:\n"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form

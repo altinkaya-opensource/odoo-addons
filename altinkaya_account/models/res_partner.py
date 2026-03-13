@@ -162,14 +162,14 @@ class ResPartner(models.Model):
             "context": self.env.context,
         }
 
-    def _get_aggregate_kur_farki(self):
-        """Aggregate kur farkı hesaplama (muhasebe yöntemi).
+    def _get_aggregate_currency_difference(self):
+        """Aggregate currency difference calculation (accounting method).
 
-        Tüm ödemelerin TL toplamı ile FIFO eşleştirilen faturaların
-        TL toplamı arasındaki farkı hesaplar.
+        Calculates the difference between total TRY payments and
+        FIFO-matched invoices' TRY totals.
 
         Returns:
-            tuple: (net_kur_farki, matched_invoice_moves)
+            tuple: (net_currency_diff, matched_invoice_moves)
         """
         self.ensure_one()
         aml_obj = self.env["account.move.line"]
@@ -183,7 +183,7 @@ class ResPartner(models.Model):
         if kfark_journal:
             excluded_journal_ids.append(kfark_journal.id)
 
-        # Tüm posted receivable AML'leri al (KRFRK ve KFARK hariç)
+        # All posted receivable AMLs (excluding KRFRK and KFARK)
         all_amls = aml_obj.search(
             [
                 ("partner_id", "=", self.id),
@@ -194,11 +194,11 @@ class ResPartner(models.Model):
             order="date asc, id asc",
         )
 
-        # Faturalar (borç): debit > 0, amount_currency > 0
+        # Invoices (debit): debit > 0, amount_currency > 0
         invoice_amls = all_amls.filtered(
             lambda l: l.debit > 0 and l.amount_currency > 0
         )
-        # Ödemeler (alacak): credit > 0, amount_currency < 0
+        # Payments (credit): credit > 0, amount_currency < 0
         payment_amls = all_amls.filtered(
             lambda l: l.credit > 0 and l.amount_currency < 0
         )
@@ -206,7 +206,7 @@ class ResPartner(models.Model):
         if not payment_amls:
             return 0.0, self.env["account.move"]
 
-        # FIFO kuyruğu: her fatura için kalan USD ve TL
+        # FIFO queue: remaining USD and TRY per invoice
         invoices_queue = []
         for aml in invoice_amls:
             invoices_queue.append(
@@ -217,7 +217,7 @@ class ResPartner(models.Model):
                 }
             )
 
-        # FIFO eşleştirme
+        # FIFO matching
         total_payment_tl = 0.0
         total_matched_invoice_tl = 0.0
         inv_idx = 0
@@ -249,9 +249,9 @@ class ResPartner(models.Model):
                 if inv["usd_remaining"] <= 0.005:
                     inv_idx += 1
 
-        aggregate_kur_farki = round(total_payment_tl - total_matched_invoice_tl, 2)
+        aggregate_diff = round(total_payment_tl - total_matched_invoice_tl, 2)
 
-        # Daha önce kesilmiş KFARK faturaları düş
+        # Deduct previously posted KFARK invoices
         if kfark_journal:
             posted_kfark_amls = aml_obj.search(
                 [
@@ -269,7 +269,7 @@ class ResPartner(models.Model):
         else:
             already_invoiced = 0.0
 
-        net_kur_farki = round(aggregate_kur_farki - already_invoiced, 2)
+        net_currency_diff = round(aggregate_diff - already_invoiced, 2)
         _logger.info(
             "KURFARK AGGREGATE [%s] "
             "invoices=%d (%.2f TL), payments=%d (%.2f TL), "
@@ -279,17 +279,17 @@ class ResPartner(models.Model):
             total_matched_invoice_tl,
             len(payment_amls),
             total_payment_tl,
-            aggregate_kur_farki,
+            aggregate_diff,
             already_invoiced,
-            net_kur_farki,
+            net_currency_diff,
         )
-        return net_kur_farki, matched_invoice_moves
+        return net_currency_diff, matched_invoice_moves
 
     def calc_difference_invoice(self, date, payment_term, billing_point):
-        """Aggregate yöntemle kur farkı faturası oluşturur.
+        """Create currency difference invoice using aggregate method.
 
-        KRFRK kayıtları yerine doğrudan fatura ve ödemelerden hesaplar:
-        Kur farkı = Σ(TL ödemeler) - Σ(FIFO eşleşen faturaların TL'si)
+        Calculates directly from invoices and payments instead of KRFRK entries:
+        Currency diff = Sum(TRY payments) - Sum(FIFO matched invoices' TRY)
         """
         self.ensure_one()
         inv_obj = self.env["account.move"]
@@ -298,9 +298,9 @@ class ResPartner(models.Model):
             [("code", "=", "KFARK")], limit=1
         )
         if not diff_inv_journal:
-            raise UserError(_("KFARK günlüğü bulunamadı!"))
+            raise UserError(_("KFARK journal not found!"))
 
-        # Mevcut taslak KFARK faturaları iptal et
+        # Cancel existing draft KFARK invoices
         draft_dif_invs = inv_obj.search(
             [
                 ("state", "=", "draft"),
@@ -312,23 +312,23 @@ class ResPartner(models.Model):
         if draft_dif_invs:
             draft_dif_invs.button_cancel()
 
-        # Aggregate kur farkı hesapla
-        net_kur_farki, matched_invoices = self._get_aggregate_kur_farki()
+        # Calculate aggregate currency difference
+        net_currency_diff, matched_invoices = self._get_aggregate_currency_difference()
         _logger.info(
-            "KURFARK [%s] net_kur_farki=%.2f, matched_invoices=%d (altinkaya_account)",
+            "KURFARK [%s] net_currency_diff=%.2f, matched_invoices=%d (altinkaya_account)",
             self.name,
-            net_kur_farki,
+            net_currency_diff,
             len(matched_invoices),
         )
 
-        if abs(net_kur_farki) < 0.01:
+        if abs(net_currency_diff) < 0.01:
             return False
 
-        inv_type = "out_refund" if net_kur_farki < 0 else "out_invoice"
+        inv_type = "out_refund" if net_currency_diff < 0 else "out_invoice"
 
-        # Güncel KDV oranları (fatura satırlarında kullanılacak)
+        # Current VAT rates (used in invoice lines)
         current_kdv_rates = [20, 10]
-        # Eski oranları güncel oranlarla eşleştir (18→20, 8→10)
+        # Map old rates to current rates (18→20, 8→10)
         rate_mapping = {18: 20, 8: 10, 20: 20, 10: 10}
         all_kdv_rates = list(rate_mapping.keys())
 
@@ -345,15 +345,15 @@ class ResPartner(models.Model):
             if tax:
                 taxes_dict[kdv_rate] = tax
             else:
-                raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
+                raise UserError(_("VAT tax with %s%% rate not found!") % kdv_rate)
 
-        # Vergi dağılımı ve fatura satırları
+        # Tax distribution and invoice lines
         inv_lines_to_create = []
         comment_einvoice = ""
 
         sale_invoices = matched_invoices.filtered(lambda m: m.is_invoice())
         if sale_invoices:
-            comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
+            comment_einvoice = _("Currency difference for the following invoices:\n")
             comment_einvoice += ", ".join(
                 inv_id.supplier_invoice_number or inv_id.name
                 for inv_id in sale_invoices
@@ -361,8 +361,8 @@ class ResPartner(models.Model):
 
             tax_lines = sale_invoices.mapped("tax_line_ids")
 
-            # Vergi tutarlarından TL bazında oran hesapla
-            # Eski oranları (18, 8) güncel oranlarla (20, 10) birleştir
+            # Calculate TRY-based tax ratios
+            # Merge old rates (18, 8) into current rates (20, 10)
             base_per_rate = {}
             for rate in all_kdv_rates:
                 invoice_taxes = tax_lines.filtered(
@@ -392,7 +392,7 @@ class ResPartner(models.Model):
                             "account_id": diff_account.id,
                             "price_unit": abs(
                                 round(
-                                    net_kur_farki * tax_ratio / (1 + rate / 100.0),
+                                    net_currency_diff * tax_ratio / (1 + rate / 100.0),
                                     2,
                                 )
                             ),
@@ -401,7 +401,7 @@ class ResPartner(models.Model):
                     )
 
         if not inv_lines_to_create:
-            # Eşleşen fatura yoksa varsayılan %20 KDV
+            # No matched invoices, default to 20% VAT
             diff_account = self.env.company.currency_diff_inv_account_id
             inv_lines_to_create.append(
                 {
@@ -410,7 +410,7 @@ class ResPartner(models.Model):
                     "account_id": diff_account.id,
                     "price_unit": abs(
                         round(
-                            net_kur_farki / (1 + taxes_dict[20].amount / 100.0),
+                            net_currency_diff / (1 + taxes_dict[20].amount / 100.0),
                             2,
                         )
                     ),
@@ -432,7 +432,7 @@ class ResPartner(models.Model):
             }
         )
 
-        # Bekleyen KRFRK kayıtlarını işaretle ve KFARK faturasına bağla
+        # Mark pending KRFRK entries and link to KFARK invoice
         receivable_account = self.property_account_receivable_id
         krfrk_journal = self.env.company.currency_exchange_journal_id
         unchecked_krfrk = aml_obj.search(
@@ -454,7 +454,7 @@ class ResPartner(models.Model):
                 }
             )
 
-        # Receivable satırında amount_currency temizle
+        # Clear amount_currency on receivable line
         self.env.cr.execute(
             """
             UPDATE account_move_line
