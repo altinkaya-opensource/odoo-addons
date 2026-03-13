@@ -71,7 +71,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 }
             )
             res = wizard_obj.action_merge()
-            picking = self.env["stock.picking"].browse(res.get("picking_id"))
+            picking = self.env["stock.picking"].browse(res.get("res_id"))
 
         else:
             picking = self.picking_ids
