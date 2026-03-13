@@ -73,3 +73,12 @@ class AccountFullReconcile(models.Model):
         res = self.env.cr.dictfetchall()
 
         return res
+
+    def unlink(self):
+        """When removing a full reconciliation, also remove partial reconciliations."""
+        partial_rec_to_unlink = self.env["account.partial.reconcile"]
+        for rec in self:
+            partial_rec_to_unlink |= rec.partial_reconcile_ids
+        res = super().unlink()
+        partial_rec_to_unlink.unlink()
+        return res
