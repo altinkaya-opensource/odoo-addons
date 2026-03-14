@@ -185,7 +185,8 @@ class TrendyolQuestion(models.Model):
     def _answer_question(self):
         """Send the answer to Trendyol API."""
         self.ensure_one()
-        client = self.backend_id._get_api_client()
+        # use sudo to ensure we have access to the backend and its credentials
+        client = self.backend_id.sudo()._get_api_client()
 
         try:
             client.answer_question(
