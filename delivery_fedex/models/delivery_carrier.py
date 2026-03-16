@@ -1177,7 +1177,7 @@ class DeliveryCarrier(models.Model):
             raise UserError(
                 _(
                     "No available pickups found on a business day. "
-                    "All available dates fall on weekends or Friday same-day."
+                    "All available dates fall on weekends."
                 )
             )
 
