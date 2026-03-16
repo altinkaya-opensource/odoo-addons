@@ -97,7 +97,7 @@ class MailMail(models.Model):
         params = {}
 
         msg_from = self.email_from
-        if "@altinkaya.com" not in msg_from:
+        if "@altinkaya.com" not in str(msg_from):
             msg_from = '"ALTINKAYA" <erp@altinkaya.com>'
 
         params["From"] = msg_from
