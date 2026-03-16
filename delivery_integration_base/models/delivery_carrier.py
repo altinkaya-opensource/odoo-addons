@@ -436,11 +436,11 @@ class DeliveryCarrier(models.Model):
         return zpl_files
 
     def _is_tr_business_day(self, dt):
-        """Check if a date is a Turkish business day (not weekend or Friday).
-        Used for same-day pickup eligibility (Mon-Thu only).
+        """Check if a date is a Turkish business day (not weekend).
+        Used for same-day pickup eligibility (Mon-Fri).
         """
         d = dt.date() if isinstance(dt, datetime) else dt
-        return d.weekday() < 4
+        return d.weekday() < 5
 
     def _get_next_tr_business_day(self, dt):
         """Advance a datetime to the next business day (Mon-Fri) if needed.
