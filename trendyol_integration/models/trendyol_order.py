@@ -598,15 +598,18 @@ class TrendyolOrder(models.Model):
                     ),
                 }
 
-        # Trendyol prices are VAT-included; use as-is with
-        # price_include taxes (Odoo checkpoint mechanism prevents drift)
-        price_unit = price_incl
+        # Trendyol prices are VAT-included.
+        # `amount` is the original (undiscounted) unit price,
+        # `price` is the unit price after discount.
+        # We use `amount` as price_unit and compute the Odoo discount
+        # percentage from the per-unit discount to avoid double-discounting.
+        gross_unit_price = line_data.get("amount") or price_incl
+        price_unit = gross_unit_price
 
-        # Trendyol sends discount as absolute amount (TRY), Odoo expects percentage
         discount_amount = line_data.get("discount", 0)
         discount_pct = 0.0
-        if discount_amount and price_incl and quantity:
-            discount_pct = (discount_amount / (price_incl * quantity)) * 100
+        if discount_amount and gross_unit_price:
+            discount_pct = (discount_amount / gross_unit_price) * 100
 
         vals = {
             "order_id": sale_order.id,
