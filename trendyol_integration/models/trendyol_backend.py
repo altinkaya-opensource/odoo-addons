@@ -1201,15 +1201,8 @@ class TrendyolBackend(models.Model):
                 )
 
             # Handle cancellation
-            if new_status == "cancelled" and order.odoo_id.state not in (
-                "done",
-                "cancel",
-            ):
-                order.odoo_id.with_context(
-                    from_trendyol_cancel=True,
-                    disable_cancel_warning=True,
-                ).action_cancel()
-                _logger.info("Cancelled Odoo order %s via webhook", order.odoo_id.name)
+            if new_status == "cancelled":
+                order.odoo_id.action_trendyol_cancel()
 
             # Update picking delivery state
             order._update_picking_delivery_state(new_status)

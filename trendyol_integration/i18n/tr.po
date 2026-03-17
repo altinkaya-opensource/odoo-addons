@@ -6965,3 +6965,29 @@ msgstr ""
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki_iscilik
 msgid "Önceki İşçilik Fiyatı"
 msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Trendyol order %s has been cancelled. The sale order has been cancelled. You "
+"cannot validate this picking."
+msgstr ""
+"Trendyol siparişi %s iptal edildi. Satış siparişi iptal edildi. Bu "
+"sevkiyatı onaylayamazsınız."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_order.py:0
+#, python-format
+msgid "Status Updated"
+msgstr "Durum Güncellendi"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_order.py:0
+#, python-format
+msgid "Trendyol status: %s"
+msgstr "Trendyol durumu: %s"
+

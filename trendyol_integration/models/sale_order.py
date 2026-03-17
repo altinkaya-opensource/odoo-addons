@@ -1,11 +1,27 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
+import logging
+
 from odoo import fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    def action_trendyol_cancel(self):
+        """Cancel this sale order due to a Trendyol cancellation.
+
+        Calls _action_cancel() directly to bypass the cancel wizard.
+        Silently skips orders that are already done or cancelled.
+        """
+        cancelable = self.filtered(lambda o: o.state not in ("done", "cancel"))
+        if cancelable:
+            cancelable._action_cancel()
+            for order in cancelable:
+                _logger.info("Cancelled Odoo order %s from Trendyol", order.name)
 
     def action_confirm(self):
         """Set Trendyol tracking number on newly created pickings."""
@@ -31,27 +47,6 @@ class SaleOrder(models.Model):
         related="trendyol_binding_ids.trendyol_status",
         string="Trendyol Status",
     )
-
-    # def action_cancel(self):
-    #     """Block direct cancellation of Trendyol orders.
-
-    #     Users must cancel from the Trendyol Orders section so the
-    #     cancellation is propagated to the Trendyol API first.
-    #     """
-    #     trendyol_orders = self.filtered(
-    #         lambda o: (
-    #             o.trendyol_binding_ids and o.trendyol_status not in (False, "cancelled") # noqa
-    #         )
-    #     )
-    #     if trendyol_orders and not self.env.context.get("from_trendyol_cancel"):
-    #         raise UserError(
-    #             _(
-    #                 "This order was created from Trendyol. Please cancel it"
-    #                 " from the Trendyol Orders section first so the"
-    #                 " cancellation is sent to Trendyol."
-    #             )
-    #         )
-    #     return super().action_cancel()
 
     def action_view_trendyol_binding(self):
         """View Trendyol binding for this order."""

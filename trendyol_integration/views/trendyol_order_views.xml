@@ -28,6 +28,11 @@
                         confirm="Are you sure you want to cancel this order in Trendyol?"
                     />
                     <button
+                        name="action_check_status"
+                        string="Check Status"
+                        type="object"
+                    />
+                    <button
                         name="action_view_in_trendyol"
                         string="View in Trendyol"
                         type="object"

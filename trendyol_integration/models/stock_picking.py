@@ -5,6 +5,7 @@ import base64
 import logging
 
 from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -89,6 +90,38 @@ class StockPicking(models.Model):
         if remaining:
             return super(StockPicking, remaining).action_print_delivery_documents()
         return True
+
+    def button_validate(self):
+        """Check Trendyol order status before validating the picking.
+
+        Fetches current status from Trendyol API to catch cancellations
+        that happened between order import cron runs.
+        """
+        for picking in self:
+            if picking.picking_type_code != "outgoing":
+                continue
+            trendyol_binding = picking._get_trendyol_binding()
+            if not trendyol_binding:
+                continue
+            try:
+                status = trendyol_binding._check_order_status()
+            except Exception:
+                _logger.warning(
+                    "Could not check Trendyol status for order %s, "
+                    "proceeding with validation.",
+                    trendyol_binding.trendyol_order_number,
+                )
+                continue
+            if status in ("cancelled", "unsupplied"):
+                raise UserError(
+                    _(
+                        "Trendyol order %s has been cancelled. "
+                        "The sale order has been cancelled. "
+                        "You cannot validate this picking.",
+                        trendyol_binding.trendyol_order_number,
+                    )
+                )
+        return super().button_validate()
 
     def _action_done(self):
         """Override to notify Trendyol of Picking status after delivery validation."""

@@ -155,14 +155,8 @@ class TrendyolOrder(models.Model):
                 existing.raw_data = json.dumps(order_data, indent=2, ensure_ascii=False)
                 existing._update_picking_delivery_state(new_status)
                 # Cancel the Odoo sale order if Trendyol status is cancelled
-                if new_status == "cancelled" and existing.odoo_id.state not in (
-                    "done",
-                    "cancel",
-                ):
-                    existing.odoo_id.with_context(
-                        from_trendyol_cancel=True,
-                        disable_cancel_warning=True,
-                    ).action_cancel()
+                if new_status == "cancelled":
+                    existing.odoo_id.action_trendyol_cancel()
             return existing
 
         # Create new order
@@ -884,6 +878,51 @@ class TrendyolOrder(models.Model):
                 vals["date_delivered"] = fields.Datetime.now()
             picking.write(vals)
 
+    def action_check_status(self):
+        """Check current order status from Trendyol API."""
+        self.ensure_one()
+        self._check_order_status()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Status Updated"),
+                "message": _("Trendyol status: %s") % self.trendyol_status,
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _check_order_status(self):
+        """Fetch current order status from Trendyol API and update locally.
+
+        If the order is cancelled/unsupplied on Trendyol, updates the
+        local trendyol_status, picking delivery state, and cancels the
+        Odoo sale order.
+
+        Returns:
+            The updated trendyol_status string
+        """
+        self.ensure_one()
+        client = self.backend_id._get_api_client()
+        result = client.get_orders(
+            order_number=self.trendyol_order_number,
+        )
+
+        packages = result.get("content", [])
+        for package in packages:
+            if str(package.get("id")) != self.trendyol_package_id:
+                continue
+            new_status = self._map_status(package.get("status"))
+            if self.trendyol_status != new_status:
+                self.trendyol_status = new_status
+                self._update_picking_delivery_state(new_status)
+                if new_status in ("cancelled", "unsupplied"):
+                    self.odoo_id.action_trendyol_cancel()
+            break
+
+        return self.trendyol_status
+
     def _notify_picking_status(self):
         """Notify Trendyol that the package is being prepared (Picking status)."""
         self.ensure_one()
@@ -931,13 +970,7 @@ class TrendyolOrder(models.Model):
                 reason_id=reason_id,
             )
             self.trendyol_status = "cancelled"
-            # Also cancel in Odoo, bypassing the Trendyol guard
-            # and sale_cancel_reason wizard
-            if self.odoo_id.state not in ("done", "cancel"):
-                self.odoo_id.with_context(
-                    from_trendyol_cancel=True,
-                    disable_cancel_warning=True,
-                ).action_cancel()
+            self.odoo_id.action_trendyol_cancel()
             _logger.info("Cancelled order %s", self.trendyol_order_number)
         except TrendyolAPIError as e:
             _logger.error(
