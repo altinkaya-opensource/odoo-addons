@@ -96,6 +96,8 @@ class SaleOrder(models.Model):
     partner_user_id = fields.Many2one(
         comodel_name="res.users",
         related="partner_id.user_id",
+        store=True,
+        string="Müşteri Satıştemsilcisi",
     )
     production_ids = fields.One2many(
         string="Productions",
