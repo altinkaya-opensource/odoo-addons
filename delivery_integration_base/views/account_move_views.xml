@@ -23,7 +23,7 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_account_invoice_filter" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='ref']" position="after">
+            <xpath expr="//field[@name='name']" position="after">
                 <field name="delivery_ref_no" string="Delivery Ref No" />
             </xpath>
         </field>
