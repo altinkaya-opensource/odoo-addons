@@ -316,6 +316,16 @@ msgid "Delivery Deadline (In Days)"
 msgstr "Teslim Deadline (Gün)"
 
 #. module: delivery_integration_base
+#: model_terms:ir.ui.view,arch_db:delivery_integration_base.view_account_invoice_filter_delivery
+msgid "Delivery Ref No"
+msgstr "Teslimat Referans No"
+
+#. module: delivery_integration_base
+#: model:ir.model.fields,field_description:delivery_integration_base.field_account_move__delivery_ref_no
+msgid "Delivery Reference No."
+msgstr "Teslimat Referans No."
+
+#. module: delivery_integration_base
 #: model:ir.model.fields,field_description:delivery_integration_base.field_sale_order__delivery_price_try
 msgid "Delivery Price (TRY)"
 msgstr "Teslimat Fiyatı (TRY)"

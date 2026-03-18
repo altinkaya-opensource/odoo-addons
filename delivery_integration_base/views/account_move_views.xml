@@ -18,4 +18,14 @@
             </xpath>
         </field>
     </record>
+    <record id="view_account_invoice_filter_delivery" model="ir.ui.view">
+        <field name="name">account.move.search.delivery</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="delivery_ref_no" string="Delivery Ref No" />
+            </xpath>
+        </field>
+    </record>
 </odoo>
