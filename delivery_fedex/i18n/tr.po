@@ -687,3 +687,135 @@ msgid ""
 "{error}\n"
 "{result}"
 msgstr ""
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Street address is required."
+msgstr "- %(type)s (%(name)s): Adres alanı zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): City or State is required."
+msgstr "- %(type)s (%(name)s): Şehir veya Eyalet zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): ZIP/Postal code is required."
+msgstr "- %(type)s (%(name)s): Posta kodu zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Country is required."
+msgstr "- %(type)s (%(name)s): Ülke zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Phone or Mobile number is required."
+msgstr "- %(type)s (%(name)s): Telefon veya Cep telefonu numarası zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- Picking %(name)s: At least one package is required."
+msgstr "- Sevkiyat %(name)s: En az bir paket gereklidir."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Weight must be greater than 0."
+msgstr "- Paket %(package)s: Ağırlık 0'dan büyük olmalıdır."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Length must be greater than 0."
+msgstr "- Paket %(package)s: Uzunluk 0'dan büyük olmalıdır."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Width must be greater than 0."
+msgstr "- Paket %(package)s: Genişlik 0'dan büyük olmalıdır."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Height must be greater than 0."
+msgstr "- Paket %(package)s: Yükseklik 0'dan büyük olmalıdır."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"- Picking %(name)s: A posted invoice is"
+" required for FedEx shipment."
+msgstr ""
+"- Sevkiyat %(name)s: FedEx gönderimi için"
+" onaylanmış bir fatura gereklidir."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"- Recipient (%(name)s): FedEx customer number is required"
+" when payment type is 'Customer Pays'."
+msgstr ""
+"- Alıcı (%(name)s): Ödeme türü 'Alıcı Öder' olduğunda"
+" FedEx müşteri numarası zorunludur."
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"Cannot send FedEx shipment. Please fix"
+" the following issues:\n"
+"\n"
+"%(errors)s"
+msgstr ""
+"FedEx gönderimi yapılamıyor. Lütfen aşağıdaki"
+" sorunları düzeltin:\n"
+"\n"
+"%(errors)s"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/fedex_request.py:0
+#, python-format
+msgid "FedEx Error: %(error)s"
+msgstr "FedEx Hatası: %(error)s"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/fedex_request.py:0
+#, python-format
+msgid ""
+"FedEx Error:\n"
+"%(error_string)s"
+msgstr ""
+"FedEx Hatası:\n"
+"%(error_string)s"
+
+#. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_carrier.py:0
+#, python-format
+msgid "Shipper"
+msgstr "Gönderen"

@@ -302,3 +302,106 @@ msgstr "Gönderimin gümrük beyanına tabi olup olmaması."
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_type__zpl
 msgid "ZPL"
 msgstr "ZPL"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Street address is required."
+msgstr "- %(type)s (%(name)s): Adres alanı zorunludur."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): City or State is required."
+msgstr "- %(type)s (%(name)s): Şehir veya Eyalet zorunludur."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): ZIP/Postal code is required."
+msgstr "- %(type)s (%(name)s): Posta kodu zorunludur."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Country is required."
+msgstr "- %(type)s (%(name)s): Ülke zorunludur."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Phone or Mobile number is required."
+msgstr "- %(type)s (%(name)s): Telefon veya Cep telefonu numarası zorunludur."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- Picking %(name)s: At least one package is required."
+msgstr "- Sevkiyat %(name)s: En az bir paket gereklidir."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Weight must be greater than 0."
+msgstr "- Paket %(package)s: Ağırlık 0'dan büyük olmalıdır."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"- Picking %(name)s: A posted invoice is"
+" required for DHL shipment."
+msgstr ""
+"- Sevkiyat %(name)s: DHL gönderimi için"
+" onaylanmış bir fatura gereklidir."
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"Cannot send DHL shipment. Please fix the"
+" following issues:\n"
+"\n"
+"%(errors)s"
+msgstr ""
+"DHL gönderimi yapılamıyor. Lütfen aşağıdaki"
+" sorunları düzeltin:\n"
+"\n"
+"%(errors)s"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL API Error: %(error)s"
+msgstr "DHL API Hatası: %(error)s"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL API Error: %(details)s"
+msgstr "DHL API Hatası: %(details)s"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "Recipient"
+msgstr "Alıcı"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_carrier.py:0
+#, python-format
+msgid "Shipper"
+msgstr "Gönderen"
