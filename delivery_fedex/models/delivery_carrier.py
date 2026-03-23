@@ -807,20 +807,135 @@ class DeliveryCarrier(models.Model):
             price = 0.0
         return price
 
+    def _validate_fedex_shipping_data(self, picking):
+        """
+        Validate that picking has all required data for FedEx shipment.
+        Raises UserError with all missing fields listed.
+        """
+        errors = []
+        warehouse_partner = picking.location_id.warehouse_id.partner_id
+        recipient = picking.partner_id
+
+        # Validate shipper and recipient address
+        for partner, label in [
+            (warehouse_partner, _("Shipper")),
+            (recipient, _("Recipient")),
+        ]:
+            if not partner.street:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Street address is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.city and not partner.state_id:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): City or State is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.zip:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): ZIP/Postal code is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.country_id:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Country is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.phone and not partner.mobile:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Phone or Mobile number is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+
+        # Validate packages
+        if not picking.package_ids:
+            errors.append(
+                _(
+                    "- Picking %(name)s: At least one package is required.",
+                    name=picking.name,
+                )
+            )
+        else:
+            for package in picking.package_ids:
+                if not package.shipping_weight or package.shipping_weight <= 0:
+                    errors.append(
+                        _(
+                            "- Package %(package)s: Weight must be greater than 0.",
+                            package=package.name,
+                        )
+                    )
+                if not package.pack_length or package.pack_length <= 0:
+                    errors.append(
+                        _(
+                            "- Package %(package)s: Length must be greater than 0.",
+                            package=package.name,
+                        )
+                    )
+                if not package.width or package.width <= 0:
+                    errors.append(
+                        _(
+                            "- Package %(package)s: Width must be greater than 0.",
+                            package=package.name,
+                        )
+                    )
+                if not package.height or package.height <= 0:
+                    errors.append(
+                        _(
+                            "- Package %(package)s: Height must be greater than 0.",
+                            package=package.name,
+                        )
+                    )
+
+        # Validate posted invoice
+        if not picking.invoice_ids.filtered(lambda m: m.state == "posted"):
+            errors.append(
+                _(
+                    "- Picking %(name)s: A posted invoice is"
+                    " required for FedEx shipment.",
+                    name=picking.name,
+                )
+            )
+
+        # Validate customer pays requires FedEx customer number
+        if self.payment_type == "customer_pays" and not recipient.fedex_customer_number:
+            errors.append(
+                _(
+                    "- Recipient (%(name)s): FedEx customer number is required"
+                    " when payment type is 'Customer Pays'.",
+                    name=recipient.display_name,
+                )
+            )
+
+        if errors:
+            raise UserError(
+                _(
+                    "Cannot send FedEx shipment. Please fix"
+                    " the following issues:\n\n%(errors)s",
+                    errors="\n".join(errors),
+                )
+            )
+
     def fedex_send_shipping(self, pickings):
         """
         Send FedEx shipment request for the given pickings.
         """
-        if (
-            self.payment_type == "customer_pays"
-            and not pickings.partner_id.fedex_customer_number
-        ):
-            raise UserError(
-                _(
-                    "FedEx customer number is required for the recipient when "
-                    "the payment type is set to 'Customer Pays'."
-                )
-            )
+        for picking in pickings:
+            self._validate_fedex_shipping_data(picking)
 
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,

@@ -32,6 +32,8 @@ class AccountMove(models.Model):
                     picking.with_context(send_from_account_move=True).send_to_shipper()
                     move.delivery_ref_no = picking.carrier_tracking_ref
                     move.multiple_delivery_ref_no = picking.multiple_shipping_numbers
+            except UserError:
+                raise
             except Exception as e:
                 _logger.error(
                     "Error sending shipment from invoice for move %s: %s",

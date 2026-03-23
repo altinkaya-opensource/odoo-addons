@@ -70,11 +70,19 @@ class FedExRequest:
 
     def _format_errors(self, response, error):
         if not response:
-            return _("FedEx Error, %(error)s", error=str(error))
+            return _("FedEx Error: %(error)s", error=str(error))
 
-        error_string = "\n".join([e["message"] for e in response["errors"]])
+        error_lines = []
+        for e in response.get("errors", []):
+            code = e.get("code", "")
+            message = e.get("message", "")
+            if code:
+                error_lines.append(f"[{code}] {message}")
+            else:
+                error_lines.append(message)
+        error_string = "\n".join(error_lines)
         return _(
-            "FedEx Error: %(error_string)s",
+            "FedEx Error:\n%(error_string)s",
             error_string=error_string,
         )
 

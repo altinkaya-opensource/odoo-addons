@@ -49,12 +49,23 @@ class DHLRequest:
         if not response:
             return _("DHL API Error: %(error)s", error=str(error))
 
-        return _(
-            "DHL API Error: %(title)s: %(message)s - %(detail)s",
-            title=response.get("title", ""),
-            message=response.get("message", ""),
-            detail=response.get("detail", ""),
-        )
+        parts = []
+        title = response.get("title", "")
+        message = response.get("message", "")
+        detail = response.get("detail", "")
+
+        if title:
+            parts.append(title)
+        if message:
+            parts.append(message)
+        if detail:
+            parts.append(detail)
+
+        # Parse additionalDetails for field-level validation errors
+        for ad in response.get("additionalDetails", []):
+            parts.append(str(ad))
+
+        return _("DHL API Error: %(details)s", details=" - ".join(parts))
 
     def _send_api_request(
         self,

@@ -497,6 +497,98 @@ class DeliveryCarrier(models.Model):
 
     # def dhl_account_rate_shipment(self, account_move):
 
+    def _validate_dhl_shipping_data(self, picking):
+        """
+        Validate that picking has all required data for DHL shipment.
+        Raises UserError with all missing fields listed.
+        """
+        errors = []
+        warehouse_partner = picking.location_id.warehouse_id.partner_id
+        recipient = picking.partner_id
+
+        # Validate shipper address
+        for partner, label in [
+            (warehouse_partner, _("Shipper")),
+            (recipient, _("Recipient")),
+        ]:
+            if not partner.street:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Street address is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.city and not partner.state_id:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): City or State is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.zip:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): ZIP/Postal code is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.country_id:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Country is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+            if not partner.phone and not partner.mobile:
+                errors.append(
+                    _(
+                        "- %(type)s (%(name)s): Phone or Mobile number is required.",
+                        type=label,
+                        name=partner.display_name,
+                    )
+                )
+
+        # Validate packages
+        if not picking.package_ids:
+            errors.append(
+                _(
+                    "- Picking %(name)s: At least one package is required.",
+                    name=picking.name,
+                )
+            )
+        else:
+            for package in picking.package_ids:
+                if not package.shipping_weight or package.shipping_weight <= 0:
+                    errors.append(
+                        _(
+                            "- Package %(package)s: Weight must be greater than 0.",
+                            package=package.name,
+                        )
+                    )
+
+        # Validate posted invoice
+        if not picking.invoice_ids.filtered(lambda m: m.state == "posted"):
+            errors.append(
+                _(
+                    "- Picking %(name)s: A posted invoice is"
+                    " required for DHL shipment.",
+                    name=picking.name,
+                )
+            )
+
+        if errors:
+            raise UserError(
+                _(
+                    "Cannot send DHL shipment. Please fix the"
+                    " following issues:\n\n%(errors)s",
+                    errors="\n".join(errors),
+                )
+            )
+
     def dhl_send_shipping(self, pickings):
         """
         Send DHL shipment request for the given pickings.
@@ -504,6 +596,9 @@ class DeliveryCarrier(models.Model):
 
         if self.payment_type == "customer_pays":
             raise NotImplementedError(_("DHL customer pays is not implemented yet."))
+
+        for picking in pickings:
+            self._validate_dhl_shipping_data(picking)
 
         dhl_request = DHLRequest(
             api_key=self.dhl_api_key,
