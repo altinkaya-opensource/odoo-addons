@@ -99,6 +99,19 @@ class AccountMove(models.Model):
         )
         self.other_inv_in_reconciles = invoice_amls.mapped("move_id")
 
+    def _switch_to_pricelist_currency(self):
+        for invoice in self:
+            if (
+                invoice.is_sale_document()
+                and invoice.pricelist_id
+                and invoice.pricelist_id.invoice_currency_id
+            ):
+                invoice.currency_id = invoice.pricelist_id.invoice_currency_id
+
+    def action_account_change_currency(self):
+        self._switch_to_pricelist_currency()
+        return super().action_account_change_currency()
+
     @api.depends("pricelist_id")
     def _compute_currency_id(self):
         """
@@ -106,14 +119,7 @@ class AccountMove(models.Model):
         computing invoice's currency_id.
         """
         res = super()._compute_currency_id()
-        for invoice in self:
-            if (
-                invoice.is_sale_document()
-                and invoice.pricelist_id
-                and invoice.pricelist_id.invoice_currency_id
-                and invoice.currency_id != invoice.pricelist_id.invoice_currency_id
-            ):
-                invoice.currency_id = self.pricelist_id.invoice_currency_id
+        self._switch_to_pricelist_currency()
         return res
 
     def _compute_tax_line_ids(self):
@@ -141,16 +147,6 @@ class AccountMove(models.Model):
             )
             inv.waiting_picking_ids = stocks
 
-    def _onchange_invoice_line_ids(self):
-        """This method was removed in 16.0 but we've added a simulation of it here"""
-        return True
-        # for invoice in self:
-        #     invoice._onchange_partner_id()
-        #     invoice._onchange_date()
-        #     invoice._compute_currency_id()
-        #     invoice._compute_tax_totals()
-        #     invoice._compute_amount()
-
     def action_post(self):
         res = super().action_post()
         user = self.env.user
@@ -168,16 +164,6 @@ class AccountMove(models.Model):
                     )
                     picking.write({"carrier_id": move.carrier_id.id})
 
-            if (
-                move.invoice_payment_term_id
-                and move.invoice_payment_term_id.convert_invoice_to_try
-            ):
-                move.currency_id = self.env.ref("base.TRY")
-                move._inverse_currency_id()
-                move._compute_currency_change_rate()
-                move.action_account_change_currency()
-
-            move._onchange_invoice_line_ids()  # Recompute taxes
             if (
                 move.move_type == "in_invoice"
                 and fields.first(move.invoice_line_ids).account_id

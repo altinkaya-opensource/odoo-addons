@@ -269,7 +269,6 @@ class ResPartner(models.Model):
                 dif_inv.invoice_line_ids = [
                     (6, False, [x.id for x in created_inv_lines])
                 ]
-                dif_inv._onchange_invoice_line_ids()
                 return dif_inv
 
         return False

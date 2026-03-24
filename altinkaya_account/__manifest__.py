@@ -24,6 +24,7 @@
         "account_credit_control",
         "payment_iyzico_altinkaya",
         "account_billing_point",
+        "account_invoice_change_currency",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -33,7 +34,6 @@
         "views/partner_view.xml",
         "views/company_view.xml",
         "views/account_invoice_report_view.xml",
-        "views/account_payment_term_view.xml",
         "views/res_currency_rate_view.xml",
         "views/account_bank_statement_line_view.xml",
         "views/account_reconcile_model_view.xml",
