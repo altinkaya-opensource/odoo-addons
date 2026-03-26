@@ -602,11 +602,13 @@ class TrendyolOrder(models.Model):
         # `amount` is the original (undiscounted) unit price,
         # `price` is the unit price after discount.
         # We use `amount` as price_unit and compute the Odoo discount
-        # percentage from the per-unit discount to avoid double-discounting.
+        # percentage from the total discount to avoid double-discounting.
         gross_unit_price = line_data.get("amount") or price_incl
         price_unit = gross_unit_price
 
-        discount_amount = line_data.get("discount", 0)
+        seller_discount = line_data.get("discount", 0)
+        ty_discount = line_data.get("tyDiscount", 0)
+        discount_amount = seller_discount + ty_discount
         discount_pct = 0.0
         if discount_amount and gross_unit_price:
             discount_pct = (discount_amount / gross_unit_price) * 100
