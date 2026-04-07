@@ -9,6 +9,216 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    @api.depends("property_account_receivable_id", "property_account_payable_id")
+    def _compute_partner_currency(self):
+        for partner in self:
+            account_currency = (
+                partner.property_account_receivable_id.currency_id
+                or partner.property_account_payable_id.currency_id
+            )
+            partner.partner_currency_id = (
+                account_currency or self.env.company.currency_id
+            )
+
+    @api.depends("move_line_ids")
+    def _compute_balance_fields(self):
+        """Compute balance fields for partners using SQL for performance."""
+        if not self.ids:
+            return True
+        query = """
+        UPDATE
+          res_partner rp
+        SET
+          balance_due = CASE WHEN due_balance_table.due_balance > 0
+          THEN due_balance_table.due_balance ELSE 0 END,
+          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0
+          THEN due_balance_table.due_amount_currency ELSE 0 END,
+          balance = balance_table.balance,
+          currency_balance = balance_table.amount_currency
+        FROM
+          (
+            SELECT
+              aml.partner_id AS partner_id,
+              SUM(aml.debit) - SUM(aml.credit) AS due_balance,
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS due_amount_currency
+            FROM
+              account_move_line aml
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
+            WHERE
+              aa.account_type IN ('asset_receivable', 'liability_payable')
+              AND NOT aa.deprecated
+              AND aml.date >= '2022-01-01'
+              AND (aml.date_maturity <= CURRENT_DATE OR aml.date_maturity IS NULL)
+              AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
+            GROUP BY
+              aml.partner_id
+          ) AS due_balance_table,
+          (
+            SELECT
+              aml.partner_id AS partner_id,
+              SUM(aml.debit) - SUM(aml.credit) AS balance,
+              SUM(
+            CASE
+              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
+              ELSE aml.amount_currency
+            END
+              ) AS amount_currency
+            FROM
+              account_move_line aml
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+              LEFT JOIN account_move am ON aml.move_id = am.id
+              LEFT JOIN account_journal aj ON am.journal_id = aj.id
+            WHERE
+              aa.account_type IN ('asset_receivable', 'liability_payable')
+              AND NOT aa.deprecated
+              AND aml.date >= '2022-01-01'
+              AND aml.partner_id IN %s
+              AND am.state = 'posted'
+              AND am.date >= '2022-01-01'
+            GROUP BY
+              aml.partner_id
+          ) AS balance_table
+        WHERE
+          rp.id = due_balance_table.partner_id
+          AND rp.id = balance_table.partner_id
+          AND rp.id IN %s;
+
+        """
+        params = (tuple(self.ids), tuple(self.ids), tuple(self.ids))
+        self._cr.execute(query, params)
+        # HACK: Since we are directly updating the database in a compute method,
+        # this causes the cache to be out of sync also invalidate_cache() method
+        # causes CacheMiss error, this looks like a bug in Odoo,
+        # so we are using search_read to update the cache.
+        self.search_read(
+            domain=[("id", "in", self.ids)],
+            fields=[
+                "balance",
+                "currency_balance",
+                "balance_due",
+                "currency_balance_due",
+            ],
+        )
+        return True
+
+    def _compute_has_2breconciled(self):
+        domain = [
+            "&",
+            "&",
+            "&",
+            "|",
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
+            ("full_reconcile_id", "=", False),
+            ("journal_id.code", "not in", ("ADVR", "KFARK")),
+        ]
+
+        for partner in self:
+            partner.has_2breconciled_customer = False
+            partner.has_2breconciled_supplier = False
+
+            if partner.customer:
+                aml_to_reconcile = partner.env["account.move.line"].search(
+                    domain + [("partner_id", "=", partner.id), ("credit", ">", 0)],
+                    limit=2,
+                )
+                partner.has_2breconciled_customer = len(aml_to_reconcile) > 0
+
+            if partner.supplier:
+                aml_to_reconcile = partner.env["account.move.line"].search(
+                    domain + [("partner_id", "=", partner.id), ("debit", ">", 0)],
+                    limit=2,
+                )
+                partner.has_2breconciled_supplier = len(aml_to_reconcile) > 0
+
+    def _search_has_2breconciled(self, partner_type):
+        AccountMoveLine = self.env["account.move.line"]
+        domain = [
+            "&",
+            "&",
+            "&",
+            "|",
+            ("account_id.account_type", "=", "liability_payable"),
+            ("account_id.account_type", "=", "asset_receivable"),
+            ("full_reconcile_id", "=", False),
+            ("journal_id.code", "not in", ("ADVR", "KFARK")),
+        ]
+
+        if partner_type == "customer":
+            domain += [("credit", ">", 0)]
+        else:
+            domain += [("debit", ">", 0)]
+
+        result = [
+            res["partner_id"][0]
+            for res in AccountMoveLine.read_group(
+                domain, ["partner_id"], ["partner_id"]
+            )
+        ]
+        return [("id", "in", result)]
+
+    def _search_has_2breconciled_customer(self, operator, operand):
+        return self._search_has_2breconciled("customer")
+
+    def _search_has_2breconciled_supplier(self, operator, operand):
+        return self._search_has_2breconciled("supplier")
+
+    partner_currency_id = fields.Many2one(
+        "res.currency",
+        readonly=True,
+        store=True,
+        compute="_compute_partner_currency",
+    )
+
+    balance = fields.Monetary(
+        string="TRY Balance",
+        compute="_compute_balance_fields",
+        store=True,
+    )
+    currency_balance = fields.Monetary(
+        string="Partner Currency Balance",
+        compute="_compute_balance_fields",
+        currency_field="partner_currency_id",
+        store=True,
+    )
+
+    balance_due = fields.Monetary(
+        string="TRY Balance Due",
+        store=True,
+        compute="_compute_balance_fields",
+    )
+    currency_balance_due = fields.Monetary(
+        string="Partner Currency Balance Due",
+        currency_field="partner_currency_id",
+        compute="_compute_balance_fields",
+        store=True,
+    )
+
+    has_2breconciled_customer = fields.Boolean(
+        string="To be reconciled customer",
+        compute="_compute_has_2breconciled",
+        search="_search_has_2breconciled_customer",
+        default=False,
+        store=False,
+    )
+
+    has_2breconciled_supplier = fields.Boolean(
+        string="To be reconciled supplier",
+        compute="_compute_has_2breconciled",
+        search="_search_has_2breconciled_supplier",
+        default=False,
+        store=False,
+    )
+
     def _search_due_days(self, operator, value):
         partners = self.search(
             [

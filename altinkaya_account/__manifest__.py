@@ -4,7 +4,7 @@
 {
     "name": "Altinkaya Account",
     "summary": "Accounting Extension for Altinkaya Enclosures",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ismail Çağan Yılmaz, Altinkaya Enclosures",
     "license": "AGPL-3",
@@ -25,6 +25,8 @@
         "payment_iyzico_altinkaya",
         "account_billing_point",
         "account_invoice_change_currency",
+        "altinkaya_base",
+        "account_financial_risk",
     ],
     "data": [
         "security/ir.model.access.csv",
