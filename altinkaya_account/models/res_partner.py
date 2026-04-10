@@ -355,6 +355,128 @@ class ResPartner(models.Model):
                     )
         return super().create(vals_list)
 
+    def change_accounts_to_usd(self):
+        """
+        Change partners receivable and payable account to
+        USD and update move lines accordingly
+        """
+        if self.parent_id:
+            return self.parent_id.change_accounts_to_usd()
+        receivable_usd = self.env["account.account"].search(
+            [("code", "=", "120.USD")], limit=1
+        )
+        payable_usd = self.env["account.account"].search(
+            [("code", "=", "320.USD")], limit=1
+        )
+        if not (receivable_usd and payable_usd):
+            raise UserError(_("Error in accounts definition"))
+        self._change_partner_accounts(receivable_usd, payable_usd)
+
+    def change_accounts_to_eur(self):
+        """
+        Change partners receivable and payable account to
+        EUR and update move lines accordingly
+        """
+        if self.parent_id:
+            return self.parent_id.change_accounts_to_eur()
+        receivable_eur = self.env["account.account"].search(
+            [("code", "=", "120.EUR")], limit=1
+        )
+        payable_eur = self.env["account.account"].search(
+            [("code", "=", "320.EUR")], limit=1
+        )
+        if not (receivable_eur and payable_eur):
+            raise UserError(_("Error in accounts definition"))
+        self._change_partner_accounts(receivable_eur, payable_eur)
+
+    def change_accounts_to_try(self):
+        """
+        Change partners receivable and payable account to
+        TRY and update move lines accordingly
+        """
+        if self.parent_id:
+            return self.parent_id.change_accounts_to_try()
+        receivable_try = self.env["account.account"].search(
+            [("code", "=", "120.TRY")], limit=1
+        )
+        payable_try = self.env["account.account"].search(
+            [("code", "=", "320.TRY")], limit=1
+        )
+        if not (receivable_try and payable_try):
+            raise UserError(_("Error in accounts definition"))
+        self._change_partner_accounts(receivable_try, payable_try)
+
+    def _change_partner_accounts(self, new_receivable, new_payable):
+        """
+        Change partner's receivable and payable accounts to new accounts
+        and update non-fully-reconciled move lines accordingly.
+        """
+        old_receivable = self.property_account_receivable_id
+        old_payable = self.property_account_payable_id
+        company_currency = self.env.company.currency_id
+        target_currency = new_receivable.currency_id or company_currency
+
+        cr = self.env.cr
+        cr.execute(
+            """UPDATE account_move_line SET account_id = %s
+            WHERE partner_id = %s AND account_id = %s
+            AND full_reconcile_id IS NULL""",
+            (new_receivable.id, self.id, old_receivable.id),
+        )
+        cr.execute(
+            """UPDATE account_move_line SET account_id = %s
+            WHERE partner_id = %s AND account_id = %s
+            AND full_reconcile_id IS NULL""",
+            (new_payable.id, self.id, old_payable.id),
+        )
+
+        self.write(
+            {
+                "property_account_receivable_id": new_receivable.id,
+                "property_account_payable_id": new_payable.id,
+            }
+        )
+
+        partner_amls = self.env["account.move.line"].search(
+            [
+                "&",
+                "&",
+                "&",
+                "|",
+                ("currency_id", "not in", [target_currency.id]),
+                ("amount_currency", "=", 0),
+                ("partner_id", "=", self.id),
+                ("account_id", "in", [new_payable.id, new_receivable.id]),
+                ("full_reconcile_id", "=", False),
+            ]
+        )
+        for aml in partner_amls:
+            amount_currency = company_currency._convert(
+                aml.debit - aml.credit,
+                target_currency,
+                self.env.company,
+                aml.date,
+            )
+            amount_residual_currency = company_currency._convert(
+                aml.amount_residual,
+                target_currency,
+                self.env.company,
+                aml.date,
+            )
+            cr.execute(
+                """UPDATE account_move_line
+                SET amount_currency = %s,
+                    currency_id = %s,
+                    amount_residual_currency = %s
+                WHERE id = %s""",
+                (
+                    amount_currency,
+                    target_currency.id,
+                    amount_residual_currency,
+                    aml.id,
+                ),
+            )
+
     def action_generate_currency_diff_invoice(self):
         view = self.env.ref("altinkaya_account.res_partner_create_difference_inv")
         return {

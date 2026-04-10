@@ -43,6 +43,7 @@
         "views/account_move_line_view.xml",
         "views/res_config_settings.xml",
         "views/credit_control_policy_view.xml",
+        "wizards/change_partner_accounts.xml",
         "wizards/create_currency_difference_invoice.xml",
         "wizards/create_currency_valuation_move.xml",
         "wizards/currency_reconcile_fix_wizard.xml",

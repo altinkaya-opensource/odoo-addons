@@ -71,6 +71,9 @@ msgid "Can Reconcile"
 msgstr "Uzlaşabilir"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
@@ -1103,3 +1106,74 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
 msgid "İhracat"
 msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_usd
+msgid "Changing partner accounts to USD Wizard"
+msgstr "Cari hesapları USD'ye çevirme sihirbazı"
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_eur
+msgid "Change Partner Accounts to EUR Wizard"
+msgstr "Cari hesapları EUR'ya çevirme sihirbazı"
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_try
+msgid "Wizard for changing partner accounts to TRY"
+msgstr "Cari hesapları TRY'ye çevirme sihirbazı"
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_usd
+msgid "Change Accounts to USD"
+msgstr "Hesapları USD'ye Çevir"
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_eur
+msgid "Change Accounts to EUR"
+msgstr "Hesapları EUR'ya Çevir"
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_try
+msgid "Change Accounts to TRY"
+msgstr "Hesapları TRY'ye Çevir"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+msgid "Change Partner Accounts to USD"
+msgstr "Cari Hesapları USD'ye Çevir"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+msgid "Change Partner Accounts to EUR"
+msgstr "Cari Hesapları EUR'ya Çevir"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+msgid "Change Partner Accounts to TRY"
+msgstr "Cari Hesapları TRY'ye Çevir"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+msgid "This action will change every accounting records of partner. Ask your administrator before use it."
+msgstr "Bu işlem carinin tüm muhasebe kayıtlarını değiştirecektir. Kullanmadan önce yöneticinize danışın."
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+msgid "Change Accounts"
+msgstr "Hesapları Değiştir"
+
+#. module: altinkaya_account
+#: code:addons/altinkaya_account/wizards/change_partner_accounts.py:0
+#, python-format
+msgid "Action is completed but there is an error happened for these partners\n %(errs)s"
+msgstr "İşlem tamamlandı ancak şu cariler için hata oluştu\n %(errs)s"
+
+#. module: altinkaya_account
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Error in accounts definition"
+msgstr "Hesap tanımlarında hata var"
