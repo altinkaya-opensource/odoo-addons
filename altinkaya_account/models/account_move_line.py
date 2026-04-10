@@ -24,11 +24,15 @@ class AccountMoveLine(models.Model):
     move_ref = fields.Char(related="move_id.ref", string="Move Reference")
     lot_ids = fields.Many2many(
         "stock.lot",
-        relation="account_move_line_stock_lot_rel",
-        column1="move_line_id",
-        column2="lot_id",
         string="Lots/Serial Numbers",
+        compute="_compute_lot_ids",
     )
+
+    @api.depends("move_line_ids")
+    def _compute_lot_ids(self):
+        for line in self:
+            line.lot_ids = line.move_line_ids.move_line_ids.lot_id
+
     moves_picking_ref = fields.Char(string="Picking Ref")
     partner_order_ref = fields.Char(string="Order Reference")
     purchase_line_amount = fields.Float(
