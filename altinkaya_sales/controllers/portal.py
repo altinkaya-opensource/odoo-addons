@@ -18,8 +18,6 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 class AltinkayaSalesPortal(CustomerPortal):
     def _show_report(self, model, report_type, report_ref, download=False):
         if report_ref == "sale.action_report_saleorder":
-            report_ref = (
-                "altinkaya_py3o_reports.report_altinkaya_sale_order_quotation_py3o"
-            )
+            report_ref = "altinkaya_py3o_reports.report_altinkaya_sale_proforma_py3o"
 
         return super()._show_report(model, report_type, report_ref, download)
