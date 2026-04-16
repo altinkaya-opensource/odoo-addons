@@ -1,0 +1,667 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* odoo_mcp_guard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-15 13:43+0000\n"
+"PO-Revision-Date: 2026-04-15 13:43+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Agent"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__agent_user_id
+msgid "Agent User"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__applied
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Applied"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Approve"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__approved
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Approved"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__approved_at
+msgid "Approved At"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__approver_id
+msgid "Approver"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__args_json
+msgid "Args"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__auto_applied
+msgid "Auto Applied"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model,name:odoo_mcp_guard.model_base
+msgid "Base"
+msgstr "Kaynak"
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Call"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__changeset_change_ids
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__changeset_ids
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_change__operation__copy
+msgid "Copy"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__count_changesets
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__count_pending_changesets
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_change__operation__create
+msgid "Create"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__create_uid
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__create_date
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__denied
+msgid "Denied"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Denied/Rejected"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__mode_at_call__deny_all
+msgid "Deny All"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__display_name
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__error
+msgid "Error"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__failed
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Failed"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__failed_message_ids
+msgid "Failed Messages"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__field
+msgid "Field"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__change_ids
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Field Changes"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Group By"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__id
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__id
+msgid "ID"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__kwargs_json
+msgid "Kwargs"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change____last_update
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__write_uid
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__write_date
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__mode_at_call__log_only
+msgid "Log Only"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__logged
+msgid "Logged"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:res.groups,name:odoo_mcp_guard.group_mcp_agent
+msgid "MCP Agent"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model,name:odoo_mcp_guard.model_mcp_guard_request
+msgid "MCP Agent Operation Guard Request"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.module.category,name:odoo_mcp_guard.module_category_mcp_guard
+#: model:ir.ui.menu,name:odoo_mcp_guard.menu_mcp_guard_root
+msgid "MCP Guard"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model,name:odoo_mcp_guard.model_mcp_guard_change
+msgid "MCP Guard Field Change"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.actions.act_window,name:odoo_mcp_guard.action_mcp_guard_request
+msgid "MCP Guard Requests"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:res.groups,name:odoo_mcp_guard.group_mcp_guard_reviewer
+msgid "MCP Guard Reviewer"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.actions.server,name:odoo_mcp_guard.cron_replay_approved_ir_actions_server
+#: model:ir.cron,cron_name:odoo_mcp_guard.cron_replay_approved
+msgid "MCP Guard: Replay Approved Requests"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.constraint,message:odoo_mcp_guard.constraint_mcp_guard_request_token_uniq
+msgid "MCP guard token must be unique."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:res.groups,comment:odoo_mcp_guard.group_mcp_guard_reviewer
+msgid "May approve or reject pending MCP guard requests."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__method
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Method"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Method %(m)s not found on model %(o)s."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__mode_at_call
+msgid "Mode At Call"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__model
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__model
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Model"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__name
+msgid "Name"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "New"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__new_value_json
+msgid "New Value Json"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__mode_at_call__off
+msgid "Off"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__old_value_json
+msgid "Old Value Json"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Only MCP guard reviewers can approve or reject requests."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Only approved requests can be replayed (current: %s)."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Only pending requests can be approved (current: %s)."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Only pending requests can be rejected (current: %s)."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__operation
+msgid "Operation"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__pending
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "Pending Approval"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Reject"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__state__rejected
+msgid "Rejected"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__replay_attempts
+msgid "Replay Attempts"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Replay Now"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Replay failed: %s"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Replay succeeded."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__request_id
+msgid "Request"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Request approved, waiting for replay."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/models/mcp_guard_request.py:0
+#, python-format
+msgid "Request rejected."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.ui.menu,name:odoo_mcp_guard.menu_mcp_guard_requests
+msgid "Requests"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_request__mode_at_call__require_approval
+msgid "Require Approval"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__res_id
+msgid "Res"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__result_json
+msgid "Result"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_form
+msgid "Result / Error"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__smart_search
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__state
+#: model_terms:ir.ui.view,arch_db:odoo_mcp_guard.mcp_guard_request_view_search
+msgid "State"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__record_ids_json
+msgid "Target IDs"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_change__count_pending_changeset_changes
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_change__count_pending_changesets
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_change__count_changesets
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__token
+msgid "Token"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,help:odoo_mcp_guard.field_mcp_guard_request__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_change__operation__unlink
+msgid "Unlink"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_change__user_can_see_changeset
+#: model:ir.model.fields,field_description:odoo_mcp_guard.field_mcp_guard_request__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:res.groups,comment:odoo_mcp_guard.group_mcp_agent
+msgid ""
+"Users in this group are treated as AI agents. Their RPC and ORM operations "
+"are logged and (optionally) held for human approval by the odoo_mcp_guard "
+"module."
+msgstr ""
+
+#. module: odoo_mcp_guard
+#: model:ir.model.fields.selection,name:odoo_mcp_guard.selection__mcp_guard_change__operation__write
+msgid "Write"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/services/execute_kw_patch.py:0
+#, python-format
+msgid "[mcp_guard] operation denied by policy (token=%s)"
+msgstr ""
+
+#. module: odoo_mcp_guard
+#. odoo-python
+#: code:addons/odoo_mcp_guard/services/execute_kw_patch.py:0
+#, python-format
+msgid "[mcp_guard] operation queued for human approval. Request token: %s"
+msgstr ""

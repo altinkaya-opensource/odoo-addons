@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+        id="menu_mcp_guard_root"
+        name="MCP Guard"
+        sequence="95"
+        groups="odoo_mcp_guard.group_mcp_guard_reviewer"
+    />
+
+    <menuitem
+        id="menu_mcp_guard_requests"
+        name="Requests"
+        parent="menu_mcp_guard_root"
+        action="action_mcp_guard_request"
+        sequence="10"
+    />
+</odoo>

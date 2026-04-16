@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mcp_guard_request_reviewer,mcp.guard.request reviewer,model_mcp_guard_request,group_mcp_guard_reviewer,1,1,1,1
+access_mcp_guard_change_reviewer,mcp.guard.change reviewer,model_mcp_guard_change,group_mcp_guard_reviewer,1,1,1,1
+access_mcp_guard_request_user,mcp.guard.request own,model_mcp_guard_request,base.group_user,1,0,0,0
+access_mcp_guard_change_user,mcp.guard.change own,model_mcp_guard_change,base.group_user,1,0,0,0

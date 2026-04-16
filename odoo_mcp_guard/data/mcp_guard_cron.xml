@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="cron_replay_approved" model="ir.cron">
+        <field name="name">MCP Guard: Replay Approved Requests</field>
+        <field name="model_id" ref="model_mcp_guard_request" />
+        <field name="state">code</field>
+        <field name="code">model._cron_replay_approved()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+</odoo>
