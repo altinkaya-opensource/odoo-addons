@@ -47,8 +47,15 @@ class MakeMtsMove(models.TransientModel):
         # moves separately.
         self.move_id.propagate_cancel = False
         self.cancel_move_origs(self.move_id)
-        self.move_id.procure_method = "make_to_stock"
-        self.move_id.state = "draft"  # reset state to draft
+        # Unlink remaining origins (done moves can't be cancelled) so the move
+        # is truly independent before switching to make_to_stock.
+        self.move_id.write(
+            {
+                "procure_method": "make_to_stock",
+                "move_orig_ids": [(5, 0, 0)],
+                "state": "draft",
+            }
+        )
         self.move_id.propagate_cancel = propagate_cancel
         self.move_id._action_confirm()
         self.move_id._action_assign()
