@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_delivery_carrier_form" model="ir.ui.view">
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position='inside'>
+                <page
+                    string="UPS Configuration"
+                    attrs="{'invisible': [('delivery_type', '!=', 'ups')]}"
+                >
+                    <group>
+                        <group string="Connection">
+                            <field
+                                name="ups_client_id"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field
+                                name="ups_client_secret"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                                password="True"
+                            />
+                            <field
+                                name="ups_account_number"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                        </group>
+                        <group string="Delivery Information">
+                            <field
+                                name="ups_service_type"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field
+                                name="ups_packaging_type"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field
+                                name="ups_pickup_type"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field
+                                name="ups_customs_payment_type"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field
+                                name="ups_reason_for_export"
+                                attrs="{'required': [('delivery_type', '=', 'ups')]}"
+                            />
+                            <field name="ups_negotiated_rates" />
+                            <field name="ups_label_character_set" />
+                            <field name="ups_label_stock_size_height" />
+                            <field name="ups_label_stock_size_width" />
+                            <field name="ups_commercial_invoice" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
