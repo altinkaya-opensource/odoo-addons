@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
         """Set marketplace tracking numbers on newly created pickings."""
         res = super().action_confirm()
         for order in self:
-            binding = fields.first(order._marketplace_tracking_binding())
+            binding = order._marketplace_tracking_binding()
             if not binding or not binding.cargo_tracking_number:
                 continue
             pickings = order.picking_ids.filtered(lambda p: not p.carrier_tracking_ref)
