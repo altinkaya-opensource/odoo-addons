@@ -64,29 +64,11 @@ class StockPicking(models.Model):
     def action_print_delivery_documents(self):
         """Print Trendyol labels via backend printer, delegate the rest to super."""
         report = self.env.ref("trendyol_integration.trendyol_shipping_label_report")
-        trendyol_pickings = self.browse()
-        for picking in self:
-            trendyol_order = picking._get_trendyol_binding()
-            if not trendyol_order:
-                continue
-            printer = trendyol_order.backend_id.label_printer_id
-            if not printer:
-                continue
-            delivery_documents = self.env["ir.attachment"].search(
-                [
-                    ("res_model", "=", "stock.picking"),
-                    ("res_id", "=", picking.id),
-                    ("is_delivery_document", "=", True),
-                ]
-            )
-            for doc in delivery_documents:
-                printer.print_document(
-                    report=report,
-                    content=base64.b64decode(doc.datas),
-                )
-            trendyol_pickings |= picking
-
-        remaining = self - trendyol_pickings
+        handled = self._marketplace_print_delivery_documents(
+            "_get_trendyol_binding",
+            report=report,
+        )
+        remaining = self - handled
         if remaining:
             return super(StockPicking, remaining).action_print_delivery_documents()
         return True

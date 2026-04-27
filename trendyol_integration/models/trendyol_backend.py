@@ -43,7 +43,7 @@ def _trendyol_ts_to_utc(ts_ms):
 class TrendyolBackend(models.Model):
     _name = "trendyol.backend"
     _description = "Trendyol Backend Configuration"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["marketplace.backend.mixin", "mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True, tracking=True)
     active = fields.Boolean(default=True)
@@ -259,26 +259,26 @@ class TrendyolBackend(models.Model):
         string="Settlements",
     )
 
-    @api.depends()
-    def _compute_counts(self):
-        ProductBinding = self.env["trendyol.product.binding"]
-        Order = self.env["trendyol.order"]
-        Claim = self.env["trendyol.claim"]
-        Question = self.env["trendyol.question"]
-        Settlement = self.env["trendyol.settlement"]
+    def _marketplace_name(self):
+        return _("Trendyol")
 
-        for backend in self:
-            backend.product_binding_count = ProductBinding.search_count(
-                [("backend_id", "=", backend.id)]
-            )
-            backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
-            backend.claim_count = Claim.search_count([("backend_id", "=", backend.id)])
-            backend.question_count = Question.search_count(
-                [("backend_id", "=", backend.id)]
-            )
-            backend.settlement_count = Settlement.search_count(
-                [("backend_id", "=", backend.id)]
-            )
+    def _marketplace_queue_channel(self):
+        return "root.trendyol.order"
+
+    def _marketplace_api_error_class(self):
+        return TrendyolAPIError
+
+    def _marketplace_cargo_provider_field(self):
+        return "trendyol_cargo_provider_name"
+
+    def _marketplace_count_models(self):
+        return {
+            "product_binding_count": "trendyol.product.binding",
+            "order_count": "trendyol.order",
+            "claim_count": "trendyol.claim",
+            "question_count": "trendyol.question",
+            "settlement_count": "trendyol.settlement",
+        }
 
     def _get_api_client(self):
         """Get configured API client for this backend."""
@@ -289,52 +289,6 @@ class TrendyolBackend(models.Model):
             api_secret=self.api_secret,
             environment=self.environment,
         )
-
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Trendyol cargo provider name.
-
-        Searches cargo_mapping_ids by trendyol_cargo_provider_name (exact match,
-        case-insensitive). Falls back to default_cargo_company_id if no mapping
-        is found.
-
-        Args:
-            cargo_provider_name: Cargo provider name from Trendyol API
-
-        Returns:
-            delivery.carrier record or False
-        """
-        self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.trendyol_cargo_provider_name
-                    and m.trendyol_cargo_provider_name.lower() == name_lower
-                )
-            )
-            if mapping:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
-
-    def action_test_connection(self):
-        """Test API connection."""
-        self.ensure_one()
-        try:
-            client = self._get_api_client()
-            client.test_connection()
-        except TrendyolAPIError as e:
-            raise UserError(_("Connection failed: %s") % str(e)) from e
-
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Connection to Trendyol API successful!"),
-                "type": "success",
-                "sticky": False,
-            },
-        }
 
     def action_register_webhook(self):
         """Register a webhook subscription on Trendyol."""
@@ -532,20 +486,12 @@ class TrendyolBackend(models.Model):
     def action_import_orders(self):
         """Manually trigger order import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Import Trendyol orders: %s") % self.name,
-        )._import_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Order import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_orders",
+            _("Import Trendyol orders: %s") % self.name,
+            _("Import Started"),
+            _("Order import has been queued."),
+        )
 
     def _import_orders(self, status=None):
         """Import orders from Trendyol API.
@@ -612,20 +558,13 @@ class TrendyolBackend(models.Model):
     def action_sync_stock_prices(self):
         """Manually trigger stock/price sync."""
         self.ensure_one()
-        self.with_delay(
+        return self._marketplace_queue_action(
+            "_sync_stock_prices",
+            _("Sync Trendyol stock/prices: %s") % self.name,
+            _("Sync Started"),
+            _("Stock/price synchronization has been queued."),
             channel="root.trendyol.stock",
-            description=_("Sync Trendyol stock/prices: %s") % self.name,
-        )._sync_stock_prices()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Stock/price synchronization has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        )
 
     def _sync_stock_prices(self):
         """Sync stock and prices to Trendyol."""
@@ -687,20 +626,12 @@ class TrendyolBackend(models.Model):
     def action_import_claims(self):
         """Manually trigger claims import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Import Trendyol claims: %s") % self.name,
-        )._import_claims()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Claims import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_claims",
+            _("Import Trendyol claims: %s") % self.name,
+            _("Import Started"),
+            _("Claims import has been queued."),
+        )
 
     def _import_claims(self):
         """Import claims/returns from Trendyol API."""
@@ -750,20 +681,13 @@ class TrendyolBackend(models.Model):
     def action_check_batch_requests(self):
         """Check status of pending batch requests."""
         self.ensure_one()
-        self.with_delay(
+        return self._marketplace_queue_action(
+            "_check_batch_requests",
+            _("Check Trendyol batch requests: %s") % self.name,
+            _("Check Started"),
+            _("Batch request check has been queued."),
             channel="root.trendyol.product",
-            description=_("Check Trendyol batch requests: %s") % self.name,
-        )._check_batch_requests()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Check Started"),
-                "message": _("Batch request check has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        )
 
     def _check_batch_requests(self):
         """Check status of pending batch requests."""
@@ -782,57 +706,27 @@ class TrendyolBackend(models.Model):
 
     def action_view_products(self):
         """View product bindings for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Product Bindings"),
-            "res_model": "trendyol.product.binding",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(
+            _("Product Bindings"), "trendyol.product.binding"
+        )
 
     def action_view_orders(self):
         """View orders for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Orders"),
-            "res_model": "trendyol.order",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Orders"), "trendyol.order")
 
     def action_view_claims(self):
         """View claims for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Claims"),
-            "res_model": "trendyol.claim",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Claims"), "trendyol.claim")
 
     def action_import_questions(self):
         """Manually trigger question import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Import Trendyol questions: %s") % self.name,
-        )._import_questions()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Question import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_questions",
+            _("Import Trendyol questions: %s") % self.name,
+            _("Import Started"),
+            _("Question import has been queued."),
+        )
 
     def _import_questions(self):
         """Import customer questions from Trendyol API."""
@@ -903,35 +797,19 @@ class TrendyolBackend(models.Model):
 
     def action_view_questions(self):
         """View questions for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Questions"),
-            "res_model": "trendyol.question",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Questions"), "trendyol.question")
 
     # ==================== Settlement Methods ====================
 
     def action_import_settlements(self):
         """Manually trigger settlement import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Import Trendyol settlements: %s") % self.name,
-        )._import_settlements()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Settlement import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_settlements",
+            _("Import Trendyol settlements: %s") % self.name,
+            _("Import Started"),
+            _("Settlement import has been queued."),
+        )
 
     def _import_settlements(self):
         """Import settlements from Trendyol finance API.
@@ -1018,92 +896,55 @@ class TrendyolBackend(models.Model):
 
     def action_view_settlements(self):
         """View settlements for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Settlements"),
-            "res_model": "trendyol.settlement",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Settlements"), "trendyol.settlement")
 
     # ==================== Cron Methods ====================
 
     @api.model
     def _cron_import_orders(self):
         """Cron job to import orders from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_orders", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_orders",
+            "_import_orders",
+            _("Import Trendyol orders: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.trendyol.order",
-                description=_("Import Trendyol orders: %s") % backend.name,
-            )._import_orders()
 
     @api.model
     def _cron_import_claims(self):
         """Cron job to import claims from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_claims", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_claims",
+            "_import_claims",
+            _("Import Trendyol claims: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.trendyol.order",
-                description=_("Import Trendyol claims: %s") % backend.name,
-            )._import_claims()
 
     @api.model
     def _cron_import_questions(self):
         """Cron job to import customer questions from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_questions", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_questions",
+            "_import_questions",
+            _("Import Trendyol questions: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.trendyol.order",
-                description=_("Import Trendyol questions: %s") % backend.name,
-            )._import_questions()
 
     @api.model
     def _cron_import_settlements(self):
         """Cron job to import settlements from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_settlements", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_settlements",
+            "_import_settlements",
+            _("Import Trendyol settlements: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.trendyol.order",
-                description=_("Import Trendyol settlements: %s") % backend.name,
-            )._import_settlements()
 
     @api.model
     def _cron_sync_stock_prices(self):
         """Cron job to sync stock/prices for all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_sync_stock", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_sync_stock",
+            "_sync_stock_prices",
+            _("Sync Trendyol stock/prices: %s"),
+            channel="root.trendyol.stock",
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.trendyol.stock",
-                description=_("Sync Trendyol stock/prices: %s") % backend.name,
-            )._sync_stock_prices()
 
     @api.model
     def _cron_check_batch_requests(self):
@@ -1143,23 +984,10 @@ class TrendyolBackend(models.Model):
 
     def _send_pending_invoices(self):
         """Find Trendyol orders with pending invoices and queue sends."""
-        self.ensure_one()
-        orders = self.env["trendyol.order"].search(
-            [
-                ("backend_id", "=", self.id),
-                ("invoice_link_sent", "=", False),
-            ]
+        return self._send_pending_marketplace_invoices(
+            "trendyol.order",
+            "trendyol_order_number",
         )
-        for order in orders:
-            posted_invoice = order.odoo_id.invoice_ids.filtered(
-                lambda i: i.state == "posted" and i.move_type == "out_invoice"
-            )
-            if not posted_invoice:
-                continue
-            order.with_delay(
-                channel="root.trendyol.order",
-                description=_("Send invoice: %s") % order.trendyol_order_number,
-            )._send_invoice()
 
     # ==================== Webhook Methods ====================
 
