@@ -15,6 +15,7 @@
         "sale",
         "stock",
         "account",
+        "altinkaya_sales",
         "delivery",
         "delivery_state",
         "queue_job",
