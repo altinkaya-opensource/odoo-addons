@@ -17,3 +17,14 @@ class ResPartner(models.Model):
         index=True,
         help="Address ID from Hepsiburada for delivery address matching",
     )
+
+    def name_get(self):
+        """Add [HB] prefix for Hepsiburada customers."""
+        result = super().name_get()
+        new_result = []
+        for rec_id, name in result:
+            partner = self.browse(rec_id)
+            if partner.hb_customer_id:
+                name = f"[HB] {name}"
+            new_result.append((rec_id, name))
+        return new_result
