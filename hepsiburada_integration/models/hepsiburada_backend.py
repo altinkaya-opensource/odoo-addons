@@ -102,6 +102,21 @@ class HepsiburadaBackend(models.Model):
         "delivery.carrier",
         help="Default delivery carrier for Hepsiburada orders",
     )
+    default_dispatch_time = fields.Integer(
+        string="Default Dispatch Time (days)",
+        default=1,
+        help="Default dispatchTime sent on listing uploads",
+    )
+    default_cargo_company_1 = fields.Char(
+        help="HB cargo company code (e.g. 'Aras Kargo')",
+    )
+    default_cargo_company_2 = fields.Char()
+    default_cargo_company_3 = fields.Char()
+    default_shipping_address_label = fields.Char()
+    default_claim_address_label = fields.Char()
+    default_shipping_profile_name = fields.Char(
+        string="Default Shipping Profile",
+    )
     cargo_mapping_ids = fields.One2many(
         "hepsiburada.cargo.mapping",
         "backend_id",
@@ -208,6 +223,13 @@ class HepsiburadaBackend(models.Model):
         compute="_compute_counts",
         string="Claims",
     )
+    product_binding_count = fields.Integer(
+        compute="_compute_counts",
+        string="Product Bindings",
+    )
+
+    # Last product sync timestamps
+    last_category_sync = fields.Datetime(readonly=True)
 
     def _marketplace_name(self):
         return _("Hepsiburada")
@@ -227,6 +249,7 @@ class HepsiburadaBackend(models.Model):
             "settlement_count": "hepsiburada.settlement",
             "question_count": "hepsiburada.question",
             "claim_count": "hepsiburada.claim",
+            "product_binding_count": "hepsiburada.product.binding",
         }
 
     def _get_api_client(self):
@@ -700,6 +723,154 @@ class HepsiburadaBackend(models.Model):
         self.last_question_sync = fields.Datetime.now()
         _logger.info("Imported %d questions for backend %s", total_imported, self.name)
 
+    # ==================== Product Sync ====================
+
+    def action_sync_categories(self):
+        """Manually trigger HB category sync."""
+        self.ensure_one()
+        self.with_delay(
+            channel="root.hepsiburada.product",
+            description=_("Sync Hepsiburada categories: %s") % self.name,
+        )._sync_categories()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Sync Started"),
+                "message": _("Category synchronization has been queued."),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
+    def _sync_categories(self):
+        """Pull all available categories from HB and upsert them."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Category = self.env["hepsiburada.category"]
+        try:
+            page = 0
+            total = 0
+            while True:
+                result = client.get_categories(available=True, page=page, size=2000)
+                items = (
+                    result.get("data", {}).get("items")
+                    or result.get("items")
+                    or result.get("content")
+                    or []
+                )
+                if not items:
+                    break
+                Category._sync_from_hepsiburada(self, items)
+                total += len(items)
+                page += 1
+                if page > 50:
+                    _logger.warning("HB category sync safety limit reached")
+                    break
+            self.last_category_sync = fields.Datetime.now()
+            _logger.info("Synced %d HB categories for %s", total, self.name)
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to sync HB categories: %s", e)
+            raise
+
+    def action_sync_stock_prices(self):
+        """Manually trigger HB stock/price sync for approved bindings."""
+        self.ensure_one()
+        return self._marketplace_queue_action(
+            "_sync_stock_prices",
+            _("Sync Hepsiburada stock/prices: %s") % self.name,
+            _("Sync Started"),
+            _("Stock/price synchronization has been queued."),
+            channel="root.hepsiburada.stock",
+        )
+
+    def _sync_stock_prices(self):
+        """Push stock+price deltas for all approved HB bindings."""
+        self.ensure_one()
+        client = self._get_api_client()
+        Binding = self.env["hepsiburada.product.binding"]
+        bindings = Binding.search(
+            [
+                ("backend_id", "=", self.id),
+                ("sync_state", "=", "approved"),
+            ]
+        )
+        if not bindings:
+            _logger.info("No approved HB bindings for backend %s", self.name)
+            return
+
+        stock_items, price_items, updated = [], [], []
+        for binding in bindings:
+            data = binding._prepare_stock_price_payload()
+            if not data:
+                continue
+            stock_items.append(
+                {
+                    "hepsiburadaSku": data["hepsiburadaSku"],
+                    "merchantSku": data["merchantSku"],
+                    "availableStock": data["availableStock"],
+                }
+            )
+            price_items.append(
+                {
+                    "hepsiburadaSku": data["hepsiburadaSku"],
+                    "merchantSku": data["merchantSku"],
+                    "price": data["price"],
+                }
+            )
+            updated.append((binding, data))
+
+        if not stock_items:
+            _logger.info("No HB stock/price changes for backend %s", self.name)
+            return
+
+        try:
+            for batch_start in range(0, len(stock_items), 1000):
+                client.stock_uploads(stock_items[batch_start : batch_start + 1000])
+                client.price_uploads(price_items[batch_start : batch_start + 1000])
+            for binding, data in updated:
+                binding.write(
+                    {
+                        "last_sent_quantity": data["availableStock"],
+                        "last_sent_price": data["price"],
+                        "last_sync_date": fields.Datetime.now(),
+                    }
+                )
+            self.last_stock_price_sync = fields.Datetime.now()
+            _logger.info(
+                "Synced %d HB stock/price items for %s", len(stock_items), self.name
+            )
+        except HepsiburadaAPIError as e:
+            _logger.error("Failed to sync HB stock/prices: %s", e)
+            raise
+
+    def action_check_batch_requests(self):
+        self.ensure_one()
+        return self._marketplace_queue_action(
+            "_check_batch_requests",
+            _("Check Hepsiburada batch requests: %s") % self.name,
+            _("Check Started"),
+            _("Batch request check has been queued."),
+            channel="root.hepsiburada.product",
+        )
+
+    def _check_batch_requests(self):
+        self.ensure_one()
+        BatchRequest = self.env["hepsiburada.batch.request"]
+        pending = BatchRequest.search(
+            [
+                ("backend_id", "=", self.id),
+                ("state", "in", ["pending", "processing"]),
+            ]
+        )
+        for request in pending:
+            request._check_status()
+
+    def action_view_products(self):
+        return self._marketplace_action_view(
+            _("Product Bindings"), "hepsiburada.product.binding"
+        )
+
     # ==================== Cron Methods ====================
 
     @api.model
@@ -710,6 +881,26 @@ class HepsiburadaBackend(models.Model):
             "_import_orders",
             _("Import Hepsiburada orders: %s"),
         )
+
+    @api.model
+    def _cron_sync_stock_prices(self):
+        """Cron job to push stock/prices for all active backends."""
+        self._marketplace_cron_queue(
+            "auto_sync_stock_price",
+            "_sync_stock_prices",
+            _("Sync Hepsiburada stock/prices: %s"),
+            channel="root.hepsiburada.stock",
+        )
+
+    @api.model
+    def _cron_check_batch_requests(self):
+        """Cron job to poll pending batch uploads for all active backends."""
+        backends = self.search([("active", "=", True)])
+        for backend in backends:
+            backend.with_delay(
+                channel="root.hepsiburada.product",
+                description=_("Check HB batch requests: %s") % backend.name,
+            )._check_batch_requests()
 
     @api.model
     def _cron_send_invoices(self):

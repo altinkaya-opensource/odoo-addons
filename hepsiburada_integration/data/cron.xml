@@ -64,4 +64,30 @@
         <field name="active" eval="True" />
         <field name="doall" eval="False" />
     </record>
+
+    <!-- Sync Stock/Prices Cron - Hourly -->
+    <record id="cron_sync_stock_prices" model="ir.cron">
+        <field name="name">Hepsiburada: Sync Stock/Prices</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_stock_prices()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">hours</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+        <field name="doall" eval="False" />
+    </record>
+
+    <!-- Check Batch Requests Cron - Every 30 minutes -->
+    <record id="cron_check_batch_requests" model="ir.cron">
+        <field name="name">Hepsiburada: Check Batch Requests</field>
+        <field name="model_id" ref="model_hepsiburada_backend" />
+        <field name="state">code</field>
+        <field name="code">model._cron_check_batch_requests()</field>
+        <field name="interval_number" eval="30" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+        <field name="doall" eval="False" />
+    </record>
 </odoo>

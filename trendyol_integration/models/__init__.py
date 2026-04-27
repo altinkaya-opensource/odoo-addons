@@ -14,6 +14,7 @@ from . import trendyol_claim
 from . import trendyol_question
 from . import trendyol_settlement
 from . import product_product
+from . import product_category
 from . import sale_order
 from . import sale_order_line
 from . import res_partner

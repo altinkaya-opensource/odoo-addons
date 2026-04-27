@@ -3,9 +3,10 @@
 
 {
     "name": "Hepsiburada Marketplace Integration",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "Sales/Sales",
-    "summary": "Integrate Odoo with Hepsiburada marketplace (orders, invoices, status)",
+    "summary": "Integrate Odoo with Hepsiburada marketplace "
+    "(orders, invoices, status, products, listings)",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
@@ -35,7 +36,15 @@
         "views/hepsiburada_settlement_views.xml",
         "views/hepsiburada_question_views.xml",
         "views/hepsiburada_claim_views.xml",
+        "views/hepsiburada_category_views.xml",
+        "views/hepsiburada_brand_views.xml",
+        "views/hepsiburada_product_binding_views.xml",
+        "views/hepsiburada_batch_request_views.xml",
+        "views/product_views.xml",
         "views/sale_order_views.xml",
+        # Wizards
+        "wizards/product_export_wizard_views.xml",
+        "wizards/category_sync_wizard_views.xml",
         "views/menus.xml",
     ],
     "installable": True,

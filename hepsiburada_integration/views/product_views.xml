@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_product_form_hepsiburada" model="ir.ui.view">
+        <field name="name">product.product.form.hepsiburada</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_hepsiburada_bindings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-cart"
+                    attrs="{'invisible': [('hepsiburada_binding_count', '=', 0)]}"
+                >
+                    <field
+                        name="hepsiburada_binding_count"
+                        widget="statinfo"
+                        string="Hepsiburada"
+                    />
+                </button>
+            </div>
+            <group name="packaging" position="after">
+                <group
+                    string="Hepsiburada"
+                    name="hepsiburada"
+                    groups="hepsiburada_integration.group_hepsiburada_user"
+                >
+                    <field name="is_published_hepsiburada" />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_hepsiburada" model="ir.ui.view">
+        <field name="name">product.template.form.hepsiburada</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_hepsiburada_bindings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-cart"
+                    attrs="{'invisible': [('hepsiburada_binding_count', '=', 0)]}"
+                >
+                    <field
+                        name="hepsiburada_binding_count"
+                        widget="statinfo"
+                        string="Hepsiburada"
+                    />
+                </button>
+            </div>
+            <group name="sale" position="after">
+                <group
+                    string="Hepsiburada"
+                    name="hepsiburada"
+                    groups="hepsiburada_integration.group_hepsiburada_user"
+                >
+                    <field name="is_published_hepsiburada" />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_product_category_form_hepsiburada" model="ir.ui.view">
+        <field name="name">product.category.form.hepsiburada</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field
+                    name="is_published_hepsiburada"
+                    groups="hepsiburada_integration.group_hepsiburada_user"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

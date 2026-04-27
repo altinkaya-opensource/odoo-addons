@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 07:17+0000\n"
-"PO-Revision-Date: 2026-04-27 07:17+0000\n"
+"POT-Creation-Date: 2026-04-27 10:53+0000\n"
+"PO-Revision-Date: 2026-04-27 10:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,8 +44,21 @@ msgid "%s Payment Journal not configured on backend."
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "%s has been queued."
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__active
 msgid "Active"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__approved
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__approved
+msgid "Approved"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -124,6 +137,13 @@ msgid "Automatically send tracking numbers when delivery is done"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Batch request status: %s"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__cargo_provider_name
 msgid "Cargo Provider"
 msgstr ""
@@ -171,6 +191,12 @@ msgstr ""
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__company_id
 msgid "Company"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__completed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__completed
+msgid "Completed"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -259,18 +285,46 @@ msgid "Description"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__draft
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__environment
 msgid "Environment"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__error
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__error
 msgid "Error"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Error Details"
 msgstr ""
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__error_message
 msgid "Error Message"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Export %(label)s to marketplace: %(name)s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__failed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__failed
+msgid "Failed"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -363,6 +417,13 @@ msgid "Marketplace Settlement Mixin"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Marketplace product"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__name
 msgid "Name"
 msgstr ""
@@ -386,6 +447,27 @@ msgstr ""
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
 msgid "No posted invoice found for sale order %s"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Only approved products can be updated."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Only approved products can have stock/price synced."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Operation Queued"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -414,8 +496,26 @@ msgid "Payment Date"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__pending
+msgid "Pending"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__pending
+msgid "Pending Approval"
+msgstr ""
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__pricelist_id
 msgid "Pricelist"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__processing
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__processing
+msgid "Processing"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -440,6 +540,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__state__reconciled
 #, python-format
 msgid "Reconciled"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__rejected
+msgid "Rejected"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -518,9 +624,23 @@ msgstr ""
 
 #. module: marketplace_integration_base
 #. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Status Checked"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
 #, python-format
 msgid "Success"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Sync stock/price: %s"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -597,6 +717,13 @@ msgstr ""
 #: code:addons/marketplace_integration_base/models/marketplace_order.py:0
 #, python-format
 msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Update %(label)s on marketplace: %(name)s"
 msgstr ""
 
 #. module: marketplace_integration_base

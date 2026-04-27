@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Product Binding Form View -->
-    <record id="view_trendyol_product_binding_form" model="ir.ui.view">
-        <field name="name">trendyol.product.binding.form</field>
-        <field name="model">trendyol.product.binding</field>
+    <record id="view_hepsiburada_product_binding_form" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.form</field>
+        <field name="model">hepsiburada.product.binding</field>
         <field name="arch" type="xml">
-            <form string="Trendyol Product Binding">
+            <form string="Hepsiburada Product Binding">
                 <header>
                     <button
-                        name="action_export_to_trendyol"
-                        string="Export to Trendyol"
+                        name="action_export"
+                        string="Submit to HB Catalog"
                         type="object"
                         class="btn-primary"
                         attrs="{'invisible': [('sync_state', 'not in', ['draft', 'error'])]}"
                     />
                     <button
-                        name="action_update_in_trendyol"
-                        string="Update in Trendyol"
+                        name="action_update"
+                        string="Update Listing"
                         type="object"
                         attrs="{'invisible': [('sync_state', '!=', 'approved')]}"
                     />
@@ -27,16 +26,22 @@
                         attrs="{'invisible': [('sync_state', '!=', 'approved')]}"
                     />
                     <button
+                        name="action_activate_listing"
+                        string="Activate Listing"
+                        type="object"
+                        attrs="{'invisible': ['|', ('sync_state', '!=', 'approved'), ('is_listing_active', '=', True)]}"
+                    />
+                    <button
+                        name="action_deactivate_listing"
+                        string="Deactivate Listing"
+                        type="object"
+                        attrs="{'invisible': ['|', ('sync_state', '!=', 'approved'), ('is_listing_active', '=', False)]}"
+                    />
+                    <button
                         name="action_set_draft"
                         string="Set to Draft"
                         type="object"
                         attrs="{'invisible': [('sync_state', '=', 'draft')]}"
-                    />
-                    <button
-                        name="action_view_in_trendyol"
-                        string="View in Trendyol"
-                        type="object"
-                        attrs="{'invisible': [('trendyol_product_id', '=', False)]}"
                     />
                     <field
                         name="sync_state"
@@ -54,14 +59,16 @@
                         <group string="Product">
                             <field name="odoo_id" />
                             <field name="backend_id" />
-                            <field name="trendyol_barcode" />
-                            <field name="trendyol_stock_code" />
-                            <field name="trendyol_product_id" readonly="1" />
+                            <field name="merchant_sku" />
+                            <field name="hepsiburada_sku" readonly="1" />
+                            <field name="variant_group_id" />
+                            <field name="tracking_id" readonly="1" />
                         </group>
-                        <group string="Trendyol Mapping">
-                            <field name="trendyol_category_id" />
-                            <field name="trendyol_brand_id" />
+                        <group string="Mapping">
+                            <field name="hepsiburada_category_id" />
+                            <field name="hepsiburada_brand_id" />
                             <field name="vat_rate" />
+                            <field name="warranty_months" />
                         </group>
                     </group>
                     <group>
@@ -76,9 +83,34 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Listing" name="listing">
+                            <group>
+                                <group>
+                                    <field name="dispatch_time" />
+                                    <field name="cargo_company_1" />
+                                    <field name="cargo_company_2" />
+                                    <field name="cargo_company_3" />
+                                </group>
+                                <group>
+                                    <field name="shipping_address_label" />
+                                    <field name="claim_address_label" />
+                                    <field name="shipping_profile_name" />
+                                    <field name="is_listing_active" />
+                                </group>
+                                <group>
+                                    <field name="maximum_purchasable_quantity" />
+                                    <field name="minimum_purchasable_quantity" />
+                                </group>
+                                <group>
+                                    <field name="customization_text_type" />
+                                    <field name="customization_text_length" />
+                                    <field name="has_installation" />
+                                </group>
+                            </group>
+                        </page>
                         <page string="Attributes" name="attributes">
                             <field
-                                name="trendyol_attributes"
+                                name="attributes"
                                 widget="ace"
                                 options="{'mode': 'json'}"
                             />
@@ -95,10 +127,9 @@
         </field>
     </record>
 
-    <!-- Product Binding Tree View -->
-    <record id="view_trendyol_product_binding_tree" model="ir.ui.view">
-        <field name="name">trendyol.product.binding.tree</field>
-        <field name="model">trendyol.product.binding</field>
+    <record id="view_hepsiburada_product_binding_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.tree</field>
+        <field name="model">hepsiburada.product.binding</field>
         <field name="arch" type="xml">
             <tree
                 decoration-danger="sync_state == 'error'"
@@ -107,29 +138,31 @@
                 decoration-info="sync_state == 'pending'"
             >
                 <field name="name" />
-                <field name="trendyol_barcode" />
-                <field name="trendyol_category_id" />
-                <field name="trendyol_brand_id" />
+                <field name="merchant_sku" />
+                <field name="hepsiburada_sku" />
+                <field name="hepsiburada_category_id" />
+                <field name="hepsiburada_brand_id" />
                 <field name="marketplace_quantity" />
                 <field name="marketplace_sale_price" widget="monetary" />
                 <field name="sync_state" />
+                <field name="is_listing_active" />
                 <field name="backend_id" />
                 <field name="last_sync_date" />
             </tree>
         </field>
     </record>
 
-    <!-- Product Binding Search View -->
-    <record id="view_trendyol_product_binding_search" model="ir.ui.view">
-        <field name="name">trendyol.product.binding.search</field>
-        <field name="model">trendyol.product.binding</field>
+    <record id="view_hepsiburada_product_binding_search" model="ir.ui.view">
+        <field name="name">hepsiburada.product.binding.search</field>
+        <field name="model">hepsiburada.product.binding</field>
         <field name="arch" type="xml">
-            <search string="Search Product Bindings">
+            <search string="Search Hepsiburada Bindings">
                 <field name="name" />
-                <field name="trendyol_barcode" />
+                <field name="merchant_sku" />
+                <field name="hepsiburada_sku" />
                 <field name="odoo_id" />
-                <field name="trendyol_category_id" />
-                <field name="trendyol_brand_id" />
+                <field name="hepsiburada_category_id" />
+                <field name="hepsiburada_brand_id" />
                 <separator />
                 <filter
                     name="draft"
@@ -161,12 +194,7 @@
                     <filter
                         name="group_category"
                         string="Category"
-                        context="{'group_by': 'trendyol_category_id'}"
-                    />
-                    <filter
-                        name="group_brand"
-                        string="Brand"
-                        context="{'group_by': 'trendyol_brand_id'}"
+                        context="{'group_by': 'hepsiburada_category_id'}"
                     />
                     <filter
                         name="group_backend"
@@ -178,19 +206,10 @@
         </field>
     </record>
 
-    <!-- Product Binding Action -->
-    <record id="action_trendyol_product_binding" model="ir.actions.act_window">
-        <field name="name">Trendyol Products</field>
-        <field name="res_model">trendyol.product.binding</field>
+    <record id="action_hepsiburada_product_binding" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Products</field>
+        <field name="res_model">hepsiburada.product.binding</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_trendyol_product_binding_search" />
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create your first Trendyol product binding
-            </p>
-            <p>
-                Link Odoo products to Trendyol by creating product bindings. You can then export them to Trendyol marketplace.
-            </p>
-        </field>
+        <field name="search_view_id" ref="view_hepsiburada_product_binding_search" />
     </record>
 </odoo>

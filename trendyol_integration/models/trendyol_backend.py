@@ -110,6 +110,31 @@ class TrendyolBackend(models.Model):
         "delivery.carrier",
         help="Default delivery carrier for Trendyol orders",
     )
+    default_cargo_company_external_id = fields.Integer(
+        string="Default Cargo Company (Trendyol ID)",
+        help="Numeric Trendyol cargo company id sent in product payload "
+        "(e.g. 10 = Aras, 4 = Yurtiçi, 17 = MNG). "
+        "Overridden when the Trendyol category sets its own cargo_company_id.",
+    )
+    default_shipment_address_id = fields.Integer(
+        string="Default Shipment Address ID",
+        help="Trendyol shipmentAddressId for product creation payloads",
+    )
+    default_returning_address_id = fields.Integer(
+        string="Default Returning Address ID",
+        help="Trendyol returningAddressId for product creation payloads",
+    )
+    default_delivery_duration = fields.Integer(
+        string="Default Delivery Duration (days)",
+        help="Trendyol deliveryDuration sent inside the deliveryOption object",
+    )
+    default_fast_delivery_type = fields.Selection(
+        [
+            ("SAME_DAY_SHIPPING", "Same Day Shipping"),
+            ("FAST_DELIVERY", "Fast Delivery"),
+        ],
+        help="Trendyol fastDeliveryType inside the deliveryOption object",
+    )
     cargo_mapping_ids = fields.One2many(
         "trendyol.cargo.mapping",
         "backend_id",
@@ -587,7 +612,7 @@ class TrendyolBackend(models.Model):
 
         items = []
         for binding in bindings:
-            item = binding._prepare_stock_price_data()
+            item = binding._prepare_stock_price_payload()
             if item:
                 items.append(item)
 

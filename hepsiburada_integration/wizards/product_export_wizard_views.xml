@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hepsiburada_product_export_wizard" model="ir.ui.view">
+        <field name="name">hepsiburada.product.export.wizard.form</field>
+        <field name="model">hepsiburada.product.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Products to Hepsiburada">
+                <group>
+                    <field name="backend_id" />
+                    <field name="hepsiburada_category_id" />
+                    <field name="hepsiburada_brand_id" />
+                    <field name="vat_rate" />
+                    <field name="dispatch_time" />
+                    <field name="skip_existing" />
+                </group>
+                <field name="product_ids">
+                    <tree>
+                        <field name="default_code" />
+                        <field name="display_name" />
+                        <field name="barcode" />
+                    </tree>
+                </field>
+                <footer>
+                    <button
+                        name="action_create_bindings"
+                        type="object"
+                        string="Create Bindings"
+                        class="btn-primary"
+                    />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hepsiburada_product_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export to Hepsiburada</field>
+        <field name="res_model">hepsiburada.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <record
+        id="action_hepsiburada_product_export_wizard_template"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Export to Hepsiburada</field>
+        <field name="res_model">hepsiburada.product.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

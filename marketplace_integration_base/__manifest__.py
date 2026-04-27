@@ -16,6 +16,7 @@
         "stock",
         "account",
         "altinkaya_sales",
+        "base_multi_image",
         "delivery",
         "delivery_state",
         "queue_job",

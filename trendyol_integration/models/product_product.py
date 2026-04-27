@@ -15,9 +15,14 @@ class ProductProduct(models.Model):
     trendyol_binding_count = fields.Integer(
         compute="_compute_trendyol_binding_count",
     )
-    image_url = fields.Char(
-        string="Image URL",
-        help="Public HTTPS URL for product image (used for marketplace integrations)",
+    is_published_trendyol = fields.Boolean(
+        string="Published on Trendyol",
+        default=lambda self: (
+            self.product_tmpl_id.is_published_trendyol
+            if self.product_tmpl_id
+            else False
+        ),
+        help="Variant is eligible for export to Trendyol",
     )
 
     def _compute_trendyol_binding_count(self):
@@ -25,7 +30,6 @@ class ProductProduct(models.Model):
             product.trendyol_binding_count = len(product.trendyol_binding_ids)
 
     def action_view_trendyol_bindings(self):
-        """View Trendyol bindings for this product."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -43,6 +47,11 @@ class ProductTemplate(models.Model):
     trendyol_binding_count = fields.Integer(
         compute="_compute_trendyol_binding_count",
     )
+    is_published_trendyol = fields.Boolean(
+        string="Published on Trendyol",
+        default=False,
+        help="Template is eligible for export to Trendyol",
+    )
 
     def _compute_trendyol_binding_count(self):
         for template in self:
@@ -51,7 +60,6 @@ class ProductTemplate(models.Model):
             )
 
     def action_view_trendyol_bindings(self):
-        """View Trendyol bindings for all variants."""
         self.ensure_one()
         product_ids = self.product_variant_ids.ids
         return {
