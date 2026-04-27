@@ -7,10 +7,6 @@ from odoo import models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    def _compute_price_unit(self):
-        trendyol_lines = self.filtered(lambda l: l.order_id.trendyol_binding_ids)
-        return super(SaleOrderLine, self - trendyol_lines)._compute_price_unit()
-
     def explode_set_contents(self):
         """Distribute Trendyol pack prices across exploded component lines.
 

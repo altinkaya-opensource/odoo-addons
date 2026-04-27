@@ -23,16 +23,8 @@ class SaleOrder(models.Model):
             for order in cancelable:
                 _logger.info("Cancelled Odoo order %s from Trendyol", order.name)
 
-    def action_confirm(self):
-        """Set Trendyol tracking number on newly created pickings."""
-        res = super().action_confirm()
-        for order in self:
-            binding = fields.first(order.trendyol_binding_ids)
-            if not binding or not binding.cargo_tracking_number:
-                continue
-            pickings = order.picking_ids.filtered(lambda p: not p.carrier_tracking_ref)
-            pickings.carrier_tracking_ref = binding.cargo_tracking_number
-        return res
+    def _marketplace_tracking_bindings(self):
+        return super()._marketplace_tracking_bindings() + [self.trendyol_binding_ids]
 
     trendyol_binding_ids = fields.One2many(
         "trendyol.order",

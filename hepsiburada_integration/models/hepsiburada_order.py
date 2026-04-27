@@ -18,6 +18,7 @@ INDIVIDUAL_VAT = "11111111111"
 class HepsiburadaOrder(models.Model):
     _name = "hepsiburada.order"
     _description = "Hepsiburada Order"
+    _inherit = ["marketplace.order.mixin"]
     _inherits = {"sale.order": "odoo_id"}
     _order = "create_date desc"
 
@@ -116,6 +117,24 @@ class HepsiburadaOrder(models.Model):
             "Order number must be unique per backend!",
         ),
     ]
+
+    def _marketplace_order_number(self):
+        return self.hb_order_number
+
+    def _marketplace_delivery_state_map(self):
+        return {
+            "packaged": "shipping_recorded_in_carrier",
+            "in_transit": "in_transit",
+            "delivered": "customer_delivered",
+            "cancelled": "canceled_shipment",
+            "undelivered": "incident",
+        }
+
+    def _marketplace_shipped_statuses(self):
+        return ("in_transit",)
+
+    def _marketplace_delivered_statuses(self):
+        return ("delivered",)
 
     @api.depends("due_date")
     def _compute_is_overdue(self):
@@ -527,26 +546,12 @@ class HepsiburadaOrder(models.Model):
     @api.model
     def _get_country(self, country_code):
         """Get country from country code (defaults to Turkey)."""
-        Country = self.env["res.country"]
-        return Country.search([("code", "=", country_code or "TR")], limit=1)
+        return self._get_country_by_code(country_code)
 
     @api.model
     def _get_state(self, country, city_name):
         """Get state/province from city name."""
-        if not country or not city_name:
-            return None
-
-        State = self.env["res.country.state"]
-        state = State.search(
-            [
-                ("country_id", "=", country.id),
-                "|",
-                ("name", "=ilike", city_name),
-                ("code", "=ilike", city_name),
-            ],
-            limit=1,
-        )
-        return state or None
+        return self._get_state_by_name(country, city_name)
 
     # ── Order Values ─────────────────────────────────────────────────────
 
@@ -557,33 +562,14 @@ class HepsiburadaOrder(models.Model):
         """Prepare sale.order values from package data."""
         first_item = package_data.get("items", [{}])[0]
         order_number = str(first_item.get("orderNumber", ""))
-
-        vals = {
-            "partner_id": main_partner.id,
-            "partner_invoice_id": main_partner.id,
-            "partner_shipping_id": shipping_partner.id,
-            "date_order": _parse_hb_datetime(package_data.get("orderDate"))
-            or fields.Datetime.now(),
-            "company_id": backend.company_id.id,
-            "warehouse_id": backend.warehouse_ids[:1].id,
-            "pricelist_id": backend.pricelist_id.id,
-            "client_order_ref": order_number,
-        }
-
-        if backend.sales_team_id:
-            vals["team_id"] = backend.sales_team_id.id
-        if backend.fiscal_position_id:
-            vals["fiscal_position_id"] = backend.fiscal_position_id.id
-        if backend.source_id:
-            vals["source_id"] = backend.source_id.id
-
-        # Get carrier from cargo company mapping
-        cargo_company = package_data.get("cargoCompany", "")
-        carrier = backend._get_carrier_for_cargo_provider(cargo_company)
-        if carrier:
-            vals["carrier_id"] = carrier.id
-
-        return vals
+        return self._prepare_marketplace_order_values(
+            backend,
+            main_partner,
+            shipping_partner,
+            _parse_hb_datetime(package_data.get("orderDate")) or fields.Datetime.now(),
+            order_number,
+            cargo_provider_name=package_data.get("cargoCompany", ""),
+        )
 
     # ── Line Values ──────────────────────────────────────────────────────
 
@@ -666,16 +652,12 @@ class HepsiburadaOrder(models.Model):
                     hb_sku,
                     sale_order.name,
                 )
-                return {
-                    "order_id": sale_order.id,
-                    "display_type": "line_note",
-                    "name": _(
-                        "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)",
-                        product=line_name,
-                        qty=quantity,
-                        price=price_unit,
-                    ),
-                }
+                return self._prepare_unmapped_line_values(
+                    sale_order,
+                    line_name,
+                    quantity,
+                    price_unit,
+                )
 
         vals = {
             "order_id": sale_order.id,
@@ -699,46 +681,13 @@ class HepsiburadaOrder(models.Model):
     @api.model
     def _get_tax_for_rate(self, backend, vat_rate):
         """Find sale tax matching the given VAT rate."""
-        if not vat_rate:
-            return None
-
-        Tax = self.env["account.tax"]
-        return Tax.search(
-            [
-                ("type_tax_use", "=", "sale"),
-                ("amount", "=", vat_rate),
-                ("price_include", "=", True),
-                ("company_id", "=", backend.company_id.id),
-            ],
-            limit=1,
-        )
+        return super()._get_tax_for_rate(backend, vat_rate)
 
     # ── Picking Delivery State ───────────────────────────────────────────
 
     def _update_picking_delivery_state(self, hb_status):
         """Update stock.picking delivery_state from Hepsiburada status."""
-        self.ensure_one()
-        state_map = {
-            "packaged": "shipping_recorded_in_carrier",
-            "in_transit": "in_transit",
-            "delivered": "customer_delivered",
-            "cancelled": "canceled_shipment",
-            "undelivered": "incident",
-        }
-        delivery_state = state_map.get(hb_status)
-        if not delivery_state:
-            return
-
-        pickings = self.odoo_id.picking_ids.filtered(
-            lambda p: p.picking_type_code == "outgoing"
-        )
-        for picking in pickings:
-            vals = {"delivery_state": delivery_state}
-            if hb_status == "in_transit":
-                vals["date_shipped"] = fields.Date.today()
-            if hb_status == "delivered":
-                vals["date_delivered"] = fields.Datetime.now()
-            picking.write(vals)
+        return super()._update_picking_delivery_state(hb_status)
 
     # ── Picking Notification ─────────────────────────────────────────────
 

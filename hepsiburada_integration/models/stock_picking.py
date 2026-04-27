@@ -65,29 +65,8 @@ class StockPicking(models.Model):
 
     def action_print_delivery_documents(self):
         """Print Hepsiburada labels via backend printer, delegate the rest to super."""
-        hb_pickings = self.browse()
-        for picking in self:
-            hb_binding = picking._get_hepsiburada_binding()
-            if not hb_binding:
-                continue
-            printer = hb_binding.backend_id.label_printer_id
-            if not printer:
-                continue
-            delivery_documents = self.env["ir.attachment"].search(
-                [
-                    ("res_model", "=", "stock.picking"),
-                    ("res_id", "=", picking.id),
-                    ("is_delivery_document", "=", True),
-                ]
-            )
-            for doc in delivery_documents:
-                printer.print_document(
-                    report=None,
-                    content=base64.b64decode(doc.datas),
-                )
-            hb_pickings |= picking
-
-        remaining = self - hb_pickings
+        handled = self._marketplace_print_delivery_documents("_get_hepsiburada_binding")
+        remaining = self - handled
         if remaining:
             return super(StockPicking, remaining).action_print_delivery_documents()
         return True

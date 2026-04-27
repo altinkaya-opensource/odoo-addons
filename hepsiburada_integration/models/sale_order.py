@@ -21,16 +21,8 @@ class SaleOrder(models.Model):
         string="HB Status",
     )
 
-    def action_confirm(self):
-        """Set Hepsiburada tracking number on newly created pickings."""
-        res = super().action_confirm()
-        for order in self:
-            binding = fields.first(order.hepsiburada_binding_ids)
-            if not binding or not binding.cargo_tracking_number:
-                continue
-            pickings = order.picking_ids.filtered(lambda p: not p.carrier_tracking_ref)
-            pickings.carrier_tracking_ref = binding.cargo_tracking_number
-        return res
+    def _marketplace_tracking_bindings(self):
+        return super()._marketplace_tracking_bindings() + [self.hepsiburada_binding_ids]
 
     def action_view_hepsiburada_binding(self):
         """View Hepsiburada binding for this order."""

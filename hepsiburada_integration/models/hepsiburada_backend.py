@@ -7,7 +7,6 @@ from datetime import timedelta
 from dateutil import parser as dateutil_parser
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
 
@@ -36,7 +35,7 @@ def _parse_hb_datetime(dt_string):
 class HepsiburadaBackend(models.Model):
     _name = "hepsiburada.backend"
     _description = "Hepsiburada Backend Configuration"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["marketplace.backend.mixin", "mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True, tracking=True)
     active = fields.Boolean(default=True)
@@ -210,21 +209,25 @@ class HepsiburadaBackend(models.Model):
         string="Claims",
     )
 
-    @api.depends()
-    def _compute_counts(self):
-        Order = self.env["hepsiburada.order"]
-        Settlement = self.env["hepsiburada.settlement"]
-        Question = self.env["hepsiburada.question"]
-        Claim = self.env["hepsiburada.claim"]
-        for backend in self:
-            backend.order_count = Order.search_count([("backend_id", "=", backend.id)])
-            backend.settlement_count = Settlement.search_count(
-                [("backend_id", "=", backend.id)]
-            )
-            backend.question_count = Question.search_count(
-                [("backend_id", "=", backend.id)]
-            )
-            backend.claim_count = Claim.search_count([("backend_id", "=", backend.id)])
+    def _marketplace_name(self):
+        return _("Hepsiburada")
+
+    def _marketplace_queue_channel(self):
+        return "root.hepsiburada.order"
+
+    def _marketplace_api_error_class(self):
+        return HepsiburadaAPIError
+
+    def _marketplace_cargo_provider_field(self):
+        return "hepsiburada_cargo_provider_name"
+
+    def _marketplace_count_models(self):
+        return {
+            "order_count": "hepsiburada.order",
+            "settlement_count": "hepsiburada.settlement",
+            "question_count": "hepsiburada.question",
+            "claim_count": "hepsiburada.claim",
+        }
 
     def _get_api_client(self):
         """Get configured API client for this backend."""
@@ -237,69 +240,17 @@ class HepsiburadaBackend(models.Model):
             user_agent=self.user_agent,
         )
 
-    def _get_carrier_for_cargo_provider(self, cargo_provider_name):
-        """Get delivery carrier for a Hepsiburada cargo provider name.
-
-        Args:
-            cargo_provider_name: Cargo provider name from Hepsiburada API
-
-        Returns:
-            delivery.carrier record or False
-        """
-        self.ensure_one()
-        if cargo_provider_name:
-            name_lower = cargo_provider_name.lower()
-            mapping = self.cargo_mapping_ids.filtered(
-                lambda m: (
-                    m.hepsiburada_cargo_provider_name
-                    and m.hepsiburada_cargo_provider_name.lower() == name_lower
-                )
-            )
-            if mapping and mapping[0].carrier_id:
-                return mapping[0].carrier_id
-        return self.default_cargo_company_id
-
-    # ==================== Connection Test ====================
-
-    def action_test_connection(self):
-        """Test API connection."""
-        self.ensure_one()
-        try:
-            client = self._get_api_client()
-            client.test_connection()
-        except HepsiburadaAPIError as e:
-            raise UserError(_("Connection failed: %s") % str(e)) from e
-
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Connection to Hepsiburada API successful!"),
-                "type": "success",
-                "sticky": False,
-            },
-        }
-
     # ==================== Order Import ====================
 
     def action_import_orders(self):
         """Manually trigger order import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Import Hepsiburada orders: %s") % self.name,
-        )._import_orders()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Order import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_orders",
+            _("Import Hepsiburada orders: %s") % self.name,
+            _("Import Started"),
+            _("Order import has been queued."),
+        )
 
     def _fetch_all_packages(self, fetch_method):
         """Paginate through a package endpoint until exhausted.
@@ -527,20 +478,12 @@ class HepsiburadaBackend(models.Model):
     def action_import_settlements(self):
         """Manually trigger settlement import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Import Hepsiburada settlements: %s") % self.name,
-        )._import_settlements()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Settlement import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_settlements",
+            _("Import Hepsiburada settlements: %s") % self.name,
+            _("Import Started"),
+            _("Settlement import has been queued."),
+        )
 
     def _import_settlements(self):
         """Import settlements from Hepsiburada finance API.
@@ -632,71 +575,31 @@ class HepsiburadaBackend(models.Model):
 
     def action_view_orders(self):
         """View orders for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Orders"),
-            "res_model": "hepsiburada.order",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Orders"), "hepsiburada.order")
 
     def action_view_settlements(self):
         """View settlements for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Settlements"),
-            "res_model": "hepsiburada.settlement",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Settlements"), "hepsiburada.settlement")
 
     def action_view_questions(self):
         """View questions for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Questions"),
-            "res_model": "hepsiburada.question",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Questions"), "hepsiburada.question")
 
     def action_view_claims(self):
         """View claims for this backend."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Claims"),
-            "res_model": "hepsiburada.claim",
-            "view_mode": "tree,form",
-            "domain": [("backend_id", "=", self.id)],
-            "context": {"default_backend_id": self.id},
-        }
+        return self._marketplace_action_view(_("Claims"), "hepsiburada.claim")
 
     # ==================== Claim Import ====================
 
     def action_import_claims(self):
         """Manually trigger claim import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Import Hepsiburada claims: %s") % self.name,
-        )._import_claims()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Claim import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_claims",
+            _("Import Hepsiburada claims: %s") % self.name,
+            _("Import Started"),
+            _("Claim import has been queued."),
+        )
 
     def _import_claims(self):
         """Import customer claims from Hepsiburada OMS API."""
@@ -745,20 +648,12 @@ class HepsiburadaBackend(models.Model):
     def action_import_questions(self):
         """Manually trigger question import."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Import Hepsiburada questions: %s") % self.name,
-        )._import_questions()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Import Started"),
-                "message": _("Question import has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_import_questions",
+            _("Import Hepsiburada questions: %s") % self.name,
+            _("Import Started"),
+            _("Question import has been queued."),
+        )
 
     def _import_questions(self):
         """Import customer questions from Hepsiburada AskToSeller API."""
@@ -810,17 +705,11 @@ class HepsiburadaBackend(models.Model):
     @api.model
     def _cron_import_orders(self):
         """Cron job to import orders from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_orders", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_orders",
+            "_import_orders",
+            _("Import Hepsiburada orders: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Import Hepsiburada orders: %s") % backend.name,
-            )._import_orders()
 
     @api.model
     def _cron_send_invoices(self):
@@ -841,88 +730,49 @@ class HepsiburadaBackend(models.Model):
     @api.model
     def _cron_import_settlements(self):
         """Cron job to import settlements from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_settlements", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_settlements",
+            "_import_settlements",
+            _("Import Hepsiburada settlements: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Import Hepsiburada settlements: %s") % backend.name,
-            )._import_settlements()
 
     @api.model
     def _cron_import_questions(self):
         """Cron job to import questions from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_questions", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_questions",
+            "_import_questions",
+            _("Import Hepsiburada questions: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Import Hepsiburada questions: %s") % backend.name,
-            )._import_questions()
 
     @api.model
     def _cron_import_claims(self):
         """Cron job to import claims from all active backends."""
-        backends = self.search(
-            [
-                ("active", "=", True),
-                ("auto_import_claims", "=", True),
-            ]
+        self._marketplace_cron_queue(
+            "auto_import_claims",
+            "_import_claims",
+            _("Import Hepsiburada claims: %s"),
         )
-        for backend in backends:
-            backend.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Import Hepsiburada claims: %s") % backend.name,
-            )._import_claims()
 
     def _send_pending_invoices(self):
         """Find Hepsiburada orders with pending invoices and queue sends."""
-        self.ensure_one()
-        orders = self.env["hepsiburada.order"].search(
-            [
-                ("backend_id", "=", self.id),
-                ("invoice_link_sent", "=", False),
-                ("hb_status", "!=", "cancelled"),
-            ]
+        return self._send_pending_marketplace_invoices(
+            "hepsiburada.order",
+            "hb_order_number",
+            extra_domain=[("hb_status", "!=", "cancelled")],
         )
-        for order in orders:
-            posted_invoice = order.odoo_id.invoice_ids.filtered(
-                lambda i: i.state == "posted" and i.move_type == "out_invoice"
-            )
-            if not posted_invoice:
-                continue
-            order.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Send invoice: %s") % order.hb_order_number,
-            )._send_invoice()
 
     # ==================== Missing Invoice Sync ====================
 
     def action_sync_missing_invoices(self):
         """Manually trigger missing invoice sync."""
         self.ensure_one()
-        self.with_delay(
-            channel="root.hepsiburada.order",
-            description=_("Sync missing invoices: %s") % self.name,
-        )._sync_missing_invoices()
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Sync Started"),
-                "message": _("Missing invoice sync has been queued."),
-                "type": "info",
-                "sticky": False,
-            },
-        }
+        return self._marketplace_queue_action(
+            "_sync_missing_invoices",
+            _("Sync missing invoices: %s") % self.name,
+            _("Sync Started"),
+            _("Missing invoice sync has been queued."),
+        )
 
     def _sync_missing_invoices(self):
         """Fetch packages with missing invoices from HB and mark orders."""
