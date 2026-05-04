@@ -102,11 +102,12 @@ class UPSRequest:
                 if "access_token" in log_result:
                     log_result["access_token"] = "***"
                 self.delivery_carrier.log_xml(
-                    "---Request:\n"
-                    + "grant_type=client_credentials"
-                    + "\n\n---Response:\n"
-                    + json.dumps(log_result, indent=4),
-                    func="UPS - auth",
+                    "grant_type=client_credentials",
+                    func="ups_auth_request",
+                )
+                self.delivery_carrier.log_xml(
+                    json.dumps(log_result, indent=4),
+                    func="ups_auth_response",
                 )
 
             res.raise_for_status()
@@ -186,11 +187,12 @@ class UPSRequest:
                 result = {}
 
             self.delivery_carrier.log_xml(
-                "---Request:\n"
-                + json.dumps(request_data, indent=4)
-                + "\n\n---Response:\n"
-                + json.dumps(result, indent=4),
-                func=f"UPS - {service_type}",
+                json.dumps(request_data, indent=4),
+                func=f"ups_{service_type}_request",
+            )
+            self.delivery_carrier.log_xml(
+                json.dumps(result, indent=4),
+                func=f"ups_{service_type}_response",
             )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:

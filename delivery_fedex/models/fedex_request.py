@@ -154,11 +154,12 @@ class FedExRequest:
                 del request_data["files"]["attachment"]
 
             self.delivery_carrier.log_xml(
-                "---Request:\n"
-                + json.dumps(request_data, indent=4)
-                + "\n\n---Response:\n"
-                + json.dumps(result, indent=4),
-                func=service_type,
+                json.dumps(request_data, indent=4),
+                func=f"fedex_{service_type}_request",
+            )
+            self.delivery_carrier.log_xml(
+                json.dumps(result, indent=4),
+                func=f"fedex_{service_type}_response",
             )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
