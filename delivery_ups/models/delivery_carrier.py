@@ -1,15 +1,25 @@
 # Copyright 2026 Altinkaya Enclosures, Ahmet Yigit Budak
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import base64
 import logging
+import re
+import textwrap
 from datetime import datetime
+from io import BytesIO
 
 import phonenumbers
+from PIL import Image
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 from .ups_request import UPSRequest
+
+# Strips a leading "[SKU]" prefix Altinkaya prepends to product display names.
+# UPS InternationalForms.Description is capped at 35 chars, and the bracketed
+# code burns ~16 chars while telling customs nothing useful.
+PRODUCT_NAME_SKU_PREFIX_RE = re.compile(r"^\[[^\]]+\]\s*")
 
 UPS_SERVICES = [
     ("01", "Next Day Air"),
@@ -146,11 +156,29 @@ class DeliveryCarrier(models.Model):
         """Return total package count considering package_multiplier."""
         return sum(p.package_multiplier for p in packages)
 
+    def _split_ups_address_lines(self, partner, max_len=35, max_lines=3):
+        """Split partner street/street2 into UPS-compliant AddressLine entries.
+
+        UPS allows up to 3 lines, each ≤ 35 chars. Lines that fit are kept
+        as-is; longer lines are wrapped at word boundaries.
+        """
+        result = []
+        for line in [partner.street, partner.street2]:
+            if not line:
+                continue
+            if len(line) <= max_len:
+                result.append(line)
+            else:
+                result.extend(textwrap.wrap(line, width=max_len, break_long_words=True))
+            if len(result) >= max_lines:
+                break
+        result = [chunk[:max_len] for chunk in result[:max_lines]]
+        return result or [""]
+
     def _prepare_ups_address(self, partner):
         """Build a UPS Address dict for a partner."""
-        address_lines = [line for line in [partner.street, partner.street2] if line]
         address = {
-            "AddressLine": address_lines or [""],
+            "AddressLine": self._split_ups_address_lines(partner),
             "City": partner.city or (partner.state_id.name if partner.state_id else ""),
             "PostalCode": partner.zip or "",
             "CountryCode": partner.country_id.code or "",
@@ -216,7 +244,7 @@ class DeliveryCarrier(models.Model):
             dims = pack.get("dimensions", {})
             packages.append(
                 {
-                    "PackagingType": {
+                    "Packaging": {
                         "Code": "30"
                         if pack.get("is_pallet")
                         else self.ups_packaging_type
@@ -251,7 +279,7 @@ class DeliveryCarrier(models.Model):
             for _i in range(pack.package_multiplier):
                 packages.append(
                     {
-                        "PackagingType": {"Code": packaging_code},
+                        "Packaging": {"Code": packaging_code},
                         "Dimensions": {
                             "UnitOfMeasurement": {
                                 "Code": (pack.length_uom_id.name or "CM").upper()
@@ -321,10 +349,12 @@ class DeliveryCarrier(models.Model):
                 if hs_code
                 else line.product_id.with_context(lang="en_US").name
             )
+            description = description or line.product_id.name or "Goods"
+            description = PRODUCT_NAME_SKU_PREFIX_RE.sub("", description)[:35]
             unit_price = max(round(line.price_unit or 0.0, 3), 0.01)
             products.append(
                 {
-                    "Description": description or line.product_id.name,
+                    "Description": description,
                     "CommodityCode": hs_code.hs_code if hs_code else "",
                     "OriginCountryCode": (
                         line.product_id.country_of_origin.code or "TR"
@@ -349,6 +379,10 @@ class DeliveryCarrier(models.Model):
             ),
             "ReasonForExport": self.ups_reason_for_export,
             "CurrencyCode": currency_code,
+            # UPS docs are ambiguous — the schema says Contacts is for EEI/USMCA
+            # only, but the official FormType=01 sample includes SoldTo, and
+            # Paperless Invoice flows reject the request with 9120800 without it.
+            "Contacts": {"SoldTo": self._prepare_ups_party_block(picking.partner_id)},
             "Product": products,
         }
         if invoice.invoice_incoterm_id:
@@ -647,6 +681,30 @@ class DeliveryCarrier(models.Model):
             "warning_message": False,
         }
 
+    def _ups_label_gif_to_pdf(self, gif_b64):
+        """Convert a UPS GIF label (base64) to a portrait PDF (base64).
+
+        UPS Shipping API returns labels in landscape; we rotate 90° clockwise
+        to portrait, scale to 80% and center on a white page of the original
+        rotated dimensions so there's a uniform margin around the label.
+        """
+        img = Image.open(BytesIO(base64.b64decode(gif_b64)))
+        if img.mode != "RGB":
+            img = img.convert("RGB")
+        img = img.rotate(-90, expand=True)
+
+        page_w, page_h = img.size
+        scaled = img.resize((int(page_w * 0.8), int(page_h * 0.8)), Image.LANCZOS)
+        canvas = Image.new("RGB", (page_w, page_h), "white")
+        canvas.paste(
+            scaled,
+            ((page_w - scaled.width) // 2, (page_h - scaled.height) // 2),
+        )
+
+        pdf_buf = BytesIO()
+        canvas.save(pdf_buf, format="PDF", resolution=203.0)
+        return base64.b64encode(pdf_buf.getvalue()).decode("ascii")
+
     def ups_send_shipping(self, pickings):
         """Create UPS shipments and return [{exact_price, tracking_number}, ...]."""
         for picking in pickings:
@@ -692,16 +750,22 @@ class DeliveryCarrier(models.Model):
             picking.carrier_tracking_ref = master_tracking
             picking.shipping_number = master_tracking
 
-            # Save labels as ir.attachment (one per package).
+            # Save labels as ir.attachment (one per package). UPS Shipping API
+            # only returns GIF or ZPL — never PDF directly. For non-ZPL output
+            # we wrap the GIF in a portrait-oriented PDF locally.
+            is_zpl = self.carrier_barcode_type == "zpl"
+            label_ext = "zpl" if is_zpl else "pdf"
+            label_mimetype = "text/plain" if is_zpl else "application/pdf"
             for seq, pr in enumerate(package_results):
                 label = (pr.get("ShippingLabel") or {}).get("GraphicImage")
                 if not label:
                     continue
-                filename = f"ups_label_{picking.name}_{seq}.{self.carrier_barcode_type}"
+                data = label if is_zpl else self._ups_label_gif_to_pdf(label)
                 self.env["ir.attachment"].create(
                     {
-                        "name": filename,
-                        "datas": label,
+                        "name": f"ups_label_{picking.name}_{seq}.{label_ext}",
+                        "datas": data,
+                        "mimetype": label_mimetype,
                         "res_model": "stock.picking",
                         "res_id": picking.id,
                         "is_delivery_document": True,
