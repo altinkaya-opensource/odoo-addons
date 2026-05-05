@@ -138,9 +138,10 @@ class MailMail(models.Model):
         # Use the first email's values for shared Mail attributes
         first_mail, first_values = batch[0]
 
+        sendgrid_domain = config.get("sendgrid_send_domain", "altinkaya.com")
         from_email = first_mail.email_from
-        if "@altinkaya.com" not in str(from_email):
-            from_email = '"ALTINKAYA" <erp@altinkaya.com>'
+        if f"@{sendgrid_domain}" not in str(from_email):
+            from_email = f'"ALTINKAYA" <erp@{sendgrid_domain}>'
 
         mail = Mail()
         mail.from_email = From(from_email)
