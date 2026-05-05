@@ -27,6 +27,7 @@ SENDGRID_BATCH_SIZE = 1000
 try:
     from sendgrid import SendGridAPIClient
     from sendgrid.helpers.mail import (
+        Asm,
         Attachment,
         Content,
         CustomArg,
@@ -34,6 +35,7 @@ try:
         FileName,
         FileType,
         From,
+        GroupId,
         Header,
         Mail,
         MimeType,
@@ -146,6 +148,15 @@ class MailMail(models.Model):
 
         if first_mail.reply_to:
             mail.reply_to = ReplyTo(first_mail.reply_to)
+
+        # ASM unsubscribe group: required for <%asm_group_unsubscribe_raw_url%>
+        # substitution and for the List-Unsubscribe header. Pulled from the
+        # mailing record, falling back to a default in odoo.conf.
+        asm_group_id = first_mail.mailing_id.sendgrid_asm_group_id or int(
+            config.get("sendgrid_asm_group_id") or 0
+        )
+        if asm_group_id:
+            mail.asm = Asm(GroupId(asm_group_id))
 
         # Shared headers
         headers = {"Message-Id": first_mail.message_id}

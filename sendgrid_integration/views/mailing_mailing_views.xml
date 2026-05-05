@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mailing_mailing_view_form_inherit_sendgrid" model="ir.ui.view">
+        <field name="name">mailing.mailing.view.form.inherit.sendgrid</field>
+        <field name="model">mailing.mailing</field>
+        <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='settings']/group/group[@name='email_content']"
+                position="inside"
+            >
+                <field
+                    name="sendgrid_asm_group_id"
+                    attrs="{'readonly': [('state', 'in', ('sending', 'done'))]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

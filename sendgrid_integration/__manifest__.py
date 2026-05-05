@@ -29,5 +29,7 @@
             "sendgrid",
         ]
     },
-    "data": [],
+    "data": [
+        "views/mailing_mailing_views.xml",
+    ],
 }
