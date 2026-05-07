@@ -708,7 +708,7 @@ class DeliveryCarrier(models.Model):
 
         return res.encode("utf-8")
 
-    def _format_rate_data(self, data):
+    def _format_fedex_rate_data(self, data):
         rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
 
         account_rate_detail = next(
@@ -738,7 +738,7 @@ class DeliveryCarrier(models.Model):
         try:
             response = fedex_request.get_rates(payload)
 
-            rate_data = self._format_rate_data(response)
+            rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
 
             # If needed, convert the price to the order's currency
@@ -788,7 +788,7 @@ class DeliveryCarrier(models.Model):
         try:
             response = fedex_request.get_rates(payload)
 
-            rate_data = self._format_rate_data(response)
+            rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
 
             # If needed, convert the price to the order's currency

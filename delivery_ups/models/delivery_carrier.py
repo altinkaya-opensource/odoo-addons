@@ -483,7 +483,7 @@ class DeliveryCarrier(models.Model):
     # ---------------------------------------------------------------------
     # Response formatters
     # ---------------------------------------------------------------------
-    def _format_rate_data(self, response):
+    def _format_ups_rate_data(self, response):
         """Return {'price', 'currency'} from a RateResponse, preferring negotiated."""
         try:
             rated = response["RateResponse"]["RatedShipment"]
@@ -655,7 +655,7 @@ class DeliveryCarrier(models.Model):
             payload = self._prepare_ups_sale_rate_data(order)
             response = ups_request.get_rate(payload)
 
-            rate_data = self._format_rate_data(response)
+            rate_data = self._format_ups_rate_data(response)
             price = rate_data["price"]
             currency_code = rate_data["currency"]
 
