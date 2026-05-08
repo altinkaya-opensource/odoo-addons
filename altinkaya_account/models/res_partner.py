@@ -671,10 +671,12 @@ class ResPartner(models.Model):
     # valuation operates on the same "open balance" the accounting team sees.
     _CURRENCY_VALUATION_START_DATE = "2022-01-01"
 
-    # Journals excluded from the open-balance calculation (advance payments
-    # and prior FX-difference / FX-valuation entries). Same set the partner
-    # statement skips.
-    _CURRENCY_VALUATION_SKIP_JOURNAL_CODES = ("ADVR", "KRFRK", "KRDGR")
+    # Journals excluded from the open-balance calculation: advance
+    # transfers and FX-difference invoices. Prior KRDGR (FX valuation)
+    # entries are intentionally INCLUDED so that re-running the wizard
+    # at the same date sees the previous valuation in old_try and
+    # yields a zero delta instead of duplicating the entry.
+    _CURRENCY_VALUATION_SKIP_JOURNAL_CODES = ("ADVR", "KRFRK")
 
     def calc_currency_valuation(self, move_date):
         """Period-end FX valuation for foreign customers/suppliers.
