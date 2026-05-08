@@ -6,14 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-15 08:28+0000\n"
-"PO-Revision-Date: 2025-09-15 08:28+0000\n"
+"POT-Creation-Date: 2026-05-08 07:23+0000\n"
+"PO-Revision-Date: 2026-05-08 07:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "$₺€ Bakiye"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "$₺€ V.Gelen"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__data_file
@@ -31,6 +41,22 @@ msgid "Account Auto Reconcile"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_res_company__currency_valuation_gain_account_id
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__currency_valuation_gain_account_id
+msgid ""
+"Account for unrealized FX gains booked by the period-end currency valuation "
+"(646 - Kambiyo Karları)."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_res_company__currency_valuation_loss_account_id
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__currency_valuation_loss_account_id
+msgid ""
+"Account for unrealized FX losses booked by the period-end currency valuation"
+" (656 - Kambiyo Zararları)."
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__accounting_contact
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__accounting_contact
 msgid "Accounting Contact"
@@ -45,7 +71,82 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_accrual_upload_wizard
-msgid "Accrual XLSX Upload Wizard"
+msgid "Accrual Upload Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__action
+msgid "Action"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/change_partner_accounts.py:0
+#: code:addons/altinkaya_account/wizards/change_partner_accounts.py:0
+#: code:addons/altinkaya_account/wizards/change_partner_accounts.py:0
+#, python-format
+msgid ""
+"Action is completed but there is an error happened for these partners\n"
+" %(errs)s"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__move_line_domain
+msgid "Additional Move Line Domain"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__move_line_domain
+msgid ""
+"Additional domain to filter move lines for credit control checks. This "
+"domain is added to the default domain used to select move lines."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "All partners (leave empty for batch)"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid ""
+"All phases completed successfully!\n"
+"\n"
+"Summary:\n"
+"- Phase 1: %(phase1)d partials unlinked\n"
+"- Phase 2: %(phase2)d orphan KRFRK moves deleted\n"
+"- Phase 3: %(phase3)d partners reconciled (with ADVR)\n"
+"\n"
+"Please run calc_difference_invoice() for affected partners."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__amount
+msgid "Amount"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_log__phase__analysis
+msgid "Analysis"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Analysis Complete"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Analyze"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__analysis
+msgid "Analyzed"
 msgstr ""
 
 #. module: altinkaya_account
@@ -61,8 +162,19 @@ msgid "Bank Statement Line"
 msgstr "Pozycja wyciągu bankowego"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__batch_size
+msgid "Batch Size"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__billing_point_id
 msgid "Billing Point"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.ui.menu,name:altinkaya_account.menu_res_partner_balance_account
+#: model:ir.ui.menu,name:altinkaya_account.menu_res_partner_balance_sale
+msgid "Borç / Alacak Listesi"
 msgstr ""
 
 #. module: altinkaya_account
@@ -71,6 +183,9 @@ msgid "Can Reconcile"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
@@ -92,6 +207,48 @@ msgid "Carrier changed from %(frm)s to %(to)s through invoice by %(user)s"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+msgid "Change Accounts"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_eur
+msgid "Change Accounts to EUR"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_try
+msgid "Change Accounts to TRY"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_change_accounts_usd
+msgid "Change Accounts to USD"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+msgid "Change Partner Accounts to EUR"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_eur
+msgid "Change Partner Accounts to EUR Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+msgid "Change Partner Accounts to TRY"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+msgid "Change Partner Accounts to USD"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__changeset_change_ids
@@ -102,10 +259,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__changeset_change_ids
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__changeset_change_ids
@@ -126,10 +290,17 @@ msgstr "Zmiany w zestawie zmian"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__changeset_ids
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__changeset_ids
@@ -137,6 +308,16 @@ msgstr "Zmiany w zestawie zmian"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__changeset_ids
 msgid "Changesets"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_usd
+msgid "Changing partner accounts to USD Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Close"
 msgstr ""
 
 #. module: altinkaya_account
@@ -150,14 +331,14 @@ msgid "Config Settings"
 msgstr "Ustawienia konfiguracji"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Configuration"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_partner
 msgid "Contact"
 msgstr "Kontakt"
-
-#. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__convert_invoice_to_try
-msgid "Convert Invoice to TRY"
-msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
@@ -184,10 +365,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_changesets
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_changesets
@@ -208,10 +396,17 @@ msgstr "Proszę liczyć zestawy zmian"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_pending_changeset_changes
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_pending_changeset_changes
@@ -232,10 +427,17 @@ msgstr "Proszę policzyć oczekujące zmiany w zestawie zmian"
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__count_pending_changesets
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__count_pending_changesets
@@ -258,6 +460,26 @@ msgid "Create Currency Difference Invoices"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_currency_valuation_move
+msgid "Create Currency Valuation Move"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.base_res_partner_search_inherit
+msgid "Create Date"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__create_devir
+msgid "Create Devir (100.D) entries for residual amounts"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_devir
+msgid "Create Devir Entries"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 msgid "Create Difference Invoices"
@@ -275,15 +497,25 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_date
 msgid "Created on"
 msgstr ""
 
@@ -292,6 +524,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__currency_id
 msgid "Currency"
 msgstr "Waluta"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_diff_inv_account_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_diff_inv_account_id
+msgid "Currency Diff Inv Account"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Currency Diff. Counterpart"
+msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
@@ -306,12 +552,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_checked
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_checked
 msgid "Currency Difference Checked"
-msgstr ""
-
-#. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_diff_inv_account_id
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_diff_inv_account_id
-msgid "Currency Difference Invoice Account"
 msgstr ""
 
 #. module: altinkaya_account
@@ -339,24 +579,54 @@ msgid "Currency Rate"
 msgstr "Kurs waluty"
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_currency_reconcile_fix_log
+msgid "Currency Reconcile Fix Wizard Log"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Currency Reconciliation Fix Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Currency Valuation"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_valuation_gain_account_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_valuation_gain_account_id
+msgid "Currency Valuation Gain Account"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_valuation_journal_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_valuation_journal_id
+msgid "Currency Valuation Journal"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_company__currency_valuation_loss_account_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__currency_valuation_loss_account_id
+msgid "Currency Valuation Loss Account"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
 msgid "Customers"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__delivery_ref_no
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__delivery_ref_no
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__delivery_ref_no
-msgid "Delivery Reference No."
+#: model:ir.model,name:altinkaya_account.model_credit_control_policy
+msgid "Define a reminder policy"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__delivery_ref_no
-#: model:ir.model.fields,help:altinkaya_account.field_account_move__delivery_ref_no
-#: model:ir.model.fields,help:altinkaya_account.field_account_payment__delivery_ref_no
-msgid ""
-"Delivery carrier reference number before the shipment is sent to the "
-"carrier."
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__details
+msgid "Details"
 msgstr ""
 
 #. module: altinkaya_account
@@ -372,9 +642,24 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__done
+msgid "Done"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__draft
+msgid "Draft"
 msgstr ""
 
 #. module: altinkaya_account
@@ -389,12 +674,73 @@ msgid "Due Days"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Döviz Bakiye"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Döviz Vade Gelen"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_account_bank_statement_line__z_tevkifatli_mi
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__z_tevkifatli_mi
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__z_tevkifatli_mi
 msgid ""
 "Eger fatura tevkifatli fatura ise bu alan secilmeli Sadece zirve programi "
 "transferinde kullanilmaktadir."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Error in accounts definition"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__exchange_moves_count
+msgid "Exchange Moves to Delete"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Exchange move partials unreconciled: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Exchange moves deleted: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Exchange moves to delete: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Execute All Phases"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__log_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Execution Log"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Fark"
 msgstr ""
 
 #. module: altinkaya_account
@@ -410,10 +756,27 @@ msgid "Filename"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Finalize"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_fiscal_position
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_fiscal_position__name
 msgid "Fiscal Position"
 msgstr "Obszar podatkowy"
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_currency_reconcile_fix_wizard
+msgid "Fix Currency Difference Reconciliation Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_currency_reconcile_fix_wizard
+#: model:ir.ui.menu,name:altinkaya_account.menu_currency_reconcile_fix_wizard
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Fix Currency Reconciliation"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_full_reconcile
@@ -436,14 +799,41 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__id
 msgid "ID"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__partner_id
+msgid "If set, only process this partner. Leave empty for all partners."
 msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
 msgid "Import"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__installment_fee_invoice_id
+msgid "Installment Fee Invoice"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__installment_fee_invoiced
+msgid "Installment Fee Invoiced"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__installment_fee_tx_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__installment_fee_tx_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__installment_fee_tx_id
+msgid "Installment Fee Payment Transaction"
 msgstr ""
 
 #. module: altinkaya_account
@@ -454,6 +844,11 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__invoice_date
 msgid "Invoice Date"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__invoiced_installment_fee
+msgid "Invoiced Installment Fee"
 msgstr ""
 
 #. module: altinkaya_account
@@ -494,6 +889,12 @@ msgid "Journal Name"
 msgstr "Nazwa dziennika"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_res_company__currency_valuation_journal_id
+#: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__currency_valuation_journal_id
+msgid "Journal used to post period-end currency valuation entries (KRDGR)."
+msgstr ""
+
+#. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
@@ -512,28 +913,72 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Last Year"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Limit"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Limit Para B."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__lines_to_reconcile_count
+msgid "Lines to Re-reconcile"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Lines to re-reconcile (from %(date)s): %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Lines unreconciled: %(count)d"
 msgstr ""
 
 #. module: altinkaya_account
@@ -564,6 +1009,14 @@ msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid ""
+"Missing TCMB forex-buying rate for currency id %(currency)s on %(date)s."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
 #: code:addons/altinkaya_account/wizards/import_fee_accrual_wizard.py:0
 #, python-format
 msgid "Missing account(s) for codes: %s"
@@ -585,6 +1038,25 @@ msgid "Move Reference"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Name"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "No exchange rate information found for the selected day!"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "No foreign-currency open balances found for the selected partners."
+msgstr ""
+
+#. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/wizards/create_currency_difference_invoice.py:0
 #, python-format
@@ -600,14 +1072,33 @@ msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "No records found to calculate exchange rate difference!"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
 #: code:addons/altinkaya_account/wizards/import_fee_accrual_wizard.py:0
 #, python-format
 msgid "No valid lines found."
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Note: Some lines could not be reconciled automatically."
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Notes"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__batch_size
+msgid "Number of records to process in each batch"
 msgstr ""
 
 #. module: altinkaya_account
@@ -623,6 +1114,20 @@ msgid "Order Reference"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Orphan ADVR moves deleted: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Orphan KRFRK moves deleted: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__other_inv_in_reconciles
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__other_inv_in_reconciles
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__other_inv_in_reconciles
@@ -635,8 +1140,58 @@ msgid "PO Unit"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Partial reconciles removed: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__partials_to_unlink_count
+msgid "Partials to Unlink"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Partials to unlink (no full_reconcile_id): %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__partner_id
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Partner"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_partner_balance
+msgid "Partner Balance Action"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__partner_currency_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__partner_currency_id
+msgid "Partner Currency"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_balance
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_balance
+msgid "Partner Currency Balance"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_balance_due
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_balance_due
+msgid "Partner Currency Balance Due"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Partners processed: %(count)d"
 msgstr ""
 
 #. module: altinkaya_account
@@ -656,9 +1211,9 @@ msgid "Payment Term"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model,name:altinkaya_account.model_account_payment_term
-msgid "Payment Terms"
-msgstr "Warunki płatności"
+#: model:ir.model,name:altinkaya_account.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Transakcja płatności"
 
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_payment
@@ -667,8 +1222,191 @@ msgid "Payments"
 msgstr "Płatności"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__phase
+msgid "Phase"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 1 Complete"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 1: Partials Unlinked"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_log__phase__phase1
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 1: Unlink Partials"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__phase1
+msgid "Phase 1: Unlinked Partials"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 1: Unlinked incomplete partials"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 2 Complete"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__phase2
+msgid "Phase 2: Cleaned KRFRK"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 2: Cleaned orphan KRFRK"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_log__phase__phase2
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 2: Cleanup KRFRK"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 2: Currency exchange journal not configured. Skipped."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 2: KRFRK Deleted"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 2: No orphan KRFRK moves found."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 3 Complete"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 3: No partners with unreconciled lines."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_log__phase__phase3
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 3: Re-reconcile"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__phase3
+msgid "Phase 3: Re-reconciled"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Phase 3: Reconciled"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Phase 3: Reconciled with ADVR (force mode)"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_log__phase__phase4
+msgid "Phase 4: Create Devir"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields.selection,name:altinkaya_account.selection__currency_reconcile_fix_wizard__state__phase4
+msgid "Phase 4: Created Devir"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__phase1_processed
+msgid "Phase1 Processed"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__phase2_processed
+msgid "Phase2 Processed"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__phase3_processed
+msgid "Phase3 Processed"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__phase4_processed
+msgid "Phase4 Processed"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__moves_picking_ref
 msgid "Picking Ref"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Please complete Phase 1 first."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Please complete Phase 2 first."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Please complete Phase 3 first."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid ""
+"Please configure the Currency Valuation gain/loss accounts and journal under"
+" Accounting Settings."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Please run analysis first."
 msgstr ""
 
 #. module: altinkaya_account
@@ -687,9 +1425,31 @@ msgstr ""
 "płatności"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Preview Statistics"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_product_pricelist
 msgid "Pricelist"
 msgstr "Cennik"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Progress"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__protected_partials_count
+msgid "Protected Partials (KFARK)"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Protected partials (KFARK linked): %(count)d"
+msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__purchase_default_account_id
@@ -698,15 +1458,20 @@ msgid "Purchase Default Account"
 msgstr ""
 
 #. module: altinkaya_account
-#. odoo-python
-#: code:addons/altinkaya_account/wizards/import_fee_accrual_wizard.py:0
-#, python-format
-msgid "Python package 'openpyxl' is required to read .xlsx files."
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__rate_inverse
+msgid "Rate Inverse"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__rate_inverse
-msgid "Rate Inverse"
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__reconcile_from_date
+msgid "Re-reconcile lines from this date onwards (migration day)"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Ready to proceed with Phase 1."
 msgstr ""
 
 #. module: altinkaya_account
@@ -723,6 +1488,11 @@ msgid "Reciever"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__reconcile_from_date
+msgid "Reconcile From Date"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Reconcile and Currency Difference"
 msgstr ""
@@ -730,6 +1500,34 @@ msgstr ""
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Reconciliations"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Remaining Lines"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Remaining unreconciled lines: %(count)d"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Reset"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__result_message
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Result"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Risk"
 msgstr ""
 
 #. module: altinkaya_account
@@ -784,10 +1582,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__smart_search
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__smart_search
@@ -796,6 +1601,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__smart_search
 msgid "Smart Search"
 msgstr "Inteligentne wyszukiwanie"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__partner_id
+msgid "Specific Partner"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__state
+msgid "State"
+msgstr ""
 
 #. module: altinkaya_account
 #. odoo-javascript
@@ -814,6 +1629,33 @@ msgstr ""
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
 msgid "Suppliers"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.base_res_partner_search_inherit
+msgid "Sıfır Değil"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "TL Bakiye"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "TL Vade Gelen"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__balance
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__balance
+msgid "TRY Balance"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__balance_due
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__balance_due
+msgid "TRY Balance Due"
 msgstr ""
 
 #. module: altinkaya_account
@@ -886,10 +1728,17 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_pending_changeset_changes
-#: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_eur__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_try__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_pending_changeset_changes
@@ -910,10 +1759,17 @@ msgstr "Liczba oczekujących zmian tego rekordu"
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_pending_changesets
-#: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_eur__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_try__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_pending_changesets
@@ -934,10 +1790,17 @@ msgstr "Liczba oczekujących zestawów zmian tego rekordu"
 #: model:ir.model.fields,help:altinkaya_account.field_account_move__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_move_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_payment__count_changesets
-#: model:ir.model.fields,help:altinkaya_account.field_account_payment_term__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_reconcile_model__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_eur__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_try__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__count_changesets
@@ -967,6 +1830,15 @@ msgid "This F.Year"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_try_view
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
+msgid ""
+"This action will change every accounting records of partner. Ask your "
+"administrator before use it."
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
 msgid "This action will create an invoice for every selected partner."
 msgstr ""
@@ -984,11 +1856,54 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "This will delete orphaned KRFRK moves. Continue?"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid ""
+"This will execute ALL phases in sequence. This is a destructive operation. "
+"Are you sure?"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid ""
+"This will unlink all partial reconciliations without full_reconcile_id. "
+"Continue?"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
+msgid "Time"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__has_2breconciled_customer
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__has_2breconciled_customer
+msgid "To be reconciled customer"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__has_2breconciled_supplier
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__has_2breconciled_supplier
+msgid "To be reconciled supplier"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__total_balance
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__total_balance
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__total_balance
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Total Balance"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Total partners: %(count)d"
 msgstr ""
 
 #. module: altinkaya_account
@@ -1002,19 +1917,20 @@ msgid "Transient Model For Currency Valuation Move"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.base_res_partner_search_inherit
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Türkiye"
 msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
-msgid "Upload Accrual XLSX"
+msgid "Upload Accrual (.xlsx)"
 msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.actions.act_window,name:altinkaya_account.action_accrual_upload_wizard
 #: model:ir.ui.menu,name:altinkaya_account.menu_accrual_upload_root
-msgid "Upload Fee Accrual (.xlsx)"
+msgid "Upload Fee Accrual"
 msgstr ""
 
 #. module: altinkaya_account
@@ -1028,10 +1944,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__user_can_see_changeset
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment_term__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_reconcile_model__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_eur__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_try__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_config_settings__user_can_see_changeset
@@ -1049,12 +1972,30 @@ msgid "Waiting Pickings"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__wizard_id
+msgid "Wizard"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
+#, python-format
+msgid "Wizard Complete"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_change_partner_accounts_try
+msgid "Wizard for changing partner accounts to TRY"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.actions.act_window,name:altinkaya_account.act_res_partner_2_account_move_line
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_partner_form
 msgid "Yevmiye Kalemleri"
 msgstr ""
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.base_res_partner_search_inherit
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Yurtdışı"
 msgstr ""
@@ -1081,10 +2022,20 @@ msgid "Zirve Muhasebe kodu"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_credit_control_communication
+msgid "credit control communication"
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__x_comment_export
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__x_comment_export
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__x_comment_export
 msgid "ihracat fatura notu"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "Ödeme Şekli"
 msgstr ""
 
 #. module: altinkaya_account
@@ -1095,4 +2046,14 @@ msgstr ""
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_search_inherit
 msgid "İhracat"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "₺ Bakiye"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
+msgid "₺ V.Gelen"
 msgstr ""

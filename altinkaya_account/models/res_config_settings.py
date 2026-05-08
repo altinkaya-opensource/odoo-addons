@@ -23,3 +23,18 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.currency_diff_inv_account_id",
         readonly=False,
     )
+    currency_valuation_gain_account_id = fields.Many2one(
+        "account.account",
+        related="company_id.currency_valuation_gain_account_id",
+        readonly=False,
+    )
+    currency_valuation_loss_account_id = fields.Many2one(
+        "account.account",
+        related="company_id.currency_valuation_loss_account_id",
+        readonly=False,
+    )
+    currency_valuation_journal_id = fields.Many2one(
+        "account.journal",
+        related="company_id.currency_valuation_journal_id",
+        readonly=False,
+    )

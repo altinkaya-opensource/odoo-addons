@@ -15,6 +15,27 @@
                     />
                     <field name="currency_diff_inv_account_id" />
                 </div>
+                <div class="row mt8">
+                    <label
+                        for="currency_valuation_gain_account_id"
+                        class="col-lg-4 o_light_label"
+                    />
+                    <field name="currency_valuation_gain_account_id" />
+                </div>
+                <div class="row mt8">
+                    <label
+                        for="currency_valuation_loss_account_id"
+                        class="col-lg-4 o_light_label"
+                    />
+                    <field name="currency_valuation_loss_account_id" />
+                </div>
+                <div class="row mt8">
+                    <label
+                        for="currency_valuation_journal_id"
+                        class="col-lg-4 o_light_label"
+                    />
+                    <field name="currency_valuation_journal_id" />
+                </div>
             </xpath>
         </field>
     </record>
