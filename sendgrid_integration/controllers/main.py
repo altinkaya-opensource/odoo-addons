@@ -31,8 +31,14 @@ SENDGRID_EVENT_MAPPING = {
     "spamreport": "spam",
     "unsubscribe": "unsub",
     "group_unsubscribe": "unsub",
-    "group_resubscribe": "unsub",
 }
+
+# Events that should propagate to Odoo's opt-out / blacklist state. Handled
+# separately from tracking events because `group_resubscribe` has no matching
+# mail.tracking.event state and must still update the subscription record.
+SENDGRID_SUPPRESSION_EVENTS = frozenset(
+    {"unsubscribe", "group_unsubscribe", "group_resubscribe"}
+)
 
 
 try:
@@ -116,11 +122,6 @@ class SendGridController(http.Controller):
             )
             return False
 
-        odoo_event_type = SENDGRID_EVENT_MAPPING.get(event_type, False)
-        if not odoo_event_type:
-            _logger.debug("Unhandled SendGrid event type: %s", event_type)
-            return False
-
         mail_mail = request.env["mail.mail"].sudo().browse(int(odoo_mail_id))
         if not mail_mail.exists():
             _logger.warning(
@@ -128,22 +129,30 @@ class SendGridController(http.Controller):
             )
             return False
 
-        tracking_email = (
-            request.env["mail.tracking.email"]
-            .sudo()
-            .search(
-                [
-                    ("mail_id", "=", mail_mail.id),
-                ],
-                limit=1,
-                order="id desc",
+        odoo_event_type = SENDGRID_EVENT_MAPPING.get(event_type, False)
+        if odoo_event_type:
+            tracking_email = (
+                request.env["mail.tracking.email"]
+                .sudo()
+                .search(
+                    [("mail_id", "=", mail_mail.id)],
+                    limit=1,
+                    order="id desc",
+                )
             )
-        )
-        if not tracking_email:
-            _logger.warning("No tracking email found for mail.mail %s", odoo_mail_id)
+            if tracking_email:
+                tracking_email.with_delay().event_create(odoo_event_type, event_data)
+            else:
+                _logger.warning(
+                    "No tracking email found for mail.mail %s", odoo_mail_id
+                )
+        elif event_type not in SENDGRID_SUPPRESSION_EVENTS:
+            _logger.debug("Unhandled SendGrid event type: %s", event_type)
             return False
 
-        tracking_email.with_delay().event_create(odoo_event_type, event_data)
+        if event_type in SENDGRID_SUPPRESSION_EVENTS:
+            mail_mail.with_delay()._sendgrid_apply_suppression(event_data)
+
         return True
 
     def _get_odoo_mail_id(self, event_data):

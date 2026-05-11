@@ -18,7 +18,7 @@ from ast import literal_eval
 from collections import defaultdict
 
 from odoo import _, fields, models
-from odoo.tools import config, ustr
+from odoo.tools import config, email_normalize, ustr
 
 _logger = logging.getLogger(__name__)
 
@@ -244,3 +244,67 @@ class MailMail(models.Model):
                     success_pids=[],
                     failure_type="mail_smtp",
                 )
+
+    def _sendgrid_apply_suppression(self, event_data):
+        """Mirror SendGrid suppression events into Odoo opt-out state.
+
+        - ``unsubscribe`` (global one-click): add to ``mail.blacklist``.
+        - ``group_unsubscribe`` (ASM group): toggle ``opt_out`` on every
+          ``mailing.list`` the originating campaign targeted. If the campaign
+          has no mailing lists (e.g. it targets ``res.partner``), fall back to
+          ``mail.blacklist`` since that's the only opt-out lever available
+          outside ``mailing.contact``.
+        - ``group_resubscribe`` (ASM group): clear ``opt_out`` on those same
+          lists. Does NOT auto-unblacklist, to avoid lifting blacklist entries
+          created for other reasons (bounces, manual adds).
+        """
+        self.ensure_one()
+        event_type = event_data.get("event", "")
+        email = email_normalize(event_data.get("email", ""))
+        if not email:
+            _logger.warning(
+                "SendGrid %s event for mail.mail %s has no usable email",
+                event_type,
+                self.id,
+            )
+            return False
+
+        if event_type == "unsubscribe":
+            self.env["mail.blacklist"].sudo()._add(email)
+            _logger.info("SendGrid global unsubscribe: blacklisted %s", email)
+            return True
+
+        if event_type in ("group_unsubscribe", "group_resubscribe"):
+            mailing = self.mailing_id
+            list_ids = mailing.contact_list_ids.ids if mailing else []
+            if list_ids:
+                opt_out = event_type == "group_unsubscribe"
+                mailing.sudo().update_opt_out(email, list_ids, opt_out)
+                _logger.info(
+                    "SendGrid %s: opt_out=%s for %s on lists %s",
+                    event_type,
+                    opt_out,
+                    email,
+                    list_ids,
+                )
+                return True
+
+            if event_type == "group_unsubscribe":
+                self.env["mail.blacklist"].sudo()._add(email)
+                _logger.info(
+                    "SendGrid group_unsubscribe with no target lists "
+                    "(mail %s): blacklisted %s",
+                    self.id,
+                    email,
+                )
+                return True
+
+            _logger.info(
+                "SendGrid group_resubscribe for %s on mail %s with no "
+                "target lists, skipping (will not auto-unblacklist)",
+                email,
+                self.id,
+            )
+            return False
+
+        return False
