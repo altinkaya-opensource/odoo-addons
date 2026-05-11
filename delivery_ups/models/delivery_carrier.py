@@ -5,10 +5,11 @@ import base64
 import logging
 import re
 import textwrap
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 
 import phonenumbers
+import pytz
 from PIL import Image
 
 from odoo import _, fields, models
@@ -940,45 +941,86 @@ class DeliveryCarrier(models.Model):
 
         return True
 
+    def _get_ups_pickup_service_code(self):
+        """Pickup ServiceCode is 3 chars; shipping ups_service_type is 2 chars.
+        UPS maps them by zero-padding (e.g. shipment "11" → pickup "011").
+        """
+        if not self.ups_service_type:
+            return "011"
+        return self.ups_service_type.zfill(3)
+
+    def _get_ups_pickup_window(self, cutoff_hour=15):
+        """Pick a (pickup_date, ready_time, close_time) in local time.
+
+        UPS rejects pickups when CloseTime - ReadyTime is below the lead time,
+        and rolls ReadyTime forward when it is earlier than 'now'. To stay
+        safely above the lead time we defer the pickup to the next business
+        day once the local time has crossed the cutoff hour.
+        """
+        tz = pytz.timezone(self.env.user.tz or "Europe/Istanbul")
+        now_local = pytz.utc.localize(fields.Datetime.now()).astimezone(tz)
+
+        if now_local.hour >= cutoff_hour or not self._is_tr_business_day(now_local):
+            pickup_dt = self._get_next_tr_business_day(now_local + timedelta(days=1))
+            ready_time = "0900"
+        else:
+            pickup_dt = now_local
+            # Pad 30 min so UPS does not overlap with the current minute.
+            ready_dt = now_local + timedelta(minutes=30)
+            ready_time = ready_dt.strftime("%H%M")
+
+        return pickup_dt.strftime("%Y%m%d"), ready_time, "1700"
+
     def _ups_request_pickup(self, picking, tracking_number, total_weight):
         """Schedule a UPS pickup for non-daily pickup types."""
         self.ensure_one()
         warehouse_partner = picking.location_id.warehouse_id.partner_id
 
-        pickup_date = self._get_next_tr_business_day(fields.Datetime.now()).strftime(
-            "%Y%m%d"
-        )
+        pickup_date, ready_time, close_time = self._get_ups_pickup_window()
+        address_lines = self._split_ups_address_lines(warehouse_partner)
 
         payload = {
             "PickupCreationRequest": {
+                "Request": {
+                    "TransactionReference": {"CustomerContext": picking.name or ""},
+                },
                 "RatePickupIndicator": "N",
                 "Shipper": {
                     "Account": {
                         "AccountNumber": self.ups_account_number or "",
                         "AccountCountryCode": (
-                            warehouse_partner.country_id.code or "TR"
+                            warehouse_partner.country_id.code
+                            or self.env.company.country_id.code
+                            or "TR"
                         ),
                     }
                 },
                 "PickupDateInfo": {
-                    "CloseTime": "1700",
-                    "ReadyTime": "0900",
+                    "CloseTime": close_time,
+                    "ReadyTime": ready_time,
                     "PickupDate": pickup_date,
                 },
                 "PickupAddress": {
-                    "CompanyName": warehouse_partner.commercial_partner_id.name or "",
-                    "ContactName": warehouse_partner.name or "",
-                    "AddressLine": warehouse_partner.street or "",
+                    "CompanyName": (warehouse_partner.commercial_partner_id.name or "")[
+                        :27
+                    ],
+                    "ContactName": (warehouse_partner.name or "")[:22],
+                    "AddressLine": address_lines,
                     "City": warehouse_partner.city or "",
-                    "StateProvince": warehouse_partner.state_id.code or "",
+                    "StateProvince": (
+                        warehouse_partner.state_id.code
+                        or warehouse_partner.state_id.name
+                        or ""
+                    ),
                     "PostalCode": warehouse_partner.zip or "",
                     "CountryCode": warehouse_partner.country_id.code or "",
                     "ResidentialIndicator": "N",
                     "Phone": {"Number": self._format_phone(warehouse_partner)},
                 },
+                "AlternateAddressIndicator": "N",
                 "PickupPiece": [
                     {
-                        "ServiceCode": self.ups_service_type or "011",
+                        "ServiceCode": self._get_ups_pickup_service_code(),
                         "Quantity": str(self._get_package_count(picking.package_ids)),
                         "DestinationCountryCode": (
                             picking.partner_id.country_id.code or ""
@@ -987,11 +1029,13 @@ class DeliveryCarrier(models.Model):
                     }
                 ],
                 "TotalWeight": {
-                    "Weight": str(round(total_weight or 0.1, 2)),
+                    "Weight": "%.1f" % (total_weight or 0.1),
                     "UnitOfMeasurement": "KGS",
                 },
+                "OverweightIndicator": "Y" if (total_weight or 0) > 32 else "N",
+                "TrackingData": [{"TrackingNumber": tracking_number}],
                 "PaymentMethod": "01",
-                "TrackingNumber": tracking_number,
+                "ReferenceNumber": picking.name or "",
             }
         }
 
@@ -1004,9 +1048,7 @@ class DeliveryCarrier(models.Model):
         )
         response = ups_request.request_pickup(payload)
 
-        prn = response.get("PickupCreationResponse", {}).get("PRN") or response.get(
-            "PickupCreationResponse", {}
-        ).get("RateResult", {}).get("PRN")
+        prn = (response.get("PickupCreationResponse") or {}).get("PRN")
         if prn:
             picking.ups_pickup_prn = prn
             picking.ups_pickup_date = datetime.strptime(pickup_date, "%Y%m%d")
