@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="expense_item_tree" model="ir.ui.view">
+        <field name="name">expense.item.tree</field>
+        <field name="model">expense.item</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" />
+                <field name="active" widget="boolean_toggle" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="expense_item_form" model="ir.ui.view">
+        <field name="name">expense.item.form</field>
+        <field name="model">expense.item</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_expense_item" model="ir.actions.act_window">
+        <field name="name">Expense Items</field>
+        <field name="res_model">expense.item</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="expense_unit_tree" model="ir.ui.view">
+        <field name="name">expense.unit.tree</field>
+        <field name="model">expense.unit</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" />
+                <field name="active" widget="boolean_toggle" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="expense_unit_form" model="ir.ui.view">
+        <field name="name">expense.unit.form</field>
+        <field name="model">expense.unit</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_expense_unit" model="ir.actions.act_window">
+        <field name="name">Expense Units</field>
+        <field name="res_model">expense.unit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="expense_type_tree" model="ir.ui.view">
+        <field name="name">expense.type.tree</field>
+        <field name="model">expense.type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" />
+                <field name="active" widget="boolean_toggle" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="expense_type_form" model="ir.ui.view">
+        <field name="name">expense.type.form</field>
+        <field name="model">expense.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_expense_type" model="ir.actions.act_window">
+        <field name="name">Expense Types</field>
+        <field name="res_model">expense.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_expense_classification"
+        name="Expense Classification"
+        parent="account.menu_finance_configuration"
+        sequence="90"
+    />
+    <menuitem
+        id="menu_expense_item"
+        name="Expense Items"
+        parent="menu_expense_classification"
+        action="action_expense_item"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_expense_unit"
+        name="Expense Units"
+        parent="menu_expense_classification"
+        action="action_expense_unit"
+        sequence="20"
+    />
+    <menuitem
+        id="menu_expense_type"
+        name="Expense Types"
+        parent="menu_expense_classification"
+        action="action_expense_type"
+        sequence="30"
+    />
+</odoo>

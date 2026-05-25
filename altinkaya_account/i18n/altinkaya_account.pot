@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-08 07:23+0000\n"
-"PO-Revision-Date: 2026-05-08 07:23+0000\n"
+"POT-Creation-Date: 2026-05-25 13:42+0000\n"
+"PO-Revision-Date: 2026-05-25 13:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,11 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__data_file
 msgid ".xlsx File"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_account
+msgid "Account"
 msgstr ""
 
 #. module: altinkaya_account
@@ -88,6 +93,13 @@ msgstr ""
 msgid ""
 "Action is completed but there is an error happened for these partners\n"
 " %(errs)s"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__active
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__active
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__active
+msgid "Active"
 msgstr ""
 
 #. module: altinkaya_account
@@ -249,6 +261,7 @@ msgid "Change Partner Accounts to USD"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__changeset_change_ids
@@ -269,6 +282,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_change_ids
@@ -280,6 +296,7 @@ msgid "Changeset Changes"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__changeset_ids
@@ -300,6 +317,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__changeset_ids
@@ -355,6 +375,7 @@ msgid "Could not read the .xlsx file: %s"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__count_changesets
@@ -375,6 +396,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_changesets
@@ -386,6 +410,7 @@ msgid "Count Changesets"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__count_pending_changeset_changes
@@ -406,6 +431,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changeset_changes
@@ -417,6 +445,7 @@ msgid "Count Pending Changeset Changes"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__count_pending_changesets
@@ -437,6 +466,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__count_pending_changesets
@@ -504,6 +536,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -516,6 +551,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__create_date
 msgid "Created on"
 msgstr ""
 
@@ -649,6 +687,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -739,6 +780,53 @@ msgid "Execution Log"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.ui.menu,name:altinkaya_account.menu_expense_classification
+msgid "Expense Classification"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_expense_item
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__expense_item_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__name
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_account_search_expense
+msgid "Expense Item"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_expense_item
+#: model:ir.ui.menu,name:altinkaya_account.menu_expense_item
+msgid "Expense Items"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_expense_type
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__expense_type_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__name
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_account_search_expense
+msgid "Expense Type"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_expense_type
+#: model:ir.ui.menu,name:altinkaya_account.menu_expense_type
+msgid "Expense Types"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_expense_unit
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__expense_unit_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__name
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.view_account_search_expense
+msgid "Expense Unit"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_expense_unit
+#: model:ir.ui.menu,name:altinkaya_account.menu_expense_unit
+msgid "Expense Units"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
 msgid "Fark"
 msgstr ""
@@ -806,6 +894,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__id
 msgid "ID"
 msgstr ""
 
@@ -920,6 +1011,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -932,6 +1026,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -944,6 +1041,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -1570,6 +1670,7 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__smart_search
@@ -1590,6 +1691,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__smart_search
@@ -1716,6 +1820,7 @@ msgid "The inverse rate of the currency"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_accrual_upload_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_account_auto_reconcile__count_pending_changeset_changes
@@ -1736,6 +1841,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_expense_item__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_expense_type__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_expense_unit__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changeset_changes
@@ -1747,6 +1855,7 @@ msgid "The number of pending changes of this record"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_accrual_upload_wizard__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_auto_reconcile__count_pending_changesets
@@ -1767,6 +1876,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_item__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_type__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_unit__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_pending_changesets
@@ -1778,6 +1890,7 @@ msgid "The number of pending changesets of this record"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,help:altinkaya_account.field_account_account__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_account_reconcile__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_accrual_upload_wizard__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_account_auto_reconcile__count_changesets
@@ -1798,6 +1911,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_item__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_type__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_expense_unit__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_payment_transaction__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_product_pricelist__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__count_changesets
@@ -1851,6 +1967,13 @@ msgstr ""
 msgid ""
 "This journal will be used on the write-off entries created by the "
 "reconciliation."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.constraint,message:altinkaya_account.constraint_expense_item_name_uniq
+#: model:ir.model.constraint,message:altinkaya_account.constraint_expense_type_name_uniq
+#: model:ir.model.constraint,message:altinkaya_account.constraint_expense_unit_name_uniq
+msgid "This record already exists."
 msgstr ""
 
 #. module: altinkaya_account
@@ -1932,6 +2055,7 @@ msgid "Upload Fee Accrual"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_account__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__user_can_see_changeset
@@ -1952,6 +2076,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_item__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_type__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_expense_unit__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_payment_transaction__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_product_pricelist__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_company__user_can_see_changeset

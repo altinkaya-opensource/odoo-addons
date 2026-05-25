@@ -19,3 +19,5 @@ from . import account_auto_reconcile
 from . import payment_transaction
 from . import credit_control_policy
 from . import credit_control_communication
+from . import expense_classification
+from . import account_account

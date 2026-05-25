@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_account_form_expense" model="ir.ui.view">
+        <field name="name">account.account.form.expense</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form" />
+        <field name="arch" type="xml">
+            <field name="account_type" position="after">
+                <field name="expense_item_id" />
+                <field name="expense_unit_id" />
+                <field name="expense_type_id" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_list_expense" model="ir.ui.view">
+        <field name="name">account.account.list.expense</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list" />
+        <field name="arch" type="xml">
+            <field name="account_type" position="after">
+                <field name="expense_item_id" optional="hide" />
+                <field name="expense_unit_id" optional="hide" />
+                <field name="expense_type_id" optional="hide" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_search_expense" model="ir.ui.view">
+        <field name="name">account.account.search.expense</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_search" />
+        <field name="arch" type="xml">
+            <filter name="accounttype" position="after">
+                <filter
+                    string="Expense Item"
+                    name="group_expense_item"
+                    context="{'group_by': 'expense_item_id'}"
+                />
+                <filter
+                    string="Expense Unit"
+                    name="group_expense_unit"
+                    context="{'group_by': 'expense_unit_id'}"
+                />
+                <filter
+                    string="Expense Type"
+                    name="group_expense_type"
+                    context="{'group_by': 'expense_type_id'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

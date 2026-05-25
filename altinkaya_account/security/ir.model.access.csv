@@ -7,3 +7,9 @@ access_currency_reconcile_fix_log,access.currency.reconcile.fix.log,model_curren
 access_change_partner_accounts_usd,access_change_partner_accounts_usd,model_change_partner_accounts_usd,account.group_account_manager,1,1,1,1
 access_change_partner_accounts_eur,access_change_partner_accounts_eur,model_change_partner_accounts_eur,account.group_account_manager,1,1,1,1
 access_change_partner_accounts_try,access_change_partner_accounts_try,model_change_partner_accounts_try,account.group_account_manager,1,1,1,1
+access_expense_item_user,expense.item.user,model_expense_item,account.group_account_user,1,0,0,0
+access_expense_item_manager,expense.item.manager,model_expense_item,account.group_account_manager,1,1,1,1
+access_expense_unit_user,expense.unit.user,model_expense_unit,account.group_account_user,1,0,0,0
+access_expense_unit_manager,expense.unit.manager,model_expense_unit,account.group_account_manager,1,1,1,1
+access_expense_type_user,expense.type.user,model_expense_type,account.group_account_user,1,0,0,0
+access_expense_type_manager,expense.type.manager,model_expense_type,account.group_account_manager,1,1,1,1
