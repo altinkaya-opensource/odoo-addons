@@ -1,6 +1,6 @@
 {
     "name": "Altinkaya Reports",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.2.0",
     "category": "General",
     "depends": [
         "base",
@@ -40,6 +40,7 @@
         "views/res_users_views.xml",
         "views/partner_view.xml",
         "views/utm_views.xml",
+        "views/expense_analysis_report_views.xml",
         "data/partner_data.xml",
         "security/ir.model.access.csv",
     ],

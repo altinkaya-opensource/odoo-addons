@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_expense_analysis_report_pivot" model="ir.ui.view">
+        <field name="name">expense.analysis.report.pivot</field>
+        <field name="model">expense.analysis.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Expense Analysis" sample="1">
+                <field name="expense_item_id" type="row" />
+                <field name="date" interval="month" type="col" />
+                <field name="balance_tl" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_expense_analysis_report_graph" model="ir.ui.view">
+        <field name="name">expense.analysis.report.graph</field>
+        <field name="model">expense.analysis.report</field>
+        <field name="arch" type="xml">
+            <graph string="Expense Analysis" type="bar" sample="1">
+                <field name="expense_item_id" />
+                <field name="balance_tl" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_expense_analysis_report_tree" model="ir.ui.view">
+        <field name="name">expense.analysis.report.tree</field>
+        <field name="model">expense.analysis.report</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="date" optional="show" />
+                <field name="account_id" optional="show" />
+                <field name="partner_id" optional="show" />
+                <field name="expense_item_id" optional="show" />
+                <field name="expense_unit_id" optional="show" />
+                <field name="expense_type_id" optional="show" />
+                <field name="balance_tl" sum="Total" optional="show" />
+                <field name="balance_usd" sum="Total" optional="hide" />
+                <field name="debit" sum="Total" optional="hide" />
+                <field name="credit" sum="Total" optional="hide" />
+                <field name="state" optional="hide" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="hide"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_expense_analysis_report_search" model="ir.ui.view">
+        <field name="name">expense.analysis.report.search</field>
+        <field name="model">expense.analysis.report</field>
+        <field name="arch" type="xml">
+            <search string="Expense Analysis">
+                <field name="account_id" />
+                <field name="partner_id" />
+                <field name="expense_item_id" />
+                <field name="expense_unit_id" />
+                <field name="expense_type_id" />
+                <filter
+                    name="posted"
+                    string="Posted"
+                    domain="[('state', '=', 'posted')]"
+                />
+                <filter
+                    name="thisyear"
+                    string="This Year"
+                    domain="['&amp;', ('date', '&gt;=', time.strftime('%Y-01-01')), ('date', '&lt;=', time.strftime('%Y-12-31'))]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_expense_item"
+                        string="Expense Item"
+                        context="{'group_by': 'expense_item_id'}"
+                    />
+                    <filter
+                        name="group_expense_unit"
+                        string="Expense Unit"
+                        context="{'group_by': 'expense_unit_id'}"
+                    />
+                    <filter
+                        name="group_expense_type"
+                        string="Expense Type"
+                        context="{'group_by': 'expense_type_id'}"
+                    />
+                    <filter
+                        name="group_account"
+                        string="Account"
+                        context="{'group_by': 'account_id'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Date"
+                        context="{'group_by': 'date'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_expense_analysis_report" model="ir.actions.act_window">
+        <field name="name">Expense Analysis</field>
+        <field name="res_model">expense.analysis.report</field>
+        <field name="view_mode">pivot,graph,tree</field>
+        <field name="search_view_id" ref="view_expense_analysis_report_search" />
+        <field
+            name="context"
+        >{'search_default_posted': 1, 'search_default_thisyear': 1, 'search_default_group_expense_item': 1}</field>
+    </record>
+
+    <menuitem
+        id="menu_expense_analysis_report"
+        name="Expense Analysis"
+        parent="account.menu_finance_reports"
+        action="action_expense_analysis_report"
+        groups="account.group_account_user"
+        sequence="90"
+    />
+</odoo>
