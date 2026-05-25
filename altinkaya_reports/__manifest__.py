@@ -10,6 +10,7 @@
         "l10n_tr_invoice_amount_in_words",
         "base_report_to_printer",
         "account",
+        "altinkaya_account",
         "account_check",
         "mrp",
         "account_invoice_change_currency",
