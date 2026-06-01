@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-02 06:13+0000\n"
-"PO-Revision-Date: 2026-02-02 06:13+0000\n"
+"POT-Creation-Date: 2026-06-01 05:18+0000\n"
+"PO-Revision-Date: 2026-06-01 05:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -713,6 +713,12 @@ msgid "AT,646,101,58,58,0,0E,0,0,"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__account_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Account"
+msgstr "Hesap"
+
+#. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 msgid "Account:"
@@ -737,6 +743,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 msgid "Amount"
 msgstr "Tutar"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__balance_tl
+msgid "Amount (TL)"
+msgstr "Tutar (TL)"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__balance_usd
+msgid "Amount (USD)"
+msgstr "Tutar (USD)"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__kdv_amount
@@ -839,8 +855,9 @@ msgstr "İptal"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__cancelled
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__expense_analysis_report__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "İptal Edildi"
 
 #. module: altinkaya_reports
 #: model:mail.template,subject:altinkaya_reports.email_template_edi_send_statement
@@ -860,6 +877,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__changeset_change_ids
@@ -871,6 +889,7 @@ msgstr "Changeset Değişiklikleri"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__changeset_ids
@@ -905,6 +924,11 @@ msgid "Commission Type"
 msgstr "Komisyon Türü"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__company_id
+msgid "Company"
+msgstr "Şirket"
+
+#. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__concluded
 msgid "Concluded"
 msgstr "Sonuçlandı"
@@ -912,7 +936,7 @@ msgstr "Sonuçlandı"
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_res_partner
 msgid "Contact"
-msgstr "İletişim"
+msgstr "Kontak"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__context_def_label_printer
@@ -922,6 +946,7 @@ msgstr "Varsayılan Etiket Yazıcısı"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_changesets
@@ -933,6 +958,7 @@ msgstr "Sayım Değişiklik Setleri"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_pending_changeset_changes
@@ -944,6 +970,7 @@ msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_pending_changesets
@@ -963,6 +990,7 @@ msgid "Created on"
 msgstr "Oluşturulma"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__credit
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 msgid "Credit"
@@ -974,13 +1002,16 @@ msgid "DESİ"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__date
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
 msgid "Date"
 msgstr "Tarih"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__debit
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 msgid "Debit"
@@ -1038,19 +1069,16 @@ msgid "Desc."
 msgstr "Azalan"
 
 #. module: altinkaya_reports
-#: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__manual_discount_percentage
-msgid "Difference between actual price and pricelist price in percentage."
-msgstr ""
-
-#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__display_name
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__draft
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__expense_analysis_report__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Taslak"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -1070,6 +1098,34 @@ msgid "Expected unit price according to pricelist, in USD."
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.actions.act_window,name:altinkaya_reports.action_expense_analysis_report
+#: model:ir.model,name:altinkaya_reports.model_expense_analysis_report
+#: model:ir.ui.menu,name:altinkaya_reports.menu_expense_analysis_report
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_graph
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_pivot
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Expense Analysis"
+msgstr "Gider Analizi"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__expense_item_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Expense Item"
+msgstr "Gider Kalemi"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__expense_type_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Expense Type"
+msgstr "Harcama Türü"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__expense_unit_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Expense Unit"
+msgstr "Birim"
+
+#. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 msgid "Explanation"
 msgstr "Açıklama"
@@ -1083,6 +1139,11 @@ msgstr "Faks:"
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Gerçekleşen Miktar"
 msgstr ""
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Group By"
+msgstr "Grupla"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
@@ -1101,6 +1162,7 @@ msgid "Hesabı:"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__id
 msgid "ID"
 msgstr ""
@@ -1153,6 +1215,7 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report____last_update
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
@@ -1184,7 +1247,6 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__manual_discount_percentage
-#: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__manual_discount_percentage
 msgid "Manual Discount Percentage"
 msgstr "Manuel İndirim Yüzdesi"
 
@@ -1265,6 +1327,7 @@ msgid "Paid"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__partner_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__partner_id
 msgid "Partner"
 msgstr "İş Ortağı"
@@ -1328,6 +1391,12 @@ msgstr "Cari"
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_utm_campaign_form_inherit_altinkaya
 msgid "Partners"
 msgstr "İş Ortakları"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__expense_analysis_report__state__posted
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "Posted"
+msgstr "Kaydedildi"
 
 #. module: altinkaya_reports
 #. odoo-python
@@ -1457,6 +1526,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__smart_search
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__smart_search
@@ -1472,6 +1542,7 @@ msgstr "Başlangıç Tarihi"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__state_id
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__state
 msgid "State"
 msgstr "Durum"
 
@@ -1547,6 +1618,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_pending_changeset_changes
@@ -1558,6 +1630,7 @@ msgstr "Bu kaydın bekleyen değişiklik sayısı"
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_pending_changesets
@@ -1569,6 +1642,7 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__count_changesets
+#: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_changesets
@@ -1581,6 +1655,16 @@ msgstr "Bu kaydın toplam değişiklik seti sayısı"
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__acquirer_id
 msgid "The user who acquired this customer."
 msgstr ""
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+msgid "This Year"
+msgstr "Bu Yıl"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_tree
+msgid "Total"
+msgstr "Toplam"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__kdv_amount
@@ -1616,11 +1700,12 @@ msgstr "Toplam USD"
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_res_users
 msgid "User"
-msgstr "Kullanıcılar"
+msgstr "Kullanıcı"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__user_can_see_changeset
