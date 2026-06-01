@@ -108,6 +108,9 @@ class AccountInvoiceReport(models.Model):
     )
     invoice_count = fields.Integer(string="Partner Invoice Count", readonly=True)
     industry_id = fields.Many2one("res.partner.industry", readonly=True)
+    expense_item_id = fields.Many2one("expense.item", readonly=True)
+    expense_unit_id = fields.Many2one("expense.unit", readonly=True)
+    expense_type_id = fields.Many2one("expense.type", readonly=True)
     # Fields from account.move.line
     origin_price_usd = fields.Float(
         string="Pricelist Price USD",
@@ -134,6 +137,9 @@ class AccountInvoiceReport(models.Model):
             so_utm.sale_campaign_id,
             so_utm.sale_medium_id,
             partner.create_date as partner_create_date,
+            account.expense_item_id as expense_item_id,
+            account.expense_unit_id as expense_unit_id,
+            account.expense_type_id as expense_type_id,
             line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
             -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
