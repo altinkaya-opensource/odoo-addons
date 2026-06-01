@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 09:32+0000\n"
-"PO-Revision-Date: 2026-06-01 09:32+0000\n"
+"POT-Creation-Date: 2026-06-01 10:38+0000\n"
+"PO-Revision-Date: 2026-06-01 10:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -587,6 +587,7 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__account_id
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__account_id
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
 msgid "Account"
 msgstr ""
@@ -619,11 +620,13 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__balance_tl
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__amount_tl
 msgid "Amount (TL)"
 msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__balance_usd
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__amount_usd
 msgid "Amount (USD)"
 msgstr ""
 
@@ -748,11 +751,22 @@ msgid "Cari:"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__cash
+msgid "Cash"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__category
+msgid "Category"
+msgstr ""
+
+#. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__changeset_change_ids
@@ -765,10 +779,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__changeset_ids
 msgid "Changesets"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__channel
+msgid "Channel"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__cheque
+msgid "Cheque"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -798,6 +823,7 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__company_id
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__company_id
 msgid "Company"
 msgstr ""
 
@@ -822,6 +848,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__count_changesets
@@ -834,6 +861,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__count_pending_changeset_changes
@@ -846,6 +874,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__count_pending_changesets
@@ -870,12 +899,18 @@ msgid "Credit"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__customer_collection
+msgid "Customer Collection"
+msgstr ""
+
+#. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "DESİ"
 msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__date
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__date
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -944,6 +979,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__display_name
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__display_name
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -1040,6 +1076,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__id
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__id
 msgid "ID"
 msgstr ""
 
@@ -1093,6 +1130,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report____last_update
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard____last_update
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -1104,6 +1142,11 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__loan
+msgid "Loan"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -1198,6 +1241,11 @@ msgid "P.12.F.03 Yazdıran:"
 msgstr ""
 
 #. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__pos
+msgid "POS"
+msgstr ""
+
+#. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__paid
 msgid "Paid"
 msgstr ""
@@ -1205,6 +1253,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__partner_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__partner_id
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__partner_id
 msgid "Partner"
 msgstr ""
 
@@ -1266,6 +1315,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__partner_ids
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_utm_campaign_form_inherit_altinkaya
 msgid "Partners"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model,name:altinkaya_reports.model_payment_analysis_report
+msgid "Payment Analysis"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__personnel
+msgid "Personnel"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -1405,6 +1464,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__smart_search
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__smart_search
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__smart_search
@@ -1420,6 +1480,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__state_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__state
 msgid "State"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__supplier_payment
+msgid "Supplier Payment"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -1455,6 +1520,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Tarih:"
+msgstr ""
+
+#. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__tax
+msgid "Tax"
 msgstr ""
 
 #. module: altinkaya_reports
@@ -1497,6 +1567,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_reports.field_payment_analysis_report__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_res_users__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_reports.field_utm_campaign__count_pending_changeset_changes
@@ -1509,6 +1580,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_reports.field_payment_analysis_report__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_users__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_utm_campaign__count_pending_changesets
@@ -1521,6 +1593,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_reports.field_expense_analysis_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_ir_actions_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_partner_statement_wizard__count_changesets
+#: model:ir.model.fields,help:altinkaya_reports.field_payment_analysis_report__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_partner__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_res_users__count_changesets
 #: model:ir.model.fields,help:altinkaya_reports.field_utm_campaign__count_changesets
@@ -1584,6 +1657,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_ir_actions_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_reports.field_utm_campaign__user_can_see_changeset
