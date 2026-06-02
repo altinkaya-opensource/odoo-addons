@@ -1230,7 +1230,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_account_invoice_report
 msgid "Invoices Statistics"
-msgstr "Fatura İsatistikleri"
+msgstr "Fatura İstatistikleri"
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_account_move_line
