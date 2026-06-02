@@ -26,6 +26,8 @@ class AccountInvoiceReport(models.Model):
     )
     state_id = fields.Many2one("res.country.state", readonly=True)
     price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
+    price_total_usd_abs = fields.Float(string="Untaxed Total USD Abs", readonly=True)
+    price_subtotal_abs = fields.Float(string="Untaxed Total Abs", readonly=True)
     total_tax = fields.Float(string="Tax Total", readonly=True)
     price_average_usd = fields.Float(
         string="Average Price USD", readonly=True, group_operator="avg"
@@ -143,6 +145,10 @@ class AccountInvoiceReport(models.Model):
             line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
             -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
+            abs(
+                line.balance * currency_table.rate * move.usd_rate
+            ) AS price_total_usd_abs,
+            abs(line.balance * currency_table.rate) AS price_subtotal_abs,
             -COALESCE(
                -- Average line price
                (line.balance / NULLIF(line.quantity, 0.0)) *
