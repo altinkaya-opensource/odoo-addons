@@ -22,7 +22,13 @@ class PaymentAnalysisReport(models.Model):
         readonly=True,
     )
     channel = fields.Selection(
-        [("cash", "Cash"), ("pos", "POS"), ("cheque", "Cheque")],
+        [
+            ("cash", "Cash"),
+            ("pos", "POS"),
+            ("cheque", "Cheque"),
+            ("bank", "Bank"),
+            ("credit_card", "Credit Card"),
+        ],
         readonly=True,
     )
     amount_tl = fields.Float(string="Amount (TL)", readonly=True)
@@ -30,7 +36,7 @@ class PaymentAnalysisReport(models.Model):
 
     @property
     def _table_query(self):
-        return """
+        return r"""
             SELECT b.id, b.date, b.partner_id, b.company_id, b.account_id,
                    b.category, b.channel, b.amount_tl,
                    b.amount_tl * COALESCE(usd.rate, 0.0) AS amount_usd
@@ -52,11 +58,22 @@ class PaymentAnalysisReport(models.Model):
                   )
                 UNION ALL
                 SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
-                       'supplier_payment', NULL, aml.debit
+                       'supplier_payment',
+                       CASE WHEN acc.code ~ '^309($|\.)' THEN 'credit_card'
+                            WHEN acc.code ~ '^(102|103)($|\.)' THEN 'bank'
+                            WHEN acc.code ~ '^100($|\.)' THEN 'cash'
+                            ELSE NULL END,
+                       aml.credit
                 FROM account_move_line aml
                 JOIN account_account acc ON acc.id = aml.account_id
-                WHERE aml.parent_state = 'posted' AND aml.debit > 0
-                  AND acc.code ~ '^320'
+                WHERE aml.parent_state = 'posted' AND aml.credit > 0
+                  AND acc.code ~ '^(100|102|103|309)($|\.)'
+                  AND acc.code !~ '^(100\.D|102\.99|102\.X)'
+                  AND EXISTS (
+                      SELECT 1 FROM account_move_line c
+                      JOIN account_account ca ON ca.id = c.account_id
+                      WHERE c.move_id = aml.move_id AND ca.code ~ '^320'
+                  )
                 UNION ALL
                 SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
                        'tax', NULL, aml.debit

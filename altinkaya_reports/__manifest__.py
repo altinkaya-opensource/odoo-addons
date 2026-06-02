@@ -41,6 +41,7 @@
         "views/partner_view.xml",
         "views/utm_views.xml",
         "views/expense_analysis_report_views.xml",
+        "views/payment_analysis_report_views.xml",
         "data/partner_data.xml",
         "security/ir.model.access.csv",
     ],

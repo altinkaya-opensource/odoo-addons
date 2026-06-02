@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_payment_analysis_report_pivot" model="ir.ui.view">
+        <field name="name">payment.analysis.report.pivot</field>
+        <field name="model">payment.analysis.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Payment Analysis" sample="1">
+                <field name="category" type="row" />
+                <field name="date" interval="month" type="col" />
+                <field name="amount_tl" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_payment_analysis_report_graph" model="ir.ui.view">
+        <field name="name">payment.analysis.report.graph</field>
+        <field name="model">payment.analysis.report</field>
+        <field name="arch" type="xml">
+            <graph string="Payment Analysis" type="bar" sample="1">
+                <field name="category" />
+                <field name="amount_tl" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_payment_analysis_report_tree" model="ir.ui.view">
+        <field name="name">payment.analysis.report.tree</field>
+        <field name="model">payment.analysis.report</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="date" optional="show" />
+                <field name="partner_id" optional="show" />
+                <field name="account_id" optional="show" />
+                <field name="category" optional="show" />
+                <field name="channel" optional="show" />
+                <field name="amount_tl" sum="Total" optional="show" />
+                <field name="amount_usd" sum="Total" optional="hide" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="hide"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_payment_analysis_report_search" model="ir.ui.view">
+        <field name="name">payment.analysis.report.search</field>
+        <field name="model">payment.analysis.report</field>
+        <field name="arch" type="xml">
+            <search string="Payment Analysis">
+                <field name="account_id" />
+                <field name="partner_id" />
+                <field name="category" />
+                <field name="channel" />
+                <filter
+                    name="thisyear"
+                    string="This Year"
+                    domain="['&amp;', ('date', '&gt;=', time.strftime('%Y-01-01')), ('date', '&lt;=', time.strftime('%Y-12-31'))]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_category"
+                        string="Category"
+                        context="{'group_by': 'category'}"
+                    />
+                    <filter
+                        name="group_channel"
+                        string="Channel"
+                        context="{'group_by': 'channel'}"
+                    />
+                    <filter
+                        name="group_account"
+                        string="Account"
+                        context="{'group_by': 'account_id'}"
+                    />
+                    <filter
+                        name="group_partner"
+                        string="Partner"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        name="group_date"
+                        string="Date"
+                        context="{'group_by': 'date'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_payment_analysis_report" model="ir.actions.act_window">
+        <field name="name">Payment Analysis</field>
+        <field name="res_model">payment.analysis.report</field>
+        <field name="view_mode">pivot,graph,tree</field>
+        <field name="search_view_id" ref="view_payment_analysis_report_search" />
+        <field
+            name="context"
+        >{'search_default_thisyear': 1, 'search_default_group_category': 1}</field>
+    </record>
+
+    <menuitem
+        id="menu_payment_analysis_report"
+        name="Payment Analysis"
+        parent="account.menu_finance_reports"
+        action="action_payment_analysis_report"
+        groups="account.group_account_user"
+        sequence="91"
+    />
+</odoo>

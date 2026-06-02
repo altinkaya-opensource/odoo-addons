@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 10:38+0000\n"
-"PO-Revision-Date: 2026-06-01 10:38+0000\n"
+"POT-Creation-Date: 2026-06-02 08:51+0000\n"
+"PO-Revision-Date: 2026-06-02 08:51+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -716,6 +716,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__account_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__account_id
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Account"
 msgstr "Hesap"
 
@@ -812,6 +813,11 @@ msgid "Balance"
 msgstr "Bakiye"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__bank
+msgid "Bank"
+msgstr "Banka"
+
+#. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Banka Ödemesi"
 msgstr ""
@@ -884,6 +890,7 @@ msgstr "Nakit"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__category
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Category"
 msgstr "Kategori"
 
@@ -915,6 +922,7 @@ msgstr "Değişiklikler"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__channel
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Channel"
 msgstr "Kanal"
 
@@ -1026,6 +1034,11 @@ msgid "Credit"
 msgstr "Alacak"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__credit_card
+msgid "Credit Card"
+msgstr "Kredi Kartı"
+
+#. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__category__customer_collection
 msgid "Customer Collection"
 msgstr "Müşteri Tahsilatı"
@@ -1042,6 +1055,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Date"
 msgstr "Tarih"
 
@@ -1181,6 +1195,7 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Group By"
 msgstr "Grupla"
 
@@ -1370,7 +1385,7 @@ msgstr ""
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__payment_analysis_report__channel__pos
 msgid "POS"
-msgstr "POS"
+msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__paid
@@ -1381,6 +1396,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_reports.field_expense_analysis_report__partner_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__partner_id
 #: model:ir.model.fields,field_description:altinkaya_reports.field_payment_analysis_report__partner_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Partner"
 msgstr "İş Ortağı"
 
@@ -1445,7 +1461,12 @@ msgid "Partners"
 msgstr "İş Ortakları"
 
 #. module: altinkaya_reports
+#: model:ir.actions.act_window,name:altinkaya_reports.action_payment_analysis_report
 #: model:ir.model,name:altinkaya_reports.model_payment_analysis_report
+#: model:ir.ui.menu,name:altinkaya_reports.menu_payment_analysis_report
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_graph
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_pivot
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "Payment Analysis"
 msgstr "Ödeme Analizi"
 
@@ -1734,11 +1755,13 @@ msgstr ""
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_search
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_search
 msgid "This Year"
 msgstr "Bu Yıl"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_expense_analysis_report_tree
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_payment_analysis_report_tree
 msgid "Total"
 msgstr "Toplam"
 
@@ -1769,9 +1792,19 @@ msgid "UTM Campaign"
 msgstr "UTM kampanyası"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_subtotal_abs
+msgid "Untaxed Total Abs"
+msgstr "Toplam (Mutlak)"
+
+#. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_total_usd
 msgid "Untaxed Total USD"
 msgstr "Toplam USD"
+
+#. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_total_usd_abs
+msgid "Untaxed Total USD Abs"
+msgstr "Toplam USD (Mutlak)"
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_res_users
