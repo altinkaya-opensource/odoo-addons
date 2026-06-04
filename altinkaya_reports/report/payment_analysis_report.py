@@ -75,13 +75,35 @@ class PaymentAnalysisReport(models.Model):
                       WHERE c.move_id = aml.move_id AND ca.code ~ '^320'
                   )
                 UNION ALL
+                -- vergi: KDV + KDV2 paid to the tax office (liability pay-off)
                 SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
                        'tax', NULL, aml.debit
                 FROM account_move_line aml
                 JOIN account_account acc ON acc.id = aml.account_id
                 WHERE aml.parent_state = 'posted' AND aml.debit > 0
-                  AND acc.code IN ('770.01.12','770.01.13','770.01.14','770.01.16',
-                                   '770.01.17','770.50.06','770.50.20')
+                  AND acc.code ~ '^360\.01\.0[12]($|\.)'
+                UNION ALL
+                -- vergi: muhtasar (stopaj) personel disi (non-payroll accrual)
+                SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
+                       'tax', NULL, aml.credit
+                FROM account_move_line aml
+                JOIN account_account acc ON acc.id = aml.account_id
+                WHERE aml.parent_state = 'posted' AND aml.credit > 0
+                  AND acc.code ~ '^360\.03($|\.)'
+                  AND NOT EXISTS (
+                      SELECT 1 FROM account_move_line w
+                      JOIN account_account wa ON wa.id = w.account_id
+                      WHERE w.move_id = aml.move_id
+                        AND wa.code ~ '^(335|361|720|760)'
+                  )
+                UNION ALL
+                -- vergi: MTV + DAMGA + belediye (EMLAK / CEVRE) expense
+                SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
+                       'tax', NULL, aml.debit
+                FROM account_move_line aml
+                JOIN account_account acc ON acc.id = aml.account_id
+                WHERE aml.parent_state = 'posted' AND aml.debit > 0
+                  AND acc.code IN ('770.01.12','770.01.13','770.01.14')
                 UNION ALL
                 SELECT aml.id, aml.date, aml.partner_id, aml.company_id, aml.account_id,
                        'personnel', NULL, aml.debit
