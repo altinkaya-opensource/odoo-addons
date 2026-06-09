@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+        id="menu_ai_translation_config"
+        name="AI Translation Configs"
+        action="web_translate_ai.action_ai_translation_configs"
+        sequence="0"
+        parent="base.menu_custom"
+    />
+</odoo>

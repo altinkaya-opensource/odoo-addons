@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="module_form_ai_translate" model="ir.ui.view">
+        <field name="name">ir.module.module.form.ai.translate</field>
+        <field name="model">ir.module.module</field>
+        <field name="inherit_id" ref="export_translation_file.module_form" />
+        <field name="arch" type="xml">
+            <button name="action_open_save_translation_wizard" position="after">
+                <button
+                    name="action_open_ai_translate_module_wizard"
+                    string="Translate Module (AI)"
+                    type="object"
+                    states="installed"
+                    icon="fa-globe"
+                />
+            </button>
+        </field>
+    </record>
+</odoo>

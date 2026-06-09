@@ -3,7 +3,7 @@
 {
     "name": "Export Translation File",
     "summary": "Allows developers to easily generate i18n files",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "Tools",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
@@ -14,6 +14,8 @@
         "base",
     ],
     "data": [
+        "security/ir.model.access.csv",
+        "wizards/export_translation_file_wizard_view.xml",
         "views/ir_module_module_view.xml",
     ],
 }
