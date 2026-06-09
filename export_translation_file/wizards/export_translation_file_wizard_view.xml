@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_export_translation_file_wizard_form" model="ir.ui.view">
+        <field name="name">export.translation.file.wizard.form</field>
+        <field name="model">export.translation.file.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Translation">
+                <sheet>
+                    <group>
+                        <field name="module_id" />
+                        <field
+                            name="lang_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                        />
+                    </group>
+                    <footer>
+                        <button
+                            name="action_apply"
+                            type="object"
+                            string="Apply"
+                            class="oe_highlight"
+                        />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

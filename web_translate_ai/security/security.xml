@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ai_translation_config_access_all" model="ir.model.access">
+        <field name="name">ai.translation.config access all</field>
+        <field name="model_id" ref="model_ai_translation_config" />
+        <field name="group_id" ref="base.group_user" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
+    <record id="ai_translation_config_access_manager" model="ir.model.access">
+        <field name="name">ai.translation.config access manager</field>
+        <field name="model_id" ref="model_ai_translation_config" />
+        <field name="group_id" ref="base.group_system" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="ai_translation_glossary_access_all" model="ir.model.access">
+        <field name="name">ai.translation.glossary access all</field>
+        <field name="model_id" ref="model_ai_translation_glossary" />
+        <field name="group_id" ref="base.group_user" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
+    <record id="ai_translation_glossary_access_manager" model="ir.model.access">
+        <field name="name">ai.translation.glossary access manager</field>
+        <field name="model_id" ref="model_ai_translation_glossary" />
+        <field name="group_id" ref="base.group_system" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="ai_translation_glossary_line_access_all" model="ir.model.access">
+        <field name="name">ai.translation.glossary.line access all</field>
+        <field name="model_id" ref="model_ai_translation_glossary_line" />
+        <field name="group_id" ref="base.group_user" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
+    <record id="ai_translation_glossary_line_access_manager" model="ir.model.access">
+        <field name="name">ai.translation.glossary.line access manager</field>
+        <field name="model_id" ref="model_ai_translation_glossary_line" />
+        <field name="group_id" ref="base.group_system" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="ai_translate_module_wizard_access_manager" model="ir.model.access">
+        <field name="name">ai.translate.module.wizard access manager</field>
+        <field name="model_id" ref="model_ai_translate_module_wizard" />
+        <field name="group_id" ref="base.group_system" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+</odoo>

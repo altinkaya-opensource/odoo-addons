@@ -1,0 +1,53 @@
+.o_translation_dialog {
+  .translation {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    .o_input,
+    textarea.o_input {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .oe_translate_ai_btn {
+    flex-shrink: 0;
+    margin-top: 0;
+
+    &.loading {
+      i.fa-globe {
+        display: none;
+      }
+
+      &::before {
+        font-family: "FontAwesome";
+        content: "\f110";
+        animation: fa-spin 1s infinite linear;
+      }
+    }
+  }
+
+  .oe_translate_ai_all_btn {
+    &.loading {
+      i.fa-globe {
+        display: none;
+      }
+
+      &::before {
+        font-family: "FontAwesome";
+        content: "\f110";
+        animation: fa-spin 1s infinite linear;
+        margin-right: 0.25rem;
+      }
+    }
+  }
+
+  .oe_translate_ai_toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+}

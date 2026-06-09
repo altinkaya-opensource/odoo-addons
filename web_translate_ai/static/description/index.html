@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <p>
+    <img
+      src="https://img.shields.io/badge/maturity-production/stable-green"
+      alt="Odoo Version"
+    />
+    <img src="https://img.shields.io/badge/odoo_version-16.0-blue" alt="Odoo Version" />
+    <img src="https://img.shields.io/badge/licence-AGPL--3-lightgrey" alt="Licence" />
+  </p>
+  <p>
+    <img
+      src="usage.png"
+      width="100%"
+      alt="Odoo AI Translation"
+    />
+  </p>
+  <h1>Web AI Translate</h1>
+  <p>
+    This module integrates OpenRouter LLM-based translation into Odoo's web translation dialog.
+    It replaces expensive per-character translation services with intelligent, context-aware
+    batch translation powered by large language models.
+  </p>
+  <h2>Features:</h2>
+  <ul>
+    <li><strong>Batch translation:</strong> Translate all languages in a single LLM call, preserving cross-language context.</li>
+    <li><strong>Single-language translation:</strong> Translate a specific language on demand.</li>
+    <li><strong>Company context:</strong> System prompt includes your company profile, industry terminology, and brand voice.</li>
+    <li><strong>Glossary support:</strong> Define term mappings that are injected directly into the AI prompt.</li>
+    <li><strong>Base language support:</strong> Set a base translation language per target language.</li>
+    <li><strong>All field types:</strong> Translate Char, Text, HTML, and other translatable fields.</li>
+    <li><strong>Copy to all:</strong> Copy English or Turkish text to all other languages instantly.</li>
+  </ul>
+  <h2>Installation:</h2>
+  <ol>
+    <li>Install the module <code>web_translate_ai</code>.</li>
+    <li>
+      Go to <code>Settings &gt; Technical &gt; AI Translation Configs</code> and create a config.
+    </li>
+    <li>Set your OpenRouter API key in <code>Settings &gt; Technical &gt; System Parameters</code> (key: <code>web_translate_ai.openrouter_api_key</code>).</li>
+    <li>Assign the AI Translation Config to your company.</li>
+    <li>
+      Set base language for translation in
+      <code>Settings &gt; Translations &gt; Languages</code>.
+    </li>
+  </ol>
+  <h2>Authors:</h2>
+  <ul>
+    <li><a href="https://github.com/yibudak">Ahmet Yiğit Budak</a></li>
+  </ul>
+</html>

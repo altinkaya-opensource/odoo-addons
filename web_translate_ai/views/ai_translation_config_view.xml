@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_ai_translation_config_form" model="ir.ui.view">
+        <field name="name">ai.translation.config.form</field>
+        <field name="model">ai.translation.config</field>
+        <field name="arch" type="xml">
+            <form string="AI Translation Config">
+                <header>
+                    <button
+                        name="action_test_connection"
+                        string="Test API"
+                        type="object"
+                        class="btn-primary"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="openrouter_api_key" widget="password" />
+                        <field name="model" />
+                        <field name="temperature" />
+                        <field name="max_tokens" />
+                        <field name="use_structured_output" />
+                        <field name="active" />
+                    </group>
+                    <notebook>
+                        <page string="System Prompt">
+                            <field
+                                name="system_prompt"
+                                widget="text"
+                                placeholder="Enter the system prompt that defines translation behavior, company context, and terminology rules..."
+                            />
+                        </page>
+                        <page string="Glossaries">
+                            <span class="text-muted">
+                                1. Create a glossary with source and target languages.<br
+                            />
+                                2. Add entries to the created glossary.<br />
+                                3. The glossary terms will be injected into the AI prompt automatically during translation.
+                            </span>
+                            <field
+                                name="glossary_ids"
+                                context="{'default_ai_translation_config_id': active_id}"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ai_translation_config_tree" model="ir.ui.view">
+        <field name="name">ai.translation.config.tree</field>
+        <field name="model">ai.translation.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="model" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_ai_translation_configs" model="ir.actions.act_window">
+        <field name="name">AI Translation Configs</field>
+        <field name="res_model">ai.translation.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="web_translate_ai.view_ai_translation_config_tree" />
+    </record>
+</odoo>
