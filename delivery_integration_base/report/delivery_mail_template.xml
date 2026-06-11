@@ -7,7 +7,10 @@
         ><![CDATA[
                 {{ object.company_id.name }} Picking (Ref {{ object.name or 'n/a' }})
             ]]></field>
-        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="email_to" />
+        <field
+            name="partner_to"
+        >{{ object._get_delivery_mail_partner().id or '' }}</field>
         <field name="model_id" ref="stock.model_stock_picking" />
         <field name="auto_delete" eval="True" />
         <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
