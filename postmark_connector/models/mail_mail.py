@@ -21,6 +21,11 @@ from odoo.tools import config
 
 _logger = logging.getLogger(__name__)
 
+
+class MissingRecipientError(Exception):
+    """Raised when a Postmark mail has no usable recipient address."""
+
+
 try:
     from postmarker.core import PostmarkClient
 except ImportError:
@@ -54,9 +59,8 @@ class MailMail(models.Model):
         postmark = PostmarkClient(server_token=api_key)
         for email in outgoing:
             try:
-                response = postmark.emails.send(
-                    **email._prepare_postmark_email_params()
-                )
+                params = email._prepare_postmark_email_params()
+                response = postmark.emails.send(**params)
 
                 if response["Message"] != "OK":
                     raise Exception(response["Message"])
@@ -69,24 +73,60 @@ class MailMail(models.Model):
                     }
                 )
                 tracking_vals = email._tracking_email_prepare(
-                    partner=fields.first(email.recipient_ids),
-                    email={"email_to": email.recipient_ids.mapped("email")},
+                    partner=fields.first(email.recipient_ids.filtered("email")),
+                    email={"email_to": params["To"]},
                 )
                 self.env["mail.tracking.email"].sudo().create(tracking_vals)
-                email._postprocess_sent_message(success_pids=self.recipient_ids.ids)
+                email._postprocess_sent_message(
+                    success_pids=email.recipient_ids.filtered("email").ids
+                )
 
                 # Commit at each e-mail processed to avoid any errors
                 # invalidating state.
                 self.env.cr.commit()  # pylint: disable=invalid-commit
 
-            except Exception as exc:
-                _logger.error("Error sending email %s with Postmark: %s", email.id, exc)
-                email.write({"state": "exception", "failure_reason": exc})
+            except MissingRecipientError as exc:
+                failure_reason = str(exc)
+                _logger.info(
+                    "Skipping Postmark email %s without recipients: %s",
+                    email.id,
+                    failure_reason,
+                )
+                email.write({"state": "exception", "failure_reason": failure_reason})
                 email._postprocess_sent_message(
                     success_pids=[],
+                    failure_reason=failure_reason,
+                    failure_type="mail_email_missing",
+                )
+                continue
+
+            except Exception as exc:
+                failure_reason = str(exc)
+                _logger.error(
+                    "Error sending email %s with Postmark: %s", email.id, failure_reason
+                )
+                email.write({"state": "exception", "failure_reason": failure_reason})
+                email._postprocess_sent_message(
+                    success_pids=[],
+                    failure_reason=failure_reason,
                     failure_type="mail_smtp",
                 )
                 continue
+
+    def _get_postmark_recipients(self):
+        """Return unique non-empty recipient email strings for Postmark."""
+        self.ensure_one()
+        emails = []
+        if self.email_to:
+            emails.extend(self.email_to.split(","))
+        emails.extend(self.recipient_ids.mapped("email"))
+
+        recipients = []
+        for email in emails:
+            email = email and email.strip()
+            if email and email not in recipients:
+                recipients.append(email)
+        return recipients
 
     def _prepare_postmark_email_params(self):
         """
@@ -122,14 +162,9 @@ class MailMail(models.Model):
         )
         params["Subject"] = self.subject or _("(No subject)")
 
-        email_to = []
-        if self.email_to:
-            email_to.extend(self.email_to.split(","))
-
-        for recipient in self.recipient_ids:
-            email_to.append(recipient.email)
-
-        params["To"] = list(set(email_to))  # Remove duplicates
+        params["To"] = self._get_postmark_recipients()
+        if not params["To"]:
+            raise MissingRecipientError(_("No recipient email address found."))
 
         if self.email_cc:
             params["Cc"] = self.email_cc
