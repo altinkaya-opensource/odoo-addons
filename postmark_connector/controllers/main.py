@@ -36,8 +36,17 @@ class PostmarkController(http.Controller):
         message_id = data.get("MessageID")
         event_type = data.get("RecordType")
 
-        if not (message_id and event_type):
+        if not event_type:
             return False
+
+        if event_type in ("Bounce", "SpamComplaint"):
+            email = data.get("Email") or data.get("Recipient")
+            request.env["mail.mail"].sudo()._postmark_blacklist_emails(
+                [email], source=f"Postmark {event_type} webhook"
+            )
+
+        if not message_id:
+            return event_type in ("Bounce", "SpamComplaint")
 
         mail_message = (
             request.env["mail.message"]
