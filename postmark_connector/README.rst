@@ -13,7 +13,7 @@ email delivery and tracking.
 ## Requirements
 
 - Postmark account and server token
-- Python package: `postmarker`
+- Python package: `postmark-python`
 - OCA modules: `mail_tracking`, `queue_job`
 
 ## Installation
@@ -21,7 +21,7 @@ email delivery and tracking.
 1. Install Python dependency:
 
    ```bash
-   pip install postmarker
+   pip install postmark-python
    ```
 
 2. Install the module in Odoo
@@ -48,6 +48,10 @@ https://your-odoo-domain.com/mail/postmark/webhook
 ```
 
 Enable events: Delivery, Bounce, Open, Click, Spam Complaint
+
+Bounce and spam complaint events are mirrored into Odoo's email blacklist. During
+module upgrade, existing Postmark suppressions from the `outbound` message stream are
+also imported into `mail.blacklist`.
 
 ## Usage
 
