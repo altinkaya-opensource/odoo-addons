@@ -72,8 +72,25 @@ class MailMail(models.Model):
         with postmark_sync.ServerClient(api_key) as postmark:
             for email in outgoing:
                 try:
-                    recipients = email._get_postmark_recipients()
-                    params = email._prepare_postmark_email_params(recipients)
+                    (
+                        recipients,
+                        blacklisted_recipients,
+                        cc_recipients,
+                        blacklisted_cc_recipients,
+                    ) = email._postmark_prepare_recipient_values()
+                    if not recipients:
+                        if not blacklisted_recipients:
+                            raise MissingRecipientError(
+                                _("No recipient email address found.")
+                            )
+                        email._postmark_cancel_blacklisted_message(
+                            blacklisted_recipients
+                        )
+                        continue
+
+                    params = email._prepare_postmark_email_params(
+                        recipients, cc_recipients=cc_recipients
+                    )
                     response = postmark.outbound.send(params)
 
                     if not response.success or response.message != "OK":
@@ -97,8 +114,21 @@ class MailMail(models.Model):
                         email={"email_to": recipients},
                     )
                     self.env["mail.tracking.email"].sudo().create(tracking_vals)
+                    blacklisted_emails = (
+                        blacklisted_recipients + blacklisted_cc_recipients
+                    )
+                    failure_reason = (
+                        email._postmark_get_blacklisted_failure_reason(
+                            blacklisted_emails
+                        )
+                        if blacklisted_recipients
+                        else False
+                    )
+                    failure_type = "mail_bl" if blacklisted_recipients else None
                     email._postprocess_sent_message(
-                        success_pids=email.recipient_ids.filtered("email").ids
+                        success_pids=email._postmark_get_success_partners(recipients),
+                        failure_reason=failure_reason,
+                        failure_type=failure_type,
                     )
 
                     # Commit at each e-mail processed to avoid any errors
@@ -235,6 +265,117 @@ class MailMail(models.Model):
         )
         return count
 
+    def _postmark_prepare_recipient_values(self):
+        """Return Postmark To/Cc recipients with blacklisted addresses removed."""
+        self.ensure_one()
+        recipients, blacklisted_recipients = (
+            self._postmark_filter_blacklisted_recipients(
+                self._get_postmark_recipients()
+            )
+        )
+        cc_recipients, blacklisted_cc_recipients = (
+            self._postmark_filter_blacklisted_recipients(
+                self._get_postmark_cc_recipients()
+            )
+        )
+        blacklisted_emails = blacklisted_recipients + blacklisted_cc_recipients
+        if blacklisted_emails:
+            _logger.info(
+                "Skipping blacklisted Postmark recipient(s) for mail %s: %s",
+                self.id,
+                ", ".join(blacklisted_emails),
+            )
+        return (
+            recipients,
+            blacklisted_recipients,
+            cc_recipients,
+            blacklisted_cc_recipients,
+        )
+
+    def _postmark_filter_blacklisted_recipients(self, recipients):
+        """Remove active Odoo blacklist addresses from the recipient list."""
+        self.ensure_one()
+        normalized_by_recipient = [
+            (recipient, tools.email_normalize(recipient, strict=False))
+            for recipient in recipients
+        ]
+        normalized_emails = {
+            normalized_email
+            for _recipient, normalized_email in normalized_by_recipient
+            if normalized_email
+        }
+        if not normalized_emails:
+            return recipients, []
+
+        blacklisted_emails = set(
+            self.env["mail.blacklist"]
+            .sudo()
+            .search(
+                [
+                    ("active", "=", True),
+                    ("email", "in", list(normalized_emails)),
+                ]
+            )
+            .mapped("email")
+        )
+        if not blacklisted_emails:
+            return recipients, []
+
+        allowed_recipients = []
+        blacklisted_recipients = []
+        for recipient, normalized_email in normalized_by_recipient:
+            if normalized_email in blacklisted_emails:
+                blacklisted_recipients.append(recipient)
+            else:
+                allowed_recipients.append(recipient)
+        return allowed_recipients, blacklisted_recipients
+
+    def _postmark_cancel_blacklisted_message(self, blacklisted_recipients):
+        """Cancel a Postmark email when all To recipients are blacklisted."""
+        self.ensure_one()
+        failure_reason = self._postmark_get_blacklisted_failure_reason(
+            blacklisted_recipients
+        )
+        _logger.info(
+            "Skipping Postmark email %s because all recipients are blacklisted: %s",
+            self.id,
+            ", ".join(blacklisted_recipients),
+        )
+        self.write(
+            {
+                "state": "cancel",
+                "failure_type": "mail_bl",
+                "failure_reason": failure_reason,
+            }
+        )
+        self._postprocess_sent_message(
+            success_pids=[],
+            failure_reason=failure_reason,
+            failure_type="mail_bl",
+        )
+
+    def _postmark_get_success_partners(self, recipients):
+        """Return recipient partners that stayed in the Postmark To list."""
+        self.ensure_one()
+        normalized_recipients = {
+            tools.email_normalize(recipient, strict=False)
+            for recipient in recipients
+            if tools.email_normalize(recipient, strict=False)
+        }
+        return self.recipient_ids.filtered(
+            lambda partner: (
+                tools.email_normalize(partner.email, strict=False)
+                in normalized_recipients
+            )
+        )
+
+    @api.model
+    def _postmark_get_blacklisted_failure_reason(self, blacklisted_recipients):
+        """Return a user-facing failure reason for blacklisted recipients."""
+        return _("Blacklisted recipient email address(es): %s") % ", ".join(
+            blacklisted_recipients
+        )
+
     def _get_postmark_recipients(self):
         """Return unique non-empty recipient email strings for Postmark."""
         self.ensure_one()
@@ -250,7 +391,12 @@ class MailMail(models.Model):
                 recipients.append(email)
         return recipients
 
-    def _prepare_postmark_email_params(self, recipients=None):
+    def _get_postmark_cc_recipients(self):
+        """Return Cc recipient email strings for Postmark."""
+        self.ensure_one()
+        return tools.email_split_and_format(self.email_cc or "")
+
+    def _prepare_postmark_email_params(self, recipients=None, cc_recipients=None):
         """
         Prepare and creates the Postmark Email object
         :return: Dictionary with the email parameters
@@ -292,8 +438,10 @@ class MailMail(models.Model):
             raise MissingRecipientError(_("No recipient email address found."))
         params["to"] = ", ".join(recipients)
 
-        if self.email_cc:
-            params["cc"] = self.email_cc
+        if cc_recipients is None:
+            cc_recipients = self._get_postmark_cc_recipients()
+        if cc_recipients:
+            params["cc"] = ", ".join(cc_recipients)
 
         if self.attachment_ids:
             params["attachments"] = [
