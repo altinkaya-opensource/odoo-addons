@@ -15,7 +15,7 @@
 
 {
     "name": "Sale Quotation Reminder",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "category": "Sales",
     "summary": "Automatic quotation follow-up reminders before expiration",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",

@@ -45,6 +45,14 @@ class SaleOrder(models.Model):
             return outgoing_emails[0]
         return False
 
+    def _mark_quotation_reminder_sent(self, reminder_type):
+        """Mark the given reminder stage as processed."""
+        self.ensure_one()
+        if reminder_type == "first":
+            self.first_reminder_mail_sent = True
+        else:
+            self.second_reminder_mail_sent = True
+
     def action_send_quotation_reminder(self, reminder_type="first"):
         """Send a quotation reminder email with threading headers.
 
@@ -52,6 +60,17 @@ class SaleOrder(models.Model):
             reminder_type: Either 'first' or 'second' to indicate which reminder.
         """
         self.ensure_one()
+        if not self.partner_id.email:
+            _logger.info(
+                "Skipping quotation reminder (%s) for %s because "
+                "partner %s has no email.",
+                reminder_type,
+                self.name,
+                self.partner_id.display_name,
+            )
+            self._mark_quotation_reminder_sent(reminder_type)
+            return False
+
         template = self.env.ref(
             "sale_quotation_reminder.email_template_quotation_reminder"
         )
@@ -63,13 +82,10 @@ class SaleOrder(models.Model):
             email_values["reply_to"] = original_msg.message_id
 
         template.send_mail(self.id, email_values=email_values, force_send=True)
-
-        if reminder_type == "first":
-            self.first_reminder_mail_sent = True
-        else:
-            self.second_reminder_mail_sent = True
+        self._mark_quotation_reminder_sent(reminder_type)
 
         _logger.info("Quotation reminder (%s) sent for %s", reminder_type, self.name)
+        return True
 
     @api.model
     def _cron_send_quotation_reminders(self):

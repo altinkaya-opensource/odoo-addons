@@ -1,8 +1,11 @@
 # # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import base64
+import logging
 
 from odoo import fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class StockPicking(models.Model):
@@ -188,20 +191,34 @@ class StockPicking(models.Model):
                         content=base64.b64decode(doc.datas),
                     )
 
+    def _get_delivery_mail_partner(self):
+        """Return the partner that should receive delivery tracking emails."""
+        self.ensure_one()
+        if self.partner_id.email:
+            return self.partner_id
+        if self.sale_id.partner_id.email:
+            return self.sale_id.partner_id
+        return self.env["res.partner"]
+
     def button_mail_send(self):
         """
         Send the shipment status by email
         :return: boolean
         """
         mail_template = self.env.ref("delivery_integration_base.delivery_mail_template")
-        email = self.partner_id.email or self.sale_id.partner_id.email
-        if email and not self.mail_sent:
-            self.with_delay().message_post_with_template(mail_template.id)
-            self.write(
-                {
-                    "mail_sent": True,
-                }
-            )
+        for picking in self:
+            partner = picking._get_delivery_mail_partner()
+            if picking.mail_sent:
+                continue
+            if not partner:
+                _logger.info(
+                    "Skipping delivery email for picking %s without recipient email.",
+                    picking.name,
+                )
+                continue
+
+            picking.with_delay().message_post_with_template(mail_template.id)
+            picking.mail_sent = True
         return True
 
     def _add_delivery_cost_to_so(self):
