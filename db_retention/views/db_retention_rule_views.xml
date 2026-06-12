@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_db_retention_rule_tree" model="ir.ui.view">
+        <field name="name">db.retention.rule.tree</field>
+        <field name="model">db.retention.rule</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="model_name" />
+                <field name="date_field_name" />
+                <field name="retention_days" />
+                <field name="last_run" />
+                <field name="last_deleted" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_db_retention_rule_form" model="ir.ui.view">
+        <field name="name">db.retention.rule.form</field>
+        <field name="model">db.retention.rule</field>
+        <field name="arch" type="xml">
+            <form string="Database Retention Rule">
+                <header>
+                    <button
+                        name="action_clean"
+                        type="object"
+                        string="Run Now"
+                        class="oe_highlight"
+                        confirm="This deletes records permanently. Continue?"
+                    />
+                    <button
+                        name="action_clean_dry_run"
+                        type="object"
+                        string="Dry Run"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <group>
+                        <field name="active" invisible="1" />
+                        <group>
+                            <field name="name" />
+                            <field name="model_id" />
+                            <field name="model_name" invisible="1" />
+                            <field name="date_field_id" />
+                            <field name="date_field_name" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="retention_days" />
+                            <field name="batch_size" />
+                            <field name="last_run" />
+                            <field name="last_deleted" />
+                        </group>
+                    </group>
+                    <group string="Additional Filter">
+                        <field name="domain" nolabel="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_db_retention_rule" model="ir.actions.act_window">
+        <field name="name">Retention Rules</field>
+        <field name="res_model">db.retention.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_db_retention_rule"
+        name="Database Retention"
+        parent="base.menu_custom"
+        action="action_db_retention_rule"
+        sequence="100"
+    />
+</odoo>

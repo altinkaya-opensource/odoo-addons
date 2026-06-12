@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="ir_cron_db_retention" model="ir.cron">
+        <field name="name">Database Retention: Apply Rules</field>
+        <field name="model_id" ref="model_db_retention_rule" />
+        <field name="state">code</field>
+        <field name="code">model._cron_clean_all()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">days</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
+</odoo>
