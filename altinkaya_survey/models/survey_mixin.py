@@ -110,7 +110,6 @@ class SurveyMapping(models.AbstractModel):
                     "shortened_url": survey.url_shortener_id.shorten_url(survey_url),
                 }
             )
-            self.env.cr.commit()  # pylint: disable=E8102
 
         return survey_user_input.shortened_url or survey_url
 
