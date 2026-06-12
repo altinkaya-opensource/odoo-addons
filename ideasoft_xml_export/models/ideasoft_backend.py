@@ -25,6 +25,10 @@ class IdeasoftBackend(models.Model):
     _description = "Ideasoft Backend Configuration"
 
     name = fields.Char(required=True)
+    active = fields.Boolean(
+        default=True,
+        help="Archive to stop XML export generation without uninstalling the module.",
+    )
     product_domain = fields.Char(
         help="Domain to filter products for export. Example: [('sale_ok', '=', True)]",
     )
