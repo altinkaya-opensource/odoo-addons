@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="inherit_view_account_invoice_report_pivot_usd" model="ir.ui.view">
+        <field name="name">account.invoice.report.pivot.usd</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_pivot" />
+        <field name="priority" eval="110" />
+        <field name="arch" type="xml">
+            <xpath expr="//pivot" position="inside">
+                <field name="price_total_usd" type="measure" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

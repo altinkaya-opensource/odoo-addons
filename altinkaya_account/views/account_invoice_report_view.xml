@@ -61,9 +61,7 @@
         <field name="priority" eval="100" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_categ_id']" position="replace" />
-            <field name="price_subtotal" position="replace">
-                <field name="price_total_usd" type="measure" />
-            </field>
+            <xpath expr="//field[@name='price_subtotal']" position="replace" />
         </field>
     </record>
 
