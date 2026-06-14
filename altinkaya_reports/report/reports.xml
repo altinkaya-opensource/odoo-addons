@@ -100,6 +100,16 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="stock_pickingaltinkayaO" model="ir.actions.report">
+        <field name="name">Depo Fişi Ostim</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">altinkaya_reports.report_picking_altinkayaO</field>
+        <field name="report_file">altinkaya_reports.report_picking_altinkayaO</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="list_carrier_report" model="ir.actions.report">
         <field name="name">Kargo Teslim</field>
         <field name="model">stock.picking</field>
