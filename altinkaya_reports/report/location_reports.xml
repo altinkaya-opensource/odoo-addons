@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <template id="location_report_godex" name="location report godex">
-        <t t-if="user.context_def_label_printer.type=='GODEX'">
+    <template id="location_report_godex_body" name="location report godex body">
+        <t t-if="printer_type=='GODEX'">
 ^Q50,3
 ^W104
 ^H10
@@ -47,7 +47,7 @@ E
 ^P1
 E</t>
 </t>
-        <t t-if="user.context_def_label_printer.type=='GODEX300'">
+        <t t-if="printer_type=='GODEX300'">
 ^Q50,3
 ^W104
 ^H10
@@ -95,5 +95,15 @@ E</t>
 ^P1
 E</t>
  </t>
+    </template>
+    <!-- Dialect follows the clicking user's own label printer, routes to their default printer. -->
+    <template id="location_report_godex" name="location report godex">
+        <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
+        <t t-call="altinkaya_reports.location_report_godex_body" />
+    </template>
+    <!-- Ostim variant: forces GODEX dialect; printing_printer_id (Ostim Barkod 2250) is set on the action in DB. -->
+    <template id="location_report_godex_ostim" name="location report godex ostim">
+        <t t-set="printer_type" t-value="'GODEX'" />
+        <t t-call="altinkaya_reports.location_report_godex_body" />
     </template>
 </odoo>
