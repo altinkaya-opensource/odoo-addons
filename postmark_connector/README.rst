@@ -16,7 +16,7 @@ email delivery and tracking.
 ## Requirements
 
 - Postmark account and server token
-- Python package: `postmark` (official SDK, >= 0.3.1)
+- Python package: `postmarker`
 - OCA modules: `mail_tracking`, `queue_job`
 
 ## Installation
@@ -24,7 +24,7 @@ email delivery and tracking.
 1. Install Python dependency:
 
    ```bash
-   pip install "postmark>=0.3.1"
+   pip install postmarker==1.0
    ```
 
 2. Install the module in Odoo

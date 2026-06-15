@@ -16,7 +16,7 @@
 
 {
     "name": "Postmark Connector",
-    "version": "16.0.0.1.3",
+    "version": "16.0.0.1.2",
     "license": "LGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
@@ -24,7 +24,7 @@
     "depends": ["mail_tracking", "queue_job"],
     "external_dependencies": {
         "python": [
-            "postmark",
+            "postmarker",
         ]
     },
     "data": [],
