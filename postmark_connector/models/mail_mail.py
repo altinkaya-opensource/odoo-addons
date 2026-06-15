@@ -17,11 +17,14 @@ import logging
 import re
 from ast import literal_eval
 
+import requests
+
 from odoo import _, api, fields, models, tools
 from odoo.tools import config
 
 _logger = logging.getLogger(__name__)
 
+POSTMARK_API_URL = "https://api.postmarkapp.com"
 POSTMARK_DEFAULT_TIMEOUT = 15
 POSTMARK_INACTIVE_ADDRESS_PATTERNS = (
     r"Found inactive addresses: ([^.]+)",
@@ -34,17 +37,14 @@ class MissingRecipientError(Exception):
 
 
 try:
-    import postmark.sync as postmark_sync
-    from postmark.exceptions import InactiveRecipientException, PostmarkAPIException
+    from postmarker.core import PostmarkClient
+    from postmarker.exceptions import ClientError
 except ImportError:
-    _logger.error("Please install the 'postmark' Python package.")
-    postmark_sync = None
+    _logger.error("Please install the 'postmarker' Python package.")
+    PostmarkClient = None
 
-    class InactiveRecipientException(Exception):
-        """Fallback class used when postmark is not installed."""
-
-    class PostmarkAPIException(Exception):
-        """Fallback class used when postmark is not installed."""
+    class ClientError(Exception):
+        """Fallback class used when postmarker is not installed."""
 
 
 class MailMail(models.Model):
@@ -52,7 +52,7 @@ class MailMail(models.Model):
 
     def send(self, auto_commit=False, raise_exception=False):
         """Override send to select the method to send the e-mail."""
-        if postmark_sync and config.get("postmark_api_key"):
+        if PostmarkClient and config.get("postmark_api_key"):
             return self.send_postmark(auto_commit=auto_commit)
         return super().send(auto_commit=auto_commit, raise_exception=raise_exception)
 
@@ -66,113 +66,96 @@ class MailMail(models.Model):
             )
             return True
 
-        with postmark_sync.ServerClient(
-            api_key, timeout=self._postmark_get_timeout()
-        ) as postmark:
-            for email in outgoing:
-                try:
-                    (
-                        recipients,
-                        blacklisted_recipients,
-                        cc_recipients,
-                        blacklisted_cc_recipients,
-                    ) = email._postmark_prepare_recipient_values()
-                    if not recipients:
-                        if not blacklisted_recipients:
-                            raise MissingRecipientError(
-                                _("No recipient email address found.")
-                            )
-                        email._postmark_cancel_blacklisted_message(
-                            blacklisted_recipients
+        postmark = PostmarkClient(
+            server_token=api_key,
+            timeout=self._postmark_get_timeout(),
+        )
+        for email in outgoing:
+            try:
+                (
+                    recipients,
+                    blacklisted_recipients,
+                    cc_recipients,
+                    blacklisted_cc_recipients,
+                ) = email._postmark_prepare_recipient_values()
+                if not recipients:
+                    if not blacklisted_recipients:
+                        raise MissingRecipientError(
+                            _("No recipient email address found.")
                         )
-                        continue
-
-                    params = email._prepare_postmark_email_params(
-                        recipients, cc_recipients=cc_recipients
-                    )
-                    _logger.info("Sending mail.mail %s through Postmark.", email.id)
-                    response = postmark.outbound.send(params)
-                    email._postmark_validate_response(response)
-
-                    email.write(
-                        {
-                            "postmark_message_id": response.message_id,
-                            "sent_date": fields.Datetime.now(),
-                            "state": "sent",
-                        }
-                    )
-                    tracking_vals = email._tracking_email_prepare(
-                        partner=fields.first(email.recipient_ids.filtered("email")),
-                        email={"email_to": recipients},
-                    )
-                    self.env["mail.tracking.email"].sudo().create(tracking_vals)
-                    blacklisted_emails = (
-                        blacklisted_recipients + blacklisted_cc_recipients
-                    )
-                    failure_reason = (
-                        email._postmark_get_blacklisted_failure_reason(
-                            blacklisted_emails
-                        )
-                        if blacklisted_recipients
-                        else False
-                    )
-                    failure_type = "mail_bl" if blacklisted_recipients else None
-                    email._postprocess_sent_message(
-                        success_pids=email._postmark_get_success_partner_ids(
-                            recipients
-                        ),
-                        failure_reason=failure_reason,
-                        failure_type=failure_type,
-                    )
-
-                    # Commit at each e-mail processed to avoid any errors
-                    # invalidating state.
-                    self.env.cr.commit()  # pylint: disable=invalid-commit
-
-                except MissingRecipientError as exc:
-                    failure_reason = str(exc)
-                    _logger.info(
-                        "Skipping Postmark email %s without recipients: %s",
-                        email.id,
-                        failure_reason,
-                    )
-                    email.write(
-                        {"state": "exception", "failure_reason": failure_reason}
-                    )
-                    email._postprocess_sent_message(
-                        success_pids=[],
-                        failure_reason=failure_reason,
-                        failure_type="mail_email_missing",
-                    )
+                    email._postmark_cancel_blacklisted_message(blacklisted_recipients)
                     continue
 
-                except InactiveRecipientException as exc:
-                    inactive_emails = email._postmark_get_exception_inactive_emails(exc)
-                    email._postmark_blacklist_emails(
-                        inactive_emails, source="Postmark inactive recipient"
-                    )
-                    email._postmark_handle_send_exception(
-                        exc,
-                        failure_type=(
-                            "mail_email_invalid" if inactive_emails else "mail_smtp"
-                        ),
-                    )
-                    continue
+                params = email._prepare_postmark_email_params(
+                    recipients, cc_recipients=cc_recipients
+                )
+                _logger.info("Sending mail.mail %s through Postmarker.", email.id)
+                response = postmark.emails.send(**params)
+                email._postmark_validate_response(response)
 
-                except PostmarkAPIException as exc:
-                    email._postmark_handle_send_exception(
-                        exc,
-                        failure_type=(
-                            "mail_email_invalid"
-                            if getattr(exc, "error_code", None) == 300
-                            else "mail_smtp"
-                        ),
-                    )
-                    continue
+                email.write(
+                    {
+                        "postmark_message_id": response["MessageID"],
+                        "sent_date": fields.Datetime.now(),
+                        "state": "sent",
+                    }
+                )
+                tracking_vals = email._tracking_email_prepare(
+                    partner=fields.first(email.recipient_ids.filtered("email")),
+                    email={"email_to": recipients},
+                )
+                self.env["mail.tracking.email"].sudo().create(tracking_vals)
+                blacklisted_emails = blacklisted_recipients + blacklisted_cc_recipients
+                failure_reason = (
+                    email._postmark_get_blacklisted_failure_reason(blacklisted_emails)
+                    if blacklisted_recipients
+                    else False
+                )
+                failure_type = "mail_bl" if blacklisted_recipients else None
+                email._postprocess_sent_message(
+                    success_pids=email._postmark_get_success_partner_ids(recipients),
+                    failure_reason=failure_reason,
+                    failure_type=failure_type,
+                )
 
-                except Exception as exc:
-                    email._postmark_handle_send_exception(exc, failure_type="mail_smtp")
-                    continue
+                # Commit at each e-mail processed to avoid any errors
+                # invalidating state. This preserves the known-good Postmarker
+                # behavior from 2f459db5.
+                self.env.cr.commit()  # pylint: disable=invalid-commit
+
+            except MissingRecipientError as exc:
+                failure_reason = str(exc)
+                _logger.info(
+                    "Skipping Postmark email %s without recipients: %s",
+                    email.id,
+                    failure_reason,
+                )
+                email.write({"state": "exception", "failure_reason": failure_reason})
+                email._postprocess_sent_message(
+                    success_pids=[],
+                    failure_reason=failure_reason,
+                    failure_type="mail_email_missing",
+                )
+                continue
+
+            except ClientError as exc:
+                inactive_emails = email._postmark_get_exception_inactive_emails(exc)
+                email._postmark_blacklist_emails(
+                    inactive_emails, source="Postmark inactive recipient"
+                )
+                email._postmark_handle_send_exception(
+                    exc,
+                    failure_type=(
+                        "mail_email_invalid"
+                        if inactive_emails or getattr(exc, "error_code", None) == 300
+                        else "mail_smtp"
+                    ),
+                )
+                continue
+
+            except Exception as exc:
+                email._postmark_handle_send_exception(exc, failure_type="mail_smtp")
+                continue
         return True
 
     @api.model
@@ -190,20 +173,17 @@ class MailMail(models.Model):
             return POSTMARK_DEFAULT_TIMEOUT
 
     def _postmark_validate_response(self, response):
-        """Validate a Postmark send response and blacklist inactive recipients."""
+        """Validate a Postmarker send response and blacklist inactive recipients."""
         self.ensure_one()
-        if response.success and response.message == "OK":
+        if response.get("ErrorCode") == 0:
             return
 
-        inactive_emails = self._postmark_extract_inactive_recipients(response.message)
+        message = response.get("Message")
+        inactive_emails = self._postmark_extract_inactive_recipients(message)
         self._postmark_blacklist_emails(
             inactive_emails, source="Postmark send response"
         )
-        raise PostmarkAPIException(
-            response.message,
-            error_code=response.error_code,
-            http_status=200,
-        )
+        raise ClientError(message, error_code=response.get("ErrorCode"))
 
     def _postmark_handle_send_exception(self, exc, failure_type):
         """Store a Postmark send failure and update mail notifications."""
@@ -234,10 +214,8 @@ class MailMail(models.Model):
 
     @api.model
     def _postmark_get_exception_inactive_emails(self, exc):
-        """Return inactive recipients exposed by official SDK exceptions."""
-        return getattr(
-            exc, "inactive_recipients", []
-        ) or self._postmark_extract_inactive_recipients(str(exc))
+        """Return inactive recipients exposed by Postmarker exceptions."""
+        return self._postmark_extract_inactive_recipients(str(exc))
 
     @api.model
     def _postmark_blacklist_emails(self, emails, source=False):
@@ -270,20 +248,25 @@ class MailMail(models.Model):
         if not api_key:
             _logger.info("Skipping Postmark suppression sync: no postmark_api_key.")
             return 0
-        if not postmark_sync:
-            _logger.info("Skipping Postmark suppression sync: SDK is unavailable.")
-            return 0
 
         try:
-            with postmark_sync.ServerClient(
-                api_key, timeout=self._postmark_get_timeout()
-            ) as postmark:
-                suppressions = postmark.suppressions.dump(stream_id)
+            response = requests.get(
+                f"{POSTMARK_API_URL}/message-streams/{stream_id}/suppressions/dump",
+                headers={
+                    "Accept": "application/json",
+                    "X-Postmark-Server-Token": api_key,
+                },
+                timeout=self._postmark_get_timeout(),
+            )
+            response.raise_for_status()
         except Exception as exc:
             _logger.error("Postmark suppression sync failed: %s", exc)
             return 0
 
-        emails = [suppression.email_address for suppression in suppressions]
+        emails = [
+            suppression.get("EmailAddress")
+            for suppression in response.json().get("Suppressions", [])
+        ]
         count = self._postmark_blacklist_emails(
             emails, source=f"Postmark {stream_id} suppression sync"
         )
@@ -436,10 +419,10 @@ class MailMail(models.Model):
         if "@altinkaya.com" not in str(msg_from):
             msg_from = '"ALTINKAYA" <erp@altinkaya.com>'
 
-        params["sender"] = msg_from
-        params["message_stream"] = "outbound"
+        params["From"] = msg_from
+        params["MessageStream"] = "outbound"
         if self.reply_to:
-            params["reply_to"] = self.reply_to
+            params["ReplyTo"] = self.reply_to
 
         headers = {"Message-Id": self.message_id}
         if self.headers:
@@ -450,32 +433,30 @@ class MailMail(models.Model):
                     "Error while parsing headers for email %s: %s", self.id, exc
                 )
 
-        params["headers"] = [
-            {"name": name, "value": str(value)} for name, value in headers.items()
-        ]
+        params["Headers"] = headers
 
         # Debrand the body.
-        params["html_body"] = self.env["mail.render.mixin"].remove_href_odoo(
+        params["HtmlBody"] = self.env["mail.render.mixin"].remove_href_odoo(
             str(self.body_content) or "", to_keep=self.body
         )
-        params["subject"] = self.subject or _("(No subject)")
+        params["Subject"] = self.subject or _("(No subject)")
 
         recipients = recipients or self._get_postmark_recipients()
         if not recipients:
             raise MissingRecipientError(_("No recipient email address found."))
-        params["to"] = ", ".join(recipients)
+        params["To"] = recipients
 
         if cc_recipients is None:
             cc_recipients = self._get_postmark_cc_recipients()
         if cc_recipients:
-            params["cc"] = ", ".join(cc_recipients)
+            params["Cc"] = cc_recipients
 
         if self.attachment_ids:
-            params["attachments"] = [
+            params["Attachments"] = [
                 {
-                    "name": attachment.name,
-                    "content": attachment.datas.decode("utf-8"),
-                    "content_type": attachment.mimetype,
+                    "Name": attachment.name,
+                    "Content": attachment.datas.decode("utf-8"),
+                    "ContentType": attachment.mimetype,
                 }
                 for attachment in self.attachment_ids
             ]
