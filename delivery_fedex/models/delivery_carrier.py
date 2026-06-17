@@ -48,13 +48,14 @@ FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
 
-# FedEx requires a state/province code for destinations in these countries and
-# rejects anything over 3 chars. Odoo stores the short ISO abbreviation in
-# state_id.code for them (US/CA "FL", MX 3-char); other countries keep longer
-# codes that FedEx neither needs nor accepts, so we never send those.
-# ponytail: this set covers FedEx's required-state countries; extend if FedEx
-# starts rejecting another destination for a missing state.
-FEDEX_STATE_REQUIRED_COUNTRIES = {"US", "CA", "MX", "PR"}
+# Per FedEx docs, the 2-letter state/province code is required when the country
+# is the US or Canada, or Mexico when EEI applies; no other country needs it and
+# FedEx rejects codes over 3 chars. Odoo keeps short codes for these (US/CA
+# "FL", MX 3-char) while other countries store longer ones (AU=9, DE=5), so we
+# only send the code here. https://developer.fedex.com/api/en-cm/catalog/postal-code/docs.html
+# ponytail: MX codes are ISO 3-letter, but FedEx documents "2-letter" — revisit
+# if a Mexico+EEI shipment is rejected on the state code.
+FEDEX_STATE_REQUIRED_COUNTRIES = {"US", "CA", "MX"}
 
 FEDEX_TO_ODOO_STATUS = {
     # Shipping recorded in carrier
