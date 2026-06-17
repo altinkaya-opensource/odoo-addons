@@ -48,6 +48,14 @@ FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
 
+# FedEx requires a state/province code for destinations in these countries and
+# rejects anything over 3 chars. Odoo stores the short ISO abbreviation in
+# state_id.code for them (US/CA "FL", MX 3-char); other countries keep longer
+# codes that FedEx neither needs nor accepts, so we never send those.
+# ponytail: this set covers FedEx's required-state countries; extend if FedEx
+# starts rejecting another destination for a missing state.
+FEDEX_STATE_REQUIRED_COUNTRIES = {"US", "CA", "MX", "PR"}
+
 FEDEX_TO_ODOO_STATUS = {
     # Shipping recorded in carrier
     "OC": "shipping_recorded_in_carrier",
@@ -234,13 +242,23 @@ class DeliveryCarrier(models.Model):
         if text_line:
             street_lines.append(text_line.strip())
 
-        return {
+        address = {
             "streetLines": street_lines,
             "city": normalize_turkish(partner.city or partner.state_id.name or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
         }
+
+        # US/CA/MX/PR addresses are rejected without a valid state code, and
+        # FedEx caps it at 3 chars, so send the short ISO code only for them.
+        if (
+            partner.country_id.code in FEDEX_STATE_REQUIRED_COUNTRIES
+            and partner.state_id.code
+        ):
+            address["stateOrProvinceCode"] = partner.state_id.code
+
+        return address
 
     def _prepare_fedex_contact(self, partner):
         """
