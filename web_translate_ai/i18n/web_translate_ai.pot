@@ -1,0 +1,448 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* web_translate_ai
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-09 12:01+0000\n"
+"PO-Revision-Date: 2026-06-09 12:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid ""
+"<span class=\"text-muted\">\n"
+"                                1. Create a glossary with source and target languages.<br/>\n"
+"                                2. Add entries to the created glossary.<br/>\n"
+"                                3. The glossary terms will be injected into the AI prompt automatically during translation.\n"
+"                            </span>"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.constraint,message:web_translate_ai.constraint_ai_translation_glossary_unique_lang_pair_per_config
+msgid "A glossary for this language pair already exists in this config."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_ai_translate_module_wizard
+msgid "AI Translate Module Wizard"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_ai_translation_config
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__ai_translation_config_id
+#: model:ir.model.fields,field_description:web_translate_ai.field_res_company__ai_translation_config_id
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.res_company_ai_translation_form_inherit
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid "AI Translation Config"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.actions.act_window,name:web_translate_ai.action_ai_translation_configs
+#: model:ir.ui.menu,name:web_translate_ai.menu_ai_translation_config
+msgid "AI Translation Configs"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_ai_translation_glossary
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_glossary_form
+msgid "AI Translation Glossary"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_ai_translation_glossary_line
+msgid "AI Translation Glossary Line"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid "AI Translation config not found for this company!"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__active
+msgid "Active"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_base
+msgid "Base"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_res_lang__tr_base_lang_id
+msgid "Base Translate Language"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid "Base language not found! Set translation base language for %s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translate_module_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "Copy English to all languages"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "Copy Turkish to all languages"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ir_module_module.py:0
+#, python-format
+msgid ""
+"Could not parse translation file %(file)s. Please fix the PO syntax or regenerate the translation file.\n"
+"%(error)s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__create_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__create_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__create_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__create_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__create_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__create_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__display_name
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__display_name
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__display_name
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "EN"
+msgstr ""
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid ""
+"Enter the system prompt that defines translation behavior, company context, "
+"and terminology rules..."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__line_ids
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_glossary_form
+msgid "Entries"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translate_module_wizard__regenerate_before_translate
+msgid ""
+"Export the selected PO files again before AI translation. This makes newly "
+"added module terms available for translation."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__glossary_ids
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid "Glossaries"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__ai_translation_glossary_id
+msgid "Glossary"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__id
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__id
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__id
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__id
+msgid "ID"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_res_lang
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__lang_ids
+msgid "Languages"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard____last_update
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config____last_update
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary____last_update
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__write_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__write_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__write_uid
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__write_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__write_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__write_date
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__temperature
+msgid "Lower values produce more deterministic translations."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__max_tokens
+msgid "Max Tokens"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__max_tokens
+msgid "Maximum tokens for the LLM response."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__model
+msgid "Model"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model,name:web_translate_ai.model_ir_module_module
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__module_id
+msgid "Module"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__name
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__name
+msgid "Name"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid "OpenRouter API Success: \"Hello World\" translation: %s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__openrouter_api_key
+msgid "OpenRouter API key for this translation config."
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid "OpenRouter API key not configured."
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid "OpenRouter API request failed: %s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__model
+msgid "OpenRouter model identifier, e.g. google/gemini-2.5-flash"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__openrouter_api_key
+msgid "Openrouter Api Key"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/wizards/ai_translate_module_wizard.py:0
+#, python-format
+msgid "Please select at least one language."
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ir_module_module.py:0
+#, python-format
+msgid "Please set AI Translation Config for the company first."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__regenerate_before_translate
+msgid "Regenerate files before translating"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translate_module_wizard__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_ir_module_module__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_res_company__smart_search
+#: model:ir.model.fields,field_description:web_translate_ai.field_res_lang__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__source_lang_id
+msgid "Source Language"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__source_term
+msgid "Source Term"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_glossary.py:0
+#, python-format
+msgid "Source and target languages must be different."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.constraint,message:web_translate_ai.constraint_ai_translation_glossary_line_source_term_uniq
+msgid "Source term must be unique in a glossary."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__system_prompt
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid "System Prompt"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__system_prompt
+msgid "System prompt sent with every translation request."
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "TR"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary__target_lang_id
+msgid "Target Language"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_glossary_line__target_term
+msgid "Target Term"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__temperature
+msgid "Temperature"
+msgstr ""
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translation_config_form
+msgid "Test API"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ai_translation_config.py:0
+#, python-format
+msgid ""
+"The AI returned an invalid JSON response. Please try again or check the model settings.\n"
+"%s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_res_lang__tr_base_lang_id
+msgid "The language to translate from with AI Translation API"
+msgstr ""
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translate_module_wizard_form
+msgid "Translate"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "Translate All"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ir_module_module.py:0
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.view_ai_translate_module_wizard_form
+#, python-format
+msgid "Translate Missing Terms"
+msgstr ""
+
+#. module: web_translate_ai
+#: model_terms:ir.ui.view,arch_db:web_translate_ai.module_form_ai_translate
+msgid "Translate Module (AI)"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-javascript
+#: code:addons/web_translate_ai/static/src/xml/inherit.xml:0
+#, python-format
+msgid "Translate all languages in one batch"
+msgstr ""
+
+#. module: web_translate_ai
+#. odoo-python
+#: code:addons/web_translate_ai/models/ir_module_module.py:0
+#, python-format
+msgid "Translation failed for the following languages: %s"
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,help:web_translate_ai.field_ai_translation_config__use_structured_output
+msgid ""
+"Use OpenRouter structured outputs (json_schema) for guaranteed valid JSON "
+"responses."
+msgstr ""
+
+#. module: web_translate_ai
+#: model:ir.model.fields,field_description:web_translate_ai.field_ai_translation_config__use_structured_output
+msgid "Use Structured Output"
+msgstr ""

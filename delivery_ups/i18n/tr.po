@@ -1,0 +1,639 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_ups
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:44+0000\n"
+"PO-Revision-Date: 2026-05-04 10:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "%(time)s %(date)s - [%(code)s] %(description)s"
+msgstr "%(time)s %(date)s - [%(code)s] %(description)s"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): City or State is required."
+msgstr "- %(type)s (%(name)s): Şehir veya il zorunludur."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Country is required."
+msgstr "- %(type)s (%(name)s): Ülke zorunludur."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Phone or Mobile number is required."
+msgstr "- %(type)s (%(name)s): Telefon veya cep telefonu numarası zorunludur."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Street address is required."
+msgstr "- %(type)s (%(name)s): Sokak adresi zorunludur."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): ZIP/Postal code is required."
+msgstr "- %(type)s (%(name)s): Posta kodu zorunludur."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Height must be greater than 0."
+msgstr "- Paket %(package)s: Yükseklik 0'dan büyük olmalıdır."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Length must be greater than 0."
+msgstr "- Paket %(package)s: Uzunluk 0'dan büyük olmalıdır."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Weight must be greater than 0."
+msgstr "- Paket %(package)s: Ağırlık 0'dan büyük olmalıdır."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Width must be greater than 0."
+msgstr "- Paket %(package)s: Genişlik 0'dan büyük olmalıdır."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"- Picking %(name)s: A posted invoice is required for UPS international "
+"shipments (needed for customs)."
+msgstr ""
+"- Transfer %(name)s: UPS uluslararası gönderileri için onaylanmış bir fatura "
+"gereklidir (gümrük için zorunludur)."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Picking %(name)s: At least one package is required."
+msgstr "- Transfer %(name)s: En az bir paket gereklidir."
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__25
+msgid "10KG Box"
+msgstr "10 KG Kutu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__24
+msgid "25KG Box"
+msgstr "25 KG Kutu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__02
+msgid "2nd Day Air"
+msgstr "2. Gün Hava"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__12
+msgid "3 Day Select"
+msgstr "3 Gün Seçimi"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__20
+msgid "Air Service Center"
+msgstr "Hava Servis Merkezi"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Cannot get rates for an order with existing pickings."
+msgstr "Mevcut transferleri olan bir sipariş için tarife alınamaz."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"Cannot send UPS shipment. Please fix the following issues:\n"
+"\n"
+"%(errors)s"
+msgstr ""
+"UPS gönderisi yapılamıyor. Lütfen aşağıdaki sorunları gideriniz:\n"
+"\n"
+"%(errors)s"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklikler"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_commercial_invoice
+msgid ""
+"Commercial invoice report used to render customs documentation. Only used if"
+" UPS does not render the invoice from InternationalForms."
+msgstr ""
+"Gümrük belgelerini oluşturmak için kullanılan ticari fatura raporu. Yalnızca"
+" UPS InternationalForms üzerinden faturayı oluşturmadığında kullanılır."
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Connection"
+msgstr "Bağlantı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__03
+msgid "Customer Counter"
+msgstr "Müşteri Kontuarı"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__02
+msgid "Customer Supplied Package"
+msgstr "Müşteri Tarafından Sağlanan Paket"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_character_set__dos
+msgid "DOS/ASCII"
+msgstr "DOS/ASCII"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__01
+msgid "Daily Pickup"
+msgstr "Günlük Alım"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_packaging_type
+msgid "Default packaging code when no pallets are present."
+msgstr "Palet bulunmadığında kullanılacak varsayılan paketleme kodu."
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Delivery Information"
+msgstr "Teslimat Bilgileri"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__gift
+msgid "Gift"
+msgstr "Hediye"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__03
+msgid "Ground"
+msgstr "Karayolu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__intercompanydata
+msgid "Intercompany Data"
+msgstr "Şirketler Arası Veri"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_character_set
+msgid ""
+"Label character set. 'tur' (Latin-5) preserves Turkish characters natively "
+"so no ASCII normalization is required."
+msgstr ""
+"Etiket karakter seti. 'tur' (Latin-5) Türkçe karakterleri doğal olarak "
+"korur, böylece ASCII'ye normalleştirmeye gerek kalmaz."
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2c
+msgid "Large Express Box"
+msgstr "Büyük Express Kutu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__19
+msgid "Letter Center"
+msgstr "Mektup Merkezi"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2b
+msgid "Medium Express Box"
+msgstr "Orta Express Kutu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__01
+msgid "Next Day Air"
+msgstr "Ertesi Gün Hava"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__14
+msgid "Next Day Air Early"
+msgstr "Ertesi Gün Hava Erken"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__13
+msgid "Next Day Air Saver"
+msgstr "Ertesi Gün Hava Tasarruflu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__07
+msgid "On Call Air"
+msgstr "Çağrı Üzerine Hava"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__06
+msgid "One Time Pickup"
+msgstr "Tek Seferlik Alım"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__30
+msgid "Pallet"
+msgstr "Palet"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__ups_pickup_prn
+msgid "Pickup Request Number (PRN) returned by UPS when scheduling a pickup."
+msgstr ""
+"Alım planlanırken UPS tarafından döndürülen Alım Talep Numarası (PRN)."
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_pickup_type
+msgid ""
+"Pickup behaviour. '01 Daily Pickup' means UPS collects at the scheduled "
+"daily time and no explicit pickup call is needed."
+msgstr ""
+"Alım davranışı. '01 Günlük Alım', UPS'in planlanan günlük saatte teslim "
+"aldığı ve ayrıca alım çağrısı yapılmasına gerek olmadığı anlamına gelir."
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__receiver
+msgid "Receiver"
+msgstr "Alıcı"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Recipient"
+msgstr "Alıcı"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__repair
+msgid "Repair"
+msgstr "Onarım"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_negotiated_rates
+msgid "Request UPS account negotiated rates in addition to published rates."
+msgstr ""
+"Yayınlanan tarifelere ek olarak UPS hesabı anlaşmalı tarifelerini talep et."
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__return
+msgid "Return"
+msgstr "İade"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__sale
+msgid "Sale"
+msgstr "Satış"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__sample
+msgid "Sample"
+msgstr "Numune"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__ups_pickup_date
+msgid "Scheduled UPS pickup date."
+msgstr "Planlanan UPS alım tarihi."
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__sender
+msgid "Sender"
+msgstr "Gönderici"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Shipper"
+msgstr "Gönderici"
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Teslimat Yöntemleri"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2a
+msgid "Small Express Box"
+msgstr "Küçük Express Kutu"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__third_party
+msgid "Third Party"
+msgstr "Üçüncü Taraf"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Timeout: the UPS servers did not reply within %(timeout)s seconds"
+msgstr "Zaman aşımı: UPS sunucuları %(timeout)s saniye içinde yanıt vermedi"
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_stock_picking
+msgid "Transfer"
+msgstr "Teslimat"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_character_set__tur
+msgid "Turkish (Latin-5)"
+msgstr "Türkçe (Latin-5)"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
+msgid "UPS"
+msgstr "UPS"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_account_number
+msgid "UPS 6-character account number (a.k.a. Shipper Number)."
+msgstr "UPS 6 karakterli hesap numarası (Shipper Number olarak da bilinir)."
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_client_id
+msgid "UPS Client ID"
+msgstr "UPS İstemci Kimliği"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_commercial_invoice
+msgid "UPS Commercial Invoice"
+msgstr "UPS Ticari Fatura"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "UPS Configuration"
+msgstr "UPS Yapılandırması"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid ""
+"UPS Error:\n"
+"%(error_string)s"
+msgstr ""
+"UPS Hatası:\n"
+"%(error_string)s"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "UPS Error: %(error)s"
+msgstr "UPS Hatası: %(error)s"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__74
+msgid "UPS Express 12:00"
+msgstr "UPS Express 12:00"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_client_id
+msgid "UPS OAuth Client ID"
+msgstr "UPS OAuth İstemci Kimliği"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_client_secret
+msgid "UPS OAuth Client Secret"
+msgstr "UPS OAuth İstemci Gizli Anahtarı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_pickup_date
+msgid "UPS Pickup Date"
+msgstr "UPS Alım Tarihi"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_pickup_prn
+msgid "UPS Pickup Request Number"
+msgstr "UPS Alım Talep Numarası"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__65
+msgid "UPS Saver"
+msgstr "UPS Tasarruflu"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__11
+msgid "UPS Standard"
+msgstr "UPS Standart"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"UPS pickup scheduled for <strong>%(date)s</strong>. PRN: "
+"<strong>%(prn)s</strong>."
+msgstr ""
+"UPS alımı <strong>%(date)s</strong> tarihine planlandı. PRN: "
+"<strong>%(prn)s</strong>."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "UPS rate response missing RatedShipment data."
+msgstr "UPS tarife yanıtında RatedShipment verisi eksik."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
+msgstr "UPS gönderisi oluşturuldu. Takip numarası: <strong>%(tracking)s</strong>."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Unsupported UPS service: %s"
+msgstr "Desteklenmeyen UPS servisi: %s"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Unsupported request type, only use 'GET', 'POST', 'DELETE'"
+msgstr "Desteklenmeyen istek türü, yalnızca 'GET', 'POST', 'DELETE' kullanın"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_account_number
+msgid "Ups Account Number"
+msgstr "UPS Hesap Numarası"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_client_secret
+msgid "Ups Client Secret"
+msgstr "UPS İstemci Gizli Anahtarı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_customs_payment_type
+msgid "Ups Customs Payment Type"
+msgstr "UPS Gümrük Ödeme Türü"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_character_set
+msgid "Ups Label Character Set"
+msgstr "UPS Etiket Karakter Seti"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_stock_size_height
+msgid "Ups Label Stock Size Height"
+msgstr "UPS Etiket Stok Boyutu Yüksekliği"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_stock_size_width
+msgid "Ups Label Stock Size Width"
+msgstr "UPS Etiket Stok Boyutu Genişliği"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_negotiated_rates
+msgid "Ups Negotiated Rates"
+msgstr "UPS Anlaşmalı Tarifeler"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_packaging_type
+msgid "Ups Packaging Type"
+msgstr "UPS Paketleme Türü"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_pickup_type
+msgid "Ups Pickup Type"
+msgstr "UPS Alım Türü"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_reason_for_export
+msgid "Ups Reason For Export"
+msgstr "UPS İhracat Nedeni"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_service_type
+msgid "Ups Service Type"
+msgstr "UPS Servis Türü"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__72
+msgid "Worldwide Economy DDP"
+msgstr "Dünya Çapında Ekonomik DDP"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__17
+msgid "Worldwide Economy DDU"
+msgstr "Dünya Çapında Ekonomik DDU"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__08
+msgid "Worldwide Expedited"
+msgstr "Dünya Çapında Hızlandırılmış"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__07
+msgid "Worldwide Express"
+msgstr "Dünya Çapında Express"
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__54
+msgid "Worldwide Express Plus"
+msgstr "Dünya Çapında Express Plus"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_stock_size_height
+msgid "ZPL label height in inches (UPS allows 6 or 8)."
+msgstr "İnç cinsinden ZPL etiket yüksekliği (UPS 6 veya 8'e izin verir)."
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_stock_size_width
+msgid "ZPL label width in inches (UPS uses 4)."
+msgstr "İnç cinsinden ZPL etiket genişliği (UPS 4 kullanır)."

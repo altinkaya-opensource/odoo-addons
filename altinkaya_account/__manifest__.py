@@ -27,6 +27,7 @@
         "account_invoice_change_currency",
         "altinkaya_base",
         "account_financial_risk",
+        "currency_rate_turkey",
     ],
     "data": [
         "security/ir.model.access.csv",

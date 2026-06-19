@@ -139,11 +139,12 @@ class DHLRequest:
                 )
             result = res.json()
             self.delivery_carrier.log_xml(
-                "---Request:\n"
-                + json.dumps(request_data, indent=4)
-                + "\n\n---Response:\n"
-                + json.dumps(result, indent=4),
-                func=f"DHL - {service_type}",
+                json.dumps(request_data, indent=4),
+                func=f"dhl_{service_type}_request",
+            )
+            self.delivery_carrier.log_xml(
+                json.dumps(result, indent=4),
+                func=f"dhl_{service_type}_response",
             )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:

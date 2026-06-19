@@ -1,0 +1,209 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* db_retention
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-12 12:32+0000\n"
+"PO-Revision-Date: 2026-06-12 12:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: Turkish\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__active
+msgid "Active"
+msgstr "Aktif"
+
+#. module: db_retention
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "Additional Filter"
+msgstr "Ek Filtre"
+
+#. module: db_retention
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "Archived"
+msgstr "Arşivlendi"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__batch_size
+msgid "Batch Size"
+msgstr "Yığın Boyutu"
+
+#. module: db_retention
+#. odoo-python
+#: code:addons/db_retention/models/db_retention_rule.py:0
+#, python-format
+msgid "Batch size must be greater than zero."
+msgstr "Yığın boyutu sıfırdan büyük olmalıdır."
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__create_date
+msgid "Created on"
+msgstr "Oluşturulma Tarihi"
+
+#. module: db_retention
+#: model:ir.ui.menu,name:db_retention.menu_db_retention_rule
+msgid "Database Retention"
+msgstr "Veritabanı Saklama"
+
+#. module: db_retention
+#: model:ir.model,name:db_retention.model_db_retention_rule
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "Database Retention Rule"
+msgstr "Veritabanı Saklama Kuralı"
+
+#. module: db_retention
+#: model:ir.actions.server,name:db_retention.ir_cron_db_retention_ir_actions_server
+#: model:ir.cron,cron_name:db_retention.ir_cron_db_retention
+msgid "Database Retention: Apply Rules"
+msgstr "Veritabanı Saklama: Kuralları Uygula"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__date_field_id
+msgid "Date Field"
+msgstr "Tarih Alanı"
+
+#. module: db_retention
+#: model:ir.model.fields,help:db_retention.field_db_retention_rule__date_field_id
+msgid "Date/Datetime field compared against the retention threshold."
+msgstr "Saklama eşiğiyle karşılaştırılan Tarih/Tarih-Saat alanı."
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__display_name
+msgid "Display Name"
+msgstr "Görünen Ad"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__domain
+msgid "Domain"
+msgstr "Domain"
+
+#. module: db_retention
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "Dry Run"
+msgstr "Deneme Çalıştırması"
+
+#. module: db_retention
+#: model:ir.model.fields,help:db_retention.field_db_retention_rule__domain
+msgid ""
+"Extra Odoo domain to further restrict the records to delete, e.g. [('state',"
+" 'in', ('done', 'cancelled'))]."
+msgstr ""
+"Silinecek kayıtları daha da kısıtlamak için ek Odoo etki alanı (domain), örn."
+" [('state', 'in', ('done', 'cancelled'))]."
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__date_field_name
+msgid "Field Name"
+msgstr "Alan Adı"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__id
+msgid "ID"
+msgstr "ID"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__last_deleted
+msgid "Last Deleted"
+msgstr "Son Silinen Adet"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule____last_update
+msgid "Last Modified on"
+msgstr "Son Değiştirilme Tarihi"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__last_run
+msgid "Last Run"
+msgstr "Son Çalıştırma"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__write_date
+msgid "Last Updated on"
+msgstr "Son Güncellenme Tarihi"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__model_id
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__model_name
+msgid "Model"
+msgstr "Model"
+
+#. module: db_retention
+#: model:ir.model.fields,help:db_retention.field_db_retention_rule__model_id
+msgid "Model whose records are purged by this rule."
+msgstr "Kayıtları bu kural tarafından temizlenen model."
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__name
+msgid "Name"
+msgstr "Ad"
+
+#. module: db_retention
+#: model:ir.model.fields,help:db_retention.field_db_retention_rule__batch_size
+msgid ""
+"Number of records deleted per transaction. Keeps locks short and memory "
+"bounded on large tables."
+msgstr ""
+"Her işlemde silinen kayıt sayısı. Büyük tablolarda kilitleri kısa tutar ve "
+"bellek kullanımını sınırlar."
+
+#. module: db_retention
+#: model:ir.model.fields,help:db_retention.field_db_retention_rule__retention_days
+msgid "Records whose date field is older than this many days are deleted."
+msgstr "Tarih alanı, belirtilen gün sayısından daha eski olan kayıtlar silinir."
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__retention_days
+msgid "Retention Days"
+msgstr "Saklama Süresi (Gün)"
+
+#. module: db_retention
+#: model:ir.actions.act_window,name:db_retention.action_db_retention_rule
+msgid "Retention Rules"
+msgstr "Saklama Kuralları"
+
+#. module: db_retention
+#. odoo-python
+#: code:addons/db_retention/models/db_retention_rule.py:0
+#, python-format
+msgid "Retention days must be greater than zero."
+msgstr "Saklama süresi sıfırdan büyük olmalıdır."
+
+#. module: db_retention
+#. odoo-python
+#: code:addons/db_retention/models/db_retention_rule.py:0
+#, python-format
+msgid "Rule '%(name)s' would delete %(count)d record(s)."
+msgstr "'%(name)s' kuralı %(count)d kaydı silecek."
+
+#. module: db_retention
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "Run Now"
+msgstr "Şimdi Çalıştır"
+
+#. module: db_retention
+#: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__sequence
+msgid "Sequence"
+msgstr "Sıra"
+
+#. module: db_retention
+#: model_terms:ir.ui.view,arch_db:db_retention.view_db_retention_rule_form
+msgid "This deletes records permanently. Continue?"
+msgstr "Bu işlem kayıtları kalıcı olarak siler. Devam edilsin mi?"

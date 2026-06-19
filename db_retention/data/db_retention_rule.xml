@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <!-- Safe default: ir.logging grows unbounded and has no native retention. -->
+    <record id="rule_ir_logging" model="db.retention.rule">
+        <field name="name">Purge old ir.logging</field>
+        <field name="model_id" ref="base.model_ir_logging" />
+        <field name="date_field_id" ref="base.field_ir_logging__create_date" />
+        <field name="retention_days">30</field>
+        <field name="domain">[]</field>
+    </record>
+</odoo>

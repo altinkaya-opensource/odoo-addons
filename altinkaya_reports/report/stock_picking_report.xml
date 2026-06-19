@@ -7,6 +7,7 @@
     >
         <xpath expr="//t[@t-call='web.html_container']" position="replace">
             <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang='tr_TR')" />
                 <t t-call="web.html_container">
                     <t t-call="web.basic_layout">
                         <div class="header">
@@ -423,6 +424,9 @@ Stokta:
         <t t-call="altinkaya_reports.report_picking_altinkaya" />
     </template>
     <template id="report_picking_altinkayaS">
+        <t t-call="altinkaya_reports.report_picking_altinkaya" />
+    </template>
+    <template id="report_picking_altinkayaO">
         <t t-call="altinkaya_reports.report_picking_altinkaya" />
     </template>
 </odoo>

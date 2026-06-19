@@ -147,9 +147,13 @@ class PaymentProvider(models.Model):
         connector = self._get_iyzico_connector(
             tx, order_id, temp_currency_id=temp_currency_id, partner_id=partner_id
         )
+        # Base amount in the payment currency (iyzico totals are already
+        # expressed in it), so the installment fee subtraction is consistent.
+        converted_base = connector._convert_price(price)
         _iyz_options = connector.check_installment(price, card_number=card_number)
         if _iyz_options["status"] == "success":
             for item in _iyz_options["installmentDetails"][0]["installmentPrices"]:
+                installment_fee = item["totalPrice"] - converted_base
                 installment_options.append(
                     {
                         "installmentNumber": item["installmentNumber"],
@@ -162,8 +166,13 @@ class PaymentProvider(models.Model):
                             connector.payment_currency,
                         ),
                         "baseAmount": format_amount(
-                            self.env, price, connector.payment_currency
+                            self.env, converted_base, connector.payment_currency
                         ),
+                        # Raw values so the storefront can render the fee and
+                        # the fee-inclusive total in its order summary.
+                        "installmentFee": round(installment_fee, 2),
+                        "totalAmount": round(item["totalPrice"], 2),
+                        "currency": connector.payment_currency.name,
                     }
                 )
         return installment_options

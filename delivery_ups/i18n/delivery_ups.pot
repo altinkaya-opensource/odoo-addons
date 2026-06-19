@@ -1,0 +1,621 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* delivery_ups
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:44+0000\n"
+"PO-Revision-Date: 2026-05-04 10:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "%(time)s %(date)s - [%(code)s] %(description)s"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): City or State is required."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Country is required."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Phone or Mobile number is required."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): Street address is required."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- %(type)s (%(name)s): ZIP/Postal code is required."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Height must be greater than 0."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Length must be greater than 0."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Weight must be greater than 0."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Package %(package)s: Width must be greater than 0."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"- Picking %(name)s: A posted invoice is required for UPS international "
+"shipments (needed for customs)."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "- Picking %(name)s: At least one package is required."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__25
+msgid "10KG Box"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__24
+msgid "25KG Box"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__02
+msgid "2nd Day Air"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__12
+msgid "3 Day Select"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__20
+msgid "Air Service Center"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Cannot get rates for an order with existing pickings."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"Cannot send UPS shipment. Please fix the following issues:\n"
+"\n"
+"%(errors)s"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_commercial_invoice
+msgid ""
+"Commercial invoice report used to render customs documentation. Only used if"
+" UPS does not render the invoice from InternationalForms."
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Connection"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__03
+msgid "Customer Counter"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__02
+msgid "Customer Supplied Package"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_character_set__dos
+msgid "DOS/ASCII"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__01
+msgid "Daily Pickup"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_packaging_type
+msgid "Default packaging code when no pallets are present."
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Delivery Information"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__gift
+msgid "Gift"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__03
+msgid "Ground"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__intercompanydata
+msgid "Intercompany Data"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_character_set
+msgid ""
+"Label character set. 'tur' (Latin-5) preserves Turkish characters natively "
+"so no ASCII normalization is required."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2c
+msgid "Large Express Box"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__19
+msgid "Letter Center"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2b
+msgid "Medium Express Box"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__01
+msgid "Next Day Air"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__14
+msgid "Next Day Air Early"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__13
+msgid "Next Day Air Saver"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__07
+msgid "On Call Air"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__06
+msgid "One Time Pickup"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__30
+msgid "Pallet"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__ups_pickup_prn
+msgid "Pickup Request Number (PRN) returned by UPS when scheduling a pickup."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_pickup_type
+msgid ""
+"Pickup behaviour. '01 Daily Pickup' means UPS collects at the scheduled "
+"daily time and no explicit pickup call is needed."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__receiver
+msgid "Receiver"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Recipient"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__repair
+msgid "Repair"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_negotiated_rates
+msgid "Request UPS account negotiated rates in addition to published rates."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__return
+msgid "Return"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__sale
+msgid "Sale"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__sample
+msgid "Sample"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__ups_pickup_date
+msgid "Scheduled UPS pickup date."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__sender
+msgid "Sender"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "Shipper"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2a
+msgid "Small Express Box"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__smart_search
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changesets
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_changesets
+#: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_customs_payment_type__third_party
+msgid "Third Party"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Timeout: the UPS servers did not reply within %(timeout)s seconds"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_character_set__tur
+msgid "Turkish (Latin-5)"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
+msgid "UPS"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_account_number
+msgid "UPS 6-character account number (a.k.a. Shipper Number)."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_client_id
+msgid "UPS Client ID"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_commercial_invoice
+msgid "UPS Commercial Invoice"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "UPS Configuration"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid ""
+"UPS Error:\n"
+"%(error_string)s"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "UPS Error: %(error)s"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__74
+msgid "UPS Express 12:00"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_client_id
+msgid "UPS OAuth Client ID"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_client_secret
+msgid "UPS OAuth Client Secret"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_pickup_date
+msgid "UPS Pickup Date"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_pickup_prn
+msgid "UPS Pickup Request Number"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__65
+msgid "UPS Saver"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__11
+msgid "UPS Standard"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"UPS pickup scheduled for <strong>%(date)s</strong>. PRN: "
+"<strong>%(prn)s</strong>."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "UPS rate response missing RatedShipment data."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Unsupported UPS service: %s"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#, python-format
+msgid "Unsupported request type, only use 'GET', 'POST', 'DELETE'"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_account_number
+msgid "Ups Account Number"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_client_secret
+msgid "Ups Client Secret"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_customs_payment_type
+msgid "Ups Customs Payment Type"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_character_set
+msgid "Ups Label Character Set"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_stock_size_height
+msgid "Ups Label Stock Size Height"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_stock_size_width
+msgid "Ups Label Stock Size Width"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_negotiated_rates
+msgid "Ups Negotiated Rates"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_packaging_type
+msgid "Ups Packaging Type"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_pickup_type
+msgid "Ups Pickup Type"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_reason_for_export
+msgid "Ups Reason For Export"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_service_type
+msgid "Ups Service Type"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__72
+msgid "Worldwide Economy DDP"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__17
+msgid "Worldwide Economy DDU"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__08
+msgid "Worldwide Expedited"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__07
+msgid "Worldwide Express"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__54
+msgid "Worldwide Express Plus"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_stock_size_height
+msgid "ZPL label height in inches (UPS allows 6 or 8)."
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_stock_size_width
+msgid "ZPL label width in inches (UPS uses 4)."
+msgstr ""

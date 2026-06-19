@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_ai_translate_module_wizard_form" model="ir.ui.view">
+        <field name="name">ai.translate.module.wizard.form</field>
+        <field name="model">ai.translate.module.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Translate Missing Terms">
+                <sheet>
+                    <group>
+                        <field name="module_id" />
+                        <field
+                            name="lang_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                        />
+                        <field name="regenerate_before_translate" />
+                    </group>
+                    <footer>
+                        <button
+                            name="action_translate"
+                            type="object"
+                            string="Translate"
+                            class="oe_highlight"
+                        />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

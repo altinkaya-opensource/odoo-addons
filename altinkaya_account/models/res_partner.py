@@ -4,6 +4,7 @@
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero
 
 
 class ResPartner(models.Model):
@@ -664,3 +665,169 @@ class ResPartner(models.Model):
             return dif_inv
 
         return False
+
+    # Earliest date considered when totalling open foreign-currency balances.
+    # Mirrors the partner-statement report (altinkaya_reports) so that the
+    # valuation operates on the same "open balance" the accounting team sees.
+    _CURRENCY_VALUATION_START_DATE = "2022-01-01"
+
+    # Journals excluded from the open-balance calculation: advance
+    # transfers and FX-difference invoices. Prior KRDGR (FX valuation)
+    # entries are intentionally INCLUDED so that re-running the wizard
+    # at the same date sees the previous valuation in old_try and
+    # yields a zero delta instead of duplicating the entry.
+    _CURRENCY_VALUATION_SKIP_JOURNAL_CODES = ("ADVR", "KRFRK")
+
+    def calc_currency_valuation(self, move_date):
+        """Period-end FX valuation for foreign customers/suppliers.
+
+        For each selected commercial partner, computes the open
+        foreign-currency balance per (currency, account) using the same
+        statement-style logic as the partner statement report: cumulative
+        net of postings since 2022-01-01, excluding ADVR/KRFRK/KRDGR
+        journals. The balance is then revalued at the TCMB forex-buying
+        rate of ``move_date`` and the difference posted as a single
+        journal entry whose counterpart goes to the configured FX
+        gain/loss accounts.
+        """
+        company = self.env.company
+        gain_account = company.currency_valuation_gain_account_id
+        loss_account = company.currency_valuation_loss_account_id
+        diff_journal = company.currency_valuation_journal_id
+        if not (gain_account and loss_account and diff_journal):
+            raise UserError(
+                _(
+                    "Please configure the Currency Valuation gain/loss accounts "
+                    "and journal under Accounting Settings."
+                )
+            )
+
+        tr_country = self.env.ref("base.tr", raise_if_not_found=False)
+        tr_country_id = tr_country.id if tr_country else 0
+        commercial_ids = tuple(self.mapped("commercial_partner_id").ids)
+
+        query = """
+            SELECT RP.commercial_partner_id AS partner_id,
+                   L.currency_id,
+                   L.account_id,
+                   ROUND(SUM(L.debit - L.credit)::numeric, 2) AS try_balance,
+                   ROUND(SUM(L.amount_currency)::numeric, 4) AS currency_balance
+            FROM account_move_line L
+            JOIN account_account A ON L.account_id = A.id
+            JOIN account_move AM ON L.move_id = AM.id
+            JOIN account_journal AJ ON AJ.id = AM.journal_id
+            JOIN res_partner RP ON L.partner_id = RP.id
+            LEFT JOIN res_country RC ON RC.id = RP.country_id
+            WHERE L.date BETWEEN %s AND %s
+              AND RP.commercial_partner_id IN %s
+              AND A.account_type IN ('asset_receivable', 'liability_payable')
+              AND L.currency_id IS NOT NULL
+              AND L.currency_id != %s
+              AND (RC.id IS NULL OR RC.id != %s)
+              AND AM.state = 'posted'
+              AND AJ.code NOT IN %s
+            GROUP BY RP.commercial_partner_id, L.currency_id, L.account_id;
+        """
+        self.env.cr.execute(
+            query,
+            (
+                self._CURRENCY_VALUATION_START_DATE,
+                move_date,
+                commercial_ids,
+                company.currency_id.id,
+                tr_country_id,
+                self._CURRENCY_VALUATION_SKIP_JOURNAL_CODES,
+            ),
+        )
+        result = self.env.cr.dictfetchall()
+        if not result:
+            raise UserError(
+                _("No foreign-currency open balances found for the selected partners.")
+            )
+
+        rates = self.env["res.currency.rate"].search_read(
+            [("name", "=", move_date)], ["currency_id", "tcmb_forex_buying"]
+        )
+        if not rates:
+            raise UserError(
+                _("No exchange rate information found for the selected day!")
+            )
+        rate_dict = {r["currency_id"][0]: r["tcmb_forex_buying"] for r in rates}
+
+        difference_aml_list = []
+        for res in result:
+            if float_is_zero(
+                float(res["currency_balance"] or 0), precision_rounding=0.01
+            ):
+                continue
+            rate = rate_dict.get(res["currency_id"])
+            if not rate:
+                raise UserError(
+                    _(
+                        "Missing TCMB forex-buying rate for currency id "
+                        "%(currency)s on %(date)s.",
+                        currency=res["currency_id"],
+                        date=move_date,
+                    )
+                )
+            old_try_balance = float(res["try_balance"] or 0)
+            current_try_balance = float(res["currency_balance"]) / float(rate)
+            difference = round(current_try_balance - old_try_balance, 2)
+            if float_is_zero(difference, precision_rounding=0.01):
+                continue
+            difference_aml_list.append(
+                {
+                    "partner_id": res["partner_id"],
+                    "account_id": res["account_id"],
+                    "name": _("Currency Valuation"),
+                    "debit": difference if difference > 0 else 0,
+                    "credit": abs(difference) if difference < 0 else 0,
+                    "currency_id": res["currency_id"],
+                    # Hack: foreign-currency accounts require amount_currency
+                    # to be non-zero, but the revaluation must not move the
+                    # foreign balance. A negligible value satisfies Odoo's
+                    # balance check without distorting the open amount.
+                    "amount_currency": 0.00001,
+                }
+            )
+
+        if not difference_aml_list:
+            raise UserError(
+                _("No records found to calculate exchange rate difference!")
+            )
+
+        total_debit = sum(line["debit"] for line in difference_aml_list)
+        total_credit = sum(line["credit"] for line in difference_aml_list)
+
+        if total_debit > 0:
+            difference_aml_list.append(
+                {
+                    "name": _("Currency Diff. Counterpart"),
+                    "account_id": gain_account.id,
+                    "debit": 0,
+                    "credit": total_debit,
+                    "currency_id": company.currency_id.id,
+                }
+            )
+
+        if total_credit > 0:
+            difference_aml_list.append(
+                {
+                    "name": _("Currency Diff. Counterpart"),
+                    "account_id": loss_account.id,
+                    "debit": total_credit,
+                    "credit": 0,
+                    "currency_id": company.currency_id.id,
+                }
+            )
+
+        move_vals = {
+            "ref": f"{move_date.strftime('%d.%m.%Y')} {_('Currency Valuation')}",
+            "journal_id": diff_journal.id,
+            "date": move_date,
+            "currency_id": company.currency_id.id,
+            "line_ids": [(0, 0, line) for line in difference_aml_list],
+        }
+        move = self.env["account.move"].create(move_vals)
+        move.action_post()
+        return move

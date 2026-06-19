@@ -48,6 +48,15 @@ FEDEX_UOM_CODES = {
     "Units": "Ea",
 }
 
+# Per FedEx docs, the 2-letter state/province code is required when the country
+# is the US or Canada, or Mexico when EEI applies; no other country needs it and
+# FedEx rejects codes over 3 chars. Odoo keeps short codes for these (US/CA
+# "FL", MX 3-char) while other countries store longer ones (AU=9, DE=5), so we
+# only send the code here. https://developer.fedex.com/api/en-cm/catalog/postal-code/docs.html
+# ponytail: MX codes are ISO 3-letter, but FedEx documents "2-letter" — revisit
+# if a Mexico+EEI shipment is rejected on the state code.
+FEDEX_STATE_REQUIRED_COUNTRIES = {"US", "CA", "MX"}
+
 FEDEX_TO_ODOO_STATUS = {
     # Shipping recorded in carrier
     "OC": "shipping_recorded_in_carrier",
@@ -234,13 +243,23 @@ class DeliveryCarrier(models.Model):
         if text_line:
             street_lines.append(text_line.strip())
 
-        return {
+        address = {
             "streetLines": street_lines,
             "city": normalize_turkish(partner.city or partner.state_id.name or ""),
             "postalCode": partner.zip,
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
         }
+
+        # US/CA/MX/PR addresses are rejected without a valid state code, and
+        # FedEx caps it at 3 chars, so send the short ISO code only for them.
+        if (
+            partner.country_id.code in FEDEX_STATE_REQUIRED_COUNTRIES
+            and partner.state_id.code
+        ):
+            address["stateOrProvinceCode"] = partner.state_id.code
+
+        return address
 
     def _prepare_fedex_contact(self, partner):
         """
@@ -708,7 +727,7 @@ class DeliveryCarrier(models.Model):
 
         return res.encode("utf-8")
 
-    def _format_rate_data(self, data):
+    def _format_fedex_rate_data(self, data):
         rate_details = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"]
 
         account_rate_detail = next(
@@ -738,7 +757,7 @@ class DeliveryCarrier(models.Model):
         try:
             response = fedex_request.get_rates(payload)
 
-            rate_data = self._format_rate_data(response)
+            rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
 
             # If needed, convert the price to the order's currency
@@ -788,7 +807,7 @@ class DeliveryCarrier(models.Model):
         try:
             response = fedex_request.get_rates(payload)
 
-            rate_data = self._format_rate_data(response)
+            rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
 
             # If needed, convert the price to the order's currency

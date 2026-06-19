@@ -10,6 +10,21 @@
         <field name="binding_type">report</field>
     </record>
 
+    <!-- Remove core "Location Barcode" (qweb-pdf) from the Print menu; we use the GODEX label report instead. -->
+    <record id="stock.action_report_location_barcode" model="ir.actions.report">
+        <field name="binding_model_id" eval="False" />
+    </record>
+
+    <record id="label_stock_location_ostim" model="ir.actions.report">
+        <field name="name">Localation Label (Ostim)</field>
+        <field name="model">stock.location</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">altinkaya_reports.location_report_godex_ostim</field>
+        <field name="report_file">altinkaya_reports.location_report_godex_ostim</field>
+        <field name="binding_model_id" ref="stock.model_stock_location" />
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="stock_pickingaltinkaya" model="ir.actions.report">
         <field name="name">Depo Fişi Ekrana</field>
         <field name="model">stock.picking</field>
@@ -96,6 +111,16 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">altinkaya_reports.report_picking_altinkayaH</field>
         <field name="report_file">altinkaya_reports.report_picking_altinkayaH</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="stock_pickingaltinkayaO" model="ir.actions.report">
+        <field name="name">Depo Fişi Ostim</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">altinkaya_reports.report_picking_altinkayaO</field>
+        <field name="report_file">altinkaya_reports.report_picking_altinkayaO</field>
         <field name="binding_model_id" ref="stock.model_stock_picking" />
         <field name="binding_type">report</field>
     </record>
