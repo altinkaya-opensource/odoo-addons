@@ -3,7 +3,7 @@
     <t t-inherit="web.TranslationDialog" t-inherit-mode="extension" owl="1">
         <!-- Compact toolbar with Translate All + Copy actions -->
         <xpath expr="//div[hasclass('o_translation_dialog')]" position="before">
-            <div t-if="aiTranslate.ai_enabled" class="oe_translate_ai_toolbar">
+            <div t-if="props.ai_enabled" class="oe_translate_ai_toolbar">
                 <button
                     class="btn btn-primary btn-sm oe_translate_ai_all_btn"
                     t-on-click="onClickTranslateAll"
@@ -38,13 +38,13 @@
         <!-- Per-language translate button inside translation div -->
         <xpath expr="//div[hasclass('translation')]" position="inside">
             <button
-                t-if="aiTranslate.ai_enabled"
+                t-if="props.ai_enabled"
                 t-att-title="term.base_lang + ' -> ' + term.lang"
                 class="btn btn-outline-primary btn-sm oe_translate_ai_btn"
                 t-att-data-field-type="props.isText ? 'textarea' : 'input'"
                 t-att-data-lang="term.lang"
                 t-att-data-base-lang="term.base_lang"
-                t-att-data-is-user-lang="term.lang === aiTranslate.user_lang ? 'true' : 'false'"
+                t-att-data-is-user-lang="term.lang === props.user_lang ? 'true' : 'false'"
                 t-on-click="onClickTranslate"
             >
                 <i class="fa fa-globe" />
