@@ -6,17 +6,17 @@ const TranslationDialog = require("@web/views/fields/translation_dialog");
 
 patch(TranslationDialog.TranslationDialog.prototype, "ai_translate", {
     setup() {
-        this._super();
-
-        // Owl props are read-only; keep injected state on the instance instead.
-        this.aiTranslate = {company_id: null, ai_enabled: false, user_lang: false};
+        this.props.company_id = null;
+        this.props.ai_enabled = false;
 
         onWillStart(async () => {
             const company_fields = await this._getCompanyFields();
-            this.aiTranslate.user_lang = company_fields.user_lang;
-            this.aiTranslate.ai_enabled = company_fields.ai_enabled;
-            this.aiTranslate.company_id = company_fields.company_id;
+            this.props.user_lang = company_fields.user_lang;
+            this.props.ai_enabled = company_fields.ai_enabled;
+            this.props.company_id = company_fields.company_id;
         });
+
+        this._super();
     },
 
     async _getCompanyFields() {
@@ -24,7 +24,7 @@ patch(TranslationDialog.TranslationDialog.prototype, "ai_translate", {
     },
 
     async onClickTranslateAll(ev) {
-        if (!this.aiTranslate.ai_enabled) {
+        if (!this.props.ai_enabled) {
             return;
         }
 
@@ -139,7 +139,7 @@ patch(TranslationDialog.TranslationDialog.prototype, "ai_translate", {
         const $btn = $(ev.currentTarget);
         const inputType = $btn.data("field-type");
         const fieldType = inputType === "textarea" ? "html" : "text";
-        if (this.aiTranslate.ai_enabled) {
+        if (this.props.ai_enabled) {
             $btn.addClass("disabled loading");
             await this._translateAI($btn, inputType, fieldType);
             $btn.removeClass("disabled loading");
