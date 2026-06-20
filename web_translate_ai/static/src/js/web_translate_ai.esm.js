@@ -24,7 +24,7 @@ patch(TranslationDialog.TranslationDialog.prototype, "ai_translate", {
     },
 
     async onClickTranslateAll(ev) {
-        if (!this.props.ai_enabled) {
+        if (!this.aiTranslate.ai_enabled) {
             return;
         }
 
@@ -139,7 +139,7 @@ patch(TranslationDialog.TranslationDialog.prototype, "ai_translate", {
         const $btn = $(ev.currentTarget);
         const inputType = $btn.data("field-type");
         const fieldType = inputType === "textarea" ? "html" : "text";
-        if (this.props.ai_enabled) {
+        if (this.aiTranslate.ai_enabled) {
             $btn.addClass("disabled loading");
             await this._translateAI($btn, inputType, fieldType);
             $btn.removeClass("disabled loading");
