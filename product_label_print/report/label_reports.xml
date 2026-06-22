@@ -23,8 +23,6 @@
 Dy2-me-dd
 Th:m:s
 <t t-if="not label.first_label_empty">
-Y0,76,cicek_5037
-
 AT,53,72,42,42,0,0,0,0,[<t t-out="Markup(label.label1.default_code)" />]
 AB,0,116,1,1,0,0E,<t t-out="Markup(label.label1.nameL1[0:40] or '')" />
 AB,0,140,1,1,0,0E,<t t-out="Markup(label.label1.nameL2[0:40] or '')" />
@@ -44,7 +42,6 @@ BQ,44,2,3,10,68,0,0,<t t-out="Markup(label.label1.lot_id.name or '')" />
 AB,266,243,1,1,0,0,Lot <t t-out="Markup(label.label1.lot_id.name or '')" />
 </t>
 <t t-if="not label.second_label_empty">
-Y419,77,cicek_5037
 Dy2-me-dd
 Th:m:s
 AT,472,73,42,42,0,0,0,0,[<t t-out="Markup(label.label2.default_code)" />]
@@ -85,7 +82,6 @@ E
 Dy2-me-dd
 Th:m:s
 <t t-if="not label.first_label_empty">
-Y27,153,cicek7052
 Dy2-me-dd
 Th:m:s
 AT,105,149,58,58,0,0,0,0,[<t t-out="Markup(label.label1.default_code)" />]
@@ -108,7 +104,6 @@ AD,399,381,1,1,0,0,Lot <t t-out="Markup(label.label1.lot_id.name or '')" />
 </t>
 
 <t t-if="not label.second_label_empty">
-Y653,153,cicek7052
 Dy2-me-dd
 Th:m:s
 AT,731,149,58,58,0,0,0,0,[<t t-out="Markup(label.label2.default_code)" />]
