@@ -15,7 +15,7 @@
             <t t-if="((docs.ids.index(location.id)%2)==0)">
 ^L
 Dy2-me-dd
-AT,5,10,50,54,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+AT,5,10,50,54,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,5,72,382,74
 AA,5,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
 AB,5,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
@@ -30,7 +30,7 @@ AB,5,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 </t>
             <t t-if="((docs.ids.index(location.id)%2)==1)">
-AT,420,10,50,54,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+AT,420,10,50,54,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,420,72,797,74
 AA,420,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
 AB,420,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
@@ -66,7 +66,7 @@ E</t>
 ^L
 Dy2-me-dd
 Th:m:s
-AT,15,15,75,81,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+AT,15,15,75,81,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,15,108,573,111
 AC,15,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
 AD,15,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
@@ -81,7 +81,7 @@ AD,15,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 </t>
             <t t-if="((docs.ids.index(location.id)%2)==1)">
-AT,641,15,75,81,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+AT,641,15,75,81,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,641,108,1199,111
 AC,641,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
 AD,641,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
