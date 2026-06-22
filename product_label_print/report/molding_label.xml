@@ -6,14 +6,7 @@
                 <t
                     t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX300'"
                 >
-                    <t
-                    t-set="name_first_line"
-                    t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
-                />
-                    <t
-                    t-set="name_second_line"
-                    t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
-                />
+                    <t t-set="lines" t-value="o.label_name_lines()" />
 ^XSETCUT,DOUBLECUT,0
 ^Q25,1
 ^W60
@@ -33,26 +26,20 @@
 ^L
 Dy2-me-dd
 Th:m:s
-Dy2-me-dd
-Th:m:s
-BE,177,29,5,13,116,0,1,<t t-out="Markup(o.barcode)" />
-AE,48,165,1,1,0,0E,[<t t-out="Markup(o.default_code)" />]
-AE,44,212,1,1,0,0E,<t t-out="Markup(name_first_line[:38])" />
-AE,382,170,1,1,0,0E,<t t-out="Markup(o.responsible_employee_id.name)" />
-<t t-if="name_second_line">AE,43,255,1,1,0,0E,<t t-out="Markup(name_second_line)" /></t>
+AE,12,24,1,1,0,0E,[<t t-out="Markup(o.default_code)" />]
+AD,12,92,1,1,0,0E,<t t-out="Markup(lines[0] if lines else '')" />
+<t t-if="len(lines) > 1">AD,12,132,1,1,0,0E,<t t-out="Markup(lines[1])" /></t>
+AD,12,232,1,1,0,0E,<t t-out="Markup(o.responsible_employee_id.name[:22])" />
+<t t-if="o.barcode">W510,249,3,2,M,8,6,<t
+                    t-out="len(o.env['gs1.digital.link'].build_product_link(o.barcode))"
+                />,0
+<t t-out="Markup(o.env['gs1.digital.link'].build_product_link(o.barcode))" /></t>
 E
                     </t>
                 <t
                     t-if="o.env.ref('product_label_print.label_product_product_kalip').printing_printer_id.type == 'GODEX'"
                 >
-                    <t
-                    t-set="name_first_line"
-                    t-value="o.display_name.replace('[%s] ' % o.default_code, '') if o.display_name and o.default_code else o.product_tmpl_id.name"
-                />
-                    <t
-                    t-set="name_second_line"
-                    t-value="o.name[38:] if name_first_line and len(name_first_line) >= 38 else ''"
-                />
+                    <t t-set="lines" t-value="o.label_name_lines()" />
 ^XSETCUT,DOUBLECUT,0
 ^Q25,1
 ^W60
@@ -72,13 +59,14 @@ E
 ^L
 Dy2-me-dd
 Th:m:s
-Dy2-me-dd
-Th:m:s
-BE,119,25,3,8,80,0,1,<t t-out="Markup(o.barcode)" />
-AC,8,130,1,1,0,0E,[<t t-out="Markup(o.default_code)" />]
-AB,158,136,1,1,0,0E,<t t-out="Markup(o.responsible_employee_id.name)" />
-AB,8,161,1,1,0,0E,<t t-out="Markup(name_first_line[:38])" />
-<t t-if="name_second_line">AB,8,178,1,1,0,0E,<t t-out="Markup(name_second_line)" /></t>
+AC,8,14,1,1,0,0E,[<t t-out="Markup(o.default_code)" />]
+AB,8,52,1,1,0,0E,<t t-out="Markup(lines[0] if lines else '')" />
+<t t-if="len(lines) > 1">AB,8,76,1,1,0,0E,<t t-out="Markup(lines[1])" /></t>
+AB,8,150,1,1,0,0E,<t t-out="Markup(o.responsible_employee_id.name[:22])" />
+<t t-if="o.barcode">W340,166,3,2,M,8,4,<t
+                    t-out="len(o.env['gs1.digital.link'].build_product_link(o.barcode))"
+                />,0
+<t t-out="Markup(o.env['gs1.digital.link'].build_product_link(o.barcode))" /></t>
 E
                     </t>
             </t>

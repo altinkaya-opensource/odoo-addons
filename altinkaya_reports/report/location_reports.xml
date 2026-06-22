@@ -15,28 +15,34 @@
             <t t-if="((docs.ids.index(location.id)%2)==0)">
 ^L
 Dy2-me-dd
-Lo,5,64,382,66
-AT,5,0,54,58,0,0,0,0,<t t-out="location.name[0:12] or ''" />
-AE,5,63,1,1,0,0,<t t-out="location.display_name[0:20] or ''" />
-AC,5,105,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
+AT,5,10,50,54,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+Lo,5,72,382,74
+AA,5,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
+AB,5,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.posy or ''"
             /> Kat:<t t-out="location.posz or ''" />
-<t t-if="location.location_id">AC,5,133,1,1,0,0,Ust Konum:<t
-                t-out="location.location_id.display_name[0:20] or ''"
+<t t-if="location.location_id">AA,5,130,1,1,0,0,Ust Konum:<t
+                t-out="location.location_id.display_name[0:30] or ''"
             /></t>
-BE,15,171,3,6,75,0,1,<t t-out="location.barcode or ''" />
+<t t-if="location.barcode">W78,388,3,2,M,8,7,<t
+                t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
+            />,0
+<t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 </t>
             <t t-if="((docs.ids.index(location.id)%2)==1)">
-Lo,420,64,792,66
-AT,420,0,54,58,0,0,0,0,<t t-out="location.name[0:12] or ''" />
-AE,420,63,1,1,0,0,<t t-out="location.display_name[0:20] or ''" />
-AC,420,105,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
+AT,420,10,50,54,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+Lo,420,72,797,74
+AA,420,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
+AB,420,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.posy or ''"
             /> Kat:<t t-out="location.posz or ''" />
-<t t-if="location.location_id">AC,420,133,1,1,0,0,Ust Konum:<t
-                t-out="location.location_id.display_name[0:20] or ''"
+<t t-if="location.location_id">AA,420,130,1,1,0,0,Ust Konum:<t
+                t-out="location.location_id.display_name[0:30] or ''"
             /></t>
-BE,430,171,3,6,75,0,1,<t t-out="location.barcode or ''" />
+<t t-if="location.barcode">W493,388,3,2,M,8,7,<t
+                t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
+            />,0
+<t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 ^P1
 E
 </t>
@@ -60,30 +66,34 @@ E</t>
 ^L
 Dy2-me-dd
 Th:m:s
-Lo,22,97,576,100
-AT,20,0,92,92,0,0E,0,0,<t t-out="location.name[0:12] or ''" />
-AT,20,100,58,58,0,0E,0,0,<t t-out="location.display_name[0:20] or ''" />
-AD,27,164,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
+AT,15,15,75,81,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+Lo,15,108,573,111
+AC,15,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
+AD,15,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.posy or ''"
             /> Kat:<t t-out="location.posz or ''" />
-<t t-if="location.location_id">AD,27,198,1,1,0,0E,Üst Konum:<t
-                t-out="location.location_id.display_name[0:20] or ''"
+<t t-if="location.location_id">AC,15,195,1,1,0,0,Ust Konum:<t
+                t-out="location.location_id.display_name[0:30] or ''"
             /></t>
-BE,36,245,5,12,129,0,1,<t t-out="location.barcode or ''" />
+<t t-if="location.barcode">W125,582,3,2,M,8,10,<t
+                t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
+            />,0
+<t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 </t>
             <t t-if="((docs.ids.index(location.id)%2)==1)">
-Lo,648,98,1202,101
-Dy2-me-dd
-Th:m:s
-AT,646,1,92,92,0,0E,0,0,<t t-out="location.name[0:12] or ''" />
-AT,646,101,58,58,0,0E,0,0,<t t-out="location.display_name[0:20] or ''" />
-AD,653,165,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
+AT,641,15,75,81,0,0,0,0,<t t-out="location.name[0:12] or ''" />
+Lo,641,108,1199,111
+AC,641,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
+AD,641,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.posy or ''"
             /> Kat:<t t-out="location.posz or ''" />
-<t t-if="location.location_id">AD,653,199,1,1,0,0E,Üst Konum:<t
-                t-out="location.location_id.display_name[0:20] or ''"
+<t t-if="location.location_id">AC,641,195,1,1,0,0,Ust Konum:<t
+                t-out="location.location_id.display_name[0:30] or ''"
             /></t>
-BE,662,245,5,12,129,0,1,<t t-out="location.barcode or ''" />
+<t t-if="location.barcode">W751,582,3,2,M,8,10,<t
+                t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
+            />,0
+<t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
 ^P1
 E</t>
         </t>

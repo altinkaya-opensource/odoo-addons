@@ -11,6 +11,7 @@
         "stock",
         "mrp",
         "base_report_to_printer",
+        "gs1_digital_link",
     ],
     "data": [
         "wizard/print_pack_barcode_wiz_view.xml",
