@@ -1,6 +1,5 @@
 
 {% if not label.second_label_empty %}
-Y652,17,tek_cicek
 Lo,648,98,1202,101
 Dy2-me-dd
 Th:m:s

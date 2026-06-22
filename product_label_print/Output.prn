@@ -9,7 +9,6 @@ N
 
 {% for label in o.label_ids %}
 {% if not label.first_label_empty %}
-GG730,340,"cicek"
 A730,390,2,n,1,1,N,"${label.label1.short_code[0:12]}"
 LO423,333,384,2
 A805,335,2,o,1,1,N,"[${label.label1.default_code}]"
@@ -22,7 +21,6 @@ B788,100,2,E30,3,6,89,B,"${label.label1.barcode or ''}"
 {% end %}
 
 {% if not label.second_label_empty %}
-GG340,340,"cicek"
 A330,390,2,n,1,1,N,"${label.label2.short_code[0:12]}"
 LO23,333,384,2
 A405,335,2,o,1,1,N,"[${label.label2.default_code}]"

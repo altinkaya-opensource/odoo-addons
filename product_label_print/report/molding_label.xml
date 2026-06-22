@@ -33,7 +33,6 @@
 ^L
 Dy2-me-dd
 Th:m:s
-Y71,60,cicek_7052
 Dy2-me-dd
 Th:m:s
 BE,177,29,5,13,116,0,1,<t t-out="Markup(o.barcode)" />
@@ -73,7 +72,6 @@ E
 ^L
 Dy2-me-dd
 Th:m:s
-Y20,30,cicek_7052
 Dy2-me-dd
 Th:m:s
 BE,119,25,3,8,80,0,1,<t t-out="Markup(o.barcode)" />
