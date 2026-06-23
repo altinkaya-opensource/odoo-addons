@@ -9,6 +9,25 @@ APPLICABLE_MODELS = [
 ]
 
 
+def wrap_words(text, width=22, max_lines=2):
+    """Greedy word-wrap into at most ``max_lines`` lines no wider than ``width``,
+    never splitting a word (an over-long word overflows rather than breaks)."""
+    lines = []
+    cur = ""
+    for word in (text or "").split():
+        candidate = f"{cur} {word}".strip()
+        if not cur or len(candidate) <= width:
+            cur = candidate
+        else:
+            lines.append(cur)
+            if len(lines) >= max_lines:
+                return lines
+            cur = word
+    if cur and len(lines) < max_lines:
+        lines.append(cur)
+    return lines
+
+
 class ProductProductLabel(models.TransientModel):
     _name = "product.product.label"
     _description = "Product Product Label"
@@ -36,6 +55,27 @@ class ProductProductLabel(models.TransientModel):
     uom_name = fields.Char(string="UOM Name", size=10)
     batch_code = fields.Char(store=False)
     model_ref_id = fields.Reference(selection="_selection_model", string="Reference")
+    gs1_url = fields.Char(string="GS1 Digital Link", compute="_compute_gs1_url")
+
+    @api.depends("barcode", "lot_id", "pieces_in_pack")
+    def _compute_gs1_url(self):
+        """GS1 Digital Link the carton QR encodes: product (01) + lot (10) +
+        pieces-in-pack as the variable count (30)."""
+        builder = self.env["gs1.digital.link"]
+        for label in self:
+            if not label.barcode:
+                label.gs1_url = False
+                continue
+            qty = label.pieces_in_pack
+            if not qty or qty <= 0:
+                qty = None
+            elif float(qty).is_integer():
+                qty = int(qty)
+            # ponytail: AI 30 is an item count; a non-unit UOM pack would emit a
+            # float here — refine only if such packs ever carry a Digital Link.
+            label.gs1_url = builder.build_product_link(
+                label.barcode, lot=label.lot_id.name or None, qty=qty
+            )
 
 
 class LabelTwoinrow(models.TransientModel):
@@ -63,6 +103,16 @@ class ProductProduct(models.Model):
     def action_open_label_layout(self):
         # Overriden to open our custom label layout
         return self.action_print_label()
+
+    def label_name_lines(self, width=22, max_lines=2):
+        """Product name (minus its ``[code]`` prefix) wrapped for a label on word
+        boundaries. Mirrors the pack-label wizard's wrapping so no report cuts a
+        word mid-way."""
+        self.ensure_one()
+        name = self.display_name or self.product_tmpl_id.name or ""
+        if self.default_code:
+            name = name.replace(f"[{self.default_code}] ", "")
+        return wrap_words(name, width, max_lines)
 
     def action_print_molding_label(self):
         self = self.with_context(must_skip_send_to_printer=True)
