@@ -77,7 +77,7 @@
     ^FO25,660^GB700,2,2^FS
     ^FO25,672^FB740,1,0,L,0^FDGÖNDEREN^FS
     ^FO25,704^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları^FS
-    ^FO25,735^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
+    ^FO25,735^FB740,1,0,L,0^FDAnkara OSB Mah. Avar Cd. No:7 Sincan/ANKARA^FS
     ^XZ
 </t>
 <t t-else="">
@@ -89,7 +89,7 @@
     ^FO25,630^GB700,2,2^FS
     ^FO25,642^FB740,1,0,L,0^FDGÖNDEREN^FS
     ^FO25,674^FB740,1,0,L,0^FDAltınkaya Elektronik Cihaz Kutuları San. Tic. A.Ş.^FS
-    ^FO25,705^FB740,1,0,L,0^FDAvar Cd. No:14 Sincan 1. OSB Ankara^FS
+    ^FO25,705^FB740,1,0,L,0^FDAnkara OSB Mah. Avar Cd. No:7 Sincan/ANKARA^FS
     ^XZ
 </t>
             </t>
