@@ -48,6 +48,30 @@ class AccountBankStatementLine(models.Model):
                     line.manual_partner_id.property_account_receivable_id
                 )
 
+    def _get_manual_reconcile_vals(self):
+        """
+        Overriden to honor the account's own currency on manual/write-off
+        reconcile lines. OCA builds the data line in the company currency and
+        the move-line `_compute_currency_id` override never runs here (the line
+        is created with an explicit currency_id), so we set the line currency
+        and amount from the chosen account here. Fires on manual_account_id
+        change via OCA's `_onchange_manual_reconcile_vals`, so changing the
+        account re-derives the currency too.
+        """
+        vals = super()._get_manual_reconcile_vals()
+        account_currency = self.manual_account_id.currency_id
+        company_currency = self.company_id.currency_id
+        if account_currency and account_currency != company_currency:
+            vals["currency_id"] = company_currency.id
+            vals["line_currency_id"] = account_currency.id
+            vals["currency_amount"] = company_currency._convert(
+                self.manual_amount,
+                account_currency,
+                self.company_id,
+                self.date,
+            )
+        return vals
+
     def _reconcile_bank_line_edit(self, data):
         """
         Overriden to fill partner when bank line reconciliation done.
