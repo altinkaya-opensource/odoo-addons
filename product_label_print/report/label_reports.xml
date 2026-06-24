@@ -36,7 +36,8 @@ AT,10,168,30,36,0,0E,0,0,<t
                     t-out="Markup(label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label1.uom_name or '')" />
 </t>
-<t t-if="label.label1.gs1_url">W180,390,3,2,M,8,5,<t
+Y10,312,cicek_7052
+<t t-if="label.label1.gs1_url">W180,194,3,2,M,8,5,<t
                     t-out="len(label.label1.gs1_url)"
                 />,0
 <t t-out="Markup(label.label1.gs1_url)" /></t>
@@ -57,7 +58,8 @@ AT,429,168,30,36,0,0E,0,0,<t
                     t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
-<t t-if="label.label2.gs1_url">W599,390,3,2,M,8,5,<t
+Y429,312,cicek_7052
+<t t-if="label.label2.gs1_url">W599,194,3,2,M,8,5,<t
                     t-out="len(label.label2.gs1_url)"
                 />,0
 <t t-out="Markup(label.label2.gs1_url)" /></t>
@@ -97,7 +99,8 @@ AT,15,252,45,54,0,0E,0,0,<t
                     t-out="Markup(label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label1.uom_name or '')" />
 </t>
-<t t-if="label.label1.gs1_url">W270,585,3,2,M,8,8,<t
+Y15,494,cicek_7052
+<t t-if="label.label1.gs1_url">W270,276,3,2,M,8,8,<t
                     t-out="len(label.label1.gs1_url)"
                 />,0
 <t t-out="Markup(label.label1.gs1_url)" /></t>
@@ -119,7 +122,8 @@ AT,641,252,45,54,0,0E,0,0,<t
                     t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
-<t t-if="label.label2.gs1_url">W896,585,3,2,M,8,8,<t
+Y641,494,cicek_7052
+<t t-if="label.label2.gs1_url">W896,276,3,2,M,8,8,<t
                     t-out="len(label.label2.gs1_url)"
                 />,0
 <t t-out="Markup(label.label2.gs1_url)" /></t>
