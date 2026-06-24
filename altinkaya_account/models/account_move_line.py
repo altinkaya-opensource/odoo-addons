@@ -70,10 +70,12 @@ class AccountMoveLine(models.Model):
             line._inverse_account_id()
             line._inverse_amount_currency()
 
-    @api.depends("move_id.currency_id")
+    @api.depends("move_id.currency_id", "account_id")
     def _compute_currency_id(self):  # pylint: disable=W8110
         """
-        Inherited to set the currency_id based on the account currency
+        Inherited to set the currency_id based on the account currency.
+        Depends on account_id so the currency re-computes when the account
+        (which carries the currency) changes, not only the move currency.
         """
         super()._compute_currency_id()
         for line in self:
