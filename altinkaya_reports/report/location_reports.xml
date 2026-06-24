@@ -25,7 +25,7 @@ AB,5,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
 Y5,312,cicek_7052
-<t t-if="location.barcode">W78,157,3,2,M,8,7,<t
+<t t-if="location.barcode">W78,157,3,2,Q,8,7,<t
                 t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
             />,0
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
@@ -41,7 +41,7 @@ AB,420,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
 Y420,312,cicek_7052
-<t t-if="location.barcode">W493,157,3,2,M,8,7,<t
+<t t-if="location.barcode">W493,157,3,2,Q,8,7,<t
                 t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
             />,0
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
@@ -78,7 +78,7 @@ AD,15,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
 Y15,494,cicek_7052
-<t t-if="location.barcode">W125,252,3,2,M,8,10,<t
+<t t-if="location.barcode">W125,252,3,2,Q,8,10,<t
                 t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
             />,0
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
@@ -94,7 +94,7 @@ AD,641,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
 Y641,494,cicek_7052
-<t t-if="location.barcode">W751,252,3,2,M,8,10,<t
+<t t-if="location.barcode">W751,252,3,2,Q,8,10,<t
                 t-out="len(location.env['gs1.digital.link'].build_location_link(location.barcode))"
             />,0
 <t t-out="location.env['gs1.digital.link'].build_location_link(location.barcode)" /></t>
