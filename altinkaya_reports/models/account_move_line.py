@@ -35,9 +35,12 @@ class AccountMoveLine(models.Model):
     )
 
     @api.depends(
+        # currency_rate (from account_invoice_currency_rate) is read at runtime
+        # below, but must stay OUT of @depends: that module loads *after*
+        # altinkaya_reports, so naming it here breaks registry load. invoice_date
+        # and currency_id are the fields currency_rate itself is computed from.
         "move_id.invoice_date",
         "move_id.currency_id",
-        "move_id.currency_rate",
         "tax_ids",
         "price_subtotal",
     )

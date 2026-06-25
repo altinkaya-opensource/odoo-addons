@@ -1,6 +1,6 @@
 {
     "name": "Altinkaya Reports",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "General",
     "depends": [
         "base",
@@ -12,7 +12,6 @@
         "account",
         "account_check",
         "mrp",
-        "account_invoice_change_currency",
         "account_invoice_pricelist",
         "altinkaya_expense_classification",
         "gs1_digital_link",
