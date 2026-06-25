@@ -10,4 +10,5 @@ from . import res_currency_rate_provider
 from . import res_currency_rate_provider_altinkaynak
 from . import sale_order
 from . import account_move
+from . import account_bank_statement_line
 from . import altinkaynak_connector
