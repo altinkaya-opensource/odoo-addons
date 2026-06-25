@@ -37,7 +37,7 @@ class AccountMoveLine(models.Model):
     @api.depends(
         "move_id.invoice_date",
         "move_id.currency_id",
-        "move_id.custom_rate",
+        "move_id.currency_rate",
         "tax_ids",
         "price_subtotal",
     )
@@ -51,7 +51,7 @@ class AccountMoveLine(models.Model):
             ):
                 continue
 
-            currency_rate = aml.move_id.custom_rate
+            currency_rate = aml.move_id.currency_rate
             _kdv_amount = 0.0
 
             for tax in aml.tax_ids:
@@ -70,9 +70,10 @@ class AccountMoveLine(models.Model):
                 elif tax_code and tax_code.startswith("391.0"):
                     _kdv_amount += aml.price_subtotal * tax.amount / 100
 
-            # Convert to company currency
+            # Convert to company currency (currency_rate = company units per
+            # 1 foreign unit, e.g. TRY per EUR, so multiply the foreign amount)
             if aml.currency_id != aml.company_currency_id and currency_rate > 0.00001:
-                _kdv_amount = _kdv_amount / currency_rate
+                _kdv_amount = _kdv_amount * currency_rate
 
             aml.kdv_amount = _kdv_amount
 
