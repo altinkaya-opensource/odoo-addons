@@ -108,10 +108,6 @@ class AccountMove(models.Model):
             ):
                 invoice.currency_id = invoice.pricelist_id.invoice_currency_id
 
-    def action_account_change_currency(self):
-        self._switch_to_pricelist_currency()
-        return super().action_account_change_currency()
-
     @api.depends("pricelist_id")
     def _compute_currency_id(self):
         """
