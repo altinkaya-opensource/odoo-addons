@@ -58,6 +58,64 @@ class AccountMoveLine(models.Model):
                 line.price_unit - line.discount / 100 * line.price_unit
             )
 
+    def _get_price_with_pricelist(self):
+        """Express the pricelist price in the invoice currency.
+
+        A pricelist always prices in its own currency, but the invoice may be
+        issued in a different one (``product.pricelist.invoice_currency_id``).
+        OCA's ``account_invoice_pricelist`` only converts the catalog base
+        price and leaves the pricelist price in the pricelist currency, so the
+        unit price (and the without_discount discount) ends up mixing
+        currencies. When the two differ, recompute with the pricelist price
+        converted to the invoice currency; otherwise keep the original path.
+        """
+        move = self.move_id
+        pricelist = move.pricelist_id
+        if (
+            not pricelist
+            or not self.product_id
+            or not move.is_invoice()
+            or pricelist.currency_id == self.currency_id
+        ):
+            return super()._get_price_with_pricelist()
+
+        product = self.product_id
+        qty = self.quantity or 1.0
+        date = move.invoice_date or fields.Date.today()
+        uom = self.product_uom_id
+        company = self.company_id or self.env.company
+
+        final_price, rule_id = pricelist._get_product_price_rule(
+            product, qty, uom=uom, date=date
+        )
+        # The pricelist price comes in the pricelist currency; bill it in the
+        # invoice currency so it is consistent with the catalog base price.
+        final_price = pricelist.currency_id._convert(
+            final_price, self.currency_id, company, date
+        )
+
+        if pricelist.discount_policy == "with_discount":
+            self._set_discount(0.0)
+            return self.env["account.tax"]._fix_tax_included_price_company(
+                final_price, product.taxes_id, self.tax_ids, company
+            )
+
+        rule = self.env["product.pricelist.item"].browse(rule_id)
+        while (
+            rule.base == "pricelist"
+            and rule.base_pricelist_id.discount_policy == "without_discount"
+        ):
+            rule = self.env["product.pricelist.item"].browse(
+                rule.base_pricelist_id._get_product_rule(
+                    product, qty, uom=uom, date=date
+                )
+            )
+        base_price = rule._compute_base_price(
+            product, qty, uom, date, target_currency=self.currency_id
+        )
+        self._set_discount(self._calculate_discount(base_price, final_price))
+        return max(base_price, final_price)
+
     def _simulate_invoice_line_onchange(self):
         """
         Simulate onchange for invoice line
