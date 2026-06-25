@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-02 06:13+0000\n"
-"PO-Revision-Date: 2026-02-02 06:13+0000\n"
+"POT-Creation-Date: 2026-06-25 13:39+0000\n"
+"PO-Revision-Date: 2026-06-25 13:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -91,22 +91,22 @@ msgstr ""
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "&amp;bull;"
-msgstr ""
+msgstr "&amp;bull;"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "&gt;&gt;"
-msgstr ""
+msgstr "&gt;&gt;"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "02.01.2013 Rev.No/Tar:00/00"
-msgstr ""
+msgstr "02.01.2013 Rev.No/Tar:00/00"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "<b>Müşteri:</b>"
-msgstr ""
+msgstr "<b>Müşteri:</b>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -151,6 +151,17 @@ msgid ""
 "                    <br/>\n"
 "                    <span>06378 Yenimahalle / ANKARA</span>"
 msgstr ""
+"<br/>\n"
+"                    <br/>\n"
+"                    <strong style=\"font-size:8pt\">ALTINKAYA ELEKTRONİK CİHAZ KUTULARI SAN.\n"
+"                        TİC. A.Ş.\n"
+"                    </strong>\n"
+"                    <br/>\n"
+"                    <span>İvedikosb Mah. 1469. sk, No:10</span>\n"
+"                    <br/>\n"
+"                    <span>İvedik OSB</span>\n"
+"                    <br/>\n"
+"                    <span>06378 Yenimahalle / ANKARA</span>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
@@ -158,6 +169,8 @@ msgid ""
 "<br/>\n"
 "Stokta:"
 msgstr ""
+"<br/>\n"
+"Stokta:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -234,6 +247,10 @@ msgid ""
 "                                </span>\n"
 "                                <br/>"
 msgstr ""
+"<span>\n"
+"                                    <strong>Tarih:</strong>\n"
+"                                </span>\n"
+"                                <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
@@ -357,6 +374,19 @@ msgid ""
 "                    </span>\n"
 "                    <br/>"
 msgstr ""
+"<span>Telefon: +90 312 395 2768 | Faks: +90 312 395 2772 |\n"
+"                        www.altinkaya.com | İvedik Vergi Dairesi 0610422947\n"
+"                    </span>\n"
+"                    <br/>\n"
+"                    <span>Garanti Bankası: 682-6294510 IBAN: TR40 0006 2000 6820 0006\n"
+"                        2945 10 (TL)\n"
+"                    </span>\n"
+"                    <br/>\n"
+"                    <span>\n"
+"                        Hazırlayan: ALTINKAYA - Sayfa:\n"
+"                        <span class=\"page\"/>\n"
+"                    </span>\n"
+"                    <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
@@ -364,6 +394,8 @@ msgid ""
 "<span>Teslim Eden</span>\n"
 "                                        <br/>"
 msgstr ""
+"<span>Teslim Eden</span>\n"
+"                                        <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
@@ -375,6 +407,12 @@ msgid ""
 "                                        <br/>\n"
 "                                        <br/>"
 msgstr ""
+"<span>Yukarıda listelenmiş paketleri teslim aldım.</span>\n"
+"                                        <br/>\n"
+"                                        <span>Adı Soyadı İmza:</span>\n"
+"                                        <br/>\n"
+"                                        <br/>\n"
+"                                        <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -405,6 +443,10 @@ msgid ""
 "                    <br/>\n"
 "                    <br/>"
 msgstr ""
+"<strong class=\"text-end\" style=\"font-size:12pt\">CARİ HESAP EKSTRESİ\n"
+"                    </strong>\n"
+"                    <br/>\n"
+"                    <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_document
@@ -414,6 +456,10 @@ msgid ""
 "                    <br/>\n"
 "                    <br/>"
 msgstr ""
+"<strong class=\"text-end\" style=\"font-size:12pt\">PARTNER STATEMENT\n"
+"                    </strong>\n"
+"                    <br/>\n"
+"                    <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -459,6 +505,22 @@ msgid ""
 "                            </strong>\n"
 "                            <br/>"
 msgstr ""
+"<strong>\n"
+"                                <span>VAT:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>Phone:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>Fax:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>E-mail:</span>\n"
+"                            </strong>\n"
+"                            <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
@@ -480,26 +542,42 @@ msgid ""
 "                            </strong>\n"
 "                            <br/>"
 msgstr ""
+"<strong>\n"
+"                                <span>İvedik VD:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>Tel:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>Faks:</span>\n"
+"                            </strong>\n"
+"                            <br/>\n"
+"                            <strong>\n"
+"                                <span>E-posta:</span>\n"
+"                            </strong>\n"
+"                            <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Barkod</strong>"
-msgstr ""
+msgstr "<strong>Barkod</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Depo Adresi:</strong>"
-msgstr ""
+msgstr "<strong>Depo Adresi:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Durumu</strong>"
-msgstr ""
+msgstr "<strong>Durumu</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
 msgid "<strong>Faks:</strong>"
-msgstr ""
+msgstr "<strong>Faks:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_document
@@ -510,17 +588,17 @@ msgstr "<strong>Faks:</strong>"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Hedef</strong>"
-msgstr ""
+msgstr "<strong>Hedef</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "<strong>Kaynak Konum</strong>"
-msgstr ""
+msgstr "<strong>Kaynak Konum</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Kaynak</strong>"
-msgstr ""
+msgstr "<strong>Kaynak</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -536,17 +614,17 @@ msgstr ""
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "<strong>Mamül Ürün Rotası</strong>"
-msgstr ""
+msgstr "<strong>Mamül Ürün Rotası</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Miktar</strong>"
-msgstr ""
+msgstr "<strong>Miktar</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Müşteri Adresi:</strong>"
-msgstr ""
+msgstr "<strong>Müşteri Adresi:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_document
@@ -556,7 +634,7 @@ msgstr "<strong>Telefon No:</strong>"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Planlanan Tarih</strong>"
-msgstr ""
+msgstr "<strong>Planlanan Tarih</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
@@ -566,7 +644,7 @@ msgstr "<strong>Miktar</strong>"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Rezerve Konum</strong>"
-msgstr ""
+msgstr "<strong>Rezerve Konum</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -580,17 +658,17 @@ msgstr ""
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Sipariş (kaynak)</strong>"
-msgstr ""
+msgstr "<strong>Sipariş (kaynak)</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Sorumlusu</strong>"
-msgstr ""
+msgstr "<strong>Sorumlusu</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Tarih</strong>"
-msgstr ""
+msgstr "<strong>Tarih</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_document
@@ -598,27 +676,29 @@ msgid ""
 "<strong>Tax Office:</strong>\n"
 "                                    <br/>"
 msgstr ""
+"<strong>Tax Office:</strong>\n"
+"                                    <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Tedarikçi Adresi:</strong>"
-msgstr ""
+msgstr "<strong>Tedarikçi Adresi:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 msgid "<strong>Tel:</strong>"
-msgstr ""
+msgstr "<strong>Tel:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Teslimat Adresi:</strong>"
-msgstr ""
+msgstr "<strong>Teslimat Adresi:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_document
 msgid "<strong>VAT:</strong>"
-msgstr ""
+msgstr "<strong>VAT:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
@@ -626,112 +706,104 @@ msgid ""
 "<strong>Vergi Dairesi:</strong>\n"
 "                                    <br/>"
 msgstr ""
+"<strong>Vergi Dairesi:</strong>\n"
+"                                    <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
 msgid "<strong>Vergi No:</strong>"
-msgstr ""
+msgstr "<strong>Vergi No:</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "<strong>Üretimde Kullanılacak Ürünler</strong>"
-msgstr ""
+msgstr "<strong>Üretimde Kullanılacak Ürünler</strong>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "<strong>Ürün</strong>"
-msgstr ""
+msgstr "<strong>Ürün</strong>"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AC,420,105,1,1,0,0,Koridor:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AA,420,130,1,1,0,0,Ust Konum:"
+msgstr "AA,420,130,1,1,0,0,Ust Konum:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AC,420,133,1,1,0,0,Ust Konum:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AA,5,130,1,1,0,0,Ust Konum:"
+msgstr "AA,5,130,1,1,0,0,Ust Konum:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AC,5,105,1,1,0,0,Koridor:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AB,420,102,1,1,0,0,Koridor:"
+msgstr "AB,420,102,1,1,0,0,Koridor:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AC,5,133,1,1,0,0,Ust Konum:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AB,5,102,1,1,0,0,Koridor:"
+msgstr "AB,5,102,1,1,0,0,Koridor:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AD,27,164,1,1,0,0E,Koridor:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AC,15,195,1,1,0,0,Ust Konum:"
+msgstr "AC,15,195,1,1,0,0,Ust Konum:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AD,27,198,1,1,0,0E,Üst Konum:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AC,641,195,1,1,0,0,Ust Konum:"
+msgstr "AC,641,195,1,1,0,0,Ust Konum:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AD,653,165,1,1,0,0E,Koridor:"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AD,15,153,1,1,0,0E,Koridor:"
+msgstr "AD,15,153,1,1,0,0E,Koridor:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AD,653,199,1,1,0,0E,Üst Konum:"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AE,420,63,1,1,0,0,"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AE,5,63,1,1,0,0,"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AD,641,153,1,1,0,0E,Koridor:"
+msgstr "AD,641,153,1,1,0,0E,Koridor:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "ALICI"
-msgstr ""
+msgstr "ALICI"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "ALTINKAYA ELEKTRONİK CİHAZ KUTULARI"
-msgstr ""
+msgstr "ALTINKAYA ELEKTRONİK CİHAZ KUTULARI"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AT,20,100,58,58,0,0E,0,0,"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AT,420,10,50,54,0,0,0,0,"
+msgstr "AT,420,10,50,54,0,0,0,0,"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "AT,646,101,58,58,0,0E,0,0,"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "AT,641,15,75,81,0,0,0,0,"
+msgstr "AT,641,15,75,81,0,0,0,0,"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 msgid "Account:"
-msgstr ""
+msgstr "Account:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__acquirer_id
 msgid "Acquirer"
-msgstr ""
+msgstr "Müşteriyi Kazanan"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_type__acquisition
 msgid "Acquisition"
-msgstr ""
+msgstr "Kazanım"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Alacak"
-msgstr ""
+msgstr "Alacak"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -741,7 +813,7 @@ msgstr "Tutar"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__kdv_amount
 msgid "Amount Total Currency"
-msgstr ""
+msgstr "Toplam Tutar (Döviz)"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_average_usd
@@ -751,39 +823,19 @@ msgstr "Ortalama Fiyat USD"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__month_nr
 msgid "Ay No"
-msgstr ""
+msgstr "Ay No"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Açıklama"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "BE,15,171,3,6,75,0,1,"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "BE,36,245,5,12,129,0,1,"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "BE,430,171,3,6,75,0,1,"
-msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid "BE,662,245,5,12,129,0,1,"
-msgstr ""
+msgstr "Açıklama"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Bakiye"
-msgstr ""
+msgstr "Bakiye"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -795,37 +847,37 @@ msgstr "Bakiye"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Banka Ödemesi"
-msgstr ""
+msgstr "Banka Ödemesi"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Bankasına ait"
-msgstr ""
+msgstr "Bankasına ait"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Baskı Tarih Saat:"
-msgstr ""
+msgstr "Baskı Tarih Saat:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Başlama / Bitiş Tarih saati"
-msgstr ""
+msgstr "Başlama / Bitiş Tarih saati"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Başlama Tarih Saat:"
-msgstr ""
+msgstr "Başlama Tarih Saat:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Bitiş Tarih Saat:"
-msgstr ""
+msgstr "Bitiş Tarih Saat:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Borç"
-msgstr ""
+msgstr "Borç"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__mass_campaign_id
@@ -840,22 +892,22 @@ msgstr "İptal"
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__cancelled
 msgid "Cancelled"
-msgstr ""
+msgstr "İptal Edildi"
 
 #. module: altinkaya_reports
 #: model:mail.template,subject:altinkaya_reports.email_template_edi_send_statement
 msgid "Cari Ekstre Mutabakatı"
-msgstr ""
+msgstr "Cari Ekstre Mutabakatı"
 
 #. module: altinkaya_reports
 #: model:mail.template,name:altinkaya_reports.email_template_edi_send_statement
 msgid "Cari Ekstre Mutabakatı Maili"
-msgstr ""
+msgstr "Cari Ekstre Mutabakatı Maili"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_document
 msgid "Cari:"
-msgstr ""
+msgstr "Cari:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__changeset_change_ids
@@ -912,7 +964,7 @@ msgstr "Sonuçlandı"
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_res_partner
 msgid "Contact"
-msgstr "İletişim"
+msgstr "Kontak"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_res_users__context_def_label_printer
@@ -971,7 +1023,7 @@ msgstr "Alacak"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "DESİ"
-msgstr ""
+msgstr "DESİ"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -989,58 +1041,58 @@ msgstr "Borç"
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaC
 msgid "Depo Fişi 2.Kat"
-msgstr ""
+msgstr "Depo Fişi 2.Kat"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaB
 msgid "Depo Fişi Bas"
-msgstr ""
+msgstr "Depo Fişi Bas"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaE
 msgid "Depo Fişi Depo"
-msgstr ""
+msgstr "Depo Fişi Depo"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkaya
 msgid "Depo Fişi Ekrana"
-msgstr ""
+msgstr "Depo Fişi Ekrana"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaH
 msgid "Depo Fişi Enjeksiyon"
-msgstr ""
+msgstr "Depo Fişi Enjeksiyon"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaG
 msgid "Depo Fişi Kesim"
-msgstr ""
+msgstr "Depo Fişi Kesim"
+
+#. module: altinkaya_reports
+#: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaO
+msgid "Depo Fişi Ostim"
+msgstr "Depo Fişi Ostim"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaF
 msgid "Depo Fişi Profil"
-msgstr ""
+msgstr "Depo Fişi Profil"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaD
 msgid "Depo Fişi Satış"
-msgstr ""
+msgstr "Depo Fişi Satış"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.stock_pickingaltinkayaS
 msgid "Depo Fişi Sincan"
-msgstr ""
+msgstr "Depo Fişi Sincan"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_try_table
 msgid "Desc."
 msgstr "Azalan"
-
-#. module: altinkaya_reports
-#: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__manual_discount_percentage
-msgid "Difference between actual price and pricelist price in percentage."
-msgstr ""
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__display_name
@@ -1050,7 +1102,7 @@ msgstr "Görünüm Adı"
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Taslak"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -1067,7 +1119,7 @@ msgstr "Bitiş Tarihi"
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__origin_price_usd
 msgid "Expected unit price according to pricelist, in USD."
-msgstr ""
+msgstr "Fiyat listesine göre beklenen birim fiyat (USD)."
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -1082,33 +1134,33 @@ msgstr "Faks:"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Gerçekleşen Miktar"
-msgstr ""
+msgstr "Gerçekleşen Miktar"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "HAM:"
-msgstr ""
+msgstr "HAM:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__week_nr
 msgid "Hafta No"
-msgstr ""
+msgstr "Hafta No"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Hesabı:"
-msgstr ""
+msgstr "Hesabı:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__industry_id
 msgid "Industry"
-msgstr ""
+msgstr "Sektör"
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_account_invoice_report
@@ -1123,27 +1175,27 @@ msgstr "Yevmiye Kalemi"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "KARGO TESLİMAT TUTANAĞI"
-msgstr ""
+msgstr "KARGO TESLİMAT TUTANAĞI"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "KARGO ŞEKLİ"
-msgstr ""
+msgstr "KARGO ŞEKLİ"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Kalıp Konumu:"
-msgstr ""
+msgstr "Kalıp Konumu:"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.list_carrier_report
 msgid "Kargo Teslim"
-msgstr ""
+msgstr "Kargo Teslim"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid "Kat:"
-msgstr ""
+msgstr "Kat:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -1151,6 +1203,8 @@ msgid ""
 "Kredi Kartı\n"
 "                                         Ödemesi"
 msgstr ""
+"Kredi Kartı\n"
+"                                         Ödemesi"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard____last_update
@@ -1168,45 +1222,85 @@ msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid ""
+"Lo,15,108,573,111\n"
+"AC,15,120,1,1,0,0,"
+msgstr ""
+"Lo,15,108,573,111\n"
+"AC,15,120,1,1,0,0,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid ""
+"Lo,420,72,797,74\n"
+"AA,420,80,1,1,0,0,"
+msgstr ""
+"Lo,420,72,797,74\n"
+"AA,420,80,1,1,0,0,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid ""
+"Lo,5,72,382,74\n"
+"AA,5,80,1,1,0,0,"
+msgstr ""
+"Lo,5,72,382,74\n"
+"AA,5,80,1,1,0,0,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid ""
+"Lo,641,108,1199,111\n"
+"AC,641,120,1,1,0,0,"
+msgstr ""
+"Lo,641,108,1199,111\n"
+"AC,641,120,1,1,0,0,"
+
+#. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.label_stock_location
 msgid "Localation Label (GODEX)"
 msgstr "Konum Etiketi (GODEX)"
 
 #. module: altinkaya_reports
+#: model:ir.actions.report,name:altinkaya_reports.label_stock_location_ostim
+msgid "Localation Label (Ostim)"
+msgstr "Konum Barkodu (Ostim)"
+
+#. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Makine Adı:"
-msgstr ""
+msgstr "Makine Adı:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_type__manager
 msgid "Manager"
-msgstr ""
+msgstr "Yönetici"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__manual_discount_percentage
-#: model:ir.model.fields,field_description:altinkaya_reports.field_account_move_line__manual_discount_percentage
 msgid "Manual Discount Percentage"
 msgstr "Manuel İndirim Yüzdesi"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Miktar"
-msgstr ""
+msgstr "Miktar"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
 msgid "NO"
-msgstr ""
+msgstr "NO"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "NOT:"
-msgstr ""
+msgstr "NOT:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Nakit"
-msgstr ""
+msgstr "Nakit"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
@@ -1217,12 +1311,12 @@ msgstr "Yok"
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Not:"
-msgstr ""
+msgstr "Not:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Notlar:"
-msgstr ""
+msgstr "Notlar:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_wizard_document
@@ -1232,12 +1326,12 @@ msgstr "Numara"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Operatör"
-msgstr ""
+msgstr "Operatör"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Operatör Adı:"
-msgstr ""
+msgstr "Operatör Adı:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__partner_campaign_id
@@ -1257,12 +1351,12 @@ msgstr "İş Ortağı Kaynak"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "P.12.F.03 Yazdıran:"
-msgstr ""
+msgstr "P.12.F.03 Yazdıran:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_state__paid
 msgid "Paid"
-msgstr ""
+msgstr "Ödendi"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_partner_statement_wizard__partner_id
@@ -1282,7 +1376,7 @@ msgstr "Fatura Sayısı"
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__seller_id
 msgid "Partner Salesperson"
-msgstr ""
+msgstr "İş Ortağı Satış Temsilcisi"
 
 #. module: altinkaya_reports
 #: model:ir.actions.report,name:altinkaya_reports.partner_statement2_altinkaya
@@ -1395,12 +1489,12 @@ msgstr "Ürün Şablonu"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "REF. NO"
-msgstr ""
+msgstr "REF. NO"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid "Raf:"
-msgstr ""
+msgstr "Raf:"
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_ir_actions_report
@@ -1425,34 +1519,34 @@ msgstr "Sip. Kaynak"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "SEVK NO"
-msgstr ""
+msgstr "SEVK NO"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_type__sale
 msgid "Sale"
-msgstr ""
+msgstr "Satış"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Sanal Pos Ödemesi"
-msgstr ""
+msgstr "Sanal Pos Ödemesi"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Satış Notu:"
-msgstr ""
+msgstr "Satış Notu:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Satış Temsilcisi"
-msgstr ""
+msgstr "Satış Temsilcisi"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Sayfa:"
-msgstr ""
+msgstr "Sayfa:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__smart_search
@@ -1478,13 +1572,13 @@ msgstr "Durum"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "TAHSİLAT MAKBUZU"
-msgstr ""
+msgstr "TAHSİLAT MAKBUZU"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "TOPLAM"
-msgstr ""
+msgstr "TOPLAM"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_en_currency_table
@@ -1497,18 +1591,18 @@ msgstr "TOPLAM"
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Tarih"
-msgstr ""
+msgstr "Tarih"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "Tarih :"
-msgstr ""
+msgstr "Tarih :"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Tarih:"
-msgstr ""
+msgstr "Tarih:"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__total_tax
@@ -1518,7 +1612,7 @@ msgstr "KDV Toplam"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "Tel:"
-msgstr ""
+msgstr "Tel:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -1531,6 +1625,13 @@ msgid ""
 "                                            <br/>\n"
 "                                            <br/>"
 msgstr ""
+"Teslim Alan\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -1543,6 +1644,13 @@ msgid ""
 "                                            <br/>\n"
 "                                            <br/>"
 msgstr ""
+"Teslim Eden\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>\n"
+"                                            <br/>"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__count_pending_changeset_changes
@@ -1580,28 +1688,30 @@ msgstr "Bu kaydın toplam değişiklik seti sayısı"
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_invoice_report__acquirer_id
 msgid "The user who acquired this customer."
-msgstr ""
+msgstr "Bu müşteriyi kazanan kullanıcı."
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,help:altinkaya_reports.field_account_move_line__kdv_amount
 msgid ""
 "Total amount in company currency. We use this field in account reporting."
 msgstr ""
+"Şirket para biriminde toplam tutar. Bu alan muhasebe raporlamasında "
+"kullanılır."
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 msgid "Tutar"
-msgstr ""
+msgstr "Tutar"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_rule_type__type_a
 msgid "Type A"
-msgstr ""
+msgstr "Tip A"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields.selection,name:altinkaya_reports.selection__account_invoice_report__sale_commission_rule_type__type_b
 msgid "Type B"
-msgstr ""
+msgstr "Tip B"
 
 #. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_utm_campaign
@@ -1609,14 +1719,24 @@ msgid "UTM Campaign"
 msgstr "UTM kampanyası"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_subtotal_abs
+msgid "Untaxed Total Abs"
+msgstr "Vergisiz Toplam (Mutlak)"
+
+#. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_total_usd
 msgid "Untaxed Total USD"
 msgstr "Toplam USD"
 
 #. module: altinkaya_reports
+#: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__price_total_usd_abs
+msgid "Untaxed Total USD Abs"
+msgstr "Vergisiz Toplam USD (Mutlak)"
+
+#. module: altinkaya_reports
 #: model:ir.model,name:altinkaya_reports.model_res_users
 msgid "User"
-msgstr "Kullanıcılar"
+msgstr "Kullanıcı"
 
 #. module: altinkaya_reports
 #: model:ir.model.fields,field_description:altinkaya_reports.field_account_invoice_report__user_can_see_changeset
@@ -1632,17 +1752,17 @@ msgstr "Kullanıcı Değişiklikleri Görebilir"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "V.D"
-msgstr ""
+msgstr "V.D"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 msgid "Vade T."
-msgstr ""
+msgstr "Vade T."
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_try_table
 msgid "Vade Tarihi"
-msgstr ""
+msgstr "Vade Tarihi"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
@@ -1650,66 +1770,75 @@ msgid ""
 "Vade gününde çekiniz tahsil edildiğinde çek tutarı bir önceki gün Merkez "
 "Bankası Efektif satış kuru ile hesaplanıp döviz bakiyenizden düşülecektir."
 msgstr ""
+"Vade gününde çekiniz tahsil edildiğinde çek tutarı bir önceki gün Merkez "
+"Bankası Efektif satış kuru ile hesaplanıp döviz bakiyenizden düşülecektir."
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid ""
-"Y420,12,tek_cicek\n"
-"Lo,420,64,792,66\n"
-"AT,489,0,61,65,0,0,0,0,"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "W125,582,3,2,M,8,10,"
+msgstr "W125,582,3,2,M,8,10,"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid ""
-"Y652,17,tek_cicek\n"
-"Lo,648,98,1202,101\n"
-"Dy2-me-dd\n"
-"Th:m:s\n"
-"AT,747,1,104,104,0,0E,0,0,"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "W493,388,3,2,M,8,7,"
+msgstr "W493,388,3,2,M,8,7,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "W751,582,3,2,M,8,10,"
+msgstr "W751,582,3,2,M,8,10,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid "W78,388,3,2,M,8,7,"
+msgstr "W78,388,3,2,M,8,7,"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "YALNIZ:"
-msgstr ""
+msgstr "YALNIZ:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_picking_altinkaya
 msgid "Yazdıran:"
-msgstr ""
+msgstr "Yazdıran:"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
+msgid ""
+"^L\n"
+"Dy2-me-dd\n"
+"AT,5,10,50,54,0,0,0,0,"
+msgstr ""
+"^L\n"
+"Dy2-me-dd\n"
+"AT,5,10,50,54,0,0,0,0,"
+
+#. module: altinkaya_reports
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid ""
 "^L\n"
 "Dy2-me-dd\n"
 "Th:m:s\n"
-"Y26,16,tek_cicek\n"
-"Lo,22,97,576,100\n"
-"AT,121,0,104,104,0,0E,0,0,"
+"AT,15,15,75,81,0,0,0,0,"
 msgstr ""
-
-#. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
-msgid ""
 "^L\n"
 "Dy2-me-dd\n"
-"Y5,12,tek_cicek\n"
-"Lo,5,64,382,66\n"
-"AT,74,0,61,65,0,0,0,0,"
-msgstr ""
+"Th:m:s\n"
+"AT,15,15,75,81,0,0,0,0,"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid ""
 "^P1\n"
 "E"
 msgstr ""
+"^P1\n"
+"E"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid ""
 "^Q50,3\n"
 "^W104\n"
@@ -1721,9 +1850,18 @@ msgid ""
 "~R255\n"
 "^XSET,ROTATION,0"
 msgstr ""
+"^Q50,3\n"
+"^W104\n"
+"^H10\n"
+"^AT\n"
+"^S5\n"
+"^R0\n"
+"^E15\n"
+"~R255\n"
+"^XSET,ROTATION,0"
 
 #. module: altinkaya_reports
-#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex
+#: model_terms:ir.ui.view,arch_db:altinkaya_reports.location_report_godex_body
 msgid ""
 "^Q50,3\n"
 "^W104\n"
@@ -1735,11 +1873,20 @@ msgid ""
 "~R255\n"
 "^XSET,ROTATION,0"
 msgstr ""
+"^Q50,3\n"
+"^W104\n"
+"^H10\n"
+"^AT\n"
+"^S7\n"
+"^R0\n"
+"^E15\n"
+"~R255\n"
+"^XSET,ROTATION,0"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "olarak tahsil edilmiştir."
-msgstr ""
+msgstr "olarak tahsil edilmiştir."
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.view_partner_statement_wizard
@@ -1749,59 +1896,60 @@ msgstr "yada"
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "seri numaralı"
-msgstr ""
+msgstr "seri numaralı"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "vadeli çek alınmıştır."
-msgstr ""
+msgstr "vadeli çek alınmıştır."
 
 #. module: altinkaya_reports
 #: model:mail.template,report_name:altinkaya_reports.email_template_edi_send_statement
 msgid "{{ ctx.get('report_name') or ('cari_hesap_ekstresi_' + object.name) }}"
 msgstr ""
+"{{ ctx.get('report_name') or ('cari_hesap_ekstresi_' + object.name) }}"
 
 #. module: altinkaya_reports
 #: model:mail.template,report_name:altinkaya_reports.email_template_edi_send_statement_en
 msgid "{{ ctx.get('report_name') or ('partner_statement_' + object.name) }}"
-msgstr ""
+msgstr "{{ ctx.get('report_name') or ('partner_statement_' + object.name) }}"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_payment_receipt_document_altinkaya
 msgid "ÇEK"
-msgstr ""
+msgstr "ÇEK"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Üretilen Adet:"
-msgstr ""
+msgstr "Üretilen Adet:"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_mrporder_altinkaya
 msgid "Üretim Emri"
-msgstr ""
+msgstr "Üretim Emri"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "Ürün Adı Hammaddeler ve Notlar"
-msgstr ""
+msgstr "Ürün Adı Hammaddeler ve Notlar"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.altinkaya_mrp_report_data_table
 msgid "İmza"
-msgstr ""
+msgstr "İmza"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_delivery_carrier_report_data
 msgid "ŞEHİR"
-msgstr ""
+msgstr "ŞEHİR"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 msgid "₺ Bakiye"
-msgstr ""
+msgstr "₺ Bakiye"
 
 #. module: altinkaya_reports
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 msgid "₺ Tutar"
-msgstr ""
+msgstr "₺ Tutar"

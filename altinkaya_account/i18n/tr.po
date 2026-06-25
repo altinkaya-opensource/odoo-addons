@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-08 07:23+0000\n"
-"PO-Revision-Date: 2026-05-08 07:23+0000\n"
+"POT-Creation-Date: 2026-06-25 13:39+0000\n"
+"PO-Revision-Date: 2026-06-25 13:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,9 @@ msgstr "Hesap Oto Uzlaştırma"
 msgid ""
 "Account for unrealized FX gains booked by the period-end currency valuation "
 "(646 - Kambiyo Karları)."
-msgstr "Dönem sonu kur değerlemesinde kayda alınan gerçekleşmemiş kambiyo karları için kullanılan hesap (646 - Kambiyo Karları)."
+msgstr ""
+"Dönem sonu kur değerlemesinde kayda alınan gerçekleşmemiş kambiyo karları "
+"için kullanılan hesap (646 - Kambiyo Karları)."
 
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__currency_valuation_loss_account_id
@@ -54,7 +56,9 @@ msgstr "Dönem sonu kur değerlemesinde kayda alınan gerçekleşmemiş kambiyo 
 msgid ""
 "Account for unrealized FX losses booked by the period-end currency valuation"
 " (656 - Kambiyo Zararları)."
-msgstr "Dönem sonu kur değerlemesinde kayda alınan gerçekleşmemiş kambiyo zararları için kullanılan hesap (656 - Kambiyo Zararları)."
+msgstr ""
+"Dönem sonu kur değerlemesinde kayda alınan gerçekleşmemiş kambiyo zararları "
+"için kullanılan hesap (656 - Kambiyo Zararları)."
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__accounting_contact
@@ -102,7 +106,9 @@ msgstr "Ek Yevmiye Kalemi Domain'i"
 msgid ""
 "Additional domain to filter move lines for credit control checks. This "
 "domain is added to the default domain used to select move lines."
-msgstr "Kredi kontrol kontrolleri için yevmiye kalemlerini filtrelemekte kullanılan ek domain. Varsayılan domain'e eklenir."
+msgstr ""
+"Kredi kontrol kontrolleri için yevmiye kalemlerini filtrelemekte kullanılan "
+"ek domain. Varsayılan domain'e eklenir."
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
@@ -702,7 +708,9 @@ msgstr "Döviz Vade Gelen"
 msgid ""
 "Eger fatura tevkifatli fatura ise bu alan secilmeli Sadece zirve programi "
 "transferinde kullanilmaktadir."
-msgstr "Fatura tevkifatlı ise bu alan seçilmelidir. Yalnızca Zirve programı transferinde kullanılır."
+msgstr ""
+"Fatura tevkifatlı ise bu alan seçilmelidir. Yalnızca Zirve programı "
+"transferinde kullanılır."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -824,7 +832,9 @@ msgstr "ID"
 #. module: altinkaya_account
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_wizard__partner_id
 msgid "If set, only process this partner. Leave empty for all partners."
-msgstr "Belirtildiyse yalnızca bu iş ortağı işlenir. Tüm iş ortakları için boş bırakın."
+msgstr ""
+"Belirtildiyse yalnızca bu iş ortağı işlenir. Tüm iş ortakları için boş "
+"bırakın."
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
@@ -904,7 +914,9 @@ msgstr "Yevmiye Adı"
 #: model:ir.model.fields,help:altinkaya_account.field_res_company__currency_valuation_journal_id
 #: model:ir.model.fields,help:altinkaya_account.field_res_config_settings__currency_valuation_journal_id
 msgid "Journal used to post period-end currency valuation entries (KRDGR)."
-msgstr "Dönem sonu kur değerleme kayıtlarını işlemek için kullanılan yevmiye (KRDGR)."
+msgstr ""
+"Dönem sonu kur değerleme kayıtlarını işlemek için kullanılan yevmiye "
+"(KRDGR)."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -984,7 +996,8 @@ msgstr "Yeniden Uzlaştırılacak Kalemler"
 #: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
 #, python-format
 msgid "Lines to re-reconcile (from %(date)s): %(count)d"
-msgstr "Yeniden uzlaştırılacak kalemler (%(date)s tarihinden itibaren): %(count)d"
+msgstr ""
+"Yeniden uzlaştırılacak kalemler (%(date)s tarihinden itibaren): %(count)d"
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1025,7 +1038,9 @@ msgstr "Sevk Satırlarını Eşleştir"
 #, python-format
 msgid ""
 "Missing TCMB forex-buying rate for currency id %(currency)s on %(date)s."
-msgstr "%(date)s tarihinde %(currency)s para birimi için TCMB döviz alış kuru bulunamadı."
+msgstr ""
+"%(date)s tarihinde %(currency)s para birimi için TCMB döviz alış kuru "
+"bulunamadı."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1066,7 +1081,8 @@ msgstr "Seçilen gün için döviz kuru bilgisi bulunamadı!"
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
 msgid "No foreign-currency open balances found for the selected partners."
-msgstr "Seçilen iş ortakları için yabancı para cinsinden açık bakiye bulunamadı."
+msgstr ""
+"Seçilen iş ortakları için yabancı para cinsinden açık bakiye bulunamadı."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1168,7 +1184,8 @@ msgstr "Bağlantısı Kaldırılacak Kısmi Uzlaşmalar"
 #: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
 #, python-format
 msgid "Partials to unlink (no full_reconcile_id): %(count)d"
-msgstr "Bağlantısı kaldırılacak kısmi uzlaşmalar (full_reconcile_id'siz): %(count)d"
+msgstr ""
+"Bağlantısı kaldırılacak kısmi uzlaşmalar (full_reconcile_id'siz): %(count)d"
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__partner_id
@@ -1412,7 +1429,9 @@ msgstr "Lütfen önce Aşama 3'ü tamamlayın."
 msgid ""
 "Please configure the Currency Valuation gain/loss accounts and journal under"
 " Accounting Settings."
-msgstr "Lütfen Muhasebe Ayarları'ndan Kur Değerleme kar/zarar hesaplarını ve yevmiyesini yapılandırın."
+msgstr ""
+"Lütfen Muhasebe Ayarları'ndan Kur Değerleme kar/zarar hesaplarını ve "
+"yevmiyesini yapılandırın."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1549,7 +1568,9 @@ msgstr "Risk"
 msgid ""
 "Row %(idx)s has a different date (%(row_date)s) than previous rows "
 "(%(move_date)s). All rows must share the same date."
-msgstr "%(idx)s satırının tarihi (%(row_date)s) önceki satırların tarihinden (%(move_date)s) farklı. Tüm satırlar aynı tarihi paylaşmalıdır."
+msgstr ""
+"%(idx)s satırının tarihi (%(row_date)s) önceki satırların tarihinden "
+"(%(move_date)s) farklı. Tüm satırlar aynı tarihi paylaşmalıdır."
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1581,7 +1602,9 @@ msgstr "Teslimat Adresi"
 msgid ""
 "Shorter name used for display. The journal entries of this journal will also"
 " be named using this prefix by default."
-msgstr "Görüntüleme için kullanılan kısa ad. Bu yevmiyenin kayıtları varsayılan olarak bu önekle adlandırılır."
+msgstr ""
+"Görüntüleme için kullanılan kısa ad. Bu yevmiyenin kayıtları varsayılan "
+"olarak bu önekle adlandırılır."
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__smart_search
@@ -1851,7 +1874,9 @@ msgstr "Bu Yıl"
 msgid ""
 "This action will change every accounting records of partner. Ask your "
 "administrator before use it."
-msgstr "Bu işlem iş ortağının tüm muhasebe kayıtlarını değiştirir. Kullanmadan önce yöneticinize danışın."
+msgstr ""
+"Bu işlem iş ortağının tüm muhasebe kayıtlarını değiştirir. Kullanmadan önce "
+"yöneticinize danışın."
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
@@ -1868,7 +1893,8 @@ msgstr "Bu işlem seçilen iş ortakları için kur değerleme hareketi oluştur
 msgid ""
 "This journal will be used on the write-off entries created by the "
 "reconciliation."
-msgstr "Bu yevmiye, uzlaştırma sırasında oluşturulan silme kayıtlarında kullanılır."
+msgstr ""
+"Bu yevmiye, uzlaştırma sırasında oluşturulan silme kayıtlarında kullanılır."
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
@@ -1880,14 +1906,18 @@ msgstr "Bu işlem yetim KRFRK kayıtlarını siler. Devam edilsin mi?"
 msgid ""
 "This will execute ALL phases in sequence. This is a destructive operation. "
 "Are you sure?"
-msgstr "Bu işlem TÜM aşamaları sırayla çalıştırır. Yıkıcı bir işlemdir. Emin misiniz?"
+msgstr ""
+"Bu işlem TÜM aşamaları sırayla çalıştırır. Yıkıcı bir işlemdir. Emin "
+"misiniz?"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
 msgid ""
 "This will unlink all partial reconciliations without full_reconcile_id. "
 "Continue?"
-msgstr "Bu işlem full_reconcile_id'si olmayan tüm kısmi uzlaşmaların bağlantısını keser. Devam edilsin mi?"
+msgstr ""
+"Bu işlem full_reconcile_id'si olmayan tüm kısmi uzlaşmaların bağlantısını "
+"keser. Devam edilsin mi?"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
