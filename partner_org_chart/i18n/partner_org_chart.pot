@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 07:44+0000\n"
-"PO-Revision-Date: 2025-01-31 07:44+0000\n"
+"POT-Creation-Date: 2026-06-26 12:40+0000\n"
+"PO-Revision-Date: 2026-06-26 12:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,47 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_org_chart
+#. odoo-javascript
+#: code:addons/partner_org_chart/static/src/fields/partner_org_chart.xml:0
+#, python-format
+msgid "A contact shown with an email address is a registered website user."
+msgstr ""
+
+#. module: partner_org_chart
+#. odoo-javascript
+#: code:addons/partner_org_chart/static/src/fields/partner_org_chart.xml:0
+#, python-format
+msgid "Archive"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: partner_org_chart
 #: model:ir.model,name:partner_org_chart.model_res_partner
 msgid "Contact"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__count_pending_changesets
+msgid "Count Pending Changesets"
 msgstr ""
 
 #. module: partner_org_chart
@@ -33,7 +72,32 @@ msgstr ""
 
 #. module: partner_org_chart
 #. odoo-javascript
-#: code:addons/partner_org_chart/static/src/fields/hooks.js:0
+#: code:addons/partner_org_chart/static/src/fields/partner_org_chart.xml:0
 #, python-format
-msgid "Team"
+msgid "Restore"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,help:partner_org_chart.field_res_partner__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,help:partner_org_chart.field_res_partner__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,help:partner_org_chart.field_res_partner__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: partner_org_chart
+#: model:ir.model.fields,field_description:partner_org_chart.field_res_partner__user_can_see_changeset
+msgid "User Can See Changeset"
 msgstr ""

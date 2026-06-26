@@ -1,99 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
 
-<t t-name="partner_org_chart.partner_org_chart_partner" owl="1">
-        <t t-set="is_self" t-value="data['is_self']" />
-
-        <section
-            t-if="data['is_self']"
-            t-attf-class="o_org_chart_entry_self_container #{child_ids.length &gt; 0 ? 'o_org_chart_has_managers' : ''}"
-        >
-            <div
-                t-attf-class="o_org_chart_entry o_org_chart_entry_#{data['partner_type']} d-flex position-relative py-2 overflow-visible #{child_ids.length &gt; 0 ? 'o_treeEntry' : ''}"
-            >
-                <t t-call="partner_org_chart.partner_org_chart_partner_content">
-                    <t t-set="is_self" t-value="data['is_self']" />
+    <t t-name="partner_org_chart.partner_org_chart" owl="1">
+        <div t-if="data" class="o_org_chart_wrap">
+            <ul class="o_org_chart">
+                <t t-call="partner_org_chart.org_chart_node">
+                    <t t-set="data" t-value="data" />
+                    <t t-set="child_ids" t-value="child_ids" />
                 </t>
-            </div>
-        </section>
-
-        <div
-            t-else=""
-            t-attf-class="o_org_chart_entry o_org_chart_entry_#{data['partner_type']} o_treeEntry d-flex position-relative py-2 overflow-visible"
-        >
-            <t t-call="partner_org_chart.partner_org_chart_partner_content">
-                <t t-set="is_self" t-value="data['is_self']" />
-            </t>
+            </ul>
+            <p class="o_org_chart_note">
+                <i class="fa fa-globe me-1" />
+                A contact shown with an email address is a registered website user.
+            </p>
         </div>
     </t>
 
-<t t-name="partner_org_chart.partner_org_chart_partner_content" owl="1">
-        <div class="o_media_left position-relative">
-            <a
-                t-if="! is_self"
-                class="o_media_object d-block rounded-circle o_partner_redirect"
-                t-att-style="'background-image:url(\'/web/image/res.partner/' + data['id'] + '/avatar_1024/\')'"
-                t-att-alt="data['name']"
-                t-att-data-partner-id="data['id']"
-                t-att-href="data['link']"
-                t-on-click.prevent="() => this._onPartnerRedirect(data['id'])"
-            />
+    <t t-name="partner_org_chart.org_chart_node" owl="1">
+        <li class="o_org_chart_node">
             <div
-                t-if="is_self"
-                class="o_media_object d-block rounded-circle border border-info"
-                t-att-style="'background-image:url(\'/web/image/res.partner/' + data['id'] + '/avatar_1024/\')'"
-            />
-        </div>
-
-        <div
-            class="d-flex flex-grow-1 align-items-center justify-content-between position-relative px-3"
-        >
-            <a
-                t-if="!is_self"
-                t-att-href="data['name']"
-                data-type='direct'
-                class="o_partner_redirect d-flex flex-column"
-                t-att-data-partner-id="data['id']"
-                t-on-click.prevent="() => this._onPartnerRedirect(data['id'])"
+                t-attf-class="o_org_chart_card #{data.is_self ? 'o_is_self' : ''} #{!data.active ? 'o_inactive' : ''}"
+                t-on-click="() => this._onPartnerRedirect(data.id)"
             >
-                <b class="o_media_heading m-0 fs-6" t-esc="data['name']" />
-                <small class="text-muted fw-bold" t-esc="data['partner_type']" />
-            </a>
-            <div t-if="is_self" class="d-flex flex-column">
-                <h5 class="o_media_heading m-0" t-esc="data['name']" />
-                <small class="text-muted fw-bold" t-esc="data['partner_type']" />
-            </div>
-        </div>
-    </t>
-
-<t t-name="partner_org_chart.partner_org_chart" owl="1">
-        <!-- Render the current node -->
-
-        <t t-if="data">
-            <t t-call="partner_org_chart.partner_org_chart_partner">
-                <t t-set="data" t-value="data" />
-                <t t-set="child_ids" t-value="child_ids" />
-            </t>
-
-            <!-- Render child nodes recursively if any -->
-            <t t-if="child_ids.length">
-                <div
-                    t-attf-class="o_org_chart_group_down position-relative #{child_ids.length &gt; 0 ? 'o_org_chart_has_managers' : ''}"
-                >
-                    <t
-                        t-foreach="child_ids"
-                        t-as="partner"
-                        t-key="partner['data']['id']"
+                <span
+                    class="o_org_chart_avatar"
+                    t-attf-style="background-image:url('/web/image/res.partner/{{data.id}}/avatar_128/')"
+                    t-att-title="data.name"
+                />
+                <div class="o_org_chart_info">
+                    <span class="o_org_chart_name" t-esc="data.name" />
+                    <span
+                        t-if="data.partner_type"
+                        class="o_org_chart_type"
+                        t-esc="data.partner_type"
+                    />
+                    <span
+                        t-if="data.login"
+                        class="o_org_chart_login"
+                        t-att-title="data.login"
                     >
-                        <t t-call="partner_org_chart.partner_org_chart">
-                            <t t-set="data" t-value="partner['data']" />
-                            <t t-set="child_ids" t-value="partner['child_ids']" />
-                        </t>
-                    </t>
+                        <i class="fa fa-globe me-1" />
+                        <span t-esc="data.login" />
+                    </span>
                 </div>
-            </t>
-        </t>
+                <div class="o_org_chart_actions" t-on-click.stop="() => {}">
+                    <select
+                        t-if="data.can_set_role"
+                        class="o_org_chart_role form-select form-select-sm"
+                        t-on-change="(ev) => this._onChangeRole(data.id, ev.target.value)"
+                    >
+                        <option
+                            value=""
+                            t-att-selected="!data.website_role_id"
+                        >—</option>
+                        <t t-foreach="this.available_roles" t-as="role" t-key="role.id">
+                            <option
+                                t-att-value="role.id"
+                                t-att-selected="role.id === data.website_role_id"
+                                t-esc="role.name"
+                            />
+                        </t>
+                    </select>
+                    <button
+                        t-if="data.active"
+                        type="button"
+                        class="btn btn-link btn-sm p-0 o_org_chart_toggle text-success"
+                        title="Archive"
+                        t-on-click="() => this._onToggleActive(data.id)"
+                    >
+                        <i class="fa fa-toggle-on" />
+                    </button>
+                    <button
+                        t-else=""
+                        type="button"
+                        class="btn btn-link btn-sm p-0 o_org_chart_toggle text-muted"
+                        title="Restore"
+                        t-on-click="() => this._onToggleActive(data.id)"
+                    >
+                        <i class="fa fa-toggle-off" />
+                    </button>
+                </div>
+            </div>
+            <ul t-if="child_ids.length" class="o_org_chart_children">
+                <t t-foreach="child_ids" t-as="child" t-key="child.data.id">
+                    <t t-call="partner_org_chart.org_chart_node">
+                        <t t-set="data" t-value="child.data" />
+                        <t t-set="child_ids" t-value="child.child_ids" />
+                    </t>
+                </t>
+            </ul>
+        </li>
     </t>
-
 
 </templates>
