@@ -59,6 +59,19 @@ class MRPBoM(models.Model):
 
     #     return res
 
+    def _ensure_bom_is_free(self):
+        """Disable the upstream ``sale_mrp`` guard.
+
+        ``sale_mrp`` raises a ``UserError`` when a kit BoM is deleted, archived
+        or changed away from the ``phantom`` type while it is still referenced
+        by an in-progress sale order. Altinkaya needs to edit kit BoMs freely,
+        so the check is neutralised here.
+        """
+        # ponytail: re-opens the upstream "Expected singleton: uom.uom" crash
+        # path on kit BoMs that are mid-sale; disabled on request. Drop this
+        # override (fall back to super) if that traceback resurfaces.
+        return
+
     def explode(self, product, quantity, picking_type=False):
         """
         This method is copied from mrp/models/mrp_bom.py
