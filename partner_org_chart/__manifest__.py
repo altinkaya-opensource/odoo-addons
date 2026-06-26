@@ -6,10 +6,12 @@
     "summary": "Organization chart on partner form",
     "license": "LGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "author": "Ümithan Güldemir, Altinkaya Enclosures",
+    "author": "Altinkaya Enclosures",
     "category": "CRM",
-    "version": "16.0.1.0.0",
-    "depends": ["base"],
+    "version": "16.0.2.0.0",
+    # website_api supplies the storefront role model (website.company.role)
+    # and the website_role / website_login fields shown on the chart nodes.
+    "depends": ["base", "website_api"],
     "data": [
         "views/partner_views.xml",
     ],
