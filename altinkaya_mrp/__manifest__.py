@@ -12,6 +12,7 @@
         "mrp",
         "stock",
         "sale",
+        "sale_mrp",
         "hr",
         "mrp_sale_info",
         "stock_related_move_shortcut",
