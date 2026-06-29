@@ -6,29 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-10 11:34+0000\n"
-"PO-Revision-Date: 2025-09-10 11:34+0000\n"
+"POT-Creation-Date: 2026-06-29 12:55+0000\n"
+"PO-Revision-Date: 2026-06-29 12:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "&amp;bull;"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "&gt;&gt;"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<b>Müşteri:</b>"
-msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.product_mrp_orders_button
@@ -41,31 +26,6 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
 msgid "<span class=\"o_stat_text\">Similar MOs</span>"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<strong>Kaynak</strong>"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<strong>Kullanılmış Ürünler</strong>"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<strong>Mamül Ürün Rotası</strong>"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<strong>Quantity</strong>"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "<strong>Üretimde Kullanılacak Ürünler</strong>"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -94,16 +54,6 @@ msgid "Assign Reserved"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Baskı Tarih Saat:"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Başlama Tarih Saat:"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__checked
 msgid "Bileşenler ve ağırlıkları kontrol edildi."
 msgstr ""
@@ -111,11 +61,6 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_bom
 msgid "Bill of Material"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Bitiş Tarih Saat:"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -182,6 +127,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_change_ids
@@ -198,6 +144,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_ids
@@ -214,6 +161,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
@@ -230,6 +178,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
@@ -246,6 +195,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
@@ -266,6 +216,7 @@ msgid "Create a new routing"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_uid
@@ -275,6 +226,7 @@ msgid "Created by"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_date
@@ -309,6 +261,7 @@ msgid "Description"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__display_name
@@ -388,6 +341,7 @@ msgid "Has production BoM"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__id
@@ -426,6 +380,11 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__is_mold
+msgid "Is Mold"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_kaliphane_menu
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_kaliphane_production
 msgid "Kalıphane İşleri"
@@ -445,6 +404,7 @@ msgid "Kontrol Edildi"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more____last_update
@@ -454,6 +414,7 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_uid
@@ -463,6 +424,7 @@ msgid "Last Updated by"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_date
@@ -477,6 +439,16 @@ msgid "MRP Change Quantity Permission"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.product_mold_maintenance_page
+msgid "Maintenance Log"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__mold_maintenance_log_ids
+msgid "Maintenance Logs"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.action_x_makine
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_makine_kod
 #: model:ir.ui.menu,name:altinkaya_mrp.menuitem_action_x_makine
@@ -488,11 +460,6 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__x_name
 msgid "Makine Adı"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Makine Adı:"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -517,6 +484,22 @@ msgid "Manufacturing: Auto Print MRP Orders"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__product_id
+msgid "Mold"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model,name:altinkaya_mrp.model_mold_maintenance_log
+msgid "Mold Maintenance Log"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.actions.act_window,name:altinkaya_mrp.action_mold_maintenance_log
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_mold_maintenance_log
+msgid "Mold Maintenance Logs"
+msgstr ""
+
+#. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_ayrintili_menu
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_ayrintili_production
 msgid "Montaj İşleri"
@@ -538,11 +521,6 @@ msgid "Mrp Cancel More"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "NOT:"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__name
 msgid "Name"
 msgstr ""
@@ -555,6 +533,7 @@ msgid "New"
 msgstr ""
 
 #. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__note
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_note
 msgid "Note"
 msgstr ""
@@ -576,13 +555,18 @@ msgid "Operatör"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Operatör Adı:"
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
+msgid "Origin Move"
 msgstr ""
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_mrp_cancel_more
 msgid "Parameters"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__photo
+msgid "Photo"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -737,11 +721,6 @@ msgid "Sales Order"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Sayfa:"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__sequence
 msgid "Sequence"
 msgstr ""
@@ -764,17 +743,13 @@ msgid "Similar Mo"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
-msgid "Similar Productions"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
 msgid "Sipariş"
 msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__smart_search
@@ -821,6 +796,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
@@ -837,6 +813,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
@@ -853,6 +830,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
@@ -911,6 +889,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__user_can_see_changeset
@@ -939,11 +918,6 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_x_makine
 msgid "X Makine"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Yazdıran:"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -981,14 +955,4 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
 msgid "Öncelik"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Üretilen Adet:"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.report_mrporder_altinkaya
-msgid "Üretim Emri"
 msgstr ""
