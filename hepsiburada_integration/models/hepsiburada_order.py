@@ -343,7 +343,7 @@ class HepsiburadaOrder(models.Model):
                 if isinstance(total_price_data, dict)
                 else total_price_data or 0,
                 "vat_amount": item.get("vat", 0),
-                "vat_rate": item.get("vat", 0),
+                "vat_rate": item.get("vatRate", 0),
                 "commission_amount": commission_data.get("amount", 0)
                 if isinstance(commission_data, dict)
                 else commission_data or 0,
@@ -592,8 +592,8 @@ class HepsiburadaOrder(models.Model):
         else:
             price_unit = price_data or 0
 
-        # vat field is the VAT percentage (e.g. 20)
-        vat_rate = item.get("vat", 0)
+        # vatRate is the VAT percentage (e.g. 10, 20); vat is the VAT amount in TL
+        vat_rate = item.get("vatRate", 0)
 
         # Calculate discount from unitHBDiscount + unitMerchantDiscount
         hb_discount_data = item.get("unitHBDiscount", {})
@@ -832,11 +832,12 @@ class HepsiburadaOrder(models.Model):
         }
 
     def _send_invoice(self):
-        """Send delivered status and invoice link to Hepsiburada API.
+        """Upload the invoice link to Hepsiburada for this order.
 
-        Two-step process:
-        1. Mark package as delivered via set_package_delivered()
-        2. Upload invoice link via upload_invoice_link()
+        Hepsiburada does not allow a merchant to set delivery status (the
+        carrier owns it; attempting it returns 403
+        DeliveryManipulationForbiddenError), so this only uploads the invoice
+        link. Delivery status is maintained separately by the import cron.
         """
         self.ensure_one()
 
@@ -851,61 +852,35 @@ class HepsiburadaOrder(models.Model):
             )
             return
 
-        client = self.backend_id._get_api_client()
-
-        # Step 1: Mark package as delivered (if not already)
-        if self.hb_status != "delivered" and self.hb_package_number:
-            data = {
-                "packageNumber": self.hb_package_number,
-                "receivedDate": fields.Datetime.now().isoformat(),
-                "receivedBy": self.hb_customer_name or "",
-            }
-            try:
-                client.set_package_delivered(data)
-                self.hb_status = "delivered"
-            except HepsiburadaAPIError as e:
-                if e.status_code == 409:
-                    _logger.info(
-                        "Package %s already delivered in HB, continuing.",
-                        self.hb_package_number,
-                    )
-                    self.hb_status = "delivered"
-                else:
-                    _logger.error(
-                        "Failed to set delivered for HB order %s: %s",
-                        self.hb_order_number,
-                        str(e),
-                    )
-                    raise
-
-        # Step 2: Send invoice link
-        if self.hb_package_number:
-            base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-            invoice_url = f"{base_url}{invoice.get_portal_url()}"
-
-            try:
-                client.upload_invoice_link(self.hb_package_number, invoice_url)
-            except HepsiburadaAPIError as e:
-                if e.status_code == 409:
-                    _logger.info(
-                        "Invoice link already exists for HB order %s, "
-                        "marking as sent locally.",
-                        self.hb_order_number,
-                    )
-                else:
-                    _logger.error(
-                        "Failed to send invoice link for HB order %s: %s",
-                        self.hb_order_number,
-                        str(e),
-                    )
-                    raise
-
         if not self.hb_package_number:
             _logger.warning(
                 "No package number for HB order %s, skipping invoice mark.",
                 self.hb_order_number,
             )
             return
+
+        client = self.backend_id._get_api_client()
+
+        # Send invoice link
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        invoice_url = f"{base_url}{invoice.get_portal_url()}"
+
+        try:
+            client.upload_invoice_link(self.hb_package_number, invoice_url)
+        except HepsiburadaAPIError as e:
+            if e.status_code == 409:
+                _logger.info(
+                    "Invoice link already exists for HB order %s, "
+                    "marking as sent locally.",
+                    self.hb_order_number,
+                )
+            else:
+                _logger.error(
+                    "Failed to send invoice link for HB order %s: %s",
+                    self.hb_order_number,
+                    str(e),
+                )
+                raise
 
         self.invoice_link_sent = True
         self.invoice_sent_date = fields.Datetime.now()
