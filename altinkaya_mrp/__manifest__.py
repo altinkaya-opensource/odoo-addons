@@ -20,7 +20,6 @@
     "data": [
         "security/ir.model.access.csv",
         "security/mrp_security.xml",
-        "data/mold_maintenance_data.xml",
         "views/mrp_bom_template_line_views.xml",
         # "reports/report_mrporder.xml",
         "views/cron.xml",
@@ -31,7 +30,7 @@
         "views/mrp_routing_views.xml",
         "views/sale_order_view.xml",
         "views/product_views.xml",
-        "views/mold_maintenance_views.xml",
+        "views/maintenance_views.xml",
         "wizards/mrp_cancel_wizard_view.xml",
         "wizards/change_production_qty_view.xml",
     ],
