@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_location_view_form_kardex" model="ir.ui.view">
+        <field name="name">stock.location.form.kardex</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form" />
+        <field name="arch" type="xml">
+            <group name="additional_info" position="after">
+                <field name="is_kardex_root" invisible="1" />
+                <field name="is_kardex_cell" invisible="1" />
+            </group>
+            <field name="comment" position="after">
+                <group
+                    string="Kardex Tray"
+                    name="kardex_tray"
+                    attrs="{'invisible': ['|', ('is_kardex_root', '=', True), ('is_kardex_cell', '=', True)]}"
+                >
+                    <field name="tray_type_id" />
+                    <field
+                        name="shelf_no"
+                        attrs="{'invisible': [('tray_type_id', '=', False)]}"
+                    />
+                    <button
+                        name="action_bring_tray"
+                        type="object"
+                        string="Bring Tray"
+                        icon="fa-arrow-down"
+                        attrs="{'invisible': [('tray_type_id', '=', False)]}"
+                    />
+                    <button
+                        name="action_return_tray"
+                        type="object"
+                        string="Return Tray"
+                        icon="fa-arrow-up"
+                        attrs="{'invisible': [('tray_type_id', '=', False)]}"
+                    />
+                </group>
+                <separator
+                    string="Tray Layout"
+                    attrs="{'invisible': [('tray_type_id', '=', False)]}"
+                />
+                <field
+                    name="tray_matrix"
+                    widget="kardex_tray_matrix"
+                    nolabel="1"
+                    attrs="{'invisible': [('tray_type_id', '=', False)]}"
+                />
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_location_view_search_kardex" model="ir.ui.view">
+        <field name="name">stock.location.search.kardex</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search" />
+        <field name="arch" type="xml">
+            <filter name="supplier" position="after">
+                <separator />
+                <filter
+                    name="kardex_root"
+                    string="Kardex Machines"
+                    domain="[('is_kardex_root', '=', True)]"
+                />
+                <filter
+                    name="kardex_tray"
+                    string="Kardex Trays"
+                    domain="[('is_kardex_tray', '=', True)]"
+                />
+                <filter
+                    name="kardex_cell"
+                    string="Kardex Cells"
+                    domain="[('is_kardex_cell', '=', True)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="groupby_kardex_root"
+                        string="Kardex Machine"
+                        context="{'group_by': 'is_kardex_root'}"
+                    />
+                    <filter
+                        name="groupby_kardex_tray"
+                        string="Kardex Tray"
+                        context="{'group_by': 'is_kardex_tray'}"
+                    />
+                    <filter
+                        name="groupby_kardex_cell"
+                        string="Kardex Cell"
+                        context="{'group_by': 'is_kardex_cell'}"
+                    />
+                </group>
+            </filter>
+        </field>
+    </record>
+</odoo>

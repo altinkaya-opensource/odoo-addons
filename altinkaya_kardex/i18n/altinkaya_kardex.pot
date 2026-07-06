@@ -1,0 +1,693 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* altinkaya_kardex
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-06 13:37+0000\n"
+"PO-Revision-Date: 2026-07-06 13:37+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: altinkaya_kardex
+#: model:ir.model.constraint,message:altinkaya_kardex.constraint_stock_kardex_location_id_unique
+msgid "A Kardex is already linked to this location."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "A cell that holds stock can't be split. Empty it first."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__active
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__active
+msgid "Active"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__address
+msgid "Address"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "All cells must belong to the same tray."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_tray_type_view_form
+msgid "Archived"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__code
+msgid "Barcode used to pick this tray type"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Bring"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
+msgid "Bring Tray"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__cabinet_no
+msgid "Cabinet No"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_picking_view_form_kardex
+msgid "Call Kardex Trays"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__cell_cols
+msgid "Cell Cols"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__cell_rows
+msgid "Cell Rows"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__cell_in_tray_type_id
+msgid "Cell's Tray Type"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "Cells that hold stock can't be merged. Empty them first."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__changeset_change_ids
+msgid "Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__changeset_ids
+msgid "Changesets"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__code
+msgid "Code"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__cols
+msgid "Cols"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__corridor_no
+msgid "Corridor No"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__count_changesets
+msgid "Count Changesets"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__create_uid
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__create_date
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__depot_no
+msgid "Depot No"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__depth
+msgid "Depth"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__depth_per_cell
+msgid "Depth Per Cell"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__depth
+msgid "Depth of the tray in mm"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__display_name
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Group By"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__has_kardex_operation
+msgid "Has Kardex Operation"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__height
+msgid "Height"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__height
+msgid "Height of the tray in mm"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__host
+msgid "Host"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__shelf_no
+msgid ""
+"Human-readable shelf number of this tray. It is both the JMIF carrier the "
+"machine moves and the shelf part of every cell code (e.g. 2-0-1-61-5)."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__id
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__id
+msgid "ID"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__is_kardex_cell
+msgid "Is Kardex Cell"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__is_kardex_root
+msgid "Is Kardex Root"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__is_kardex_tray
+msgid "Is Kardex Tray"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "JMIF Gateway"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__host
+msgid "JMIF gateway host/IP"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__address
+msgid "JMIF machine address, e.g. VLM-1"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__jmif_password
+msgid "Jmif Password"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__jmif_user
+msgid "Jmif User"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__kardex_ids
+#: model:ir.ui.menu,name:altinkaya_kardex.menu_kardex_root
+msgid "Kardex"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid "Kardex %s answered."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Cell"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Cells"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Machine"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.actions.act_window,name:altinkaya_kardex.stock_kardex_action
+#: model:ir.ui.menu,name:altinkaya_kardex.menu_kardex_machines
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Machines"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Tray"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model,name:altinkaya_kardex.model_stock_location_tray_type
+msgid "Kardex Tray Type"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.actions.act_window,name:altinkaya_kardex.stock_location_tray_type_action
+#: model:ir.ui.menu,name:altinkaya_kardex.menu_kardex_tray_types
+msgid "Kardex Tray Types"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
+msgid "Kardex Trays"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model,name:altinkaya_kardex.model_stock_kardex
+msgid "Kardex Vertical Lift"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.esm.js:0
+#, python-format
+msgid "Kardex tray layout"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex____last_update
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__write_uid
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__write_date
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__location_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Location"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "Location %s already has sub-locations; it can't be turned into a tray."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Location Code"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Machine"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.xml:0
+#, python-format
+msgid "Merge"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__name
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__name
+msgid "Name"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "Only 1x1 cells can be merged. Split them first."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_tray_type_view_form
+msgid "Physical dimensions (mm)"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__port
+msgid "Port"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
+msgid "Return Tray"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__location_id
+msgid "Root Location"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__rows
+msgid "Rows"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.esm.js:0
+#, python-format
+msgid "Save the tray before editing its layout."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "Select at least two cells to merge."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_picking_view_form_kardex
+msgid "Send Trays Back"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__cell_in_tray_type_id
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__tray_type_id
+msgid ""
+"Set a tray type to turn this location into a Kardex tray. One child cell "
+"location is generated per grid cell."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "Set the shelf number on tray %s first."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__shelf_no
+msgid "Shelf No"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__smart_search
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__smart_search
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__smart_search
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.xml:0
+#, python-format
+msgid "Split"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model,name:altinkaya_kardex.model_stock_location
+msgid "Stock Location"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Test Connection"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid "The Kardex couldn't perform the task. Check the machine for a fault."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid "The Kardex operation timed out."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid "The Kardex operation was cancelled at the machine."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid ""
+"The Kardex response was lost. Did the operation run at the machine? Check "
+"for inconsistencies before retrying."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid "The connection to the Kardex was refused."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_picking__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_picking__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__count_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__count_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__count_changesets
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_picking__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "The selection must be a solid rectangle."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "This cell is not merged."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__is_kardex_tray
+msgid "This location is a Kardex tray whose cells are auto-generated."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__is_kardex_cell
+msgid "This location is a single cell inside a Kardex tray."
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid "This location is not under a Kardex."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__is_kardex_root
+msgid "This location is the root location of a Kardex machine."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__cabinet_no
+msgid "This machine's number, used in the cell code."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_kardex__location_id
+msgid "Top stock location of the machine. Trays and cells hang under it."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model,name:altinkaya_kardex.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid ""
+"Tray %s still holds stock. Empty its cells before changing or clearing its "
+"tray type."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__tray_cell_contains_stock
+msgid "Tray Cell Contains Stock"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
+msgid "Tray Layout"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__tray_matrix
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__tray_matrix
+msgid "Tray Matrix"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__tray_type_id
+msgid "Tray Type"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__tray_location_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "Trays"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_picking__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__width
+msgid "Width"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__width_per_cell
+msgid "Width Per Cell"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__width
+msgid "Width of the tray in mm"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location_tray_type.py:0
+#, python-format
+msgid ""
+"You can't change the rows/cols of a tray type that is already used by a "
+"tray. Create a new tray type instead."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "e.g. 192.0.2.10"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "e.g. Kardex 1"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
+msgid "e.g. VLM-1"
+msgstr ""
+
+#. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.xml:0
+#, python-format
+msgid "selected"
+msgstr ""

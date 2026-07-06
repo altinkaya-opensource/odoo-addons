@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_picking_view_form_kardex" model="ir.ui.view">
+        <field name="name">stock.picking.form.kardex</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <field name="state" position="before">
+                <field name="has_kardex_operation" invisible="1" />
+                <button
+                    name="action_call_kardex_trays"
+                    type="object"
+                    string="Call Kardex Trays"
+                    icon="fa-arrow-down"
+                    attrs="{'invisible': [('has_kardex_operation', '=', False)]}"
+                />
+                <button
+                    name="action_return_kardex_trays"
+                    type="object"
+                    string="Send Trays Back"
+                    icon="fa-arrow-up"
+                    attrs="{'invisible': [('has_kardex_operation', '=', False)]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

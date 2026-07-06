@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="altinkaya_kardex.KardexTrayMatrix" owl="1">
+        <div class="o_kardex_tray">
+            <div class="o_kardex_grid" t-att-style="gridStyle()">
+                <t t-foreach="matrix.cells" t-as="cell" t-key="cell.id">
+                    <div
+                        t-att-style="cellStyle(cell)"
+                        t-attf-class="o_kardex_cell {{cell.occupied ? 'o_kardex_occupied' : 'o_kardex_empty'}} {{isSelected(cell) ? 'o_kardex_selected' : ''}}"
+                        t-att-title="cell.name"
+                        t-on-click="() => this.toggle(cell)"
+                        role="button"
+                    >
+                        <span t-esc="cell.bin" />
+                    </div>
+                </t>
+            </div>
+            <div class="o_kardex_actions mt-2">
+                <button
+                    class="btn btn-primary btn-sm"
+                    type="button"
+                    t-att-disabled="!canMerge"
+                    t-on-click="onMerge"
+                >Merge</button>
+                <button
+                    class="btn btn-secondary btn-sm ms-2"
+                    type="button"
+                    t-att-disabled="!canSplit"
+                    t-on-click="onSplit"
+                >Split</button>
+                <span class="ms-3 text-muted">
+                    <t t-esc="selection.ids.length" /> selected
+                </span>
+            </div>
+        </div>
+    </t>
+</templates>

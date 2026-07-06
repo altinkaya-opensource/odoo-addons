@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_location_tray_type_user,stock.location.tray.type user,model_stock_location_tray_type,stock.group_stock_user,1,0,0,0
+access_stock_location_tray_type_manager,stock.location.tray.type manager,model_stock_location_tray_type,stock.group_stock_manager,1,1,1,1
+access_stock_kardex_user,stock.kardex user,model_stock_kardex,stock.group_stock_user,1,0,0,0
+access_stock_kardex_manager,stock.kardex manager,model_stock_kardex,stock.group_stock_manager,1,1,1,1
