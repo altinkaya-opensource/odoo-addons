@@ -11,7 +11,7 @@
                         t-on-click="() => this.onCellClick(cell)"
                         role="button"
                     >
-                        <span t-esc="cell.bin" />
+                        <span t-esc="cell.cell_ref" />
                     </div>
                 </t>
             </div>
