@@ -689,3 +689,12 @@ msgid ""
 msgstr ""
 "%s rafının zaten oluşturulmuş hücreleri var. Tipini değiştirmek için "
 "arşivleyip yeni bir raf oluşturun."
+
+#. module: altinkaya_kardex
+msgid "Number of rows — the vertical count (how many cells top to bottom)."
+msgstr "Satır sayısı — dikey adet (üstten alta kaç hücre)."
+
+#. module: altinkaya_kardex
+msgid ""
+"Number of columns — the horizontal count (how many cells left to right)."
+msgstr "Sütun sayısı — yatay adet (soldan sağa kaç hücre)."
