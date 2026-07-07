@@ -120,16 +120,15 @@ class StockLocation(models.Model):
         return f"{depot}-{corridor}-{cabinet}-{shelf}-{bin_no}"
 
     def _sync_cell_names(self):
-        """Rewrite child cell names/barcodes after a code input changes.
+        """Rewrite child cell names after a code input changes.
 
-        The cell code doubles as the scannable location barcode, so the operator
-        can scan the compartment on the hand terminal.
+        The barcode is left empty on generated cells; the name carries the code.
         """
         for tray in self.filtered("tray_type_id"):
             for cell in tray.child_ids.filtered("cell_in_tray_type_id"):
                 new_name = tray._format_cell_name(cell.posx, cell.posy)
-                if cell.name != new_name or cell.barcode != new_name:
-                    cell.write({"name": new_name, "barcode": new_name})
+                if cell.name != new_name:
+                    cell.write({"name": new_name})
 
     def _get_kardex(self):
         """Climb the parent chain to the stock.kardex this location belongs to."""
@@ -197,7 +196,6 @@ class StockLocation(models.Model):
             cell_vals = [
                 {
                     "name": name,
-                    "barcode": name,
                     "posx": col,
                     "posy": row,
                     "posz": posz,
@@ -343,7 +341,6 @@ class StockLocation(models.Model):
                     self.create(
                         {
                             "name": name,
-                            "barcode": name,
                             "posx": col,
                             "posy": row,
                             "posz": tray.posz or 0,

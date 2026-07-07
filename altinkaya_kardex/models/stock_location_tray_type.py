@@ -19,8 +19,14 @@ class StockLocationTrayType(models.Model):
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
     code = fields.Char(required=True, help="Barcode used to pick this tray type")
-    rows = fields.Integer(required=True)
-    cols = fields.Integer(required=True)
+    rows = fields.Integer(
+        required=True,
+        help="Number of rows — the vertical count (how many cells top to bottom).",
+    )
+    cols = fields.Integer(
+        required=True,
+        help="Number of columns — the horizontal count (how many cells left to right).",
+    )
     width = fields.Integer(help="Width of the tray in mm")
     depth = fields.Integer(help="Depth of the tray in mm")
     height = fields.Integer(help="Height of the tray in mm")
