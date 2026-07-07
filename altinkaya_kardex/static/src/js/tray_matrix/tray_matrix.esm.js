@@ -16,8 +16,11 @@ import {useService} from "@web/core/utils/hooks";
 export class KardexTrayMatrixField extends Component {
     setup() {
         this.orm = useService("orm");
+        this.action = useService("action");
         this.notification = useService("notification");
         this.selection = useState({ids: []});
+        // Off: a click opens the cell's location. On: a click selects for merge/split.
+        this.state = useState({mergeMode: false});
     }
 
     get matrix() {
@@ -54,6 +57,28 @@ export class KardexTrayMatrixField extends Component {
             `grid-column:${cell.x + 1}/span ${cell.cols};` +
             `grid-row:${cell.y + 1}/span ${cell.rows};`
         );
+    }
+
+    onCellClick(cell) {
+        if (this.state.mergeMode) {
+            this.toggle(cell);
+        } else {
+            this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "stock.location",
+                res_id: cell.id,
+                views: [[false, "form"]],
+                target: "current",
+            });
+        }
+    }
+
+    setMergeMode(ev) {
+        this.state.mergeMode = ev.target.checked;
+        // Leaving merge mode drops the pending selection so it can't act later.
+        if (!this.state.mergeMode) {
+            this.selection.ids = [];
+        }
     }
 
     toggle(cell) {
