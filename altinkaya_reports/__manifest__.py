@@ -15,6 +15,7 @@
         "account_invoice_pricelist",
         "altinkaya_expense_classification",
         "gs1_digital_link",
+        "altinkaya_kardex",
     ],
     "license": "LGPL-3",
     "author": "Yigit Budak, MAkifOzdemir,OnurUgur,Codequarters,Altinkaya Enclosures",

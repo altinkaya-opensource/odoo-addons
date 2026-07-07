@@ -18,9 +18,7 @@ Dy2-me-dd
 AT,5,10,50,54,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,5,72,382,74
 AA,5,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
-AB,5,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
-                t-out="location.posy or ''"
-            /> Kat:<t t-out="location.posz or ''" />
+AB,5,102,1,1,0,0,<t t-out="location.location_label_line or ''" />
 <t t-if="location.location_id">AA,5,130,1,1,0,0,Ust Konum:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
@@ -34,9 +32,7 @@ Y5,312,cicek_7052
 AT,420,10,50,54,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,420,72,797,74
 AA,420,80,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
-AB,420,102,1,1,0,0,Koridor:<t t-out="location.posx or ''" /> Raf:<t
-                t-out="location.posy or ''"
-            /> Kat:<t t-out="location.posz or ''" />
+AB,420,102,1,1,0,0,<t t-out="location.location_label_line or ''" />
 <t t-if="location.location_id">AA,420,130,1,1,0,0,Ust Konum:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
@@ -71,9 +67,7 @@ Th:m:s
 AT,15,15,75,81,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,15,108,573,111
 AC,15,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
-AD,15,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
-                t-out="location.posy or ''"
-            /> Kat:<t t-out="location.posz or ''" />
+AD,15,153,1,1,0,0E,<t t-out="location.location_label_line or ''" />
 <t t-if="location.location_id">AC,15,195,1,1,0,0,Ust Konum:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>
@@ -87,9 +81,7 @@ Y15,494,cicek_7052
 AT,641,15,75,81,0,0,0,0,<t t-out="location.name[0:20] or ''" />
 Lo,641,108,1199,111
 AC,641,120,1,1,0,0,<t t-out="location.display_name[0:30] or ''" />
-AD,641,153,1,1,0,0E,Koridor:<t t-out="location.posx or ''" /> Raf:<t
-                t-out="location.posy or ''"
-            /> Kat:<t t-out="location.posz or ''" />
+AD,641,153,1,1,0,0E,<t t-out="location.location_label_line or ''" />
 <t t-if="location.location_id">AC,641,195,1,1,0,0,Ust Konum:<t
                 t-out="location.location_id.display_name[0:30] or ''"
             /></t>

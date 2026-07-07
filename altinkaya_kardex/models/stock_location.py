@@ -54,6 +54,10 @@ class StockLocation(models.Model):
         store=True,
         help="This location is the root location of a Kardex machine.",
     )
+    kardex_label_line = fields.Char(
+        compute="_compute_kardex_label_line",
+        help="Position line for a cell's location label (empty for other locations).",
+    )
 
     @api.depends("tray_type_id", "cell_in_tray_type_id", "kardex_ids")
     def _compute_is_kardex(self):
@@ -61,6 +65,27 @@ class StockLocation(models.Model):
             location.is_kardex_tray = bool(location.tray_type_id)
             location.is_kardex_cell = bool(location.cell_in_tray_type_id)
             location.is_kardex_root = bool(location.kardex_ids)
+
+    @api.depends("cell_in_tray_type_id", "posx", "posy", "location_id.shelf_no")
+    def _compute_kardex_label_line(self):
+        """Human-readable position printed on a cell's Godex label.
+
+        Replaces the generic ``Koridor/Raf/Kat`` line, which is meaningless for a
+        Kardex cell whose posx/posy are grid coordinates, not aisle/rack numbers.
+        """
+        for location in self:
+            tray_type = location.cell_in_tray_type_id
+            if not tray_type:
+                location.kardex_label_line = False
+                continue
+            kardex = location._get_kardex()
+            row_no = (tray_type.rows or 1) - location.posy + 1
+            cabinet = kardex.cabinet_no if kardex else ""
+            shelf = location.location_id.shelf_no or ""
+            # ASCII label (no Turkish chars), like the Koridor/Raf/Kat line it replaces.
+            location.kardex_label_line = (
+                f"Dolap:{cabinet} Raf:{shelf} Goz:{location.posx}-{row_no}"
+            )
 
     @api.depends("quant_ids.quantity")
     def _compute_tray_cell_contains_stock(self):
@@ -97,30 +122,28 @@ class StockLocation(models.Model):
                         "rows": cell.cell_rows or 1,
                         "occupied": cell.tray_cell_contains_stock,
                         "name": cell.name,
-                        # Column-major from bottom-left; must match _format_cell_name.
-                        "bin": (cell.posx - 1) * tray_type.rows
-                        + (tray_type.rows - cell.posy + 1),
+                        # Col-row shown in the grid; matches the label's cell address.
+                        "cell_ref": f"{cell.posx}-{tray_type.rows - cell.posy + 1}",
                     }
                     for cell in cells
                 ],
             }
 
     def _format_cell_name(self, col, row):
-        """Structured location code ``depot-corridor-cabinet-shelf-bin``.
+        """Structured location code ``depot-cabinet-shelf-col-row``.
 
-        The first three come from the Kardex machine, the shelf from this tray, and
-        the bin is the cell's running number: column-major from the bottom-left,
-        going up then right (so column 1 is 1,2,... bottom to top, then column 2).
-        Missing inputs render as ``0`` until they are filled and the names resync.
+        depot/cabinet come from the Kardex machine, the shelf from this tray, and the
+        cell is addressed by its column and its row counted from the bottom (so the
+        bottom cell of a column is row 01). Column and row are zero-padded to two
+        digits. Missing inputs render as ``0`` until they are filled and names resync.
         """
         kardex = self._get_kardex()
         rows = self.tray_type_id.rows or 1
-        bin_no = (col - 1) * rows + (rows - row + 1)
+        row_no = rows - row + 1
         depot = kardex.depot_no if kardex else 0
-        corridor = kardex.corridor_no if kardex else 0
         cabinet = kardex.cabinet_no if kardex else 0
         shelf = self.shelf_no or 0
-        return f"{depot}-{corridor}-{cabinet}-{shelf}-{bin_no}"
+        return f"{depot}-{cabinet}-{shelf}-{col:02d}-{row_no:02d}"
 
     def _sync_cell_names(self):
         """Rewrite child cell names after a code input changes.
