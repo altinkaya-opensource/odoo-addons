@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_location_tray_type_view_form" model="ir.ui.view">
+        <field name="name">stock.location.tray.type.form</field>
+        <field name="model">stock.location.tray.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <field name="active" invisible="1" />
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                        </group>
+                        <group>
+                            <field name="rows" />
+                            <field name="cols" />
+                        </group>
+                        <group string="Physical dimensions (mm)">
+                            <field name="width" />
+                            <field name="depth" />
+                            <field name="height" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_location_tray_type_view_tree" model="ir.ui.view">
+        <field name="name">stock.location.tray.type.tree</field>
+        <field name="model">stock.location.tray.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="code" />
+                <field name="rows" />
+                <field name="cols" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock_location_tray_type_action" model="ir.actions.act_window">
+        <field name="name">Kardex Tray Types</field>
+        <field name="res_model">stock.location.tray.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
