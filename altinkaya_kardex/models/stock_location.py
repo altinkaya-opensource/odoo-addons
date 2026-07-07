@@ -97,7 +97,9 @@ class StockLocation(models.Model):
                         "rows": cell.cell_rows or 1,
                         "occupied": cell.tray_cell_contains_stock,
                         "name": cell.name,
-                        "bin": (cell.posy - 1) * tray_type.cols + cell.posx,
+                        # Column-major from bottom-left; must match _format_cell_name.
+                        "bin": (cell.posx - 1) * tray_type.rows
+                        + (tray_type.rows - cell.posy + 1),
                     }
                     for cell in cells
                 ],
@@ -107,12 +109,13 @@ class StockLocation(models.Model):
         """Structured location code ``depot-corridor-cabinet-shelf-bin``.
 
         The first three come from the Kardex machine, the shelf from this tray, and
-        the bin is the cell's running number in the tray (row-major, left to right).
-        Missing inputs render as ``00`` until they are filled and the names resync.
+        the bin is the cell's running number: column-major from the bottom-left,
+        going up then right (so column 1 is 1,2,... bottom to top, then column 2).
+        Missing inputs render as ``0`` until they are filled and the names resync.
         """
         kardex = self._get_kardex()
-        cols = self.tray_type_id.cols or 1
-        bin_no = (row - 1) * cols + col
+        rows = self.tray_type_id.rows or 1
+        bin_no = (col - 1) * rows + (rows - row + 1)
         depot = kardex.depot_no if kardex else 0
         corridor = kardex.corridor_no if kardex else 0
         cabinet = kardex.cabinet_no if kardex else 0

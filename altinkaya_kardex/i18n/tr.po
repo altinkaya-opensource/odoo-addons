@@ -385,6 +385,13 @@ msgid "Merge"
 msgstr "Birleştir"
 
 #. module: altinkaya_kardex
+#. odoo-javascript
+#: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.xml:0
+#, python-format
+msgid "Merge mode"
+msgstr "Birleştirme modu"
+
+#. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__name
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__name
 msgid "Name"
