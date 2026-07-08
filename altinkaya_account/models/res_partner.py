@@ -430,14 +430,16 @@ class ResPartner(models.Model):
             "context": self.env.context,
         }
 
-    def _get_currency_difference_balances(self):
+    def _get_currency_difference_balances(self, date):
         """TL residual and FX balance per foreign-currency receivable account.
 
         Statement rule (mirrors the partner statement in altinkaya_reports):
         posted lines since 2022-01-01, ADVR and KRFRK journals excluded,
-        KFARK/KRDGR lines counted as TRY-only. Posted KFARK invoices are part
-        of the sum, so the calculation is idempotent: right after invoicing,
-        tl_net is zero.
+        KFARK/KRDGR lines counted as TRY-only. Lines not yet due at ``date``
+        are excluded (an open invoice due next month is not part of the
+        settled difference); KFARK lines are exempt from the maturity check
+        so already-issued difference invoices always stay in the sum and the
+        calculation remains idempotent.
         """
         self.ensure_one()
         self.env.cr.execute(
@@ -451,21 +453,51 @@ class ResPartner(models.Model):
               JOIN account_move m ON m.id = l.move_id
               JOIN account_journal aj ON aj.id = m.journal_id
              WHERE l.partner_id = %s
+               AND l.company_id = %s
                AND a.account_type = 'asset_receivable'
                AND a.currency_id IS NOT NULL
                AND m.state = 'posted'
                AND l.date >= %s
                AND m.date >= %s
                AND aj.code NOT IN ('ADVR', 'KRFRK')
+               AND (l.date_maturity IS NULL
+                    OR l.date_maturity <= %s
+                    OR aj.code = 'KFARK')
              GROUP BY l.account_id
             """,
             (
                 self.commercial_partner_id.id,
+                self.env.company.id,
                 self._CURRENCY_VALUATION_START_DATE,
                 self._CURRENCY_VALUATION_START_DATE,
+                date,
             ),
         )
         return self.env.cr.dictfetchall()
+
+    def _get_fx_residual_try_value(self, account, fx_net, date):
+        """TRY value of the partner's remaining FX balance at ``date``.
+
+        The remaining foreign-currency debt is not exchange difference — its
+        TRY equivalent must stay open on the account. Uses the TCMB forex
+        buying rate, like calc_currency_valuation.
+        """
+        if not fx_net:
+            return 0.0
+        rate = self.env["res.currency.rate"].search(
+            [("currency_id", "=", account.currency_id.id), ("name", "<=", date)],
+            order="name desc",
+            limit=1,
+        )
+        if not rate or not rate.tcmb_forex_buying:
+            raise UserError(
+                _(
+                    "No exchange rate information found for %(currency)s at %(date)s!",
+                    currency=account.currency_id.name,
+                    date=date,
+                )
+            )
+        return round(fx_net / rate.tcmb_forex_buying, 2)
 
     def _get_difference_source_invoices(self, account):
         """Customer invoices on this account since the last posted KFARK invoice.
@@ -476,6 +508,7 @@ class ResPartner(models.Model):
         aml_obj = self.env["account.move.line"]
         base_domain = [
             ("partner_id", "=", self.commercial_partner_id.id),
+            ("company_id", "=", self.env.company.id),
             ("account_id", "=", account.id),
             ("move_id.state", "=", "posted"),
             ("date", ">=", self._CURRENCY_VALUATION_START_DATE),
@@ -548,10 +581,7 @@ class ResPartner(models.Model):
                 raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
 
         created_invoices = inv_obj
-        for row in self._get_currency_difference_balances():
-            amount = -row["tl_net"]
-            if abs(amount) < KFARK_MIN_AMOUNT:
-                continue
+        for row in self._get_currency_difference_balances(date):
             account = self.env["account.account"].browse(row["account_id"])
             if abs(row["fx_net"]) >= KFARK_FX_TOLERANCE:
                 _logger.warning(
@@ -562,6 +592,13 @@ class ResPartner(models.Model):
                     row["fx_net"],
                     row["tl_net"],
                 )
+                continue
+            # Only the settled part of the TL residual is exchange
+            # difference; the TRY value of the remaining FX balance stays
+            # open on the account (the customer still owes it in currency).
+            fx_try_value = self._get_fx_residual_try_value(account, row["fx_net"], date)
+            amount = -(row["tl_net"] - fx_try_value)
+            if abs(amount) < KFARK_MIN_AMOUNT:
                 continue
             inv_type = "out_invoice" if amount > 0 else "out_refund"
 

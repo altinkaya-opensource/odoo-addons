@@ -84,7 +84,6 @@
                     options="{'currency_field': 'partner_currency_id','digits': 'invoice'}"
                 />
                 <field name="partner_currency_id" string="$€₺" />
-                <field name="currency_difference_amls" string="Fark" />
                 <field name="partner_currency_id" invisible="1" />
                 <field name="currency_id" invisible="1" />
                 <field name="property_payment_term_id" string="Ödeme Şekli" />
