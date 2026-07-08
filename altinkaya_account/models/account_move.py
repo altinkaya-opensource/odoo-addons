@@ -1,8 +1,12 @@
 # Copyright 2025 Ismail Çağan Yılmaz (https://github.com/milleniumkid)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import Command, _, api, fields, models
+import logging
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
 
 
 class AccountMove(models.Model):
@@ -81,11 +85,7 @@ class AccountMove(models.Model):
     @api.model
     def _compute_full_reconcile_ids(self):
         for invoice in self:
-            if invoice.state == "draft" and invoice.currency_difference_line_ids:
-                invoice.full_reconcile_ids = (
-                    invoice.currency_difference_line_ids.mapped("full_reconcile_id")
-                )
-            elif invoice.state == "posted" and invoice.invoice_line_ids:
+            if invoice.state == "posted" and invoice.invoice_line_ids:
                 invoice.full_reconcile_ids = invoice.line_ids.mapped(
                     "full_reconcile_id"
                 )
@@ -173,55 +173,62 @@ class AccountMove(models.Model):
                 )
 
         if not res:  # This means post was successful
-            # Currency difference invoice
-            for invoice in self.filtered(lambda x: x.currency_difference_line_ids):
-                reconciled_lines = invoice.mapped(
-                    "currency_difference_line_ids.full_reconcile_id.reconciled_line_ids"
+            for invoice in self.filtered(
+                lambda m: (
+                    m.journal_id.code == "KFARK"
+                    and m.move_type in ("out_invoice", "out_refund")
                 )
-                old_difference_lines = reconciled_lines.filtered(
-                    lambda aml: aml.journal_code == "KRFRK"
-                )
-
-                aml_to_reconcile = reconciled_lines - old_difference_lines
-
-                new_currency_diff_line = invoice.line_ids.filtered(
-                    lambda ml: (
-                        ml.account_id
-                        in (
-                            self.partner_id.property_account_payable_id,
-                            self.partner_id.property_account_receivable_id,
-                        )
-                    )
-                )
-
-                full_to_unlink = reconciled_lines.mapped("full_reconcile_id")
-                partials = full_to_unlink.mapped("partial_reconcile_ids")
-                full_to_unlink.unlink()
-
-                new_currency_diff_line.amount_residual = 0.0
-                new_currency_diff_line.amount_residual_currency = 0.0
-                new_currency_diff_line.reconciled = True
-
-                # Create new full with our new line
-                self.env["account.full.reconcile"].with_context(
-                    skip_invoice_sync=True,
-                    skip_invoice_line_sync=True,
-                    skip_account_move_synchronization=True,
-                    check_move_validity=False,
-                ).create(
-                    {
-                        "partial_reconcile_ids": [Command.set(partials.ids)],
-                        "reconciled_line_ids": [
-                            Command.set((aml_to_reconcile + new_currency_diff_line).ids)
-                        ],
-                    }
-                )
-
-                moves_to_cancel = old_difference_lines.mapped("move_id")
-                for move in moves_to_cancel:
-                    move.button_cancel()
+            ):
+                invoice._reverse_outstanding_krfrk()
 
         return res
+
+    def _reverse_outstanding_krfrk(self):
+        """Replace the automatic exchange-difference (KRFRK) entries billed by
+        this KFARK invoice with the invoice itself.
+
+        The outstanding KRFRK moves are reversed with the standard reversal
+        mechanism and the reversal's receivable lines are reconciled against
+        the invoice's receivable line. Existing reconciliations are never
+        touched; when the reversal total differs from the invoice total the
+        residual stays open on purpose — it signals ledger data that needs
+        repair (currency.reconcile.fix.wizard).
+        """
+        self.ensure_one()
+        recv_line = self.line_ids.filtered(lambda ml: ml.display_type == "payment_term")
+        if not recv_line:
+            return
+        account = recv_line.account_id
+        krfrk_moves = self.env["account.move"].search(
+            [
+                ("journal_id", "=", self.company_id.currency_exchange_journal_id.id),
+                ("state", "=", "posted"),
+                ("reversed_entry_id", "=", False),
+                ("reversal_move_id", "=", False),
+                ("line_ids.partner_id", "=", self.commercial_partner_id.id),
+                ("line_ids.account_id", "=", account.id),
+            ]
+        )
+        if not krfrk_moves:
+            _logger.info(
+                "Kur farkı faturası %s: ters kaydedilecek KRFRK kaydı yok, "
+                "fatura satırı açık kalıyor.",
+                self.name,
+            )
+            return
+        reversals = krfrk_moves._reverse_moves(
+            default_values_list=[
+                {
+                    "date": self.invoice_date,
+                    "ref": _("Currency difference invoice %s", self.name),
+                }
+            ]
+            * len(krfrk_moves)
+        )
+        reversals.action_post()
+        rev_lines = reversals.line_ids.filtered(lambda ml: ml.account_id == account)
+        (rev_lines + recv_line).with_context(no_exchange_difference=True).reconcile()
+        self.currency_difference_line_ids = [(6, 0, rev_lines.ids)]
 
     def action_match_einvoice_lines_picking(self):
         """
@@ -279,33 +286,35 @@ class AccountMove(models.Model):
         super()._must_check_constrains_date_sequence()
         return False
 
+    def _teardown_kfark_reversals(self):
+        """Undo the KRFRK reversals created when this KFARK invoice was posted.
+
+        Deleting (not just cancelling) the reversal clears reversal_move_id on
+        the original KRFRK move, so it becomes outstanding again and a re-run
+        of the wizard reproduces the same invoice. Legacy invoices link the
+        original KRFRK lines instead of reversal lines (reversed_entry_id
+        unset) — those are left untouched.
+        """
+        for invoice in self.filtered(
+            lambda m: m.journal_id.code == "KFARK" and m.currency_difference_line_ids
+        ):
+            reversals = invoice.currency_difference_line_ids.move_id.filtered(
+                "reversed_entry_id"
+            )
+            invoice.currency_difference_line_ids = [(5, 0, 0)]
+            if reversals:
+                (reversals.line_ids | invoice.line_ids).remove_move_reconcile()
+                reversals.button_cancel()
+                reversals.with_context(force_delete=True).unlink()
+
     def button_cancel(self):
         res = super().button_cancel()
-
-        if not self:
-            return res
-
-        for invoice in self:
-            if (
-                invoice.currency_difference_line_ids
-                and invoice.journal_id.code == "KFARK"
-            ):
-                for line in invoice.currency_difference_line_ids:
-                    line.write({"difference_checked": False})
+        self._teardown_kfark_reversals()
+        return res
 
     def unlink(self):
-        """
-        When unlinking a currency difference invoice, set the related move lines
-        difference_checked field to False
-        """
+        self._teardown_kfark_reversals()
         for invoice in self:
-            if (
-                invoice.currency_difference_line_ids
-                and invoice.journal_id.code == "KFARK"
-            ):
-                for line in invoice.currency_difference_line_ids:
-                    line.write({"difference_checked": False})
-
             if invoice.installment_fee_tx_id:
                 tx = invoice.installment_fee_tx_id
                 tx.installment_fee_invoiced = False
