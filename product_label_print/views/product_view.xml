@@ -33,6 +33,18 @@
         </field>
     </record>
 
+    <record id="action_print_external_label_multi" model="ir.actions.server">
+        <field name="name">Print External Product Labels</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="product.model_product_product" />
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_print_external_label()
+        </field>
+    </record>
+
     <record id="action_print_molding_label_multi" model="ir.actions.server">
         <field name="name">Print Molding Label Multi Action</field>
         <field name="type">ir.actions.server</field>
