@@ -9,9 +9,10 @@
                 t-set="printer_type"
                 t-value="docs.env.ref('product_label_print.label_product_product_external').printing_printer_id.type"
             />
+            <t t-set="label_count" t-value="len(docs)" />
             <t t-if="printer_type == 'GODEX'">
 ^Q50,3
-^W50
+^W<t t-out="104 if label_count > 1 else 50" />
 ^H10
 ^S5
 ^AT
@@ -23,7 +24,12 @@
 ^E15
 ~R255
 ^XSET,ROTATION,0
-<t t-foreach="docs" t-as="p">
+<t t-foreach="range(0, label_count, 2)" t-as="label_index">
+<t t-set="p" t-value="docs[label_index]" />
+<t
+                t-set="p2"
+                t-value="docs[label_index + 1] if label_index + 1 &lt; label_count else False"
+            />
 <t t-set="lines" t-value="p.label_name_lines(30, 3)" />
 <t
                 t-set="gs1_url"
@@ -39,13 +45,29 @@ Y23,302,tek_cicek
 AT,23,349,24,21,0,0E,0,0,www.altinkaya.com
 <t t-if="gs1_url">W207,206,3,2,Q,8,5,<t t-out="len(gs1_url)" />,0
 <t t-out="Markup(gs1_url)" /></t>
+<t t-if="p2">
+<t t-set="lines2" t-value="p2.label_name_lines(30, 3)" />
+<t
+                t-set="gs1_url2"
+                t-value="p2.barcode and p2.env['gs1.digital.link'].build_product_link(p2.barcode)"
+            />
+AT,429,12,51,49,0,0E,0,0,<t t-out="Markup(p2.default_code or '')" />
+Lo,436,69,782,72
+AT,445,94,28,32,0,0E,0,0,<t t-out="Markup(lines2[0] if lines2 else '')" />
+<t t-if="len(lines2) > 1">AT,445,126,28,32,0,0E,0,0,<t t-out="Markup(lines2[1])" /></t>
+<t t-if="len(lines2) > 2">AT,445,158,28,32,0,0E,0,0,<t t-out="Markup(lines2[2])" /></t>
+Y438,302,tek_cicek
+AT,438,349,24,21,0,0E,0,0,www.altinkaya.com
+<t t-if="gs1_url2">W622,206,3,2,Q,8,5,<t t-out="len(gs1_url2)" />,0
+<t t-out="Markup(gs1_url2)" /></t>
+</t>
 ^P1
 E
 </t>
 </t>
             <t t-if="printer_type == 'GODEX300'">
 ^Q50,3
-^W50
+^W<t t-out="104 if label_count > 1 else 50" />
 ^H10
 ^S5
 ^AT
@@ -57,7 +79,12 @@ E
 ^E15
 ~R255
 ^XSET,ROTATION,0
-<t t-foreach="docs" t-as="p">
+<t t-foreach="range(0, label_count, 2)" t-as="label_index">
+<t t-set="p" t-value="docs[label_index]" />
+<t
+                t-set="p2"
+                t-value="docs[label_index + 1] if label_index + 1 &lt; label_count else False"
+            />
 <t t-set="lines" t-value="p.label_name_lines(30, 3)" />
 <t
                 t-set="gs1_url"
@@ -73,6 +100,22 @@ Y33,440,tek_cicek
 AT,33,510,36,32,0,0E,0,0,www.altinkaya.com
 <t t-if="gs1_url">W311,309,3,2,Q,8,7,<t t-out="len(gs1_url)" />,0
 <t t-out="Markup(gs1_url)" /></t>
+<t t-if="p2">
+<t t-set="lines2" t-value="p2.label_name_lines(30, 3)" />
+<t
+                t-set="gs1_url2"
+                t-value="p2.barcode and p2.env['gs1.digital.link'].build_product_link(p2.barcode)"
+            />
+AT,647,18,77,74,0,0E,0,0,<t t-out="Markup(p2.default_code or '')" />
+Lo,658,104,1177,108
+AT,679,141,42,48,0,0E,0,0,<t t-out="Markup(lines2[0] if lines2 else '')" />
+<t t-if="len(lines2) > 1">AT,679,189,42,48,0,0E,0,0,<t t-out="Markup(lines2[1])" /></t>
+<t t-if="len(lines2) > 2">AT,679,237,42,48,0,0E,0,0,<t t-out="Markup(lines2[2])" /></t>
+Y659,440,tek_cicek
+AT,659,510,36,32,0,0E,0,0,www.altinkaya.com
+<t t-if="gs1_url2">W937,309,3,2,Q,8,7,<t t-out="len(gs1_url2)" />,0
+<t t-out="Markup(gs1_url2)" /></t>
+</t>
 ^P1
 E
 </t>
