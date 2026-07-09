@@ -115,8 +115,7 @@ class ProductProduct(models.Model):
         return wrap_words(name, width, max_lines)
 
     def action_print_external_label(self):
-        """Print the customer-facing label (branding + code + name + GS1 QR,
-        no lot/qty) for all selected products, paired two-per-row."""
+        """Print the showroom label (code + name + GS1 QR, no lot/qty)."""
         self = self.with_context(must_skip_send_to_printer=True)
         external_label = self.env.ref(
             "product_label_print.label_product_product_external"

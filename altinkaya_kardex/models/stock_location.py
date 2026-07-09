@@ -105,7 +105,7 @@ class StockLocation(models.Model):
             shelf = location.location_id.shelf_no or ""
             # ASCII label (no Turkish chars), like the Koridor/Raf/Kat line it replaces.
             location.kardex_label_line = (
-                f"Dolap:{cabinet} Raf:{shelf} Goz:{location.posx}-{row_no}"
+                f"Kardex:{cabinet} Tepsi:{shelf} Sira:{location.posx}-{row_no}"
             )
 
     @api.depends("quant_ids.quantity")
