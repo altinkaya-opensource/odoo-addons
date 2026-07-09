@@ -54,6 +54,7 @@ class StockLocation(models.Model):
         store=True,
         help="This location is the root location of a Kardex machine.",
     )
+    child_location_count = fields.Integer(compute="_compute_child_location_count")
     kardex_label_line = fields.Char(
         compute="_compute_kardex_label_line",
         help="Position line for a cell's location label (empty for other locations).",
@@ -65,6 +66,22 @@ class StockLocation(models.Model):
             location.is_kardex_tray = bool(location.tray_type_id)
             location.is_kardex_cell = bool(location.cell_in_tray_type_id)
             location.is_kardex_root = bool(location.kardex_ids)
+
+    def _compute_child_location_count(self):
+        for location in self:
+            location.child_location_count = len(location.child_ids)
+
+    def action_open_child_locations(self):
+        """Open the direct sub-locations of this location in a list view."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Sub-locations"),
+            "res_model": "stock.location",
+            "view_mode": "tree,form",
+            "domain": [("location_id", "=", self.id)],
+            "context": {"default_location_id": self.id},
+        }
 
     @api.depends(
         "cell_in_tray_type_id", "posx", "posy", "cell_rows", "location_id.shelf_no"

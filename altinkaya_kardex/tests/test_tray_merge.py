@@ -26,6 +26,11 @@ class TestTrayMerge(TransactionCase):
             lambda c: c.posx == col and c.posy == 4 - display_row + 1
         )
 
+    def test_child_location_count_button(self):
+        self.assertEqual(self.tray.child_location_count, 16)
+        action = self.tray.action_open_child_locations()
+        self.assertEqual(action["domain"], [("location_id", "=", self.tray.id)])
+
     def test_merge_keeps_bottom_left_name_and_split_restores(self):
         # Merge 6-3, 6-4 style block: cols 1-2, display rows 2-3.
         cells = (

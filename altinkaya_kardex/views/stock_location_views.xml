@@ -5,6 +5,21 @@
         <field name="model">stock.location</field>
         <field name="inherit_id" ref="stock.view_location_form" />
         <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_open_child_locations"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-sitemap"
+                    attrs="{'invisible': [('child_location_count', '=', 0)]}"
+                >
+                    <field
+                        name="child_location_count"
+                        widget="statinfo"
+                        string="Sub-locations"
+                    />
+                </button>
+            </div>
             <group name="additional_info" position="after">
                 <field name="is_kardex_root" invisible="1" />
                 <field name="is_kardex_cell" invisible="1" />
