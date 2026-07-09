@@ -978,6 +978,7 @@ class DeliveryCarrier(models.Model):
 
         pickup_date, ready_time, close_time = self._get_ups_pickup_window()
         address_lines = self._split_ups_address_lines(warehouse_partner)
+        pickup_note = self._get_pickup_note_from_invoice(picking, max_length=57)
 
         payload = {
             "PickupCreationRequest": {
@@ -1038,6 +1039,8 @@ class DeliveryCarrier(models.Model):
                 "ReferenceNumber": picking.name or "",
             }
         }
+        if pickup_note:
+            payload["PickupCreationRequest"]["SpecialInstruction"] = pickup_note
 
         ups_request = UPSRequest(
             prod=self.prod_environment,

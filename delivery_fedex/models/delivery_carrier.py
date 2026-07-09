@@ -1208,6 +1208,7 @@ class DeliveryCarrier(models.Model):
         Prepare FedEx pickup payload for the given picking.
         """
         warehouse_partner = picking.location_id.warehouse_id.partner_id
+        pickup_note = self._get_pickup_note_from_invoice(picking, max_length=60)
 
         data = {
             "associatedAccountNumber": {"value": self.fedex_account_number},
@@ -1235,6 +1236,9 @@ class DeliveryCarrier(models.Model):
             "countryRelationship": "INTERNATIONAL",
             "trackingNumber": tracking_number,
         }
+        if pickup_note:
+            data["remarks"] = pickup_note
+
         if "freight" in self.fedex_service_type.lower():
             first_pallet = fields.first(
                 picking.package_ids.filtered(lambda p: p.is_pallet)

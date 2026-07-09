@@ -4,7 +4,7 @@
 {
     "name": "Delivery FedEx",
     "summary": "Delivery Carrier implementation for FedEx API",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "category": "Stock",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Altinkaya Enclosures, Erol Develi, Ahmet Yigit Budak",

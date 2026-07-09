@@ -150,6 +150,13 @@ class DeliveryCarrier(models.Model):
         else:
             raise ValidationError(_("No Reference Sequence defined for this carrier"))
 
+    def _get_pickup_note_from_invoice(self, picking, max_length=None):
+        invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[:1]
+        if not invoice:
+            return ""
+        note = " ".join((invoice.delivery_pickup_note or "").split())
+        return note[:max_length] if max_length else note
+
     def _update_all_picking_status(self):
         """
         Update integrated pickings in a batch

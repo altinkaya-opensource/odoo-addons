@@ -371,6 +371,7 @@ class DeliveryCarrier(models.Model):
 
         warehouse_id = picking.location_id.warehouse_id
         invoice = picking.invoice_ids.filtered(lambda m: m.state == "posted")[0]
+        pickup_note = self._get_pickup_note_from_invoice(picking, max_length=240)
         data = {
             "accounts": [{"typeCode": "shipper", "number": self.dhl_account_number}],
             "customerDetails": {
@@ -441,6 +442,12 @@ class DeliveryCarrier(models.Model):
                 "unitOfMeasurement": "metric",
             },
         }
+
+        if pickup_note:
+            data["pickup"]["specialInstructions"] = [
+                {"value": pickup_note[i : i + 80]}
+                for i in range(0, len(pickup_note), 80)
+            ]
 
         data["content"].update(
             self._prepare_dhl_customs_data(picking, picking.shipping_weight)
