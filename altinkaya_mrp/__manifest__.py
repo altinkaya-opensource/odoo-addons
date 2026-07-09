@@ -30,6 +30,7 @@
         "views/mrp_routing_views.xml",
         "views/sale_order_view.xml",
         "views/product_views.xml",
+        "views/maintenance_views.xml",
         "wizards/mrp_cancel_wizard_view.xml",
         "wizards/change_production_qty_view.xml",
     ],

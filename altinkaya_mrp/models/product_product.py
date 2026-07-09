@@ -1,8 +1,12 @@
-from odoo import models
+from odoo import fields, models
 
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
+
+    maintenance_log_ids = fields.One2many(
+        "maintenance.log", "product_id", string="Maintenance Logs"
+    )
 
     def action_view_mos(self):
         action = self.env.ref("mrp.mrp_production_report").sudo().read()[0]
