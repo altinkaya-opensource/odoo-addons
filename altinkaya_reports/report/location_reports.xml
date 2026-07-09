@@ -97,6 +97,7 @@ E</t>
 ^P1
 E</t>
  </t>
+        <t t-out="'\n'" />
     </template>
     <!-- Dialect follows the clicking user's own label printer, routes to their default printer. -->
     <template id="location_report_godex" name="location report godex">
