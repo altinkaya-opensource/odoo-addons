@@ -64,6 +64,20 @@
         </field>
     </record>
 
+    <record id="stock_location_view_tree_kardex" model="ir.ui.view">
+        <field name="name">stock.location.tree.kardex</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2" />
+        <field name="arch" type="xml">
+            <!-- Kardex shelf columns, off by default; toggle from the list's
+                 optional-columns menu. shelf_no is only meaningful on trays. -->
+            <field name="usage" position="after">
+                <field name="tray_type_id" optional="hide" />
+                <field name="shelf_no" optional="hide" />
+            </field>
+        </field>
+    </record>
+
     <record id="stock_location_view_search_kardex" model="ir.ui.view">
         <field name="name">stock.location.search.kardex</field>
         <field name="model">stock.location</field>
