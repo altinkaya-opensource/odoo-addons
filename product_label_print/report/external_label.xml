@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Customer-facing label on 50x50 mm single-up stock: product code,
+    <!-- Showroom label on 50x50 mm single-up stock: product code,
          name, website and GS1 QR - no lot/qty. One label per product.
-         Name lines wrap at 17 chars so they stay left of the QR column. -->
+         Name lines wrap at 30 chars so they stay above the QR column. -->
     <template id="product_external_label">
         <t t-translation="off">
             <t
@@ -30,14 +30,14 @@
                 t-value="p.barcode and p.env['gs1.digital.link'].build_product_link(p.barcode)"
             />
 ^L
-R6,6,395,394,3,3
-AT,35,23,36,40,0,0E,0,0,<t t-out="Markup(p.default_code or '')" />
-Lo,33,76,379,79
-AT,35,94,22,22,0,0E,0,0,<t t-out="Markup(lines[0] if lines else '')" />
-<t t-if="len(lines) > 1">AT,35,125,22,22,0,0E,0,0,<t t-out="Markup(lines[1])" /></t>
-<t t-if="len(lines) > 2">AT,35,156,22,22,0,0E,0,0,<t t-out="Markup(lines[2])" /></t>
-AT,24,356,19,19,0,0E,0,0,www.altinkaya.com
-<t t-if="gs1_url">W227,228,3,2,M,8,5,<t t-out="len(gs1_url)" />,0
+AT,14,12,51,49,0,0E,0,0,<t t-out="Markup(p.default_code or '')" />
+Lo,21,69,367,72
+AT,30,94,28,32,0,0E,0,0,<t t-out="Markup(lines[0] if lines else '')" />
+<t t-if="len(lines) > 1">AT,30,126,28,32,0,0E,0,0,<t t-out="Markup(lines[1])" /></t>
+<t t-if="len(lines) > 2">AT,30,158,28,32,0,0E,0,0,<t t-out="Markup(lines[2])" /></t>
+Y23,302,tek_cicek
+AT,23,349,24,21,0,0E,0,0,www.altinkaya.com
+<t t-if="gs1_url">W207,206,3,2,Q,8,5,<t t-out="len(gs1_url)" />,0
 <t t-out="Markup(gs1_url)" /></t>
 ^P1
 E
@@ -64,14 +64,14 @@ E
                 t-value="p.barcode and p.env['gs1.digital.link'].build_product_link(p.barcode)"
             />
 ^L
-R9,9,592,591,4,4
-AT,52,34,54,60,0,0E,0,0,<t t-out="Markup(p.default_code or '')" />
-Lo,50,114,568,118
-AT,52,141,33,33,0,0E,0,0,<t t-out="Markup(lines[0] if lines else '')" />
-<t t-if="len(lines) > 1">AT,52,188,33,33,0,0E,0,0,<t t-out="Markup(lines[1])" /></t>
-<t t-if="len(lines) > 2">AT,52,235,33,33,0,0E,0,0,<t t-out="Markup(lines[2])" /></t>
-AT,36,534,28,28,0,0E,0,0,www.altinkaya.com
-<t t-if="gs1_url">W340,342,3,2,M,8,7,<t t-out="len(gs1_url)" />,0
+AT,21,18,77,74,0,0E,0,0,<t t-out="Markup(p.default_code or '')" />
+Lo,32,104,551,108
+AT,53,141,42,48,0,0E,0,0,<t t-out="Markup(lines[0] if lines else '')" />
+<t t-if="len(lines) > 1">AT,53,189,42,48,0,0E,0,0,<t t-out="Markup(lines[1])" /></t>
+<t t-if="len(lines) > 2">AT,53,237,42,48,0,0E,0,0,<t t-out="Markup(lines[2])" /></t>
+Y33,440,tek_cicek
+AT,33,510,36,32,0,0E,0,0,www.altinkaya.com
+<t t-if="gs1_url">W311,309,3,2,Q,8,7,<t t-out="len(gs1_url)" />,0
 <t t-out="Markup(gs1_url)" /></t>
 ^P1
 E
