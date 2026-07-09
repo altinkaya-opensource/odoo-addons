@@ -43,21 +43,21 @@ Y16,312,cicek_7052
 <t t-out="Markup(label.label1.gs1_url)" /></t>
 </t>
 <t t-if="not label.second_label_empty">
-AT,435,8,45,46,0,0E,0,0,[<t t-out="Markup(label.label2.default_code)" />]
-AB,435,59,1,1,0,0E,<t t-out="Markup(label.label2.nameL1[0:40] or '')" />
-AB,435,83,1,1,0,0E,<t t-out="Markup(label.label2.nameL2[0:40] or '')" />
-AB,435,107,1,1,0,0E,<t t-out="Markup(label.label2.nameL3[0:40] or '')" />
-AA,435,139,1,1,0,0E,<t
+AT,431,8,45,46,0,0E,0,0,[<t t-out="Markup(label.label2.default_code)" />]
+AB,431,59,1,1,0,0E,<t t-out="Markup(label.label2.nameL1[0:40] or '')" />
+AB,431,83,1,1,0,0E,<t t-out="Markup(label.label2.nameL2[0:40] or '')" />
+AB,431,107,1,1,0,0E,<t t-out="Markup(label.label2.nameL3[0:40] or '')" />
+AA,431,139,1,1,0,0E,<t
                     t-out="Markup(label.label2.note or label.label2.nameL4[0:40] or '')"
                 />
 <t t-if="label.label2.pieces_in_pack > 0.0">
-AT,435,162,30,36,0,0E,0,0,<t
+AT,431,162,30,36,0,0E,0,0,<t
                     t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
-AB,435,206,1,1,0,0E,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />
-Y435,312,cicek_7052
-<t t-if="label.label2.gs1_url">W614,198,3,2,Q,8,5,<t
+AB,431,206,1,1,0,0E,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />
+Y431,312,cicek_7052
+<t t-if="label.label2.gs1_url">W610,198,3,2,Q,8,5,<t
                     t-out="len(label.label2.gs1_url)"
                 />,0
 <t t-out="Markup(label.label2.gs1_url)" /></t>
@@ -69,7 +69,7 @@ E
                 <t t-if="o.printer_type == 'GODEX300'">
 <t t-if="o.label_ids[0].first_label_empty">^B52</t>
 ^Q50,3
-^W50
+^W<t t-out="104 if any(not row.second_label_empty for row in o.label_ids) else 50" />
 ^H10
 ^S5
 ^AT
@@ -100,17 +100,17 @@ AT,24,314,53,45,0,0E,0,0,Lot <t t-out="Markup(label.label1.lot_id.name or '')" /
 <t t-out="Markup(label.label1.gs1_url)" /></t>
 </t>
 <t t-if="not label.second_label_empty">
-AT,643,12,66,68,0,0E,0,0,[<t t-out="Markup(label.label2.default_code)" />]
-AB,643,84,1,2,0,0E,<t t-out="Markup(label.label2.nameL1[0:40] or '')" />
-AB,643,136,1,2,0,0E,<t t-out="Markup(label.label2.nameL2[0:40] or '')" />
-AB,643,188,1,2,0,0E,<t t-out="Markup(label.label2.nameL3[0:40] or '')" />
+AT,650,12,66,68,0,0E,0,0,[<t t-out="Markup(label.label2.default_code)" />]
+AB,650,84,1,2,0,0E,<t t-out="Markup(label.label2.nameL1[0:40] or '')" />
+AB,650,136,1,2,0,0E,<t t-out="Markup(label.label2.nameL2[0:40] or '')" />
+AB,650,188,1,2,0,0E,<t t-out="Markup(label.label2.nameL3[0:40] or '')" />
 <t t-if="label.label2.pieces_in_pack > 0.0">
-AT,643,250,45,49,0,0E,0,0,<t
+AT,650,250,45,49,0,0E,0,0,<t
                     t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
-AT,643,314,53,45,0,0E,0,0,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />
-<t t-if="label.label2.gs1_url">W896,279,3,2,Q,8,8,<t
+AT,650,314,53,45,0,0E,0,0,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />
+<t t-if="label.label2.gs1_url">W903,279,3,2,Q,8,8,<t
                     t-out="len(label.label2.gs1_url)"
                 />,0
 <t t-out="Markup(label.label2.gs1_url)" /></t>

@@ -210,17 +210,17 @@ class PrintPackBarcodeWizard(models.TransientModel):
                     labels_to_print = labels_to_print - 1
 
                 if labels_to_print > 1:
-                    # 1 1
+                    copies_to_print = labels_to_print // 2
                     Label_l = label_template_obj.create(
                         {
                             "first_label_empty": False,
                             "label1": product_label.id,
                             "second_label_empty": False,
                             "label2": product_label.id,
-                            "copies_to_print": labels_to_print / 2,
+                            "copies_to_print": copies_to_print,
                         }
                     )
-                    labels_to_print = labels_to_print - (int(labels_to_print / 2) * 2)
+                    labels_to_print = labels_to_print - (copies_to_print * 2)
                     Label_Res.append(Label_l.id)
                 if labels_to_print == 1:
                     leap_label = True
