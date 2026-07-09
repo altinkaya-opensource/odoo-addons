@@ -54,6 +54,7 @@ class StockLocation(models.Model):
         store=True,
         help="This location is the root location of a Kardex machine.",
     )
+    child_location_count = fields.Integer(compute="_compute_child_location_count")
     kardex_label_line = fields.Char(
         compute="_compute_kardex_label_line",
         help="Position line for a cell's location label (empty for other locations).",
@@ -66,7 +67,25 @@ class StockLocation(models.Model):
             location.is_kardex_cell = bool(location.cell_in_tray_type_id)
             location.is_kardex_root = bool(location.kardex_ids)
 
-    @api.depends("cell_in_tray_type_id", "posx", "posy", "location_id.shelf_no")
+    def _compute_child_location_count(self):
+        for location in self:
+            location.child_location_count = len(location.child_ids)
+
+    def action_open_child_locations(self):
+        """Open the direct sub-locations of this location in a list view."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Sub-locations"),
+            "res_model": "stock.location",
+            "view_mode": "tree,form",
+            "domain": [("location_id", "=", self.id)],
+            "context": {"default_location_id": self.id},
+        }
+
+    @api.depends(
+        "cell_in_tray_type_id", "posx", "posy", "cell_rows", "location_id.shelf_no"
+    )
     def _compute_kardex_label_line(self):
         """Human-readable position printed on a cell's Godex label.
 
@@ -79,7 +98,9 @@ class StockLocation(models.Model):
                 location.kardex_label_line = False
                 continue
             kardex = location._get_kardex()
-            row_no = (tray_type.rows or 1) - location.posy + 1
+            # A merged cell is addressed by the bottom row of its span.
+            bottom_row = location.posy + (location.cell_rows or 1) - 1
+            row_no = (tray_type.rows or 1) - bottom_row + 1
             cabinet = kardex.cabinet_no if kardex else ""
             shelf = location.location_id.shelf_no or ""
             # ASCII label (no Turkish chars), like the Koridor/Raf/Kat line it replaces.
@@ -110,8 +131,9 @@ class StockLocation(models.Model):
                 location.tray_matrix = {}
                 continue
             cells = location.child_ids.filtered("cell_in_tray_type_id")
+            rows = tray_type.rows
             location.tray_matrix = {
-                "rows": tray_type.rows,
+                "rows": rows,
                 "cols": tray_type.cols,
                 "cells": [
                     {
@@ -122,8 +144,10 @@ class StockLocation(models.Model):
                         "rows": cell.cell_rows or 1,
                         "occupied": cell.tray_cell_contains_stock,
                         "name": cell.name,
-                        # Col-row shown in the grid; matches the label's cell address.
-                        "cell_ref": f"{cell.posx}-{tray_type.rows - cell.posy + 1}",
+                        # Col-row shown in the grid; matches the label's cell address
+                        # (a merged cell is addressed by the bottom row of its span).
+                        "cell_ref": f"{cell.posx}-"
+                        f"{rows - (cell.posy + (cell.cell_rows or 1) - 1) + 1}",
                     }
                     for cell in cells
                 ],
@@ -152,7 +176,9 @@ class StockLocation(models.Model):
         """
         for tray in self.filtered("tray_type_id"):
             for cell in tray.child_ids.filtered("cell_in_tray_type_id"):
-                new_name = tray._format_cell_name(cell.posx, cell.posy)
+                # A merged cell is named after the bottom row of its span.
+                bottom_row = cell.posy + (cell.cell_rows or 1) - 1
+                new_name = tray._format_cell_name(cell.posx, bottom_row)
                 if cell.name != new_name:
                     cell.write({"name": new_name})
 
@@ -311,8 +337,10 @@ class StockLocation(models.Model):
     def action_merge_cells(self):
         """Merge ``self`` (a solid rectangle of empty 1x1 cells) into one cell.
 
-        The top-left cell becomes the anchor and grows to span the rectangle; the
-        others are archived (not unlinked, so historical moves keep their source).
+        The top-left cell becomes the anchor and grows to span the rectangle, but
+        it takes the bottom-left cell's code (rows are counted from the bottom, so
+        the merged cell keeps the lowest code, e.g. 1-2 + 1-3 -> 1-2). The other
+        cells are archived (not unlinked, so historical moves keep their source).
         """
         if len(self) < 2:
             raise UserError(_("Select at least two cells to merge."))
@@ -330,7 +358,13 @@ class StockLocation(models.Model):
         if len(self) != (x2 - x1 + 1) * (y2 - y1 + 1):
             raise UserError(_("The selection must be a solid rectangle."))
         anchor = self.filtered(lambda c: c.posx == x1 and c.posy == y1)
-        anchor.write({"cell_cols": x2 - x1 + 1, "cell_rows": y2 - y1 + 1})
+        anchor.write(
+            {
+                "cell_cols": x2 - x1 + 1,
+                "cell_rows": y2 - y1 + 1,
+                "name": tray._format_cell_name(x1, y2),
+            }
+        )
         (self - anchor).write({"active": False})
         return True
 
@@ -346,7 +380,11 @@ class StockLocation(models.Model):
         tray = self.location_id
         x1, y1 = self.posx, self.posy
         cols, rows = self.cell_cols, self.cell_rows
-        self.write({"cell_cols": 1, "cell_rows": 1})
+        # Shrinking back to 1x1 also restores the anchor's own position code
+        # (it carried the bottom-left cell's code while merged).
+        self.write(
+            {"cell_cols": 1, "cell_rows": 1, "name": tray._format_cell_name(x1, y1)}
+        )
         Cell = self.with_context(active_test=False)
         for row in range(y1, y1 + rows):
             for col in range(x1, x1 + cols):
