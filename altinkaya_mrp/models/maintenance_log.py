@@ -8,14 +8,13 @@ class MaintenanceLog(models.Model):
 
     product_id = fields.Many2one(
         "product.product",
-        string="Product",
         required=True,
         ondelete="cascade",
         index=True,
     )
-    note = fields.Text(string="Note")
-    photo = fields.Image(string="Photo")
-    duration = fields.Float(string="Duration")
+    note = fields.Text()
+    photo = fields.Image()
+    duration = fields.Float()
     duration_uom_id = fields.Many2one(
         "uom.uom",
         string="Duration UoM",
@@ -23,5 +22,5 @@ class MaintenanceLog(models.Model):
             ("category_id", "=", self.env.ref("uom.uom_categ_wtime").id)
         ],
     )
-    performed_by_id = fields.Many2one("hr.employee", string="Performed By")
+    performed_by_id = fields.Many2one("hr.employee")
     # created_by = create_uid, date = create_date (automatic)

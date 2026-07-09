@@ -15,9 +15,7 @@ class TestMaintenance(TransactionCase):
     def test_log_create_and_link(self):
         if not self.product:
             self.skipTest("no product in this DB")
-        log = self.Log.create(
-            {"product_id": self.product.id, "note": "Test note"}
-        )
+        log = self.Log.create({"product_id": self.product.id, "note": "Test note"})
         self.assertEqual(log.create_uid, self.env.user)
         self.assertIn(log, self.product.maintenance_log_ids)
 
