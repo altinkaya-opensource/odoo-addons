@@ -103,6 +103,8 @@ export class KardexTrayMatrixField extends Component {
         await this.orm.call("stock.location", method, [[...this.selection.ids]]);
         this.selection.ids = [];
         await this.props.record.load();
+        // load() refreshes the data but never re-renders; notify() does.
+        this.props.record.model.notify();
     }
 
     onMerge() {
