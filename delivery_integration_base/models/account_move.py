@@ -19,6 +19,10 @@ class AccountMove(models.Model):
         help="Some carriers provide multiple reference numbers for a "
         "single shipment if it contains multiple packages.",
     )
+    delivery_pickup_note = fields.Text(
+        string="Pickup Note",
+        help="Extra note sent to the delivery carrier when scheduling pickup.",
+    )
 
     def send_to_shipper(self):
         """

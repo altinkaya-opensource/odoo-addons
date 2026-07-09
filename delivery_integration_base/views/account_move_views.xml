@@ -15,6 +15,7 @@
                     name="multiple_delivery_ref_no"
                     attrs="{'invisible': [('multiple_delivery_ref_no', '=', False)]}"
                 />
+                <field name="delivery_pickup_note" />
             </xpath>
         </field>
     </record>
