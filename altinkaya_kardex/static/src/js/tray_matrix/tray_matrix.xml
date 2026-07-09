@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="altinkaya_kardex.KardexTrayMatrix" owl="1">
+        <div class="o_kardex_tray">
+            <div class="o_kardex_grid" t-att-style="gridStyle()">
+                <t t-foreach="matrix.cells" t-as="cell" t-key="cell.id">
+                    <div
+                        t-att-style="cellStyle(cell)"
+                        t-attf-class="o_kardex_cell {{cell.occupied ? 'o_kardex_occupied' : 'o_kardex_empty'}} {{isSelected(cell) ? 'o_kardex_selected' : ''}}"
+                        t-att-title="cell.name"
+                        t-on-click="() => this.onCellClick(cell)"
+                        role="button"
+                    >
+                        <span t-esc="cell.cell_ref" />
+                    </div>
+                </t>
+            </div>
+            <div class="o_kardex_actions mt-2">
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="kardex_merge_mode"
+                        t-att-checked="state.mergeMode"
+                        t-on-change="setMergeMode"
+                    />
+                    <label
+                        class="form-check-label"
+                        for="kardex_merge_mode"
+                    >Merge mode</label>
+                </div>
+                <t t-if="state.mergeMode">
+                    <button
+                        class="btn btn-primary btn-sm ms-2"
+                        type="button"
+                        t-att-disabled="!canMerge"
+                        t-on-click="onMerge"
+                    >Merge</button>
+                    <button
+                        class="btn btn-secondary btn-sm ms-2"
+                        type="button"
+                        t-att-disabled="!canSplit"
+                        t-on-click="onSplit"
+                    >Split</button>
+                    <span class="ms-3 text-muted">
+                        <t t-esc="selection.ids.length" /> selected
+                    </span>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

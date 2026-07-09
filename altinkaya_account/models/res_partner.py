@@ -2,9 +2,19 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
-from odoo import Command, _, api, fields, models
+import logging
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
+
+_logger = logging.getLogger(__name__)
+
+# Skip a foreign-currency account when its FX balance is not (nearly) closed:
+# kur farkı is only invoiced once the customer has zeroed the currency balance.
+KFARK_FX_TOLERANCE = 5.0
+# Ignore TL residuals below this (rounding noise).
+KFARK_MIN_AMOUNT = 1.0
 
 
 class ResPartner(models.Model):
@@ -228,25 +238,6 @@ class ResPartner(models.Model):
         )
         return [("id", "in", partners.ids)]
 
-    def _search_diff_check(self, operator, value):
-        AccountMoveLine = self.env["account.move.line"]
-        domain = [
-            ("difference_checked", "=", False),
-            (
-                "journal_id",
-                "=",
-                self.env.company.currency_exchange_journal_id.id,
-            ),
-            ("partner_id", "!=", False),
-        ]
-        result = [
-            res["partner_id"][0]
-            for res in AccountMoveLine.read_group(
-                domain, ["partner_id"], ["partner_id"]
-            )
-        ]
-        return [("id", "in", result)]
-
     tax_office_name = fields.Char("Tax Office")
     z_muhasebe_kodu = fields.Char(
         "Zirve Muhasebe kodu", size=64, required=False, translate=False
@@ -267,63 +258,10 @@ class ResPartner(models.Model):
         search="_search_due_days",
     )
 
-    currency_difference_amls = fields.Many2many(
-        "account.move.line",
-        string="Currency Difference Move Lines",
-        compute="_compute_currency_difference_amls",
-    )
-
-    currency_difference_to_invoice = fields.Boolean(
-        string="Currency Difference to invoice",
-        compute="_compute_difference_to_invoice",
-        search="_search_diff_check",
-    )
-
     currency_difference_checked = fields.Boolean(
         default=False,
         help="Manual check for currency difference",
     )
-
-    def _get_difference_aml_domain(self):
-        return [
-            ("partner_id", "=", self.id),
-            ("journal_id", "=", self.env.company.currency_exchange_journal_id.id),
-            ("move_id.reversal_move_id", "=", False),
-            ("move_id.reversed_entry_id", "=", False),
-            ("difference_checked", "=", False),
-            ("move_id.state", "=", "posted"),
-            ("account_id", "=", self.property_account_receivable_id.id),
-        ]
-
-    def _compute_currency_difference_amls(self):
-        for partner in self:
-            difference_aml_domain = partner._get_difference_aml_domain()
-
-            difference_amls = self.env["account.move.line"].search_read(
-                domain=difference_aml_domain, fields=["id"]
-            )
-            if len(difference_amls) > 0:
-                # partner.write(
-                #     {
-                #         "currency_difference_amls": [
-                #             Command.set([x["id"] for x in difference_amls])
-                #         ]
-                #     }
-                # )
-                partner.currency_difference_amls = [
-                    Command.set([x["id"] for x in difference_amls])
-                ]
-
-            else:
-                # partner.write({"currency_difference_amls": [Command.clear()]})
-                partner.currency_difference_amls = [Command.clear()]
-
-    def _compute_difference_to_invoice(self):
-        for partner in self:
-            if len(partner.currency_difference_amls) > 0:
-                partner.currency_difference_to_invoice = True
-            else:
-                partner.currency_difference_to_invoice = False
 
     def _compute_due_days(self):
         for record in self:
@@ -492,8 +430,126 @@ class ResPartner(models.Model):
             "context": self.env.context,
         }
 
+    def _get_currency_difference_balances(self, date):
+        """TL residual and FX balance per foreign-currency receivable account.
+
+        Statement rule (mirrors the partner statement in altinkaya_reports):
+        posted lines since 2022-01-01, ADVR and KRFRK journals excluded,
+        KFARK/KRDGR lines counted as TRY-only. Lines not yet due at ``date``
+        are excluded (an open invoice due next month is not part of the
+        settled difference); KFARK lines are exempt from the maturity check
+        so already-issued difference invoices always stay in the sum and the
+        calculation remains idempotent.
+        """
+        self.ensure_one()
+        self.env.cr.execute(
+            """
+            SELECT l.account_id,
+                   ROUND(SUM(l.debit - l.credit)::numeric, 2) AS tl_net,
+                   ROUND(SUM(CASE WHEN aj.code IN ('KFARK', 'KRDGR') THEN 0
+                                  ELSE l.amount_currency END)::numeric, 4) AS fx_net
+              FROM account_move_line l
+              JOIN account_account a ON a.id = l.account_id
+              JOIN account_move m ON m.id = l.move_id
+              JOIN account_journal aj ON aj.id = m.journal_id
+             WHERE l.partner_id = %s
+               AND l.company_id = %s
+               AND a.account_type = 'asset_receivable'
+               AND a.currency_id IS NOT NULL
+               AND m.state = 'posted'
+               AND l.date >= %s
+               AND m.date >= %s
+               AND aj.code NOT IN ('ADVR', 'KRFRK')
+               AND (l.date_maturity IS NULL
+                    OR l.date_maturity <= %s
+                    OR aj.code = 'KFARK')
+             GROUP BY l.account_id
+            """,
+            (
+                self.commercial_partner_id.id,
+                self.env.company.id,
+                self._CURRENCY_VALUATION_START_DATE,
+                self._CURRENCY_VALUATION_START_DATE,
+                date,
+            ),
+        )
+        return self.env.cr.dictfetchall()
+
+    def _get_fx_residual_try_value(self, account, fx_net, date):
+        """TRY value of the partner's remaining FX balance at ``date``.
+
+        The remaining foreign-currency debt is not exchange difference — its
+        TRY equivalent must stay open on the account. Uses the TCMB forex
+        buying rate, like calc_currency_valuation.
+        """
+        if not fx_net:
+            return 0.0
+        rate = self.env["res.currency.rate"].search(
+            [("currency_id", "=", account.currency_id.id), ("name", "<=", date)],
+            order="name desc",
+            limit=1,
+        )
+        if not rate or not rate.tcmb_forex_buying:
+            raise UserError(
+                _(
+                    "No exchange rate information found for %(currency)s at %(date)s!",
+                    currency=account.currency_id.name,
+                    date=date,
+                )
+            )
+        return round(fx_net / rate.tcmb_forex_buying, 2)
+
+    def _get_difference_source_invoices(self, account):
+        """Customer invoices on this account since the last posted KFARK invoice.
+
+        Used for the KDV mix and the e-invoice comment. Falls back to the
+        whole statement window when no invoice exists after the last KFARK.
+        """
+        aml_obj = self.env["account.move.line"]
+        base_domain = [
+            ("partner_id", "=", self.commercial_partner_id.id),
+            ("company_id", "=", self.env.company.id),
+            ("account_id", "=", account.id),
+            ("move_id.state", "=", "posted"),
+            ("date", ">=", self._CURRENCY_VALUATION_START_DATE),
+        ]
+        last_kfark_line = aml_obj.search(
+            base_domain + [("move_id.journal_id.code", "=", "KFARK")],
+            order="date desc",
+            limit=1,
+        )
+        invoice_domain = base_domain + [
+            ("move_id.move_type", "in", ("out_invoice", "out_refund")),
+            ("move_id.journal_id.code", "!=", "KFARK"),
+        ]
+        invoice_lines = aml_obj.search(
+            invoice_domain + [("date", ">", last_kfark_line.date)]
+            if last_kfark_line
+            else invoice_domain
+        )
+        if not invoice_lines and last_kfark_line:
+            invoice_lines = aml_obj.search(invoice_domain)
+        return invoice_lines.mapped("move_id")
+
+    @api.model
+    def _get_kdv_distribution(self, invoices, kdv_rates):
+        """Share of each KDV rate in the invoices' untaxed bases."""
+        totals = {}
+        for rate in kdv_rates:
+            base = sum(
+                abs(line.balance)
+                for line in invoices.mapped("invoice_line_ids")
+                if rate in line.tax_ids.mapped("amount")
+            )
+            if base:
+                totals[rate] = base
+        grand_total = sum(totals.values())
+        return {rate: base / grand_total for rate, base in totals.items()}
+
     def calc_difference_invoice(self, date, payment_term, billing_point):
+        self.ensure_one()
         inv_obj = self.env["account.move"]
+        company = self.env.company
         diff_inv_journal = self.env["account.journal"].search(
             [("code", "=", "KFARK")], limit=1
         )
@@ -502,127 +558,78 @@ class ResPartner(models.Model):
                 ("state", "=", "draft"),
                 ("journal_id", "=", diff_inv_journal.id),
                 ("partner_id", "=", self.id),
-                ("currency_id", "=", self.env.company.currency_id.id),
+                ("currency_id", "=", company.currency_id.id),
             ]
         )
         if draft_dif_invs:
-            for draft_inv in draft_dif_invs:
-                draft_inv.button_cancel()
+            draft_dif_invs.button_cancel()
 
-        difference_aml_domain = self._get_difference_aml_domain()
-
-        difference_amls = self.env["account.move.line"].search(difference_aml_domain)
-        if not difference_amls:
-            return False
-
-        if (
-            difference_amls
-            and round(
-                (
-                    sum(difference_amls.mapped("debit"))
-                    - sum(difference_amls.mapped("credit"))
-                ),
-                2,
+        kdv_rates = [20, 10, 18, 8]
+        taxes_dict = {}
+        for kdv_rate in kdv_rates:
+            tax = self.env["account.tax"].search(
+                [
+                    ("type_tax_use", "=", "sale"),
+                    ("amount", "=", kdv_rate),
+                    ("include_base_amount", "=", False),
+                ],
+                limit=1,
             )
-            < 0
-        ):
-            inv_type = "out_refund"
-        else:
-            inv_type = "out_invoice"
-        if difference_amls:
-            # Get taxes
-            kdv_rates = [20, 10, 18, 8]
-            taxes_dict = {}
-            for kdv_rate in kdv_rates:
-                tax = self.env["account.tax"].search(
-                    [
-                        ("type_tax_use", "=", "sale"),
-                        ("amount", "=", kdv_rate),
-                        ("include_base_amount", "=", False),
-                    ],
-                    limit=1,
+            if tax:
+                taxes_dict[kdv_rate] = tax
+            else:
+                raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
+
+        created_invoices = inv_obj
+        for row in self._get_currency_difference_balances(date):
+            account = self.env["account.account"].browse(row["account_id"])
+            if abs(row["fx_net"]) >= KFARK_FX_TOLERANCE:
+                _logger.warning(
+                    "Kur farkı faturası atlandı: %s / %s hesabında döviz "
+                    "bakiyesi kapanmamış (fx_net=%s, tl_net=%s)",
+                    self.display_name,
+                    account.code,
+                    row["fx_net"],
+                    row["tl_net"],
                 )
-                if tax:
-                    taxes_dict[kdv_rate] = tax
-                else:
-                    raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
+                continue
+            # Only the settled part of the TL residual is exchange
+            # difference; the TRY value of the remaining FX balance stays
+            # open on the account (the customer still owes it in currency).
+            fx_try_value = self._get_fx_residual_try_value(account, row["fx_net"], date)
+            amount = -(row["tl_net"] - fx_try_value)
+            if abs(amount) < KFARK_MIN_AMOUNT:
+                continue
+            inv_type = "out_invoice" if amount > 0 else "out_refund"
 
-            inv_ids = (
-                difference_amls._all_reconciled_lines()
-                .filtered(lambda r: "invoice" in r.move_type)
-                .mapped("move_id")
-            )
-            total_difference = sum(difference_amls.mapped("balance"))
-
-            comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n"
-
+            source_invoices = self._get_difference_source_invoices(account)
             inv_lines_to_create = []
-
-            if len(inv_ids) > 0:
-                comment_einvoice += ", ".join(
-                    inv_id.supplier_invoice_number
-                    if inv_id.supplier_invoice_number
-                    else inv_id.number
-                    for inv_id in inv_ids
+            comment_einvoice = ""
+            if source_invoices:
+                comment_einvoice = "Aşağıdaki faturaların kur farkıdır:\n" + ", ".join(
+                    inv.supplier_invoice_number or inv.number for inv in source_invoices
                 )
-
-                # Compute tax distribution
-                tax_lines = inv_ids.mapped("tax_line_ids")
-                distribution = {}
-
-                for rate in kdv_rates:
-                    invoice_taxes = tax_lines.filtered(
-                        lambda txl: txl.tax_line_id.amount == rate
-                    )
-
-                    total_tax_amount = sum(
-                        abs(bal) for bal in invoice_taxes.mapped("balance")
-                    )
-
-                    tax_rate = round(
-                        (
-                            total_tax_amount
-                            / sum(inv_ids.mapped("amount_untaxed_signed"))
-                            * 100
-                            / rate
-                        ),
-                        4,
-                    )
-                    if tax_rate > 0:
-                        distribution[rate] = tax_rate
-
-                for rate, tax_rate in distribution.items():
+                distribution = self._get_kdv_distribution(source_invoices, kdv_rates)
+                for rate, share in distribution.items():
                     inv_lines_to_create.append(
                         {
                             "name": _("Currency Difference"),
                             "product_uom_id": 1,
-                            "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
+                            "account_id": company.currency_diff_inv_account_id.id,
                             "price_unit": abs(
-                                round(
-                                    total_difference * tax_rate / (1 + rate / 100.0),
-                                    2,
-                                )
+                                round(amount * share / (1 + rate / 100.0), 2)
                             ),
                             "tax_ids": [(6, False, [taxes_dict[rate].id])],
                         }
                     )
-
-            else:
-                # If there is no invoice, then it is a difference between
-                # the exchange rate of the invoice and the payment
-                # Set the tax rate to 20%
-                comment_einvoice = ""
+            if not inv_lines_to_create:
+                # No source invoice found: rate-timing difference, flat 20%.
                 inv_lines_to_create.append(
                     {
                         "name": _("Currency Difference"),
                         "product_uom_id": 1,
-                        "account_id": self.env.company.currency_diff_inv_account_id.id,  # noqa
-                        "price_unit": abs(
-                            round(
-                                total_difference / (1 + taxes_dict[20].amount / 100.0),
-                                2,
-                            ),
-                        ),
+                        "account_id": company.currency_diff_inv_account_id.id,
+                        "price_unit": abs(round(amount / 1.20, 2)),
                         "tax_ids": [(6, False, [taxes_dict[20].id])],
                     }
                 )
@@ -632,7 +639,7 @@ class ResPartner(models.Model):
                     "partner_id": self.id,
                     "invoice_date": date,
                     "journal_id": diff_inv_journal.id,
-                    "currency_id": self.env.company.currency_id.id,
+                    "currency_id": company.currency_id.id,
                     "move_type": inv_type,
                     "billing_point_id": billing_point.id,
                     "invoice_payment_term_id": payment_term.id,
@@ -641,30 +648,27 @@ class ResPartner(models.Model):
                 }
             )
 
-            difference_amls.write({"difference_checked": True})
-            dif_inv.write(
-                {
-                    "currency_difference_line_ids": [(6, 0, difference_amls.ids)],
-                }
-            )
-
-            # Clear amount_currency on receivable line
+            # Force the receivable line onto this FX account and make it
+            # TRY-only so the invoice never distorts the FX balance.
             self.env.cr.execute(
                 """
                 UPDATE account_move_line
-                SET amount_currency = 0.0, currency_id = %s
-                WHERE move_id = %s and account_id = %s
+                SET amount_currency = 0.0, currency_id = %s, account_id = %s
+                WHERE move_id = %s AND account_id = %s
             """,
                 (
-                    dif_inv.company_id.currency_id.id,
+                    company.currency_id.id,
+                    account.id,
                     dif_inv.id,
                     dif_inv.partner_id.property_account_receivable_id.id,
                 ),
             )
-            dif_inv.line_ids.invalidate_recordset(["amount_currency", "currency_id"])
-            return dif_inv
+            dif_inv.line_ids.invalidate_recordset(
+                ["amount_currency", "currency_id", "account_id"]
+            )
+            created_invoices |= dif_inv
 
-        return False
+        return created_invoices or False
 
     # Earliest date considered when totalling open foreign-currency balances.
     # Mirrors the partner-statement report (altinkaya_reports) so that the

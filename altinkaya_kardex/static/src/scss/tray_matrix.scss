@@ -1,0 +1,42 @@
+.o_kardex_tray {
+  max-width: 100%;
+  overflow-x: auto;
+
+  .o_kardex_grid {
+    display: grid;
+    grid-auto-rows: 56px;
+    gap: 5px;
+    width: 100%;
+  }
+
+  .o_kardex_cell {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    border: 1px solid #adb5bd;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  .o_kardex_empty {
+    background-color: #e9f7ef;
+    color: #1e7e34;
+  }
+
+  .o_kardex_occupied {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+
+  .o_kardex_selected {
+    outline: 3px solid #ffc107;
+    outline-offset: -3px;
+  }
+}

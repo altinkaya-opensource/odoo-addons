@@ -15,6 +15,7 @@
         "sale",
         "stock",
         "account",
+        "stock_picking_invoice_link",
         "altinkaya_sales",
         "delivery",
         "delivery_state",

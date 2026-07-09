@@ -38,7 +38,6 @@ class AccountMoveLine(models.Model):
     purchase_line_amount = fields.Float(
         string="PO Unit", related="purchase_line_id.price_unit"
     )
-    difference_checked = fields.Boolean(string="Currency Difference Checked")
     unit_discounted = fields.Float(
         string="Disc. Unit",
         compute="_compute_unit_discounted",

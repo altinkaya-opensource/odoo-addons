@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_kardex_view_form" model="ir.ui.view">
+        <field name="name">stock.kardex.form</field>
+        <field name="model">stock.kardex</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_test_connection"
+                        type="object"
+                        string="Test Connection"
+                        class="oe_highlight"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <field name="active" invisible="1" />
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Kardex 1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Machine">
+                            <field name="location_id" />
+                            <field name="address" placeholder="e.g. VLM-1" />
+                        </group>
+                        <group string="Location Code">
+                            <field name="cabinet_no" />
+                            <field name="depot_no" />
+                            <field name="corridor_no" />
+                        </group>
+                        <group string="JMIF Gateway">
+                            <field name="host" placeholder="e.g. 192.0.2.10" />
+                            <field name="port" />
+                            <field name="jmif_user" />
+                            <field name="jmif_password" password="True" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Trays" name="trays">
+                            <field name="tray_location_ids">
+                                <tree>
+                                    <field name="display_name" string="Location" />
+                                    <field name="tray_type_id" />
+                                    <field name="shelf_no" />
+                                    <button
+                                        name="action_bring_tray"
+                                        type="object"
+                                        string="Bring"
+                                        icon="fa-arrow-down"
+                                    />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_kardex_view_tree" model="ir.ui.view">
+        <field name="name">stock.kardex.tree</field>
+        <field name="model">stock.kardex</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="location_id" />
+                <field name="address" />
+                <field name="host" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock_kardex_action" model="ir.actions.act_window">
+        <field name="name">Kardex Machines</field>
+        <field name="res_model">stock.kardex</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_kardex_root"
+        parent="stock.menu_stock_config_settings"
+        name="Kardex"
+    />
+    <menuitem
+        id="menu_kardex_machines"
+        parent="menu_kardex_root"
+        action="stock_kardex_action"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_kardex_tray_types"
+        parent="menu_kardex_root"
+        action="stock_location_tray_type_action"
+        sequence="20"
+    />
+</odoo>

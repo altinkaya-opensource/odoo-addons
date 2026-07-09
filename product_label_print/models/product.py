@@ -114,6 +114,22 @@ class ProductProduct(models.Model):
             name = name.replace(f"[{self.default_code}] ", "")
         return wrap_words(name, width, max_lines)
 
+    def action_print_external_label(self):
+        """Print the customer-facing label (branding + code + name + GS1 QR,
+        no lot/qty) for all selected products, paired two-per-row."""
+        self = self.with_context(must_skip_send_to_printer=True)
+        external_label = self.env.ref(
+            "product_label_print.label_product_product_external"
+        )
+        printer_id = external_label.printing_printer_id
+        if not printer_id:
+            raise UserError(_("Please define printer for this label"))
+        payload = external_label._render_qweb_text(
+            "product_label_print.label_product_product_external",
+            docids=self.ids,
+        )[0]
+        printer_id.print_document(report=None, content=payload, doc_form="txt")
+
     def action_print_molding_label(self):
         self = self.with_context(must_skip_send_to_printer=True)
         molding_label = self.env.ref("product_label_print.label_product_product_kalip")
