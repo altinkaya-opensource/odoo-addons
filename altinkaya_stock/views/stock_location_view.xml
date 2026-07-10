@@ -17,6 +17,28 @@
             <field name="removal_strategy_id" position="after">
                 <field name="priority" />
             </field>
+
+            <!-- Core drops "comment" bare into the sheet with no label, so nobody
+                 knows what the box is. Move it into a dedicated group so its label
+                 shows. Two steps because "move" must be a direct child of the
+                 position element: create the empty group, then move comment inside. -->
+            <xpath expr="//field[@name='comment']" position="before">
+                <group name="location_note_group" />
+            </xpath>
+            <xpath expr="//group[@name='location_note_group']" position="inside">
+                <xpath expr="//field[@name='comment']" position="move" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_location_tree_inherit_altinkaya" model="ir.ui.view">
+        <field name="name">Altinkaya Location Tree Customization</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2" />
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="comment" optional="hide" />
+            </field>
         </field>
     </record>
 </odoo>
