@@ -4,6 +4,10 @@ from odoo import fields, models
 class StockLocation(models.Model):
     _inherit = "stock.location"
 
+    # Core ships this as Html "Additional Information"; here it is a short, plain
+    # note (capped at 64 chars) so it stays label-sized. See migrations/16.0.0.1.1.
+    comment = fields.Char("Additional Information", size=64)
+
     included_location_ids = fields.Many2many(
         "stock.location",
         "stock_location_included_location_rel",
