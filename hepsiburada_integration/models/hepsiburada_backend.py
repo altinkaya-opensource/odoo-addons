@@ -141,10 +141,6 @@ class HepsiburadaBackend(models.Model):
         default=True,
         help="Automatically import orders via scheduled job",
     )
-    auto_sync_tracking = fields.Boolean(
-        default=True,
-        help="Automatically send tracking numbers when delivery is done",
-    )
     auto_send_invoice = fields.Boolean(
         default=True,
         help="Send invoice links to Hepsiburada via nightly batch cron",

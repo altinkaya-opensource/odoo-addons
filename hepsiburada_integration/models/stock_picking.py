@@ -4,7 +4,7 @@
 import base64
 import logging
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -72,7 +72,12 @@ class StockPicking(models.Model):
         return True
 
     def _action_done(self):
-        """Override to notify Hepsiburada when delivery is validated."""
+        """Fetch the Hepsiburada label when delivery is validated.
+
+        Delivery status is owned by Hepsiburada's carrier integration. The
+        order import cron synchronizes that status back to Odoo, so completing
+        a picking must not try to move the package to ``intransit``.
+        """
         res = super()._action_done()
 
         for picking in self:
@@ -83,21 +88,7 @@ class StockPicking(models.Model):
             if not hb_binding:
                 continue
 
-            # Fetch shipping label regardless of sync setting
+            # Fetch the label without mutating the carrier-owned package status.
             picking._fetch_hepsiburada_label()
-
-            backend = hb_binding.backend_id
-            if not backend.auto_sync_tracking:
-                continue
-
-            # Notify Hepsiburada: set package intransit
-            hb_binding.with_delay(
-                channel="root.hepsiburada.order",
-                description=_("Notify HB intransit: %s") % hb_binding.hb_order_number,
-            )._notify_picking_done(picking)
-            _logger.info(
-                "Queued intransit notification for HB order %s",
-                hb_binding.hb_order_number,
-            )
 
         return res
