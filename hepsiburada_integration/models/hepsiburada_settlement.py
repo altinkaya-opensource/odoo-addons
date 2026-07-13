@@ -97,6 +97,13 @@ class HepsiburadaSettlement(models.Model):
         ),
     ]
 
+    @staticmethod
+    def _numeric_value(value):
+        """Extract a scalar from Hepsiburada's nested money objects."""
+        if isinstance(value, dict):
+            value = value.get("value", value.get("amount", 0.0))
+        return value or 0.0
+
     @api.model
     def _import_settlement(self, backend, data):
         """Import a single settlement from Hepsiburada API response.
@@ -137,6 +144,10 @@ class HepsiburadaSettlement(models.Model):
         transaction_type = TRANSACTION_TYPE_MAP.get(
             data.get("transactionType", ""), "sale"
         )
+        amount_data = data.get("amount", 0.0)
+        currency_code = data.get("currencyCode")
+        if isinstance(amount_data, dict):
+            currency_code = amount_data.get("currencyCode") or currency_code
 
         try:
             settlement = self.create(
@@ -149,10 +160,14 @@ class HepsiburadaSettlement(models.Model):
                     "package_number": str(data.get("packageNumber", "")),
                     "sku": data.get("sku", ""),
                     "description": data.get("description", ""),
-                    "amount": data.get("amount", 0.0),
-                    "commission_rate": data.get("commissionRate", 0.0),
-                    "commission_amount": data.get("commissionAmount", 0.0),
-                    "currency_code": str(data.get("currencyCode", "949")),
+                    "amount": self._numeric_value(amount_data),
+                    "commission_rate": self._numeric_value(
+                        data.get("commissionRate", 0.0)
+                    ),
+                    "commission_amount": self._numeric_value(
+                        data.get("commissionAmount", 0.0)
+                    ),
+                    "currency_code": str(currency_code or "949"),
                     "payment_date": data.get("paymentDate"),
                     "payment_status": data.get("status", ""),
                     "invoice_number": data.get("invoiceNumber", ""),
