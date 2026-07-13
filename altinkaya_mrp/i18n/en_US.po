@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-29 12:55+0000\n"
-"PO-Revision-Date: 2026-06-29 12:55+0000\n"
+"POT-Creation-Date: 2026-07-13 13:21+0000\n"
+"PO-Revision-Date: 2026-07-13 13:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_change_ids
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_change_ids
@@ -144,7 +144,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__changeset_ids
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__changeset_ids
@@ -161,7 +161,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_changesets
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
@@ -178,7 +178,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
@@ -195,7 +195,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__count_pending_changesets
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
@@ -216,7 +216,7 @@ msgid "Create a new routing"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__create_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_uid
@@ -226,7 +226,7 @@ msgid "Created by"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__create_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_date
@@ -261,7 +261,7 @@ msgid "Description"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__display_name
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__display_name
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__display_name
@@ -275,6 +275,16 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__operation_id
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__product_id
 msgid "Dummy field to make this model compatible with BoM lines"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__duration
+msgid "Duration"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__duration_uom_id
+msgid "Duration UoM"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -341,7 +351,7 @@ msgid "Has production BoM"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__id
@@ -380,11 +390,6 @@ msgid ""
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__is_mold
-msgid "Is Mold"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_kaliphane_menu
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_kaliphane_production
 msgid "Kalıphane İşleri"
@@ -404,7 +409,7 @@ msgid "Kontrol Edildi"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log____last_update
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter____last_update
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more____last_update
@@ -414,7 +419,7 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__write_uid
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_uid
@@ -424,7 +429,7 @@ msgid "Last Updated by"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__write_date
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__write_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__write_date
@@ -439,12 +444,15 @@ msgid "MRP Change Quantity Permission"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.product_mold_maintenance_page
+#: model:ir.model,name:altinkaya_mrp.model_maintenance_log
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.product_maintenance_page
 msgid "Maintenance Log"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__mold_maintenance_log_ids
+#: model:ir.actions.act_window,name:altinkaya_mrp.action_maintenance_log
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_product_product__maintenance_log_ids
+#: model:ir.ui.menu,name:altinkaya_mrp.menu_maintenance_log
 msgid "Maintenance Logs"
 msgstr ""
 
@@ -484,22 +492,6 @@ msgid "Manufacturing: Auto Print MRP Orders"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__product_id
-msgid "Mold"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model:ir.model,name:altinkaya_mrp.model_mold_maintenance_log
-msgid "Mold Maintenance Log"
-msgstr ""
-
-#. module: altinkaya_mrp
-#: model:ir.actions.act_window,name:altinkaya_mrp.action_mold_maintenance_log
-#: model:ir.ui.menu,name:altinkaya_mrp.menu_mold_maintenance_log
-msgid "Mold Maintenance Logs"
-msgstr ""
-
-#. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_ayrintili_menu
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_mrp_ayrintili_production
 msgid "Montaj İşleri"
@@ -533,7 +525,7 @@ msgid "New"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__note
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__note
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__x_note
 msgid "Note"
 msgstr ""
@@ -565,7 +557,12 @@ msgid "Parameters"
 msgstr ""
 
 #. module: altinkaya_mrp
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__photo
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__performed_by_id
+msgid "Performed By"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__photo
 msgid "Photo"
 msgstr ""
 
@@ -586,6 +583,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_product_template
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__product_id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_id
 msgid "Product"
 msgstr ""
@@ -749,7 +747,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__smart_search
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__smart_search
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__smart_search
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__smart_search
@@ -796,7 +794,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changeset_changes
-#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_mrp.field_maintenance_log__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changeset_changes
@@ -813,7 +811,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_pending_changesets
-#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_maintenance_log__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_pending_changesets
@@ -830,7 +828,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,help:altinkaya_mrp.field_change_production_qty__count_changesets
-#: model:ir.model.fields,help:altinkaya_mrp.field_mold_maintenance_log__count_changesets
+#: model:ir.model.fields,help:altinkaya_mrp.field_maintenance_log__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_template_line__count_changesets
 #: model:ir.model.fields,help:altinkaya_mrp.field_mrp_bom_wcparameter__count_changesets
@@ -889,7 +887,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_change_production_qty__user_can_see_changeset
-#: model:ir.model.fields,field_description:altinkaya_mrp.field_mold_maintenance_log__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__user_can_see_changeset
