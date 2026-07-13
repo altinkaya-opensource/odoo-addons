@@ -3,7 +3,7 @@
 {
     "name": "Altınkaya Kardex JMIF Integration",
     "summary": "Kardex vertical lifts as stock locations, driven over the JMIF gateway",
-    "version": "16.0.2.0.0",
+    "version": "16.0.2.1.0",
     "author": "Yiğit Budak, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",

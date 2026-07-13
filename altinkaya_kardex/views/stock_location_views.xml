@@ -74,6 +74,7 @@
             <field name="usage" position="after">
                 <field name="tray_type_id" optional="hide" />
                 <field name="shelf_no" optional="hide" />
+                <field name="empty_cells" optional="hide" />
             </field>
         </field>
     </record>
