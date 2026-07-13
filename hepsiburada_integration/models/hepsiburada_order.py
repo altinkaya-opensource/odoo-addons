@@ -578,11 +578,12 @@ class HepsiburadaOrder(models.Model):
         """Prepare sale.order.line values from HB package line item.
 
         Product matching cascade:
-            productBarcode -> merchantSku -> hbSku -> fallback.
+            productBarcode -> merchantSku -> normalized merchantSku -> hbSku
+            -> fallback.
         """
-        merchant_sku = item.get("merchantSku", "")
-        hb_sku = item.get("hbSku", "")
-        product_barcode = item.get("productBarcode", "")
+        merchant_sku = str(item.get("merchantSku") or "").strip()
+        hb_sku = str(item.get("hbSku") or "").strip()
+        product_barcode = str(item.get("productBarcode") or "").strip()
         quantity = item.get("quantity", 1)
 
         # Get unit price from merchantUnitPrice or price
@@ -623,7 +624,31 @@ class HepsiburadaOrder(models.Model):
         # 3. Match by merchantSku as default_code
         if not product and merchant_sku:
             product = Product.search([("default_code", "=", merchant_sku)], limit=1)
-        # 4. Match by hbSku as default_code
+
+        # 4. Hepsiburada listings may contain Odoo's display-name form, e.g.
+        # ``[PC-278-0-0-S-0]``, instead of the raw default code. Only use the
+        # unwrapped value when it identifies a single product.
+        normalized_merchant_sku = merchant_sku
+        if merchant_sku.startswith("[") and merchant_sku.endswith("]"):
+            normalized_merchant_sku = merchant_sku[1:-1].strip()
+        if (
+            not product
+            and normalized_merchant_sku
+            and normalized_merchant_sku != merchant_sku
+        ):
+            candidates = Product.search(
+                [("default_code", "=", normalized_merchant_sku)], limit=2
+            )
+            if len(candidates) == 1:
+                product = candidates
+            elif candidates:
+                _logger.warning(
+                    "Ambiguous normalized merchantSku %s for order %s",
+                    normalized_merchant_sku,
+                    sale_order.name,
+                )
+
+        # 5. Match by hbSku as default_code
         if not product and hb_sku:
             product = Product.search([("default_code", "=", hb_sku)], limit=1)
 
