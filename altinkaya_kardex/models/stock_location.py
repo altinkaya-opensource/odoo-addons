@@ -55,6 +55,11 @@ class StockLocation(models.Model):
         help="This location is the root location of a Kardex machine.",
     )
     child_location_count = fields.Integer(compute="_compute_child_location_count")
+    empty_cells = fields.Integer(
+        compute="_compute_empty_cells",
+        store=True,
+        help="Number of empty (unoccupied) cells in this Kardex tray.",
+    )
     kardex_label_line = fields.Char(
         compute="_compute_kardex_label_line",
         help="Position line for a cell's location label (empty for other locations).",
@@ -152,6 +157,18 @@ class StockLocation(models.Model):
                     for cell in cells
                 ],
             }
+
+    @api.depends(
+        "tray_type_id",
+        "child_ids.cell_in_tray_type_id",
+        "child_ids.tray_cell_contains_stock",
+    )
+    def _compute_empty_cells(self):
+        for location in self:
+            cells = location.child_ids.filtered("cell_in_tray_type_id")
+            location.empty_cells = sum(
+                1 for cell in cells if not cell.tray_cell_contains_stock
+            )
 
     def _format_cell_name(self, col, row):
         """Structured location code ``depot-cabinet-shelf-col-row``.

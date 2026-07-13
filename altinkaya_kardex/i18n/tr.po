@@ -6,11 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-06 13:37+0000\n"
-"PO-Revision-Date: 2026-07-06 13:37+0000\n"
+"POT-Creation-Date: 2026-07-13 09:30+0000\n"
+"PO-Revision-Date: 2026-07-13 09:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -116,6 +115,11 @@ msgid "Changesets"
 msgstr "Değişiklikler"
 
 #. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__child_location_count
+msgid "Child Location Count"
+msgstr "Alt Konum Sayısı"
+
+#. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__code
 msgid "Code"
 msgstr "Kod"
@@ -188,6 +192,11 @@ msgid "Display Name"
 msgstr "Görünen Ad"
 
 #. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__empty_cells
+msgid "Empty Cells"
+msgstr "Boş Hücre"
+
+#. module: altinkaya_kardex
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
 msgid "Group By"
 msgstr "Grupla"
@@ -225,7 +234,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__id
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__is_kardex_cell
@@ -271,7 +280,7 @@ msgstr "JMIF Kullanıcı"
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__kardex_ids
 #: model:ir.ui.menu,name:altinkaya_kardex.menu_kardex_root
 msgid "Kardex"
-msgstr "Kardex"
+msgstr ""
 
 #. module: altinkaya_kardex
 #. odoo-python
@@ -291,6 +300,11 @@ msgid "Kardex Cells"
 msgstr "Kardex Hücreleri"
 
 #. module: altinkaya_kardex
+#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__kardex_label_line
+msgid "Kardex Label Line"
+msgstr ""
+
+#. module: altinkaya_kardex
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
 msgid "Kardex Machine"
 msgstr "Kardex Makinesi"
@@ -301,6 +315,11 @@ msgstr "Kardex Makinesi"
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_search_kardex
 msgid "Kardex Machines"
 msgstr "Kardex Makineleri"
+
+#. module: altinkaya_kardex
+#: model:res.groups,name:altinkaya_kardex.group_kardex_manager
+msgid "Kardex Manager"
+msgstr "Kardex Yönetici"
 
 #. module: altinkaya_kardex
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
@@ -389,13 +408,29 @@ msgstr "Birleştir"
 #: code:addons/altinkaya_kardex/static/src/js/tray_matrix/tray_matrix.xml:0
 #, python-format
 msgid "Merge mode"
-msgstr "Birleştirme modu"
+msgstr ""
 
 #. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__name
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__name
 msgid "Name"
 msgstr "Ad"
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__cols
+msgid ""
+"Number of columns — the horizontal count (how many cells left to right)."
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__empty_cells
+msgid "Number of empty (unoccupied) cells in this Kardex tray."
+msgstr "Kardex rafındaki boş hücre sayısı."
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__rows
+msgid "Number of rows — the vertical count (how many cells top to bottom)."
+msgstr ""
 
 #. module: altinkaya_kardex
 #. odoo-python
@@ -412,7 +447,12 @@ msgstr "Fiziksel ölçüler (mm)"
 #. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_kardex__port
 msgid "Port"
-msgstr "Port"
+msgstr ""
+
+#. module: altinkaya_kardex
+#: model:ir.model.fields,help:altinkaya_kardex.field_stock_location__kardex_label_line
+msgid "Position line for a cell's location label (empty for other locations)."
+msgstr ""
 
 #. module: altinkaya_kardex
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
@@ -490,6 +530,14 @@ msgstr "Ayır"
 #: model:ir.model,name:altinkaya_kardex.model_stock_location
 msgid "Stock Location"
 msgstr "Stok Konumu"
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_location_view_form_kardex
+#, python-format
+msgid "Sub-locations"
+msgstr ""
 
 #. module: altinkaya_kardex
 #: model_terms:ir.ui.view,arch_db:altinkaya_kardex.stock_kardex_view_form
@@ -612,6 +660,17 @@ msgid "Transfer"
 msgstr "Teslimat"
 
 #. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_location.py:0
+#, python-format
+msgid ""
+"Tray %s already has generated cells. Archive it and create a new tray to "
+"change its type."
+msgstr ""
+"%s rafının zaten oluşturulmuş hücreleri var. Tipini değiştirmek için "
+"arşivleyip yeni bir raf oluşturun."
+
+#. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__tray_cell_contains_stock
 msgid "Tray Cell Contains Stock"
 msgstr "Raf Hücresi Stok İçeriyor"
@@ -623,7 +682,6 @@ msgstr "Raf Düzeni"
 
 #. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location__tray_matrix
-#: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__tray_matrix
 msgid "Tray Matrix"
 msgstr "Raf Matrisi"
 
@@ -647,6 +705,11 @@ msgid "User Can See Changeset"
 msgstr "Kullanıcı Değişiklikleri Görebilir"
 
 #. module: altinkaya_kardex
+#: model:res.groups,comment:altinkaya_kardex.group_kardex_manager
+msgid "Users allowed to call/return Kardex trays (Odoo + mobile)."
+msgstr ""
+
+#. module: altinkaya_kardex
 #: model:ir.model.fields,field_description:altinkaya_kardex.field_stock_location_tray_type__width
 msgid "Width"
 msgstr "Genişlik"
@@ -655,6 +718,15 @@ msgstr "Genişlik"
 #: model:ir.model.fields,help:altinkaya_kardex.field_stock_location_tray_type__width
 msgid "Width of the tray in mm"
 msgstr "Raf genişliği (mm)"
+
+#. module: altinkaya_kardex
+#. odoo-python
+#: code:addons/altinkaya_kardex/models/stock_kardex.py:0
+#, python-format
+msgid ""
+"You are not allowed to operate the Kardex. Ask an administrator for the "
+"Kardex Manager permission."
+msgstr ""
 
 #. module: altinkaya_kardex
 #. odoo-python
@@ -688,20 +760,3 @@ msgstr "örn. VLM-1"
 #, python-format
 msgid "selected"
 msgstr "seçili"
-
-#. module: altinkaya_kardex
-msgid ""
-"Tray %s already has generated cells. Archive it and create a new tray to "
-"change its type."
-msgstr ""
-"%s rafının zaten oluşturulmuş hücreleri var. Tipini değiştirmek için "
-"arşivleyip yeni bir raf oluşturun."
-
-#. module: altinkaya_kardex
-msgid "Number of rows — the vertical count (how many cells top to bottom)."
-msgstr "Satır sayısı — dikey adet (üstten alta kaç hücre)."
-
-#. module: altinkaya_kardex
-msgid ""
-"Number of columns — the horizontal count (how many cells left to right)."
-msgstr "Sütun sayısı — yatay adet (soldan sağa kaç hücre)."
