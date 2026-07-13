@@ -8,7 +8,7 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Altinkaya Enclosures",
     "category": "CRM",
-    "version": "16.0.2.0.0",
+    "version": "16.0.2.0.1",
     # website_api supplies the storefront role model (website.company.role)
     # and the website_role / website_login fields shown on the chart nodes.
     "depends": ["base", "website_api"],

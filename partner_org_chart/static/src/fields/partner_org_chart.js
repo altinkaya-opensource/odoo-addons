@@ -70,7 +70,7 @@ export class PartnerOrgChart extends Field {
      * @param {number} partnerId
      */
     async _onToggleActive(partnerId) {
-        await this.orm.call('res.partner', 'toggle_active', [[partnerId]]);
+        await this.orm.call('res.partner', 'toggle_active_from_org_chart', [[partnerId]]);
         await this.fetchPartnerData(this.view_partner_id, true);
     }
 
