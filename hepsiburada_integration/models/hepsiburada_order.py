@@ -689,46 +689,6 @@ class HepsiburadaOrder(models.Model):
         """Update stock.picking delivery_state from Hepsiburada status."""
         return super()._update_picking_delivery_state(hb_status)
 
-    # ── Picking Notification ─────────────────────────────────────────────
-
-    def _notify_picking_done(self, picking):
-        """Notify Hepsiburada that a picking is done (set package intransit)."""
-        self.ensure_one()
-
-        if not self.hb_package_number:
-            _logger.warning(
-                "Cannot notify HB intransit for order %s: no package number",
-                self.hb_order_number,
-            )
-            return
-
-        client = self.backend_id._get_api_client()
-        tracking_ref = picking.carrier_tracking_ref or ""
-
-        data = {
-            "packageNumber": self.hb_package_number,
-            "shippedDate": fields.Datetime.now().isoformat(),
-            "trackingInfoCode": tracking_ref,
-        }
-
-        try:
-            client.set_package_intransit(data)
-            self.hb_status = "in_transit"
-            if tracking_ref and not self.cargo_tracking_number:
-                self.cargo_tracking_number = tracking_ref
-            _logger.info(
-                "Notified HB intransit for order %s, package %s",
-                self.hb_order_number,
-                self.hb_package_number,
-            )
-        except HepsiburadaAPIError as e:
-            _logger.error(
-                "Failed to notify HB intransit for order %s: %s",
-                self.hb_order_number,
-                str(e),
-            )
-            raise
-
     # ── Tracking Fetch ────────────────────────────────────────────────────
 
     def action_fetch_tracking(self):
