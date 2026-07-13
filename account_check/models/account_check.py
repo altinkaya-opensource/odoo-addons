@@ -243,10 +243,10 @@ class AccountCheck(models.Model):
                         _(
                             "Check Number (%(number)s) must be unique per "
                             "Owner and Bank!"
-                            "\n* Check ids: %(ids)s"
-                        ),
-                        number=rec.number,
-                        ids=same_checks.ids,
+                            "\n* Check ids: %(ids)s",
+                            number=rec.number,
+                            ids=same_checks.ids,
+                        )
                     )
         return True
 
