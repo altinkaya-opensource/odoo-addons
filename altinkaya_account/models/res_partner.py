@@ -2,17 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
-import logging
-
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
 
-_logger = logging.getLogger(__name__)
-
-# Skip a foreign-currency account when its FX balance is not (nearly) closed:
-# kur farkı is only invoiced once the customer has zeroed the currency balance.
-KFARK_FX_TOLERANCE = 5.0
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
 
@@ -583,19 +576,9 @@ class ResPartner(models.Model):
         created_invoices = inv_obj
         for row in self._get_currency_difference_balances(date):
             account = self.env["account.account"].browse(row["account_id"])
-            if abs(row["fx_net"]) >= KFARK_FX_TOLERANCE:
-                _logger.warning(
-                    "Kur farkı faturası atlandı: %s / %s hesabında döviz "
-                    "bakiyesi kapanmamış (fx_net=%s, tl_net=%s)",
-                    self.display_name,
-                    account.code,
-                    row["fx_net"],
-                    row["tl_net"],
-                )
-                continue
-            # Only the settled part of the TL residual is exchange
-            # difference; the TRY value of the remaining FX balance stays
-            # open on the account (the customer still owes it in currency).
+            # Only the exchange-rate component of the TL residual is invoiced;
+            # the TRY value of the remaining FX balance stays open on the
+            # account (the customer still owes it in currency).
             fx_try_value = self._get_fx_residual_try_value(account, row["fx_net"], date)
             amount = -(row["tl_net"] - fx_try_value)
             if abs(amount) < KFARK_MIN_AMOUNT:
