@@ -167,7 +167,10 @@
                 />
                 <field name="origin" invisible="1" />
                 <field name="procurement_group_id" readonly="1" />
-                <field name="x_makine" options="{'no_open': True, 'no_create': True}" />
+                <field
+                    name="machine_workcenter_id"
+                    options="{'no_open': True, 'no_create': True}"
+                />
                 <field name="x_operator" />
             </xpath>
 
@@ -241,9 +244,9 @@
             <filter name="product" position="after">
                 <filter
                     string="Makine"
-                    name="x_makine"
+                    name="machine_workcenter_id"
                     domain="[]"
-                    context="{'group_by':'x_makine'}"
+                    context="{'group_by':'machine_workcenter_id'}"
                 />
                 <filter
                     string="Operatör"
@@ -329,7 +332,7 @@
                     options="{'no_open':True,'no_create':True}"
                     groups="uom.group_uom"
                 />
-                <field name="x_makine_kod" string="Makine" />
+                <field name="machine_workcenter_code" string="Makine" />
                 <field name="x_operator" string="Operatör" />
                 <field name="sale_id" string="Sipariş" />
                 <field name="state" />

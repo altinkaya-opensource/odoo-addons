@@ -3,7 +3,7 @@
 {
     "name": "ALTINKAYA MRP Extension",
     "summary": "Extra features for MRP Module",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.1.0",
     "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
@@ -23,7 +23,6 @@
         "views/mrp_bom_template_line_views.xml",
         # "reports/report_mrporder.xml",
         "views/cron.xml",
-        "views/x_makine_views.xml",
         "views/procurement_view.xml",
         "views/mrp_production_views.xml",
         "views/mrp_bom_views.xml",
