@@ -245,7 +245,7 @@ class DeliveryCarrier(models.Model):
             dims = pack.get("dimensions", {})
             packages.append(
                 {
-                    "Packaging": {
+                    "PackagingType": {
                         "Code": "30"
                         if pack.get("is_pallet")
                         else self.ups_packaging_type
@@ -258,7 +258,7 @@ class DeliveryCarrier(models.Model):
                     },
                     "PackageWeight": {
                         "UnitOfMeasurement": {"Code": "KGS"},
-                        "Weight": str(round(pack.get("weight", 0.1), 2)),
+                        "Weight": str(round(max(pack.get("weight") or 0.0, 0.1), 2)),
                     },
                 }
             )
@@ -673,7 +673,12 @@ class DeliveryCarrier(models.Model):
                     )
         except Exception as exc:
             _logger.error("UPS rate_shipment failed: %s", exc, exc_info=True)
-            price = 0.0
+            return {
+                "success": False,
+                "price": 0.0,
+                "error_message": str(exc),
+                "warning_message": False,
+            }
 
         return {
             "success": True,
