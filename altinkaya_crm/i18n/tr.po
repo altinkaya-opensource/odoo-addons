@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* altinkaya_crm
+# 	* altinkaya_crm
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 12:07+0000\n"
-"PO-Revision-Date: 2024-03-22 12:07+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2026-07-17 06:43+0000\n"
+"PO-Revision-Date: 2026-07-17 06:43+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,20 +16,58 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_crm
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.sale_order_form_inherit_crm_altinkaya
+msgid "<span class=\"o_stat_text\">Opportunity</span>"
+msgstr "<span class=\"o_stat_text\">Fırsat</span>"
+
+#. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__activity_type_id
 msgid "Activity Type"
 msgstr "Aktivite Tipi"
 
 #. module: altinkaya_crm
-#: selection:crm.phonecall,state:0
-msgid "Cancelled"
-msgstr "İptal Edildi"
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__product_categ_ids
+msgid "Category"
+msgstr "Kategori"
 
 #. module: altinkaya_crm
-#: code:addons/altinkaya_crm/models/res_partner.py:19
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__changeset_change_ids
+msgid "Changeset Changes"
+msgstr "Changeset Değişiklikleri"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__changeset_ids
+msgid "Changesets"
+msgstr "Değişiklikler"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__code
+msgid "Code"
+msgstr "Kod"
+
+#. module: altinkaya_crm
+#. odoo-python
+#: code:addons/altinkaya_crm/models/res_partner.py:0
 #, python-format
 msgid "Company Tax No"
 msgstr "Vergi No"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__complete_name
+msgid "Complete Name"
+msgstr "Tam Adı"
 
 #. module: altinkaya_crm
 #: model:ir.model,name:altinkaya_crm.model_res_partner
@@ -37,31 +75,86 @@ msgid "Contact"
 msgstr "İletişim"
 
 #. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__count_changesets
+msgid "Count Changesets"
+msgstr "Sayım Değişiklik Setleri"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__count_pending_changeset_changes
+msgid "Count Pending Changeset Changes"
+msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__count_pending_changesets
+msgid "Count Pending Changesets"
+msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: altinkaya_crm
 #: model:ir.model,name:altinkaya_crm.model_res_country
 msgid "Country"
 msgstr "Ülke"
 
 #. module: altinkaya_crm
-#: selection:crm.phonecall,state:0
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.sale_order_form_inherit_crm_altinkaya
+msgid "Create Opportunity"
+msgstr "Fırsat Oluştur"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__currency_id
+msgid "Currency"
+msgstr "Para Birimi"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__expected_revenue
+msgid "Expected Revenue"
+msgstr "Beklenen Gelir"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__expected_revenue_usd
+msgid "Expected Revenue (USD)"
+msgstr "Beklenen Gelir (USD)"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields.selection,name:altinkaya_crm.selection__crm_phonecall__state__failed
 msgid "Failed"
 msgstr "Başarısız"
 
 #. module: altinkaya_crm
-#: selection:crm.phonecall,state:0
-msgid "Held"
-msgstr "Yapıldı"
-
-#. module: altinkaya_crm
-#: code:addons/altinkaya_crm/models/res_partner.py:24
+#. odoo-python
+#: code:addons/altinkaya_crm/models/res_partner.py:0
 #, python-format
 msgid "Incorrect VAT"
 msgstr "Yanlış VAT"
 
 #. module: altinkaya_crm
-#: code:addons/altinkaya_crm/models/res_partner.py:22
+#. odoo-python
+#: code:addons/altinkaya_crm/models/res_partner.py:0
 #, python-format
 msgid "Individual Tax No"
 msgstr "TC No"
+
+#. module: altinkaya_crm
+#: model:ir.model,name:altinkaya_crm.model_res_partner_industry
+msgid "Industry"
+msgstr "Sektör"
 
 #. module: altinkaya_crm
 #: model:ir.model,name:altinkaya_crm.model_crm_lead
@@ -71,7 +164,7 @@ msgstr "Aday/Fırsat"
 #. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__linkedin
 msgid "LinkedIn"
-msgstr ""
+msgstr "LinkedIn"
 
 #. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__my_team
@@ -90,15 +183,39 @@ msgid "My Team Activity"
 msgstr "Takım Aktiviteleri"
 
 #. module: altinkaya_crm
-#: code:addons/altinkaya_crm/models/res_partner.py:54
+#: model:ir.model.constraint,message:altinkaya_crm.constraint_res_partner_industry_ref_code
+msgid "NACE Code must be unique!"
+msgstr "NACE Kodu benzersiz olmalıdır!"
+
+#. module: altinkaya_crm
+#. odoo-python
+#: code:addons/altinkaya_crm/models/sale_order.py:0
+#, python-format
+msgid "Only quotations can be converted into an opportunity."
+msgstr "Yalnızca taslak veya gönderilmiş teklifler fırsata dönüştürülebilir."
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__partner_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_partner_industry_form_inherit
+msgid "Partners"
+msgstr "İş Ortakları"
+
+#. module: altinkaya_crm
+#: model:ir.model,name:altinkaya_crm.model_crm_phonecall
+msgid "Phonecall"
+msgstr "Telefon çağrısı"
+
+#. module: altinkaya_crm
+#. odoo-python
+#: code:addons/altinkaya_crm/models/res_partner.py:0
 #, python-format
 msgid "Please define a sales team for this country."
 msgstr "Müşterinin ülkesi için bir satış ekibi ayarlayın."
 
 #. module: altinkaya_crm
-#: model:ir.model,name:altinkaya_crm.model_sale_order
-msgid "Sale Order"
-msgstr "Satış Siparişi"
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_partner_industry_form_inherit
+msgid "Product Categories"
+msgstr "Ürün Kategorileri"
 
 #. module: altinkaya_crm
 #: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_country_view_form_inherit_altinkaya
@@ -106,9 +223,9 @@ msgid "Sales"
 msgstr "Satış"
 
 #. module: altinkaya_crm
-#: model:ir.model,name:altinkaya_crm.model_crm_team
-msgid "Sales Channels"
-msgstr "Satış Ekipleri"
+#: model:ir.model,name:altinkaya_crm.model_sale_order
+msgid "Sales Order"
+msgstr "Satış Siparişi"
 
 #. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__sale_person_ids
@@ -121,9 +238,10 @@ msgid "Sales Persons for this country"
 msgstr "Bu ülke için Satış Elemanları"
 
 #. module: altinkaya_crm
+#: model:ir.model,name:altinkaya_crm.model_crm_team
 #: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__sale_team_id
 msgid "Sales Team"
-msgstr "Satış Ekibi"
+msgstr "Satış Ekipleri"
 
 #. module: altinkaya_crm
 #: model:ir.model.fields,help:altinkaya_crm.field_res_country__sale_team_id
@@ -131,28 +249,105 @@ msgid "Sales Team for this country"
 msgstr "Bu ülke için satış ekibi"
 
 #. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__smart_search
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__smart_search
+msgid "Smart Search"
+msgstr "Akıllı Arama"
+
+#. module: altinkaya_crm
 #: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__state
 msgid "Status"
 msgstr "Durumu"
 
 #. module: altinkaya_crm
-#: selection:crm.phonecall,state:0
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_partner_industry_form_inherit
+msgid "Sub-industries"
+msgstr "Alt Sektörler"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields.selection,name:altinkaya_crm.selection__crm_phonecall__state__success
 msgid "Success"
 msgstr "Başarılı"
 
 #. module: altinkaya_crm
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_lead__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_phonecall__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_team__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_res_country__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner_industry__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_crm.field_sale_order__count_pending_changeset_changes
+msgid "The number of pending changes of this record"
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_lead__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_phonecall__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_team__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_country__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner_industry__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_sale_order__count_pending_changesets
+msgid "The number of pending changesets of this record"
+msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_lead__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_phonecall__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_crm_team__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_country__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_res_partner_industry__count_changesets
+#: model:ir.model.fields,help:altinkaya_crm.field_sale_order__count_changesets
+msgid "The overall number of changesets of this record"
+msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: altinkaya_crm
 #: model:ir.model.fields,help:altinkaya_crm.field_crm_phonecall__state
-msgid "The status is set to Confirmed, when a case is created.\n"
+msgid ""
+"The status is set to Confirmed, when a case is created.\n"
 "When the call is over, the status is set to Held.\n"
-"If the call is not applicable anymore, the status can be set to Cancelled."
-msgstr "Bir vaka oluşturulduğunda durum Onaylandı olarak ayarlanır.\n"
+"If the callis not applicable anymore, the status can be set to Cancelled."
+msgstr ""
+"Bir vaka oluşturulduğunda durum Onaylandı olarak ayarlanır.\n"
 "Çağrı bittiğinde durum Beklemede olarak ayarlanır.\n"
 "Çağrı artık geçerli değilse durum İptal Edildi olarak ayarlanabilir."
 
 #. module: altinkaya_crm
-#: selection:crm.phonecall,state:0
-msgid "To Do"
-msgstr "Yapılacak"
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__also_includes
+msgid "This item Also Includes"
+msgstr "Bu Kalem Ayrıca Şunları Kapsar"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__excludes
+msgid "This item Excludes"
+msgstr "Bu Kalem Şunları Kapsamaz"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__includes
+msgid "This item Includes"
+msgstr "Bu Kalem Şunları Kapsar"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__transcript
+msgid "Transcript"
+msgstr "Görüşme Dökümü"
+
+#. module: altinkaya_crm
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_lead__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_phonecall__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_crm_team__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_country__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_res_partner_industry__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_crm.field_sale_order__user_can_see_changeset
+msgid "User Can See Changeset"
+msgstr "Kullanıcı Değişiklikleri Görebilir"
 
 #. module: altinkaya_crm
 #: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_partner_view_form_inherit_altinkaya
@@ -166,7 +361,6 @@ msgid "Vat Status"
 msgstr "Vergi No Tipi"
 
 #. module: altinkaya_crm
-#: model:ir.model,name:altinkaya_crm.model_crm_phonecall
-msgid "crm.phonecall"
-msgstr "Telefon çağrısı"
-
+#: model_terms:ir.ui.view,arch_db:altinkaya_crm.res_partner_view_form_inherit_altinkaya
+msgid "Çağrılar"
+msgstr "Çağrılar"
