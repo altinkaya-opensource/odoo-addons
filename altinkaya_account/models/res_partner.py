@@ -265,27 +265,33 @@ class ResPartner(models.Model):
             else:
                 record.due_days = 0
 
+    def _update_export_account_codes(self):
+        """Update export account codes from the partner country and reference."""
+        for partner in self.filtered(
+            lambda record: record._needs_ref() and record.ref and record.country_id
+        ):
+            export_ref = partner.ref.strip()
+            if partner.country_id.code != "TR":
+                export_ref = f"Y{export_ref}"
+            super(ResPartner, partner).write(
+                {
+                    "z_receivable_export": f"120.{export_ref}",
+                    "z_payable_export": f"320.{export_ref}",
+                }
+            )
+        return True
+
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            if not vals.get("ref") and self._needs_ref(vals=vals):
-                vals["ref"] = self._get_next_ref(vals=vals)
-                if vals.get("ref") and vals.get("country_id"):
-                    country_id = self.env["res.country"].browse(vals["country_id"])
-                    if country_id and country_id.code != "TR":
-                        z_receivable_export = "120.Y%s" % (vals["ref"].strip() or "")
-                        z_payable_export = "320.Y%s" % (vals["ref"].strip() or "")
-                    else:
-                        z_receivable_export = "120.%s" % (vals["ref"].strip() or "")
-                        z_payable_export = "320.%s" % (vals["ref"].strip() or "")
-                    vals.update(
-                        {
-                            "ref": vals["ref"],
-                            "z_receivable_export": z_receivable_export,
-                            "z_payable_export": z_payable_export,
-                        }
-                    )
-        return super().create(vals_list)
+        partners = super().create(vals_list)
+        partners._update_export_account_codes()
+        return partners
+
+    def write(self, vals):
+        result = super().write(vals)
+        if "country_id" in vals or "ref" in vals:
+            self._update_export_account_codes()
+        return result
 
     def change_accounts_to_usd(self):
         """
