@@ -114,16 +114,10 @@ class ProductProduct(models.Model):
             name = name.replace(f"[{self.default_code}] ", "")
         return wrap_words(name, width, max_lines)
 
-    def action_print_external_label(self):
-        """Print the showroom label (code + name + GS1 QR, no lot/qty)."""
+    def _print_external_label(self, report_xmlid):
         self = self.with_context(must_skip_send_to_printer=True)
-        external_label = self.env.ref(
-            "product_label_print.label_product_product_external"
-        )
-        printer_id = (
-            external_label.printing_printer_id
-            or self.env.user.context_def_label_printer
-        )
+        external_label = self.env.ref(report_xmlid)
+        printer_id = external_label.printing_printer_id
         if not printer_id:
             raise UserError(_("Please define printer for this label"))
         if printer_id.type not in ("GODEX", "GODEX300"):
@@ -135,11 +129,23 @@ class ProductProduct(models.Model):
             )
         payload = external_label.with_context(
             printer_type=printer_id.type
-        )._render_qweb_text(
-            "product_label_print.label_product_product_external", docids=self.ids
-        )[0]
-        payload = payload.rstrip() + b"\n"
-        printer_id.print_document(report=None, content=payload, doc_form="txt")
+        )._render_qweb_text(report_xmlid, docids=self.ids)[0]
+        payload = payload.rstrip()
+        if not payload:
+            raise UserError(_("Label report rendered empty"))
+        printer_id.print_document(report=None, content=payload + b"\n", doc_form="txt")
+
+    def action_print_external_label(self):
+        """Print the showroom label (code + name + GS1 QR, no lot/qty)."""
+        return self._print_external_label(
+            "product_label_print.label_product_product_external"
+        )
+
+    def action_print_kardex_label(self):
+        """Print the Kardex label (code + name + GS1 QR, no lot/qty)."""
+        return self._print_external_label(
+            "product_label_print.label_product_product_kardex"
+        )
 
     def action_print_molding_label(self):
         self = self.with_context(must_skip_send_to_printer=True)
