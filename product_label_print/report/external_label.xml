@@ -5,10 +5,7 @@
          Name lines wrap at 30 chars so they stay above the QR column. -->
     <template id="product_external_label">
         <t t-translation="off">
-            <t
-                t-set="printer_type"
-                t-value="docs.env.ref('product_label_print.label_product_product_external').printing_printer_id.type"
-            />
+            <t t-set="printer_type" t-value="docs.env.context.get('printer_type')" />
             <t t-set="label_count" t-value="len(docs)" />
             <t t-if="printer_type == 'GODEX'">
 ^Q50,3
