@@ -4,7 +4,7 @@
 {
     "name": "Altinkaya CRM Extension",
     "summary": "Adds tracking and conversion rates to orders.",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "General",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Yousef Sheta, Altinkaya Enclosures",
@@ -14,6 +14,7 @@
     "depends": [
         "crm",
         "sale",
+        "sale_crm",
         "partner_industry_secondary",
         "crm_phonecall",
         "verimor_bulutsantralim_click2dial",

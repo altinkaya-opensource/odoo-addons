@@ -31,6 +31,36 @@
             >
                 <field name="linkedin" widget="url" />
             </xpath>
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expected_revenue']" position="after">
+                <field
+                    name="currency_id"
+                    class="oe_inline o_input_6ch"
+                    options="{'no_create': True, 'no_open': True}"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="crm_case_kanban_view_leads_inherit_altinkaya" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit.altinkaya</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads" />
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/field[@name='expected_revenue']" position="after">
+                <field name="expected_revenue_usd" />
+                <field name="currency_id" />
+            </xpath>
+            <xpath expr="//kanban/progressbar" position="attributes">
+                <attribute name="sum_field">expected_revenue_usd</attribute>
+            </xpath>
+            <xpath
+                expr="//templates//field[@name='expected_revenue']"
+                position="attributes"
+            >
+                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
