@@ -120,13 +120,25 @@ class ProductProduct(models.Model):
         external_label = self.env.ref(
             "product_label_print.label_product_product_external"
         )
-        printer_id = external_label.printing_printer_id
+        printer_id = (
+            external_label.printing_printer_id
+            or self.env.user.context_def_label_printer
+        )
         if not printer_id:
             raise UserError(_("Please define printer for this label"))
-        payload = external_label._render_qweb_text(
-            "product_label_print.label_product_product_external",
-            docids=self.ids,
+        if printer_id.type not in ("GODEX", "GODEX300"):
+            raise UserError(
+                _(
+                    "Please define printer type (GODEX or GODEX300) "
+                    "for this label printer"
+                )
+            )
+        payload = external_label.with_context(
+            printer_type=printer_id.type
+        )._render_qweb_text(
+            "product_label_print.label_product_product_external", docids=self.ids
         )[0]
+        payload = payload.rstrip() + b"\n"
         printer_id.print_document(report=None, content=payload, doc_form="txt")
 
     def action_print_molding_label(self):
