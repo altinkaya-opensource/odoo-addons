@@ -10,11 +10,23 @@
     </record>
 
     <record id="label_product_product_external" model="ir.actions.report">
-        <field name="name">Showroom Product Label (GODEX)</field>
+        <field name="name">Showroom Ürün Etiketi</field>
         <field name="model">product.product</field>
         <field name="report_name">product_label_print.product_external_label</field>
         <field name="report_file">external_label</field>
         <field name="report_type">qweb-text</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="label_product_product_kardex" model="ir.actions.report">
+        <field name="name">Kardex Ürün Etiketi</field>
+        <field name="model">product.product</field>
+        <field name="report_name">product_label_print.product_kardex_label</field>
+        <field name="report_file">external_label</field>
+        <field name="report_type">qweb-text</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_type">report</field>
     </record>
 
     <record id="label_product_product_kalip" model="ir.actions.report">

@@ -4,8 +4,16 @@
          name, website and GS1 QR - no lot/qty. One label per product.
          Name lines wrap at 30 chars so they stay above the QR column. -->
     <template id="product_external_label">
+        <t t-call="product_label_print.product_external_label_body" />
+    </template>
+
+    <template id="product_kardex_label">
+        <t t-call="product_label_print.product_external_label_body" />
+    </template>
+
+    <template id="product_external_label_body">
         <t t-translation="off">
-            <t t-set="printer_type" t-value="docs.env.context.get('printer_type')" />
+            <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
             <t t-set="label_count" t-value="len(docs)" />
             <t t-if="printer_type == 'GODEX'">
 ^Q50,3
@@ -117,6 +125,7 @@ AT,659,510,36,32,0,0E,0,0,www.altinkaya.com
 E
 </t>
 </t>
+            <t t-out="'\n'" />
         </t>
     </template>
 </odoo>

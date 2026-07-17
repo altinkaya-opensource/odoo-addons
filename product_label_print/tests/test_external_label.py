@@ -1,10 +1,8 @@
-from unittest.mock import patch
-
 from odoo.tests.common import TransactionCase
 
 
 class TestExternalLabel(TransactionCase):
-    def test_print_uses_selected_printer_type_and_ends_with_newline(self):
+    def test_bound_reports_use_user_label_printer_type(self):
         product = self.env["product.product"].create(
             {
                 "name": "Showroom Test Product",
@@ -22,23 +20,17 @@ class TestExternalLabel(TransactionCase):
                 "type": "GODEX",
             }
         )
-        report = self.env.ref("product_label_print.label_product_product_external")
-        report.printing_printer_id = False
+        reports = self.env.ref(
+            "product_label_print.label_product_product_external"
+        ) | self.env.ref("product_label_print.label_product_product_kardex")
+        reports.printing_printer_id = printer
         self.env.user.context_def_label_printer = printer
 
-        with (
-            patch.object(
-                type(report),
-                "_render_qweb_text",
-                autospec=True,
-                return_value=(b"^P1\nE\n        ", "text"),
-            ) as render,
-            patch.object(
-                type(printer), "print_document", autospec=True
-            ) as print_document,
-        ):
-            product.action_print_external_label()
-
-        rendered_report = render.call_args.args[0]
-        self.assertEqual(rendered_report.env.context["printer_type"], "GODEX")
-        self.assertEqual(print_document.call_args.kwargs["content"], b"^P1\nE\n")
+        product_model = self.env.ref("product.model_product_product")
+        for report in reports:
+            self.assertEqual(report.binding_model_id, product_model)
+            payload = report.with_context(
+                must_skip_send_to_printer=True
+            )._render_qweb_text(report, docids=product.ids)[0]
+            self.assertIn(b"^L", payload)
+            self.assertIn(b"^P1\nE", payload)
