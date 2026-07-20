@@ -1143,7 +1143,8 @@ class DeliveryCarrier(models.Model):
         picking.carrier_tracking_ref = response["trackingNumber"]
         picking.shipping_number = response["trackingNumber"]
 
-        tracking_events = response["trackResults"][0]["scanEvents"]
+        # FedEx omits scanEvents until the shipment has its first scan
+        tracking_events = response["trackResults"][0].get("scanEvents") or []
 
         last_event = tracking_events[-1] if tracking_events else {}
 
@@ -1168,9 +1169,9 @@ class DeliveryCarrier(models.Model):
             ]
         )
 
-        carrier_received_by = response["trackResults"][0]["deliveryDetails"].get(
-            "receivedByName"
-        )
+        carrier_received_by = (
+            response["trackResults"][0].get("deliveryDetails") or {}
+        ).get("receivedByName")
 
         if carrier_received_by:
             picking.carrier_received_by = carrier_received_by
