@@ -11,7 +11,6 @@ class CRMLead(models.Model):
         readonly=False,
         required=True,
         store=True,
-        precompute=True,
     )
     expected_revenue = fields.Monetary(currency_field="currency_id")
     expected_revenue_usd = fields.Float(
