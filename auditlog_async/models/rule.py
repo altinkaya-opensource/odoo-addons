@@ -38,6 +38,19 @@ def auditlog_json_default(obj):
 class AuditlogRule(models.Model):
     _inherit = "auditlog.rule"
 
+    def get_auditlog_fields(self, model):
+        """Exclude binary fields from audit logging.
+
+        Reading a binary field loads the whole attachment into memory
+        (base64-encoded), so a batch of records with images can exhaust
+        the worker's RAM. Their content is useless in audit logs anyway.
+        """
+        return [
+            fname
+            for fname in super().get_auditlog_fields(model)
+            if model._fields[fname].type != "binary"
+        ]
+
     def _make_create(self):
         """Async create logging - minimal sync capture."""
         self.ensure_one()
