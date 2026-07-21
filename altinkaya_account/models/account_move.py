@@ -108,16 +108,6 @@ class AccountMove(models.Model):
             ):
                 invoice.currency_id = invoice.pricelist_id.invoice_currency_id
 
-    @api.depends("pricelist_id")
-    def _compute_currency_id(self):
-        """
-        Override to use invoice_currency_id from pricelist when
-        computing invoice's currency_id.
-        """
-        res = super()._compute_currency_id()
-        self._switch_to_pricelist_currency()
-        return res
-
     def _compute_tax_line_ids(self):
         for move in self:
             move.tax_line_ids = move.line_ids.filtered("tax_repartition_line_id")
