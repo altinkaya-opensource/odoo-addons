@@ -434,23 +434,40 @@ class ResPartner(models.Model):
 
         Statement rule (mirrors the partner statement in altinkaya_reports):
         posted lines since 2022-01-01, ADVR and KRFRK journals excluded,
-        KFARK/KRDGR lines counted as TRY-only. Lines not yet due at ``date``
-        are excluded (an open invoice due next month is not part of the
-        settled difference); KFARK lines are exempt from the maturity check
-        so already-issued difference invoices always stay in the sum and the
+        KFARK/KRDGR lines counted as TRY-only. Customer invoices after each
+        account's last payment on or before ``date`` are excluded. Lines not
+        yet due at ``date`` are also excluded; KFARK lines are exempt so the
         calculation remains idempotent.
         """
         self.ensure_one()
         self.env.cr.execute(
             """
+            WITH last_payment AS (
+                SELECT p.account_id, MAX(p.date) AS last_payment_date
+                  FROM account_move_line p
+                  JOIN account_account pa ON pa.id = p.account_id
+                  JOIN account_move pm ON pm.id = p.move_id
+                 WHERE p.partner_id = %s
+                   AND p.company_id = %s
+                   AND pa.account_type = 'asset_receivable'
+                   AND pa.currency_id IS NOT NULL
+                   AND pm.state = 'posted'
+                   AND p.date BETWEEN %s AND %s
+                   AND p.credit > 0
+                   AND (p.payment_id IS NOT NULL
+                        OR p.statement_line_id IS NOT NULL)
+                 GROUP BY p.account_id
+            )
             SELECT l.account_id,
                    ROUND(SUM(l.debit - l.credit)::numeric, 2) AS tl_net,
                    ROUND(SUM(CASE WHEN aj.code IN ('KFARK', 'KRDGR') THEN 0
-                                  ELSE l.amount_currency END)::numeric, 4) AS fx_net
+                                  ELSE l.amount_currency END)::numeric, 4) AS fx_net,
+                   lp.last_payment_date
               FROM account_move_line l
               JOIN account_account a ON a.id = l.account_id
               JOIN account_move m ON m.id = l.move_id
               JOIN account_journal aj ON aj.id = m.journal_id
+              JOIN last_payment lp ON lp.account_id = l.account_id
              WHERE l.partner_id = %s
                AND l.company_id = %s
                AND a.account_type = 'asset_receivable'
@@ -459,12 +476,19 @@ class ResPartner(models.Model):
                AND l.date >= %s
                AND m.date >= %s
                AND aj.code NOT IN ('ADVR', 'KRFRK')
+               AND (aj.code = 'KFARK'
+                    OR m.move_type NOT IN ('out_invoice', 'out_refund')
+                    OR COALESCE(m.invoice_date, l.date) <= lp.last_payment_date)
                AND (l.date_maturity IS NULL
                     OR l.date_maturity <= %s
                     OR aj.code = 'KFARK')
-             GROUP BY l.account_id
+             GROUP BY l.account_id, lp.last_payment_date
             """,
             (
+                self.commercial_partner_id.id,
+                self.env.company.id,
+                self._CURRENCY_VALUATION_START_DATE,
+                date,
                 self.commercial_partner_id.id,
                 self.env.company.id,
                 self._CURRENCY_VALUATION_START_DATE,
@@ -498,8 +522,8 @@ class ResPartner(models.Model):
             )
         return round(fx_net / rate.tcmb_forex_buying, 2)
 
-    def _get_difference_source_invoices(self, account):
-        """Customer invoices on this account since the last posted KFARK invoice.
+    def _get_difference_source_invoices(self, account, payment_date):
+        """Invoices through the last payment, after the last posted KFARK.
 
         Used for the KDV mix and the e-invoice comment. Falls back to the
         whole statement window when no invoice exists after the last KFARK.
@@ -520,6 +544,7 @@ class ResPartner(models.Model):
         invoice_domain = base_domain + [
             ("move_id.move_type", "in", ("out_invoice", "out_refund")),
             ("move_id.journal_id.code", "!=", "KFARK"),
+            ("move_id.invoice_date", "<=", payment_date),
         ]
         invoice_lines = aml_obj.search(
             invoice_domain + [("date", ">", last_kfark_line.date)]
@@ -591,7 +616,9 @@ class ResPartner(models.Model):
                 continue
             inv_type = "out_invoice" if amount > 0 else "out_refund"
 
-            source_invoices = self._get_difference_source_invoices(account)
+            source_invoices = self._get_difference_source_invoices(
+                account, row["last_payment_date"]
+            )
             inv_lines_to_create = []
             comment_einvoice = ""
             if source_invoices:
