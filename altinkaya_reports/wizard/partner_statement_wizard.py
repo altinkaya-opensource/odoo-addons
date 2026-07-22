@@ -24,20 +24,54 @@ class WizarPartnerStatement(models.TransientModel):
     )
     partner_id = fields.Many2one("res.partner", default=_default_partner_ids)
 
-    def print_report(self):
-        report_name = "altinkaya_reports.partner_statement_altinkaya"
-        context = dict(self.env.context)
-        context.update(
+    def _get_report_context(self):
+        self.ensure_one()
+        report_context = dict(self.env.context)
+        report_context.update(
             {
-                "date_start": self.date_start.strftime("%Y-%m-%d"),
-                "date_end": self.date_end.strftime("%Y-%m-%d"),
+                "date_start": fields.Date.to_string(self.date_start),
+                "date_end": fields.Date.to_string(self.date_end),
+                "lang": self._context.get("wizard_lang")
+                or self.partner_id.lang
+                or self.env.user.lang,
                 "partner_ids": self.partner_id.ids,
             }
         )
+        return report_context
+
+    def print_report(self):
+        self.ensure_one()
+        report_name = "altinkaya_reports.partner_statement_altinkaya"
+        report_context = self._get_report_context()
         if self._context.get("wizard_lang") == "en_US":
             report_name += "_en"
-        return self.env.ref(report_name).report_action(
-            docids=self.partner_id.ids, data={"yigit": "123"}
+        return (
+            self.env.ref(report_name)
+            .with_context(**report_context)
+            .report_action(
+                docids=self.partner_id.ids,
+                data={
+                    "date_start": report_context["date_start"],
+                    "date_end": report_context["date_end"],
+                    "lang": report_context["lang"],
+                },
+            )
+        )
+
+    def print_excel(self):
+        self.ensure_one()
+        report_context = self._get_report_context()
+        return (
+            self.env.ref("altinkaya_reports.partner_statement_altinkaya_xlsx")
+            .with_context(**report_context)
+            .report_action(
+                self.partner_id,
+                data={
+                    "date_start": report_context["date_start"],
+                    "date_end": report_context["date_end"],
+                    "lang": report_context["lang"],
+                },
+            )
         )
 
 
