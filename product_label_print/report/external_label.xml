@@ -11,6 +11,10 @@
         <t t-call="product_label_print.product_external_label_body" />
     </template>
 
+    <template id="product_depo2_label">
+        <t t-call="product_label_print.product_external_label_body" />
+    </template>
+
     <template id="product_external_label_body">
         <t t-translation="off">
             <t t-set="printer_type" t-value="user.context_def_label_printer.type" />

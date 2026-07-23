@@ -20,9 +20,11 @@ class TestExternalLabel(TransactionCase):
                 "type": "GODEX",
             }
         )
-        reports = self.env.ref(
-            "product_label_print.label_product_product_external"
-        ) | self.env.ref("product_label_print.label_product_product_kardex")
+        reports = (
+            self.env.ref("product_label_print.label_product_product_external")
+            | self.env.ref("product_label_print.label_product_product_kardex")
+            | self.env.ref("product_label_print.label_product_product_depo2")
+        )
         reports.printing_printer_id = printer
         self.env.user.context_def_label_printer = printer
 

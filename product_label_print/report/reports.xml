@@ -29,6 +29,16 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="label_product_product_depo2" model="ir.actions.report">
+        <field name="name">Depo2 Ürün Etiketi</field>
+        <field name="model">product.product</field>
+        <field name="report_name">product_label_print.product_depo2_label</field>
+        <field name="report_file">external_label</field>
+        <field name="report_type">qweb-text</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="label_product_product_kalip" model="ir.actions.report">
         <field name="name">Molding Label (GODEX)</field>
         <field name="model">product.product</field>

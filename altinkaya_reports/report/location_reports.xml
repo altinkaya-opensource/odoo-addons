@@ -109,4 +109,9 @@ E</t>
         <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
         <t t-call="altinkaya_reports.location_report_godex_body" />
     </template>
+    <!-- Depo2 variant: printing_printer_id is set on the action in DB. -->
+    <template id="location_report_godex_depo2" name="location report godex depo2">
+        <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
+        <t t-call="altinkaya_reports.location_report_godex_body" />
+    </template>
 </odoo>
