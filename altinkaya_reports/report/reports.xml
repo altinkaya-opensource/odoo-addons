@@ -25,6 +25,16 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="label_stock_location_depo2" model="ir.actions.report">
+        <field name="name">Konum Barkodu (Depo2)</field>
+        <field name="model">stock.location</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">altinkaya_reports.location_report_godex_depo2</field>
+        <field name="report_file">altinkaya_reports.location_report_godex_depo2</field>
+        <field name="binding_model_id" ref="stock.model_stock_location" />
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="stock_pickingaltinkaya" model="ir.actions.report">
         <field name="name">Depo Fişi Ekrana</field>
         <field name="model">stock.picking</field>
