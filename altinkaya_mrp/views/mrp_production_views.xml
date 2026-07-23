@@ -493,4 +493,23 @@
         groups="mrp.group_mrp_routings"
         sequence="0"
     />
+
+    <record id="mrp_boya_menu" model="ir.actions.act_window">
+        <field name="name">Toz Boya İşleri</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="mrp_production_tree_without_route" />
+        <field name="domain">[["process_id","=",4]]</field>
+        <field name="context">{'search_default_todo':1}</field>
+    </record>
+
+    <menuitem
+        id="menu_mrp_boya_production"
+        name="Toz Boya İşleri"
+        action="mrp_boya_menu"
+        parent="mrp.menu_mrp_manufacturing"
+        groups="mrp.group_mrp_routings"
+        sequence="0"
+    />
 </odoo>
