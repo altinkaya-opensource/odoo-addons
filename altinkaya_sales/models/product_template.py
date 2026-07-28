@@ -5,9 +5,11 @@ Created on Jan 17, 2019
 """
 
 import logging
+from collections import defaultdict
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
 
@@ -77,16 +79,119 @@ class ProductTemplate(models.Model):
         default=0.0,
     )
 
-    def compute_set_product_price(self):
-        """
-        Compute the price of the set product based on the price of its components.
-        It creates a dummy SO to compute the price of the components.
-        :return:
-        """
-        self.ensure_one()
-        phantom_boms = self.bom_ids.filtered(lambda b: b.type == "phantom")
+    def _set_price_kit_variants(self):
+        bom_domain = [("type", "=", "phantom")]
+        if self:
+            bom_domain.append(("product_tmpl_id", "in", self.ids))
+        phantom_boms = self.env["mrp.bom"].sudo().search(bom_domain)
+        variant_ids = phantom_boms.filtered("product_id").product_id.ids
+        template_ids = phantom_boms.filtered(
+            lambda bom: not bom.product_id
+        ).product_tmpl_id.ids
+        if not variant_ids and not template_ids:
+            return self.env["product.product"]
+        return self.env["product.product"].search(
+            [
+                ("active", "=", True),
+                # This is intentionally the variant field, not the template field.
+                ("is_published", "=", True),
+                "|",
+                ("id", "in", variant_ids),
+                ("product_tmpl_id", "in", template_ids),
+            ]
+        )
 
-        if not phantom_boms:
+    def _compute_set_prices(self, kits):
+        """Return {variant_id: price} summed from each kit's exploded BOM."""
+        param = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("altinkaya_sales.set_price_pricelist_id", 136)
+        )
+        pricelist = self.env["product.pricelist"].browse(int(param)).exists()
+        if not pricelist:
+            raise UserError(
+                _(
+                    "The configured set price pricelist %(pricelist_id)s "
+                    "does not exist.",
+                    pricelist_id=param,
+                )
+            )
+
+        prices = {}
+        for kit in kits:
+            bom = self.env["mrp.bom"].sudo()._bom_find(products=kit).get(kit)
+            if not bom or bom.type != "phantom":
+                continue
+            try:
+                _boms, lines = bom.explode(kit, 1.0, picking_type=bom.picking_type_id)
+            except Exception as error:
+                _logger.warning(
+                    "Could not explode set product %s: %s",
+                    kit.default_code,
+                    error,
+                )
+                continue
+
+            merged = defaultdict(float)
+            for bom_line, data in lines:
+                product = data.get("target_product") or bom_line.product_id
+                merged[product] += data["qty"]
+            total = sum(
+                pricelist._get_product_price(product, qty) * qty
+                for product, qty in merged.items()
+            )
+            if not total:
+                _logger.warning(
+                    "Set product %s computed zero from %s exploded lines; skipping",
+                    kit.default_code,
+                    len(lines),
+                )
+                continue
+            prices[kit.id] = total
+        return prices
+
+    def _recompute_set_prices(self, variants):
+        prices = self._compute_set_prices(variants)
+
+        precision = self.env["decimal.precision"].precision_get("Product Price")
+        changed = 0
+        for kit in variants:
+            if kit.id not in prices:
+                continue
+            old_price = kit.v_fiyat_dolar
+            new_price = prices[kit.id]
+            if not float_compare(old_price, new_price, precision_digits=precision):
+                continue
+            changed += 1
+            _logger.info(
+                "Updating set product price for %s: %s -> %s",
+                kit.display_name,
+                old_price,
+                new_price,
+            )
+            kit.v_fiyat_dolar = new_price
+
+        # The per-change INFO lines above are the audit trail: they carry the
+        # old and new price, so a run stays reversible from the log alone.
+        _logger.info(
+            "Set price recompute scanned %s variants, changed %s",
+            len(variants),
+            changed,
+        )
+        return {
+            "scanned": len(variants),
+            "changed": changed,
+        }
+
+    @api.model
+    def _cron_recompute_set_prices(self):
+        return self._recompute_set_prices(self._set_price_kit_variants())
+
+    def compute_set_product_price(self):
+        """Compute the set product price from its components."""
+        self.ensure_one()
+        if not self.bom_ids.filtered(lambda bom: bom.type == "phantom"):
             raise UserError(
                 _(
                     "No phantom BoM found for product %(name)s. Please create"
@@ -94,51 +199,5 @@ class ProductTemplate(models.Model):
                     name=self.name,
                 )
             )
-
-        products_2compute = self.product_variant_ids
-        date_now = fields.Datetime.now()
-        dummy_so = self.env["sale.order"].create(
-            {
-                "name": "Phantom Bom Price Compute: {}, {}".format(
-                    self.id, date_now.strftime("%d-%m-%Y")
-                ),
-                "partner_id": 12515,  # Ahmet Altınışık test
-                "partner_invoice_id": 12515,
-                "partner_shipping_id": 12515,
-                "pricelist_id": 136,  # USD pricelist
-                "warehouse_id": 1,
-                "company_id": 1,
-                "currency_id": 2,  # USD
-                "date_order": fields.Datetime.now(),
-            }
-        )
-        for product in products_2compute:
-            bom_dict = self.env["mrp.bom"].sudo()._bom_find(products=product)
-            bom = bom_dict.get(product)
-            if not bom.type == "phantom":
-                continue
-            # Create a new sale order line
-            dummy_sol = self.env["sale.order.line"].create(
-                {
-                    "order_id": dummy_so.id,
-                    "product_id": product.id,
-                    "product_uom_qty": 1,
-                    "product_uom": product.uom_id.id,
-                    "price_unit": product.v_fiyat_dolar,
-                }
-            )
-            # Explode the phantom bom
-            dummy_sol.explode_set_contents()
-            # Compute the price
-            dummy_so._recalculate_prices()
-            # Update the product price
-            _logger.info(
-                f"Updating product price for product {product.display_name}: "
-                f"{product.v_fiyat_dolar} -> {dummy_so.amount_untaxed}"
-            )
-            product.v_fiyat_dolar = dummy_so.amount_untaxed
-            # Clear sale order lines
-            dummy_so.order_line.unlink()
-        # Clear the dummy sale order
-        dummy_so.unlink()
+        self._recompute_set_prices(self._set_price_kit_variants())
         return True
