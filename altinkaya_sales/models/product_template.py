@@ -187,17 +187,3 @@ class ProductTemplate(models.Model):
     @api.model
     def _cron_recompute_set_prices(self):
         return self._recompute_set_prices(self._set_price_kit_variants())
-
-    def compute_set_product_price(self):
-        """Compute the set product price from its components."""
-        self.ensure_one()
-        if not self.bom_ids.filtered(lambda bom: bom.type == "phantom"):
-            raise UserError(
-                _(
-                    "No phantom BoM found for product %(name)s. Please create"
-                    " a phantom BoM to compute the price of the set product.",
-                    name=self.name,
-                )
-            )
-        self._recompute_set_prices(self._set_price_kit_variants())
-        return True
