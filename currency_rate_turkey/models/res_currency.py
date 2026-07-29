@@ -74,7 +74,14 @@ class ResCurrency(models.Model):
 
     def _get_rates_single(self, company, date):
         rates_dict = {}
+        requested_rate_type = self._context.get("rate_type")
+        currency_ids_by_rate_type = {}
+
         for rec in self:
+            rate_type = requested_rate_type or rec.main_rate_field or "rate"
+            currency_ids_by_rate_type.setdefault(rate_type, []).append(rec.id)
+
+        for rate_type, currency_ids in currency_ids_by_rate_type.items():
             query = """SELECT c.id,
                               COALESCE((SELECT r.rate_field FROM res_currency_rate r
                                       WHERE r.currency_id = c.id AND r.name <= %s
@@ -83,13 +90,7 @@ class ResCurrency(models.Model):
                                       LIMIT 1), 1.0) AS rate
                        FROM res_currency c
                        WHERE c.id IN %s"""
-
-            if self._context.get("rate_type"):
-                rate_type = self._context.get("rate_type")
-            else:
-                rate_type = rec.main_rate_field or "rate"
-
             query = query.replace("r.rate_field", f"r.{rate_type}")
-            self._cr.execute(query, (date, company.id, tuple(rec.ids)))
+            self._cr.execute(query, (date, company.id, tuple(currency_ids)))
             rates_dict.update(dict(self._cr.fetchall()))
         return rates_dict
