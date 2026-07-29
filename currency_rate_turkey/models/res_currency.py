@@ -40,8 +40,8 @@ class ResCurrency(models.Model):
         if isinstance(date, str):
             date = fields.Date.from_string(date)
 
-        # Look for the last seven days
-        dates = [(date - timedelta(days=i)) for i in range(7)]
+        # Look for the previous fourteen days
+        dates = [(date - timedelta(days=i)) for i in range(1, 15)]
         rates = {}
         for date in dates:
             rate_found = False
