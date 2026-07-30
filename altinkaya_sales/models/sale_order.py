@@ -290,63 +290,72 @@ class SaleOrder(models.Model):
 
     @api.depends("currency_id", "amount_untaxed", "date_order", "pricelist_id")
     def _compute_amount_untaxed_usd(self):
+        """Untaxed total converted to USD at the order-date rate.
+
+        The amount, the pricelist currency and the date come from the
+        recordset; only the rate is read from SQL. Reading amount_untaxed
+        back out of sale_order instead returned the row from before the
+        current transaction wrote it, so an order created together with its
+        lines in one transaction stored 0 and never recovered.
         """
-        This function computes the untaxed amount in USD
-        :return:
-        """
-        # This means that the record is not created yet and it's single.
-        if not self.ids:
-            self.amount_untaxed_usd = 0.0
-            return
-        cr = self._cr
-        query = """
--- -- EUR_ID = 1
--- -- USD_ID = 2
-SELECT
-  sale_order.id,
-  CASE
-    WHEN pl.currency_id = 2 THEN sale_order.amount_untaxed
-    ELSE
-      CASE
-        WHEN pl.currency_id = 1 THEN
-          (
-            SELECT sale_order.amount_untaxed / rateEUR.rate * rateUSD.rate
-            FROM (
-              SELECT rate FROM res_currency_rate
-              WHERE currency_id = 1 AND name <= sale_order.date_order::date
-              ORDER BY name DESC
-              LIMIT 1
-            ) AS rateEUR,
-            (
-              SELECT rate FROM res_currency_rate
-              WHERE currency_id = 2 AND name <= sale_order.date_order::date
-              ORDER BY name DESC
-              LIMIT 1
-            ) AS rateUSD
-          )
-        ELSE
-          (
-            SELECT sale_order.amount_untaxed * rateUSD.rate
-            FROM (
-              SELECT rate FROM res_currency_rate
-              WHERE currency_id = 2 AND name <= sale_order.date_order::date
-              ORDER BY name DESC
-              LIMIT 1
-            ) AS rateUSD
-          )
-      END
-  END AS amount_untaxed_usd
-FROM sale_order
-JOIN product_pricelist pl ON sale_order.pricelist_id = pl.id
-WHERE sale_order.id in %(ids)s;
-        """
-        cr.execute(query, {"ids": tuple(self.ids)})
-        result = dict(cr.fetchall())
+        self.amount_untaxed_usd = 0.0
+
+        ids, currencies, dates = [], [], []
         for order in self.filtered("id"):
-            if result.get(order.id):
-                order.amount_untaxed_usd = result[order.id] or 0.0
-            else:
-                order.amount_untaxed_usd = 0.0
+            # The old query joined product_pricelist, so an order without one
+            # produced no row and kept 0.0. Leaving it out of the arrays does
+            # the same.
+            currency = order.pricelist_id.currency_id
+            if not currency:
+                continue
+            ids.append(order.id)
+            currencies.append(currency.id)
+            dates.append((order.date_order or fields.Datetime.now()).date())
+        if not ids:
+            return
+
+        usd_id = self.env.ref("base.USD").id
+        eur_id = self.env.ref("base.EUR").id
+        self.env["res.currency.rate"].flush_model(
+            ["rate", "currency_id", "company_id", "name"]
+        )
+        self.env.cr.execute(
+            """
+            SELECT p.order_id,
+                   CASE
+                       WHEN p.currency_id = %(usd)s THEN 1.0
+                       WHEN p.currency_id = %(eur)s THEN
+                           (SELECT r.rate FROM res_currency_rate r
+                             WHERE r.currency_id = %(usd)s
+                               AND r.name <= p.rate_date
+                          ORDER BY r.name DESC LIMIT 1)
+                           / NULLIF((SELECT r.rate FROM res_currency_rate r
+                                      WHERE r.currency_id = %(eur)s
+                                        AND r.name <= p.rate_date
+                                   ORDER BY r.name DESC LIMIT 1), 0)
+                       ELSE
+                           (SELECT r.rate FROM res_currency_rate r
+                             WHERE r.currency_id = %(usd)s
+                               AND r.name <= p.rate_date
+                          ORDER BY r.name DESC LIMIT 1)
+                   END AS factor
+              FROM unnest(%(ids)s::int[], %(currencies)s::int[],
+                          %(dates)s::date[])
+                   AS p (order_id, currency_id, rate_date)
+            """,
+            {
+                "usd": usd_id,
+                "eur": eur_id,
+                "ids": ids,
+                "currencies": currencies,
+                "dates": dates,
+            },
+        )
+        factors = dict(self.env.cr.fetchall())
+        for order in self:
+            factor = factors.get(order.id)
+            if factor:
+                order.amount_untaxed_usd = order.amount_untaxed * factor
 
     @api.onchange("partner_shipping_id")
     def onchange_partner_id_carrier_id(self):
