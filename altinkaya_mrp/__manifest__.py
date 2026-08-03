@@ -3,7 +3,7 @@
 {
     "name": "ALTINKAYA MRP Extension",
     "summary": "Extra features for MRP Module",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.0.2",
     "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
