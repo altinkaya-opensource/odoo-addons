@@ -29,9 +29,37 @@ class ChangeProductionQty(models.TransientModel):
             return False
 
         self._check_change_permitted()
-        partial_qty_producing = self._get_partial_qty_producing()
+        # Core resets qty_producing to the new total on workorder-less MOs;
+        # remember deliberately partial values so we can restore them after.
+        partial_qty_producing = {}
+        for wizard in self:
+            production = wizard.mo_id
+            rounding = production.product_uom_id.rounding
+            if (
+                not production.workorder_ids
+                and not float_is_zero(
+                    production.qty_producing, precision_rounding=rounding
+                )
+                and float_compare(
+                    production.qty_producing,
+                    production.product_qty,
+                    precision_rounding=rounding,
+                )
+                != 0
+            ):
+                partial_qty_producing[production] = production.qty_producing
         res = super().change_prod_qty()
-        self._restore_partial_qty_producing(partial_qty_producing)
+        for production, qty_producing in partial_qty_producing.items():
+            if (
+                float_compare(
+                    qty_producing,
+                    production.product_qty,
+                    precision_rounding=production.product_uom_id.rounding,
+                )
+                < 0
+            ):
+                production.qty_producing = qty_producing
+                production._set_qty_producing()
         for wizard in self:
             production = wizard.mo_id
             for dest_move in production.move_dest_ids:
@@ -41,49 +69,6 @@ class ChangeProductionQty(models.TransientModel):
                         lambda m: m.product_id == production.product_id
                     ).write({"product_uom_qty": wizard.product_qty})
         return res
-
-    def _get_partial_qty_producing(self):
-        """Collect qty_producing values that were deliberately set to a
-        partial amount (different from the current total). The core wizard
-        resets qty_producing to the new total; these values let us undo
-        that reset after super()."""
-        partial_qty_producing = {}
-        for wizard in self:
-            production = wizard.mo_id
-            rounding = production.product_uom_id.rounding
-            qty_producing = production.qty_producing
-            is_partial = (
-                not float_is_zero(qty_producing, precision_rounding=rounding)
-                and float_compare(
-                    qty_producing, production.product_qty, precision_rounding=rounding
-                )
-                != 0
-            )
-            if is_partial:
-                partial_qty_producing[production] = qty_producing
-        return partial_qty_producing
-
-    def _restore_partial_qty_producing(self, partial_qty_producing):
-        """Restore the partial qty_producing values overwritten by the core
-        wizard and rescale the component consumption accordingly. Values
-        above the new total are left as the core set them."""
-        for production, qty_producing in partial_qty_producing.items():
-            rounding = production.product_uom_id.rounding
-            fits_new_total = (
-                float_compare(
-                    qty_producing, production.product_qty, precision_rounding=rounding
-                )
-                < 0
-            )
-            changed_by_core = (
-                float_compare(
-                    production.qty_producing, qty_producing, precision_rounding=rounding
-                )
-                != 0
-            )
-            if fits_new_total and changed_by_core:
-                production.qty_producing = qty_producing
-                production._set_qty_producing()
 
     def _check_change_permitted(self):
         """Check increase or decrease percentage is not more than 10%"""
