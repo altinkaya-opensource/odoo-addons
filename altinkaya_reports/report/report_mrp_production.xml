@@ -435,5 +435,8 @@
         <template id="report_mrporder_altinkayaI">
             <t t-call="mrp.report_mrporder" />
         </template>
+        <template id="report_mrporder_altinkayaK">
+            <t t-call="mrp.report_mrporder" />
+        </template>
     </data>
 </odoo>
