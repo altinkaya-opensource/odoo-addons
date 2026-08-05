@@ -429,4 +429,7 @@ Stokta:
     <template id="report_picking_altinkayaO">
         <t t-call="altinkaya_reports.report_picking_altinkaya" />
     </template>
+    <template id="report_picking_altinkayaK">
+        <t t-call="altinkaya_reports.report_picking_altinkaya" />
+    </template>
 </odoo>
