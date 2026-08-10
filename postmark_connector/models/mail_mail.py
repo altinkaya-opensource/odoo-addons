@@ -125,9 +125,8 @@ class MailMail(models.Model):
                         failure_type=failure_type,
                     )
 
-                    # Commit at each e-mail processed to avoid any errors
-                    # invalidating state.
-                    self.env.cr.commit()  # pylint: disable=invalid-commit
+                    if auto_commit:
+                        self.env.cr.commit()  # pylint: disable=invalid-commit
 
                 except MissingRecipientError as exc:
                     failure_reason = str(exc)
