@@ -24,6 +24,8 @@ FEDEX_SERVICES = [
     ("FEDEX_REGIONAL_ECONOMY_FREIGHT", "Regional Economy Freight"),
 ]
 
+FEDEX_FREIGHT_MIN_PACKAGE_WEIGHT_KG = 68.01
+
 FEDEX_PICKUP_TYPES = [
     ("CONTACT_FEDEX_TO_SCHEDULE", "Contact FedEx to Schedule"),
     ("DROPOFF_AT_FEDEX_LOCATION", "Dropoff at FedEx Location"),
@@ -746,13 +748,33 @@ class DeliveryCarrier(models.Model):
         """
         Get FedEx rate for the given sale order.
         """
+        payload = self._prepare_fedex_sale_rate_data(order)
+        package_weights = [
+            package["weight"]["value"]
+            for package in payload["requestedShipment"]["requestedPackageLineItems"]
+        ]
+        if "FREIGHT" in (self.fedex_service_type or "") and any(
+            weight < FEDEX_FREIGHT_MIN_PACKAGE_WEIGHT_KG for weight in package_weights
+        ):
+            return {
+                "success": False,
+                "price": 0.0,
+                "error_message": _(
+                    "The selected FedEx freight service requires each package to weigh "
+                    "at least %(minimum_weight)s kg. The lightest package weighs "
+                    "%(package_weight)s kg.",
+                    minimum_weight=f"{FEDEX_FREIGHT_MIN_PACKAGE_WEIGHT_KG:.2f}",
+                    package_weight=f"{min(package_weights):.2f}",
+                ),
+                "warning_message": False,
+            }
+
         fedex_request = FedExRequest(
             client_id=self.fedex_client_id,
             client_secret=self.fedex_client_secret,
             delivery_carrier=self,
             prod=self.prod_environment,
         )
-        payload = self._prepare_fedex_sale_rate_data(order)
 
         try:
             response = fedex_request.get_rates(payload)
