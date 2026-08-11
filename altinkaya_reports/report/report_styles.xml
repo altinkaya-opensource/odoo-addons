@@ -73,11 +73,15 @@
             .ak-qty { font-size: 15px; font-weight: 700; white-space: nowrap; }
             .ak-uom { font-size: 9.5px; color: #6b6b6b; font-weight: 400; }
             .ak-dim { color: #6b6b6b; font-size: 9.5px; }
-            /* Breathing room around the line QR codes: consecutive rows stack one
-               QR directly under the next, and touching finder patterns are
-               harder to aim a scanner at. */
-            .ak-cell-qr { padding: 13px 12px 13px 6px; }
-            .ak-cell-qr img { width: 86px; height: 86px; display: block; margin: 4px 0; }
+            /* QR cell budget, and it must be respected: the line tables are
+               table-layout:fixed, so an image wider than its column does not
+               shrink — it overflows into the next one. Image + horizontal
+               padding must stay under the column width set on the header cell
+               (74 + 10 + 8 = 92 against a 96px column).
+               The vertical padding is what keeps consecutive QR codes from
+               touching, which makes them easier to aim a scanner at. */
+            .ak-cell-qr { padding: 12px 10px 12px 8px; }
+            .ak-cell-qr img { width: 74px; height: 74px; display: block; margin: 4px 0; }
             .ak-res { margin: 0; padding: 0; list-style: none; }
             .ak-res li { font-size: 9.5px; color: #4a4a4a; }
 

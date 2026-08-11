@@ -236,7 +236,7 @@
                                         <tr>
                                             <th
                                                 t-if="show_qc"
-                                                style="width:62px;"
+                                                style="width:80px;"
                                             >KK</th>
                                             <th>ÜRÜN</th>
                                             <th
@@ -251,7 +251,7 @@
                                                 t-if="show_dest"
                                                 style="width:110px;"
                                             >HEDEF</th>
-                                            <th style="width:80px;">BARKOD</th>
+                                            <th style="width:96px;">BARKOD</th>
                                             <th style="width:96px;">REZERVE KONUM</th>
                                         </tr>
                                     </thead>
@@ -264,7 +264,7 @@
                                                 <img
                                                     t-if="move.draft_inspection_id.qr_image_256"
                                                     t-att-src="image_data_uri(move.draft_inspection_id.qr_image_256)"
-                                                    style="width:56px;height:56px;"
+                                                    style="width:74px;height:74px;"
                                                 />
                                             </td>
                                             <td>
