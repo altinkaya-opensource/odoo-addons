@@ -82,8 +82,8 @@
                                         style="border-color: #ffffff; text-align: center; vertical-align: center;"
                                     >
                                         <img
-                                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
-                                            style="width:300px;height:50px;"
+                                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(o.env['gs1.digital.link'].build_mo_link(o.name)), 240, 240, 0)"
+                                            style="width:50px;height:50px;"
                                         />
                                     </td>
                                 </tr>
@@ -174,8 +174,8 @@
                                             t-if="o.product_id and o.product_id.barcode"
                                         >
                                             <img
-                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', o.product_id.barcode, 200, 45)"
-                                                style="width:200px;height:45px"
+                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(o.env['gs1.digital.link'].build_product_link(o.product_id.barcode)), 200, 200, 0)"
+                                                style="width:45px;height:45px"
                                             />
                                             <br />
                                             <span t-field="o.product_id.barcode" />
@@ -215,8 +215,8 @@
                                                 t-if="line.product_id and line.product_id.barcode"
                                             >
                                                 <img
-                                                    t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line.product_id.barcode, 200, 15)"
-                                                    style="width:200px;height:15px"
+                                                    t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(line.product_id.env['gs1.digital.link'].build_product_link(line.product_id.barcode)), 200, 200, 0)"
+                                                    style="width:45px;height:45px;float:left;margin-right:4px"
                                                 />
                                             </span>
                                             <span
@@ -273,8 +273,8 @@
                                                     style="align-content: center;text-align:center;"
                                                 >
                                                     <img
-                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
-                                                        style="width:200px;height:30px;"
+                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(route[1].env['gs1.digital.link'].build_picking_link(route[1].name)), 240, 240, 0)"
+                                                        style="width:50px;height:50px;"
                                                     />
                                                 </div>
                                                 <div
@@ -317,8 +317,8 @@
                                                     style="align-content: center;text-align:center;"
                                                 >
                                                     <img
-                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', route[1].name, 800, 120)"
-                                                        style="width:200px;height:30px;"
+                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(route[1].env['gs1.digital.link'].build_mo_link(route[1].name)), 240, 240, 0)"
+                                                        style="width:50px;height:50px;"
                                                     />
                                                 </div>
                                                 <div

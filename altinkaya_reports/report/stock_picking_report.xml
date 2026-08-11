@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo noupdate="1">
+<!-- noupdate was inherited from the 2019 import and silently froze these
+     templates: the live Depo Fişi sat 16 months behind the repo (missing the
+     Turkish-rendering fix and the QC inspection QR). Templates are code, not
+     user data — they must track the module. -->
+<odoo>
     <template
         id="report_picking_altinkaya"
         inherit_id="stock.report_picking"
@@ -62,8 +66,8 @@
                                             style="border-color: #ffffff; text-align: center; vertical-align: center;"
                                         >
                                             <img
-                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
-                                                style="width:300px;height:50px;"
+                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(o.env['gs1.digital.link'].build_picking_link(o.name)), 240, 240, 0)"
+                                                style="width:50px;height:50px;"
                                             />
                                         </td>
                                     </tr>
@@ -270,8 +274,12 @@
                                 <tbody>
                                     <tr t-foreach="o.move_ids" t-as="move">
                                         <t>
+                                            <!-- altinkaya_quality_control is an
+                                                 optional integration and is not a
+                                                 dependency of this module, so probe
+                                                 the field before reading it. -->
                                             <td
-                                                t-if="move.draft_inspection_id.qr_image_256"
+                                                t-if="'draft_inspection_id' in move._fields and move.draft_inspection_id.qr_image_256"
                                             >
                                                 <img
                                                     t-att-src="image_data_uri(move.draft_inspection_id.qr_image_256)"
@@ -343,13 +351,13 @@ Stokta:
                                                         </span>
                                                 </td>
                                             </t>
-                                            <td style="width: 180px;">
+                                            <td style="width: 50px;">
                                                 <span
                                                     t-if="move.product_id and move.product_id.barcode"
                                                 >
                                                     <img
-                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', move.product_id.barcode, 360, 80)"
-                                                        style="width:178px;height:40px"
+                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(move.product_id.env['gs1.digital.link'].build_product_link(move.product_id.barcode)), 200, 200, 0)"
+                                                        style="width:45px;height:45px"
                                                     />
                                                 </span>
                                             </td>
