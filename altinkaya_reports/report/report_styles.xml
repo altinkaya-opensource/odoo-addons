@@ -10,6 +10,11 @@
 
         Kept deliberately plain: no flexbox or grid — wkhtmltopdf's WebKit is
         from ~2012 and lays them out unpredictably. Tables and inline-block only.
+
+        NO text-transform: uppercase ANYWHERE. WebKit upper-cases with the
+        English rules, so Turkish dotted i becomes I instead of İ
+        ("Üretilen" -> "ÜRETILEN"). Labels are written upper-case in the
+        templates instead, with the correct İ / I characters.
     -->
     <template id="report_style" name="Altinkaya report style">
         <style>
@@ -22,10 +27,10 @@
             .ak-title { font-size: 25px; font-weight: 700; line-height: 1.05; letter-spacing: -0.4px; }
             .ak-sub { font-size: 11px; color: #6b6b6b; padding-top: 2px; }
             .ak-kind { display: inline-block; background: #E5097F; color: #fff; font-size: 9px;
-                       font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase;
+                       font-weight: 700; letter-spacing: 1.1px;
                        padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
             .ak-flag { display: inline-block; background: #b00020; color: #fff; font-size: 10px;
-                       font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+                       font-weight: 700; letter-spacing: 0.6px;
                        padding: 3px 9px; border-radius: 3px; margin-left: 5px; white-space: nowrap; }
             /* The A4 paperformat gives the page header 35mm (~124px @90dpi).
                The whole block — logo row + rule — has to fit inside that or it
@@ -37,32 +42,34 @@
 
             /* ── Section labels and boxes ────────────────────────────── */
             .ak-band { font-size: 8.5px; font-weight: 700; letter-spacing: 1px;
-                       text-transform: uppercase; color: #8a8a8a; margin: 10px 0 3px; }
+                       color: #8a8a8a; margin: 10px 0 3px; }
             .ak-box { border: 1px solid #d9d9d9; border-radius: 3px; padding: 6px 8px; font-size: 11px; }
             .ak-party { font-size: 13px; font-weight: 700; }
             .ak-addr { color: #4a4a4a; font-size: 10.5px; }
             .ak-note { border-left: 3px solid #E5097F; background: #fafafa;
                        padding: 5px 8px; font-size: 11px; margin-bottom: 5px; }
-            .ak-note b { font-size: 8.5px; font-weight: 700; letter-spacing: 0.7px;
-                         text-transform: uppercase; color: #8a8a8a; }
+            .ak-note b { font-size: 8.5px; font-weight: 700; letter-spacing: 0.7px; color: #8a8a8a; }
 
             /* ── Key/value grid ─────────────────────────────────────── */
             .ak-meta { width: 100%; border-collapse: collapse; table-layout: fixed; }
             .ak-meta th { background: #f4f4f4; border: 1px solid #d9d9d9; color: #5c5c5c;
                           font-size: 8px; font-weight: 700; letter-spacing: 0.7px;
-                          text-transform: uppercase; padding: 4px 6px; text-align: left; }
+                          padding: 4px 6px; text-align: left; }
             .ak-meta td { border: 1px solid #d9d9d9; font-size: 11px; padding: 5px 6px;
                           word-wrap: break-word; }
 
             /* ── Line tables ────────────────────────────────────────── */
             .ak-lines { width: 100%; border-collapse: collapse; table-layout: fixed; }
             .ak-lines th { background: #262626; color: #fff; font-size: 8.5px; font-weight: 700;
-                           letter-spacing: 0.7px; text-transform: uppercase;
-                           padding: 6px; text-align: left; }
+                           letter-spacing: 0.7px; padding: 6px; text-align: left; }
             .ak-lines td { border-bottom: 1px solid #e4e4e4; padding: 7px 6px;
                            vertical-align: top; font-size: 11px; word-wrap: break-word; }
             .ak-lines tr:nth-child(even) td { background: #fafafa; }
-            .ak-code { font-weight: 700; }
+            /* Code and name are separate blocks on purpose: QtWebKit shifts the
+               baseline by ~1.6pt when a bold and a regular run share one line,
+               so an inline "[CODE] Name" printed visibly out of alignment. */
+            .ak-code { font-weight: 700; font-size: 11px; line-height: 1.3; }
+            .ak-name { font-size: 11px; line-height: 1.3; color: #333; }
             .ak-qty { font-size: 15px; font-weight: 700; white-space: nowrap; }
             .ak-uom { font-size: 9.5px; color: #6b6b6b; font-weight: 400; }
             .ak-dim { color: #6b6b6b; font-size: 9.5px; }
@@ -71,11 +78,11 @@
             .ak-res li { font-size: 9.5px; color: #4a4a4a; }
 
             /* ── Üretim Emri hero + write-in box ─────────────────────── */
-            .ak-hero { width: 100%; border-collapse: collapse; table-layout: fixed; }
-            .ak-hero td { padding: 8px 10px; vertical-align: middle;
-                          border-top: 2px solid #262626; border-bottom: 2px solid #262626; }
-            .ak-hero td.ak-hero-l { border-left: 2px solid #262626; }
-            .ak-hero td.ak-hero-r { border-right: 2px solid #262626; }
+            /* Light single box: a heavy top border here read as a second rule
+               immediately under the pink header rule. */
+            .ak-hero { width: 100%; border-collapse: collapse; table-layout: fixed;
+                       margin-top: 10px; border: 1px solid #d9d9d9; border-radius: 3px; }
+            .ak-hero td { padding: 9px 10px; vertical-align: middle; border: 0; }
             .ak-hero-qty { font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
             .ak-hero-uom { font-size: 11px; font-weight: 400; color: #4a4a4a; }
             .ak-hero-prod { font-size: 15px; font-weight: 600; line-height: 1.25; }
@@ -85,8 +92,7 @@
 
             .ak-fill { width: 100%; border-collapse: collapse; margin-top: 8px; }
             .ak-fill td { border: 2px solid #262626; padding: 10px; vertical-align: middle; }
-            .ak-fill-lbl { font-size: 15px; font-weight: 700; letter-spacing: 0.4px;
-                           text-transform: uppercase; }
+            .ak-fill-lbl { font-size: 15px; font-weight: 700; letter-spacing: 0.4px; }
             .ak-fill-line { border-bottom: 1px solid #9a9a9a; height: 28px; }
             .ak-fill-note { font-size: 10.5px; color: #4a4a4a; padding-top: 6px; }
 

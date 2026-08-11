@@ -67,7 +67,7 @@
                                                 <td>
                                                     <span
                                                         class="ak-kind"
-                                                    >Depo Fişi</span>
+                                                    >DEPO FİŞİ</span>
                                                     <div class="ak-title">
                                                         <span t-field="o.name" />
                                                     </div>
@@ -95,7 +95,7 @@
                                  set in each. -->
                                 <t
                                     t-set="addr_label"
-                                    t-value="'Tedarikçi Adresi' if o.picking_type_id.code == 'incoming' else ('Müşteri Adresi' if o.picking_type_id.code == 'outgoing' else 'Depo Adresi')"
+                                    t-value="'TEDARİKÇİ ADRESİ' if o.picking_type_id.code == 'incoming' else ('MÜŞTERİ ADRESİ' if o.picking_type_id.code == 'outgoing' else 'DEPO ADRESİ')"
                                 />
                                 <div t-if="o.partner_id">
                                     <div class="ak-band">
@@ -118,7 +118,7 @@
                                 <div
                                     t-if="o.move_ids and o.move_ids[0].partner_id and o.move_ids[0].partner_id.id != o.partner_id.id"
                                 >
-                                    <div class="ak-band">Teslimat Adresi</div>
+                                    <div class="ak-band">TESLİMAT ADRESİ</div>
                                     <div class="ak-box">
                                         <div class="ak-party">
                                             <t
@@ -146,7 +146,7 @@
                                 <div
                                     t-if="o.picking_type_id.code != 'internal' and (not o.move_ids or not o.move_ids[0].partner_id) and o.picking_type_id.warehouse_id.partner_id"
                                 >
-                                    <div class="ak-band">Depo Adresi</div>
+                                    <div class="ak-band">DEPO ADRESİ</div>
                                     <div class="ak-box">
                                         <div class="ak-party">
                                             <t
@@ -173,18 +173,18 @@
                                     </div>
                                 </div>
 
-                                <div class="ak-band">Sevkiyat Bilgileri</div>
+                                <div class="ak-band">SEVKİYAT BİLGİLERİ</div>
                                 <table class="ak-meta">
                                     <thead>
                                         <tr>
-                                            <th>Sipariş (kaynak)</th>
-                                            <th>Durumu</th>
-                                            <th>Sorumlusu</th>
-                                            <th>Tarih</th>
-                                            <th>Satış Temsilcisi</th>
+                                            <th>SİPARİŞ (KAYNAK)</th>
+                                            <th>DURUMU</th>
+                                            <th>SORUMLUSU</th>
+                                            <th>TARİH</th>
+                                            <th>SATIŞ TEMSİLCİSİ</th>
                                             <th
                                                 name="td_sched_date_h"
-                                            >Planlanan Tarih</th>
+                                            >PLANLANAN TARİH</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,25 +212,25 @@
                                 </table>
 
                                 <div t-if="o.carrier_id" class="ak-note">
-                                    <b>Nakliyeci</b>
+                                    <b>NAKLİYECİ</b>
                                     <div>
                                         <span t-field="o.carrier_id" />
                                     </div>
                                 </div>
                                 <div t-if="o.note" class="ak-note">
-                                    <b>Not</b>
+                                    <b>NOT</b>
                                     <div>
                                         <span t-field="o.note" />
                                     </div>
                                 </div>
                                 <div t-if="o.sale_note" class="ak-note">
-                                    <b>Satış Notu</b>
+                                    <b>SATIŞ NOTU</b>
                                     <div>
                                         <span t-field="o.sale_note" />
                                     </div>
                                 </div>
 
-                                <div class="ak-band">Ürünler</div>
+                                <div class="ak-band">ÜRÜNLER</div>
                                 <table class="ak-lines">
                                     <thead>
                                         <tr>
@@ -238,21 +238,21 @@
                                                 t-if="show_qc"
                                                 style="width:62px;"
                                             >KK</th>
-                                            <th>Ürün</th>
+                                            <th>ÜRÜN</th>
                                             <th
                                                 class="text-right"
                                                 style="width:74px;"
-                                            >Miktar</th>
+                                            >MİKTAR</th>
                                             <th
                                                 t-if="show_src"
                                                 style="width:120px;"
-                                            >Kaynak</th>
+                                            >KAYNAK</th>
                                             <th
                                                 t-if="show_dest"
                                                 style="width:110px;"
-                                            >Hedef</th>
-                                            <th style="width:80px;">Barkod</th>
-                                            <th style="width:96px;">Rezerve Konum</th>
+                                            >HEDEF</th>
+                                            <th style="width:80px;">BARKOD</th>
+                                            <th style="width:96px;">REZERVE KONUM</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -268,25 +268,24 @@
                                                 />
                                             </td>
                                             <td>
-                                                <span
+                                                <div
                                                     class="ak-code"
                                                     t-if="move.product_id.default_code"
-                                                >[<t
                                                     t-out="move.product_id.default_code"
-                                                />]</span>
-                                                <t t-out="move.product_id.name" />
+                                                />
+                                                <div
+                                                    class="ak-name"
+                                                    t-out="move.product_id.name"
+                                                />
                                             </td>
                                             <td class="text-right">
-                                                <span class="ak-qty">
+                                                <div class="ak-qty">
                                                     <t
-                                                        t-if="move.product_uom.category_id.id == 1"
-                                                        t-out="'%.0f' % move.product_uom_qty"
-                                                    />
-                                                    <t
-                                                        t-if="not (move.product_uom.category_id.id == 1)"
                                                         t-out="move.product_uom_qty"
+                                                        t-options-widget="'float'"
+                                                        t-options-precision="0 if move.product_uom_qty.is_integer() else 2"
                                                     />
-                                                </span>
+                                                </div>
                                                 <div class="ak-uom">
                                                     <span t-field="move.product_uom" />
                                                 </div>
@@ -294,14 +293,16 @@
                                             <td t-if="show_src">
                                                 <span t-field="move.location_id" />
                                                 <div class="ak-dim">
-                                                Stokta:
-                                                <t
-                                                    t-out="'%.0f' % move.product_id.qty_available"
+                                                    Stokta:
+                                                    <t
+                                                    t-out="move.product_id.qty_available"
+                                                    t-options-widget="'float'"
+                                                    t-options-precision="0 if move.product_id.qty_available.is_integer() else 2"
                                                 />
-                                                <span
+                                                    <span
                                                     t-field="move.product_id.uom_id.name"
                                                 />
-                                            </div>
+                                                </div>
                                             </td>
                                             <td t-if="show_dest">
                                                 <span t-field="move.location_dest_id" />
@@ -324,7 +325,11 @@
                                                     <t
                                                         t-out="quant.location_id.name"
                                                     />:
-                                                    <t t-out="quant.reserved_uom_qty" />
+                                                    <t
+                                                        t-out="quant.reserved_uom_qty"
+                                                        t-options-widget="'float'"
+                                                        t-options-precision="0 if quant.reserved_uom_qty.is_integer() else 2"
+                                                    />
                                                 </li>
                                                 </ul>
                                             </td>

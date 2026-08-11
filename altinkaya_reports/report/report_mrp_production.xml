@@ -42,7 +42,7 @@
                                             </svg>
                                             </td>
                                             <td>
-                                                <span class="ak-kind">Üretim Emri</span>
+                                                <span class="ak-kind">ÜRETİM EMRİ</span>
                                                 <span
                                                     t-if="o.priority in ('2', '3')"
                                                     class="ak-flag"
@@ -76,7 +76,9 @@
                                         <td style="width:110px;">
                                             <div class="ak-hero-qty">
                                                 <t
-                                                    t-out="int(round(o.product_qty, 2)) if round(o.product_qty, 2).is_integer() else '{:.2f}'.format(o.product_qty)"
+                                                    t-out="o.product_qty"
+                                                    t-options-widget="'float'"
+                                                    t-options-precision="0 if o.product_qty.is_integer() else 2"
                                                 />
                                             </div>
                                             <div class="ak-hero-uom">
@@ -106,12 +108,12 @@
                                 </tbody>
                             </table>
 
-                            <div class="ak-band">İş Bilgileri</div>
+                            <div class="ak-band">İŞ BİLGİLERİ</div>
                             <table class="ak-meta">
                                 <thead>
                                     <tr>
-                                        <th>Makine Adı</th>
-                                        <th>Operatör Adı</th>
+                                        <th>MAKİNE ADI</th>
+                                        <th>OPERATÖR ADI</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,8 +130,8 @@
                             <table class="ak-meta" style="margin-top:4px;">
                                 <thead>
                                     <tr>
-                                        <th>Başlama Tarih Saat</th>
-                                        <th>Bitiş Tarih Saat</th>
+                                        <th>BAŞLAMA TARİH SAAT</th>
+                                        <th>BİTİŞ TARİH SAAT</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -148,7 +150,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <div class="ak-fill-lbl">Üretilen Adet</div>
+                                            <div class="ak-fill-lbl">ÜRETİLEN ADET</div>
                                             <div class="ak-fill-line" />
                                             <div
                                                 class="ak-fill-note"
@@ -169,36 +171,36 @@
                                 class="ak-note"
                                 style="margin-top:8px;"
                             >
-                                <b>Not</b>
+                                <b>NOT</b>
                                 <div>
                                     <span t-field="o.x_note" />
                                 </div>
                             </div>
                             <div t-if="o.sale_note" class="ak-note">
-                                <b>Satış Notu</b>
+                                <b>SATIŞ NOTU</b>
                                 <div>
                                     <span t-field="o.sale_note" />
                                 </div>
                             </div>
                             <div t-if="o.sale_id" class="ak-note">
-                                <b>Müşteri</b>
+                                <b>MÜŞTERİ</b>
                                 <div>
                                     <span t-field="o.sale_id.partner_id.display_name" />
                                 </div>
                             </div>
 
                             <t t-if="o.move_raw_ids">
-                                <div class="ak-band">Üretimde Kullanılacak Ürünler</div>
+                                <div class="ak-band">ÜRETİMDE KULLANILACAK ÜRÜNLER</div>
                                 <table class="ak-lines">
                                     <thead>
                                         <tr>
-                                            <th style="width:80px;">Barkod</th>
-                                            <th>Ürün</th>
+                                            <th style="width:80px;">BARKOD</th>
+                                            <th>ÜRÜN</th>
                                             <th
                                                 class="text-right"
                                                 style="width:80px;"
-                                            >Miktar</th>
-                                            <th style="width:130px;">Kaynak Konum</th>
+                                            >MİKTAR</th>
+                                            <th style="width:130px;">KAYNAK KONUM</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -210,26 +212,32 @@
                                                 />
                                             </td>
                                             <td>
-                                                <span
+                                                <div
                                                     class="ak-code"
                                                     t-if="line.product_id.default_code"
-                                                >[<t
                                                     t-out="line.product_id.default_code"
-                                                />]</span>
-                                                <t t-out="line.product_id.name" />
+                                                />
+                                                <div
+                                                    class="ak-name"
+                                                    t-out="line.product_id.name"
+                                                />
                                             </td>
                                             <td class="text-right">
-                                                <span class="ak-qty">
+                                                <div class="ak-qty">
                                                     <t
-                                                        t-out="int(round(line.product_uom_qty, 2)) if round(line.product_uom_qty, 2).is_integer() else '{:.2f}'.format(line.product_uom_qty)"
-                                                    />
-                                                </span>
-                                                <div class="ak-uom">
-                                                    <span
-                                                        t-field="line.product_uom.name"
-                                                        groups="product.group_uom"
+                                                        t-out="line.product_uom_qty"
+                                                        t-options-widget="'float'"
+                                                        t-options-precision="0 if line.product_uom_qty.is_integer() else 2"
                                                     />
                                                 </div>
+                                                <!-- No groups= on the UoM: it was
+                                                     hidden from anyone outside
+                                                     product.group_uom, which is
+                                                     most of the shop floor. -->
+                                                <div
+                                                    class="ak-uom"
+                                                    t-out="line.product_uom.name"
+                                                />
                                             </td>
                                             <td class="ak-dim">
                                                 <span
@@ -243,7 +251,7 @@
 
                             <t t-set="routes" t-value="o.get_product_route()" />
                             <t t-if="routes">
-                                <div class="ak-band">Mamül Ürün Rotası</div>
+                                <div class="ak-band">MAMÜL ÜRÜN ROTASI</div>
                                 <table class="ak-lines">
                                     <tbody>
                                         <tr t-foreach="routes" t-as="route">
