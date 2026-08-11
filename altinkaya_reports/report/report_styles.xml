@@ -73,7 +73,11 @@
             .ak-qty { font-size: 15px; font-weight: 700; white-space: nowrap; }
             .ak-uom { font-size: 9.5px; color: #6b6b6b; font-weight: 400; }
             .ak-dim { color: #6b6b6b; font-size: 9.5px; }
-            .ak-cell-qr img { width: 86px; height: 86px; display: block; }
+            /* Breathing room around the line QR codes: consecutive rows stack one
+               QR directly under the next, and touching finder patterns are
+               harder to aim a scanner at. */
+            .ak-cell-qr { padding: 13px 12px 13px 6px; }
+            .ak-cell-qr img { width: 86px; height: 86px; display: block; margin: 4px 0; }
             .ak-res { margin: 0; padding: 0; list-style: none; }
             .ak-res li { font-size: 9.5px; color: #4a4a4a; }
 
@@ -90,11 +94,14 @@
             .ak-hero-qr img { width: 112px; height: 112px; }
             .ak-hero-bc { font-size: 9px; color: #6b6b6b; padding-top: 2px; }
 
+            /* Üretilen Adet is filled in by hand on the shop floor, so the box
+               is sized for pencil digits (~16mm of writing height at 90dpi),
+               not for the label. */
             .ak-fill { width: 100%; border-collapse: collapse; margin-top: 8px; }
-            .ak-fill td { border: 2px solid #262626; padding: 10px; vertical-align: middle; }
-            .ak-fill-lbl { font-size: 15px; font-weight: 700; letter-spacing: 0.4px; }
-            .ak-fill-line { border-bottom: 1px solid #9a9a9a; height: 28px; }
-            .ak-fill-note { font-size: 10.5px; color: #4a4a4a; padding-top: 6px; }
+            .ak-fill td { border: 2px solid #262626; padding: 12px 14px; vertical-align: middle; }
+            .ak-fill-lbl { font-size: 19px; font-weight: 700; letter-spacing: 0.4px; }
+            .ak-fill-line { border-bottom: 1px solid #9a9a9a; height: 58px; }
+            .ak-fill-note { font-size: 10.5px; color: #4a4a4a; padding-top: 8px; }
 
             .ak-route-name { font-size: 15px; font-weight: 700; }
             .ak-route-flow { font-size: 11px; color: #4a4a4a; }
