@@ -26,6 +26,8 @@
         # "report/purchase_quotation_reports.xml",
         # "report/purchase_order_reports.xml",
         "report/location_reports.xml",
+        # Shared stylesheet: must load before the reports that t-call it.
+        "report/report_styles.xml",
         "report/report_mrp_production.xml",
         "report/stock_picking_report.xml",
         "report/report_account_payment.xml",

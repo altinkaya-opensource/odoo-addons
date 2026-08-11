@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+        Shared stylesheet for the Depo Fişi and Üretim Emri layouts.
+
+        wkhtmltopdf renders the page header, the body and the page footer as
+        three SEPARATE documents, so a <style> block written inside the header
+        div never reaches the body. This template is t-called from all three so
+        each fragment carries the rules it needs.
+
+        Kept deliberately plain: no flexbox or grid — wkhtmltopdf's WebKit is
+        from ~2012 and lays them out unpredictably. Tables and inline-block only.
+    -->
+    <template id="report_style" name="Altinkaya report style">
+        <style>
+            .ak { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1b1b1b; }
+
+            /* ── Page header ─────────────────────────────────────────── */
+            .ak-head { width: 100%; border-collapse: collapse; }
+            .ak-head td { border: 0; padding: 0; vertical-align: middle; }
+            .ak-brand { width: 58px; }
+            .ak-title { font-size: 25px; font-weight: 700; line-height: 1.05; letter-spacing: -0.4px; }
+            .ak-sub { font-size: 11px; color: #6b6b6b; padding-top: 2px; }
+            .ak-kind { display: inline-block; background: #E5097F; color: #fff; font-size: 9px;
+                       font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase;
+                       padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+            .ak-flag { display: inline-block; background: #b00020; color: #fff; font-size: 10px;
+                       font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+                       padding: 3px 9px; border-radius: 3px; margin-left: 5px; white-space: nowrap; }
+            /* The A4 paperformat gives the page header 35mm (~124px @90dpi).
+               The whole block — logo row + rule — has to fit inside that or it
+               bleeds over the first body section, so do not grow this QR
+               without also raising header_spacing on the paperformat. */
+            .ak-qr { width: 112px; text-align: right; }
+            .ak-qr img { width: 104px; height: 104px; }
+            .ak-rule { height: 3px; background: #E5097F; margin-top: 5px; }
+
+            /* ── Section labels and boxes ────────────────────────────── */
+            .ak-band { font-size: 8.5px; font-weight: 700; letter-spacing: 1px;
+                       text-transform: uppercase; color: #8a8a8a; margin: 10px 0 3px; }
+            .ak-box { border: 1px solid #d9d9d9; border-radius: 3px; padding: 6px 8px; font-size: 11px; }
+            .ak-party { font-size: 13px; font-weight: 700; }
+            .ak-addr { color: #4a4a4a; font-size: 10.5px; }
+            .ak-note { border-left: 3px solid #E5097F; background: #fafafa;
+                       padding: 5px 8px; font-size: 11px; margin-bottom: 5px; }
+            .ak-note b { font-size: 8.5px; font-weight: 700; letter-spacing: 0.7px;
+                         text-transform: uppercase; color: #8a8a8a; }
+
+            /* ── Key/value grid ─────────────────────────────────────── */
+            .ak-meta { width: 100%; border-collapse: collapse; table-layout: fixed; }
+            .ak-meta th { background: #f4f4f4; border: 1px solid #d9d9d9; color: #5c5c5c;
+                          font-size: 8px; font-weight: 700; letter-spacing: 0.7px;
+                          text-transform: uppercase; padding: 4px 6px; text-align: left; }
+            .ak-meta td { border: 1px solid #d9d9d9; font-size: 11px; padding: 5px 6px;
+                          word-wrap: break-word; }
+
+            /* ── Line tables ────────────────────────────────────────── */
+            .ak-lines { width: 100%; border-collapse: collapse; table-layout: fixed; }
+            .ak-lines th { background: #262626; color: #fff; font-size: 8.5px; font-weight: 700;
+                           letter-spacing: 0.7px; text-transform: uppercase;
+                           padding: 6px; text-align: left; }
+            .ak-lines td { border-bottom: 1px solid #e4e4e4; padding: 7px 6px;
+                           vertical-align: top; font-size: 11px; word-wrap: break-word; }
+            .ak-lines tr:nth-child(even) td { background: #fafafa; }
+            .ak-code { font-weight: 700; }
+            .ak-qty { font-size: 15px; font-weight: 700; white-space: nowrap; }
+            .ak-uom { font-size: 9.5px; color: #6b6b6b; font-weight: 400; }
+            .ak-dim { color: #6b6b6b; font-size: 9.5px; }
+            .ak-cell-qr img { width: 86px; height: 86px; display: block; }
+            .ak-res { margin: 0; padding: 0; list-style: none; }
+            .ak-res li { font-size: 9.5px; color: #4a4a4a; }
+
+            /* ── Üretim Emri hero + write-in box ─────────────────────── */
+            .ak-hero { width: 100%; border-collapse: collapse; table-layout: fixed; }
+            .ak-hero td { padding: 8px 10px; vertical-align: middle;
+                          border-top: 2px solid #262626; border-bottom: 2px solid #262626; }
+            .ak-hero td.ak-hero-l { border-left: 2px solid #262626; }
+            .ak-hero td.ak-hero-r { border-right: 2px solid #262626; }
+            .ak-hero-qty { font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
+            .ak-hero-uom { font-size: 11px; font-weight: 400; color: #4a4a4a; }
+            .ak-hero-prod { font-size: 15px; font-weight: 600; line-height: 1.25; }
+            .ak-hero-qr { width: 128px; text-align: center; }
+            .ak-hero-qr img { width: 112px; height: 112px; }
+            .ak-hero-bc { font-size: 9px; color: #6b6b6b; padding-top: 2px; }
+
+            .ak-fill { width: 100%; border-collapse: collapse; margin-top: 8px; }
+            .ak-fill td { border: 2px solid #262626; padding: 10px; vertical-align: middle; }
+            .ak-fill-lbl { font-size: 15px; font-weight: 700; letter-spacing: 0.4px;
+                           text-transform: uppercase; }
+            .ak-fill-line { border-bottom: 1px solid #9a9a9a; height: 28px; }
+            .ak-fill-note { font-size: 10.5px; color: #4a4a4a; padding-top: 6px; }
+
+            .ak-route-name { font-size: 15px; font-weight: 700; }
+            .ak-route-flow { font-size: 11px; color: #4a4a4a; }
+
+            /* ── Page footer ────────────────────────────────────────── */
+            .ak-foot { border-top: 1px solid #d9d9d9; color: #7a7a7a; font-size: 9px;
+                       padding-top: 4px; }
+        </style>
+    </template>
+</odoo>
