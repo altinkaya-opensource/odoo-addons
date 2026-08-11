@@ -49,6 +49,31 @@ class AccountMove(models.Model):
         "account.move.line",
         string="Currency Difference Lines",
     )
+    is_manual_currency_difference = fields.Boolean(copy=False)
+    currency_difference_source_invoice_ids = fields.Many2many(
+        "account.move",
+        "account_move_currency_diff_source_invoice_rel",
+        "currency_difference_invoice_id",
+        "source_invoice_id",
+        string="Source Invoices",
+        copy=False,
+    )
+    currency_difference_source_payment_line_ids = fields.Many2many(
+        "account.move.line",
+        "account_move_currency_diff_source_payment_rel",
+        "currency_difference_invoice_id",
+        "source_payment_line_id",
+        string="Source Payments",
+        copy=False,
+    )
+    currency_difference_source_move_ids = fields.Many2many(
+        "account.move",
+        "account_move_currency_diff_source_move_rel",
+        "currency_difference_invoice_id",
+        "source_move_id",
+        string="Source Currency Difference Entries",
+        copy=False,
+    )
 
     full_reconcile_ids = fields.Many2many(
         "account.full.reconcile",
@@ -189,16 +214,37 @@ class AccountMove(models.Model):
         if not recv_line:
             return
         account = recv_line.account_id
-        krfrk_moves = self.env["account.move"].search(
-            [
-                ("journal_id", "=", self.company_id.currency_exchange_journal_id.id),
-                ("state", "=", "posted"),
-                ("reversed_entry_id", "=", False),
-                ("reversal_move_id", "=", False),
-                ("line_ids.partner_id", "=", self.commercial_partner_id.id),
-                ("line_ids.account_id", "=", account.id),
-            ]
-        )
+        if self.is_manual_currency_difference:
+            krfrk_moves = self.currency_difference_source_move_ids.filtered(
+                lambda move: (
+                    move.journal_id == self.company_id.currency_exchange_journal_id
+                    and move.state == "posted"
+                    and not move.reversed_entry_id
+                    and not move.reversal_move_id
+                    and move.line_ids.filtered(
+                        lambda line: (
+                            line.account_id == account
+                            and line.partner_id.commercial_partner_id
+                            == self.commercial_partner_id
+                        )
+                    )
+                )
+            )
+        else:
+            krfrk_moves = self.env["account.move"].search(
+                [
+                    (
+                        "journal_id",
+                        "=",
+                        self.company_id.currency_exchange_journal_id.id,
+                    ),
+                    ("state", "=", "posted"),
+                    ("reversed_entry_id", "=", False),
+                    ("reversal_move_id", "=", False),
+                    ("line_ids.partner_id", "=", self.commercial_partner_id.id),
+                    ("line_ids.account_id", "=", account.id),
+                ]
+            )
         if not krfrk_moves:
             _logger.info(
                 "Kur farkı faturası %s: ters kaydedilecek KRFRK kaydı yok, "
@@ -299,6 +345,11 @@ class AccountMove(models.Model):
 
     def button_cancel(self):
         res = super().button_cancel()
+        self._teardown_kfark_reversals()
+        return res
+
+    def button_draft(self):
+        res = super().button_draft()
         self._teardown_kfark_reversals()
         return res
 

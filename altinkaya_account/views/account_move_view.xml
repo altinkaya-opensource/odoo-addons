@@ -7,6 +7,9 @@
         <field name="type">form</field>
         <field name="priority" eval="999" />
         <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <field name="is_manual_currency_difference" invisible="1" />
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
                     name="reconcile_and_currency_difference"
@@ -20,6 +23,56 @@
                         string="Invoices in reconciliations"
                     />
                     <field name="other_inv_in_reconciles" nolabel="1" />
+                </page>
+                <page
+                    name="currency_difference_sources"
+                    string="Currency Difference Sources"
+                    attrs="{'invisible': [('is_manual_currency_difference', '=', False)]}"
+                >
+                    <separator string="Invoices" />
+                    <field
+                        name="currency_difference_source_invoice_ids"
+                        nolabel="1"
+                        readonly="1"
+                    >
+                        <tree create="false" delete="false">
+                            <field name="invoice_date" />
+                            <field name="name" />
+                            <field name="currency_id" />
+                            <field name="amount_total" />
+                            <field name="payment_state" />
+                        </tree>
+                    </field>
+                    <separator string="Payments" />
+                    <field
+                        name="currency_difference_source_payment_line_ids"
+                        nolabel="1"
+                        readonly="1"
+                    >
+                        <tree create="false" delete="false">
+                            <field name="date" />
+                            <field name="move_id" />
+                            <field name="journal_id" />
+                            <field name="account_id" />
+                            <field name="currency_id" />
+                            <field name="amount_currency" />
+                            <field name="balance" />
+                        </tree>
+                    </field>
+                    <separator string="Currency Difference Entries" />
+                    <field
+                        name="currency_difference_source_move_ids"
+                        nolabel="1"
+                        readonly="1"
+                    >
+                        <tree create="false" delete="false">
+                            <field name="date" />
+                            <field name="name" />
+                            <field name="journal_id" />
+                            <field name="ref" />
+                            <field name="state" />
+                        </tree>
+                    </field>
                 </page>
             </xpath>
 
