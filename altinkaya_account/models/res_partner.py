@@ -2,9 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
-from odoo import _, api, fields, models
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
 
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
@@ -416,17 +415,25 @@ class ResPartner(models.Model):
             )
 
     def action_generate_currency_diff_invoice(self):
-        view = self.env.ref("altinkaya_account.res_partner_create_difference_inv")
+        self.ensure_one()
+        view = self.env.ref(
+            "altinkaya_account.selected_currency_difference_invoice_form"
+        )
         return {
             "name": _("Create Currency Difference Invoice"),
             "type": "ir.actions.act_window",
             "view_type": "form",
             "view_mode": "form",
-            "res_model": "create.currency.difference.invoice",
+            "res_model": "create.selected.currency.difference.invoice",
             "views": [(view.id, "form")],
             "view_id": view.id,
             "target": "new",
-            "context": self.env.context,
+            "context": {
+                **self.env.context,
+                "active_model": "res.partner",
+                "active_id": self.id,
+                "active_ids": self.ids,
+            },
         }
 
     def _get_currency_difference_balances(self, date):
@@ -474,6 +481,7 @@ class ResPartner(models.Model):
                AND a.currency_id IS NOT NULL
                AND m.state = 'posted'
                AND l.date >= %s
+               AND l.date <= %s
                AND m.date >= %s
                AND aj.code NOT IN ('ADVR', 'KRFRK')
                AND (aj.code = 'KFARK'
@@ -492,6 +500,7 @@ class ResPartner(models.Model):
                 self.commercial_partner_id.id,
                 self.env.company.id,
                 self._CURRENCY_VALUATION_START_DATE,
+                date,
                 self._CURRENCY_VALUATION_START_DATE,
                 date,
             ),
@@ -570,55 +579,303 @@ class ResPartner(models.Model):
         grand_total = sum(totals.values())
         return {rate: base / grand_total for rate, base in totals.items()}
 
-    def calc_difference_invoice(self, date, payment_term, billing_point):
+    def _get_currency_difference_tax(self, rate):
+        tax = self.env["account.tax"].search(
+            [
+                ("company_id", "=", self.env.company.id),
+                ("type_tax_use", "=", "sale"),
+                ("amount", "=", rate),
+                ("include_base_amount", "=", False),
+            ],
+            limit=1,
+        )
+        if not tax:
+            raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % rate)
+        return tax
+
+    def _is_currency_difference_invoice(self, move, date):
+        """Customer invoice eligible to back a currency difference invoice."""
+        self.ensure_one()
+        start_date = fields.Date.to_date(self._CURRENCY_VALUATION_START_DATE)
+        return (
+            move.company_id == self.env.company
+            and move.commercial_partner_id == self.commercial_partner_id
+            and move.state == "posted"
+            and move.move_type == "out_invoice"
+            and move.journal_id.code != "KFARK"
+            and start_date <= (move.invoice_date or move.date) <= date
+        )
+
+    def _is_currency_difference_payment(self, line, date):
+        """Receivable payment line eligible for a currency difference invoice."""
+        self.ensure_one()
+        start_date = fields.Date.to_date(self._CURRENCY_VALUATION_START_DATE)
+        return (
+            line.company_id == self.env.company
+            and line.parent_state == "posted"
+            and line.partner_id.commercial_partner_id == self.commercial_partner_id
+            and line.account_id.account_type == "asset_receivable"
+            and line.account_id.currency_id
+            and line.credit > 0
+            and start_date <= line.date <= date
+            and line.journal_id.code not in ("ADVR", "KFARK", "KRDGR", "KRFRK")
+            and (line.payment_id or line.statement_line_id)
+        )
+
+    def _is_outstanding_exchange_move(self, move):
+        """KRFRK entry still open, i.e. not yet billed by a KFARK invoice."""
+        return (
+            move
+            and move.state == "posted"
+            and move.journal_id == self.env.company.currency_exchange_journal_id
+            and not move.reversed_entry_id
+            and not move.reversal_move_id
+        )
+
+    def _get_currency_difference_candidates(self, date):
+        """Invoice/payment pairs whose reconciliation left an unbilled KRFRK entry.
+
+        Used to prefill the manual wizard: everything returned here passes
+        _get_selected_currency_difference_entries as-is.
+        """
+        self.ensure_one()
+        partner = self.commercial_partner_id
+        partials = self.env["account.partial.reconcile"].search(
+            [
+                ("debit_move_id.company_id", "=", self.env.company.id),
+                ("exchange_move_id", "!=", False),
+                ("debit_move_id.partner_id", "child_of", partner.id),
+                ("debit_move_id.account_id.account_type", "=", "asset_receivable"),
+                ("debit_move_id.account_id.currency_id", "!=", False),
+            ]
+        )
+        reserved_moves = (
+            self.env["account.move"]
+            .search(
+                [
+                    ("state", "=", "draft"),
+                    ("company_id", "=", self.env.company.id),
+                    ("commercial_partner_id", "=", partner.id),
+                    ("is_manual_currency_difference", "=", True),
+                ]
+            )
+            .currency_difference_source_move_ids
+        )
+        partials = partials.filtered(
+            lambda partial: (
+                self._is_outstanding_exchange_move(partial.exchange_move_id)
+                and partial.exchange_move_id not in reserved_moves
+                and self._is_currency_difference_invoice(
+                    partial.debit_move_id.move_id, date
+                )
+                and self._is_currency_difference_payment(partial.credit_move_id, date)
+            )
+        )
+        return partials.debit_move_id.move_id, partials.credit_move_id
+
+    def _get_selected_currency_difference_entries(self, date, invoices, payment_lines):
+        """Validate manual selections and return their exchange-difference data."""
+        self.ensure_one()
+        if not invoices or not payment_lines:
+            raise UserError(_("Select at least one invoice and one payment."))
+
+        company = self.env.company
+        partner = self.commercial_partner_id
+        invalid_invoices = invoices.filtered(
+            lambda move: not self._is_currency_difference_invoice(move, date)
+        )
+        if invalid_invoices:
+            raise UserError(
+                _("Some selected invoices are not eligible for currency difference.")
+            )
+
+        invoice_lines = invoices.line_ids.filtered(
+            lambda line: (
+                line.account_id.account_type == "asset_receivable"
+                and line.account_id.currency_id
+                and line.partner_id.commercial_partner_id == partner
+            )
+        )
+        if invoices - invoice_lines.move_id:
+            raise UserError(
+                _(
+                    "Every selected invoice must use a foreign-currency "
+                    "receivable account."
+                )
+            )
+
+        invalid_payments = payment_lines.filtered(
+            lambda line: not self._is_currency_difference_payment(line, date)
+        )
+        if invalid_payments:
+            raise UserError(
+                _("Some selected payments are not eligible for currency difference.")
+            )
+
+        invoice_accounts = invoice_lines.account_id
+        payment_accounts = payment_lines.account_id
+        if invoice_accounts - payment_accounts or payment_accounts - invoice_accounts:
+            raise UserError(
+                _(
+                    "Selected invoices and payments must use the same "
+                    "receivable accounts."
+                )
+            )
+
+        selected_lines = invoice_lines | payment_lines
+        selected_line_ids = set(selected_lines.ids)
+        partials = (
+            selected_lines.matched_debit_ids | selected_lines.matched_credit_ids
+        ).filtered(
+            lambda partial: (
+                partial.debit_move_id.id in selected_line_ids
+                and partial.credit_move_id.id in selected_line_ids
+                and self._is_outstanding_exchange_move(partial.exchange_move_id)
+            )
+        )
+        matched_lines = partials.debit_move_id | partials.credit_move_id
+        matched_invoices = (matched_lines & invoice_lines).move_id
+        if invoices - matched_invoices or payment_lines - matched_lines:
+            raise UserError(
+                _(
+                    "Every selected invoice and payment must belong to a "
+                    "reconciliation that generated an outstanding currency "
+                    "difference entry."
+                )
+            )
+        existing_drafts = self.env["account.move"].search(
+            [
+                ("state", "=", "draft"),
+                ("company_id", "=", company.id),
+                ("commercial_partner_id", "=", partner.id),
+                ("is_manual_currency_difference", "=", True),
+                (
+                    "currency_difference_source_move_ids",
+                    "in",
+                    partials.exchange_move_id.ids,
+                ),
+            ],
+            limit=1,
+        )
+        if existing_drafts:
+            raise UserError(
+                _(
+                    "One or more selected currency difference entries are already "
+                    "used by another draft invoice."
+                )
+            )
+        return invoice_lines, payment_lines, partials
+
+    def calc_selected_difference_invoice(
+        self, date, payment_term, billing_point, invoices, payment_lines
+    ):
+        """Create currency-difference invoices from explicit invoice/payment pairs."""
+        self.ensure_one()
+        invoice_lines, payment_lines, partials = (
+            self._get_selected_currency_difference_entries(
+                date, invoices, payment_lines
+            )
+        )
+        balance_rows = []
+        for account in invoice_lines.account_id:
+            account_invoice_lines = invoice_lines.filtered(
+                lambda line, current=account: line.account_id == current
+            )
+            account_payment_lines = payment_lines.filtered(
+                lambda line, current=account: line.account_id == current
+            )
+            account_line_ids = set((account_invoice_lines | account_payment_lines).ids)
+            account_partials = partials.filtered(
+                lambda partial, line_ids=account_line_ids: (
+                    partial.debit_move_id.id in line_ids
+                    and partial.credit_move_id.id in line_ids
+                )
+            )
+            exchange_moves = account_partials.exchange_move_id
+            exchange_lines = exchange_moves.line_ids.filtered(
+                lambda line, current=account: (
+                    line.account_id == current
+                    and line.partner_id.commercial_partner_id
+                    == self.commercial_partner_id
+                )
+            )
+            balance_rows.append(
+                {
+                    "account_id": account.id,
+                    "amount": self.env.company.currency_id.round(
+                        sum(exchange_lines.mapped("balance"))
+                    ),
+                    "source_invoice_ids": account_invoice_lines.move_id.ids,
+                    "source_payment_line_ids": account_payment_lines.ids,
+                    "source_exchange_move_ids": exchange_moves.ids,
+                    "manual_selection": True,
+                }
+            )
+        return self.calc_difference_invoice(
+            date,
+            payment_term,
+            billing_point,
+            balance_rows=balance_rows,
+        )
+
+    def calc_difference_invoice(
+        self, date, payment_term, billing_point, balance_rows=None
+    ):
         self.ensure_one()
         inv_obj = self.env["account.move"]
         company = self.env.company
         diff_inv_journal = self.env["account.journal"].search(
-            [("code", "=", "KFARK")], limit=1
+            [("code", "=", "KFARK"), ("company_id", "=", company.id)], limit=1
         )
-        draft_dif_invs = inv_obj.search(
-            [
-                ("state", "=", "draft"),
-                ("journal_id", "=", diff_inv_journal.id),
-                ("partner_id", "=", self.id),
-                ("currency_id", "=", company.currency_id.id),
-            ]
-        )
-        if draft_dif_invs:
-            draft_dif_invs.button_cancel()
+        if not diff_inv_journal or not company.currency_diff_inv_account_id:
+            raise UserError(
+                _(
+                    "Please configure the currency difference journal and invoice "
+                    "account under Accounting Settings."
+                )
+            )
+        if balance_rows is None:
+            draft_dif_invs = inv_obj.search(
+                [
+                    ("state", "=", "draft"),
+                    ("journal_id", "=", diff_inv_journal.id),
+                    ("partner_id", "=", self.id),
+                    ("currency_id", "=", company.currency_id.id),
+                ]
+            )
+            if draft_dif_invs:
+                draft_dif_invs.button_cancel()
 
         kdv_rates = [20, 10, 18, 8]
-        taxes_dict = {}
-        for kdv_rate in kdv_rates:
-            tax = self.env["account.tax"].search(
-                [
-                    ("type_tax_use", "=", "sale"),
-                    ("amount", "=", kdv_rate),
-                    ("include_base_amount", "=", False),
-                ],
-                limit=1,
-            )
-            if tax:
-                taxes_dict[kdv_rate] = tax
-            else:
-                raise UserError(_("KDV %s oranlı vergi tanımlanmamış!") % kdv_rate)
-
+        taxes_by_rate = {}
         created_invoices = inv_obj
-        for row in self._get_currency_difference_balances(date):
+        rows = (
+            balance_rows
+            if balance_rows is not None
+            else self._get_currency_difference_balances(date)
+        )
+        for row in rows:
             account = self.env["account.account"].browse(row["account_id"])
-            # Only the exchange-rate component of the TL residual is invoiced;
-            # the TRY value of the remaining FX balance stays open on the
-            # account (the customer still owes it in currency).
-            fx_try_value = self._get_fx_residual_try_value(account, row["fx_net"], date)
-            amount = -(row["tl_net"] - fx_try_value)
+            if "amount" in row:
+                amount = row["amount"]
+            else:
+                # Only the exchange-rate component of the TL residual is invoiced;
+                # the TRY value of the remaining FX balance stays open on the
+                # account (the customer still owes it in currency).
+                fx_try_value = self._get_fx_residual_try_value(
+                    account, row["fx_net"], date
+                )
+                amount = -(row["tl_net"] - fx_try_value)
             if abs(amount) < KFARK_MIN_AMOUNT:
                 continue
             inv_type = "out_invoice" if amount > 0 else "out_refund"
 
-            source_invoices = self._get_difference_source_invoices(
-                account, row["last_payment_date"]
-            )
+            if "source_invoice_ids" in row:
+                source_invoices = inv_obj.browse(row["source_invoice_ids"])
+            else:
+                source_invoices = self._get_difference_source_invoices(
+                    account, row["last_payment_date"]
+                )
             inv_lines_to_create = []
             comment_einvoice = ""
             if source_invoices:
@@ -627,6 +884,8 @@ class ResPartner(models.Model):
                 )
                 distribution = self._get_kdv_distribution(source_invoices, kdv_rates)
                 for rate, share in distribution.items():
+                    if rate not in taxes_by_rate:
+                        taxes_by_rate[rate] = self._get_currency_difference_tax(rate)
                     inv_lines_to_create.append(
                         {
                             "name": _("Currency Difference"),
@@ -635,34 +894,50 @@ class ResPartner(models.Model):
                             "price_unit": abs(
                                 round(amount * share / (1 + rate / 100.0), 2)
                             ),
-                            "tax_ids": [(6, False, [taxes_dict[rate].id])],
+                            "tax_ids": [Command.set(taxes_by_rate[rate].ids)],
                         }
                     )
             if not inv_lines_to_create:
                 # No source invoice found: rate-timing difference, flat 20%.
+                if 20 not in taxes_by_rate:
+                    taxes_by_rate[20] = self._get_currency_difference_tax(20)
                 inv_lines_to_create.append(
                     {
                         "name": _("Currency Difference"),
                         "product_uom_id": 1,
                         "account_id": company.currency_diff_inv_account_id.id,
                         "price_unit": abs(round(amount / 1.20, 2)),
-                        "tax_ids": [(6, False, [taxes_dict[20].id])],
+                        "tax_ids": [Command.set(taxes_by_rate[20].ids)],
                     }
                 )
 
-            dif_inv = inv_obj.create(
-                {
-                    "partner_id": self.id,
-                    "invoice_date": date,
-                    "journal_id": diff_inv_journal.id,
-                    "currency_id": company.currency_id.id,
-                    "move_type": inv_type,
-                    "billing_point_id": billing_point.id,
-                    "invoice_payment_term_id": payment_term.id,
-                    "comment_einvoice": comment_einvoice,
-                    "line_ids": [(0, 0, line) for line in inv_lines_to_create],
-                }
-            )
+            invoice_vals = {
+                "partner_id": self.id,
+                "invoice_date": date,
+                "journal_id": diff_inv_journal.id,
+                "currency_id": company.currency_id.id,
+                "move_type": inv_type,
+                "billing_point_id": billing_point.id,
+                "invoice_payment_term_id": payment_term.id,
+                "comment_einvoice": comment_einvoice,
+                "line_ids": [Command.create(line) for line in inv_lines_to_create],
+            }
+            if row.get("manual_selection"):
+                invoice_vals.update(
+                    {
+                        "is_manual_currency_difference": True,
+                        "currency_difference_source_invoice_ids": [
+                            Command.set(row["source_invoice_ids"])
+                        ],
+                        "currency_difference_source_payment_line_ids": [
+                            Command.set(row["source_payment_line_ids"])
+                        ],
+                        "currency_difference_source_move_ids": [
+                            Command.set(row["source_exchange_move_ids"])
+                        ],
+                    }
+                )
+            dif_inv = inv_obj.create(invoice_vals)
 
             # Force the receivable line onto this FX account and make it
             # TRY-only so the invoice never distorts the FX balance.
@@ -698,17 +973,18 @@ class ResPartner(models.Model):
     # yields a zero delta instead of duplicating the entry.
     _CURRENCY_VALUATION_SKIP_JOURNAL_CODES = ("ADVR", "KRFRK")
 
-    def calc_currency_valuation(self, move_date):
+    def calc_currency_valuation(self, move_date, rate_field="tcmb_forex_buying"):
         """Period-end FX valuation for foreign customers/suppliers.
 
         For each selected commercial partner, computes the open
         foreign-currency balance per (currency, account) using the same
         statement-style logic as the partner statement report: cumulative
-        net of postings since 2022-01-01, excluding ADVR/KRFRK/KRDGR
-        journals. The balance is then revalued at the TCMB forex-buying
-        rate of ``move_date`` and the difference posted as a single
-        journal entry whose counterpart goes to the configured FX
-        gain/loss accounts.
+        net of postings since 2022-01-01, excluding ADVR/KRFRK journals.
+        Previous KRDGR entries remain included so repeated valuations post
+        only the new delta. The balance is then revalued at the selected
+        rate field of ``move_date`` and the difference posted as a
+        single journal entry whose counterpart goes to the configured FX
+        gain/loss accounts. Defaults to the TCMB forex-buying rate.
         """
         company = self.env.company
         gain_account = company.currency_valuation_gain_account_id
@@ -739,6 +1015,7 @@ class ResPartner(models.Model):
             JOIN res_partner RP ON L.partner_id = RP.id
             LEFT JOIN res_country RC ON RC.id = RP.country_id
             WHERE L.date BETWEEN %s AND %s
+              AND L.company_id = %s
               AND RP.commercial_partner_id IN %s
               AND A.account_type IN ('asset_receivable', 'liability_payable')
               AND L.currency_id IS NOT NULL
@@ -753,6 +1030,7 @@ class ResPartner(models.Model):
             (
                 self._CURRENCY_VALUATION_START_DATE,
                 move_date,
+                company.id,
                 commercial_ids,
                 company.currency_id.id,
                 tr_country_id,
@@ -765,35 +1043,37 @@ class ResPartner(models.Model):
                 _("No foreign-currency open balances found for the selected partners.")
             )
 
+        available_rate_fields = dict(self.env["res.currency.rate"]._get_rate_fields())
+        if rate_field not in available_rate_fields:
+            raise UserError(_("Invalid currency valuation rate type."))
         rates = self.env["res.currency.rate"].search_read(
-            [("name", "=", move_date)], ["currency_id", "tcmb_forex_buying"]
+            [("name", "=", move_date)], ["currency_id", rate_field]
         )
         if not rates:
             raise UserError(
                 _("No exchange rate information found for the selected day!")
             )
-        rate_dict = {r["currency_id"][0]: r["tcmb_forex_buying"] for r in rates}
+        rate_dict = {r["currency_id"][0]: r[rate_field] for r in rates}
 
         difference_aml_list = []
         for res in result:
-            if float_is_zero(
-                float(res["currency_balance"] or 0), precision_rounding=0.01
-            ):
+            currency = self.env["res.currency"].browse(res["currency_id"])
+            if currency.is_zero(float(res["currency_balance"] or 0)):
                 continue
             rate = rate_dict.get(res["currency_id"])
             if not rate:
                 raise UserError(
                     _(
-                        "Missing TCMB forex-buying rate for currency id "
-                        "%(currency)s on %(date)s.",
-                        currency=res["currency_id"],
+                        "Missing %(rate_type)s rate for %(currency)s on %(date)s.",
+                        rate_type=available_rate_fields[rate_field],
+                        currency=currency.name,
                         date=move_date,
                     )
                 )
             old_try_balance = float(res["try_balance"] or 0)
             current_try_balance = float(res["currency_balance"]) / float(rate)
             difference = round(current_try_balance - old_try_balance, 2)
-            if float_is_zero(difference, precision_rounding=0.01):
+            if company.currency_id.is_zero(difference):
                 continue
             difference_aml_list.append(
                 {
@@ -803,11 +1083,8 @@ class ResPartner(models.Model):
                     "debit": difference if difference > 0 else 0,
                     "credit": abs(difference) if difference < 0 else 0,
                     "currency_id": res["currency_id"],
-                    # Hack: foreign-currency accounts require amount_currency
-                    # to be non-zero, but the revaluation must not move the
-                    # foreign balance. A negligible value satisfies Odoo's
-                    # balance check without distorting the open amount.
-                    "amount_currency": 0.00001,
+                    # Revalue only the TRY carrying amount; keep FX unchanged.
+                    "amount_currency": 0.0,
                 }
             )
 
