@@ -158,6 +158,63 @@ class AccountMove(models.Model):
             )
             inv.waiting_picking_ids = stocks
 
+    @api.depends(
+        "invoice_payment_term_id",
+        "invoice_date",
+        "currency_id",
+        "amount_total_in_currency_signed",
+        "invoice_date_due",
+        "partner_id",
+        "fiscal_position_id",
+        "line_ids.account_id",
+    )
+    def _compute_needed_terms(self):
+        res = super()._compute_needed_terms()
+        for move in self:
+            if not move.is_invoice(True) or not move.needed_terms:
+                continue
+
+            term_account = move.line_ids.filtered(
+                lambda line: line.display_type == "payment_term"
+            ).account_id[:1]
+            if not term_account:
+                partner = move.commercial_partner_id.with_company(move.company_id)
+                term_account = (
+                    partner.property_account_receivable_id
+                    if move.is_sale_document(include_receipts=True)
+                    else partner.property_account_payable_id
+                )
+                if term_account and move.fiscal_position_id:
+                    term_account = move.fiscal_position_id.map_account(term_account)
+
+            account_currency = term_account.currency_id
+            if not account_currency or account_currency == move.currency_id:
+                continue
+
+            company_currency = move.company_id.currency_id
+            conversion_date = (
+                move.invoice_date or move.date or fields.Date.context_today(move)
+            )
+            needed_terms = {
+                key: dict(values) for key, values in move.needed_terms.items()
+            }
+            for values in needed_terms.values():
+                values["amount_currency"] = company_currency._convert(
+                    values["balance"],
+                    account_currency,
+                    move.company_id,
+                    conversion_date,
+                )
+                if values.get("discount_balance"):
+                    values["discount_amount_currency"] = company_currency._convert(
+                        values["discount_balance"],
+                        account_currency,
+                        move.company_id,
+                        conversion_date,
+                    )
+            move.needed_terms = needed_terms
+        return res
+
     def action_post(self):
         res = super().action_post()
         user = self.env.user
