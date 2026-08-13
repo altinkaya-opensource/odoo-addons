@@ -1,10 +1,12 @@
 from datetime import date
+from unittest.mock import patch
 
 from odoo import Command
 from odoo.exceptions import UserError
-from odoo.tests import Form, TransactionCase
+from odoo.tests import Form, TransactionCase, tagged
 
 
+@tagged("post_install", "-at_install")
 class TestCurrencyValuation(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -227,7 +229,9 @@ class TestCurrencyValuation(TransactionCase):
         with self.assertRaisesRegex(
             UserError, "No records found to calculate exchange rate difference"
         ):
-            (gain_partner | loss_partner).calc_currency_valuation(self.valuation_date)
+            (gain_partner | loss_partner).with_context(
+                lang="en_US"
+            ).calc_currency_valuation(self.valuation_date)
         self.assertEqual(
             self.env["account.move"].search_count(
                 [("journal_id", "=", self.valuation_journal.id)]
@@ -256,6 +260,32 @@ class TestCurrencyValuation(TransactionCase):
         self.assertEqual(valuation_line.debit, 1500.0)
         self.assertEqual(valuation_line.credit, 0.0)
 
+    def test_currency_valuation_clears_try_when_foreign_balance_is_zero(self):
+        partner = self._create_partner("Currency valuation zero balance partner")
+        moves = self._create_source_move(
+            partner, 1000.0, 100.0
+        ) | self._create_source_move(partner, -800.0, -100.0)
+        self.rate.unlink()
+
+        move = partner.calc_currency_valuation(self.valuation_date)
+        valuation_line = move.line_ids.filtered(lambda line: line.partner_id == partner)
+
+        self.assertEqual(valuation_line.credit, 200.0)
+        self.assertEqual(valuation_line.amount_currency, 0.0)
+        self.assertEqual(
+            sum(
+                (moves | move)
+                .line_ids.filtered(
+                    lambda line: (
+                        line.partner_id == partner
+                        and line.account_id == self.receivable_account
+                    )
+                )
+                .mapped("balance")
+            ),
+            0.0,
+        )
+
     def test_currency_valuation_scope(self):
         commercial_partner = self._create_partner("Currency valuation commercial")
         child_partner = self._create_partner(
@@ -283,9 +313,14 @@ class TestCurrencyValuation(TransactionCase):
         )
 
         for code in ("ADVR", "KRFRK"):
-            excluded_journal = self._create_journal(
-                f"Currency valuation excluded {code}", code
+            excluded_journal = self.env["account.journal"].search(
+                [("company_id", "=", self.company.id), ("code", "=", code)],
+                limit=1,
             )
+            if not excluded_journal:
+                excluded_journal = self._create_journal(
+                    f"Currency valuation excluded {code}", code
+                )
             self._create_source_move(
                 child_partner,
                 5000.0,
@@ -293,12 +328,20 @@ class TestCurrencyValuation(TransactionCase):
                 journal=excluded_journal,
             )
 
-        other_company = self.env["res.company"].create(
-            {
-                "name": "Currency valuation other company",
-                "currency_id": self.company.currency_id.id,
-            }
+        other_company = self.env["res.company"].search(
+            [("id", "!=", self.company.id)], limit=1
         )
+        if not other_company:
+            warehouse_model = self.env["stock.warehouse"]
+            with patch.object(
+                type(warehouse_model), "create", return_value=warehouse_model
+            ):
+                other_company = self.env["res.company"].create(
+                    {
+                        "name": "Currency valuation other company",
+                        "currency_id": self.company.currency_id.id,
+                    }
+                )
         other_receivable = self._create_account(
             "Other company valuation receivable",
             "KVT.RECV",
@@ -340,6 +383,7 @@ class TestCurrencyValuation(TransactionCase):
     def test_currency_valuation_configuration_and_rate_errors(self):
         partner = self._create_partner("Currency valuation error partner")
         self._create_source_move(partner, 1000.0, 100.0)
+        partner = partner.with_context(lang="en_US")
 
         self.company.currency_valuation_gain_account_id = False
         with self.assertRaisesRegex(UserError, "Please configure"):
