@@ -1049,29 +1049,27 @@ class ResPartner(models.Model):
         rates = self.env["res.currency.rate"].search_read(
             [("name", "=", move_date)], ["currency_id", rate_field]
         )
-        if not rates:
-            raise UserError(
-                _("No exchange rate information found for the selected day!")
-            )
         rate_dict = {r["currency_id"][0]: r[rate_field] for r in rates}
 
         difference_aml_list = []
         for res in result:
             currency = self.env["res.currency"].browse(res["currency_id"])
-            if currency.is_zero(float(res["currency_balance"] or 0)):
-                continue
-            rate = rate_dict.get(res["currency_id"])
-            if not rate:
-                raise UserError(
-                    _(
-                        "Missing %(rate_type)s rate for %(currency)s on %(date)s.",
-                        rate_type=available_rate_fields[rate_field],
-                        currency=currency.name,
-                        date=move_date,
-                    )
-                )
+            currency_balance = float(res["currency_balance"] or 0)
             old_try_balance = float(res["try_balance"] or 0)
-            current_try_balance = float(res["currency_balance"]) / float(rate)
+            if currency.is_zero(currency_balance):
+                current_try_balance = 0.0
+            else:
+                rate = rate_dict.get(res["currency_id"])
+                if not rate:
+                    raise UserError(
+                        _(
+                            "Missing %(rate_type)s rate for %(currency)s on %(date)s.",
+                            rate_type=available_rate_fields[rate_field],
+                            currency=currency.name,
+                            date=move_date,
+                        )
+                    )
+                current_try_balance = currency_balance / float(rate)
             difference = round(current_try_balance - old_try_balance, 2)
             if company.currency_id.is_zero(difference):
                 continue
