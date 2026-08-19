@@ -454,7 +454,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Answer Queued"
+msgid "Answer Sent"
 msgstr ""
 
 #. module: trendyol_integration
@@ -2121,6 +2121,13 @@ msgstr ""
 #: code:addons/trendyol_integration/models/trendyol_backend.py:0
 #, python-format
 msgid "Failed to register webhook: %s"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_question.py:0
+#, python-format
+msgid "Failed to send answer: %s"
 msgstr ""
 
 #. module: trendyol_integration
@@ -6852,7 +6859,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Your answer has been queued for submission."
+msgid "Your answer has been submitted to Trendyol."
 msgstr ""
 
 #. module: trendyol_integration

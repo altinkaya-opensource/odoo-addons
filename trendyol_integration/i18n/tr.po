@@ -476,8 +476,8 @@ msgstr "Cevap Tarihi"
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Answer Queued"
-msgstr "Cevap Kuyruğa Alındı"
+msgid "Answer Sent"
+msgstr "Cevap Gönderildi"
 
 #. module: trendyol_integration
 #. odoo-python
@@ -2176,6 +2176,13 @@ msgstr "Webhook silme başarısız: %s"
 #, python-format
 msgid "Failed to register webhook: %s"
 msgstr "Webhook kayıt başarısız: %s"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_question.py:0
+#, python-format
+msgid "Failed to send answer: %s"
+msgstr "Cevap gönderilemedi: %s"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__default_product_id
@@ -7053,8 +7060,8 @@ msgstr "Trendyol satıcı ID'niz"
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Your answer has been queued for submission."
-msgstr "Cevabınız gönderim için kuyruğa alındı."
+msgid "Your answer has been submitted to Trendyol."
+msgstr "Cevabınız Trendyol'a gönderildi."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__trendyol_stock_code

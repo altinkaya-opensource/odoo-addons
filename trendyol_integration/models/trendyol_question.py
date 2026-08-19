@@ -157,7 +157,7 @@ class TrendyolQuestion(models.Model):
             raise
 
     def action_answer_question(self):
-        """Validate and queue the answer to be sent to Trendyol."""
+        """Validate and send the answer to Trendyol."""
         self.ensure_one()
         if self.status != "waiting_for_answer":
             raise UserError(_("Only questions waiting for answer can be answered."))
@@ -166,18 +166,18 @@ class TrendyolQuestion(models.Model):
         if len(self.answer_text) > 2000:
             raise UserError(_("Answer must be at most 2000 characters long."))
 
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Answer Trendyol question: %s") % self.trendyol_question_id,
-        )._answer_question()
+        try:
+            self._answer_question()
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to send answer: %s") % str(e)) from e
 
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
-                "title": _("Answer Queued"),
-                "message": _("Your answer has been queued for submission."),
-                "type": "info",
+                "title": _("Answer Sent"),
+                "message": _("Your answer has been submitted to Trendyol."),
+                "type": "success",
                 "sticky": False,
             },
         }
@@ -192,16 +192,26 @@ class TrendyolQuestion(models.Model):
             client.answer_question(
                 int(self.trendyol_question_id), self.answer_text.strip()
             )
-            self.status = "waiting_for_approve"
-            self.activity_ids.unlink()
-            _logger.info("Answered question %s", self.trendyol_question_id)
         except TrendyolAPIError as e:
-            _logger.error(
-                "Failed to answer question %s: %s",
-                self.trendyol_question_id,
-                str(e),
+            already_answered = e.status_code == 400 and (
+                "bu soru daha önce cevaplandı" in str(e).casefold()
             )
-            raise
+            if not already_answered:
+                _logger.error(
+                    "Failed to answer question %s: %s",
+                    self.trendyol_question_id,
+                    str(e),
+                )
+                raise
+            _logger.info(
+                "Question %s was already answered in Trendyol; "
+                "treating the submission as successful.",
+                self.trendyol_question_id,
+            )
+
+        self.status = "waiting_for_approve"
+        self.activity_ids.unlink()
+        _logger.info("Answered question %s", self.trendyol_question_id)
 
     def action_open_in_trendyol(self):
         """Open the question's web URL in a new browser tab."""
