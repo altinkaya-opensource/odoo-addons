@@ -37,6 +37,35 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
         self.assertEqual(settlement.state, "error")
         self.assertFalse(settlement.odoo_payment_id)
 
+    def test_non_paid_rows_stay_imported_after_a_sync(self):
+        settlements = self.env["hepsiburada.settlement"].create(
+            [
+                {
+                    "backend_id": self.backend.id,
+                    "hb_transaction_id": "commission-row",
+                    "transaction_type": "commission",
+                    "amount": -40,
+                    "currency_code": "949",
+                    "payment_status": "Paid",
+                    "order_number": "ORDER-UNRECONCILED",
+                },
+                {
+                    "backend_id": self.backend.id,
+                    "hb_transaction_id": "will-be-paid-row",
+                    "transaction_type": "sale",
+                    "amount": 100,
+                    "currency_code": "949",
+                    "payment_status": "WillBePaid",
+                    "order_number": "ORDER-UNRECONCILED",
+                },
+            ]
+        )
+
+        self.backend._reconcile_paid_settlements(settlements)
+
+        self.assertEqual(set(settlements.mapped("state")), {"imported"})
+        self.assertFalse(any(settlements.mapped("error_message")))
+
     def test_paid_rows_are_reconciled_as_one_amount_group(self):
         bank_journal = self.env["account.journal"].search(
             [
@@ -104,8 +133,11 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
                 ],
             }
         )
-        invoice.journal_id.prevent_einvoice_generation = True
-        invoice._update_einvoice_fields()
+        # The e-invoice module is not a dependency of this addon.
+        if "prevent_einvoice_generation" in invoice.journal_id._fields:
+            invoice.journal_id.prevent_einvoice_generation = True
+        if hasattr(invoice, "_update_einvoice_fields"):
+            invoice._update_einvoice_fields()
         self.env["exception.rule"].search(
             [("name", "=", "Paket Bilgisi Eksik")]
         ).active = False

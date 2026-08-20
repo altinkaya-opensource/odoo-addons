@@ -16,6 +16,24 @@ _logger = logging.getLogger(__name__)
 INDIVIDUAL_VAT = "11111111111"
 
 
+def _changed_values(record, vals):
+    """Return the subset of ``vals`` that differs from the record.
+
+    Empty values compare equal regardless of their falsy flavour, so an
+    unchanged record is never rewritten.
+    """
+    changes = {}
+    for field_name, value in vals.items():
+        current = record[field_name]
+        if isinstance(current, models.BaseModel):
+            current = current.id
+        if not current and not value:
+            continue
+        if current != value:
+            changes[field_name] = value
+    return changes
+
+
 class HepsiburadaOrder(models.Model):
     _name = "hepsiburada.order"
     _description = "Hepsiburada Order"
@@ -205,49 +223,7 @@ class HepsiburadaOrder(models.Model):
         )
 
         if existing:
-            new_status = package_data.get("_hb_status") or self._map_status(
-                package_data.get("status")
-            )
-            status_scope = package_data.get("_status_scope", "order")
-            existing.raw_data = json.dumps(package_data, indent=2, ensure_ascii=False)
-            package = existing._upsert_package(package_data, new_status)
-
-            existing_lines = {
-                line.hb_line_item_id: line for line in existing.hb_line_item_ids
-            }
-            added_count = 0
-            for item in line_items:
-                line_item_id = str(item.get("lineItemId") or item.get("id") or "")
-                if not line_item_id:
-                    continue
-                line = existing_lines.get(line_item_id)
-                if line:
-                    line._update_from_api(item, package=package, status=new_status)
-                else:
-                    self._add_line_to_order(
-                        backend,
-                        existing,
-                        item,
-                        package=package,
-                        status=new_status,
-                    )
-                    added_count += 1
-
-            if added_count:
-                _logger.info(
-                    "Added %d new line items to existing HB order %s",
-                    added_count,
-                    order_number,
-                )
-
-            if package:
-                existing._sync_from_packages()
-            elif status_scope == "line" and new_status == "cancelled":
-                existing._sync_status_from_lines()
-            elif new_status and not existing.package_ids:
-                existing._set_order_status(new_status)
-            existing._refresh_shipping_partner(package_data)
-            return existing
+            return self._update_existing_order(backend, existing, package_data)
 
         # Create new order
         try:
@@ -331,6 +307,62 @@ class HepsiburadaOrder(models.Model):
             )
             raise
 
+    @api.model
+    def _update_existing_order(self, backend, existing, package_data):
+        """Refresh an already imported order from a package payload."""
+        line_items = package_data.get("items", [])
+        new_status = package_data.get("_hb_status") or self._map_status(
+            package_data.get("status")
+        )
+        status_scope = package_data.get("_status_scope", "order")
+        # A line-scoped cancellation only cancels the listed line items:
+        # the package itself must keep its current status.
+        line_cancellation = status_scope == "line" and new_status == "cancelled"
+        raw_data = json.dumps(package_data, indent=2, ensure_ascii=False)
+        if existing.raw_data != raw_data:
+            existing.raw_data = raw_data
+        package = existing._upsert_package(
+            package_data,
+            None if line_cancellation else new_status,
+        )
+
+        existing_lines = {
+            line.hb_line_item_id: line for line in existing.hb_line_item_ids
+        }
+        added_count = 0
+        for item in line_items:
+            line_item_id = str(item.get("lineItemId") or item.get("id") or "")
+            if not line_item_id:
+                continue
+            line = existing_lines.get(line_item_id)
+            if line:
+                line._update_from_api(item, package=package, status=new_status)
+                continue
+            self._add_line_to_order(
+                backend,
+                existing,
+                item,
+                package=package,
+                status=new_status,
+            )
+            added_count += 1
+
+        if added_count:
+            _logger.info(
+                "Added %d new line items to existing HB order %s",
+                added_count,
+                existing.hb_order_number,
+            )
+
+        if line_cancellation:
+            existing._sync_status_from_lines()
+        elif package:
+            existing._sync_from_packages()
+        elif new_status and not existing.package_ids:
+            existing._set_order_status(new_status)
+        existing._refresh_shipping_partner(package_data)
+        return existing
+
     def _add_line_to_order(self, backend, binding, item, package=False, status=None):
         """Add a single HB line item to the order.
 
@@ -349,34 +381,18 @@ class HepsiburadaOrder(models.Model):
         if status == "cancelled":
             sale_line.product_uom_qty = 0
 
-        # Price fields from packages API structure
-        price_data = item.get("price", {})
-        total_price_data = item.get("totalPrice", {})
-        commission_data = item.get("commission", {})
-
-        self.env["hepsiburada.order.line"].create(
+        HbLine = self.env["hepsiburada.order.line"]
+        hb_line_vals = HbLine._hb_line_vals_from_item(item)
+        hb_line_vals.update(
             {
                 "hb_order_id": binding.id,
                 "package_id": package.id if package else False,
                 "hb_line_item_id": line_item_id,
-                "hb_sku": item.get("hbSku", ""),
-                "merchant_sku": item.get("merchantSku", ""),
                 "sale_line_id": sale_line.id,
-                "quantity": item.get("quantity", 1),
-                "unit_price": price_data.get("amount", 0)
-                if isinstance(price_data, dict)
-                else price_data or 0,
-                "total_price": total_price_data.get("amount", 0)
-                if isinstance(total_price_data, dict)
-                else total_price_data or 0,
-                "vat_amount": item.get("vat", 0),
-                "vat_rate": item.get("vatRate", 0),
-                "commission_amount": commission_data.get("amount", 0)
-                if isinstance(commission_data, dict)
-                else commission_data or 0,
                 "status": status or binding.hb_status,
             }
         )
+        HbLine.create(hb_line_vals)
 
     def _upsert_package(self, package_data, status=None):
         self.ensure_one()
@@ -470,14 +486,26 @@ class HepsiburadaOrder(models.Model):
                         lambda line: not line.package_id and line.status != "cancelled"
                     )
                 ),
-                "hb_missing_invoice": any(packages.mapped("hb_missing_invoice")),
-                "invoice_link_sent": bool(packages)
-                and all(packages.mapped("invoice_link_sent")),
-                "invoice_sent_date": max(
-                    (date for date in packages.mapped("invoice_sent_date") if date),
-                    default=False,
-                ),
             }
+            # Invoice flags are owned by the packages. Orders without package
+            # records own them directly, so leave those untouched here.
+            if packages:
+                vals.update(
+                    {
+                        "hb_missing_invoice": any(
+                            packages.mapped("hb_missing_invoice")
+                        ),
+                        "invoice_link_sent": all(packages.mapped("invoice_link_sent")),
+                        "invoice_sent_date": max(
+                            (
+                                date
+                                for date in packages.mapped("invoice_sent_date")
+                                if date
+                            ),
+                            default=False,
+                        ),
+                    }
+                )
             if len(packages) == 1:
                 package = packages[0]
                 vals.update(
@@ -498,9 +526,26 @@ class HepsiburadaOrder(models.Model):
                         "cargo_tracking_link": False,
                     }
                 )
-            order.write(vals)
+            changes = _changed_values(order, vals)
+            if changes:
+                order.write(changes)
             if aggregate_status:
                 order._set_order_status(aggregate_status)
+            order._propagate_tracking_to_pickings()
+
+    def _propagate_tracking_to_pickings(self):
+        """Stamp the HB tracking number on outgoing pickings missing one."""
+        self.ensure_one()
+        if not self.cargo_tracking_number:
+            return
+        pickings = self.odoo_id.picking_ids.filtered(
+            lambda picking: (
+                picking.picking_type_code == "outgoing"
+                and not picking.carrier_tracking_ref
+            )
+        )
+        if pickings:
+            pickings.write({"carrier_tracking_ref": self.cargo_tracking_number})
 
     # ── Status Mapping ───────────────────────────────────────────────────
 
@@ -661,19 +706,6 @@ class HepsiburadaOrder(models.Model):
                     "address:" + sha256(normalized_address.encode("utf-8")).hexdigest()
                 )
 
-        if address_id:
-            shipping_partner = Partner.search(
-                [
-                    ("hb_address_id", "=", address_id),
-                    ("parent_id", "=", main_partner.id),
-                    ("type", "=", "delivery"),
-                ],
-                limit=1,
-            )
-            if shipping_partner:
-                return shipping_partner
-
-        # Create child partner for shipping address
         recipient_name = (pkg.get("recipientName") or "").strip()
         if not recipient_name:
             recipient_name = (pkg.get("customerName") or "").strip()
@@ -710,9 +742,24 @@ class HepsiburadaOrder(models.Model):
             "hb_address_id": address_id or False,
         }
 
-        if address_id and shipping_partner:
-            shipping_partner.write(partner_vals)
-            return shipping_partner
+        # Refresh the stored address: HB may change it under a stable id.
+        if address_id:
+            shipping_partner = Partner.search(
+                [
+                    ("hb_address_id", "=", address_id),
+                    ("parent_id", "=", main_partner.id),
+                    ("type", "=", "delivery"),
+                ],
+                limit=1,
+            )
+            if shipping_partner:
+                changes = _changed_values(shipping_partner, partner_vals)
+                # Computed without inverse: writing it is a silent no-op, so
+                # it would show up as a change on every single re-import.
+                changes.pop("is_blacklisted", None)
+                if changes:
+                    shipping_partner.write(changes)
+                return shipping_partner
         return Partner.create(partner_vals)
 
     def _refresh_shipping_partner(self, package_data):
@@ -1254,30 +1301,39 @@ class HepsiburadaOrderLine(models.Model):
     commission_amount = fields.Float()
     status = fields.Char()
 
-    def _update_from_api(self, item, package=False, status=None):
-        self.ensure_one()
-        price_data = item.get("price", {})
-        total_price_data = item.get("totalPrice", {})
-        commission_data = item.get("commission", {})
-        vals = {
-            "package_id": package.id if package else self.package_id.id,
-            "hb_sku": item.get("hbSku") or item.get("sku") or self.hb_sku,
+    @staticmethod
+    def _item_amount(value):
+        """Unwrap Hepsiburada's {currency, amount} money objects."""
+        if isinstance(value, dict):
+            return value.get("amount", 0)
+        return value or 0
+
+    def _hb_line_vals_from_item(self, item):
+        """Extract the shared line values from an HB API item payload.
+
+        Called on an existing line the stored values are used as fallbacks for
+        keys the payload does not carry; called on an empty recordset the
+        creation defaults apply.
+        """
+        line = self[:1]
+        return {
+            "hb_sku": item.get("hbSku") or item.get("sku") or line.hb_sku or "",
             "merchant_sku": item.get("merchantSku")
             or item.get("merchantSKU")
-            or self.merchant_sku,
-            "quantity": item.get("quantity", self.quantity),
-            "unit_price": price_data.get("amount", 0)
-            if isinstance(price_data, dict)
-            else price_data or 0,
-            "total_price": total_price_data.get("amount", 0)
-            if isinstance(total_price_data, dict)
-            else total_price_data or 0,
-            "vat_amount": item.get("vat", self.vat_amount),
-            "vat_rate": item.get("vatRate", self.vat_rate),
-            "commission_amount": commission_data.get("amount", 0)
-            if isinstance(commission_data, dict)
-            else commission_data or 0,
+            or line.merchant_sku
+            or "",
+            "quantity": item.get("quantity", line.quantity if line else 1),
+            "unit_price": self._item_amount(item.get("price")),
+            "total_price": self._item_amount(item.get("totalPrice")),
+            "vat_amount": item.get("vat", line.vat_amount),
+            "vat_rate": item.get("vatRate", line.vat_rate),
+            "commission_amount": self._item_amount(item.get("commission")),
         }
+
+    def _update_from_api(self, item, package=False, status=None):
+        self.ensure_one()
+        vals = self._hb_line_vals_from_item(item)
+        vals["package_id"] = package.id if package else self.package_id.id
         if status:
             vals["status"] = status
         self.write(vals)
