@@ -5,7 +5,7 @@ import json
 import logging
 from datetime import timedelta
 
-from odoo import SUPERUSER_ID, api
+from odoo import SUPERUSER_ID, _, api
 
 _logger = logging.getLogger(__name__)
 
@@ -94,9 +94,9 @@ def _settlement_review_reason(settlement):
     if str(settlement.payment_status or "").lower() != "paid" and (
         settlement.odoo_payment_id or settlement.commission_payment_id
     ):
-        return "A payment was posted before Hepsiburada marked the transaction Paid."
+        return _("A payment was posted before Hepsiburada marked the transaction Paid.")
     if settlement.commission_payment_id:
-        return (
+        return _(
             "Legacy commission payment has no matched supplier invoice and "
             "must be reviewed."
         )
