@@ -12,7 +12,7 @@
                         string="Send Answer"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('hb_status', '=', 'closed')]}"
+                        attrs="{'invisible': [('hb_status', '!=', 'waiting_merchant')]}"
                     />
                     <button
                         name="action_fetch_conversations"
@@ -22,7 +22,7 @@
                     <field
                         name="hb_status"
                         widget="statusbar"
-                        statusbar_visible="open,waiting_merchant,waiting_customer,closed"
+                        statusbar_visible="unknown,waiting_merchant,answered,rejected,auto_closed"
                     />
                 </header>
                 <sheet>
@@ -36,7 +36,11 @@
                             <field name="backend_id" />
                             <field name="subject" />
                             <field name="customer_name" />
+                            <field name="customer_id" />
+                            <field name="order_number" />
+                            <field name="line_item_id" />
                             <field name="hb_created_date" />
+                            <field name="expire_date" />
                             <field name="is_answered" />
                         </group>
                         <group string="Product Info">
@@ -55,7 +59,7 @@
                             nolabel="1"
                             colspan="2"
                             placeholder="Type your answer here..."
-                            attrs="{'invisible': [('hb_status', '=', 'closed')]}"
+                            attrs="{'invisible': [('hb_status', '!=', 'waiting_merchant')]}"
                         />
                     </group>
                     <notebook>
@@ -84,8 +88,8 @@
         <field name="arch" type="xml">
             <tree
                 decoration-danger="hb_status == 'waiting_merchant'"
-                decoration-success="hb_status == 'closed'"
-                decoration-info="hb_status == 'waiting_customer'"
+                decoration-success="hb_status == 'answered'"
+                decoration-muted="hb_status in ('rejected', 'auto_closed')"
             >
                 <field name="hb_issue_number" />
                 <field name="subject" />
@@ -119,19 +123,19 @@
                     domain="[('hb_status', '=', 'waiting_merchant')]"
                 />
                 <filter
-                    name="waiting_customer"
-                    string="Waiting Customer"
-                    domain="[('hb_status', '=', 'waiting_customer')]"
+                    name="answered"
+                    string="Answered"
+                    domain="[('hb_status', '=', 'answered')]"
                 />
                 <filter
-                    name="open"
-                    string="Open"
-                    domain="[('hb_status', '=', 'open')]"
+                    name="rejected"
+                    string="Rejected"
+                    domain="[('hb_status', '=', 'rejected')]"
                 />
                 <filter
-                    name="closed"
-                    string="Closed"
-                    domain="[('hb_status', '=', 'closed')]"
+                    name="auto_closed"
+                    string="Auto Closed"
+                    domain="[('hb_status', '=', 'auto_closed')]"
                 />
                 <separator />
                 <filter

@@ -3,7 +3,7 @@
 
 {
     "name": "Hepsiburada Marketplace Integration",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "Sales/Sales",
     "summary": "Integrate Odoo with Hepsiburada marketplace (orders, invoices, status)",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",

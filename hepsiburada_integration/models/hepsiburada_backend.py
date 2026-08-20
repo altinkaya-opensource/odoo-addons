@@ -7,6 +7,7 @@ from datetime import timedelta
 from dateutil import parser as dateutil_parser
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
 
@@ -186,6 +187,10 @@ class HepsiburadaBackend(models.Model):
     last_settlement_sync = fields.Datetime(readonly=True)
     last_question_sync = fields.Datetime(readonly=True)
     last_claim_sync = fields.Datetime(readonly=True)
+    last_order_sync_error = fields.Text(readonly=True)
+    last_settlement_sync_error = fields.Text(readonly=True)
+    last_question_sync_error = fields.Text(readonly=True)
+    last_claim_sync_error = fields.Text(readonly=True)
 
     # Statistics
     order_count = fields.Integer(
@@ -228,12 +233,15 @@ class HepsiburadaBackend(models.Model):
     def _get_api_client(self):
         """Get configured API client for this backend."""
         self.ensure_one()
+        # API credentials are deliberately hidden from regular marketplace users.
+        # Authorized business actions may use them, but must never expose them.
+        backend = self.sudo()
         return HepsiburadaRequest(
-            merchant_id=self.merchant_id,
-            username=self.api_username,
-            password=self.api_password,
-            environment=self.environment,
-            user_agent=self.user_agent,
+            merchant_id=backend.merchant_id,
+            username=backend.api_username,
+            password=backend.api_password,
+            environment=backend.environment,
+            user_agent=backend.user_agent,
         )
 
     # ==================== Order Import ====================
@@ -248,7 +256,7 @@ class HepsiburadaBackend(models.Model):
             _("Order import has been queued."),
         )
 
-    def _fetch_all_packages(self, fetch_method):
+    def _fetch_all_packages(self, fetch_method, limit=50, **fetch_kwargs):
         """Paginate through a package endpoint until exhausted.
 
         Args:
@@ -259,22 +267,26 @@ class HepsiburadaBackend(models.Model):
         """
         all_packages = []
         offset = 0
-        limit = 50
-
         while True:
-            result = fetch_method(offset=offset, limit=limit)
+            result = fetch_method(offset=offset, limit=limit, **fetch_kwargs)
             packages = (
                 result
                 if isinstance(result, list)
-                else result.get("items", result.get("content", []))
+                else result.get(
+                    "items",
+                    result.get("content", result.get("data", [])),
+                )
             )
+            if isinstance(packages, dict):
+                packages = packages.get("items", packages.get("content", []))
             if not packages:
                 break
             all_packages.extend(packages)
-            offset += limit
-            if offset > 5000:
-                _logger.warning("Import safety limit reached")
+            if len(packages) < limit:
                 break
+            offset += limit
+            if offset >= 100000:
+                raise UserError(_("Hepsiburada import exceeded 100,000 records."))
 
         return all_packages
 
@@ -374,16 +386,153 @@ class HepsiburadaBackend(models.Model):
                     "shippingCity": shipping.get("city", ""),
                     "shippingDistrict": shipping.get("district", ""),
                     "shippingTown": shipping.get("town", ""),
+                    "shippingPostalCode": shipping.get("postalCode", ""),
                     "shippingCountryCode": shipping.get("countryCode", "TR"),
+                    "shippingAddressId": shipping.get("id", ""),
                     # Contact
                     "email": shipping.get("email", "") or billing_addr.get("email", ""),
                     "phoneNumber": shipping.get("phoneNumber", ""),
                     # Status
                     "status": api_status,
                     "_hb_status": hb_status,
+                    "_status_scope": "line" if hb_status == "cancelled" else "order",
                 }
             )
         return packages
+
+    def _current_order_payloads(self, client, errors):
+        payloads = []
+        endpoints = [
+            (client.get_paid_orders, "open", "Open"),
+            (
+                client.get_payment_awaiting_orders,
+                "payment_awaiting",
+                "PaymentAwaiting",
+            ),
+        ]
+        for fetch_method, hb_status, api_status in endpoints:
+            try:
+                items = self._fetch_all_packages(fetch_method, limit=50)
+                payloads.extend(
+                    self._group_flat_items_as_packages(
+                        items,
+                        hb_status,
+                        api_status,
+                    )
+                )
+            except Exception as error:
+                errors.append(f"{hb_status}: {error}")
+                _logger.exception("Failed to fetch %s HB orders", hb_status)
+        try:
+            packages = self._fetch_all_packages(client.get_packages, limit=10)
+            for package in packages:
+                package["_hb_status"] = "packaged"
+            payloads.extend(packages)
+        except Exception as error:
+            errors.append(f"packaged: {error}")
+            _logger.exception("Failed to fetch packaged HB orders")
+        return payloads
+
+    def _transition_order_payloads(self, client, sync_start, sync_end, errors):
+        payloads = []
+        endpoints = [
+            (client.get_cancelled_orders, "cancelled", "Cancelled", True),
+            (client.get_shipped_packages, "in_transit", "InTransit", False),
+            (client.get_delivered_packages, "delivered", "Delivered", False),
+            (client.get_undelivered_packages, "undelivered", "Undelivered", False),
+        ]
+        window_start = sync_start
+        while window_start < sync_end:
+            window_end = min(window_start + timedelta(days=1), sync_end)
+            date_kwargs = {
+                "begin_date": window_start.strftime("%Y-%m-%d %H:%M"),
+                "end_date": window_end.strftime("%Y-%m-%d %H:%M"),
+            }
+            for fetch_method, hb_status, api_status, is_flat in endpoints:
+                try:
+                    records = self._fetch_all_packages(
+                        fetch_method,
+                        limit=50,
+                        **date_kwargs,
+                    )
+                    if is_flat:
+                        records = self._group_flat_items_as_packages(
+                            records,
+                            hb_status,
+                            api_status,
+                        )
+                    else:
+                        for package in records:
+                            package["_hb_status"] = hb_status
+                    payloads.extend(records)
+                except Exception as error:
+                    errors.append(f"{hb_status}: {error}")
+                    _logger.exception(
+                        "Failed to fetch %s HB records for %s - %s",
+                        hb_status,
+                        window_start,
+                        window_end,
+                    )
+            window_start = window_end
+        return payloads
+
+    def _import_status_payload(self, Order, package_data):
+        package_number = str(package_data.get("packageNumber") or "")
+        package = self.env["hepsiburada.package"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("hb_package_number", "=", package_number),
+            ],
+            limit=1,
+        )
+        if package:
+            package._update_from_api(
+                package_data,
+                status=package_data.get("_hb_status"),
+            )
+            return 1
+
+        order_numbers = package_data.get("orderNumbers", [])
+        if package_data.get("orderNumber"):
+            order_numbers = [package_data["orderNumber"]]
+        bindings = Order.search(
+            [
+                ("backend_id", "=", self.id),
+                (
+                    "hb_order_number",
+                    "in",
+                    [str(item) for item in order_numbers],
+                ),
+            ]
+        )
+        for binding in bindings:
+            binding._upsert_package(
+                package_data,
+                package_data.get("_hb_status"),
+            )
+        return len(bindings)
+
+    def _import_order_payloads(self, payloads, errors):
+        Order = self.env["hepsiburada.order"]
+        total_imported = 0
+        for package_data in payloads:
+            items = package_data.get("items", [])
+            identifier = str(package_data.get("packageNumber") or "")
+            if items:
+                identifier = str(items[0].get("orderNumber") or identifier)
+            try:
+                with self.env.cr.savepoint():
+                    if items:
+                        total_imported += bool(Order._import_order(self, package_data))
+                    else:
+                        total_imported += self._import_status_payload(
+                            Order,
+                            package_data,
+                        )
+            except Exception as error:
+                errors.append(f"order/package {identifier}: {error}")
+                _logger.exception("Failed to import HB payload %s", identifier)
+        return total_imported
 
     def _import_orders(self):
         """Import orders from all Hepsiburada endpoints.
@@ -398,76 +547,46 @@ class HepsiburadaBackend(models.Model):
         - /packages/cancelled (iptal edildi)
         """
         self.ensure_one()
-        client = self._get_api_client()
         Order = self.env["hepsiburada.order"]
+        sync_end = fields.Datetime.now()
+        existing_orders = Order.search([("backend_id", "=", self.id)])
+        existing_dates = existing_orders.mapped("odoo_id.date_order")
+        sync_start = self.last_order_sync
+        if sync_start:
+            sync_start -= timedelta(hours=2)
+        elif existing_dates:
+            sync_start = min(existing_dates) - timedelta(days=1)
+        else:
+            sync_start = sync_end - timedelta(days=30)
 
-        try:
-            all_packages = []
-
-            # 1. Flat order endpoints → group into pseudo-packages
-            flat_endpoints = [
-                (client.get_paid_orders, "open", "Open"),
-                (
-                    client.get_payment_awaiting_orders,
-                    "payment_awaiting",
-                    "PaymentAwaiting",
-                ),
-                (client.get_cancelled_orders, "cancelled", "Cancelled"),
-            ]
-            for fetch_method, hb_status, api_status in flat_endpoints:
-                try:
-                    flat_items = self._fetch_all_packages(fetch_method)
-                    all_packages.extend(
-                        self._group_flat_items_as_packages(
-                            flat_items, hb_status, api_status
-                        )
-                    )
-                except HepsiburadaAPIError:
-                    _logger.exception("Failed to fetch %s orders", hb_status)
-
-            # 2. Package endpoints (already in package format)
-            package_endpoints = [
-                (client.get_packages, "packaged"),
-                (client.get_shipped_packages, "in_transit"),
-                (client.get_delivered_packages, "delivered"),
-                (client.get_undelivered_packages, "undelivered"),
-            ]
-
-            for fetch_method, status in package_endpoints:
-                try:
-                    packages = self._fetch_all_packages(fetch_method)
-                    for pkg in packages:
-                        pkg["_hb_status"] = status
-                    all_packages.extend(packages)
-                except HepsiburadaAPIError:
-                    _logger.exception("Failed to fetch %s packages", status)
-
-            if not all_packages:
-                _logger.info("No packages to import for backend %s", self.name)
-                self.last_order_sync = fields.Datetime.now()
-                return
-
-            total_imported = 0
-            for package_data in all_packages:
-                items = package_data.get("items", [])
-                if not items:
-                    continue
-                order_number = str(items[0].get("orderNumber", ""))
-                try:
-                    Order._import_order(self, package_data)
-                    total_imported += 1
-                except Exception:
-                    _logger.exception("Failed to import HB order %s", order_number)
-
-            self.last_order_sync = fields.Datetime.now()
-            _logger.info(
-                "Imported %d orders for backend %s",
-                total_imported,
-                self.name,
+        errors = []
+        client = self._get_api_client()
+        payloads = self._current_order_payloads(client, errors)
+        payloads.extend(
+            self._transition_order_payloads(
+                client,
+                sync_start,
+                sync_end,
+                errors,
             )
-        except HepsiburadaAPIError as e:
-            _logger.error("Failed to import orders: %s", str(e))
-            raise
+        )
+        total_imported = self._import_order_payloads(payloads, errors)
+
+        if errors:
+            self.last_order_sync_error = "\n".join(errors[-20:])
+        else:
+            self.write(
+                {
+                    "last_order_sync": sync_end,
+                    "last_order_sync_error": False,
+                }
+            )
+        _logger.info(
+            "Imported %d HB order payloads for backend %s (%d errors)",
+            total_imported,
+            self.name,
+            len(errors),
+        )
 
     # ==================== Settlement Import ====================
 
@@ -481,16 +600,104 @@ class HepsiburadaBackend(models.Model):
             _("Settlement import has been queued."),
         )
 
+    def _import_settlement_window(self, client, window_start, window_end):
+        Settlement = self.env["hepsiburada.settlement"]
+        start_str = window_start.strftime("%Y-%m-%d")
+        end_str = window_end.strftime("%Y-%m-%d")
+        imported = Settlement.browse()
+        errors = []
+        offset = 0
+        while True:
+            try:
+                result = client.get_transactions(
+                    record_date_start=start_str,
+                    record_date_end=end_str,
+                    offset=offset,
+                    limit=100,
+                )
+            except HepsiburadaAPIError as error:
+                errors.append(f"{start_str} - {end_str}: {error}")
+                _logger.error(
+                    "Failed to import settlements for %s - %s: %s",
+                    window_start,
+                    window_end,
+                    str(error),
+                )
+                break
+            content = (
+                result
+                if isinstance(result, list)
+                else result.get("content", result.get("items", []))
+            )
+            if not content:
+                break
+            for item in content:
+                try:
+                    with self.env.cr.savepoint():
+                        settlement = Settlement._import_settlement(self, item)
+                    if settlement:
+                        imported |= settlement
+                except Exception as error:
+                    errors.append(f"transaction {item.get('id', '?')}: {error}")
+                    _logger.exception(
+                        "Failed to import HB transaction %s",
+                        item.get("id", "?"),
+                    )
+            if len(content) < 100:
+                break
+            offset += 100
+            if offset >= 100000:
+                errors.append(
+                    "Settlement import exceeded 100,000 records for "
+                    f"{start_str} - {end_str}"
+                )
+                break
+        return imported, errors
+
+    def _reconcile_paid_settlements(self, imported_settlements):
+        Settlement = self.env["hepsiburada.settlement"]
+        retryable = Settlement.search(
+            [
+                ("backend_id", "=", self.id),
+                ("transaction_type", "in", ("sale", "return")),
+                ("payment_status", "=ilike", "Paid"),
+                ("state", "in", ("imported", "error")),
+                ("requires_manual_review", "=", False),
+            ]
+        )
+        seen_groups = set()
+        for settlement in imported_settlements | retryable:
+            group_key = (
+                settlement.order_number,
+                settlement.package_number,
+                settlement.transaction_type,
+                settlement.payment_date,
+                settlement.currency_code,
+                settlement.invoice_number,
+            )
+            if group_key in seen_groups:
+                continue
+            seen_groups.add(group_key)
+            try:
+                with self.env.cr.savepoint():
+                    settlement._reconcile()
+            except Exception as error:
+                settlement._set_group_error(
+                    settlement._reconciliation_group(),
+                    str(error),
+                )
+                _logger.exception(
+                    "Auto-reconcile failed for HB settlement group %s",
+                    group_key,
+                )
+
     def _import_settlements(self):
         """Import settlements from Hepsiburada finance API.
 
-        The API has a max 15-day date range. We iterate in 15-day windows
-        from last_settlement_sync (or 15 days ago) to now.
+        Import complete financial records first, then reconcile paid order groups.
         """
         self.ensure_one()
         client = self._get_api_client()
-        Settlement = self.env["hepsiburada.settlement"]
-
         end_date = fields.Datetime.now()
         if self.last_settlement_sync:
             start_date = self.last_settlement_sync
@@ -498,73 +705,40 @@ class HepsiburadaBackend(models.Model):
             start_date = end_date - timedelta(days=15)
 
         window_start = start_date
+        completed_until = start_date
         total_imported = 0
+        errors = []
+        imported_settlements = self.env["hepsiburada.settlement"].browse()
 
         while window_start < end_date:
-            window_end = min(window_start + timedelta(days=15), end_date)
-            start_str = window_start.strftime("%Y-%m-%d")
-            end_str = window_end.strftime("%Y-%m-%d")
-
-            try:
-                offset = 0
-                while True:
-                    result = client.get_transactions(
-                        record_date_start=start_str,
-                        record_date_end=end_str,
-                        transaction_types="Payment,Return,Commission",
-                        offset=offset,
-                        limit=100,
-                    )
-                    content = (
-                        result
-                        if isinstance(result, list)
-                        else result.get("content", result.get("items", []))
-                    )
-                    if not content:
-                        break
-
-                    for item in content:
-                        settlement = Settlement._import_settlement(self, item)
-                        if (
-                            settlement
-                            and settlement.state == "imported"
-                            and self.auto_reconcile_settlements
-                        ):
-                            try:
-                                settlement._reconcile()
-                            except Exception as e:
-                                settlement.write(
-                                    {
-                                        "state": "error",
-                                        "error_message": str(e),
-                                    }
-                                )
-                                _logger.warning(
-                                    "Auto-reconcile failed for settlement %s: %s",
-                                    settlement.hb_transaction_id,
-                                    str(e),
-                                )
-                        total_imported += 1
-
-                    offset += 100
-                    if offset > 5000:
-                        _logger.warning("Settlement import safety limit reached")
-                        break
-
-            except HepsiburadaAPIError as e:
-                _logger.error(
-                    "Failed to import settlements for window %s - %s: %s",
-                    window_start,
-                    window_end,
-                    str(e),
-                )
-                raise
-
+            window_end = min(window_start + timedelta(days=14), end_date)
+            window_records, window_errors = self._import_settlement_window(
+                client,
+                window_start,
+                window_end,
+            )
+            imported_settlements |= window_records
+            total_imported += len(window_records)
+            errors.extend(window_errors)
+            if window_errors:
+                break
+            completed_until = window_end
             window_start = window_end
 
-        self.last_settlement_sync = fields.Datetime.now()
+        if self.auto_reconcile_settlements:
+            self._reconcile_paid_settlements(imported_settlements)
+
+        vals = {"last_settlement_sync": completed_until}
+        if errors:
+            vals["last_settlement_sync_error"] = "\n".join(errors[-20:])
+        else:
+            vals["last_settlement_sync_error"] = False
+        self.write(vals)
         _logger.info(
-            "Imported %d settlements for backend %s", total_imported, self.name
+            "Imported %d settlements for backend %s (%d errors)",
+            total_imported,
+            self.name,
+            len(errors),
         )
 
     # ==================== View Actions ====================
@@ -605,13 +779,15 @@ class HepsiburadaBackend(models.Model):
 
         total_imported = 0
         offset = 0
+        errors = []
 
         while True:
             try:
                 result = client.get_claims(offset=offset, limit=50)
             except HepsiburadaAPIError as e:
                 _logger.error("Failed to fetch claims at offset %d: %s", offset, e)
-                raise
+                errors.append(str(e))
+                break
 
             claims = (
                 result
@@ -623,20 +799,32 @@ class HepsiburadaBackend(models.Model):
 
             for claim_data in claims:
                 try:
-                    Claim._import_claim(self, claim_data)
-                    total_imported += 1
-                except Exception:
+                    with self.env.cr.savepoint():
+                        Claim._import_claim(self, claim_data)
+                        total_imported += 1
+                except Exception as error:
+                    errors.append(f"claim {claim_data.get('number', '?')}: {error}")
                     _logger.exception(
                         "Failed to import claim %s",
-                        claim_data.get("claimNumber", "?"),
+                        claim_data.get("claimNumber", claim_data.get("number", "?")),
                     )
 
+            if len(claims) < 50:
+                break
             offset += 50
-            if offset > 5000:
-                _logger.warning("Claim import safety limit reached")
+            if offset >= 100000:
+                errors.append("Claim import exceeded 100,000 records")
                 break
 
-        self.last_claim_sync = fields.Datetime.now()
+        if errors:
+            self.last_claim_sync_error = "\n".join(errors[-20:])
+        else:
+            self.write(
+                {
+                    "last_claim_sync": fields.Datetime.now(),
+                    "last_claim_sync_error": False,
+                }
+            )
         _logger.info("Imported %d claims for backend %s", total_imported, self.name)
 
     # ==================== Question Import ====================
@@ -659,41 +847,60 @@ class HepsiburadaBackend(models.Model):
 
         total_imported = 0
         current_page = 1
+        errors = []
 
         while True:
             try:
-                result = client.get_issues(current_page=current_page, page_size=50)
+                result = client.get_issues(current_page=current_page, page_size=25)
             except HepsiburadaAPIError as e:
                 _logger.error("Failed to fetch questions page %d: %s", current_page, e)
-                raise
+                errors.append(str(e))
+                break
 
             issues = result.get("data", result.get("items", []))
+            if isinstance(issues, dict):
+                issues = issues.get("items", issues.get("content", []))
             if not issues:
                 break
 
             for issue_data in issues:
                 try:
-                    question = Question._import_question(self, issue_data)
-                    if question:
-                        # Conversations may be inline in list response
-                        convs = issue_data.get("conversations", [])
-                        if convs:
-                            question._import_conversations(convs)
-                        else:
-                            question._import_conversations()
-                        total_imported += 1
-                except Exception:
+                    with self.env.cr.savepoint():
+                        question = Question._import_question(self, issue_data)
+                        if question:
+                            # Conversations may be inline in list response
+                            convs = issue_data.get("conversations", [])
+                            if convs:
+                                question._import_conversations(convs)
+                            else:
+                                question._import_conversations()
+                            total_imported += 1
+                except Exception as error:
+                    errors.append(
+                        f"question {issue_data.get('issueNumber', '?')}: {error}"
+                    )
                     _logger.exception(
                         "Failed to import question %s",
-                        issue_data.get("number", "?"),
+                        issue_data.get("issueNumber", issue_data.get("number", "?")),
                     )
 
-            total_pages = result.get("totalPageCount", 1)
+            total_pages = result.get(
+                "totalPages",
+                result.get("totalPageCount", current_page),
+            )
             if current_page >= total_pages:
                 break
             current_page += 1
 
-        self.last_question_sync = fields.Datetime.now()
+        if errors:
+            self.last_question_sync_error = "\n".join(errors[-20:])
+        else:
+            self.write(
+                {
+                    "last_question_sync": fields.Datetime.now(),
+                    "last_question_sync_error": False,
+                }
+            )
         _logger.info("Imported %d questions for backend %s", total_imported, self.name)
 
     # ==================== Cron Methods ====================
@@ -809,46 +1016,28 @@ class HepsiburadaBackend(models.Model):
             if offset >= total_count or offset > 5000:
                 break
 
-        # Build domain to find matching orders
-        domain_parts = []
-        if missing_package_numbers:
-            domain_parts.append(
-                ("hb_package_number", "in", list(missing_package_numbers))
-            )
+        Package = self.env["hepsiburada.package"]
+        packages_to_mark = Package.search(
+            [
+                ("backend_id", "=", self.id),
+                ("hb_package_number", "in", list(missing_package_numbers)),
+            ]
+        )
+        packages_to_mark.write({"hb_missing_invoice": True})
+        Package.search(
+            [
+                ("backend_id", "=", self.id),
+                ("hb_missing_invoice", "=", True),
+                ("id", "not in", packages_to_mark.ids),
+            ]
+        ).write({"hb_missing_invoice": False})
+
+        backend_orders = Order.search([("backend_id", "=", self.id)])
+        backend_orders._sync_from_packages()
         if missing_order_numbers:
-            domain_parts.append(("hb_order_number", "in", list(missing_order_numbers)))
-
-        if domain_parts:
-            # Combine with OR if both exist
-            search_domain = [("backend_id", "=", self.id)]
-            if len(domain_parts) == 2:
-                search_domain += ["|"] + domain_parts
-            else:
-                search_domain += domain_parts
-
-            orders_to_mark = Order.search(search_domain)
-            orders_to_mark.filtered(lambda o: not o.hb_missing_invoice).write(
-                {"hb_missing_invoice": True}
-            )
-
-            # Clear flag for orders no longer in the missing list
-            orders_to_clear = Order.search(
-                [
-                    ("backend_id", "=", self.id),
-                    ("hb_missing_invoice", "=", True),
-                    ("id", "not in", orders_to_mark.ids),
-                ]
-            )
-            if orders_to_clear:
-                orders_to_clear.write({"hb_missing_invoice": False})
-        else:
-            # No missing invoices — clear all flags
-            Order.search(
-                [
-                    ("backend_id", "=", self.id),
-                    ("hb_missing_invoice", "=", True),
-                ]
-            ).write({"hb_missing_invoice": False})
+            backend_orders.filtered(
+                lambda order: order.hb_order_number in missing_order_numbers
+            ).write({"hb_missing_invoice": True})
 
         _logger.info(
             "Missing invoice sync done for backend %s: %d packages missing",
