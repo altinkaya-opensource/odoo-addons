@@ -111,6 +111,18 @@ class MarketplaceSettlementMixin(models.AbstractModel):
         if self.state == "reconciled":
             raise UserError(_("This settlement is already reconciled."))
         self._reconcile()
+        if self.state != "reconciled":
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("Reconciliation Failed"),
+                    "message": self.error_message
+                    or _("The settlement could not be reconciled."),
+                    "type": "danger",
+                    "sticky": True,
+                },
+            }
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",

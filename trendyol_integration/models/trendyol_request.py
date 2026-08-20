@@ -674,7 +674,7 @@ class TrendyolRequest(MarketplaceRequest):
             Dict with questions list
         """
         endpoint = f"/integration/qna/sellers/{self.seller_id}/questions/filter"
-        params = {"page": page, "size": size}
+        params = {"page": page, "size": min(size, 50)}
         if status:
             params["status"] = status
         if barcode:
@@ -685,6 +685,11 @@ class TrendyolRequest(MarketplaceRequest):
             params["endDate"] = end_date
 
         return self._make_request("GET", endpoint, params=params)
+
+    def get_question(self, question_id):
+        """Get one customer question by its Trendyol ID."""
+        endpoint = f"/integration/qna/sellers/{self.seller_id}/questions/{question_id}"
+        return self._make_request("GET", endpoint)
 
     def answer_question(self, question_id, answer_text):
         """Answer a customer question.

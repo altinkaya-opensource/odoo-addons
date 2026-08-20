@@ -613,3 +613,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__warehouse_ids
 msgid "Warehouses"
 msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Reconciliation Failed"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The settlement could not be reconciled."
+msgstr ""
