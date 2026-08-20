@@ -470,12 +470,13 @@ class TrendyolBackend(models.Model):
 
                 Brand._sync_from_trendyol(self, brands)
                 total_synced += len(brands)
+                total_pages = result.get("totalPages")
+                if total_pages is not None and page + 1 >= total_pages:
+                    break
                 page += 1
 
-                # Safety limit
-                if page > 100:
-                    _logger.warning("Brand sync safety limit reached")
-                    break
+                if page >= 1000:
+                    raise UserError(_("Brand synchronization page limit reached."))
 
             self.last_brand_sync = fields.Datetime.now()
             _logger.info("Synced %d brands for backend %s", total_synced, self.name)
@@ -519,6 +520,7 @@ class TrendyolBackend(models.Model):
         try:
             page = 0
             total_imported = 0
+            failed_packages = []
             while True:
                 result = client.get_orders(
                     status=status,
@@ -532,24 +534,34 @@ class TrendyolBackend(models.Model):
                     break
 
                 for order_data in orders:
+                    package_id = order_data.get(
+                        "shipmentPackageId", order_data.get("id")
+                    )
                     try:
-                        Order._import_order(self, order_data)
-                        total_imported += 1
+                        with self.env.cr.savepoint():
+                            if Order._import_order(self, order_data):
+                                total_imported += 1
                     except Exception:
-                        package_id = order_data.get(
-                            "shipmentPackageId", order_data.get("id")
-                        )
+                        failed_packages.append(str(package_id or "unknown"))
                         _logger.exception(
                             "Failed to import order package %s", package_id
                         )
 
-                page += 1
-                # Safety limit
-                if page > 50:
-                    _logger.warning("Order import safety limit reached")
+                total_pages = result.get("totalPages")
+                if total_pages is not None and page + 1 >= total_pages:
                     break
+                page += 1
+                if page >= 1000:
+                    raise UserError(_("Order import page limit reached."))
 
-            self.last_order_sync = end_date
+            if not failed_packages:
+                self.last_order_sync = end_date
+            else:
+                _logger.error(
+                    "%d Trendyol package(s) failed; keeping the previous order "
+                    "sync cursor so they are retried",
+                    len(failed_packages),
+                )
             _logger.info("Imported %d orders for backend %s", total_imported, self.name)
         except TrendyolAPIError as e:
             _logger.error("Failed to import orders: %s", str(e))
@@ -585,20 +597,24 @@ class TrendyolBackend(models.Model):
             _logger.info("No approved bindings to sync for backend %s", self.name)
             return
 
-        items = []
+        binding_items = []
         for binding in bindings:
             item = binding._prepare_stock_price_data()
             if item:
-                items.append(item)
+                binding_items.append((binding, item))
 
-        if not items:
+        if not binding_items:
             _logger.info("No stock/price changes to sync for backend %s", self.name)
             return
 
         try:
             # Send in batches of 1000
-            for i in range(0, len(items), 1000):
-                batch_items = items[i : i + 1000]
+            for i in range(0, len(binding_items), 1000):
+                batch_pairs = binding_items[i : i + 1000]
+                batch_items = [item for _binding, item in batch_pairs]
+                batch_bindings = Binding.browse(
+                    [binding.id for binding, _item in batch_pairs]
+                )
                 result = client.update_price_and_inventory(batch_items)
 
                 batch_id = result.get("batchRequestId")
@@ -610,13 +626,14 @@ class TrendyolBackend(models.Model):
                             "request_type": "price_inventory",
                             "state": "pending",
                             "total_items": len(batch_items),
+                            "product_binding_ids": [(6, 0, batch_bindings.ids)],
                         }
                     )
 
             self.last_stock_sync = fields.Datetime.now()
             _logger.info(
                 "Synced %d stock/price items for backend %s",
-                len(items),
+                len(binding_items),
                 self.name,
             )
         except TrendyolAPIError as e:
@@ -667,12 +684,41 @@ class TrendyolBackend(models.Model):
                     Claim._import_claim(self, claim_data)
                     total_imported += 1
 
-                page += 1
-                if page > 100:
-                    _logger.warning("Claims import safety limit reached")
+                total_pages = result.get("totalPages")
+                if total_pages is not None and page + 1 >= total_pages:
                     break
+                page += 1
+                if page >= 1000:
+                    raise UserError(_("Claims import page limit reached."))
 
-            self.last_claim_sync = fields.Datetime.now()
+            # Date filters operate on claimDate, so changed older claims are not
+            # returned by the incremental window. Refresh every non-terminal
+            # claim explicitly by ID to keep line-level statuses current.
+            active_claims = Claim.search(
+                [
+                    ("backend_id", "=", self.id),
+                    (
+                        "claim_status",
+                        "in",
+                        [
+                            "created",
+                            "waiting_in_action",
+                            "waiting_fraud_check",
+                            "in_analysis",
+                            "unresolved",
+                        ],
+                    ),
+                ]
+            )
+            for offset in range(0, len(active_claims), 25):
+                claim_ids = active_claims[offset : offset + 25].mapped(
+                    "trendyol_claim_id"
+                )
+                result = client.get_claims(claim_ids=claim_ids, page=0, size=25)
+                for claim_data in result.get("content", []):
+                    Claim._import_claim(self, claim_data)
+
+            self.last_claim_sync = end_date
             _logger.info("Imported %d claims for backend %s", total_imported, self.name)
         except TrendyolAPIError as e:
             _logger.error("Failed to import claims: %s", str(e))
@@ -741,53 +787,82 @@ class TrendyolBackend(models.Model):
         else:
             start_date = end_date - timedelta(days=14)
 
-        start_ts = _utc_to_trendyol_ts(start_date)
-        end_ts = _utc_to_trendyol_ts(end_date)
-
         try:
-            page = 0
             total_imported = 0
-            while True:
-                result = client.get_questions(
-                    status="WAITING_FOR_ANSWER",
-                    start_date=start_ts,
-                    end_date=end_ts,
-                    page=page,
-                    size=100,
-                )
-                questions = result.get("content", [])
-                if not questions:
-                    break
+            window_start = start_date
+            while window_start < end_date:
+                window_end = min(window_start + timedelta(days=14), end_date)
+                page = 0
+                while True:
+                    result = client.get_questions(
+                        status="WAITING_FOR_ANSWER",
+                        start_date=_utc_to_trendyol_ts(window_start),
+                        end_date=_utc_to_trendyol_ts(window_end),
+                        page=page,
+                        size=50,
+                    )
+                    questions = result.get("content", [])
+                    if not questions:
+                        break
 
-                for question_data in questions:
-                    question, is_new = Question._import_question(self, question_data)
-                    if question and is_new and self.question_user_ids:
-                        activity_type = self.env.ref("mail.mail_activity_data_todo")
-                        for user in self.question_user_ids:
-                            self.env["mail.activity"].sudo().create(
-                                {
-                                    "res_model_id": self.env["ir.model"]
-                                    .sudo()
-                                    ._get("trendyol.question")
-                                    .id,
-                                    "res_id": question.id,
-                                    "activity_type_id": activity_type.id,
-                                    "user_id": user.id,
-                                    "summary": _(
-                                        "New question from %(customer)s",
-                                        customer=question.customer_name,
-                                    ),
-                                    "note": question.question_text,
-                                }
-                            )
-                    total_imported += 1
+                    for question_data in questions:
+                        question, is_new = Question._import_question(
+                            self, question_data
+                        )
+                        if question and is_new and self.question_user_ids:
+                            activity_type = self.env.ref("mail.mail_activity_data_todo")
+                            for user in self.question_user_ids:
+                                self.env["mail.activity"].sudo().create(
+                                    {
+                                        "res_model_id": self.env["ir.model"]
+                                        .sudo()
+                                        ._get("trendyol.question")
+                                        .id,
+                                        "res_id": question.id,
+                                        "activity_type_id": activity_type.id,
+                                        "user_id": user.id,
+                                        "summary": _(
+                                            "New question from %(customer)s",
+                                            customer=question.customer_name,
+                                        ),
+                                        "note": question.question_text,
+                                    }
+                                )
+                        total_imported += 1
 
-                page += 1
-                if page > 50:
-                    _logger.warning("Question import safety limit reached")
-                    break
+                    total_pages = result.get("totalPages")
+                    if total_pages is not None and page + 1 >= total_pages:
+                        break
+                    page += 1
+                    if page >= 1000:
+                        raise UserError(_("Question import page limit reached."))
+                window_start = window_end
 
-            self.last_question_sync = fields.Datetime.now()
+            # Questions change status after their creation window. Refresh all
+            # active records by ID so answers, approvals, and rejections settle.
+            active_questions = Question.search(
+                [
+                    ("backend_id", "=", self.id),
+                    (
+                        "status",
+                        "in",
+                        ["waiting_for_answer", "waiting_for_approve"],
+                    ),
+                ]
+            )
+            for question in active_questions:
+                try:
+                    question_data = client.get_question(
+                        int(question.trendyol_question_id)
+                    )
+                except TrendyolAPIError as error:
+                    if error.status_code == 404:
+                        question.status = "unanswered"
+                        continue
+                    raise
+                Question._import_question(self, question_data)
+
+            self.last_question_sync = end_date
             _logger.info(
                 "Imported %d questions for backend %s", total_imported, self.name
             )
@@ -851,32 +926,15 @@ class TrendyolBackend(models.Model):
                         break
 
                     for item in content:
-                        settlement = Settlement._import_settlement(self, item)
-                        if (
-                            settlement
-                            and settlement.state == "imported"
-                            and self.auto_reconcile_settlements
-                        ):
-                            try:
-                                settlement._reconcile()
-                            except Exception as e:
-                                settlement.write(
-                                    {
-                                        "state": "error",
-                                        "error_message": str(e),
-                                    }
-                                )
-                                _logger.warning(
-                                    "Auto-reconcile failed for settlement %s: %s",
-                                    settlement.trendyol_settlement_id,
-                                    str(e),
-                                )
+                        Settlement._import_settlement(self, item)
                         total_imported += 1
 
-                    page += 1
-                    if page > 50:
-                        _logger.warning("Settlement import safety limit reached")
+                    total_pages = result.get("totalPages")
+                    if total_pages is not None and page + 1 >= total_pages:
                         break
+                    page += 1
+                    if page >= 1000:
+                        raise UserError(_("Settlement import page limit reached."))
 
             except TrendyolAPIError as e:
                 _logger.error(
@@ -889,7 +947,33 @@ class TrendyolBackend(models.Model):
 
             window_start = window_end
 
-        self.last_settlement_sync = fields.Datetime.now()
+        if self.auto_reconcile_settlements:
+            settlements = Settlement.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("state", "in", ["imported", "error"]),
+                ]
+            )
+            for settlement in settlements:
+                if settlement.state == "reconciled":
+                    continue
+                try:
+                    with self.env.cr.savepoint():
+                        settlement._reconcile()
+                except Exception as error:
+                    settlement.write(
+                        {
+                            "state": "error",
+                            "error_message": str(error),
+                        }
+                    )
+                    _logger.warning(
+                        "Auto-reconcile failed for settlement %s: %s",
+                        settlement.trendyol_settlement_id,
+                        str(error),
+                    )
+
+        self.last_settlement_sync = end_date
         _logger.info(
             "Imported %d settlements for backend %s", total_imported, self.name
         )
@@ -1000,50 +1084,32 @@ class TrendyolBackend(models.Model):
         self.ensure_one()
         Order = self.env["trendyol.order"]
 
-        # Webhook data typically contains order/package updates
-        status = data.get("status")
-        package_id = str(data.get("shipmentPackageId") or data.get("id") or "")
+        packages = data.get("content") if isinstance(data, dict) else None
+        if packages is None:
+            packages = [data]
+        if not isinstance(packages, list):
+            raise ValueError("Invalid Trendyol webhook content")
 
-        if not package_id:
-            _logger.warning("Webhook data missing package ID: %s", data)
-            return
-
-        # Find existing order
-        order = Order.search(
-            [
-                ("backend_id", "=", self.id),
-                ("trendyol_package_id", "=", package_id),
-            ],
-            limit=1,
-        )
-
-        if order:
-            # Update status
-            new_status = Order._map_status(status)
-            if order.trendyol_status != new_status:
-                order.trendyol_status = new_status
-                _logger.info(
-                    "Webhook updated order %s status to %s",
-                    order.trendyol_order_number,
-                    new_status,
-                )
-
-            # Handle cancellation
-            if new_status == "cancelled":
-                order.odoo_id.action_trendyol_cancel()
-
-            # Update picking delivery state
-            order._update_picking_delivery_state(new_status)
-
-            # Update tracking info if provided
-            tracking = data.get("cargoTrackingNumber")
-            if tracking and not order.cargo_tracking_number:
-                order.cargo_tracking_number = tracking
-                order.cargo_tracking_link = data.get("cargoTrackingLink")
-
-        else:
-            # Order not found, try to import it
-            _logger.info(
-                "Webhook for unknown package %s, attempting import", package_id
+        for package_data in packages:
+            if not isinstance(package_data, dict):
+                _logger.warning("Ignoring invalid Trendyol webhook package")
+                continue
+            package_value = package_data.get("shipmentPackageId") or package_data.get(
+                "id"
             )
-            Order._import_order(self, data)
+            if not package_value:
+                _logger.warning("Trendyol webhook package is missing its ID")
+                continue
+            package_id = str(package_value)
+            order = Order.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("trendyol_package_id", "=", package_id),
+                ],
+                limit=1,
+            )
+            if order:
+                order._update_from_trendyol_data(package_data)
+            else:
+                _logger.info("Webhook for unknown package %s, importing it", package_id)
+                Order._import_order(self, package_data)

@@ -140,15 +140,36 @@ class TrendyolBatchRequest(models.Model):
                 if not binding:
                     continue
 
+                request_item = item.get("requestItem", {})
                 if item.get("status") == "SUCCESS":
-                    binding.sync_state = "approved"
-                    # Store Trendyol product ID if returned
-                    product_id = item.get("requestItem", {}).get("productMainId")
-                    if product_id:
-                        binding.trendyol_product_id = str(product_id)
+                    if self.request_type == "price_inventory":
+                        binding.write(
+                            {
+                                "last_sent_quantity": request_item.get(
+                                    "quantity", binding.last_sent_quantity
+                                ),
+                                "last_sent_price": request_item.get(
+                                    "salePrice", binding.last_sent_price
+                                ),
+                                "last_sent_list_price": request_item.get(
+                                    "listPrice", binding.last_sent_list_price
+                                ),
+                                "last_sync_date": fields.Datetime.now(),
+                                "sync_error": False,
+                            }
+                        )
+                    else:
+                        binding.write(
+                            {
+                                "sync_state": "approved",
+                                "sync_error": False,
+                            }
+                        )
                 elif item.get("status") == "FAILED":
-                    binding.sync_state = "error"
-                    binding.sync_error = "\n".join(item.get("failureReasons", []))
+                    vals = {"sync_error": "\n".join(item.get("failureReasons", []))}
+                    if self.request_type != "price_inventory":
+                        vals["sync_state"] = "error"
+                    binding.write(vals)
 
         self.write(
             {

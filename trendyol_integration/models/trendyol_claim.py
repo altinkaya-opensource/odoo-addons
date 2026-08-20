@@ -58,6 +58,8 @@ class TrendyolClaim(models.Model):
             ("rejected", "Rejected"),
             ("cancelled", "Cancelled"),
             ("unresolved", "Unresolved"),
+            ("waiting_fraud_check", "Waiting Fraud Check"),
+            ("in_analysis", "In Analysis"),
         ],
         default="created",
         required=True,
@@ -128,10 +130,11 @@ class TrendyolClaim(models.Model):
         Returns:
             trendyol.claim record
         """
-        claim_id = str(claim_data.get("id"))
-        if not claim_id:
+        claim_value = claim_data.get("id") or claim_data.get("claimId")
+        if not claim_value:
             _logger.warning("Invalid claim data: missing claim ID")
             return False
+        claim_id = str(claim_value)
 
         # Check if already imported
         existing = self.search(
@@ -142,18 +145,21 @@ class TrendyolClaim(models.Model):
             limit=1,
         )
 
-        if existing:
-            # Update status if changed
-            new_status = self._map_status(claim_data.get("claimStatus"))
-            if existing.claim_status != new_status:
-                existing.claim_status = new_status
-                existing.raw_data = json.dumps(claim_data, indent=2, ensure_ascii=False)
-            return existing
-
         # Find related order
         order_number = claim_data.get("orderNumber")
         trendyol_order = False
-        if order_number:
+        package_value = claim_data.get("orderShipmentPackageId") or claim_data.get(
+            "orderOutboundPackageId"
+        )
+        if package_value:
+            trendyol_order = self.env["trendyol.order"].search(
+                [
+                    ("backend_id", "=", backend.id),
+                    ("trendyol_package_id", "=", str(package_value)),
+                ],
+                limit=1,
+            )
+        if not trendyol_order and order_number:
             trendyol_order = self.env["trendyol.order"].search(
                 [
                     ("backend_id", "=", backend.id),
@@ -162,31 +168,35 @@ class TrendyolClaim(models.Model):
                 limit=1,
             )
 
-        # Parse dates
-        claim_date = self._parse_timestamp(claim_data.get("claimDate"))
-        last_modified = self._parse_timestamp(claim_data.get("lastModifiedDate"))
+        claim_items = list(self._iter_claim_items(claim_data))
+        vals = {
+            "backend_id": backend.id,
+            "trendyol_claim_id": claim_id,
+            "trendyol_order_id": trendyol_order.id if trendyol_order else False,
+            "claim_date": self._parse_timestamp(claim_data.get("claimDate")),
+            "last_modified_date": self._parse_timestamp(
+                claim_data.get("lastModifiedDate")
+            ),
+            "claim_status": self._claim_status_from_data(claim_data, claim_items),
+            "auto_accepted": any(
+                claim_item.get("autoAccepted") for _, claim_item in claim_items
+            ),
+            "cargo_tracking_number": claim_data.get("cargoTrackingNumber"),
+            "cargo_tracking_link": claim_data.get("cargoTrackingLink"),
+            "cargo_provider_name": claim_data.get("cargoProviderName"),
+            "cargo_sender_number": claim_data.get("cargoSenderNumber"),
+            "raw_data": json.dumps(claim_data, indent=2, ensure_ascii=False),
+        }
+
+        if existing:
+            existing.write(vals)
+            self._sync_claim_lines(existing, claim_items)
+            return existing
 
         # Create claim
         try:
-            claim = self.create(
-                {
-                    "backend_id": backend.id,
-                    "trendyol_claim_id": claim_id,
-                    "trendyol_order_id": trendyol_order.id if trendyol_order else False,
-                    "claim_date": claim_date,
-                    "last_modified_date": last_modified,
-                    "claim_status": self._map_status(claim_data.get("claimStatus")),
-                    "cargo_tracking_number": claim_data.get("cargoTrackingNumber"),
-                    "cargo_tracking_link": claim_data.get("cargoTrackingLink"),
-                    "cargo_provider_name": claim_data.get("cargoProviderName"),
-                    "cargo_sender_number": claim_data.get("cargoSenderNumber"),
-                    "raw_data": json.dumps(claim_data, indent=2, ensure_ascii=False),
-                }
-            )
-
-            # Create claim lines
-            for item_data in claim_data.get("items", []):
-                self._create_claim_line(claim, item_data)
+            claim = self.create(vals)
+            self._sync_claim_lines(claim, claim_items)
 
             _logger.info("Imported claim %s", claim_id)
             return claim
@@ -198,6 +208,8 @@ class TrendyolClaim(models.Model):
     @api.model
     def _map_status(self, trendyol_status):
         """Map Trendyol claim status to our status field."""
+        if isinstance(trendyol_status, dict):
+            trendyol_status = trendyol_status.get("name")
         status_map = {
             "Created": "created",
             "WaitingInAction": "waiting_in_action",
@@ -205,54 +217,121 @@ class TrendyolClaim(models.Model):
             "Rejected": "rejected",
             "Cancelled": "cancelled",
             "Unresolved": "unresolved",
+            "WaitingFraudCheck": "waiting_fraud_check",
+            "InAnalysis": "in_analysis",
         }
-        return status_map.get(trendyol_status, "created")
+        return status_map.get(trendyol_status)
+
+    @api.model
+    def _iter_claim_items(self, claim_data):
+        """Yield ``(order_line, claim_item)`` pairs from current and legacy data."""
+        for item_group in claim_data.get("items", []):
+            nested_items = item_group.get("claimItems")
+            if nested_items is None:
+                yield item_group, item_group
+                continue
+            order_line = item_group.get("orderLine") or {}
+            for claim_item in nested_items:
+                yield order_line, claim_item
+
+    @api.model
+    def _claim_status_from_data(self, claim_data, claim_items):
+        top_level_status = self._map_status(claim_data.get("claimStatus"))
+        if top_level_status:
+            return top_level_status
+
+        statuses = {
+            self._map_status(
+                claim_item.get("claimItemStatus") or claim_item.get("status")
+            )
+            for _, claim_item in claim_items
+        }
+        statuses.discard(None)
+        for status in (
+            "waiting_in_action",
+            "created",
+            "waiting_fraud_check",
+            "in_analysis",
+            "unresolved",
+            "rejected",
+            "accepted",
+            "cancelled",
+        ):
+            if status in statuses:
+                return status
+        return "created"
 
     @api.model
     def _parse_timestamp(self, timestamp):
         """Parse Trendyol timestamp (ms, GMT+3) to naive UTC datetime."""
         return _trendyol_ts_to_utc(timestamp)
 
-    def _create_claim_line(self, claim, item_data):
-        """Create claim line from API data.
-
-        Args:
-            claim: trendyol.claim record
-            item_data: Dict from API response
-        """
+    def _sync_claim_lines(self, claim, claim_items):
+        """Upsert nested claim items while preserving their product bindings."""
         ClaimLine = self.env["trendyol.claim.line"]
-
-        # Find product binding
-        barcode = item_data.get("barcode")
-        binding = False
-        if barcode:
-            binding = self.env["trendyol.product.binding"].search(
+        seen_line_ids = set()
+        for order_line, claim_item in claim_items:
+            line_value = claim_item.get("id")
+            if not line_value:
+                continue
+            line_id = str(line_value)
+            seen_line_ids.add(line_id)
+            barcode = order_line.get("barcode") or claim_item.get("barcode")
+            binding = False
+            if barcode:
+                binding = self.env["trendyol.product.binding"].search(
+                    [
+                        ("backend_id", "=", claim.backend_id.id),
+                        ("trendyol_barcode", "=", barcode),
+                    ],
+                    limit=1,
+                )
+            customer_reason = claim_item.get("customerClaimItemReason") or {}
+            trendyol_reason = claim_item.get("trendyolClaimItemReason") or {}
+            vals = {
+                "claim_id": claim.id,
+                "trendyol_line_id": line_id,
+                "product_binding_id": binding.id if binding else False,
+                "barcode": barcode,
+                "product_name": order_line.get("productName", ""),
+                "quantity": claim_item.get("quantity", 1),
+                "customer_reason": customer_reason.get("name")
+                if isinstance(customer_reason, dict)
+                else customer_reason,
+                "trendyol_reason": trendyol_reason.get("name")
+                if isinstance(trendyol_reason, dict)
+                else trendyol_reason,
+                "status": (
+                    claim_item.get("claimItemStatus", {}).get("name", "")
+                    if isinstance(claim_item.get("claimItemStatus"), dict)
+                    else claim_item.get("claimItemStatus")
+                    or claim_item.get("status", "")
+                ),
+            }
+            existing_line = ClaimLine.search(
                 [
-                    ("backend_id", "=", claim.backend_id.id),
-                    ("trendyol_barcode", "=", barcode),
+                    ("claim_id", "=", claim.id),
+                    ("trendyol_line_id", "=", line_id),
                 ],
                 limit=1,
             )
+            if existing_line:
+                existing_line.write(vals)
+            else:
+                ClaimLine.create(vals)
 
-        ClaimLine.create(
-            {
-                "claim_id": claim.id,
-                "trendyol_line_id": str(item_data.get("id", "")),
-                "product_binding_id": binding.id if binding else False,
-                "barcode": barcode,
-                "product_name": item_data.get("productName", ""),
-                "quantity": item_data.get("quantity", 1),
-                "customer_reason": item_data.get("customerClaimReasonText", ""),
-                "trendyol_reason": item_data.get("trendyolClaimReasonText", ""),
-                "status": item_data.get("status", ""),
-            }
+        stale_lines = claim.line_ids.filtered(
+            lambda line: (
+                not line.trendyol_line_id or line.trendyol_line_id not in seen_line_ids
+            )
         )
+        stale_lines.unlink()
 
     def action_approve_claim(self):
         """Approve claim items in Trendyol."""
         self.ensure_one()
 
-        if self.claim_status not in ("created", "waiting_in_action"):
+        if self.claim_status != "waiting_in_action":
             raise UserError(_("Only pending claims can be approved."))
 
         if not self.line_ids:
@@ -280,18 +359,18 @@ class TrendyolClaim(models.Model):
         client = self.backend_id._get_api_client()
 
         # Get line IDs to approve
-        line_ids = [
-            int(line.trendyol_line_id)
-            for line in self.line_ids
-            if line.trendyol_line_id
-        ]
+        lines_to_approve = self.line_ids.filtered(
+            lambda line: line.trendyol_line_id and line.status == "WaitingInAction"
+        )
+        line_ids = lines_to_approve.mapped("trendyol_line_id")
 
         if not line_ids:
             raise UserError(_("No valid line IDs found to approve."))
 
         try:
-            client.approve_claim(int(self.trendyol_claim_id), line_ids)
-            self.claim_status = "accepted"
+            client.approve_claim(self.trendyol_claim_id, line_ids)
+            lines_to_approve.status = "WaitingFraudCheck"
+            self.claim_status = "waiting_fraud_check"
             _logger.info("Approved claim %s", self.trendyol_claim_id)
         except TrendyolAPIError as e:
             _logger.error(
@@ -343,17 +422,23 @@ class TrendyolClaim(models.Model):
             active_id=delivery.id,
             active_model="stock.picking",
         ).create({})
+        return_wizard._onchange_picking_id()
+
+        # The core wizard defaults every delivered move to its full quantity.
+        # Clear those defaults before applying only the quantities in the claim.
+        return_wizard.product_return_moves.quantity = 0
 
         # Map claim lines to return lines
-        for line in self.line_ids:
-            if not line.product_binding_id:
-                continue
-
+        quantities_by_product = {}
+        for line in self.line_ids.filtered("product_binding_id"):
             product = line.product_binding_id.odoo_id
-            for wizard_line in return_wizard.product_return_moves:
-                if wizard_line.product_id == product:
-                    wizard_line.quantity = line.quantity
-                    break
+            quantities_by_product[product.id] = (
+                quantities_by_product.get(product.id, 0) + line.quantity
+            )
+        for wizard_line in return_wizard.product_return_moves:
+            wizard_line.quantity = quantities_by_product.get(
+                wizard_line.product_id.id, 0
+            )
 
         # Create return picking
         result = return_wizard.create_returns()

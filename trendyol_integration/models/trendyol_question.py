@@ -18,6 +18,7 @@ QUESTION_STATUS_MAP = {
     "ANSWERED": "answered",
     "REPORTED": "reported",
     "REJECTED": "rejected",
+    "UNANSWERED": "unanswered",
 }
 
 
@@ -51,6 +52,7 @@ class TrendyolQuestion(models.Model):
             ("answered", "Answered"),
             ("reported", "Reported"),
             ("rejected", "Rejected"),
+            ("unanswered", "Unanswered"),
         ],
         default="waiting_for_answer",
         required=True,
@@ -93,10 +95,11 @@ class TrendyolQuestion(models.Model):
         Returns:
             tuple (trendyol.question record, bool is_new)
         """
-        question_id = str(question_data.get("id", ""))
-        if not question_id:
+        question_value = question_data.get("id")
+        if not question_value:
             _logger.warning("Invalid question data: missing question ID")
             return False, False
+        question_id = str(question_value)
 
         existing = self.search(
             [
@@ -108,21 +111,18 @@ class TrendyolQuestion(models.Model):
 
         if existing:
             new_status = self._map_status(question_data.get("status"))
-            vals = {}
+            vals = {
+                "raw_data": json.dumps(question_data, indent=2, ensure_ascii=False),
+            }
             if existing.status != new_status:
                 vals["status"] = new_status
-            # Update answer if present
             answer_data = question_data.get("answer") or {}
-            if answer_data.get("text") and not existing.answer_text:
+            if answer_data.get("text"):
                 vals["answer_text"] = answer_data["text"]
                 vals["answer_date"] = self._parse_timestamp(
                     answer_data.get("creationDate")
                 )
-            if vals:
-                vals["raw_data"] = json.dumps(
-                    question_data, indent=2, ensure_ascii=False
-                )
-                existing.write(vals)
+            existing.write(vals)
             return existing, False
 
         # Parse answer data if already answered
@@ -210,6 +210,7 @@ class TrendyolQuestion(models.Model):
             )
 
         self.status = "waiting_for_approve"
+        self.answer_date = fields.Datetime.now()
         self.activity_ids.unlink()
         _logger.info("Answered question %s", self.trendyol_question_id)
 

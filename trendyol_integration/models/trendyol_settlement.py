@@ -115,10 +115,11 @@ class TrendyolSettlement(models.Model):
         Returns:
             trendyol.settlement record or False
         """
-        settlement_id = str(data.get("id", ""))
-        if not settlement_id:
+        settlement_value = data.get("id")
+        if not settlement_value:
             _logger.warning("Invalid settlement data: missing ID")
             return False
+        settlement_id = str(settlement_value)
 
         existing = self.search(
             [
@@ -132,8 +133,17 @@ class TrendyolSettlement(models.Model):
 
         # Find linked trendyol.order
         order_number = data.get("orderNumber", "")
+        shipment_package_id = str(data.get("shipmentPackageId") or "")
         trendyol_order = False
-        if order_number:
+        if shipment_package_id:
+            trendyol_order = self.env["trendyol.order"].search(
+                [
+                    ("backend_id", "=", backend.id),
+                    ("trendyol_package_id", "=", shipment_package_id),
+                ],
+                limit=1,
+            )
+        if not trendyol_order and order_number:
             trendyol_order = self.env["trendyol.order"].search(
                 [
                     ("backend_id", "=", backend.id),
@@ -154,7 +164,7 @@ class TrendyolSettlement(models.Model):
                         data.get("transactionDate")
                     ),
                     "order_number": str(order_number) if order_number else "",
-                    "shipment_package_id": str(data.get("shipmentPackageId", "")),
+                    "shipment_package_id": shipment_package_id,
                     "barcode": data.get("barcode", ""),
                     "description": data.get("description", ""),
                     "debt": data.get("debt", 0.0),
@@ -162,9 +172,9 @@ class TrendyolSettlement(models.Model):
                     "commission_rate": data.get("commissionRate", 0.0),
                     "commission_amount": data.get("commissionAmount", 0.0),
                     "seller_revenue": data.get("sellerRevenue", 0.0),
-                    "payment_order_id": str(data.get("paymentOrderId", "")),
+                    "payment_order_id": str(data.get("paymentOrderId") or ""),
                     "payment_date": self._parse_timestamp(data.get("paymentDate")),
-                    "receipt_id": str(data.get("receiptId", "")),
+                    "receipt_id": str(data.get("receiptId") or ""),
                     "trendyol_order_id": trendyol_order.id if trendyol_order else False,
                     "raw_data": json.dumps(data, indent=2, ensure_ascii=False),
                 }
@@ -196,3 +206,89 @@ class TrendyolSettlement(models.Model):
 
     def _marketplace_commission_ref(self):
         return _("Trendyol Commission - Order %s") % self.order_number
+
+    def _get_reconciliation_group(self):
+        """Return transaction rows that belong to the same package payout."""
+        self.ensure_one()
+        domain = [
+            ("backend_id", "=", self.backend_id.id),
+            ("transaction_type", "=", self.transaction_type),
+        ]
+        if self.shipment_package_id:
+            domain.append(("shipment_package_id", "=", self.shipment_package_id))
+        else:
+            domain.append(("order_number", "=", self.order_number))
+        if self.payment_order_id:
+            domain.append(("payment_order_id", "=", self.payment_order_id))
+        return self.search(domain)
+
+    def _marketplace_commission_amount(self):
+        self.ensure_one()
+        return sum(
+            abs(amount)
+            for amount in self._get_reconciliation_group().mapped("commission_amount")
+        )
+
+    def _reconcile(self):
+        """Reconcile all rows for one package payout exactly once."""
+        self.ensure_one()
+        if self.state == "reconciled":
+            return
+
+        group = self._get_reconciliation_group()
+        reconciled = group.filtered(
+            lambda settlement: (
+                settlement.state == "reconciled" and settlement.odoo_payment_id
+            )
+        )[:1]
+        if reconciled:
+            expected_commission = self._marketplace_commission_amount()
+            recorded_commission = (
+                reconciled.commission_payment_id.amount
+                if reconciled.commission_payment_id
+                else 0.0
+            )
+            currency = (
+                reconciled.commission_payment_id.currency_id
+                or self.backend_id.company_id.currency_id
+            )
+            if currency.compare_amounts(expected_commission, recorded_commission) == 0:
+                group.write(
+                    {
+                        "state": "reconciled",
+                        "odoo_invoice_id": reconciled.odoo_invoice_id.id,
+                        "odoo_payment_id": reconciled.odoo_payment_id.id,
+                        "commission_payment_id": reconciled.commission_payment_id.id,
+                        "error_message": False,
+                    }
+                )
+            else:
+                (group - reconciled).write(
+                    {
+                        "state": "error",
+                        "error_message": _(
+                            "This payout was partially reconciled by the legacy "
+                            "row-by-row flow and requires manual commission review."
+                        ),
+                    }
+                )
+            return
+
+        super()._reconcile()
+        if self.state == "reconciled":
+            group.write(
+                {
+                    "state": "reconciled",
+                    "odoo_invoice_id": self.odoo_invoice_id.id,
+                    "odoo_payment_id": self.odoo_payment_id.id,
+                    "commission_payment_id": self.commission_payment_id.id,
+                    "error_message": False,
+                }
+            )
+        elif self.state == "error":
+            (group - self).write(
+                {
+                    "state": "error",
+                    "error_message": self.error_message,
+                }
+            )

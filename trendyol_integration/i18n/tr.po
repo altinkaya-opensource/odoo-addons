@@ -7092,3 +7092,65 @@ msgstr "Önceki işçilik fiyatı"
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__v_fiyat_onceki_iscilik
 msgid "Önceki İşçilik Fiyatı"
 msgstr "Önceki İşçilik Fiyatı"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Brand synchronization page limit reached."
+msgstr "Marka senkronizasyonu sayfa sınırına ulaştı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Claims import page limit reached."
+msgstr "İade içe aktarma sayfa sınırına ulaştı."
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__in_analysis
+msgid "In Analysis"
+msgstr "İncelemede"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__last_sent_list_price
+msgid "Last Sent List Price"
+msgstr "Son Gönderilen Liste Fiyatı"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Order import page limit reached."
+msgstr "Sipariş içe aktarma sayfa sınırına ulaştı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Question import page limit reached."
+msgstr "Soru içe aktarma sayfa sınırına ulaştı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Settlement import page limit reached."
+msgstr "Hesaplaşma içe aktarma sayfa sınırına ulaştı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "This payout was partially reconciled by the legacy row-by-row flow and requires manual commission review."
+msgstr "Bu ödeme eski satır bazlı akışta kısmen uzlaştırılmış; komisyonların elle incelenmesi gerekiyor."
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_question__status__unanswered
+msgid "Unanswered"
+msgstr "Yanıtsız"
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__waiting_fraud_check
+msgid "Waiting Fraud Check"
+msgstr "Fraud Kontrolü Bekliyor"
