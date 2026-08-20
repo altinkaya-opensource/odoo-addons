@@ -27,6 +27,28 @@ class TestHepsiburadaClaim(HepsiburadaCommon):
         self.assertEqual(claim.hb_sku, "HBSKU-1")
         self.assertEqual(claim.merchant_sku, "MERCHANT-1")
 
+    def test_finalized_with_is_normalized_case_insensitively(self):
+        claim = self.env["hepsiburada.claim"]._import_claim(
+            self.backend,
+            {
+                "number": "CLAIM-FINALIZED",
+                "finalizedWith": "refund",
+            },
+        )
+
+        self.assertEqual(claim.finalized_with, "Refund")
+
+    def test_unknown_finalized_with_is_ignored(self):
+        claim = self.env["hepsiburada.claim"]._import_claim(
+            self.backend,
+            {
+                "number": "CLAIM-FINALIZED-UNKNOWN",
+                "finalizedWith": "Exchange",
+            },
+        )
+
+        self.assertFalse(claim.finalized_with)
+
     def test_unknown_claim_type_does_not_become_return(self):
         claim = self.env["hepsiburada.claim"]._import_claim(
             self.backend,

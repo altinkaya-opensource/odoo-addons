@@ -62,6 +62,17 @@ CLAIM_STATUS_MAP = {
     "cancelled": "cancelled",
 }
 
+FINALIZED_WITH_SELECTION = [
+    ("Refund", "Refund"),
+    ("Change", "Change"),
+]
+
+# Map HB API finalizedWith strings to internal selection values
+FINALIZED_WITH_MAP = {
+    "refund": "Refund",
+    "change": "Change",
+}
+
 CLAIM_REJECTION_REASON_SELECTION = [
     ("CustomerReturnedWrongItem", "Customer returned the wrong item"),
     ("ProductIsDamaged", "Product is damaged"),
@@ -152,9 +163,7 @@ class HepsiburadaClaim(models.Model):
     claim_date = fields.Datetime()
     action_expire_date = fields.Datetime()
     refund_amount = fields.Float()
-    finalized_with = fields.Selection(
-        [("Refund", "Refund"), ("Change", "Change")],
-    )
+    finalized_with = fields.Selection(FINALIZED_WITH_SELECTION)
 
     # Accept/Reject fields
     acception_reason = fields.Text(string="Acceptance Reason")
@@ -190,6 +199,18 @@ class HepsiburadaClaim(models.Model):
                 )
             else:
                 claim.hb_order_id = False
+
+    @api.model
+    def _map_finalized_with(self, value):
+        """Map the HB finalizedWith value to the selection key."""
+        raw_value = str(value or "").strip()
+        if not raw_value:
+            return False
+        finalized_with = FINALIZED_WITH_MAP.get(raw_value.lower())
+        if not finalized_with:
+            _logger.warning("Unknown Hepsiburada finalizedWith value: %s", raw_value)
+            return False
+        return finalized_with
 
     @api.model
     def _import_claim(self, backend, claim_data):
@@ -256,7 +277,7 @@ class HepsiburadaClaim(models.Model):
                 )
             ),
             "refund_amount": refund_amount,
-            "finalized_with": claim_data.get("finalizedWith", ""),
+            "finalized_with": self._map_finalized_with(claim_data.get("finalizedWith")),
             "raw_data": json.dumps(claim_data, indent=2, ensure_ascii=False),
         }
 

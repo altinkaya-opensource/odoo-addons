@@ -101,7 +101,10 @@ class HepsiburadaPackage(models.Model):
             data = result[0] if result else {}
         else:
             data = result or {}
-        status = self.hb_order_id._map_status(data.get("status")) or self.hb_status
+        # Order-level statuses such as "open" are not valid for a package.
+        status = self.hb_order_id._map_status(data.get("status"))
+        if status not in dict(PACKAGE_STATUS_SELECTION):
+            status = self.hb_status
         self._update_from_api(data, status=status)
         return data
 

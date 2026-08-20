@@ -243,6 +243,20 @@ class HepsiburadaSettlement(models.Model):
             commission_amt = abs(self.amount)
         return commission_amt
 
+    def _reconciliation_group_key(self):
+        """Dedup key matching the domain fields of _reconciliation_group()."""
+        self.ensure_one()
+        return (
+            self.backend_id.id,
+            self.order_number,
+            self.package_number,
+            self.transaction_type,
+            self.payment_status,
+            self.payment_date,
+            self.currency_code,
+            self.invoice_number,
+        )
+
     def _reconciliation_group(self):
         self.ensure_one()
         return self.search(
