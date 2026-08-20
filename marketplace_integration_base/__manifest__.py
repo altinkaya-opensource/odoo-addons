@@ -17,6 +17,7 @@
         "account",
         "stock_picking_invoice_link",
         "altinkaya_sales",
+        "base_multi_image",
         "delivery",
         "delivery_state",
         "queue_job",

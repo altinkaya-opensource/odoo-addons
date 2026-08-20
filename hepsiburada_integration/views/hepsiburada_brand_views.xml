@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hepsiburada_brand_form" model="ir.ui.view">
+        <field name="name">hepsiburada.brand.form</field>
+        <field name="model">hepsiburada.brand</field>
+        <field name="arch" type="xml">
+            <form string="Hepsiburada Brand">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="external_id" />
+                        <field name="backend_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hepsiburada_brand_tree" model="ir.ui.view">
+        <field name="name">hepsiburada.brand.tree</field>
+        <field name="model">hepsiburada.brand</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" />
+                <field name="external_id" />
+                <field name="backend_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hepsiburada_brand" model="ir.actions.act_window">
+        <field name="name">Hepsiburada Brands</field>
+        <field name="res_model">hepsiburada.brand</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

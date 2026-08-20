@@ -21,12 +21,16 @@ HEPSIBURADA_SERVICE_URLS = {
         "shipping": "https://shipping-external-sit.hepsiburada.com",
         "finance": "https://mpfinance-external-sit.hepsiburada.com",
         "asktoseller": "https://api-asktoseller-merchant-sit.hepsiburada.com",
+        "mpop": "https://mpop-sit.hepsiburada.com",
+        "listing": "https://listing-external-sit.hepsiburada.com",
     },
     "prod": {
         "oms": "https://oms-external.hepsiburada.com",
         "shipping": "https://shipping-external.hepsiburada.com",
         "finance": "https://mpfinance-external.hepsiburada.com",
         "asktoseller": "https://api-asktoseller-merchant.hepsiburada.com",
+        "mpop": "https://mpop.hepsiburada.com",
+        "listing": "https://listing-external.hepsiburada.com",
     },
 }
 
@@ -543,6 +547,200 @@ class HepsiburadaRequest(MarketplaceRequest):
             status_code=response.status_code,
             response_data=error_data,
         )
+
+    # ==================== Catalog (mpop) Methods ====================
+
+    def get_categories(self, leaf=None, status=None, available=None, page=0, size=2000):
+        """Fetch the merchant-available category list.
+
+        Args:
+            leaf: When True only leaf categories are returned.
+            status: ``ACTIVE`` / ``INACTIVE`` filter.
+            available: When True, returns categories the merchant can list in.
+            page: Page number (0-based).
+            size: Page size.
+        """
+        endpoint = "/product/api/categories/get-all-categories"
+        params = {"page": page, "size": size}
+        if leaf is not None:
+            params["leaf"] = str(leaf).lower()
+        if status:
+            params["status"] = status
+        if available is not None:
+            params["available"] = str(available).lower()
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
+    def get_category_attributes(self, category_id):
+        """Return baseAttributes/attributes/variantAttributes for a category."""
+        endpoint = f"/product/api/categories/{category_id}/attributes"
+        return self._make_request("GET", "mpop", endpoint)
+
+    def get_attribute_values(self, category_id, attribute_id, page=0, size=500):
+        endpoint = (
+            f"/product/api/categories/{category_id}/attribute/{attribute_id}/values"
+        )
+        params = {"page": page, "size": size}
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
+    def import_product(self, products, version=1):
+        """Submit a product upload as a JSON file via multipart/form-data.
+
+        Args:
+            products: A list of product payload dicts (per docs/reference.md).
+            version: API version flag (the catalog accepts ``version=1``).
+
+        Returns:
+            Dict with the ``trackingId`` returned by the catalog.
+        """
+        self.rate_limiter.acquire()
+
+        base_url = self.service_urls.get("mpop")
+        if not base_url:
+            raise HepsiburadaAPIError("MPOP service URL not configured")
+
+        url = f"{base_url}/product/api/products/import"
+        headers = {
+            "Authorization": self.auth_header,
+            "User-Agent": self.user_agent,
+            "Accept": "application/json",
+        }
+        body = json.dumps(products).encode("utf-8")
+        files = {"file": ("products.json", body, "application/json")}
+
+        _logger.debug("HB MPOP POST %s (multipart, %d items)", url, len(products))
+
+        try:
+            response = requests.post(
+                url=url,
+                headers=headers,
+                files=files,
+                params={"version": version},
+                timeout=120,
+            )
+        except requests.RequestException as e:
+            raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
+
+        if response.status_code in (200, 201, 202):
+            try:
+                return response.json() if response.text else {}
+            except json.JSONDecodeError:
+                return {"raw": response.text}
+
+        try:
+            error_data = response.json()
+            error_msg = error_data.get("message", response.text)
+        except (json.JSONDecodeError, ValueError):
+            error_data = None
+            error_msg = response.text
+        raise HepsiburadaAPIError(
+            f"Import API error ({response.status_code}): {error_msg}",
+            status_code=response.status_code,
+            response_data=error_data,
+        )
+
+    def fastlist_product(self, items):
+        """Fast-list products that already exist in the HB catalog."""
+        endpoint = "/product/api/products/fastlisting"
+        return self._make_request("POST", "mpop", endpoint, json_data={"items": items})
+
+    def get_product_status(self, tracking_id):
+        endpoint = f"/product/api/products/status/{tracking_id}"
+        return self._make_request("GET", "mpop", endpoint)
+
+    def get_products_by_status(self, status, page=0, size=200):
+        endpoint = "/product/api/products/products-by-merchant-and-status"
+        params = {
+            "merchantId": self.merchant_id,
+            "status": status,
+            "page": page,
+            "size": size,
+        }
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
+    def get_all_merchant_products(self, page=0, size=200):
+        endpoint = f"/product/api/products/all-products-of-merchant/{self.merchant_id}"
+        params = {"page": page, "size": size}
+        return self._make_request("GET", "mpop", endpoint, params=params)
+
+    def check_product_status(self, merchant_skus):
+        endpoint = "/product/api/products/check-product-status"
+        return self._make_request(
+            "POST",
+            "mpop",
+            endpoint,
+            json_data={"merchantSkuList": list(merchant_skus)},
+        )
+
+    def delete_pending_products(self, merchant_skus):
+        endpoint = "/product/api/products/delete-process"
+        return self._make_request(
+            "POST",
+            "mpop",
+            endpoint,
+            json_data={"merchantSkuList": list(merchant_skus)},
+        )
+
+    def approve_prematch(self, items):
+        endpoint = "/product/api/products/approve-prematch"
+        return self._make_request("POST", "mpop", endpoint, json_data={"items": items})
+
+    def reject_prematch(self, items):
+        endpoint = "/product/api/products/reject-prematch"
+        return self._make_request("POST", "mpop", endpoint, json_data={"items": items})
+
+    # ==================== Listing Methods ====================
+
+    def get_listings(self, page=0, size=100):
+        endpoint = f"/listings/merchantid/{self.merchant_id}"
+        params = {"page": page, "size": size}
+        return self._make_request("GET", "listing", endpoint, params=params)
+
+    def inventory_uploads(self, items):
+        """Bulk listing update (full payload)."""
+        endpoint = f"/listings/merchantid/{self.merchant_id}/inventory-uploads"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
+
+    def stock_uploads(self, items):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/stock-uploads"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
+
+    def price_uploads(self, items):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/price-uploads"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
+
+    def shipping_info_uploads(self, items):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/shipping-info-uploads"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
+
+    def additional_info_uploads(self, items):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/additional-info-uploads"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
+
+    def activate_sku(self, sku):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/sku/{sku}/activate"
+        return self._make_request("POST", "listing", endpoint)
+
+    def deactivate_sku(self, sku):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/sku/{sku}/deactivate"
+        return self._make_request("POST", "listing", endpoint)
+
+    def update_listing(self, sku, merchant_sku, payload):
+        endpoint = (
+            f"/listings/merchantid/{self.merchant_id}"
+            f"/sku/{sku}/merchantsku/{merchant_sku}"
+        )
+        return self._make_request("POST", "listing", endpoint, json_data=payload)
+
+    def delete_listing(self, sku, merchant_sku):
+        endpoint = (
+            f"/listings/merchantid/{self.merchant_id}"
+            f"/sku/{sku}/merchantsku/{merchant_sku}"
+        )
+        return self._make_request("DELETE", "listing", endpoint)
+
+    def bulk_unlock(self, items):
+        endpoint = f"/listings/merchantid/{self.merchant_id}/bulk-unlock"
+        return self._make_request("POST", "listing", endpoint, json_data=items)
 
     # ==================== Utility Methods ====================
 

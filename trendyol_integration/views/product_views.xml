@@ -27,6 +27,7 @@
                     name="trendyol"
                     groups="trendyol_integration.group_trendyol_user"
                 >
+                    <field name="is_published_trendyol" />
                     <field name="image_url" />
                 </group>
             </group>
@@ -54,6 +55,34 @@
                     />
                 </button>
             </div>
+            <group name="sale" position="after">
+                <group
+                    string="Trendyol"
+                    name="trendyol"
+                    groups="trendyol_integration.group_trendyol_user"
+                >
+                    <field name="is_published_trendyol" />
+                    <field name="marketplace_dimensional_weight" />
+                    <field name="marketplace_warranty_months" />
+                    <field name="marketplace_lot_number" />
+                    <field name="marketplace_video_url" />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- Product Category Form Extension -->
+    <record id="view_product_category_form_trendyol" model="ir.ui.view">
+        <field name="name">product.category.form.trendyol</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field
+                    name="is_published_trendyol"
+                    groups="trendyol_integration.group_trendyol_user"
+                />
+            </field>
         </field>
     </record>
 </odoo>

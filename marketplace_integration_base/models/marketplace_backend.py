@@ -83,11 +83,21 @@ class MarketplaceBackendMixin(models.AbstractModel):
         default=True,
         help="Automatically import customer claims via scheduled job",
     )
+    auto_export_products = fields.Boolean(
+        default=False,
+        help="Automatically export new product bindings via scheduled job",
+    )
+    auto_sync_stock_price = fields.Boolean(
+        default=True,
+        help="Automatically push stock and price changes via scheduled job",
+    )
 
     last_order_sync = fields.Datetime(readonly=True)
     last_settlement_sync = fields.Datetime(readonly=True)
     last_question_sync = fields.Datetime(readonly=True)
     last_claim_sync = fields.Datetime(readonly=True)
+    last_product_sync = fields.Datetime(readonly=True)
+    last_stock_price_sync = fields.Datetime(readonly=True)
 
     order_count = fields.Integer(compute="_compute_counts", string="Orders")
     settlement_count = fields.Integer(
@@ -96,6 +106,7 @@ class MarketplaceBackendMixin(models.AbstractModel):
     )
     question_count = fields.Integer(compute="_compute_counts", string="Questions")
     claim_count = fields.Integer(compute="_compute_counts", string="Claims")
+    product_count = fields.Integer(compute="_compute_counts", string="Products")
 
     def _marketplace_name(self):
         return _("Marketplace")

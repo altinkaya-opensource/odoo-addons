@@ -11,9 +11,8 @@ _logger = logging.getLogger(__name__)
 class TrendyolBrand(models.Model):
     _name = "trendyol.brand"
     _description = "Trendyol Brand"
-    _order = "name"
+    _inherit = ["marketplace.brand.mixin"]
 
-    name = fields.Char(required=True, index=True)
     trendyol_id = fields.Integer(
         string="Trendyol ID",
         required=True,
@@ -34,22 +33,26 @@ class TrendyolBrand(models.Model):
         ),
     ]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if "external_id" not in vals and "trendyol_id" in vals:
+                vals["external_id"] = str(vals["trendyol_id"])
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if "trendyol_id" in vals and "external_id" not in vals:
+            vals["external_id"] = str(vals["trendyol_id"])
+        return super().write(vals)
+
     @api.model
     def _sync_from_trendyol(self, backend, brands):
-        """Sync brands from Trendyol API response.
-
-        Args:
-            backend: trendyol.backend record
-            brands: List of brand dicts from API
-        """
+        """Sync brands from Trendyol API response."""
         for brand_data in brands:
             trendyol_id = brand_data.get("id")
             name = brand_data.get("name")
-
             if not trendyol_id or not name:
                 continue
-
-            # Find or create brand
             brand = self.search(
                 [
                     ("backend_id", "=", backend.id),
@@ -57,13 +60,12 @@ class TrendyolBrand(models.Model):
                 ],
                 limit=1,
             )
-
             vals = {
                 "name": name,
                 "trendyol_id": trendyol_id,
+                "external_id": str(trendyol_id),
                 "backend_id": backend.id,
             }
-
             if brand:
                 brand.write(vals)
             else:
@@ -71,16 +73,7 @@ class TrendyolBrand(models.Model):
 
     @api.model
     def search_by_name(self, backend, name):
-        """Search for a brand by name, optionally from API.
-
-        Args:
-            backend: trendyol.backend record
-            name: Brand name to search
-
-        Returns:
-            trendyol.brand record or None
-        """
-        # First search locally
+        """Search for a brand by name, falling back to API."""
         brand = self.search(
             [
                 ("backend_id", "=", backend.id),
@@ -88,11 +81,8 @@ class TrendyolBrand(models.Model):
             ],
             limit=1,
         )
-
         if brand:
             return brand
-
-        # Search via API
         try:
             client = backend._get_api_client()
             result = client.get_brands_by_name(name)
@@ -108,5 +98,4 @@ class TrendyolBrand(models.Model):
                 )
         except Exception as e:
             _logger.warning("Failed to search brand by name: %s", str(e))
-
         return None

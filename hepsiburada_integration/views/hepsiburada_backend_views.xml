@@ -64,6 +64,18 @@
                                 string="Claims"
                             />
                         </button>
+                        <button
+                            name="action_view_products"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-cubes"
+                        >
+                            <field
+                                name="product_binding_count"
+                                widget="statinfo"
+                                string="Products"
+                            />
+                        </button>
                     </div>
                     <widget
                         name="web_ribbon"
@@ -96,6 +108,24 @@
                             <field name="fiscal_position_id" />
                             <field name="source_id" />
                             <field name="default_cargo_company_id" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Listing Defaults">
+                            <field name="default_dispatch_time" />
+                            <field name="default_cargo_company_1" />
+                            <field name="default_cargo_company_2" />
+                            <field name="default_cargo_company_3" />
+                            <field name="default_shipping_address_label" />
+                            <field name="default_claim_address_label" />
+                            <field name="default_shipping_profile_name" />
+                        </group>
+                        <group string="Product Sync">
+                            <field name="auto_export_products" />
+                            <field name="auto_sync_stock_price" />
+                            <field name="last_product_sync" readonly="1" />
+                            <field name="last_stock_price_sync" readonly="1" />
+                            <field name="last_category_sync" readonly="1" />
                         </group>
                     </group>
                     <notebook>
@@ -175,6 +205,30 @@
                                         type="object"
                                         class="btn-secondary d-block mb-2"
                                         icon="fa-file-text-o"
+                                    />
+                                </div>
+                                <div class="col-6">
+                                    <h3>Products</h3>
+                                    <button
+                                        name="action_sync_categories"
+                                        string="Sync Categories"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-sitemap"
+                                    />
+                                    <button
+                                        name="action_sync_stock_prices"
+                                        string="Sync Stock/Prices"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-refresh"
+                                    />
+                                    <button
+                                        name="action_check_batch_requests"
+                                        string="Check Batch Requests"
+                                        type="object"
+                                        class="btn-secondary d-block mb-2"
+                                        icon="fa-hourglass-half"
                                     />
                                 </div>
                             </div>

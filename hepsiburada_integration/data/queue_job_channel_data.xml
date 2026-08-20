@@ -4,4 +4,12 @@
         <field name="name">hepsiburada.order</field>
         <field name="parent_id" ref="queue_job.channel_root" />
     </record>
+    <record id="channel_hepsiburada_product" model="queue.job.channel">
+        <field name="name">hepsiburada.product</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="channel_hepsiburada_stock" model="queue.job.channel">
+        <field name="name">hepsiburada.stock</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
 </odoo>

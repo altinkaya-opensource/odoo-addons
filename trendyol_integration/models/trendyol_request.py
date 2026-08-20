@@ -173,6 +173,40 @@ class TrendyolRequest(MarketplaceRequest):
         endpoint = f"/integration/product/sellers/{self.seller_id}/products"
         return self._make_request("PUT", endpoint, json_data={"items": items})
 
+    def create_products_v2(self, items):
+        """Create products through the v2 endpoint (POST /v2/products).
+
+        Args:
+            items: List of product data dicts (max 1000). Supports the v2
+                ``attributeValueIds`` (multi-value) attribute payload.
+
+        Returns:
+            Dict with ``batchRequestId``
+        """
+        if len(items) > 1000:
+            raise TrendyolAPIError("Maximum 1000 items per batch")
+        endpoint = f"/integration/product/sellers/{self.seller_id}/v2/products"
+        return self._make_request("POST", endpoint, json_data={"items": items})
+
+    def update_approved_products(self, items):
+        """Update content of approved products via the v2 bulk endpoint."""
+        if len(items) > 1000:
+            raise TrendyolAPIError("Maximum 1000 items per batch")
+        endpoint = (
+            f"/integration/product/sellers/{self.seller_id}"
+            "/products/content-bulk-update"
+        )
+        return self._make_request("POST", endpoint, json_data={"items": items})
+
+    def update_unapproved_products(self, items):
+        """Update content of unapproved products via the v2 endpoint."""
+        if len(items) > 1000:
+            raise TrendyolAPIError("Maximum 1000 items per batch")
+        endpoint = (
+            f"/integration/product/sellers/{self.seller_id}/products/content-update"
+        )
+        return self._make_request("PUT", endpoint, json_data={"items": items})
+
     def update_price_and_inventory(self, items):
         """Update product prices and inventory.
 

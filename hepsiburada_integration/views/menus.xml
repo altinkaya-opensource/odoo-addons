@@ -54,6 +54,15 @@
         groups="group_hepsiburada_manager"
     />
 
+    <!-- Products Menu -->
+    <menuitem
+        id="menu_hepsiburada_products"
+        name="Products"
+        parent="menu_hepsiburada_root"
+        sequence="15"
+        action="action_hepsiburada_product_binding"
+    />
+
     <!-- Backends -->
     <menuitem
         id="menu_hepsiburada_backends"
@@ -61,5 +70,41 @@
         parent="menu_hepsiburada_config"
         sequence="10"
         action="action_hepsiburada_backend"
+    />
+
+    <!-- Categories -->
+    <menuitem
+        id="menu_hepsiburada_categories"
+        name="Categories"
+        parent="menu_hepsiburada_config"
+        sequence="20"
+        action="action_hepsiburada_category"
+    />
+
+    <!-- Brands -->
+    <menuitem
+        id="menu_hepsiburada_brands"
+        name="Brands"
+        parent="menu_hepsiburada_config"
+        sequence="22"
+        action="action_hepsiburada_brand"
+    />
+
+    <!-- Batch Requests -->
+    <menuitem
+        id="menu_hepsiburada_batch_requests"
+        name="Batch Requests"
+        parent="menu_hepsiburada_config"
+        sequence="25"
+        action="action_hepsiburada_batch_request"
+    />
+
+    <!-- Sync Wizards -->
+    <menuitem
+        id="menu_hepsiburada_category_sync"
+        name="Sync Categories"
+        parent="menu_hepsiburada_config"
+        sequence="30"
+        action="action_hepsiburada_category_sync_wizard"
     />
 </odoo>

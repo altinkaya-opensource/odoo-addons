@@ -6,11 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 07:17+0000\n"
-"PO-Revision-Date: 2026-04-27 07:17+0000\n"
+"POT-Creation-Date: 2026-04-27 10:53+0000\n"
+"PO-Revision-Date: 2026-04-27 10:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -45,14 +44,27 @@ msgid "%s Payment Journal not configured on backend."
 msgstr "%s ödeme yevmiyesi backend üzerinde yapılandırılmamış."
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "%s has been queued."
+msgstr "%s kuyruğa alındı."
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__active
 msgid "Active"
-msgstr "Etkin"
+msgstr "Aktif"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__approved
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__approved
+msgid "Approved"
+msgstr "Onaylandı"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_claims
 msgid "Auto Import Claims"
-msgstr "İade Taleplerini Otomatik İçe Aktar"
+msgstr "İadeleri Otomatik İçe Aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_orders
@@ -67,12 +79,12 @@ msgstr "Soruları Otomatik İçe Aktar"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_settlements
 msgid "Auto Import Settlements"
-msgstr "Hesaplaşmaları Otomatik İçe Aktar"
+msgstr "Hakedişleri Otomatik İçe Aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_reconcile_settlements
 msgid "Auto Reconcile Settlements"
-msgstr "Hesaplaşmaları Otomatik Uzlaştır"
+msgstr "Hakedişleri Otomatik Mahsuplaştır"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_send_invoice
@@ -82,7 +94,7 @@ msgstr "Faturayı Otomatik Gönder"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_sync_tracking
 msgid "Auto Sync Tracking"
-msgstr "Takibi Otomatik Senkronize Et"
+msgstr "Takip Bilgisini Otomatik Senkronize Et"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__auto_confirm_orders
@@ -92,39 +104,44 @@ msgstr "Siparişleri Otomatik Onayla"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_confirm_orders
 msgid "Automatically confirm imported orders"
-msgstr "İçe aktarılan siparişleri otomatik olarak onayla"
+msgstr "İçe aktarılan siparişleri otomatik onayla"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_claims
 msgid "Automatically import customer claims via scheduled job"
-msgstr ""
-"Müşteri iade taleplerini zamanlanmış görev ile otomatik olarak içe aktar"
+msgstr "Müşteri iadelerini zamanlanmış görev ile otomatik içe aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_questions
 msgid "Automatically import customer questions via scheduled job"
-msgstr "Müşteri sorularını zamanlanmış görev ile otomatik olarak içe aktar"
+msgstr "Müşteri sorularını zamanlanmış görev ile otomatik içe aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_settlements
 msgid "Automatically import financial settlements via scheduled job"
-msgstr ""
-"Finansal hesaplaşmaları zamanlanmış görev ile otomatik olarak içe aktar"
+msgstr "Finansal hakedişleri zamanlanmış görev ile otomatik içe aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_import_orders
 msgid "Automatically import orders via scheduled job"
-msgstr "Siparişleri zamanlanmış görev ile otomatik olarak içe aktar"
+msgstr "Siparişleri zamanlanmış görev ile otomatik içe aktar"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_reconcile_settlements
 msgid "Automatically reconcile imported settlements with invoices"
-msgstr "İçe aktarılan hesaplaşmaları faturalarla otomatik olarak uzlaştır"
+msgstr "İçe aktarılan hakedişleri faturalarla otomatik mahsuplaştır"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__auto_sync_tracking
 msgid "Automatically send tracking numbers when delivery is done"
-msgstr "Teslimat tamamlandığında takip numaralarını otomatik olarak gönder"
+msgstr "Teslimat tamamlandığında takip numaralarını otomatik gönder"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Batch request status: %s"
+msgstr "Toplu istek durumu: %s"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__cargo_provider_name
@@ -175,6 +192,12 @@ msgstr "Komisyon Oranı"
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__company_id
 msgid "Company"
 msgstr "Şirket"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__completed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__completed
+msgid "Completed"
+msgstr "Tamamlandı"
 
 #. module: marketplace_integration_base
 #. odoo-python
@@ -241,7 +264,7 @@ msgstr "%s iade faturası zaten ödenmiş."
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__default_cargo_company_id
 msgid "Default Cargo Company"
-msgstr "Varsayılan Kargo Firması"
+msgstr "Varsayılan Kargo Şirketi"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__default_product_id
@@ -264,14 +287,29 @@ msgid "Description"
 msgstr "Açıklama"
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__draft
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__draft
+msgid "Draft"
+msgstr "Taslak"
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__environment
 msgid "Environment"
 msgstr "Ortam"
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__error
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__state__error
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__error
 msgid "Error"
 msgstr "Hata"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Error Details"
+msgstr "Hata Detayları"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__error_message
@@ -279,18 +317,29 @@ msgid "Error Message"
 msgstr "Hata Mesajı"
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Export %(label)s to marketplace: %(name)s"
+msgstr "Pazaryerine %(label)s aktar: %(name)s"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__failed
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__failed
+msgid "Failed"
+msgstr "Başarısız"
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__default_product_id
 msgid ""
 "Fallback product for unmapped marketplace items. If not set, unmapped items "
 "will be created as note lines."
-msgstr ""
-"Eşleştirilmemiş pazaryeri ürünleri için yedek ürün. Ayarlanmazsa "
-"eşleştirilmemiş ürünler not satırı olarak oluşturulur."
+msgstr "Eşleştirilmemiş pazaryeri kalemleri için yedek ürün. Ayarlanmazsa, eşleşmeyen kalemler not satırı olarak oluşturulur."
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__fiscal_position_id
 msgid "Fiscal Position"
-msgstr "Mali Koşul"
+msgstr "Mali Pozisyon"
 
 #. module: marketplace_integration_base
 #. odoo-python
@@ -329,7 +378,7 @@ msgstr "Fatura Gönderim Tarihi"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__last_claim_sync
 msgid "Last Claim Sync"
-msgstr "Son İade Talebi Senkronizasyonu"
+msgstr "Son İade Senkronizasyonu"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__last_order_sync
@@ -344,7 +393,7 @@ msgstr "Son Soru Senkronizasyonu"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__last_settlement_sync
 msgid "Last Settlement Sync"
-msgstr "Son Hesaplaşma Senkronizasyonu"
+msgstr "Son Hakediş Senkronizasyonu"
 
 #. module: marketplace_integration_base
 #. odoo-python
@@ -367,7 +416,14 @@ msgstr "Pazaryeri Sipariş Mixin"
 #. module: marketplace_integration_base
 #: model:ir.model,name:marketplace_integration_base.model_marketplace_settlement_mixin
 msgid "Marketplace Settlement Mixin"
-msgstr "Pazaryeri Hesaplaşma Mixin"
+msgstr "Pazaryeri Hakediş Mixin"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Marketplace product"
+msgstr "Pazaryeri ürünü"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__name
@@ -396,6 +452,27 @@ msgid "No posted invoice found for sale order %s"
 msgstr "%s satış siparişi için onaylanmış fatura bulunamadı"
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Only approved products can be updated."
+msgstr "Yalnızca onaylanmış ürünler güncellenebilir."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Only approved products can have stock/price synced."
+msgstr "Yalnızca onaylanmış ürünlerin stok/fiyatı senkronize edilebilir."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Operation Queued"
+msgstr "İşlem Kuyruğa Alındı"
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__order_number
 msgid "Order Number"
 msgstr "Sipariş Numarası"
@@ -413,7 +490,7 @@ msgstr "Pazaryeri API'sinden gelen orijinal JSON verisi"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__odoo_payment_id
 msgid "Payment"
-msgstr "Ödeme"
+msgstr "Tahsilat/Tediye"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__payment_date
@@ -421,14 +498,32 @@ msgid "Payment Date"
 msgstr "Ödeme Tarihi"
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__pending
+msgid "Pending"
+msgstr "Beklemede"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__pending
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__pending
+msgid "Pending Approval"
+msgstr "Onay Bekliyor"
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__pricelist_id
 msgid "Pricelist"
 msgstr "Fiyat Listesi"
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_batch_request__state__processing
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_batch_request__state__processing
+msgid "Processing"
+msgstr "İşleniyor"
+
+#. module: marketplace_integration_base
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_backend_mixin__environment__prod
 msgid "Production"
-msgstr "Üretim"
+msgstr "Canlı Ortam"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__question_count
@@ -448,6 +543,12 @@ msgstr "Ham Veri"
 #, python-format
 msgid "Reconciled"
 msgstr "Uzlaştırıldı"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_product_binding__sync_state__rejected
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_product_binding__sync_state__rejected
+msgid "Rejected"
+msgstr "Reddedildi"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__transaction_type__return
@@ -496,7 +597,7 @@ msgstr "Hesaplaşma başarıyla uzlaştırıldı."
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__settlement_count
 msgid "Settlements"
-msgstr "Hesaplaşmalar"
+msgstr "Hakedişler"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__smart_search
@@ -525,10 +626,24 @@ msgstr "Durum"
 
 #. module: marketplace_integration_base
 #. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_batch_request.py:0
+#, python-format
+msgid "Status Checked"
+msgstr "Durum Kontrol Edildi"
+
+#. module: marketplace_integration_base
+#. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_backend.py:0
 #, python-format
 msgid "Success"
 msgstr "Başarılı"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Sync stock/price: %s"
+msgstr "Stok/fiyat senkronize et: %s"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__count_pending_changeset_changes
@@ -592,7 +707,7 @@ msgstr "İşlem Tarihi"
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__transaction_type
 msgid "Transaction Type"
-msgstr "İşlem Türü"
+msgstr "İşlem Tipi"
 
 #. module: marketplace_integration_base
 #: model:ir.model,name:marketplace_integration_base.model_stock_picking
@@ -605,6 +720,13 @@ msgstr "Teslimat"
 #, python-format
 msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
 msgstr "EŞLEŞMEMİŞ: %(product)s (Miktar: %(qty)s, Fiyat: %(price)s)"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_product_binding.py:0
+#, python-format
+msgid "Update %(label)s on marketplace: %(name)s"
+msgstr "Pazaryerinde %(label)s güncelle: %(name)s"
 
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__user_can_see_changeset

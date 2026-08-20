@@ -33,6 +33,8 @@
                         </group>
                         <group>
                             <field name="odoo_category_id" />
+                            <field name="odoo_category_ids" widget="many2many_tags" />
+                            <field name="cargo_company_id" />
                         </group>
                     </group>
                     <notebook attrs="{'invisible': [('is_leaf', '=', False)]}">

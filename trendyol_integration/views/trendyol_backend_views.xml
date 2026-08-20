@@ -107,6 +107,11 @@
                             <field name="fiscal_position_id" />
                             <field name="source_id" />
                             <field name="default_cargo_company_id" />
+                            <field name="default_cargo_company_external_id" />
+                            <field name="default_shipment_address_id" />
+                            <field name="default_returning_address_id" />
+                            <field name="default_delivery_duration" />
+                            <field name="default_fast_delivery_type" />
                         </group>
                     </group>
                     <notebook>

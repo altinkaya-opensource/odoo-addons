@@ -13,11 +13,10 @@ _logger = logging.getLogger(__name__)
 class TrendyolCategory(models.Model):
     _name = "trendyol.category"
     _description = "Trendyol Category"
+    _inherit = ["marketplace.category.mixin"]
     _parent_name = "parent_id"
     _parent_store = True
-    _order = "parent_path, name"
 
-    name = fields.Char(required=True, index=True)
     trendyol_id = fields.Integer(
         string="Trendyol ID",
         required=True,
@@ -35,7 +34,6 @@ class TrendyolCategory(models.Model):
         index=True,
         ondelete="cascade",
     )
-    parent_path = fields.Char(index=True, unaccent=False)
     child_ids = fields.One2many(
         "trendyol.category",
         "parent_id",
@@ -43,23 +41,16 @@ class TrendyolCategory(models.Model):
     )
     odoo_category_id = fields.Many2one(
         "product.category",
-        help="Map to Odoo product category for filtering",
+        help="Map to a single Odoo category (kept for backward compatibility)",
     )
     attribute_ids = fields.One2many(
         "trendyol.category.attribute",
         "category_id",
         string="Attributes",
     )
-    full_path = fields.Char(
-        compute="_compute_full_path",
-        store=True,
-        recursive=True,
-    )
-    is_leaf = fields.Boolean(
-        string="Is Leaf Category",
-        compute="_compute_is_leaf",
-        store=True,
-        help="Only leaf categories can be used for products",
+    cargo_company_id = fields.Integer(
+        string="Cargo Company ID",
+        help="Override Trendyol cargo company id for products in this category",
     )
 
     _sql_constraints = [
@@ -70,53 +61,27 @@ class TrendyolCategory(models.Model):
         ),
     ]
 
-    @api.depends("name", "parent_id.full_path")
-    def _compute_full_path(self):
-        for category in self:
-            if category.parent_id:
-                category.full_path = f"{category.parent_id.full_path} > {category.name}"
-            else:
-                category.full_path = category.name
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if "external_id" not in vals and "trendyol_id" in vals:
+                vals["external_id"] = str(vals["trendyol_id"])
+        return super().create(vals_list)
 
-    @api.depends("child_ids")
-    def _compute_is_leaf(self):
-        for category in self:
-            category.is_leaf = not category.child_ids
-
-    def name_get(self):
-        result = []
-        for category in self:
-            result.append((category.id, category.full_path or category.name))
-        return result
-
-    @api.model
-    def _name_search(self, name, domain=None, operator="ilike", limit=None, order=None):
-        domain = domain or []
-        if name:
-            domain = [
-                "|",
-                ("name", operator, name),
-                ("full_path", operator, name),
-            ] + domain
-        return self._search(domain, limit=limit, order=order)
+    def write(self, vals):
+        if "trendyol_id" in vals and "external_id" not in vals:
+            vals["external_id"] = str(vals["trendyol_id"])
+        return super().write(vals)
 
     @api.model
     def _sync_from_trendyol(self, backend, categories, parent=None):
-        """Sync categories from Trendyol API response.
-
-        Args:
-            backend: trendyol.backend record
-            categories: List of category dicts from API
-            parent: Parent category record (for recursion)
-        """
+        """Sync categories from Trendyol API response."""
         for cat_data in categories:
             trendyol_id = cat_data.get("id")
             name = cat_data.get("name")
-
             if not trendyol_id or not name:
                 continue
 
-            # Find or create category
             category = self.search(
                 [
                     ("backend_id", "=", backend.id),
@@ -124,26 +89,22 @@ class TrendyolCategory(models.Model):
                 ],
                 limit=1,
             )
-
             vals = {
                 "name": name,
                 "trendyol_id": trendyol_id,
+                "external_id": str(trendyol_id),
                 "backend_id": backend.id,
                 "parent_id": parent.id if parent else False,
             }
-
             if category:
                 category.write(vals)
             else:
                 category = self.create(vals)
-
-            # Recursively process subcategories
             subcategories = cat_data.get("subCategories", [])
             if subcategories:
                 self._sync_from_trendyol(backend, subcategories, parent=category)
 
     def action_sync_attributes(self):
-        """Sync attributes for this category from Trendyol."""
         self.ensure_one()
         self.with_delay(
             channel="root.trendyol.product",
@@ -161,43 +122,30 @@ class TrendyolCategory(models.Model):
         }
 
     def _sync_attributes(self):
-        """Sync attributes from Trendyol API for this category."""
         self.ensure_one()
         client = self.backend_id._get_api_client()
         Attribute = self.env["trendyol.category.attribute"]
         AttributeValue = self.env["trendyol.attribute.value"]
-
         try:
             result = client.get_category_attributes(self.trendyol_id)
             attrs_data = result.get("categoryAttributes", [])
-
-            # Clear existing attributes
             self.attribute_ids.unlink()
-
             for attr_data in attrs_data:
                 attr_id = attr_data.get("attribute", {}).get("id")
                 attr_name = attr_data.get("attribute", {}).get("name")
-                required = attr_data.get("required", False)
-                allow_custom = attr_data.get("allowCustom", False)
-                varianter = attr_data.get("varianter", False)
-                slicer = attr_data.get("slicer", False)
-
                 if not attr_id or not attr_name:
                     continue
-
                 attribute = Attribute.create(
                     {
                         "category_id": self.id,
                         "trendyol_id": attr_id,
                         "name": attr_name,
-                        "required": required,
-                        "allow_custom": allow_custom,
-                        "varianter": varianter,
-                        "slicer": slicer,
+                        "required": attr_data.get("required", False),
+                        "allow_custom": attr_data.get("allowCustom", False),
+                        "varianter": attr_data.get("varianter", False),
+                        "slicer": attr_data.get("slicer", False),
                     }
                 )
-
-                # Create attribute values
                 for val_data in attr_data.get("attributeValues", []):
                     val_id = val_data.get("id")
                     val_name = val_data.get("name")
@@ -209,7 +157,6 @@ class TrendyolCategory(models.Model):
                                 "name": val_name,
                             }
                         )
-
             _logger.info(
                 "Synced %d attributes for category %s",
                 len(attrs_data),
