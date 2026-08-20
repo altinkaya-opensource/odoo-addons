@@ -27,12 +27,22 @@ class TestTrendyolQuestion(TrendyolTestCase):
             }
         )
 
-    def test_answer_question_accepts_already_answered_response(self):
+    def _api_question(self, status="WAITING_FOR_ANSWER", answer_text=None):
+        data = {"id": "987654321", "status": status}
+        if answer_text:
+            data["answer"] = {
+                "text": answer_text,
+                "creationDate": 1_787_000_000_000,
+            }
+        return data
+
+    def test_answer_question_accepts_already_answered_error_code(self):
         question = self._create_question()
         activity = question.activity_schedule("mail.mail_activity_data_todo")
         error = TrendyolAPIError(
-            "API error (400): Bu soru daha önce cevaplandı.",
+            "API error (400): Localized rejection copy.",
             status_code=400,
+            response_data={"errors": [{"key": "QUESTION_ALREADY_ANSWERED"}]},
         )
 
         with patch.object(TrendyolRequest, "answer_question", side_effect=error):
@@ -41,6 +51,46 @@ class TestTrendyolQuestion(TrendyolTestCase):
         self.assertEqual(question.status, "waiting_for_approve")
         self.assertFalse(activity.exists())
 
+    def test_answer_question_confirms_already_answered_with_api_status(self):
+        question = self._create_question()
+        error = TrendyolAPIError(
+            "API error (400): Localized rejection copy.",
+            status_code=400,
+        )
+
+        with (
+            patch.object(TrendyolRequest, "answer_question", side_effect=error),
+            patch.object(
+                TrendyolRequest,
+                "get_question",
+                return_value=self._api_question(
+                    status="ANSWERED", answer_text="Published answer"
+                ),
+            ),
+        ):
+            question._answer_question()
+
+        self.assertEqual(question.status, "waiting_for_approve")
+
+    def test_answer_question_falls_back_to_localized_message(self):
+        question = self._create_question()
+        error = TrendyolAPIError(
+            "API error (400): Bu soru daha önce cevaplandı.",
+            status_code=400,
+        )
+
+        with (
+            patch.object(TrendyolRequest, "answer_question", side_effect=error),
+            patch.object(
+                TrendyolRequest,
+                "get_question",
+                side_effect=TrendyolAPIError("API error (503)", status_code=503),
+            ),
+        ):
+            question._answer_question()
+
+        self.assertEqual(question.status, "waiting_for_approve")
+
     def test_answer_question_reraises_other_api_errors(self):
         question = self._create_question()
         error = TrendyolAPIError(
@@ -48,7 +98,12 @@ class TestTrendyolQuestion(TrendyolTestCase):
             status_code=400,
         )
 
-        with patch.object(TrendyolRequest, "answer_question", side_effect=error):
+        with (
+            patch.object(TrendyolRequest, "answer_question", side_effect=error),
+            patch.object(
+                TrendyolRequest, "get_question", return_value=self._api_question()
+            ),
+        ):
             with self.assertRaises(TrendyolAPIError):
                 question._answer_question()
 
@@ -74,14 +129,19 @@ class TestTrendyolQuestion(TrendyolTestCase):
             status_code=400,
         )
 
-        with patch.object(TrendyolRequest, "answer_question", side_effect=error):
+        with (
+            patch.object(TrendyolRequest, "answer_question", side_effect=error),
+            patch.object(
+                TrendyolRequest, "get_question", return_value=self._api_question()
+            ),
+        ):
             with self.assertRaises(UserError) as raised_error:
                 question.action_answer_question()
 
         self.assertIn("Answer is too short", str(raised_error.exception))
         self.assertEqual(question.status, "waiting_for_answer")
 
-    def test_import_refreshes_local_answer_and_terminal_status(self):
+    def test_import_refreshes_status_but_keeps_local_answer(self):
         question = self._create_question()
 
         question._import_question(
@@ -97,6 +157,24 @@ class TestTrendyolQuestion(TrendyolTestCase):
         )
 
         self.assertEqual(question.status, "answered")
+        self.assertEqual(question.answer_text, "This is a valid test answer.")
+
+    def test_import_fills_missing_answer_from_trendyol(self):
+        question = self._create_question()
+        question.answer_text = False
+
+        question._import_question(
+            self.backend,
+            {
+                "id": question.trendyol_question_id,
+                "status": "ANSWERED",
+                "answer": {
+                    "text": "The answer published by Trendyol.",
+                    "creationDate": 1_787_000_000_000,
+                },
+            },
+        )
+
         self.assertEqual(question.answer_text, "The answer published by Trendyol.")
         self.assertTrue(question.answer_date)
 

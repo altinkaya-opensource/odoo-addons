@@ -245,8 +245,11 @@ class TrendyolOrder(models.Model):
             "cargoTrackingLink": "cargo_tracking_link",
         }
         for api_field, odoo_field in field_map.items():
-            if api_field in order_data:
-                vals[odoo_field] = order_data.get(api_field) or False
+            # An empty payload value means "not shipped yet" for Trendyol, so
+            # it must never clear tracking data we already stored.
+            value = order_data.get(api_field)
+            if value:
+                vals[odoo_field] = value
 
         new_status = self._map_status(order_data.get("status"))
         if new_status:

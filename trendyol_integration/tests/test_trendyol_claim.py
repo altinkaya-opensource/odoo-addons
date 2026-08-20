@@ -49,6 +49,43 @@ class TestTrendyolClaim(TrendyolTestCase):
         self.assertEqual(claim.line_ids.barcode, "TY-CLAIM-BARCODE")
         self.assertEqual(claim.line_ids.status, "WaitingInAction")
 
+    def test_resync_keeps_manual_binding_and_legacy_lines(self):
+        claim = self.env["trendyol.claim"]._import_claim(
+            self.backend, self._claim_data()
+        )
+        product = self.env["product.product"].create(
+            {
+                "name": "Manually Bound Product",
+                "type": "product",
+                "detailed_type": "product",
+            }
+        )
+        category = self.env["trendyol.category"].create(
+            {"name": "Leaf", "trendyol_id": 2, "backend_id": self.backend.id}
+        )
+        brand = self.env["trendyol.brand"].create(
+            {"name": "Brand", "trendyol_id": 2, "backend_id": self.backend.id}
+        )
+        binding = self.env["trendyol.product.binding"].create(
+            {
+                "odoo_id": product.id,
+                "backend_id": self.backend.id,
+                "trendyol_barcode": "TY-MANUAL-BARCODE",
+                "trendyol_category_id": category.id,
+                "trendyol_brand_id": brand.id,
+            }
+        )
+        claim.line_ids.product_binding_id = binding
+        legacy_line = self.env["trendyol.claim.line"].create(
+            {"claim_id": claim.id, "quantity": 1}
+        )
+
+        self.env["trendyol.claim"]._import_claim(self.backend, self._claim_data())
+
+        synced_line = claim.line_ids.filtered("trendyol_line_id")
+        self.assertEqual(synced_line.product_binding_id, binding)
+        self.assertTrue(legacy_line.exists())
+
     def test_approval_keeps_uuid_ids_and_waits_for_fraud_check(self):
         claim = self.env["trendyol.claim"]._import_claim(
             self.backend, self._claim_data()

@@ -143,28 +143,30 @@ class TrendyolBatchRequest(models.Model):
                 request_item = item.get("requestItem", {})
                 if item.get("status") == "SUCCESS":
                     if self.request_type == "price_inventory":
-                        binding.write(
-                            {
-                                "last_sent_quantity": request_item.get(
-                                    "quantity", binding.last_sent_quantity
-                                ),
-                                "last_sent_price": request_item.get(
-                                    "salePrice", binding.last_sent_price
-                                ),
-                                "last_sent_list_price": request_item.get(
-                                    "listPrice", binding.last_sent_list_price
-                                ),
-                                "last_sync_date": fields.Datetime.now(),
-                                "sync_error": False,
-                            }
-                        )
+                        vals = {
+                            "last_sent_quantity": request_item.get(
+                                "quantity", binding.last_sent_quantity
+                            ),
+                            "last_sent_price": request_item.get(
+                                "salePrice", binding.last_sent_price
+                            ),
+                            "last_sent_list_price": request_item.get(
+                                "listPrice", binding.last_sent_list_price
+                            ),
+                            "last_sync_date": fields.Datetime.now(),
+                            "sync_error": False,
+                        }
                     else:
-                        binding.write(
-                            {
-                                "sync_state": "approved",
-                                "sync_error": False,
-                            }
-                        )
+                        vals = {
+                            "sync_state": "approved",
+                            "sync_error": False,
+                        }
+                    # Only set when returned, so a partial payload cannot drop
+                    # the Trendyol product ID we already know.
+                    product_main_id = request_item.get("productMainId")
+                    if product_main_id:
+                        vals["trendyol_product_id"] = str(product_main_id)
+                    binding.write(vals)
                 elif item.get("status") == "FAILED":
                     vals = {"sync_error": "\n".join(item.get("failureReasons", []))}
                     if self.request_type != "price_inventory":
