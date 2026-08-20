@@ -3,6 +3,7 @@
 
 import json
 import logging
+from hashlib import sha256
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -78,6 +79,16 @@ class HepsiburadaOrder(models.Model):
     # Package info
     hb_package_number = fields.Char(string="Package Number")
     hb_cargo_barcode = fields.Char(string="Cargo Barcode")
+    package_ids = fields.One2many(
+        "hepsiburada.package",
+        "hb_order_id",
+        string="Packages",
+    )
+    package_count = fields.Integer(compute="_compute_package_count")
+    package_mapping_incomplete = fields.Boolean(
+        readonly=True,
+        index=True,
+    )
 
     # Delivery info
     delivery_type = fields.Char(help="StandardDelivery / BT / YT")
@@ -120,6 +131,11 @@ class HepsiburadaOrder(models.Model):
 
     def _marketplace_order_number(self):
         return self.hb_order_number
+
+    @api.depends("package_ids")
+    def _compute_package_count(self):
+        for order in self:
+            order.package_count = len(order.package_ids)
 
     def _marketplace_delivery_state_map(self):
         return {
@@ -189,55 +205,48 @@ class HepsiburadaOrder(models.Model):
         )
 
         if existing:
-            # Update status - use _hb_status tag set by endpoint
-            new_status = package_data.get(
-                "_hb_status",
-                self._map_status(package_data.get("status")),
+            new_status = package_data.get("_hb_status") or self._map_status(
+                package_data.get("status")
             )
-            if existing.hb_status != new_status:
-                existing.hb_status = new_status
-                existing.raw_data = json.dumps(
-                    package_data, indent=2, ensure_ascii=False
-                )
-                existing._update_picking_delivery_state(new_status)
-                # Cancel the Odoo sale order if HB status is cancelled
-                if new_status == "cancelled" and existing.odoo_id.state not in (
-                    "done",
-                    "cancel",
-                ):
-                    existing.odoo_id.with_context(
-                        from_hepsiburada_cancel=True,
-                        disable_cancel_warning=True,
-                    ).action_cancel()
+            status_scope = package_data.get("_status_scope", "order")
+            existing.raw_data = json.dumps(package_data, indent=2, ensure_ascii=False)
+            package = existing._upsert_package(package_data, new_status)
 
-            # Update package number if it was empty and now available
-            pkg_number = package_data.get("packageNumber", "")
-            if pkg_number and not existing.hb_package_number:
-                existing.hb_package_number = str(pkg_number)
+            existing_lines = {
+                line.hb_line_item_id: line for line in existing.hb_line_item_ids
+            }
+            added_count = 0
+            for item in line_items:
+                line_item_id = str(item.get("lineItemId") or item.get("id") or "")
+                if not line_item_id:
+                    continue
+                line = existing_lines.get(line_item_id)
+                if line:
+                    line._update_from_api(item, package=package, status=new_status)
+                else:
+                    self._add_line_to_order(
+                        backend,
+                        existing,
+                        item,
+                        package=package,
+                        status=new_status,
+                    )
+                    added_count += 1
 
-            # Fetch tracking info for shipped/delivered packages
-            if (
-                existing.hb_package_number
-                and not existing.cargo_tracking_number
-                and new_status in ("packaged", "in_transit", "delivered", "undelivered")
-            ):
-                existing._fetch_tracking_from_api()
-
-            # Add only NEW line items (idempotency)
-            existing_line_ids = set(existing.hb_line_item_ids.mapped("hb_line_item_id"))
-            new_items = [
-                item
-                for item in line_items
-                if str(item.get("lineItemId", "")) not in existing_line_ids
-            ]
-            if new_items:
-                for item in new_items:
-                    self._add_line_to_order(backend, existing, item)
+            if added_count:
                 _logger.info(
                     "Added %d new line items to existing HB order %s",
-                    len(new_items),
+                    added_count,
                     order_number,
                 )
+
+            if package:
+                existing._sync_from_packages()
+            elif status_scope == "line" and new_status == "cancelled":
+                existing._sync_status_from_lines()
+            elif new_status and not existing.package_ids:
+                existing._set_order_status(new_status)
+            existing._refresh_shipping_partner(package_data)
             return existing
 
         # Create new order
@@ -260,37 +269,52 @@ class HepsiburadaOrder(models.Model):
             full_address = " ".join(p.strip() for p in addr_parts if p and p.strip())
 
             # Create binding before lines
+            initial_status = package_data.get("_hb_status") or self._map_status(
+                package_data.get("status")
+            )
             binding = self.create(
                 {
                     "odoo_id": sale_order.id,
                     "backend_id": backend.id,
                     "hb_order_number": order_number,
-                    "hb_order_id": str(package_data.get("id", "")),
-                    "hb_customer_id": str(package_data.get("customerId", "")),
-                    "hb_status": package_data.get(
-                        "_hb_status",
-                        self._map_status(package_data.get("status")),
+                    "hb_order_id": str(
+                        first_item.get("orderId") or package_data.get("orderId") or ""
                     ),
+                    "hb_customer_id": str(package_data.get("customerId") or ""),
+                    "hb_status": initial_status or "open",
                     "cargo_provider_name": package_data.get("cargoCompany", ""),
                     "hb_customer_name": package_data.get("customerName", ""),
                     "hb_full_address": full_address,
-                    "hb_package_number": str(package_data.get("packageNumber", ""))
-                    or False,
-                    "hb_cargo_barcode": package_data.get("barcode", "") or False,
                     "delivery_type": first_item.get("deliveryType", ""),
                     "due_date": _parse_hb_datetime(package_data.get("dueDate")),
                     "raw_data": json.dumps(package_data, indent=2, ensure_ascii=False),
                 }
             )
 
+            package = binding._upsert_package(package_data, initial_status)
+
             # Create order lines from all HB line items
             for item in line_items:
-                self._add_line_to_order(backend, binding, item)
+                self._add_line_to_order(
+                    backend,
+                    binding,
+                    item,
+                    package=package,
+                    status=initial_status,
+                )
 
             # Auto-confirm if configured
-            if backend.auto_confirm_orders:
+            if backend.auto_confirm_orders and binding.hb_status not in (
+                "cancelled",
+                "payment_awaiting",
+            ):
                 sale_order.ignore_exception = True
                 sale_order.with_context(bypass_risk=True).action_confirm()
+            elif binding.hb_status == "cancelled":
+                sale_order.with_context(
+                    from_hepsiburada_cancel=True,
+                    disable_cancel_warning=True,
+                ).action_cancel()
 
             _logger.info(
                 "Imported HB order %s with %d line items",
@@ -307,13 +331,13 @@ class HepsiburadaOrder(models.Model):
             )
             raise
 
-    def _add_line_to_order(self, backend, binding, item):
+    def _add_line_to_order(self, backend, binding, item, package=False, status=None):
         """Add a single HB line item to the order.
 
         Creates both the sale.order.line and the
         hepsiburada.order.line tracking record.
         """
-        line_item_id = str(item.get("lineItemId", ""))
+        line_item_id = str(item.get("lineItemId") or item.get("id") or "")
         if not line_item_id:
             _logger.warning("HB line item missing lineItemId, skipping")
             return
@@ -322,6 +346,8 @@ class HepsiburadaOrder(models.Model):
         if not line_vals:
             return
         sale_line = self.env["sale.order.line"].create(line_vals)
+        if status == "cancelled":
+            sale_line.product_uom_qty = 0
 
         # Price fields from packages API structure
         price_data = item.get("price", {})
@@ -331,6 +357,7 @@ class HepsiburadaOrder(models.Model):
         self.env["hepsiburada.order.line"].create(
             {
                 "hb_order_id": binding.id,
+                "package_id": package.id if package else False,
                 "hb_line_item_id": line_item_id,
                 "hb_sku": item.get("hbSku", ""),
                 "merchant_sku": item.get("merchantSku", ""),
@@ -347,9 +374,133 @@ class HepsiburadaOrder(models.Model):
                 "commission_amount": commission_data.get("amount", 0)
                 if isinstance(commission_data, dict)
                 else commission_data or 0,
-                "status": binding.hb_status,
+                "status": status or binding.hb_status,
             }
         )
+
+    def _upsert_package(self, package_data, status=None):
+        self.ensure_one()
+        package_number = package_data.get("packageNumber")
+        if package_number in (None, "", False):
+            return self.env["hepsiburada.package"]
+        package_number = str(package_number)
+        package = self.env["hepsiburada.package"].search(
+            [
+                ("backend_id", "=", self.backend_id.id),
+                ("hb_package_number", "=", package_number),
+            ],
+            limit=1,
+        )
+        if package and package.hb_order_id != self:
+            raise UserError(
+                _("Package %(package)s is already linked to order %(order)s.")
+                % {
+                    "package": package_number,
+                    "order": package.hb_order_id.hb_order_number,
+                }
+            )
+        if not package:
+            package = self.env["hepsiburada.package"].create(
+                {
+                    "hb_order_id": self.id,
+                    "hb_package_number": package_number,
+                    "hb_status": status
+                    if status
+                    in (
+                        "packaged",
+                        "in_transit",
+                        "delivered",
+                        "undelivered",
+                        "cancelled",
+                    )
+                    else "packaged",
+                }
+            )
+        package_status = (
+            status
+            if status
+            in ("packaged", "in_transit", "delivered", "undelivered", "cancelled")
+            else package.hb_status
+        )
+        package._update_from_api(package_data, status=package_status)
+        return package
+
+    def _set_order_status(self, status):
+        self.ensure_one()
+        if not status or self.hb_status == status:
+            return
+        self.hb_status = status
+        self._update_picking_delivery_state(status)
+        if status == "cancelled" and self.odoo_id.state not in ("done", "cancel"):
+            self.odoo_id.with_context(
+                from_hepsiburada_cancel=True,
+                disable_cancel_warning=True,
+            ).action_cancel()
+
+    def _sync_status_from_lines(self):
+        self.ensure_one()
+        statuses = set(self.hb_line_item_ids.mapped("status"))
+        if statuses and statuses == {"cancelled"}:
+            self._set_order_status("cancelled")
+
+    def _sync_from_packages(self):
+        for order in self:
+            packages = order.package_ids
+            active_packages = packages.filtered(
+                lambda package: package.hb_status != "cancelled"
+            )
+            statuses = set(active_packages.mapped("hb_status"))
+            if packages and not active_packages:
+                aggregate_status = "cancelled"
+            elif statuses and statuses == {"delivered"}:
+                aggregate_status = "delivered"
+            elif "undelivered" in statuses:
+                aggregate_status = "undelivered"
+            elif statuses & {"in_transit", "delivered"}:
+                aggregate_status = "in_transit"
+            elif statuses:
+                aggregate_status = "packaged"
+            else:
+                aggregate_status = False
+
+            vals = {
+                "package_mapping_incomplete": bool(
+                    packages
+                    and order.hb_line_item_ids.filtered(
+                        lambda line: not line.package_id and line.status != "cancelled"
+                    )
+                ),
+                "hb_missing_invoice": any(packages.mapped("hb_missing_invoice")),
+                "invoice_link_sent": bool(packages)
+                and all(packages.mapped("invoice_link_sent")),
+                "invoice_sent_date": max(
+                    (date for date in packages.mapped("invoice_sent_date") if date),
+                    default=False,
+                ),
+            }
+            if len(packages) == 1:
+                package = packages[0]
+                vals.update(
+                    {
+                        "hb_package_number": package.hb_package_number,
+                        "hb_cargo_barcode": package.hb_cargo_barcode,
+                        "cargo_provider_name": package.cargo_provider_name,
+                        "cargo_tracking_number": package.cargo_tracking_number,
+                        "cargo_tracking_link": package.cargo_tracking_link,
+                    }
+                )
+            elif len(packages) > 1:
+                vals.update(
+                    {
+                        "hb_package_number": False,
+                        "hb_cargo_barcode": False,
+                        "cargo_tracking_number": False,
+                        "cargo_tracking_link": False,
+                    }
+                )
+            order.write(vals)
+            if aggregate_status:
+                order._set_order_status(aggregate_status)
 
     # ── Status Mapping ───────────────────────────────────────────────────
 
@@ -368,7 +519,7 @@ class HepsiburadaOrder(models.Model):
             "ClaimCreated": "undelivered",
             "PaymentAwaiting": "payment_awaiting",
         }
-        return status_map.get(hb_status, "open")
+        return status_map.get(hb_status)
 
     # ── Partner Resolution ───────────────────────────────────────────────
 
@@ -419,7 +570,7 @@ class HepsiburadaOrder(models.Model):
                 return partner
 
         # 3. Match by hb_customer_id
-        customer_id = str(pkg.get("customerId", ""))
+        customer_id = str(pkg.get("customerId") or "")
         if customer_id:
             partner = Partner.search(
                 [
@@ -491,12 +642,29 @@ class HepsiburadaOrder(models.Model):
         """Get or create shipping address as child partner."""
         Partner = self.env["res.partner"]
 
-        # Try to find existing shipping address by customer_id + parent
-        customer_id = str(pkg.get("customerId", ""))
-        if customer_id:
+        address_id = str(pkg.get("shippingAddressId") or "").strip()
+        if not address_id:
+            address_parts = [
+                pkg.get("recipientName"),
+                pkg.get("shippingAddressDetail"),
+                pkg.get("shippingDistrict"),
+                pkg.get("shippingTown"),
+                pkg.get("shippingCity"),
+                pkg.get("shippingPostalCode"),
+                pkg.get("shippingCountryCode"),
+            ]
+            normalized_address = "|".join(
+                " ".join(str(part or "").lower().split()) for part in address_parts
+            )
+            if normalized_address.strip("|"):
+                address_id = (
+                    "address:" + sha256(normalized_address.encode("utf-8")).hexdigest()
+                )
+
+        if address_id:
             shipping_partner = Partner.search(
                 [
-                    ("hb_address_id", "=", customer_id),
+                    ("hb_address_id", "=", address_id),
                     ("parent_id", "=", main_partner.id),
                     ("type", "=", "delivery"),
                 ],
@@ -533,15 +701,32 @@ class HepsiburadaOrder(models.Model):
             "street": (pkg.get("shippingAddressDetail") or "").strip(),
             "street2": street2,
             "city": shipping_city,
+            "zip": (pkg.get("shippingPostalCode") or "").strip(),
             "phone": pkg.get("phoneNumber", ""),
             "email": pkg.get("email", ""),
             "country_id": country.id if country else False,
             "state_id": state.id if state else False,
             "is_blacklisted": True,
-            "hb_address_id": customer_id,
+            "hb_address_id": address_id or False,
         }
 
+        if address_id and shipping_partner:
+            shipping_partner.write(partner_vals)
+            return shipping_partner
         return Partner.create(partner_vals)
+
+    def _refresh_shipping_partner(self, package_data):
+        self.ensure_one()
+        if not package_data.get("shippingAddressDetail"):
+            return
+        main_partner = self.odoo_id.partner_id
+        shipping_partner = self._get_or_create_shipping_partner(
+            self.backend_id,
+            package_data,
+            main_partner,
+        )
+        if self.odoo_id.partner_shipping_id != shipping_partner:
+            self.odoo_id.partner_shipping_id = shipping_partner
 
     @api.model
     def _get_country(self, country_code):
@@ -594,7 +779,9 @@ class HepsiburadaOrder(models.Model):
             price_unit = price_data or 0
 
         # vatRate is the VAT percentage (e.g. 10, 20); vat is the VAT amount in TL
-        vat_rate = item.get("vatRate", 0)
+        vat_rate = item.get("vatRate")
+        if vat_rate in (None, ""):
+            vat_rate = backend.default_vat_rate
 
         # Calculate discount from unitHBDiscount + unitMerchantDiscount
         hb_discount_data = item.get("unitHBDiscount", {})
@@ -719,7 +906,8 @@ class HepsiburadaOrder(models.Model):
     def action_fetch_tracking(self):
         """Manual button: fetch tracking info from Hepsiburada API."""
         self.ensure_one()
-        if not self.hb_package_number:
+        self._ensure_package_records()
+        if not self.package_ids:
             raise UserError(
                 _("Cannot fetch tracking: no package number on this order.")
             )
@@ -736,57 +924,72 @@ class HepsiburadaOrder(models.Model):
         }
 
     def _fetch_tracking_from_api(self):
-        """Fetch package detail from HB API and update tracking fields."""
+        """Fetch every HB package independently and refresh aggregate fields."""
         self.ensure_one()
-        if not self.hb_package_number:
+        self._ensure_package_records()
+        if not self.package_ids:
             return
+        errors = []
+        for package in self.package_ids:
+            try:
+                package._fetch_tracking_from_api()
+            except HepsiburadaAPIError as error:
+                errors.append(str(error))
+                _logger.warning(
+                    "Failed to fetch HB package detail for %s",
+                    package.hb_package_number,
+                    exc_info=True,
+                )
+        self._sync_from_packages()
+        if errors and len(errors) == len(self.package_ids):
+            raise UserError(_("Tracking could not be fetched: %s") % errors[0])
 
-        client = self.backend_id._get_api_client()
-        try:
-            result = client.get_package_detail(self.hb_package_number)
-        except HepsiburadaAPIError:
-            _logger.warning(
-                "Failed to fetch package detail for %s",
-                self.hb_package_number,
-                exc_info=True,
+    def _ensure_package_records(self):
+        """Create the package child for records predating the package model."""
+        for order in self:
+            if order.package_ids or not order.hb_package_number:
+                continue
+            package = self.env["hepsiburada.package"].create(
+                {
+                    "hb_order_id": order.id,
+                    "hb_package_number": order.hb_package_number,
+                    "hb_status": order.hb_status
+                    if order.hb_status
+                    in (
+                        "packaged",
+                        "in_transit",
+                        "delivered",
+                        "undelivered",
+                        "cancelled",
+                    )
+                    else "packaged",
+                    "hb_cargo_barcode": order.hb_cargo_barcode,
+                    "cargo_provider_name": order.cargo_provider_name,
+                    "cargo_tracking_number": order.cargo_tracking_number,
+                    "cargo_tracking_link": order.cargo_tracking_link,
+                    "hb_missing_invoice": order.hb_missing_invoice,
+                    "invoice_link_sent": order.invoice_link_sent,
+                    "invoice_sent_date": order.invoice_sent_date,
+                    "raw_data": order.raw_data,
+                }
             )
-            return
-
-        # API returns a list; take the first element
-        if isinstance(result, list):
-            data = result[0] if result else {}
-        else:
-            data = result or {}
-
-        vals = {}
-        tracking_number = data.get("trackingInfoCode", "")
-        tracking_url = data.get("trackingInfoUrl", "")
-        cargo_company = data.get("cargoCompany", "")
-
-        if tracking_number and not self.cargo_tracking_number:
-            vals["cargo_tracking_number"] = tracking_number
-        if tracking_url and not self.cargo_tracking_link:
-            vals["cargo_tracking_link"] = tracking_url
-        if cargo_company and not self.cargo_provider_name:
-            vals["cargo_provider_name"] = cargo_company
-
-        # Also update stock.picking carrier_tracking_ref
-        if tracking_number:
-            pickings = self.odoo_id.picking_ids.filtered(
-                lambda p: (
-                    p.picking_type_code == "outgoing" and not p.carrier_tracking_ref
+            try:
+                raw_data = json.loads(order.raw_data or "{}")
+            except (TypeError, ValueError):
+                raw_data = {}
+            raw_line_ids = {
+                str(item.get("lineItemId") or item.get("id") or "")
+                for item in raw_data.get("items", [])
+            }
+            lines = order.hb_line_item_ids.filtered(
+                lambda line: (
+                    not line.package_id
+                    and line.status != "cancelled"
+                    and (not raw_line_ids or line.hb_line_item_id in raw_line_ids)
                 )
             )
-            if pickings:
-                pickings.write({"carrier_tracking_ref": tracking_number})
-
-        if vals:
-            self.write(vals)
-            _logger.info(
-                "Updated tracking for HB order %s: %s",
-                self.hb_order_number,
-                vals,
-            )
+            lines.write({"package_id": package.id})
+            order._sync_from_packages()
 
     # ── Invoice Sending ──────────────────────────────────────────────────
 
@@ -837,38 +1040,21 @@ class HepsiburadaOrder(models.Model):
             )
             return
 
-        if not self.hb_package_number:
+        self._ensure_package_records()
+        if not self.package_ids:
             _logger.warning(
                 "No package number for HB order %s, skipping invoice mark.",
                 self.hb_order_number,
             )
             return
 
-        client = self.backend_id._get_api_client()
-
-        # Send invoice link
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         invoice_url = f"{base_url}{invoice.get_portal_url()}"
-
-        try:
-            client.upload_invoice_link(self.hb_package_number, invoice_url)
-        except HepsiburadaAPIError as e:
-            if e.status_code == 409:
-                _logger.info(
-                    "Invoice link already exists for HB order %s, "
-                    "marking as sent locally.",
-                    self.hb_order_number,
-                )
-            else:
-                _logger.error(
-                    "Failed to send invoice link for HB order %s: %s",
-                    self.hb_order_number,
-                    str(e),
-                )
-                raise
-
-        self.invoice_link_sent = True
-        self.invoice_sent_date = fields.Datetime.now()
+        for package in self.package_ids.filtered(
+            lambda item: not item.invoice_link_sent
+        ):
+            package._send_invoice_link(invoice_url)
+        self._sync_from_packages()
         _logger.info(
             "Invoice link sent for HB order %s: %s",
             self.hb_order_number,
@@ -880,7 +1066,8 @@ class HepsiburadaOrder(models.Model):
     def action_create_package(self):
         """Manual button: queue package creation in Hepsiburada."""
         self.ensure_one()
-        if self.hb_package_number:
+        self._ensure_package_records()
+        if self.package_ids:
             raise UserError(_("Package already created for this order."))
         if self.hb_status != "open":
             raise UserError(_("Only orders with 'Open' status can be packaged."))
@@ -911,15 +1098,7 @@ class HepsiburadaOrder(models.Model):
         # The /orders list endpoint uses "id" but get_order_detail
         # may return the proper "lineItemId" field.
         detail = client.get_order_detail(self.hb_order_number)
-        _logger.info(
-            "Order detail response for %s: %s",
-            self.hb_order_number,
-            json.dumps(detail, default=str)[:2000],
-        )
-
-        detail_items = detail.get("items", [])
-        if not detail_items:
-            detail_items = detail if isinstance(detail, list) else []
+        detail_items = detail if isinstance(detail, list) else detail.get("items", [])
 
         if not detail_items:
             raise UserError(_("No line items returned from order detail API."))
@@ -961,8 +1140,26 @@ class HepsiburadaOrder(models.Model):
             if isinstance(first, dict):
                 actual_pkg = str(first.get("packageNumber", ""))
 
-        self.hb_package_number = actual_pkg
-        self.hb_status = "packaged"
+        if not actual_pkg:
+            raise UserError(
+                _("Hepsiburada created the package but returned no package number.")
+            )
+        package_data = {
+            "packageNumber": actual_pkg,
+            "items": detail_items,
+            "status": "Packaged",
+        }
+        package = self._upsert_package(package_data, "packaged")
+        line_by_id = {line.hb_line_item_id: line for line in self.hb_line_item_ids}
+        for item in detail_items:
+            line_item_id = str(item.get("lineItemId") or item.get("id") or "")
+            if line_item_id in line_by_id:
+                line_by_id[line_item_id]._update_from_api(
+                    item,
+                    package=package,
+                    status="packaged",
+                )
+        self._sync_from_packages()
         _logger.info(
             "Created package %s for HB order %s",
             actual_pkg,
@@ -1008,6 +1205,9 @@ class HepsiburadaOrder(models.Model):
             try:
                 client.cancel_line_item(line.hb_line_item_id)
             except HepsiburadaAPIError as e:
+                if e.status_code == 409:
+                    line.status = "cancelled"
+                    continue
                 _logger.error(
                     "Failed to cancel line item %s for HB order %s: %s",
                     line.hb_line_item_id,
@@ -1015,14 +1215,9 @@ class HepsiburadaOrder(models.Model):
                     str(e),
                 )
                 raise
+            line.status = "cancelled"
 
-        self.hb_status = "cancelled"
-
-        if self.odoo_id.state not in ("done", "cancel"):
-            self.odoo_id.with_context(
-                from_hepsiburada_cancel=True,
-                disable_cancel_warning=True,
-            ).action_cancel()
+        self._sync_status_from_lines()
 
         _logger.info("Cancelled HB order %s", self.hb_order_number)
 
@@ -1035,6 +1230,11 @@ class HepsiburadaOrderLine(models.Model):
         "hepsiburada.order",
         required=True,
         ondelete="cascade",
+        index=True,
+    )
+    package_id = fields.Many2one(
+        "hepsiburada.package",
+        ondelete="set null",
         index=True,
     )
     hb_line_item_id = fields.Char(
@@ -1053,6 +1253,41 @@ class HepsiburadaOrderLine(models.Model):
     vat_rate = fields.Float()
     commission_amount = fields.Float()
     status = fields.Char()
+
+    def _update_from_api(self, item, package=False, status=None):
+        self.ensure_one()
+        price_data = item.get("price", {})
+        total_price_data = item.get("totalPrice", {})
+        commission_data = item.get("commission", {})
+        vals = {
+            "package_id": package.id if package else self.package_id.id,
+            "hb_sku": item.get("hbSku") or item.get("sku") or self.hb_sku,
+            "merchant_sku": item.get("merchantSku")
+            or item.get("merchantSKU")
+            or self.merchant_sku,
+            "quantity": item.get("quantity", self.quantity),
+            "unit_price": price_data.get("amount", 0)
+            if isinstance(price_data, dict)
+            else price_data or 0,
+            "total_price": total_price_data.get("amount", 0)
+            if isinstance(total_price_data, dict)
+            else total_price_data or 0,
+            "vat_amount": item.get("vat", self.vat_amount),
+            "vat_rate": item.get("vatRate", self.vat_rate),
+            "commission_amount": commission_data.get("amount", 0)
+            if isinstance(commission_data, dict)
+            else commission_data or 0,
+        }
+        if status:
+            vals["status"] = status
+        self.write(vals)
+        if (
+            status == "cancelled"
+            and self.sale_line_id
+            and not self.sale_line_id.qty_delivered
+            and not self.sale_line_id.qty_invoiced
+        ):
+            self.sale_line_id.product_uom_qty = 0
 
     _sql_constraints = [
         (

@@ -3,6 +3,8 @@ access_hepsiburada_backend_user,hepsiburada.backend.user,model_hepsiburada_backe
 access_hepsiburada_backend_manager,hepsiburada.backend.manager,model_hepsiburada_backend,group_hepsiburada_manager,1,1,1,1
 access_hepsiburada_order_user,hepsiburada.order.user,model_hepsiburada_order,group_hepsiburada_user,1,0,0,0
 access_hepsiburada_order_manager,hepsiburada.order.manager,model_hepsiburada_order,group_hepsiburada_manager,1,1,1,1
+access_hepsiburada_package_user,hepsiburada.package.user,model_hepsiburada_package,group_hepsiburada_user,1,0,0,0
+access_hepsiburada_package_manager,hepsiburada.package.manager,model_hepsiburada_package,group_hepsiburada_manager,1,1,1,1
 access_hepsiburada_order_line_user,hepsiburada.order.line.user,model_hepsiburada_order_line,group_hepsiburada_user,1,0,0,0
 access_hepsiburada_order_line_manager,hepsiburada.order.line.manager,model_hepsiburada_order_line,group_hepsiburada_manager,1,1,1,1
 access_hepsiburada_cargo_mapping_user,hepsiburada.cargo.mapping.user,model_hepsiburada_cargo_mapping,group_hepsiburada_user,1,0,0,0

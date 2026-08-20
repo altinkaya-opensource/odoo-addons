@@ -183,9 +183,19 @@
                             <group>
                                 <group string="Last Sync Times">
                                     <field name="last_order_sync" readonly="0" />
+                                    <field name="last_order_sync_error" readonly="1" />
                                     <field name="last_settlement_sync" readonly="0" />
                                     <field name="last_question_sync" readonly="0" />
+                                    <field
+                                        name="last_question_sync_error"
+                                        readonly="1"
+                                    />
                                     <field name="last_claim_sync" readonly="0" />
+                                    <field name="last_claim_sync_error" readonly="1" />
+                                    <field
+                                        name="last_settlement_sync_error"
+                                        readonly="1"
+                                    />
                                 </group>
                             </group>
                         </page>

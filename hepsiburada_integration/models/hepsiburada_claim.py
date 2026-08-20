@@ -12,7 +12,9 @@ from .hepsiburada_request import HepsiburadaAPIError
 _logger = logging.getLogger(__name__)
 
 CLAIM_TYPE_SELECTION = [
+    ("unknown", "Unknown"),
     ("return", "Return"),
+    ("renew_product", "Renew Product"),
     ("missing_part", "Missing Part"),
     ("missing_item", "Missing Item"),
     ("damaged_with_report", "Damaged With Report"),
@@ -24,8 +26,10 @@ CLAIM_TYPE_SELECTION = [
 ]
 
 CLAIM_STATUS_SELECTION = [
+    ("unknown", "Unknown"),
     ("new_request", "New Request"),
     ("awaiting_action", "Awaiting Action"),
+    ("awaiting_pre_approval", "Awaiting Pre-Approval"),
     ("in_dispute", "In Dispute"),
     ("accepted", "Accepted"),
     ("rejected", "Rejected"),
@@ -36,6 +40,7 @@ CLAIM_STATUS_SELECTION = [
 # Map HB API type strings to internal selection values
 CLAIM_TYPE_MAP = {
     "return": "return",
+    "renewproduct": "renew_product",
     "missingpart": "missing_part",
     "missingitem": "missing_item",
     "damagedwithreport": "damaged_with_report",
@@ -49,12 +54,47 @@ CLAIM_TYPE_MAP = {
 CLAIM_STATUS_MAP = {
     "newrequest": "new_request",
     "awaitingaction": "awaiting_action",
+    "awaitingpreapproval": "awaiting_pre_approval",
     "indispute": "in_dispute",
     "accepted": "accepted",
     "rejected": "rejected",
     "refunded": "refunded",
     "cancelled": "cancelled",
 }
+
+CLAIM_REJECTION_REASON_SELECTION = [
+    ("CustomerReturnedWrongItem", "Customer returned the wrong item"),
+    ("ProductIsDamaged", "Product is damaged"),
+    ("MissingQuantity", "Returned quantity is missing"),
+    ("NoSuchAccessory", "Product is used or not resalable"),
+    ("BoxIsEmptyWithReport", "Box is empty with a report"),
+    ("BoxIsEmptyWithoutReport", "Box is empty without a report"),
+    (
+        "SomePartsOrSomeAccessoriesOrSomePapersAreMissing",
+        "Parts, accessories, or papers are missing",
+    ),
+    ("ReturnedProductIsNotDelivered", "Returned product was not delivered"),
+    ("NewProductWillBeSent", "A new product will be sent"),
+    ("ExtraProductHasBeenReturned", "Extra product was returned"),
+    ("ProductNotWrong", "The product is not wrong"),
+    ("ProductNotDefective", "The product is not defective"),
+    ("StockProblem", "Stock problem"),
+    ("ReturnedProductHasAccountOrPassword", "Product has an account or password"),
+    ("MarkedAsServiceProcess", "Product will enter service analysis"),
+    ("ProductSentComplete", "Product was sent complete"),
+    ("MissingItemOrPartCannotBeSupplied", "Missing item or part cannot be supplied"),
+    (
+        "ClaimedComponentIsNotPartOfTheProduct",
+        "Claimed component is not part of the product",
+    ),
+    ("InvoiceReplacesWarranty", "Invoice replaces the warranty"),
+    (
+        "PartialShipmentMissingPackageWillBeDelivered",
+        "Missing package in partial shipment will be delivered",
+    ),
+    ("CustomerProblemSolved", "Customer problem was solved"),
+    ("Other", "Other"),
+]
 
 
 class HepsiburadaClaim(models.Model):
@@ -77,6 +117,7 @@ class HepsiburadaClaim(models.Model):
         index=True,
     )
     hb_claim_id = fields.Char(string="Claim ID")
+    hb_line_item_id = fields.Char(string="Line Item ID", index=True)
     claim_type = fields.Selection(
         CLAIM_TYPE_SELECTION,
         string="Type",
@@ -111,11 +152,17 @@ class HepsiburadaClaim(models.Model):
     claim_date = fields.Datetime()
     action_expire_date = fields.Datetime()
     refund_amount = fields.Float()
-    finalized_with = fields.Char()
+    finalized_with = fields.Selection(
+        [("Refund", "Refund"), ("Change", "Change")],
+    )
 
     # Accept/Reject fields
     acception_reason = fields.Text(string="Acceptance Reason")
-    rejection_reason = fields.Text()
+    rejection_reason = fields.Text(string="Legacy Rejection Note")
+    rejection_code = fields.Selection(
+        CLAIM_REJECTION_REASON_SELECTION,
+        string="Rejection Reason",
+    )
     merchant_statement = fields.Text()
 
     # Raw data
@@ -168,25 +215,35 @@ class HepsiburadaClaim(models.Model):
         )
 
         # Map type
-        type_raw = (claim_data.get("type", "") or "").lower().replace("_", "")
-        claim_type = CLAIM_TYPE_MAP.get(type_raw, "return")
+        type_raw = (
+            str(claim_data.get("claimType") or claim_data.get("type") or "")
+            .lower()
+            .replace("_", "")
+        )
+        claim_type = CLAIM_TYPE_MAP.get(type_raw, "unknown")
 
         # Map status
         status_raw = (claim_data.get("status", "") or "").lower().replace("_", "")
-        hb_status = CLAIM_STATUS_MAP.get(status_raw, "new_request")
+        hb_status = CLAIM_STATUS_MAP.get(status_raw, "unknown")
+
+        refund_amount = claim_data.get("refundAmount", 0.0) or 0.0
+        if isinstance(refund_amount, dict):
+            refund_amount = refund_amount.get("amount", refund_amount.get("value", 0.0))
 
         vals = {
             "backend_id": backend.id,
             "hb_claim_number": claim_number,
             "hb_claim_id": str(claim_data.get("id", "")),
+            "hb_line_item_id": str(claim_data.get("lineItemId") or ""),
             "claim_type": claim_type,
             "hb_status": hb_status,
             "hb_order_number": str(claim_data.get("orderNumber", "") or ""),
             "customer_id": str(claim_data.get("customerId", "") or ""),
             "customer_name": claim_data.get("customerName", ""),
             "product_name": claim_data.get("productName", ""),
-            "hb_sku": claim_data.get("hbSku", ""),
-            "merchant_sku": claim_data.get("merchantSku", ""),
+            "hb_sku": claim_data.get("sku") or claim_data.get("hbSku", ""),
+            "merchant_sku": claim_data.get("MerchantSku")
+            or claim_data.get("merchantSku", ""),
             "quantity": claim_data.get("quantity", 1) or 1,
             "explanation": claim_data.get("explanation", ""),
             "claim_date": self._parse_hb_date(
@@ -198,7 +255,7 @@ class HepsiburadaClaim(models.Model):
                     claim_data.get("awaitingActionExpireDate", ""),
                 )
             ),
-            "refund_amount": claim_data.get("refundAmount", 0.0) or 0.0,
+            "refund_amount": refund_amount,
             "finalized_with": claim_data.get("finalizedWith", ""),
             "raw_data": json.dumps(claim_data, indent=2, ensure_ascii=False),
         }
@@ -212,10 +269,24 @@ class HepsiburadaClaim(models.Model):
     def action_accept_claim(self):
         """Accept a claim in Hepsiburada."""
         self.ensure_one()
-        if self.hb_status not in ("new_request", "awaiting_action", "in_dispute"):
+        if self.hb_status not in (
+            "new_request",
+            "awaiting_action",
+            "awaiting_pre_approval",
+            "in_dispute",
+        ):
             raise UserError(
                 _("Only claims with status New/Awaiting/Dispute can be accepted.")
             )
+        if self.claim_type == "missing_invoice":
+            raise UserError(
+                _(
+                    "Missing-invoice claims must be accepted from the "
+                    "Hepsiburada portal."
+                )
+            )
+        if self.claim_type == "renew_product" and not self.finalized_with:
+            raise UserError(_("Select Refund or Change before accepting this claim."))
 
         client = self.backend_id._get_api_client()
 
@@ -244,11 +315,16 @@ class HepsiburadaClaim(models.Model):
     def action_reject_claim(self):
         """Reject a claim in Hepsiburada."""
         self.ensure_one()
-        if self.hb_status not in ("new_request", "awaiting_action", "in_dispute"):
+        if self.hb_status not in (
+            "new_request",
+            "awaiting_action",
+            "awaiting_pre_approval",
+            "in_dispute",
+        ):
             raise UserError(
                 _("Only claims with status New/Awaiting/Dispute can be rejected.")
             )
-        if not self.rejection_reason:
+        if not self.rejection_code:
             raise UserError(_("Please enter a rejection reason before rejecting."))
 
         client = self.backend_id._get_api_client()
@@ -256,7 +332,7 @@ class HepsiburadaClaim(models.Model):
         try:
             client.reject_claim(
                 self.hb_claim_number,
-                rejection_reason=self.rejection_reason or "",
+                rejection_reason=self.rejection_code,
                 merchant_statement=self.merchant_statement or "",
             )
         except HepsiburadaAPIError as e:

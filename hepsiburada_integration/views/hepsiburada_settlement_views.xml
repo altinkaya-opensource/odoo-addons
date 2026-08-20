@@ -12,7 +12,7 @@
                         string="Reconcile"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('state', '=', 'reconciled')]}"
+                        attrs="{'invisible': ['|', '|', '|', ('state', '=', 'reconciled'), ('transaction_type', 'not in', ['sale', 'return']), ('payment_status', '!=', 'Paid'), ('requires_manual_review', '=', True)]}"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -24,11 +24,19 @@
                     >
                         <field name="error_message" />
                     </div>
+                    <div
+                        class="alert alert-warning"
+                        role="alert"
+                        attrs="{'invisible': [('requires_manual_review', '=', False)]}"
+                    >
+                        <field name="review_reason" />
+                    </div>
                     <group>
                         <group string="Transaction Info">
                             <field name="backend_id" />
                             <field name="hb_transaction_id" />
                             <field name="transaction_type" />
+                            <field name="hb_transaction_type" />
                             <field name="transaction_date" />
                             <field name="order_number" />
                             <field name="package_number" />
@@ -39,6 +47,8 @@
                             <field name="amount" />
                             <field name="commission_rate" />
                             <field name="commission_amount" />
+                            <field name="net_amount" />
+                            <field name="tax_amount" />
                             <field name="currency_code" />
                         </group>
                     </group>
@@ -53,6 +63,7 @@
                             <field name="odoo_invoice_id" />
                             <field name="odoo_payment_id" />
                             <field name="commission_payment_id" />
+                            <field name="requires_manual_review" />
                         </group>
                     </group>
                     <notebook>
@@ -79,11 +90,13 @@
             >
                 <field name="order_number" />
                 <field name="transaction_type" />
+                <field name="hb_transaction_type" optional="show" />
                 <field name="transaction_date" />
                 <field name="amount" />
                 <field name="commission_amount" />
                 <field name="payment_status" />
                 <field name="state" />
+                <field name="requires_manual_review" optional="show" />
                 <field name="odoo_invoice_id" optional="show" />
             </tree>
         </field>

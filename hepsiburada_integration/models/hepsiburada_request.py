@@ -120,7 +120,16 @@ class HepsiburadaRequest(MarketplaceRequest):
 
     # ==================== Order Methods (OMS) ====================
 
-    def get_paid_orders(self, offset=0, limit=50):
+    @staticmethod
+    def _date_range_params(begin_date=None, end_date=None):
+        params = {}
+        if begin_date:
+            params["begindate"] = begin_date
+        if end_date:
+            params["enddate"] = end_date
+        return params
+
+    def get_paid_orders(self, offset=0, limit=50, begin_date=None, end_date=None):
         """Get paid orders (ready to process).
 
         Args:
@@ -131,51 +140,64 @@ class HepsiburadaRequest(MarketplaceRequest):
             List of order line item dicts
         """
         endpoint = f"/orders/merchantid/{self.merchant_id}"
-        params = {"offset": offset, "limit": min(limit, 50)}
+        params = {"offset": offset, "limit": min(limit, 100)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_packages(self, offset=0, limit=50):
+    def get_packages(self, offset=0, limit=10, begin_date=None, end_date=None):
         """Get packages with full order data.
 
         Args:
             offset: Pagination offset
-            limit: Page size (max 50)
+            limit: Page size (max 10)
 
         Returns:
             List of package dicts with nested items
         """
         endpoint = f"/packages/merchantid/{self.merchant_id}"
-        params = {"offset": offset, "limit": min(limit, 50)}
+        params = {"offset": offset, "limit": min(limit, 10)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_shipped_packages(self, offset=0, limit=50):
+    def get_shipped_packages(self, offset=0, limit=50, begin_date=None, end_date=None):
         """Get shipped (in transit) packages."""
         endpoint = f"/packages/merchantid/{self.merchant_id}/shipped"
         params = {"offset": offset, "limit": min(limit, 50)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_delivered_packages(self, offset=0, limit=50):
+    def get_delivered_packages(
+        self, offset=0, limit=50, begin_date=None, end_date=None
+    ):
         """Get delivered packages."""
         endpoint = f"/packages/merchantid/{self.merchant_id}/delivered"
         params = {"offset": offset, "limit": min(limit, 50)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_undelivered_packages(self, offset=0, limit=50):
+    def get_undelivered_packages(
+        self, offset=0, limit=50, begin_date=None, end_date=None
+    ):
         """Get undelivered packages."""
         endpoint = f"/packages/merchantid/{self.merchant_id}/undelivered"
         params = {"offset": offset, "limit": min(limit, 50)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_cancelled_orders(self, offset=0, limit=50):
+    def get_cancelled_orders(self, offset=0, limit=50, begin_date=None, end_date=None):
         """Get cancelled orders."""
         endpoint = f"/orders/merchantid/{self.merchant_id}/cancelled"
         params = {"offset": offset, "limit": min(limit, 50)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
-    def get_payment_awaiting_orders(self, offset=0, limit=50):
+    def get_payment_awaiting_orders(
+        self, offset=0, limit=50, begin_date=None, end_date=None
+    ):
         """Get orders awaiting payment."""
         endpoint = f"/orders/merchantid/{self.merchant_id}/paymentawaiting"
         params = {"offset": offset, "limit": min(limit, 50)}
+        params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
     def get_order_detail(self, order_number):
@@ -346,7 +368,14 @@ class HepsiburadaRequest(MarketplaceRequest):
 
     # ==================== Claim Methods (OMS) ====================
 
-    def get_claims(self, offset=0, limit=50, status=None):
+    def get_claims(
+        self,
+        offset=0,
+        limit=50,
+        status=None,
+        begin_date=None,
+        end_date=None,
+    ):
         """Get all claims for this merchant.
 
         Args:
@@ -361,6 +390,10 @@ class HepsiburadaRequest(MarketplaceRequest):
         params = {"offset": offset, "limit": min(limit, 50)}
         if status:
             params["status"] = status
+        if begin_date:
+            params["beginDate"] = begin_date
+        if end_date:
+            params["endDate"] = end_date
         return self._make_request("GET", "oms", endpoint, params=params)
 
     def accept_claim(
@@ -458,7 +491,7 @@ class HepsiburadaRequest(MarketplaceRequest):
 
     # ==================== Ask to Seller (Questions) Methods ====================
 
-    def get_issues(self, current_page=1, page_size=50):
+    def get_issues(self, current_page=1, page_size=25, **filters):
         """Get customer questions (issues) list.
 
         Args:
@@ -469,7 +502,14 @@ class HepsiburadaRequest(MarketplaceRequest):
             Dict with issues list and pagination info
         """
         endpoint = "/api/v1.0/issues"
-        params = {"currentPage": current_page, "pageSize": page_size}
+        params = {
+            "page": max(int(current_page or 1), 1),
+            "size": min(max(int(page_size or 25), 1), 25),
+            "desc": True,
+        }
+        params.update(
+            {key: value for key, value in filters.items() if value is not None}
+        )
         return self._make_request("GET", "asktoseller", endpoint, params=params)
 
     def get_issue_detail(self, issue_number):
@@ -519,11 +559,7 @@ class HepsiburadaRequest(MarketplaceRequest):
         except requests.RequestException as e:
             raise HepsiburadaAPIError(f"Request failed: {str(e)}") from e
 
-        _logger.debug(
-            "HB API response: %s - %s",
-            response.status_code,
-            response.text[:500] if response.text else "",
-        )
+        _logger.debug("HB AskToSeller API response status: %s", response.status_code)
 
         if response.status_code in (200, 201, 204):
             try:
