@@ -3059,6 +3059,17 @@ msgid "Manual Reference"
 msgstr ""
 
 #. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
+msgid "Manual Review"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid "Manual Review Required"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__valuation
 msgid ""
 "Manual: The accounting entries to value the inventory are not posted automatically.\n"
@@ -4906,6 +4917,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_product_binding_form
 msgid "Set to Draft"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid ""
+"Set when reconciliation needs a human decision. Such rows are skipped by "
+"the automatic reconciliation pass."
 msgstr ""
 
 #. module: trendyol_integration
@@ -6941,7 +6959,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_settlement.py:0
 #, python-format
-msgid "This payout was partially reconciled by the legacy row-by-row flow and requires manual commission review."
+msgid "This payout row arrived after the payout was reconciled. Its commission is not covered by the commission payment already recorded and needs manual review."
 msgstr ""
 
 #. module: trendyol_integration

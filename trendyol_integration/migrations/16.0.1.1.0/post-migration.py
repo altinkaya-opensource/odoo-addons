@@ -29,8 +29,11 @@ def migrate(cr, version):
             "cargoTrackingNumber": "cargo_tracking_number",
             "cargoTrackingLink": "cargo_tracking_link",
         }.items():
-            if api_field in data:
-                vals[odoo_field] = data.get(api_field) or False
+            # Creation-time raw data is stale: only fill in missing values,
+            # never wipe tracking stored later by the webhook.
+            value = data.get(api_field)
+            if value and not order[odoo_field]:
+                vals[odoo_field] = value
         if vals:
             order.write(vals)
 

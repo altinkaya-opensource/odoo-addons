@@ -24,6 +24,12 @@
                     >
                         <field name="error_message" />
                     </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Manual Review"
+                        bg_color="bg-warning"
+                        attrs="{'invisible': [('manual_review_required', '=', False)]}"
+                    />
                     <group>
                         <group string="Transaction Info">
                             <field name="backend_id" />
@@ -54,6 +60,7 @@
                             <field name="odoo_invoice_id" />
                             <field name="odoo_payment_id" />
                             <field name="commission_payment_id" />
+                            <field name="manual_review_required" />
                         </group>
                     </group>
                     <notebook>
@@ -116,6 +123,11 @@
                     name="errors"
                     string="Errors"
                     domain="[('state', '=', 'error')]"
+                />
+                <filter
+                    name="manual_review"
+                    string="Manual Review"
+                    domain="[('manual_review_required', '=', True)]"
                 />
                 <separator />
                 <filter

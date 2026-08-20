@@ -21,6 +21,19 @@ QUESTION_STATUS_MAP = {
     "UNANSWERED": "unanswered",
 }
 
+# Statuses Trendyol reports once an answer has been submitted.
+ANSWERED_STATUSES = ("waiting_for_approve", "answered", "reported", "rejected")
+
+# Normalized error keys/codes Trendyol returns for a duplicate answer.
+ALREADY_ANSWERED_ERROR_CODES = (
+    "alreadyanswered",
+    "questionalreadyanswered",
+    "questionalreadyhasanswer",
+)
+
+# Last-resort fallback: Trendyol's localized rejection message.
+ALREADY_ANSWERED_MESSAGE = "bu soru daha önce cevaplandı"
+
 
 class TrendyolQuestion(models.Model):
     _name = "trendyol.question"
@@ -117,7 +130,8 @@ class TrendyolQuestion(models.Model):
             if existing.status != new_status:
                 vals["status"] = new_status
             answer_data = question_data.get("answer") or {}
-            if answer_data.get("text"):
+            # A locally saved answer is never overwritten by an import.
+            if answer_data.get("text") and not existing.answer_text:
                 vals["answer_text"] = answer_data["text"]
                 vals["answer_date"] = self._parse_timestamp(
                     answer_data.get("creationDate")
@@ -193,10 +207,7 @@ class TrendyolQuestion(models.Model):
                 int(self.trendyol_question_id), self.answer_text.strip()
             )
         except TrendyolAPIError as e:
-            already_answered = e.status_code == 400 and (
-                "bu soru daha önce cevaplandı" in str(e).casefold()
-            )
-            if not already_answered:
+            if not self._is_already_answered(client, e):
                 _logger.error(
                     "Failed to answer question %s: %s",
                     self.trendyol_question_id,
@@ -213,6 +224,56 @@ class TrendyolQuestion(models.Model):
         self.answer_date = fields.Datetime.now()
         self.activity_ids.unlink()
         _logger.info("Answered question %s", self.trendyol_question_id)
+
+    def _is_already_answered(self, client, error):
+        """Tell whether Trendyol rejected the answer as a duplicate."""
+        self.ensure_one()
+        if error.status_code != 400:
+            return False
+
+        error_codes = self._api_error_codes(error.response_data)
+        if any(code in ALREADY_ANSWERED_ERROR_CODES for code in error_codes):
+            return True
+
+        try:
+            question_data = client.get_question(int(self.trendyol_question_id))
+        except TrendyolAPIError as fetch_error:
+            _logger.warning(
+                "Could not confirm the status of question %s: %s",
+                self.trendyol_question_id,
+                str(fetch_error),
+            )
+            return ALREADY_ANSWERED_MESSAGE in str(error).casefold()
+
+        if not question_data:
+            return ALREADY_ANSWERED_MESSAGE in str(error).casefold()
+
+        answer_data = question_data.get("answer") or {}
+        if answer_data.get("text"):
+            return True
+        return self._map_status(question_data.get("status")) in ANSWERED_STATUSES
+
+    @api.model
+    def _api_error_codes(self, response_data):
+        """Return normalized error keys/codes from an API error payload."""
+        if not isinstance(response_data, dict):
+            return []
+
+        entries = response_data.get("errors")
+        if not isinstance(entries, list):
+            entries = [response_data]
+
+        codes = []
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            for key in ("key", "code", "errorCode"):
+                value = entry.get(key)
+                if value:
+                    codes.append(
+                        str(value).replace("_", "").replace("-", "").casefold()
+                    )
+        return codes
 
     def action_open_in_trendyol(self):
         """Open the question's web URL in a new browser tab."""

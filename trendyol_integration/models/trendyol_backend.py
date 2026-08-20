@@ -710,13 +710,31 @@ class TrendyolBackend(models.Model):
                     ),
                 ]
             )
+            failed_refreshes = []
             for offset in range(0, len(active_claims), 25):
-                claim_ids = active_claims[offset : offset + 25].mapped(
-                    "trendyol_claim_id"
+                chunk = active_claims[offset : offset + 25]
+                try:
+                    with self.env.cr.savepoint():
+                        result = client.get_claims(
+                            claim_ids=chunk.mapped("trendyol_claim_id"),
+                            page=0,
+                            size=25,
+                        )
+                        for claim_data in result.get("content", []):
+                            Claim._import_claim(self, claim_data)
+                except Exception as error:
+                    failed_refreshes.append(str(error))
+                    _logger.exception(
+                        "Failed to refresh Trendyol claims %s",
+                        chunk.mapped("trendyol_claim_id"),
+                    )
+
+            if failed_refreshes:
+                _logger.error(
+                    "%d Trendyol claim refresh chunk(s) failed: %s",
+                    len(failed_refreshes),
+                    "; ".join(failed_refreshes),
                 )
-                result = client.get_claims(claim_ids=claim_ids, page=0, size=25)
-                for claim_data in result.get("content", []):
-                    Claim._import_claim(self, claim_data)
 
             self.last_claim_sync = end_date
             _logger.info("Imported %d claims for backend %s", total_imported, self.name)
@@ -952,21 +970,23 @@ class TrendyolBackend(models.Model):
                 [
                     ("backend_id", "=", self.id),
                     ("state", "in", ["imported", "error"]),
+                    ("manual_review_required", "=", False),
                 ]
             )
             for settlement in settlements:
-                if settlement.state == "reconciled":
+                if (
+                    settlement.state == "reconciled"
+                    or settlement.manual_review_required
+                ):
                     continue
                 try:
                     with self.env.cr.savepoint():
                         settlement._reconcile()
                 except Exception as error:
-                    settlement.write(
-                        {
-                            "state": "error",
-                            "error_message": str(error),
-                        }
-                    )
+                    vals = {"state": "error"}
+                    if settlement.error_message != str(error):
+                        vals["error_message"] = str(error)
+                    settlement.write(vals)
                     _logger.warning(
                         "Auto-reconcile failed for settlement %s: %s",
                         settlement.trendyol_settlement_id,

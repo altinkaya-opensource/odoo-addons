@@ -89,6 +89,10 @@ class TrendyolSettlement(models.Model):
         tracking=True,
     )
     error_message = fields.Text()
+    manual_review_required = fields.Boolean(
+        help="Set when reconciliation needs a human decision. Such rows are "
+        "skipped by the automatic reconciliation pass.",
+    )
     raw_data = fields.Text()
 
     _sql_constraints = [
@@ -210,6 +214,10 @@ class TrendyolSettlement(models.Model):
     def _get_reconciliation_group(self):
         """Return transaction rows that belong to the same package payout."""
         self.ensure_one()
+        if not self.shipment_package_id and not self.order_number:
+            # Without a package or order key the row cannot be grouped safely:
+            # a bare backend/type domain would match unrelated settlements.
+            return self
         domain = [
             ("backend_id", "=", self.backend_id.id),
             ("transaction_type", "=", self.transaction_type),
@@ -240,38 +248,9 @@ class TrendyolSettlement(models.Model):
             lambda settlement: (
                 settlement.state == "reconciled" and settlement.odoo_payment_id
             )
-        )[:1]
+        )
         if reconciled:
-            expected_commission = self._marketplace_commission_amount()
-            recorded_commission = (
-                reconciled.commission_payment_id.amount
-                if reconciled.commission_payment_id
-                else 0.0
-            )
-            currency = (
-                reconciled.commission_payment_id.currency_id
-                or self.backend_id.company_id.currency_id
-            )
-            if currency.compare_amounts(expected_commission, recorded_commission) == 0:
-                group.write(
-                    {
-                        "state": "reconciled",
-                        "odoo_invoice_id": reconciled.odoo_invoice_id.id,
-                        "odoo_payment_id": reconciled.odoo_payment_id.id,
-                        "commission_payment_id": reconciled.commission_payment_id.id,
-                        "error_message": False,
-                    }
-                )
-            else:
-                (group - reconciled).write(
-                    {
-                        "state": "error",
-                        "error_message": _(
-                            "This payout was partially reconciled by the legacy "
-                            "row-by-row flow and requires manual commission review."
-                        ),
-                    }
-                )
+            self._join_reconciled_group(group, reconciled)
             return
 
         super()._reconcile()
@@ -283,6 +262,7 @@ class TrendyolSettlement(models.Model):
                     "odoo_payment_id": self.odoo_payment_id.id,
                     "commission_payment_id": self.commission_payment_id.id,
                     "error_message": False,
+                    "manual_review_required": False,
                 }
             )
         elif self.state == "error":
@@ -292,3 +272,46 @@ class TrendyolSettlement(models.Model):
                     "error_message": self.error_message,
                 }
             )
+
+    def _join_reconciled_group(self, group, reconciled):
+        """Attach the rows of an already reconciled payout to its payments.
+
+        Rows that are already reconciled keep their live payments untouched:
+        only the remaining rows are settled or flagged for manual review.
+        """
+        self.ensure_one()
+        pending = group - reconciled
+        if not pending:
+            return
+
+        anchor = fields.first(reconciled)
+        expected_commission = self._marketplace_commission_amount()
+        recorded_commission = sum(reconciled.commission_payment_id.mapped("amount"))
+        currency = (
+            anchor.commission_payment_id.currency_id
+            or self.backend_id.company_id.currency_id
+        )
+        if currency.compare_amounts(expected_commission, recorded_commission) == 0:
+            pending.write(
+                {
+                    "state": "reconciled",
+                    "odoo_invoice_id": anchor.odoo_invoice_id.id,
+                    "odoo_payment_id": anchor.odoo_payment_id.id,
+                    "commission_payment_id": anchor.commission_payment_id.id,
+                    "error_message": False,
+                    "manual_review_required": False,
+                }
+            )
+            return
+
+        pending.write(
+            {
+                "state": "error",
+                "manual_review_required": True,
+                "error_message": _(
+                    "This payout row arrived after the payout was reconciled. "
+                    "Its commission is not covered by the commission payment "
+                    "already recorded and needs manual review."
+                ),
+            }
+        )
