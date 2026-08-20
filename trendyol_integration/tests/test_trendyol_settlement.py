@@ -5,7 +5,22 @@ from .common import TrendyolTestCase
 
 
 class TestTrendyolSettlement(TrendyolTestCase):
-    def test_package_rows_are_reconciled_with_one_payment(self):
+    def _create_settlement_row(self, order, settlement_id, commission_amount):
+        return self.env["trendyol.settlement"].create(
+            {
+                "backend_id": self.backend.id,
+                "trendyol_settlement_id": settlement_id,
+                "transaction_type": "sale",
+                "order_number": order.trendyol_order_number,
+                "shipment_package_id": order.trendyol_package_id,
+                "payment_order_id": "PAYOUT-1",
+                "trendyol_order_id": order.id,
+                "commission_amount": commission_amount,
+            }
+        )
+
+    def _prepare_payout_order(self):
+        """Return a Trendyol order with a posted invoice ready for payout."""
         journal = self.env["account.journal"].search(
             [
                 ("company_id", "=", self.env.company.id),
@@ -97,32 +112,13 @@ class TestTrendyolSettlement(TrendyolTestCase):
                 "trendyol_package_id": "SETTLEMENT-PACKAGE",
             }
         )
-        settlements = self.env["trendyol.settlement"].create(
-            [
-                {
-                    "backend_id": self.backend.id,
-                    "trendyol_settlement_id": "SETTLEMENT-1",
-                    "transaction_type": "sale",
-                    "order_number": order.trendyol_order_number,
-                    "shipment_package_id": order.trendyol_package_id,
-                    "payment_order_id": "PAYOUT-1",
-                    "trendyol_order_id": order.id,
-                    "commission_amount": 10,
-                    "seller_revenue": 40,
-                },
-                {
-                    "backend_id": self.backend.id,
-                    "trendyol_settlement_id": "SETTLEMENT-2",
-                    "transaction_type": "sale",
-                    "order_number": order.trendyol_order_number,
-                    "shipment_package_id": order.trendyol_package_id,
-                    "payment_order_id": "PAYOUT-1",
-                    "trendyol_order_id": order.id,
-                    "commission_amount": 5,
-                    "seller_revenue": 45,
-                },
-            ]
-        )
+        return order, invoice
+
+    def test_package_rows_are_reconciled_with_one_payment(self):
+        order, invoice = self._prepare_payout_order()
+        settlements = self._create_settlement_row(
+            order, "SETTLEMENT-1", 10
+        ) | self._create_settlement_row(order, "SETTLEMENT-2", 5)
 
         settlements[0]._reconcile()
 
@@ -131,6 +127,47 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertEqual(len(settlements.commission_payment_id), 1)
         self.assertEqual(settlements.commission_payment_id.amount, 15)
         self.assertEqual(settlements.odoo_invoice_id, invoice)
+
+    def test_late_row_is_flagged_without_touching_reconciled_rows(self):
+        order, _invoice = self._prepare_payout_order()
+        settlements = self._create_settlement_row(
+            order, "SETTLEMENT-1", 10
+        ) | self._create_settlement_row(order, "SETTLEMENT-2", 5)
+        settlements[0]._reconcile()
+        payment = settlements.odoo_payment_id
+        commission_payment = settlements.commission_payment_id
+
+        late_row = self._create_settlement_row(order, "SETTLEMENT-3", 7)
+        late_row._reconcile()
+
+        self.assertEqual(settlements.mapped("state"), ["reconciled", "reconciled"])
+        self.assertEqual(settlements.odoo_payment_id, payment)
+        self.assertEqual(settlements.commission_payment_id, commission_payment)
+        self.assertEqual(commission_payment.state, "posted")
+        self.assertEqual(late_row.state, "error")
+        self.assertTrue(late_row.manual_review_required)
+        self.assertFalse(late_row.odoo_payment_id)
+
+    def test_rows_without_package_and_order_keys_are_not_grouped(self):
+        settlements = self.env["trendyol.settlement"].create(
+            [
+                {
+                    "backend_id": self.backend.id,
+                    "trendyol_settlement_id": "KEYLESS-1",
+                    "transaction_type": "sale",
+                },
+                {
+                    "backend_id": self.backend.id,
+                    "trendyol_settlement_id": "KEYLESS-2",
+                    "transaction_type": "sale",
+                },
+            ]
+        )
+
+        self.assertEqual(
+            settlements[0]._get_reconciliation_group(),
+            settlements[0],
+        )
 
     def test_manual_reconcile_reports_failure_as_failure(self):
         settlement = self.env["trendyol.settlement"].create(

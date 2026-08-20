@@ -33,6 +33,29 @@ class TestTrendyolOrder(TrendyolTestCase):
         self.assertEqual(order.cargo_tracking_number, "TRACK-2")
         self.assertEqual(order.cargo_tracking_link, "https://tracking.example/2")
 
+    def test_empty_cargo_payload_keeps_stored_tracking(self):
+        _sale, order = self._create_sale_and_order(package_id="EMPTY-CARGO")
+        order.write(
+            {
+                "cargo_provider_name": "Stored Cargo",
+                "cargo_tracking_number": "TRACK-1",
+                "cargo_tracking_link": "https://tracking.example/1",
+            }
+        )
+
+        order._update_from_trendyol_data(
+            {
+                "status": "Created",
+                "cargoProviderName": None,
+                "cargoTrackingNumber": None,
+                "cargoTrackingLink": "",
+            }
+        )
+
+        self.assertEqual(order.cargo_provider_name, "Stored Cargo")
+        self.assertEqual(order.cargo_tracking_number, "TRACK-1")
+        self.assertEqual(order.cargo_tracking_link, "https://tracking.example/1")
+
     def test_current_line_schema_is_used_for_api_operations(self):
         _sale, order = self._create_sale_and_order()
         order.raw_data = json.dumps({"lines": [{"lineId": 987, "quantity": 2}]})

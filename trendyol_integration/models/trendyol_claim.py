@@ -291,7 +291,6 @@ class TrendyolClaim(models.Model):
             vals = {
                 "claim_id": claim.id,
                 "trendyol_line_id": line_id,
-                "product_binding_id": binding.id if binding else False,
                 "barcode": barcode,
                 "product_name": order_line.get("productName", ""),
                 "quantity": claim_item.get("quantity", 1),
@@ -308,6 +307,9 @@ class TrendyolClaim(models.Model):
                     or claim_item.get("status", "")
                 ),
             }
+            # Never drop a binding that was found earlier or set by hand.
+            if binding:
+                vals["product_binding_id"] = binding.id
             existing_line = ClaimLine.search(
                 [
                     ("claim_id", "=", claim.id),
@@ -320,9 +322,10 @@ class TrendyolClaim(models.Model):
             else:
                 ClaimLine.create(vals)
 
+        # Lines without a Trendyol ID are legacy or manual rows: keep them.
         stale_lines = claim.line_ids.filtered(
             lambda line: (
-                not line.trendyol_line_id or line.trendyol_line_id not in seen_line_ids
+                line.trendyol_line_id and line.trendyol_line_id not in seen_line_ids
             )
         )
         stale_lines.unlink()

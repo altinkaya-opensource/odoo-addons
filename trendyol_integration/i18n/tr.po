@@ -3155,6 +3155,17 @@ msgid "Manual Reference"
 msgstr "Manuel Referans"
 
 #. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
+msgid "Manual Review"
+msgstr "Elle İnceleme"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid "Manual Review Required"
+msgstr "Elle İnceleme Gerekiyor"
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__valuation
 msgid ""
 "Manual: The accounting entries to value the inventory are not posted automatically.\n"
@@ -5055,6 +5066,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_product_binding_form
 msgid "Set to Draft"
 msgstr "Taslağa Çevir"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid ""
+"Set when reconciliation needs a human decision. Such rows are skipped by "
+"the automatic reconciliation pass."
+msgstr ""
+"Uzlaştırmanın insan kararı gerektirdiği durumlarda işaretlenir. Bu satırlar "
+"otomatik uzlaştırma turunda atlanır."
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__trendyol_settlement_id
@@ -7142,8 +7162,8 @@ msgstr "Hesaplaşma içe aktarma sayfa sınırına ulaştı."
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_settlement.py:0
 #, python-format
-msgid "This payout was partially reconciled by the legacy row-by-row flow and requires manual commission review."
-msgstr "Bu ödeme eski satır bazlı akışta kısmen uzlaştırılmış; komisyonların elle incelenmesi gerekiyor."
+msgid "This payout row arrived after the payout was reconciled. Its commission is not covered by the commission payment already recorded and needs manual review."
+msgstr "Bu ödeme satırı, ödeme uzlaştırıldıktan sonra geldi. Komisyonu, daha önce kaydedilen komisyon ödemesinin kapsamında değil ve elle incelenmesi gerekiyor."
 
 #. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_question__status__unanswered
