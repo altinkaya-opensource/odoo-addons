@@ -1125,6 +1125,13 @@ msgstr "Talep reddedilemedi: %s"
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
+msgid "Failed to refresh question status: %s"
+msgstr "Soru durumu yenilenemedi: %s"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
 msgid "Failed to send answer: %s"
 msgstr "Yanıt gönderilemedi: %s"
 
@@ -1497,6 +1504,13 @@ msgstr "Hepsiburada Hesap Kesimi İşlemi"
 #, fuzzy, python-format
 msgid "Hepsiburada import exceeded 100,000 records."
 msgstr "Hepsiburada: Siparişleri İçe Aktar"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Hepsiburada no longer reports this question as answerable."
+msgstr "Hepsiburada bu soruyu artık yanıtlanabilir olarak bildirmiyor."
 
 #. module: hepsiburada_integration
 #. odoo-python
@@ -1966,6 +1980,11 @@ msgstr "Son Hesaplaşma Senkronizasyonu"
 #, fuzzy
 msgid "Last Settlement Sync Error"
 msgstr "Son Hesaplaşma Senkronizasyonu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__last_status_refresh
+msgid "Last Status Refresh"
+msgstr "Son Durum Yenileme"
 
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
@@ -2861,6 +2880,13 @@ msgstr "Soru Bilgisi"
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Question Status Updated"
+msgstr "Soru Durumu Güncellendi"
+
+#. module: hepsiburada_integration
+#. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Question import has been queued."
@@ -3588,6 +3614,32 @@ msgid ""
 msgstr ""
 "Bu bağlantının kaynağıdır, ör. Arama Motoru, başka bir alan adı veya e-posta "
 "listesi adı"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "This question has already been answered on Hepsiburada."
+msgstr "Bu soru Hepsiburada'da zaten yanıtlanmış."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid ""
+"This question was automatically closed by Hepsiburada and can no longer be "
+"answered."
+msgstr ""
+"Bu soru Hepsiburada tarafından otomatik olarak kapatıldı ve artık "
+"yanıtlanamaz."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid ""
+"This question was rejected on Hepsiburada and can no longer be answered."
+msgstr "Bu soru Hepsiburada'da reddedildi ve artık yanıtlanamaz."
 
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__timesheet_encode_uom_id

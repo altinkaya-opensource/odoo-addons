@@ -74,6 +74,7 @@ class HepsiburadaQuestion(models.Model):
     # Answer
     answer_text = fields.Text(string="Answer")
     is_answered = fields.Boolean(default=False, index=True)
+    last_status_refresh = fields.Datetime(copy=False, index=True)
 
     # Raw data
     raw_data = fields.Text()
@@ -85,6 +86,20 @@ class HepsiburadaQuestion(models.Model):
             "Issue number must be unique per backend.",
         ),
     ]
+
+    @api.model
+    def _map_hb_status(self, status):
+        normalized_status = "".join(
+            character for character in str(status or "").lower() if character.isalnum()
+        )
+        return {
+            "waitingforanswer": "waiting_merchant",
+            "waitingmerchant": "waiting_merchant",
+            "waitingmerchantanswer": "waiting_merchant",
+            "answered": "answered",
+            "rejected": "rejected",
+            "autoclosed": "auto_closed",
+        }.get(normalized_status, "unknown")
 
     @api.model
     def _import_question(self, backend, issue_data):
@@ -109,17 +124,7 @@ class HepsiburadaQuestion(models.Model):
             limit=1,
         )
 
-        # Map HB status to internal status
-        hb_status_raw = str(issue_data.get("status") or "").lower().replace("_", "")
-        status_map = {
-            "waitingforanswer": "waiting_merchant",
-            "waitingmerchant": "waiting_merchant",
-            "waitingmerchantanswer": "waiting_merchant",
-            "answered": "answered",
-            "rejected": "rejected",
-            "autoclosed": "auto_closed",
-        }
-        hb_status = status_map.get(hb_status_raw, "unknown")
+        hb_status = self._map_hb_status(issue_data.get("status"))
 
         # subject can be a string or an object with "description"
         subject_raw = issue_data.get("subject", "")
@@ -266,6 +271,84 @@ class HepsiburadaQuestion(models.Model):
             self.is_answered = True
         return True
 
+    def _sync_issue_detail(self, detail):
+        """Persist the current remote issue state and inline conversations."""
+        self.ensure_one()
+        if isinstance(detail, dict) and isinstance(detail.get("data"), dict):
+            detail = detail["data"]
+        if not isinstance(detail, dict) or "status" not in detail:
+            return False
+
+        status = self._map_hb_status(detail.get("status"))
+        vals = {
+            "hb_status": status,
+            "last_status_refresh": fields.Datetime.now(),
+        }
+        if status == "answered":
+            vals["is_answered"] = True
+        if "expireDate" in detail:
+            vals["expire_date"] = self._parse_hb_date(detail.get("expireDate"))
+        if "lastModifiedAt" in detail or "lastModifiedDate" in detail:
+            vals["last_modified_date"] = self._parse_hb_date(
+                detail.get("lastModifiedAt", detail.get("lastModifiedDate"))
+            )
+        self.write(vals)
+
+        conversations = detail.get("conversations")
+        if isinstance(conversations, list):
+            self._import_conversations(conversations)
+        return self
+
+    def _refresh_remote_state(self, client):
+        self.ensure_one()
+        detail = client.get_issue_detail(self.hb_issue_number)
+        question = self._sync_issue_detail(detail)
+        if question != self:
+            raise HepsiburadaAPIError(
+                "Question detail API returned an invalid response"
+            )
+        return question
+
+    def _success_notification(self):
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Success"),
+                "message": _("Answer sent to Hepsiburada successfully."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def _status_notification(self):
+        self.ensure_one()
+        messages = {
+            "answered": _("This question has already been answered on Hepsiburada."),
+            "auto_closed": _(
+                "This question was automatically closed by Hepsiburada and can no "
+                "longer be answered."
+            ),
+            "rejected": _(
+                "This question was rejected on Hepsiburada and can no longer be "
+                "answered."
+            ),
+        }
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Question Status Updated"),
+                "message": messages.get(
+                    self.hb_status,
+                    _("Hepsiburada no longer reports this question as answerable."),
+                ),
+                "type": "warning",
+                "sticky": True,
+                "next": {"type": "ir.actions.client", "tag": "reload"},
+            },
+        }
+
     def action_answer_question(self):
         """Send the answer to Hepsiburada."""
         self.ensure_one()
@@ -280,21 +363,29 @@ class HepsiburadaQuestion(models.Model):
         answer_text = self.answer_text
 
         try:
+            self._refresh_remote_state(client)
+        except HepsiburadaAPIError as error:
+            raise UserError(
+                _("Failed to refresh question status: %s") % str(error)
+            ) from error
+        if self.hb_status != "waiting_merchant":
+            return self._status_notification()
+
+        try:
             client.answer_issue(self.hb_issue_number, answer_text)
         except HepsiburadaAPIError as e:
             if e.status_code not in (400, 409):
                 raise UserError(_("Failed to send answer: %s") % str(e)) from e
             try:
-                detail = client.get_issue_detail(self.hb_issue_number)
+                self._refresh_remote_state(client)
             except HepsiburadaAPIError:
                 raise UserError(_("Failed to send answer: %s") % str(e)) from e
-            if isinstance(detail, dict) and isinstance(detail.get("data"), dict):
-                detail = detail["data"]
-            if (
-                not isinstance(detail, dict)
-                or str(detail.get("status") or "").lower() != "answered"
-            ):
-                raise UserError(_("Failed to send answer: %s") % str(e)) from e
+            if self.hb_status == "answered":
+                self.write({"is_answered": True, "answer_text": False})
+                return self._success_notification()
+            if self.hb_status != "waiting_merchant":
+                return self._status_notification()
+            raise UserError(_("Failed to send answer: %s") % str(e)) from e
 
         if not self._import_conversations():
             message_hash = sha256(answer_text.encode("utf-8")).hexdigest()
@@ -316,16 +407,7 @@ class HepsiburadaQuestion(models.Model):
             }
         )
 
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Answer sent to Hepsiburada successfully."),
-                "type": "success",
-                "sticky": False,
-            },
-        }
+        return self._success_notification()
 
     def action_fetch_conversations(self):
         """Manually fetch conversation history."""

@@ -19,7 +19,7 @@ access_trendyol_claim_line_user,trendyol.claim.line.user,model_trendyol_claim_li
 access_trendyol_claim_line_manager,trendyol.claim.line.manager,model_trendyol_claim_line,group_trendyol_manager,1,1,1,1
 access_trendyol_batch_request_user,trendyol.batch.request.user,model_trendyol_batch_request,group_trendyol_user,1,0,0,0
 access_trendyol_batch_request_manager,trendyol.batch.request.manager,model_trendyol_batch_request,group_trendyol_manager,1,1,1,1
-access_trendyol_question_user,trendyol.question.user,model_trendyol_question,group_trendyol_user,1,1,0,0
+access_trendyol_question_user,trendyol.question.user,model_trendyol_question,group_trendyol_user,1,1,0,1
 access_trendyol_question_manager,trendyol.question.manager,model_trendyol_question,group_trendyol_manager,1,1,1,1
 access_trendyol_settlement_user,trendyol.settlement.user,model_trendyol_settlement,group_trendyol_user,1,0,0,0
 access_trendyol_settlement_manager,trendyol.settlement.manager,model_trendyol_settlement,group_trendyol_manager,1,1,1,1

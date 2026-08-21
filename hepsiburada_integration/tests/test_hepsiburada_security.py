@@ -70,3 +70,8 @@ class TestHepsiburadaSecurity(HepsiburadaCommon):
         self.assertNotIn(other_backend, visible_backends)
         self.assertIn(own_question, visible_questions)
         self.assertNotIn(other_question, visible_questions)
+
+        with self.assertRaises(AccessError):
+            other_question.with_user(user).unlink()
+        own_question.with_user(user).unlink()
+        self.assertFalse(own_question.exists())

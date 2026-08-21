@@ -545,6 +545,7 @@ class HepsiburadaRequest(MarketplaceRequest):
             "Authorization": self.auth_header,
             "User-Agent": self.user_agent,
             "merchantId": self.merchant_id,
+            "Accept": "application/json",
         }
 
         _logger.debug("HB API POST %s (multipart/form-data)", url)
@@ -553,7 +554,7 @@ class HepsiburadaRequest(MarketplaceRequest):
             response = requests.post(
                 url=url,
                 headers=headers,
-                data={"Answer": answer_text},
+                files={"Answer": (None, answer_text)},
                 timeout=60,
             )
         except requests.RequestException as e:
@@ -569,7 +570,11 @@ class HepsiburadaRequest(MarketplaceRequest):
 
         try:
             error_data = response.json()
-            error_msg = error_data.get("message", response.text)
+            error_msg = (
+                self._extract_error_message(error_data, response.text)
+                if isinstance(error_data, dict)
+                else response.text
+            )
         except json.JSONDecodeError:
             error_data = None
             error_msg = response.text

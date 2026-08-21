@@ -1102,6 +1102,13 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Failed to refresh question status: %s"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
@@ -1475,6 +1482,13 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Hepsiburada import exceeded 100,000 records."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Hepsiburada no longer reports this question as answerable."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -1953,6 +1967,11 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__last_settlement_sync_error
 msgid "Last Settlement Sync Error"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_question__last_status_refresh
+msgid "Last Status Refresh"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2851,6 +2870,13 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Question Status Updated"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
@@ -3565,6 +3591,30 @@ msgstr ""
 msgid ""
 "This is the source of the link, e.g. Search Engine, another domain, or name "
 "of email list"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "This question has already been answered on Hepsiburada."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid ""
+"This question was automatically closed by Hepsiburada and can no longer be "
+"answered."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid ""
+"This question was rejected on Hepsiburada and can no longer be answered."
 msgstr ""
 
 #. module: hepsiburada_integration
