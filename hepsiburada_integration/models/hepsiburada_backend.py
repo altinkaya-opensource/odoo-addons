@@ -927,6 +927,36 @@ class HepsiburadaBackend(models.Model):
                 )
                 break
 
+        if not fetch_errors:
+            refresh_before = fields.Datetime.now() - timedelta(hours=6)
+            expired_questions = Question.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("hb_status", "=", "waiting_merchant"),
+                    ("expire_date", "!=", False),
+                    ("expire_date", "<=", fields.Datetime.now()),
+                    "|",
+                    ("last_status_refresh", "=", False),
+                    ("last_status_refresh", "<=", refresh_before),
+                ],
+                order="expire_date, id",
+                limit=100,
+            )
+            for question in expired_questions:
+                try:
+                    with self.env.cr.savepoint():
+                        question._refresh_remote_state(client)
+                        total_imported += 1
+                except Exception as error:
+                    record_errors.append(
+                        f"question {question.hb_issue_number}: {error}"
+                    )
+                    _logger.exception(
+                        "Failed to refresh expired question %s: %s",
+                        question.hb_issue_number,
+                        error,
+                    )
+
         errors = fetch_errors + record_errors
         vals = {
             "last_question_sync_error": "\n".join(errors[-20:]) if errors else False
