@@ -32,7 +32,7 @@ class StockWarehouseOrderpoint(models.Model):
     def _get_product_context(self, visibility_days=0):
         """Inherited to add included_location_ids on stock.location model."""
         res = super()._get_product_context(visibility_days)
-        res["location_id"] = [
+        res["location"] = [
             self.location_id.id,
             *self.location_id.included_location_ids.ids,
         ]
