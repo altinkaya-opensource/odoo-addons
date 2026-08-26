@@ -223,6 +223,30 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
                 f"action_report_ewaybill_{warehouse_name_suffix}"
             )
             invoice = picking.ewaybill_id  # use ewaybill instead of invoice for report
+        elif (
+            sale_id.create_ewaybill_within_invoice
+            and "l10n_tr_edispatch_uuid" in picking._fields
+            and picking.l10n_tr_edispatch_uuid
+        ):
+            picking.l10n_tr_edispatch_print_requested = True
+            if picking.l10n_tr_edispatch_state in (
+                False,
+                "draft",
+                "failed",
+                "exception",
+            ):
+                picking.action_l10n_tr_edispatch_queue()
+            elif (
+                picking.l10n_tr_edispatch_state in ("waiting", "completed")
+                and picking.l10n_tr_edispatch_pdf_id
+            ):
+                picking._l10n_tr_edispatch_print_after_acceptance()
+                picking.l10n_tr_edispatch_print_requested = False
+
+            # The Nilvera job prints the final e-dispatch only after the upload
+            # is accepted. The cargo label can still be printed immediately.
+            picking.action_print_delivery_documents()
+            return True
         else:
             report_ref = (
                 "l10n_tr_account_einvoice_base."
