@@ -225,8 +225,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
             invoice = picking.ewaybill_id  # use ewaybill instead of invoice for report
         elif (
             sale_id.create_ewaybill_within_invoice
-            and "l10n_tr_edispatch_uuid" in picking._fields
-            and picking.l10n_tr_edispatch_uuid
+            and hasattr(picking, "_has_electronic_waybill")
+            and picking._has_electronic_waybill()
         ):
             picking.l10n_tr_edispatch_print_requested = True
             if picking.l10n_tr_edispatch_state in (
