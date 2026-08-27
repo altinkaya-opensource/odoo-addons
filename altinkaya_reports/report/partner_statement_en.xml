@@ -31,7 +31,7 @@
             <div class="row" style="border-bottom:2px solid black;margin">
                 <div class="col-7" style="font-size:8pt">
                     <img
-                        src="/altinkaya_reports/static/img/altinkaya.svg"
+                        src="/altinkaya_reports/static/img/altinkaya-logo-en.svg"
                         style="max-height:24px"
                     />
                     <br />
@@ -42,11 +42,11 @@
                         TİC. A.Ş.
                     </strong>
                     <br />
-                    <span>İvedikosb Mah. 1469. sk, No:10</span>
+                    <span>1231. Cd. No:1</span>
                     <br />
-                    <span>İvedik OSB</span>
+                    <span>Ostim OSB</span>
                     <br />
-                    <span>06378 Yenimahalle / ANKARA</span>
+                    <span>06374 Yenimahalle / ANKARA</span>
                 </div>
                 <div class="col-5">
                     <strong class="text-end" style="font-size:12pt">PARTNER STATEMENT
@@ -89,7 +89,7 @@
         <div class="footer">
             <div class="row" style="border-top:2px solid black;font-size:8pt">
                 <div class="col-12 text-center">
-                    <span>Phone: +90 850 432 25 15 | Fax: +90 312 395 2772 |
+                    <span>Phone: +90 850 432 25 15 |
                         www.altinkaya.com | VAT: 0610422947
                     </span>
                     <br />
