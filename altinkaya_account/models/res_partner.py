@@ -234,8 +234,16 @@ class ResPartner(models.Model):
     z_muhasebe_kodu = fields.Char(
         "Zirve Muhasebe kodu", size=64, required=False, translate=False
     )
-    z_receivable_export = fields.Char("Receivable Export", size=64, required=False)
-    z_payable_export = fields.Char("Payable Export", size=64, required=False)
+    # Do not copy ref/export codes: storefront signup copies the portal
+    # template user via res.users._inherits, which would otherwise reuse
+    # the template partner's ref (and the Zirve codes derived from it).
+    ref = fields.Char(copy=False)
+    z_receivable_export = fields.Char(
+        "Receivable Export", size=64, required=False, copy=False
+    )
+    z_payable_export = fields.Char(
+        "Payable Export", size=64, required=False, copy=False
+    )
     purchase_default_account_id = fields.Many2one(
         "account.account",
         required=False,
@@ -264,6 +272,33 @@ class ResPartner(models.Model):
             else:
                 record.due_days = 0
 
+    def _ref_is_taken(self, ref):
+        """Return whether ``ref`` is already used by a commercial partner."""
+        if not ref:
+            return False
+        return bool(
+            self.sudo()
+            .with_context(active_test=False)
+            .search([("ref", "=", ref), ("parent_id", "=", False)], limit=1)
+        )
+
+    def _ensure_unique_ref_vals(self, vals):
+        """Assign a unique sequence ref when the given one is missing or taken.
+
+        Storefront registration copies the portal template user. Because
+        ``res.users`` inherits ``res.partner``, that copy feeds the template's
+        ``ref`` into ``create()`` vals and ``base_partner_sequence`` then
+        skips sequence assignment. Replace a missing or colliding ref so
+        each commercial partner keeps unique Zirve export codes.
+        """
+        if not self._needs_ref(vals=vals):
+            return
+        ref = (vals.get("ref") or "").strip()
+        if ref:
+            vals["ref"] = ref
+        if not ref or self._ref_is_taken(ref):
+            vals["ref"] = self._get_next_ref(vals=vals)
+
     def _update_export_account_codes(self):
         """Update export account codes from the partner country and reference."""
         for partner in self.filtered(
@@ -282,6 +317,8 @@ class ResPartner(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            self._ensure_unique_ref_vals(vals)
         partners = super().create(vals_list)
         partners._update_export_account_codes()
         return partners

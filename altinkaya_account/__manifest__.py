@@ -4,7 +4,7 @@
 {
     "name": "Altinkaya Account",
     "summary": "Accounting Extension for Altinkaya Enclosures",
-    "version": "16.0.1.5.0",
+    "version": "16.0.1.6.0",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ismail Çağan Yılmaz, Altinkaya Enclosures",
     "license": "AGPL-3",
