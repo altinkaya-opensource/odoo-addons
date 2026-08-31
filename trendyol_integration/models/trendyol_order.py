@@ -3,10 +3,11 @@
 
 import json
 import logging
+import re
 from datetime import datetime
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
 from .trendyol_request import TrendyolAPIError
@@ -14,6 +15,7 @@ from .trendyol_request import TrendyolAPIError
 _logger = logging.getLogger(__name__)
 
 INDIVIDUAL_VAT = "11111111111"
+PLACEHOLDER_VATS = frozenset({INDIVIDUAL_VAT, "2222222222"})
 
 
 class TrendyolOrder(models.Model):
@@ -290,6 +292,106 @@ class TrendyolOrder(models.Model):
         return status_map.get(trendyol_status)
 
     @api.model
+    def _partner_vat_digits(self, vat):
+        """Return the digits-only form of a tax number."""
+        return re.sub(r"\D+", "", vat or "")
+
+    @api.model
+    def _sanitize_partner_vat(self, vat):
+        """Return a VAT that partner constraints accept, or False.
+
+        Trendyol tax numbers are often mistyped. An invalid VAT must not
+        abort the whole order import.
+        """
+        digits = self._partner_vat_digits(vat)
+        if not digits:
+            return False
+        if digits in PLACEHOLDER_VATS:
+            return digits
+        Partner = self.env["res.partner"]
+        candidates = [digits]
+        if len(digits) == 11:
+            candidates.extend((digits[:10], digits[1:]))
+        elif len(digits) > 11:
+            candidates.extend((digits[:11], digits[:10], digits[-11:], digits[-10:]))
+        check_vat_tr = getattr(Partner, "check_vat_tr", None)
+        seen = set()
+        for candidate in candidates:
+            if not candidate or candidate in seen:
+                continue
+            seen.add(candidate)
+            if check_vat_tr:
+                if check_vat_tr(candidate):
+                    return candidate
+                continue
+            if len(candidate) in (10, 11):
+                return candidate
+        return False
+
+    @api.model
+    def _is_duplicate_vat_conflict(self, exc, vat):
+        """Return True when partner create failed because this VAT already exists."""
+        if not vat:
+            return False
+        msg = (getattr(exc, "name", None) or str(exc) or "").lower()
+        vat_token = vat.lower()
+        vat_digits = self._partner_vat_digits(vat)
+        mentions_vat = (
+            "vat" in msg or vat_token in msg or (vat_digits and vat_digits in msg)
+        )
+        if not mentions_vat:
+            return False
+        return any(
+            token in msg
+            for token in (
+                "unique",
+                "already exist",
+                "already registered",
+                "duplicate",
+            )
+        )
+
+    @api.model
+    def _create_main_partner(self, Partner, partner_vals):
+        """Create the invoice partner, dropping an invalid VAT if needed."""
+        try:
+            with self.env.cr.savepoint():
+                return Partner.create(partner_vals)
+        except (ValidationError, UserError) as exc:
+            vat = partner_vals.get("vat")
+            if not vat or vat in PLACEHOLDER_VATS:
+                raise
+            if self._is_duplicate_vat_conflict(exc, vat):
+                domain = [
+                    ("vat", "=", vat),
+                    ("parent_id", "=", False),
+                ]
+                company_id = partner_vals.get("company_id")
+                if company_id:
+                    domain.append(("company_id", "in", [False, company_id]))
+                existing = Partner.search(domain, limit=1)
+                if existing:
+                    customer_id = partner_vals.get("trendyol_customer_id")
+                    if customer_id and not existing.trendyol_customer_id:
+                        existing.trendyol_customer_id = customer_id
+                    _logger.warning(
+                        "Reusing partner %s for Trendyol VAT %s after create error: %s",
+                        existing.display_name,
+                        vat,
+                        exc,
+                    )
+                    return existing
+            _logger.warning(
+                "Invalid VAT %s for Trendyol partner %s: %s; creating without VAT",
+                vat,
+                partner_vals.get("name"),
+                exc,
+            )
+            partner_vals = dict(partner_vals)
+            partner_vals["vat"] = False
+            return Partner.create(partner_vals)
+
+    @api.model
     def _get_or_create_partner(self, backend, order_data):
         """Get or create partner(s) from order data.
 
@@ -324,26 +426,28 @@ class TrendyolOrder(models.Model):
 
         customer_id = str(order_data.get("customerId", ""))
         invoice_address = order_data.get("invoiceAddress", {})
-        is_commercial = bool(invoice_address.get("taxNumber"))
+        raw_tax = (invoice_address.get("taxNumber") or "").strip()
+        vat = self._sanitize_partner_vat(raw_tax)
+        is_commercial = bool(raw_tax) and (
+            self._partner_vat_digits(raw_tax) not in PLACEHOLDER_VATS
+        )
 
         # For commercial orders, try VAT matching first
         # Skip matching for dummy/individual VAT to avoid address mismatches
-        if is_commercial:
-            vat = invoice_address.get("taxNumber", "").strip()
-            if vat and vat != INDIVIDUAL_VAT:
-                partner = Partner.search(
-                    [
-                        ("vat", "=", vat),
-                        ("company_id", "in", [False, backend.company_id.id]),
-                        ("parent_id", "=", False),
-                    ],
-                    limit=1,
-                )
-                if partner:
-                    # Update trendyol_customer_id if missing
-                    if customer_id and not partner.trendyol_customer_id:
-                        partner.trendyol_customer_id = customer_id
-                    return partner
+        if is_commercial and vat:
+            partner = Partner.search(
+                [
+                    ("vat", "=", vat),
+                    ("company_id", "in", [False, backend.company_id.id]),
+                    ("parent_id", "=", False),
+                ],
+                limit=1,
+            )
+            if partner:
+                # Update trendyol_customer_id if missing
+                if customer_id and not partner.trendyol_customer_id:
+                    partner.trendyol_customer_id = customer_id
+                return partner
 
         # Try to find by Trendyol customer ID
         if customer_id:
@@ -365,7 +469,8 @@ class TrendyolOrder(models.Model):
         partner_vals["trendyol_customer_id"] = customer_id
 
         if is_commercial:
-            partner_vals["vat"] = invoice_address.get("taxNumber", "").strip()
+            if vat:
+                partner_vals["vat"] = vat
             partner_vals["company_type"] = "company"
             tax_office = invoice_address.get("taxOffice", "").strip()
             if tax_office:
@@ -376,7 +481,7 @@ class TrendyolOrder(models.Model):
         else:
             partner_vals["vat"] = INDIVIDUAL_VAT
 
-        return Partner.create(partner_vals)
+        return self._create_main_partner(Partner, partner_vals)
 
     @api.model
     def _get_or_create_shipping_partner(self, backend, order_data, main_partner):
