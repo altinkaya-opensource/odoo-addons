@@ -122,3 +122,56 @@ class TestTrendyolOrder(TrendyolTestCase):
             self.backend._import_orders()
 
         self.assertEqual(self.backend.last_order_sync, old_cursor)
+
+    def test_sanitize_partner_vat_drops_invalid_number(self):
+        Order = self.env["trendyol.order"]
+        self.assertFalse(Order._sanitize_partner_vat("80012349540"))
+        self.assertFalse(Order._sanitize_partner_vat(""))
+        self.assertEqual(Order._sanitize_partner_vat("11111111111"), "11111111111")
+        self.assertEqual(Order._sanitize_partner_vat("2222222222"), "2222222222")
+
+    def test_sanitize_partner_vat_uses_valid_vkn_prefix(self):
+        Order = self.env["trendyol.order"]
+        PartnerClass = type(self.env["res.partner"])
+        with patch.object(
+            PartnerClass,
+            "check_vat_tr",
+            side_effect=lambda vat: vat == "8001234007",
+        ):
+            self.assertEqual(Order._sanitize_partner_vat("8001234007"), "8001234007")
+            self.assertEqual(Order._sanitize_partner_vat("80012340070"), "8001234007")
+
+    def test_main_partner_created_without_invalid_vat(self):
+        partner = self.env["trendyol.order"]._get_or_create_main_partner(
+            self.backend,
+            {
+                "customerId": "ty-cust-invalid-vat",
+                "invoiceAddress": {
+                    "company": "WARMER INNOVATION",
+                    "taxNumber": "80012349540",
+                    "firstName": "Ali",
+                    "lastName": "Yilmaz",
+                    "address1": "Test Street 1",
+                    "city": "Ankara",
+                    "countryCode": "TR",
+                },
+            },
+        )
+        self.assertEqual(partner.name, "WARMER INNOVATION")
+        self.assertFalse(partner.vat)
+        self.assertEqual(partner.company_type, "company")
+        self.assertEqual(partner.trendyol_customer_id, "ty-cust-invalid-vat")
+
+    def test_create_main_partner_drops_vat_on_validation_error(self):
+        Partner = self.env["res.partner"]
+        created = self.env["trendyol.order"]._create_main_partner(
+            Partner,
+            {
+                "name": "Bad VAT Co",
+                "vat": "80012349540",
+                "company_type": "company",
+                "country_id": self.env.ref("base.tr").id,
+            },
+        )
+        self.assertFalse(created.vat)
+        self.assertEqual(created.name, "Bad VAT Co")
