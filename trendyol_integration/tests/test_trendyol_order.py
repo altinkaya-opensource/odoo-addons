@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from odoo import fields
+from odoo.exceptions import ValidationError
 
 from .common import TrendyolTestCase
 
@@ -175,3 +176,101 @@ class TestTrendyolOrder(TrendyolTestCase):
         )
         self.assertFalse(created.vat)
         self.assertEqual(created.name, "Bad VAT Co")
+
+    def _patch_create_failing_on_vat(self, Partner, message_template):
+        PartnerClass = type(Partner)
+        real_create = PartnerClass.create
+
+        def create_side_effect(this, vals):
+            if isinstance(vals, dict) and vals.get("vat"):
+                raise ValidationError(message_template % vals["vat"])
+            return real_create(this, vals)
+
+        return patch.object(PartnerClass, "create", create_side_effect)
+
+    def test_create_main_partner_reuses_same_company_on_duplicate_vat(self):
+        Partner = self.env["res.partner"]
+        existing = Partner.create(
+            {
+                "name": "Same Company VAT",
+                "vat": "11111111110",
+                "company_id": self.env.company.id,
+            }
+        )
+        with self._patch_create_failing_on_vat(
+            Partner, "The VAT %s already exists in another partner."
+        ):
+            reused = self.env["trendyol.order"]._create_main_partner(
+                Partner,
+                {
+                    "name": "New Import",
+                    "vat": "11111111110",
+                    "company_id": self.env.company.id,
+                    "trendyol_customer_id": "ty-reuse-1",
+                    "company_type": "company",
+                    "country_id": self.env.ref("base.tr").id,
+                },
+            )
+
+        self.assertEqual(reused, existing)
+        self.assertEqual(existing.trendyol_customer_id, "ty-reuse-1")
+
+    def test_create_main_partner_does_not_reuse_other_company_on_duplicate_vat(self):
+        Partner = self.env["res.partner"]
+        other_company = self.env["res.company"].create({"name": "Other Trendyol Co"})
+        other = Partner.create(
+            {
+                "name": "Other Company VAT",
+                "vat": "11111111110",
+                "company_id": other_company.id,
+            }
+        )
+        with self._patch_create_failing_on_vat(
+            Partner, "The VAT %s already exists in another partner."
+        ):
+            created = self.env["trendyol.order"]._create_main_partner(
+                Partner,
+                {
+                    "name": "This Company Import",
+                    "vat": "11111111110",
+                    "company_id": self.env.company.id,
+                    "trendyol_customer_id": "ty-other-co",
+                    "company_type": "company",
+                    "country_id": self.env.ref("base.tr").id,
+                },
+            )
+
+        self.assertNotEqual(created, other)
+        self.assertFalse(created.vat)
+        self.assertEqual(created.trendyol_customer_id, "ty-other-co")
+        self.assertEqual(created.company_id, self.env.company)
+        self.assertFalse(other.trendyol_customer_id)
+
+    def test_create_main_partner_does_not_reuse_on_invalid_vat_error(self):
+        Partner = self.env["res.partner"]
+        decoy = Partner.create({"name": "Decoy VAT Partner"})
+        PartnerClass = type(Partner)
+        with (
+            self._patch_create_failing_on_vat(
+                Partner,
+                "The VAT number [%s] for partner [X] does not seem to be valid.",
+            ),
+            patch.object(PartnerClass, "search", return_value=decoy) as search_mock,
+        ):
+            created = self.env["trendyol.order"]._create_main_partner(
+                Partner,
+                {
+                    "name": "Invalid VAT Import",
+                    "vat": "80012349540",
+                    "company_id": self.env.company.id,
+                    "trendyol_customer_id": "ty-invalid-reuse",
+                    "company_type": "company",
+                    "country_id": self.env.ref("base.tr").id,
+                },
+            )
+
+        search_mock.assert_not_called()
+        self.assertNotEqual(created, decoy)
+        self.assertFalse(created.vat)
+        self.assertEqual(created.trendyol_customer_id, "ty-invalid-reuse")
+        self.assertFalse(decoy.trendyol_customer_id)

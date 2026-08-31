@@ -329,6 +329,29 @@ class TrendyolOrder(models.Model):
         return False
 
     @api.model
+    def _is_duplicate_vat_conflict(self, exc, vat):
+        """Return True when partner create failed because this VAT already exists."""
+        if not vat:
+            return False
+        msg = (getattr(exc, "name", None) or str(exc) or "").lower()
+        vat_token = vat.lower()
+        vat_digits = self._partner_vat_digits(vat)
+        mentions_vat = (
+            "vat" in msg or vat_token in msg or (vat_digits and vat_digits in msg)
+        )
+        if not mentions_vat:
+            return False
+        return any(
+            token in msg
+            for token in (
+                "unique",
+                "already exist",
+                "already registered",
+                "duplicate",
+            )
+        )
+
+    @api.model
     def _create_main_partner(self, Partner, partner_vals):
         """Create the invoice partner, dropping an invalid VAT if needed."""
         try:
@@ -338,21 +361,26 @@ class TrendyolOrder(models.Model):
             vat = partner_vals.get("vat")
             if not vat or vat in PLACEHOLDER_VATS:
                 raise
-            existing = Partner.search(
-                [
+            if self._is_duplicate_vat_conflict(exc, vat):
+                domain = [
                     ("vat", "=", vat),
                     ("parent_id", "=", False),
-                ],
-                limit=1,
-            )
-            if existing:
-                _logger.warning(
-                    "Reusing partner %s for Trendyol VAT %s after create error: %s",
-                    existing.display_name,
-                    vat,
-                    exc,
-                )
-                return existing
+                ]
+                company_id = partner_vals.get("company_id")
+                if company_id:
+                    domain.append(("company_id", "in", [False, company_id]))
+                existing = Partner.search(domain, limit=1)
+                if existing:
+                    customer_id = partner_vals.get("trendyol_customer_id")
+                    if customer_id and not existing.trendyol_customer_id:
+                        existing.trendyol_customer_id = customer_id
+                    _logger.warning(
+                        "Reusing partner %s for Trendyol VAT %s after create error: %s",
+                        existing.display_name,
+                        vat,
+                        exc,
+                    )
+                    return existing
             _logger.warning(
                 "Invalid VAT %s for Trendyol partner %s: %s; creating without VAT",
                 vat,
