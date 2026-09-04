@@ -50,6 +50,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <field name="qr_code" widget="image" class="oe_avatar" />
                     <group>
                         <field name="product_id" />
                         <field name="performed_by_id" />
