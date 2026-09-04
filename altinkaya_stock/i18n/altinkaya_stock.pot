@@ -687,6 +687,15 @@ msgid "Invoice Address"
 msgstr ""
 
 #. module: altinkaya_stock
+#. odoo-python
+#: code:addons/altinkaya_stock/models/stock_quant.py:0
+#, python-format
+msgid ""
+"It is not possible to unreserve more products of %s than you have in stock.\n"
+"Please contact your system administrator to rectify this issue."
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
 msgid "Is Pallet"
