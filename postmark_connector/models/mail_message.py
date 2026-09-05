@@ -21,4 +21,4 @@ class MailMessage(models.Model):
     _description = "Adds states to mails through postmark integration"
 
     sent_date = fields.Datetime(copy=False)
-    postmark_message_id = fields.Char(copy=False)
+    postmark_message_id = fields.Char(copy=False, index=True)
