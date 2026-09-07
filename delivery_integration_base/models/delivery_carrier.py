@@ -181,9 +181,10 @@ class DeliveryCarrier(models.Model):
 
         for picking in pickings:
             try:
-                method = f"{picking.delivery_type}_tracking_state_update"
-                if hasattr(picking.carrier_id, method):
-                    getattr(picking.carrier_id, method)(picking)
+                with self.env.cr.savepoint():
+                    method = f"{picking.delivery_type}_tracking_state_update"
+                    if hasattr(picking.carrier_id, method):
+                        getattr(picking.carrier_id, method)(picking)
             except Exception as exc:
                 _logger.error("Error updating picking %s state: %s", picking.name, exc)
 
