@@ -62,10 +62,19 @@ matching without creating another payment. Several order commissions may pay
 the same vendor invoice; that invoice can remain partially unpaid until all
 of its commissions are matched.
 
-When automatic settlement reconciliation is enabled, the normal import retries
-open commission payments created by this new flow. Its date window revisits
-transactions whose commission reference is still missing. Missing references
-or bills never fall back to matching the oldest open invoice.
+The daily settlement import separately refreshes missing commission invoice
+references, including old settlements whose customer payment or commission
+payment is already reconciled and rows without a payment yet. It queries only
+the date windows containing missing references, in batches of at most 15 days,
+and only updates existing reference metadata in those historical windows.
+This refresh also runs when automatic settlement reconciliation is disabled.
+Order webhooks do not provide these financial reference updates.
+
+When automatic settlement reconciliation is enabled, the same import retries
+open commission payments created by this new flow. A reference can arrive
+before its vendor bill: matching retries without another API refresh once the
+reference is known. Missing references or bills never fall back to matching
+the oldest open invoice.
 
 Historical payments are excluded from generic matching but are not enrolled in
 automatic invoice-specific matching. No migration removes their reconciliations

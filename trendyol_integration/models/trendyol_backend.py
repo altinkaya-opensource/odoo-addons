@@ -920,65 +920,18 @@ class TrendyolBackend(models.Model):
         else:
             start_date = end_date - timedelta(days=15)
 
-        # Revisit missing references only for payments created by the new flow.
-        # Legacy payments are not enrolled in automatic historical correction.
-        pending_dates = Settlement.search(
-            [
-                ("backend_id", "=", self.id),
-                ("commission_payment_id.trendyol_commission_auto_match", "=", True),
-                ("commission_payment_id.state", "=", "posted"),
-                ("commission_payment_id.is_reconciled", "=", False),
-                ("commission_invoice_number", "=", False),
-                ("transaction_date", "!=", False),
-            ]
-        ).mapped("transaction_date")
-        if pending_dates:
-            start_date = min(start_date, min(pending_dates) - timedelta(seconds=1))
-
         # Iterate in 15-day windows
         window_start = start_date
         total_imported = 0
 
         while window_start < end_date:
             window_end = min(window_start + timedelta(days=15), end_date)
-            start_ts = _utc_to_trendyol_ts(window_start)
-            end_ts = _utc_to_trendyol_ts(window_end)
-
-            try:
-                page = 0
-                while True:
-                    result = client.get_settlements(
-                        start_date=start_ts,
-                        end_date=end_ts,
-                        transaction_types="Sale,Return",
-                        page=page,
-                        size=500,
-                    )
-                    content = result.get("content", [])
-                    if not content:
-                        break
-
-                    for item in content:
-                        Settlement._import_settlement(self, item)
-                        total_imported += 1
-
-                    total_pages = result.get("totalPages")
-                    if total_pages is not None and page + 1 >= total_pages:
-                        break
-                    page += 1
-                    if page >= 1000:
-                        raise UserError(_("Settlement import page limit reached."))
-
-            except TrendyolAPIError as e:
-                _logger.error(
-                    "Failed to import settlements for window %s - %s: %s",
-                    window_start,
-                    window_end,
-                    str(e),
-                )
-                raise
-
+            total_imported += self._import_settlement_window(
+                client, window_start, window_end
+            )
             window_start = window_end
+
+        self._refresh_missing_commission_references(client)
 
         if self.auto_reconcile_settlements:
             settlements = Settlement.search(
@@ -1014,6 +967,72 @@ class TrendyolBackend(models.Model):
         _logger.info(
             "Imported %d settlements for backend %s", total_imported, self.name
         )
+
+    def _refresh_missing_commission_references(self, client):
+        """Refresh missing invoice metadata, including closed legacy settlements."""
+        self.ensure_one()
+        pending = self.env["trendyol.settlement"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("commission_amount", "!=", 0),
+                ("commission_invoice_number", "=", False),
+                ("transaction_date", "!=", False),
+            ]
+        )
+        # Invert the offset applied by _trendyol_ts_to_utc before choosing the
+        # API calendar day, including transactions near midnight.
+        pending_dates = sorted(
+            {
+                fields.Datetime.to_datetime((date + TRENDYOL_UTC_OFFSET).date())
+                for date in pending.mapped("transaction_date")
+            }
+        )
+        while pending_dates:
+            window_start = pending_dates[0]
+            window_limit = window_start + timedelta(days=15)
+            dates = [date for date in pending_dates if date < window_limit]
+            self._import_settlement_window(
+                client, window_start, dates[-1] + timedelta(days=1), pending
+            )
+            pending_dates = [date for date in pending_dates if date >= window_limit]
+
+    def _import_settlement_window(self, client, start_date, end_date, pending=None):
+        """Page through a window; a pending set restricts writes to its metadata."""
+        self.ensure_one()
+        Settlement = self.env["trendyol.settlement"]
+        pending_by_id = (
+            {row.trendyol_settlement_id: row for row in pending}
+            if pending is not None
+            else None
+        )
+        total_imported = 0
+        page = 0
+        while True:
+            result = client.get_settlements(
+                start_date=_utc_to_trendyol_ts(start_date),
+                end_date=_utc_to_trendyol_ts(end_date),
+                transaction_types="Sale,Return",
+                page=page,
+                size=500,
+            )
+            content = result.get("content", [])
+            if not content:
+                break
+            for item in content:
+                if pending_by_id is None:
+                    Settlement._import_settlement(self, item)
+                    total_imported += 1
+                else:
+                    row = pending_by_id.get(str(item.get("id")))
+                    if row:
+                        row._refresh_commission_reference(item)
+            total_pages = result.get("totalPages")
+            if total_pages is not None and page + 1 >= total_pages:
+                break
+            page += 1
+            if page >= 1000:
+                raise UserError(_("Settlement import page limit reached."))
+        return total_imported
 
     def _reconcile_pending_commissions(self):
         """Retry only new-flow payments; never automatically repair legacy ones."""

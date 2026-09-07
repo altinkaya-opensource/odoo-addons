@@ -9,6 +9,7 @@ from unittest.mock import Mock, patch
 from odoo import fields
 
 from ..models.trendyol_backend import _utc_to_trendyol_ts
+from ..models.trendyol_request import TrendyolAPIError
 from .common import TrendyolTestCase
 
 
@@ -127,7 +128,7 @@ class TestTrendyolSettlement(TrendyolTestCase):
                 ],
             }
         )
-        invoice.action_post()
+        self._post_fixture_invoice(invoice)
         order = self.env["trendyol.order"].create(
             {
                 "odoo_id": sale.id,
@@ -171,10 +172,17 @@ class TestTrendyolSettlement(TrendyolTestCase):
                 ],
             }
         )
-        bill.action_post()
+        self._post_fixture_invoice(bill)
         # Preserve the external vendor reference independently of entry numbering.
         bill.ref = reference
         return bill
+
+    def _post_fixture_invoice(self, invoice):
+        """Post accounting fixtures independently of deployment warning rules."""
+        if "ignore_exception" in invoice._fields:
+            invoice.ignore_exception = True
+        invoice.action_post()
+        self.assertEqual(invoice.state, "posted")
 
     def _payable_lines(self, move):
         """Return the document's open payable lines."""
@@ -275,15 +283,18 @@ class TestTrendyolSettlement(TrendyolTestCase):
         )
         client = SimpleNamespace(
             get_settlements=Mock(
-                return_value={
-                    "content": [
-                        {
-                            "id": row.trendyol_settlement_id,
-                            "commissionInvoiceSerialNumber": bill.ref,
-                        }
-                    ],
-                    "totalPages": 1,
-                }
+                side_effect=[
+                    {"content": [], "totalPages": 0},
+                    {
+                        "content": [
+                            {
+                                "id": row.trendyol_settlement_id,
+                                "commissionInvoiceSerialNumber": bill.ref,
+                            }
+                        ],
+                        "totalPages": 1,
+                    },
+                ]
             )
         )
         with patch.object(type(self.backend), "_get_api_client", return_value=client):
@@ -300,6 +311,156 @@ class TestTrendyolSettlement(TrendyolTestCase):
         )
         self.assertEqual(row.commission_invoice_number, bill.ref)
 
+    def test_daily_refresh_preserves_closed_legacy_payment_and_amounts(self):
+        order, invoice = self._prepare_payout_order()
+        row = self._create_settlement_row(order, "LEGACY-REFRESH", 15)
+        row.transaction_date = fields.Datetime.now() - timedelta(days=180)
+        row.raw_data = json.dumps({"commissionAmount": 15, "credit": 100})
+        row._reconcile()
+        payment = row.commission_payment_id
+        payment.trendyol_commission_auto_match = False
+        old = self._vendor_bill("DCF2026999900001", 15, "2026-01-21")
+        (self._payable_lines(payment.move_id) + self._payable_lines(old)).reconcile()
+        original_links = (
+            payment.move_id.line_ids.matched_credit_ids
+            | payment.move_id.line_ids.matched_debit_ids
+        )
+        target = self._vendor_bill("DCF2026999900002", 15)
+        self.backend.write(
+            {
+                "auto_reconcile_settlements": False,
+                "last_settlement_sync": fields.Datetime.now() - timedelta(days=1),
+            }
+        )
+        client = SimpleNamespace(
+            get_settlements=Mock(
+                side_effect=[
+                    {"content": []},
+                    {
+                        "content": [
+                            {
+                                "id": row.trendyol_settlement_id,
+                                "commissionInvoiceSerialNumber": target.ref,
+                                "commissionAmount": 999,
+                                "credit": 999,
+                            },
+                            {"id": "UNREQUESTED-HISTORY", "commissionAmount": 20},
+                        ],
+                        "totalPages": 1,
+                    },
+                ]
+            )
+        )
+        with patch.object(type(self.backend), "_get_api_client", return_value=client):
+            self.backend._import_settlements()
+        self.assertEqual(row.commission_invoice_number, target.ref)
+        self.assertEqual(row.commission_payment_id, payment)
+        self.assertEqual(payment.reconciled_bill_ids, old)
+        self.assertTrue(original_links.exists())
+        self.assertFalse(payment.trendyol_commission_auto_match)
+        self.assertEqual(row.state, "reconciled")
+        self.assertEqual(row.commission_match_state, "review")
+        self.assertEqual(row.commission_amount, 15)
+        self.assertEqual(json.loads(row.raw_data)["commissionAmount"], 15)
+        self.assertEqual(json.loads(row.raw_data)["credit"], 100)
+        self.assertEqual(invoice.amount_residual, 0)
+        self.assertEqual(target.amount_residual, 15)
+        self.assertFalse(
+            self.env["trendyol.settlement"].search(
+                [("trendyol_settlement_id", "=", "UNREQUESTED-HISTORY")]
+            )
+        )
+
+    def test_reference_refresh_pages_rows_without_payments_and_stops_when_filled(self):
+        _sale, order = self._create_sale_and_order()
+        row = self._create_settlement_row(order, "UNPAID-REFERENCE", 15)
+        row.transaction_date = fields.Datetime.now() - timedelta(days=90)
+        client = SimpleNamespace(
+            get_settlements=Mock(
+                side_effect=[
+                    {"content": [{"id": "UNREQUESTED-HISTORY"}], "totalPages": 2},
+                    {
+                        "content": [
+                            {
+                                "id": row.trendyol_settlement_id,
+                                "commissionInvoiceSerialNumber": "DCF2026999900002",
+                            }
+                        ],
+                        "totalPages": 2,
+                    },
+                ]
+            )
+        )
+        self.backend._refresh_missing_commission_references(client)
+        self.assertEqual(row.commission_invoice_number, "DCF2026999900002")
+        self.assertFalse(row.odoo_payment_id)
+        self.assertFalse(row.commission_payment_id)
+        self.assertEqual(
+            [call.kwargs["page"] for call in client.get_settlements.call_args_list],
+            [0, 1],
+        )
+        client.get_settlements.reset_mock()
+        self.backend._refresh_missing_commission_references(client)
+        client.get_settlements.assert_not_called()
+
+    def test_reference_refresh_uses_sparse_windows_and_trendyol_midnight(self):
+        _sale, order = self._create_sale_and_order()
+        for index, date in enumerate(
+            [
+                "2026-01-01 22:30:00",
+                "2026-01-15 22:30:00",
+                "2026-01-16 22:30:00",
+                "2026-07-01 22:30:00",
+            ]
+        ):
+            row = self._create_settlement_row(order, f"WINDOW-{index}", 15)
+            row.transaction_date = date
+        zero = self._create_settlement_row(order, "ZERO-COMMISSION", 0)
+        zero.transaction_date = "2025-01-01 12:00:00"
+        known = self._create_settlement_row(order, "KNOWN-REFERENCE", 15, "KNOWN")
+        known.transaction_date = "2025-02-01 12:00:00"
+        other_backend = self.backend.copy({"name": "Other Reference Backend"})
+        other = self._create_settlement_row(order, "OTHER-BACKEND", 15)
+        other.write(
+            {"backend_id": other_backend.id, "transaction_date": "2025-03-01 12:00:00"}
+        )
+        client = SimpleNamespace(get_settlements=Mock(return_value={"content": []}))
+        self.backend._refresh_missing_commission_references(client)
+        calls = client.get_settlements.call_args_list
+        expected = [
+            ("2026-01-02", "2026-01-17"),
+            ("2026-01-17", "2026-01-18"),
+            ("2026-07-02", "2026-07-03"),
+        ]
+        self.assertEqual(len(calls), len(expected))
+        for call, (start, end) in zip(calls, expected, strict=True):
+            self.assertEqual(
+                call.kwargs["start_date"],
+                _utc_to_trendyol_ts(fields.Datetime.to_datetime(start)),
+            )
+            self.assertEqual(
+                call.kwargs["end_date"],
+                _utc_to_trendyol_ts(fields.Datetime.to_datetime(end)),
+            )
+
+    def test_failed_reference_refresh_keeps_import_watermark(self):
+        _sale, order = self._create_sale_and_order()
+        row = self._create_settlement_row(order, "FAILED-REFERENCE", 15)
+        row.transaction_date = fields.Datetime.now() - timedelta(days=90)
+        previous_sync = fields.Datetime.now() - timedelta(days=1)
+        self.backend.last_settlement_sync = previous_sync
+        client = SimpleNamespace(
+            get_settlements=Mock(
+                side_effect=[{"content": []}, TrendyolAPIError("Finance unavailable")]
+            )
+        )
+        with patch.object(type(self.backend), "_get_api_client", return_value=client):
+            with self.assertRaises(TrendyolAPIError):
+                self.backend._import_settlements()
+        self.assertEqual(self.backend.last_settlement_sync, previous_sync)
+        self.assertFalse(row.commission_invoice_number)
+        self.assertFalse(row.commission_payment_id)
+
     def test_legacy_open_payments_are_protected_but_not_automatically_matched(self):
         order, _invoice = self._prepare_payout_order()
         row = self._create_settlement_row(order, "LEGACY-OPEN", 15)
@@ -314,6 +475,7 @@ class TestTrendyolSettlement(TrendyolTestCase):
                 "commissionInvoiceSerialNumber": bill.ref,
             },
         )
+        self.assertEqual(row.commission_match_state, "review")
         self.backend._reconcile_pending_commissions()
         row.action_reconcile_commission()
         self.env["account.auto.reconcile"].reconcile_partner(

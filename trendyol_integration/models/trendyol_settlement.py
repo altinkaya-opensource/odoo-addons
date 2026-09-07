@@ -230,7 +230,10 @@ class TrendyolSettlement(models.Model):
                 {
                     "commission_invoice_id": False,
                     "commission_match_state": "review"
-                    if self.commission_payment_id.is_reconciled
+                    if (
+                        not self.commission_payment_id.trendyol_commission_auto_match
+                        or self.commission_payment_id.is_reconciled
+                    )
                     else "waiting",
                     "commission_match_note": _(
                         "The API commission invoice reference was updated. "
