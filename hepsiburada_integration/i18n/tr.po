@@ -3954,3 +3954,87 @@ msgstr "İptal Edildi"
 
 #~ msgid "Waiting Customer"
 #~ msgstr "Müşteri Bekleniyor"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_enabled
+msgid "Enable Webhooks"
+msgstr "Webhook'ları Etkinleştir"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Generate Webhook Credentials"
+msgstr "Webhook Erişim Bilgilerini Oluştur"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Hepsiburada webhook refresh failed; retrying."
+msgstr "Hepsiburada webhook yenilemesi başarısız oldu; yeniden denenecek."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid JSON"
+msgstr "Geçersiz JSON"
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid payload"
+msgstr "Geçersiz bildirim verisi"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Notifications trigger an immediate refresh from the\n"
+"                                Hepsiburada API. Scheduled polling remains available\n"
+"                                independently as a fallback."
+msgstr ""
+"Bildirimler, Hepsiburada API üzerinden hemen yenileme başlatır. Zamanlanmış "
+"sorgulama, yedek olarak bağımsız şekilde kullanılmaya devam eder."
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Refresh Hepsiburada orders after webhook: %s"
+msgstr "Webhook sonrası Hepsiburada siparişlerini yenile: %s"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Share this base URL and the dedicated webhook credentials\n"
+"                                with Hepsiburada. Complete their test-environment onboarding\n"
+"                                before enabling production notifications."
+msgstr ""
+"Bu temel adresi ve webhook için oluşturulan erişim bilgilerini Hepsiburada "
+"ile paylaşın. Canlı ortam bildirimlerini etkinleştirmeden önce Hepsiburada "
+"test ortamındaki kurulum sürecini tamamlayın."
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_package__hb_status__unpacked
+msgid "Unpacked"
+msgstr "Paketi Bozuldu"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_url
+msgid "Webhook Base URL"
+msgstr "Webhook Temel Adresi"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_password
+msgid "Webhook Password"
+msgstr "Webhook Parolası"
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_username
+msgid "Webhook Username"
+msgstr "Webhook Kullanıcı Adı"
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Webhooks"
+msgstr "Webhook'lar"

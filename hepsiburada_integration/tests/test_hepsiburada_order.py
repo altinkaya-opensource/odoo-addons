@@ -157,6 +157,7 @@ class TestHepsiburadaOrder(HepsiburadaCommon):
                 "location_dest_id": self.env.ref("stock.stock_location_customers").id,
                 "partner_id": binding.odoo_id.partner_id.id,
                 "group_id": group.id,
+                "sale_id": binding.odoo_id.id,
             }
         )
 

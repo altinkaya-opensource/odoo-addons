@@ -3920,3 +3920,82 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
 msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_enabled
+msgid "Enable Webhooks"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Generate Webhook Credentials"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Hepsiburada webhook refresh failed; retrying."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid JSON"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid payload"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Notifications trigger an immediate refresh from the\n"
+"                                Hepsiburada API. Scheduled polling remains available\n"
+"                                independently as a fallback."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Refresh Hepsiburada orders after webhook: %s"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Share this base URL and the dedicated webhook credentials\n"
+"                                with Hepsiburada. Complete their test-environment onboarding\n"
+"                                before enabling production notifications."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_package__hb_status__unpacked
+msgid "Unpacked"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_url
+msgid "Webhook Base URL"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_password
+msgid "Webhook Password"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_username
+msgid "Webhook Username"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Webhooks"
+msgstr ""
