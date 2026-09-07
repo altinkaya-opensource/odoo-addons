@@ -7174,3 +7174,224 @@ msgstr "Yanıtsız"
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__waiting_fraud_check
 msgid "Waiting Fraud Check"
 msgstr "Fraud Kontrolü Bekliyor"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_id
+msgid "Commission Invoice"
+msgstr "Komisyon Faturası"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_number
+msgid "Commission Invoice Number"
+msgstr "Komisyon Fatura Numarası"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_note
+msgid "Commission Match Note"
+msgstr "Komisyon Eşleştirme Notu"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_state
+msgid "Commission Match State"
+msgstr "Komisyon Eşleştirme Durumu"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#, python-format
+msgid "Commission Matching"
+msgstr "Komisyon Eşleştirme"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr "Komisyon, belirtilen tedarikçi belgesiyle uzlaştırıldı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr "Komisyon eşleştirmesi bekliyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Customer Payment Reconciled"
+msgstr "Müşteri Tahsilatı Uzlaştırıldı"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_account_payment__trendyol_commission_auto_match
+msgid ""
+"Enabled only for commission payments created by the invoice-specific "
+"matching flow. Legacy payments require a separately reviewed correction."
+msgstr ""
+"Yalnızca faturaya özel eşleştirme akışında oluşturulan komisyon ödemeleri "
+"için etkinleştirilir. Eski ödemeler için ayrı bir inceleme ve düzeltme "
+"gerekir."
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__is_trendyol_commission
+msgid "Is Trendyol Commission"
+msgstr "Trendyol Komisyonu"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Legacy commission payments require a separately reviewed correction. No "
+"payment reconciliation was changed."
+msgstr ""
+"Eski komisyon ödemeleri için ayrı bir inceleme ve düzeltme gerekir. Ödeme "
+"uzlaşmalarında değişiklik yapılmadı."
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+msgid "Match Commission Invoice"
+msgstr "Komisyon Faturasıyla Uzlaştır"
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr "Uzlaştırıldı"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
+msgstr ""
+"Bu komisyon fatura referansına sahip birden fazla tedarikçi belgesi var."
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
+msgstr "İnceleme Gerekli"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+"Komisyon ödemesinin tutarı, hakediş satırlarının toplamıyla uyuşmuyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr "Komisyon ödemesi ile tedarikçi belgesinin para birimleri farklı."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr ""
+"Komisyon ödemesi, belirtilen tedarikçi belgesinin kalan bakiyesini aşıyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+"Komisyon ödemesi başka bir belgeyle uzlaştırılmış. Mevcut uzlaşmalar "
+"korundu."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr "Komisyon ödemesi, ilgili tedarikçi belgesine bağlanmadan kapanmış."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the Trendyol "
+"backend."
+msgstr ""
+"Komisyon ödemesinin iş ortağı veya şirketi Trendyol yapılandırmasıyla "
+"uyuşmuyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
+msgstr "Tedarikçi belgesinde uyumlu ve açık bir satıcı hesabı satırı yok."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr ""
+"Bu ödeme birden fazla komisyon faturası referansını kapsıyor. İnceleme "
+"gerekiyor."
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_auto_match
+msgid "Trendyol Commission Auto Match"
+msgstr "Trendyol Komisyonu Otomatik Eşleştirme"
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_settlement_ids
+msgid "Trendyol Commission Settlement"
+msgstr "Trendyol Komisyon Hakedişi"
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr "Bekliyor"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from Trendyol."
+msgstr "Trendyol komisyon fatura numarası bekleniyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr "Komisyon ödemesinin onaylanması bekleniyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Waiting for the referenced DSM vendor bill or credit note to be posted."
+msgstr ""
+"Belirtilen DSM tedarikçi faturasının veya iade faturasının onaylanması "
+"bekleniyor."
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The API commission invoice reference was updated. Existing payment "
+"reconciliations were preserved."
+msgstr ""
+"API komisyon faturası referansı güncellendi. Mevcut ödeme uzlaşmaları "
+"korundu."

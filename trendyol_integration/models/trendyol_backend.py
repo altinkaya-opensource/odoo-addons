@@ -920,6 +920,21 @@ class TrendyolBackend(models.Model):
         else:
             start_date = end_date - timedelta(days=15)
 
+        # Revisit missing references only for payments created by the new flow.
+        # Legacy payments are not enrolled in automatic historical correction.
+        pending_dates = Settlement.search(
+            [
+                ("backend_id", "=", self.id),
+                ("commission_payment_id.trendyol_commission_auto_match", "=", True),
+                ("commission_payment_id.state", "=", "posted"),
+                ("commission_payment_id.is_reconciled", "=", False),
+                ("commission_invoice_number", "=", False),
+                ("transaction_date", "!=", False),
+            ]
+        ).mapped("transaction_date")
+        if pending_dates:
+            start_date = min(start_date, min(pending_dates) - timedelta(seconds=1))
+
         # Iterate in 15-day windows
         window_start = start_date
         total_imported = 0
@@ -993,10 +1008,37 @@ class TrendyolBackend(models.Model):
                         str(error),
                     )
 
+            self._reconcile_pending_commissions()
+
         self.last_settlement_sync = end_date
         _logger.info(
             "Imported %d settlements for backend %s", total_imported, self.name
         )
+
+    def _reconcile_pending_commissions(self):
+        """Retry only new-flow payments; never automatically repair legacy ones."""
+        self.ensure_one()
+        Settlement = self.env["trendyol.settlement"]
+        pending_commissions = Settlement.search(
+            [
+                ("backend_id", "=", self.id),
+                ("commission_payment_id.trendyol_commission_auto_match", "=", True),
+                ("commission_payment_id.state", "=", "posted"),
+                ("commission_payment_id.is_reconciled", "=", False),
+            ]
+        ).commission_payment_id
+        for payment in pending_commissions:
+            settlement = payment.trendyol_commission_settlement_ids[:1]
+            try:
+                with self.env.cr.savepoint():
+                    settlement._reconcile_commission_invoice()
+            except Exception as error:
+                payment.trendyol_commission_settlement_ids._set_commission_match(
+                    "review", str(error)
+                )
+                _logger.exception(
+                    "Failed to match Trendyol commission payment %s", payment.id
+                )
 
     def action_view_settlements(self):
         """View settlements for this backend."""

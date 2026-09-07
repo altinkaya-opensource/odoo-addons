@@ -75,6 +75,15 @@ class TrendyolSettlement(models.Model):
     commission_payment_id = fields.Many2one(
         "account.payment",
     )
+    commission_invoice_number = fields.Char(
+        compute="_compute_commission_invoice_number", store=True, index=True
+    )
+    commission_invoice_id = fields.Many2one("account.move", readonly=True)
+    commission_match_state = fields.Selection(
+        [("waiting", "Waiting"), ("matched", "Matched"), ("review", "Review Required")],
+        readonly=True,
+    )
+    commission_match_note = fields.Text(readonly=True)
 
     # Status
     state = fields.Selection(
@@ -108,6 +117,17 @@ class TrendyolSettlement(models.Model):
         """Parse Trendyol timestamp (ms, GMT+3) to naive UTC datetime."""
         return _trendyol_ts_to_utc(timestamp)
 
+    @api.depends("raw_data")
+    def _compute_commission_invoice_number(self):
+        """Keep the API invoice reference, including existing stored payloads."""
+        for settlement in self:
+            try:
+                data = json.loads(settlement.raw_data or "{}")
+                number = (data.get("commissionInvoiceSerialNumber") or "").strip()
+            except (ValueError, TypeError, AttributeError):
+                number = False
+            settlement.commission_invoice_number = number or False
+
     @api.model
     def _import_settlement(self, backend, data):
         """Import a single settlement from Trendyol API response.
@@ -133,6 +153,7 @@ class TrendyolSettlement(models.Model):
             limit=1,
         )
         if existing:
+            existing._refresh_commission_reference(data)
             return existing
 
         # Find linked trendyol.order
@@ -190,6 +211,35 @@ class TrendyolSettlement(models.Model):
             _logger.error("Failed to import settlement %s: %s", settlement_id, str(e))
             raise
 
+    def _refresh_commission_reference(self, data):
+        """Refresh metadata without rewriting posted amounts or reconciliation links."""
+        self.ensure_one()
+        number = (data.get("commissionInvoiceSerialNumber") or "").strip()
+        if not number or number == self.commission_invoice_number:
+            return
+        try:
+            stored_data = json.loads(self.raw_data or "{}")
+        except (ValueError, TypeError):
+            stored_data = {}
+        if not isinstance(stored_data, dict):
+            stored_data = {}
+        stored_data["commissionInvoiceSerialNumber"] = number
+        values = {"raw_data": json.dumps(stored_data, indent=2, ensure_ascii=False)}
+        if self.commission_payment_id:
+            values.update(
+                {
+                    "commission_invoice_id": False,
+                    "commission_match_state": "review"
+                    if self.commission_payment_id.is_reconciled
+                    else "waiting",
+                    "commission_match_note": _(
+                        "The API commission invoice reference was updated. "
+                        "Existing payment reconciliations were preserved."
+                    ),
+                }
+            )
+        self.write(values)
+
     def _marketplace_name(self):
         return _("Trendyol")
 
@@ -237,6 +287,13 @@ class TrendyolSettlement(models.Model):
             for amount in self._get_reconciliation_group().mapped("commission_amount")
         )
 
+    def _create_commission_payment(self, payment_type):
+        """Opt in only newly created payments to invoice-specific matching."""
+        payment = super()._create_commission_payment(payment_type)
+        if payment:
+            payment.trendyol_commission_auto_match = True
+        return payment
+
     def _reconcile(self):
         """Reconcile all rows for one package payout exactly once."""
         self.ensure_one()
@@ -251,6 +308,7 @@ class TrendyolSettlement(models.Model):
         )
         if reconciled:
             self._join_reconciled_group(group, reconciled)
+            self._reconcile_commission_invoice()
             return
 
         super()._reconcile()
@@ -265,6 +323,7 @@ class TrendyolSettlement(models.Model):
                     "manual_review_required": False,
                 }
             )
+            self._reconcile_commission_invoice()
         elif self.state == "error":
             (group - self).write(
                 {
@@ -315,3 +374,215 @@ class TrendyolSettlement(models.Model):
                 ),
             }
         )
+
+    def _set_commission_match(self, state, note=False, invoice=False):
+        """Report commission matching separately from customer reconciliation."""
+        values = {
+            "commission_match_state": state,
+            "commission_match_note": note,
+            "commission_invoice_id": invoice.id if invoice else False,
+        }
+        self.write(values)
+        return state == "matched"
+
+    def _reconcile_commission_invoice(self):
+        """Match a commission payment only to the vendor document named by the API."""
+        self.ensure_one()
+        payment = self.commission_payment_id
+        if not payment:
+            return False
+        rows = payment.trendyol_commission_settlement_ids
+        if not payment.trendyol_commission_auto_match:
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "Legacy commission payments require a separately reviewed "
+                    "correction. "
+                    "No payment reconciliation was changed."
+                ),
+            )
+        currency = payment.currency_id
+        charged_rows = rows.filtered(
+            lambda row: not currency.is_zero(row.commission_amount)
+        )
+        numbers = set(charged_rows.mapped("commission_invoice_number"))
+        if not numbers or False in numbers:
+            return rows._set_commission_match(
+                "waiting", _("Waiting for the commission invoice number from Trendyol.")
+            )
+        if len(numbers) != 1:
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "This payment covers multiple commission invoice references. "
+                    "Review is required."
+                ),
+            )
+        backend = self.backend_id
+        supplier = backend.trendyol_partner_id.commercial_partner_id
+        if (
+            len(rows.backend_id) != 1
+            or payment.partner_type != "supplier"
+            or payment.partner_id.commercial_partner_id != supplier
+            or payment.company_id != backend.company_id
+        ):
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "The commission payment partner or company does not match "
+                    "the Trendyol backend."
+                ),
+            )
+        if payment.state != "posted":
+            return rows._set_commission_match(
+                "waiting", _("Waiting for the commission payment to be posted.")
+            )
+        if currency.compare_amounts(
+            sum(abs(row.commission_amount) for row in rows), payment.amount
+        ):
+            return rows._set_commission_match(
+                "review",
+                _("The commission payment amount differs from its settlement rows."),
+            )
+        invoice_number = numbers.pop()
+        invoices = self.env["account.move"].search(
+            [
+                ("company_id", "=", backend.company_id.id),
+                ("commercial_partner_id", "=", supplier.id),
+                (
+                    "move_type",
+                    "=",
+                    "in_invoice" if payment.payment_type == "outbound" else "in_refund",
+                ),
+                ("state", "=", "posted"),
+                "|",
+                ("ref", "=", invoice_number),
+                ("name", "=", invoice_number),
+            ],
+            limit=2,
+        )
+        if not invoices:
+            return rows._set_commission_match(
+                "waiting",
+                _(
+                    "Waiting for the referenced DSM vendor bill or credit note "
+                    "to be posted."
+                ),
+            )
+        if len(invoices) != 1:
+            return rows._set_commission_match(
+                "review",
+                _("Multiple vendor documents have this commission invoice reference."),
+            )
+        invoice = invoices
+        if invoice.currency_id != currency:
+            return rows._set_commission_match(
+                "review",
+                _("The commission payment and vendor document currencies differ."),
+                invoice,
+            )
+        payment_lines = payment.move_id.line_ids.filtered(
+            lambda line: line.account_type == "liability_payable"
+        )
+        partials = payment_lines.matched_debit_ids | payment_lines.matched_credit_ids
+        counterpart_lines = (
+            partials.debit_move_id | partials.credit_move_id
+        ) - payment_lines
+        if counterpart_lines.filtered(lambda line: line.move_id != invoice):
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "The commission payment is already reconciled with another "
+                    "document. "
+                    "Existing reconciliations were preserved."
+                ),
+                invoice,
+            )
+        if payment.is_reconciled:
+            if counterpart_lines:
+                return rows._set_commission_match("matched", invoice=invoice)
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "The commission payment is closed without a matching "
+                    "vendor document."
+                ),
+                invoice,
+            )
+        payment_lines = payment_lines.filtered(lambda line: not line.reconciled)
+        invoice_lines = invoice.line_ids.filtered(
+            lambda line: (
+                line.account_type == "liability_payable" and not line.reconciled
+            )
+        )
+        if (
+            not payment_lines
+            or not invoice_lines
+            or len(payment_lines.account_id) != 1
+            or payment_lines.account_id != invoice_lines.account_id
+            or sum(payment_lines.mapped("balance"))
+            * sum(invoice_lines.mapped("balance"))
+            >= 0
+        ):
+            return rows._set_commission_match(
+                "review",
+                _("The vendor document has no compatible open payable lines."),
+                invoice,
+            )
+        residual_field = (
+            "amount_residual"
+            if currency == backend.company_id.currency_id
+            else "amount_residual_currency"
+        )
+        payment_remaining = abs(sum(payment_lines.mapped(residual_field)))
+        invoice_remaining = abs(sum(invoice_lines.mapped(residual_field)))
+        if currency.compare_amounts(payment_remaining, invoice_remaining) > 0:
+            return rows._set_commission_match(
+                "review",
+                _(
+                    "The commission payment exceeds the referenced vendor "
+                    "document's remaining balance."
+                ),
+                invoice,
+            )
+        (payment_lines + invoice_lines).reconcile()
+        return rows._set_commission_match("matched", invoice=invoice)
+
+    def action_reconcile(self):
+        """Make a waiting commission explicit after successful customer collection."""
+        self.ensure_one()
+        action = super().action_reconcile()
+        if (
+            self.state == "reconciled"
+            and self.commission_payment_id
+            and self.commission_match_state != "matched"
+        ):
+            action["params"].update(
+                {
+                    "title": _("Customer Payment Reconciled"),
+                    "message": self.commission_match_note
+                    or _("Commission matching is pending."),
+                    "type": "warning",
+                }
+            )
+        return action
+
+    def action_reconcile_commission(self):
+        """Retry invoice-specific matching without creating another payment."""
+        self.ensure_one()
+        matched = self._reconcile_commission_invoice()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Commission Matching"),
+                "message": self.commission_match_note
+                or (
+                    _("Commission matched to the referenced vendor document.")
+                    if matched
+                    else _("Commission matching is pending.")
+                ),
+                "type": "success" if matched else "warning",
+                "sticky": not matched,
+            },
+        }
