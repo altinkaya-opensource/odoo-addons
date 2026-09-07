@@ -4,15 +4,103 @@
 import json
 from datetime import timedelta
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from odoo import fields
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 from .common import TrendyolTestCase
 
 
 class TestTrendyolOrder(TrendyolTestCase):
+    def test_missing_customer_identity_never_reuses_a_placeholder_partner(self):
+        Partner = self.env["res.partner"]
+        for customer_id in (0, "0", None, False, "", " ", "None", "False", -1):
+            with self.subTest(customer_id=customer_id):
+                placeholder = Partner.create(
+                    {
+                        "name": "Placeholder Customer",
+                        "trendyol_customer_id": str(customer_id),
+                    }
+                )
+                partner_count = Partner.search_count([])
+                with self.assertRaises(UserError):
+                    self.env["trendyol.order"]._get_or_create_main_partner(
+                        self.backend,
+                        {
+                            "customerId": customer_id,
+                            "invoiceAddress": {"fullName": "Different Customer"},
+                        },
+                    )
+                self.assertEqual(Partner.search_count([]), partner_count)
+                self.assertEqual(placeholder.trendyol_customer_id, str(customer_id))
+
+    def test_valid_customer_identity_reuses_the_matching_customer(self):
+        partner = self.env["res.partner"].create(
+            {"name": "Known Customer", "trendyol_customer_id": "987654321"}
+        )
+        for customer_id in (987654321, "987654321"):
+            with self.subTest(customer_id=customer_id):
+                imported = self.env["trendyol.order"]._get_or_create_main_partner(
+                    self.backend, {"customerId": customer_id}
+                )
+                self.assertEqual(imported, partner)
+
+    def test_vat_match_replaces_placeholder_customer_identity(self):
+        partner = self.env["res.partner"].create(
+            {
+                "name": "Known Company",
+                "vat": "8001234007",
+                "trendyol_customer_id": "0",
+            }
+        )
+        imported = self.env["trendyol.order"]._get_or_create_main_partner(
+            self.backend,
+            {
+                "customerId": 987654321,
+                "invoiceAddress": {"taxNumber": partner.vat},
+            },
+        )
+        self.assertEqual(imported, partner)
+        self.assertEqual(partner.trendyol_customer_id, "987654321")
+
+    def test_customer_identity_refresh_preserves_corrected_order_partners(self):
+        sale, order = self._create_sale_and_order(package_id="CUSTOMER-REFRESH")
+        order.trendyol_customer_id = "0"
+        partners = (sale.partner_id, sale.partner_invoice_id, sale.partner_shipping_id)
+
+        order._update_from_trendyol_data({"status": "Created", "customerId": 987654321})
+        order._update_from_trendyol_data({"status": "Created", "customerId": 0})
+
+        self.assertEqual(order.trendyol_customer_id, "987654321")
+        self.assertEqual(
+            (sale.partner_id, sale.partner_invoice_id, sale.partner_shipping_id),
+            partners,
+        )
+
+    def test_missing_identity_keeps_polling_cursor_and_creates_no_order(self):
+        old_cursor = fields.Datetime.now() - timedelta(hours=1)
+        self.backend.last_order_sync = old_cursor
+        data = {
+            "shipmentPackageId": "MISSING-CUSTOMER",
+            "orderNumber": "MISSING-CUSTOMER",
+            "status": "Created",
+            "customerId": 0,
+            "invoiceAddress": {"fullName": "Different Customer"},
+        }
+        client = SimpleNamespace(
+            get_orders=lambda **_kwargs: {"content": [data], "totalPages": 1}
+        )
+        partner_count = self.env["res.partner"].search_count([])
+        order_count = self.env["sale.order"].search_count([])
+
+        with patch.object(type(self.backend), "_get_api_client", return_value=client):
+            self.backend._import_orders()
+
+        self.assertEqual(self.backend.last_order_sync, old_cursor)
+        self.assertEqual(self.env["res.partner"].search_count([]), partner_count)
+        self.assertEqual(self.env["sale.order"].search_count([]), order_count)
+
     def test_existing_order_refreshes_cargo_without_status_change(self):
         _sale, order = self._create_sale_and_order(status="created")
 
@@ -146,7 +234,7 @@ class TestTrendyolOrder(TrendyolTestCase):
         partner = self.env["trendyol.order"]._get_or_create_main_partner(
             self.backend,
             {
-                "customerId": "ty-cust-invalid-vat",
+                "customerId": 987654321,
                 "invoiceAddress": {
                     "company": "WARMER INNOVATION",
                     "taxNumber": "80012349540",
@@ -161,7 +249,7 @@ class TestTrendyolOrder(TrendyolTestCase):
         self.assertEqual(partner.name, "WARMER INNOVATION")
         self.assertFalse(partner.vat)
         self.assertEqual(partner.company_type, "company")
-        self.assertEqual(partner.trendyol_customer_id, "ty-cust-invalid-vat")
+        self.assertEqual(partner.trendyol_customer_id, "987654321")
 
     def test_create_main_partner_drops_vat_on_validation_error(self):
         Partner = self.env["res.partner"]
@@ -193,8 +281,9 @@ class TestTrendyolOrder(TrendyolTestCase):
         existing = Partner.create(
             {
                 "name": "Same Company VAT",
-                "vat": "11111111110",
+                "vat": "8001234007",
                 "company_id": self.env.company.id,
+                "trendyol_customer_id": "0",
             }
         )
         with self._patch_create_failing_on_vat(
@@ -204,16 +293,16 @@ class TestTrendyolOrder(TrendyolTestCase):
                 Partner,
                 {
                     "name": "New Import",
-                    "vat": "11111111110",
+                    "vat": "8001234007",
                     "company_id": self.env.company.id,
-                    "trendyol_customer_id": "ty-reuse-1",
+                    "trendyol_customer_id": "987654321",
                     "company_type": "company",
                     "country_id": self.env.ref("base.tr").id,
                 },
             )
 
         self.assertEqual(reused, existing)
-        self.assertEqual(existing.trendyol_customer_id, "ty-reuse-1")
+        self.assertEqual(existing.trendyol_customer_id, "987654321")
 
     def test_create_main_partner_does_not_reuse_other_company_on_duplicate_vat(self):
         Partner = self.env["res.partner"]
@@ -221,7 +310,7 @@ class TestTrendyolOrder(TrendyolTestCase):
         other = Partner.create(
             {
                 "name": "Other Company VAT",
-                "vat": "11111111110",
+                "vat": "8001234007",
                 "company_id": other_company.id,
             }
         )
@@ -232,7 +321,7 @@ class TestTrendyolOrder(TrendyolTestCase):
                 Partner,
                 {
                     "name": "This Company Import",
-                    "vat": "11111111110",
+                    "vat": "8001234007",
                     "company_id": self.env.company.id,
                     "trendyol_customer_id": "ty-other-co",
                     "company_type": "company",
@@ -249,16 +338,13 @@ class TestTrendyolOrder(TrendyolTestCase):
     def test_create_main_partner_does_not_reuse_on_invalid_vat_error(self):
         Partner = self.env["res.partner"]
         decoy = Partner.create({"name": "Decoy VAT Partner"})
-        PartnerClass = type(Partner)
-        with (
-            self._patch_create_failing_on_vat(
-                Partner,
-                "The VAT number [%s] for partner [X] does not seem to be valid.",
-            ),
-            patch.object(PartnerClass, "search", return_value=decoy) as search_mock,
+        search_mock = Mock(return_value=decoy)
+        with self._patch_create_failing_on_vat(
+            Partner,
+            "The VAT number [%s] for partner [X] does not seem to be valid.",
         ):
             created = self.env["trendyol.order"]._create_main_partner(
-                Partner,
+                SimpleNamespace(create=Partner.create, search=search_mock),
                 {
                     "name": "Invalid VAT Import",
                     "vat": "80012349540",
