@@ -7,6 +7,8 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from .hepsiburada_backend import _parse_hb_datetime
+
 _logger = logging.getLogger(__name__)
 
 TRANSACTION_TYPE_MAP = {
@@ -172,6 +174,7 @@ class HepsiburadaSettlement(models.Model):
             currency_code = amount_data.get("currencyCode") or currency_code
 
         try:
+            # Reject invalid dates instead of silently importing them as empty.
             vals = {
                 "backend_id": backend.id,
                 "hb_transaction_id": transaction_id,
@@ -179,7 +182,8 @@ class HepsiburadaSettlement(models.Model):
                 "hb_transaction_type": hb_transaction_type,
                 "is_income": is_income,
                 "is_invoice": data.get("isInvoice") is True,
-                "transaction_date": data.get("recordDate"),
+                "transaction_date": _parse_hb_datetime(data.get("recordDate"))
+                or fields.Datetime.to_datetime(data.get("recordDate")),
                 "order_number": order_number,
                 "package_number": str(data.get("packageNumber") or ""),
                 "sku": data.get("sku", ""),
@@ -194,7 +198,8 @@ class HepsiburadaSettlement(models.Model):
                 "tax_amount": self._numeric_value(data.get("taxAmount", 0.0)),
                 "quantity": self._numeric_value(data.get("quantity", 0.0)),
                 "currency_code": str(currency_code or "949"),
-                "payment_date": data.get("paymentDate"),
+                "payment_date": _parse_hb_datetime(data.get("paymentDate"))
+                or fields.Datetime.to_datetime(data.get("paymentDate")),
                 "payment_status": data.get("status", ""),
                 "invoice_number": data.get("invoiceNumber", ""),
                 "hb_order_id": hb_order.id if hb_order else False,

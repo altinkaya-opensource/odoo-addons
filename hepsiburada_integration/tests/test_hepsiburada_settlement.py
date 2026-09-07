@@ -1,12 +1,64 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
+from datetime import datetime
+
 from odoo import fields
+from odoo.tools import mute_logger
 
 from .common import HepsiburadaCommon
 
 
 class TestHepsiburadaSettlement(HepsiburadaCommon):
+    def test_import_settlement_parses_iso_dates(self):
+        settlement = self.env["hepsiburada.settlement"]._import_settlement(
+            self.backend,
+            {
+                "id": "iso-dates",
+                "recordDate": "2026-09-01T00:00:00",
+                "paymentDate": "2026-09-02T10:30:00.123",
+            },
+        )
+
+        self.assertEqual(settlement.transaction_date, datetime(2026, 9, 1))
+        self.assertEqual(
+            settlement.payment_date, datetime(2026, 9, 2, 10, 30, 0, 123000)
+        )
+
+    def test_import_settlement_updates_dates_in_utc(self):
+        settlement_model = self.env["hepsiburada.settlement"]
+        settlement = settlement_model._import_settlement(
+            self.backend, {"id": "updated-dates"}
+        )
+
+        updated = settlement_model._import_settlement(
+            self.backend,
+            {
+                "id": "updated-dates",
+                "recordDate": "2026-09-01T01:00:00+03:00",
+                "paymentDate": "2026-09-02T10:30:00Z",
+            },
+        )
+
+        self.assertEqual(updated, settlement)
+        self.assertEqual(updated.transaction_date, datetime(2026, 8, 31, 22))
+        self.assertEqual(updated.payment_date, datetime(2026, 9, 2, 10, 30))
+
+    def test_import_settlement_rejects_invalid_dates(self):
+        for field_name in ("recordDate", "paymentDate"):
+            with (
+                self.subTest(field_name=field_name),
+                mute_logger(
+                    "odoo.addons.hepsiburada_integration.models.hepsiburada_settlement"
+                ),
+                self.assertRaises(ValueError),
+                self.env.cr.savepoint(),
+            ):
+                self.env["hepsiburada.settlement"]._import_settlement(
+                    self.backend,
+                    {"id": f"invalid-{field_name}", field_name: "invalid-date"},
+                )
+
     def test_import_settlement_extracts_nested_amount(self):
         settlement = self.env["hepsiburada.settlement"]._import_settlement(
             self.backend,
@@ -20,6 +72,8 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
 
         self.assertEqual(settlement.amount, -408.0)
         self.assertEqual(settlement.currency_code, "949")
+        self.assertFalse(settlement.transaction_date)
+        self.assertFalse(settlement.payment_date)
 
     def test_will_be_paid_transaction_is_not_reconciled(self):
         settlement = self.env["hepsiburada.settlement"].create(
