@@ -274,6 +274,10 @@ body.o_web_client {
 
   .o_control_panel {
     background-color: $o-white;
+
+    .breadcrumb {
+      background-color: transparent;
+    }
   }
 
   .o_list_view .o_control_panel {
@@ -524,6 +528,26 @@ body.o_web_client {
     .badge.text-bg-#{$name} {
       color: $text !important;
       background-color: mix($tone, $o-view-background-color, 25%) !important;
+    }
+  }
+
+  .alert-warning {
+    background-color: $o-altinkaya-warning-bg;
+    border-color: $o-altinkaya-warning-border;
+    border-left-width: 3px;
+    color: $o-altinkaya-warning-text;
+
+    a[href]:not(.btn),
+    .btn-link,
+    .alert-link {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover,
+      &:focus-visible {
+        color: $o-main-headings-color;
+      }
     }
   }
 

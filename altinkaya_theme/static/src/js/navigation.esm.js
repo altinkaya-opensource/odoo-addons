@@ -1,12 +1,22 @@
 /** @odoo-module **/
-import {Component, useExternalListener, useState} from "@odoo/owl";
+import {
+  Component,
+  onWillDestroy,
+  useEffect,
+  useExternalListener,
+  useRef,
+  useState,
+} from "@odoo/owl";
 import {browser} from "@web/core/browser/browser";
 import {Dialog} from "@web/core/dialog/dialog";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
 import {useAutofocus, useBus, useService} from "@web/core/utils/hooks";
 import {patch} from "@web/core/utils/patch";
 import {NavBar} from "@web/webclient/navbar/navbar";
 import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
 import {searchMenuEntries} from "@altinkaya_theme/js/menu_search.esm";
+
+let nextMenuId = 0;
 
 /** Flatten the accessible menu tree, keeping group names as context. */
 function collectMenuEntries(nodes, parents = []) {
@@ -24,8 +34,22 @@ export class AltinkayaMenu extends Component {
   /** Set up the search and use Odoo's dialog keyboard/focus handling. */
   setup() {
     this.menu = useService("menu");
-    this.state = useState({query: ""});
-    useAutofocus();
+    this.state = useState({query: "", activeIndex: -1});
+    this.searchInput = useAutofocus();
+    this.results = useRef("results");
+    this.resultsId = `o_altinkaya_results_${nextMenuId++}`;
+    // Odoo maps Alt to Control on macOS, matching the launcher's data-hotkey.
+    useHotkey("alt+h", () => this.props.close(), {
+      bypassEditableProtection: true,
+    });
+    useEffect(
+      () => {
+        this.results.el
+          ?.querySelector('[aria-selected="true"]')
+          ?.scrollIntoView({block: "nearest", inline: "nearest"});
+      },
+      () => [this.state.activeIndex, this.state.query]
+    );
   }
 
   get title() {
@@ -47,6 +71,47 @@ export class AltinkayaMenu extends Component {
       );
     }
     return searchMenuEntries(entries, query, app && app.id);
+  }
+
+  /** Reset keyboard selection whenever the search text changes. */
+  handleSearchInput(event) {
+    this.state.query = event.target.value;
+    this.state.activeIndex = -1;
+  }
+
+  /** Navigate results while retaining the search input's typing focus. */
+  async handleSearchKeydown(event) {
+    if (
+      event.isComposing ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey ||
+      event.shiftKey ||
+      !["ArrowDown", "ArrowUp", "Enter"].includes(event.key)
+    ) {
+      return;
+    }
+    const entries = this.entries;
+    if (!entries.length) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.key === "Enter") {
+      const entry =
+        entries[this.state.activeIndex] || (this.state.query.trim() && entries[0]);
+      if (entry && !event.repeat) await this.handleSelect(event, entry.menu);
+      return;
+    }
+
+    const direction = event.key === "ArrowDown" ? 1 : -1;
+    const next =
+      this.state.activeIndex < 0
+        ? direction > 0
+          ? 0
+          : entries.length - 1
+        : this.state.activeIndex + direction;
+    this.state.activeIndex = (next + entries.length) % entries.length;
+    this.searchInput.el.focus({preventScroll: true});
   }
 
   /** Use the root application's identity for every submenu. */
@@ -100,7 +165,8 @@ patch(NavBar.prototype, "altinkaya_theme.navigation", {
   setup() {
     this._super(...arguments);
     this.altinkayaDialog = useService("dialog");
-    this.altinkayaNavigation = useState({toolsOpen: false});
+    this.altinkayaNavigation = useState({toolsOpen: false, closeMenu: null});
+    onWillDestroy(() => this.altinkayaNavigation.closeMenu?.());
     useBus(this.env.bus, "ACTION_MANAGER:UPDATE", () => {
       this.altinkayaNavigation.toolsOpen = false;
     });
@@ -114,9 +180,21 @@ patch(NavBar.prototype, "altinkaya_theme.navigation", {
     this.altinkayaNavigation.toolsOpen = !this.altinkayaNavigation.toolsOpen;
   },
 
-  /** Open the searchable application launcher. */
+  /** Toggle one application launcher and clear its handle on every close path. */
   handleOpenApplications() {
     this.altinkayaNavigation.toolsOpen = false;
-    this.altinkayaDialog.add(AltinkayaMenu, {});
+    if (this.altinkayaNavigation.closeMenu) {
+      this.altinkayaNavigation.closeMenu();
+      return;
+    }
+    this.altinkayaNavigation.closeMenu = this.altinkayaDialog.add(
+      AltinkayaMenu,
+      {},
+      {
+        onClose: () => {
+          this.altinkayaNavigation.closeMenu = null;
+        },
+      }
+    );
   },
 });

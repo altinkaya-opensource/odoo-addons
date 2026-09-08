@@ -28,6 +28,10 @@ Use **Dark Mode** in the user menu to switch appearances. Under profile
 preferences, **Use System Theme** follows the device's appearance. An explicit
 switch disables system following. Preferences are stored per user.
 
+In menu search, **Up/Down** highlights results and **Enter** opens the selected
+menu. Typing resets the selection; keyboard navigation keeps the search input
+focused and scrolls the highlighted result into view.
+
 Migration from web_dark_mode
 ----------------------------
 

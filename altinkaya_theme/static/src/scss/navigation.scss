@@ -137,12 +137,20 @@ body.o_web_client {
     border: 1px solid transparent;
     border-radius: 8px;
     color: $o-main-text-color;
+    scroll-margin-top: 64px;
+    scroll-margin-bottom: 8px;
 
     &:hover,
     &:focus-visible {
       color: $o-main-headings-color;
       background-color: mix($o-altinkaya-accent, $o-view-background-color, 10%);
       border-color: $o-gray-300;
+    }
+
+    &[aria-selected="true"] {
+      color: $o-main-headings-color;
+      background-color: $o-list-group-active-bg;
+      border-color: $o-altinkaya-accent;
     }
   }
 

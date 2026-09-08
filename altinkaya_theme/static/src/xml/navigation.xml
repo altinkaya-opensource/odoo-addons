@@ -87,21 +87,38 @@
                 <input
                     type="search"
                     class="form-control"
-                    t-model="state.query"
+                    t-att-value="state.query"
+                    t-on-input="handleSearchInput"
+                    t-on-keydown="handleSearchKeydown"
                     t-ref="autofocus"
                     t-att-placeholder="placeholder"
                     t-att-aria-label="placeholder"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-haspopup="listbox"
+                    t-att-aria-controls="resultsId"
+                    t-att-aria-expanded="entries.length ? 'true' : 'false'"
+                    t-att-aria-activedescendant="state.activeIndex >= 0 ? resultsId + '_' + state.activeIndex : undefined"
                 />
             </div>
             <div
                 class="o_altinkaya_app_grid"
                 t-att-class="{'o_altinkaya_sections_list': state.query.trim().length > 0}"
+                t-ref="results"
+                t-att-id="resultsId"
+                role="listbox"
+                t-att-aria-label="title"
+                t-on-keydown="handleSearchKeydown"
             >
                 <a
                     t-foreach="entries"
                     t-as="entry"
                     t-key="entry.menu.id"
                     class="o_altinkaya_app"
+                    t-attf-id="{{resultsId}}_{{entry_index}}"
+                    role="option"
+                    t-att-aria-selected="state.activeIndex === entry_index ? 'true' : 'false'"
+                    t-on-focus="() => { state.activeIndex = entry_index; }"
                     t-att-href="getHref(entry.menu)"
                     t-on-click="(ev) => this.handleSelect(ev, entry.menu)"
                 >
