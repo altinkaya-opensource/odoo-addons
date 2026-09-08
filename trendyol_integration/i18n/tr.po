@@ -7174,3 +7174,10 @@ msgstr "Yanıtsız"
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__waiting_fraud_check
 msgid "Waiting Fraud Check"
 msgstr "Fraud Kontrolü Bekliyor"
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_order.py:0
+#, python-format
+msgid "Trendyol customer information is not available yet. Retry the import later."
+msgstr "Trendyol müşteri bilgileri henüz hazır değil. İçe aktarmayı daha sonra tekrar deneyin."
