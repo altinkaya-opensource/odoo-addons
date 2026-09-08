@@ -2,12 +2,15 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 import logging
+import secrets
 from datetime import timedelta
 
 from dateutil import parser as dateutil_parser
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+from odoo.addons.queue_job.exception import RetryableJobError
 
 from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
 
@@ -74,6 +77,25 @@ class HepsiburadaBackend(models.Model):
         default="stage",
         required=True,
         tracking=True,
+    )
+
+    webhook_enabled = fields.Boolean(
+        string="Enable Webhooks",
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+        copy=False,
+    )
+    webhook_url = fields.Char(
+        string="Webhook Base URL",
+        compute="_compute_webhook_url",
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+    )
+    webhook_username = fields.Char(
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+        copy=False,
+    )
+    webhook_password = fields.Char(
+        groups="hepsiburada_integration.group_hepsiburada_manager",
+        copy=False,
     )
 
     # Odoo Mappings
@@ -246,6 +268,64 @@ class HepsiburadaBackend(models.Model):
             environment=backend.environment,
             user_agent=backend.user_agent,
         )
+
+    def _compute_webhook_url(self):
+        """Expose the base URL under which Hepsiburada's routes are served."""
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        for backend in self:
+            backend.webhook_url = (
+                f"{base_url.rstrip('/')}/hb/wh/{backend.id}"
+                if base_url and backend.id
+                else False
+            )
+
+    def action_generate_webhook_credentials(self):
+        """Generate dedicated inbound credentials for Hepsiburada onboarding."""
+        self.ensure_one()
+        self.write(
+            {
+                "webhook_username": f"hepsiburada-{self.id}",
+                "webhook_password": secrets.token_urlsafe(32),
+            }
+        )
+
+    def _queue_webhook_sync(self):
+        """Coalesce notifications into a refresh of authoritative API data."""
+        self.ensure_one()
+        self.with_delay(
+            channel=self._marketplace_queue_channel(),
+            identity_key=f"hepsiburada-webhook-sync-{self.id}",
+            description=_("Refresh Hepsiburada orders after webhook: %s") % self.name,
+        )._sync_webhook_orders()
+
+    def _sync_webhook_orders(self):
+        """Run the shared import and retry incomplete API reads."""
+        self.ensure_one()
+        if not self.active or not self.webhook_enabled:
+            return
+        if not self._import_orders():
+            raise RetryableJobError(
+                _("Hepsiburada webhook refresh failed; retrying."), seconds=60
+            )
+
+    def _sync_unpacked_packages(self, client):
+        """Reconcile unpacked package history for polling and webhooks alike."""
+        self.ensure_one()
+        packages = self._fetch_all_packages(client.get_unpacked_packages, limit=10)
+        Package = self.env["hepsiburada.package"]
+        for data in packages:
+            package_number = data.get("packageNumber")
+            if not package_number:
+                continue
+            package = Package.search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("hb_package_number", "=", str(package_number)),
+                ],
+                limit=1,
+            )
+            if package:
+                package._mark_unpacked()
 
     # ==================== Order Import ====================
 
@@ -561,6 +641,7 @@ class HepsiburadaBackend(models.Model):
         - /packages/delivered (teslim edildi)
         - /packages/undelivered (teslim edilemedi)
         - /packages/cancelled (iptal edildi)
+        - /packages/status/unpacked (paketi bozuldu)
         """
         self.ensure_one()
         Order = self.env["hepsiburada.order"]
@@ -580,6 +661,12 @@ class HepsiburadaBackend(models.Model):
         fetch_errors = []
         record_errors = []
         client = self._get_api_client()
+        try:
+            with self.env.cr.savepoint():
+                self._sync_unpacked_packages(client)
+        except Exception as error:
+            fetch_errors.append(f"unpacked: {error}")
+            _logger.exception("Failed to synchronize unpacked HB packages")
         payloads = self._current_order_payloads(client, fetch_errors)
         payloads.extend(
             self._transition_order_payloads(
@@ -602,6 +689,7 @@ class HepsiburadaBackend(models.Model):
             self.name,
             len(errors),
         )
+        return not fetch_errors
 
     # ==================== Settlement Import ====================
 

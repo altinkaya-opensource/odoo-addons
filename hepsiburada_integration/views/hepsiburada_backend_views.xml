@@ -99,6 +99,34 @@
                         </group>
                     </group>
                     <notebook>
+                        <page
+                            string="Webhooks"
+                            name="webhooks"
+                            groups="hepsiburada_integration.group_hepsiburada_manager"
+                        >
+                            <group>
+                                <field name="webhook_enabled" />
+                                <field name="webhook_url" widget="url" />
+                                <field name="webhook_username" />
+                                <field name="webhook_password" password="True" />
+                            </group>
+                            <button
+                                name="action_generate_webhook_credentials"
+                                string="Generate Webhook Credentials"
+                                type="object"
+                                class="btn-secondary"
+                            />
+                            <p class="mt-3">
+                                Share this base URL and the dedicated webhook credentials
+                                with Hepsiburada. Complete their test-environment onboarding
+                                before enabling production notifications.
+                            </p>
+                            <p>
+                                Notifications trigger an immediate refresh from the
+                                Hepsiburada API. Scheduled polling remains available
+                                independently as a fallback.
+                            </p>
+                        </page>
                         <page string="Sync Settings" name="sync_settings">
                             <group>
                                 <group string="Auto Sync">

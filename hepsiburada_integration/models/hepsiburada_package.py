@@ -17,6 +17,7 @@ PACKAGE_STATUS_SELECTION = [
     ("delivered", "Delivered"),
     ("undelivered", "Undelivered"),
     ("cancelled", "Cancelled"),
+    ("unpacked", "Unpacked"),
 ]
 
 
@@ -91,6 +92,16 @@ class HepsiburadaPackage(models.Model):
         self.write(vals)
         self.hb_order_id._sync_from_packages()
         return self
+
+    def _mark_unpacked(self):
+        """Release package mappings while preserving the package history."""
+        self.ensure_one()
+        if self.hb_status == "unpacked":
+            return
+        active_lines = self.line_ids.filtered(lambda line: line.status != "cancelled")
+        active_lines.write({"package_id": False, "status": "open"})
+        self.hb_status = "unpacked"
+        self.hb_order_id._sync_from_packages()
 
     def _fetch_tracking_from_api(self):
         self.ensure_one()

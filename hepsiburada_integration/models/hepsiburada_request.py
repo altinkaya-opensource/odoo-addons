@@ -166,6 +166,13 @@ class HepsiburadaRequest(MarketplaceRequest):
         params.update(self._date_range_params(begin_date, end_date))
         return self._make_request("GET", "oms", endpoint, params=params)
 
+    def get_unpacked_packages(self, offset=0, limit=10):
+        """Get packages that Hepsiburada has unpacked."""
+        endpoint = f"/packages/merchantid/{self.merchant_id}/status/unpacked"
+        return self._make_request(
+            "GET", "oms", endpoint, params={"offset": offset, "limit": min(limit, 10)}
+        )
+
     def get_delivered_packages(
         self, offset=0, limit=50, begin_date=None, end_date=None
     ):

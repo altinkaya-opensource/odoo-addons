@@ -461,7 +461,9 @@ class HepsiburadaOrder(models.Model):
 
     def _sync_from_packages(self):
         for order in self:
-            packages = order.package_ids
+            packages = order.package_ids.filtered(
+                lambda package: package.hb_status != "unpacked"
+            )
             active_packages = packages.filtered(
                 lambda package: package.hb_status != "cancelled"
             )
@@ -476,6 +478,12 @@ class HepsiburadaOrder(models.Model):
                 aggregate_status = "in_transit"
             elif statuses:
                 aggregate_status = "packaged"
+            elif order.package_ids and not packages:
+                aggregate_status = (
+                    "cancelled"
+                    if set(order.hb_line_item_ids.mapped("status")) == {"cancelled"}
+                    else "open"
+                )
             else:
                 aggregate_status = False
 
@@ -506,6 +514,14 @@ class HepsiburadaOrder(models.Model):
                         ),
                     }
                 )
+            elif order.package_ids:
+                vals.update(
+                    {
+                        "hb_missing_invoice": False,
+                        "invoice_link_sent": False,
+                        "invoice_sent_date": False,
+                    }
+                )
             if len(packages) == 1:
                 package = packages[0]
                 vals.update(
@@ -517,7 +533,7 @@ class HepsiburadaOrder(models.Model):
                         "cargo_tracking_link": package.cargo_tracking_link,
                     }
                 )
-            elif len(packages) > 1:
+            elif order.package_ids:
                 vals.update(
                     {
                         "hb_package_number": False,
@@ -974,10 +990,11 @@ class HepsiburadaOrder(models.Model):
         """Fetch every HB package independently and refresh aggregate fields."""
         self.ensure_one()
         self._ensure_package_records()
-        if not self.package_ids:
+        packages = self.package_ids.filtered(lambda item: item.hb_status != "unpacked")
+        if not packages:
             return
         errors = []
-        for package in self.package_ids:
+        for package in packages:
             try:
                 package._fetch_tracking_from_api()
             except HepsiburadaAPIError as error:
@@ -988,7 +1005,7 @@ class HepsiburadaOrder(models.Model):
                     exc_info=True,
                 )
         self._sync_from_packages()
-        if errors and len(errors) == len(self.package_ids):
+        if errors and len(errors) == len(packages):
             raise UserError(_("Tracking could not be fetched: %s") % errors[0])
 
     def _ensure_package_records(self):
@@ -1098,7 +1115,7 @@ class HepsiburadaOrder(models.Model):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         invoice_url = f"{base_url}{invoice.get_portal_url()}"
         for package in self.package_ids.filtered(
-            lambda item: not item.invoice_link_sent
+            lambda item: not item.invoice_link_sent and item.hb_status != "unpacked"
         ):
             package._send_invoice_link(invoice_url)
         self._sync_from_packages()
@@ -1114,7 +1131,7 @@ class HepsiburadaOrder(models.Model):
         """Manual button: queue package creation in Hepsiburada."""
         self.ensure_one()
         self._ensure_package_records()
-        if self.package_ids:
+        if self.package_ids.filtered(lambda item: item.hb_status != "unpacked"):
             raise UserError(_("Package already created for this order."))
         if self.hb_status != "open":
             raise UserError(_("Only orders with 'Open' status can be packaged."))

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 11:25+0000\n"
-"PO-Revision-Date: 2026-08-20 11:25+0000\n"
+"POT-Creation-Date: 2026-09-08 12:53+0000\n"
+"PO-Revision-Date: 2026-09-08 12:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,6 +40,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_claim__rejection_code__newproductwillbesent
 msgid "A new product will be sent"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#, python-format
+msgid "A payment was posted before Hepsiburada marked the transaction Paid."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -86,6 +94,11 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__access_warning
 msgid "Access warning"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_account_auto_reconcile
+msgid "Account Auto Reconcile"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -457,6 +470,8 @@ msgid "Change"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__changeset_change_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__changeset_change_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_change_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__changeset_change_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__changeset_change_ids
@@ -474,6 +489,8 @@ msgid "Changeset Changes"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__changeset_ids
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__changeset_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__changeset_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__changeset_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__changeset_ids
@@ -488,6 +505,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_sale_order_line__changeset_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_stock_picking__changeset_ids
 msgid "Changesets"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Check the commission amount, currency, partner and journal."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -522,6 +547,14 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Claim accepted in Hepsiburada."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Claim import exceeded 100,000 records"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -575,13 +608,61 @@ msgid "Commission Amount"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_number
+msgid "Commission Invoice Number"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_state
+msgid "Commission Match State"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Commission Matching"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_payment_id
 msgid "Commission Payment"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Commission Pending"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_rate
 msgid "Commission Rate"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__commission_refund
+msgid "Commission Refund"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Commission Review"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Commission data changed; the existing payment was preserved."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -644,6 +725,8 @@ msgid "Conversations updated."
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__count_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__count_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_changesets
@@ -661,6 +744,8 @@ msgid "Count Changesets"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_pending_changeset_changes
@@ -678,6 +763,8 @@ msgid "Count Pending Changeset Changes"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__count_pending_changesets
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changesets
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__count_pending_changesets
@@ -1021,6 +1108,11 @@ msgid "Effective Date"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_enabled
+msgid "Enable Webhooks"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__environment
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_search
 msgid "Environment"
@@ -1093,6 +1185,14 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#, python-format
+msgid "Failed to refresh question status: %s"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
@@ -1102,12 +1202,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
-#, python-format
-msgid "Failed to refresh question status: %s"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
@@ -1195,6 +1290,11 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__hb_full_address
 msgid "Full Address"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Generate Webhook Credentials"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -1373,6 +1473,11 @@ msgid "Hepsiburada Claim"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__hepsiburada_commission_settlement_ids
+msgid "Hepsiburada Commission Settlement"
+msgstr ""
+
+#. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
@@ -1439,6 +1544,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Hepsiburada Payment Journal not configured on backend."
 msgstr ""
@@ -1466,19 +1572,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Hepsiburada created the package but returned no package number."
 msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Hepsiburada has not paid this transaction yet."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
 #, python-format
 msgid "Hepsiburada import exceeded 100,000 records."
@@ -1487,12 +1588,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Hepsiburada no longer reports this question as answerable."
 msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Hepsiburada order not found for order number: %s"
@@ -1506,6 +1609,13 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__hb_missing_invoice
 msgid "Hepsiburada reports this package as missing invoice"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Hepsiburada webhook refresh failed; retrying."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -1761,6 +1871,20 @@ msgid ""
 msgstr ""
 
 #. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid JSON"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/controllers/webhook.py:0
+#, python-format
+msgid "Invalid payload"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__odoo_invoice_id
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_order_form
 msgid "Invoice"
@@ -1768,6 +1892,7 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Invoice %s is already paid by another transaction."
@@ -1781,6 +1906,11 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__invoice_count
 msgid "Invoice Count"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__invoice_date
+msgid "Invoice Date"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -1854,6 +1984,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__message_is_follower
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__message_is_follower
 msgid "Is Follower"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__is_hepsiburada_commission
+msgid "Is Hepsiburada Commission"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2017,6 +2152,17 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#, python-format
+msgid ""
+"Legacy commission payment has no matched supplier invoice and must be "
+"reviewed."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Legacy settlement payments require manual review."
@@ -2073,6 +2219,11 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__cargo_mapping_ids
 msgid "Map Hepsiburada cargo providers to Odoo delivery carriers"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Match Commission Invoice"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2171,8 +2322,17 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Missing-invoice claims must be accepted from the Hepsiburada portal."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Multiple posted customer documents require review."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2301,6 +2461,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "No posted invoice or credit note found for sale order %s"
 msgstr ""
@@ -2316,6 +2477,14 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "No valid line item IDs found in order detail."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Notifications trigger an immediate refresh from the\n"
+"                                Hepsiburada API. Scheduled polling remains available\n"
+"                                independently as a fallback."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2431,13 +2600,7 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Only paid sale and return transactions can be reconciled."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Only questions waiting for an answer can be answered."
@@ -2575,6 +2738,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Package %(package)s is already linked to order %(order)s."
 msgstr ""
@@ -2711,6 +2875,7 @@ msgid "Payment Terms"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_account_payment
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__payment_ids
 msgid "Payments"
 msgstr ""
@@ -2871,8 +3036,17 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "Question Status Updated"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Question import exceeded %s pages"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2925,10 +3099,19 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__state__reconciled
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
 #, python-format
 msgid "Reconciled"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Reconciliation Failed"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -2939,6 +3122,13 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_question_form
 msgid "Refresh Conversations"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Refresh Hepsiburada orders after webhook: %s"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3124,6 +3314,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_claim.py:0
 #, python-format
 msgid "Select Refund or Change before accepting this claim."
 msgstr ""
@@ -3169,12 +3360,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Settlement could not be reconciled."
 msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid ""
@@ -3185,6 +3378,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid ""
 "Settlement group amount %(settlement).2f does not match invoice residual "
@@ -3194,8 +3388,17 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid "Settlement group has been reconciled successfully."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Settlement import exceeded 100,000 records for %(window)s"
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3208,6 +3411,7 @@ msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
 #, python-format
 msgid ""
@@ -3232,6 +3436,14 @@ msgstr ""
 msgid ""
 "Settlements are imported from Hepsiburada's finance API and used\n"
 "                to reconcile invoices with marketplace payments."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid ""
+"Share this base URL and the dedicated webhook credentials\n"
+"                                with Hepsiburada. Complete their test-environment onboarding\n"
+"                                before enabling production notifications."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3265,6 +3477,8 @@ msgid "Sku"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__smart_search
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__smart_search
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__smart_search
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__smart_search
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__smart_search
@@ -3473,6 +3687,14 @@ msgid "Test Connection"
 msgstr ""
 
 #. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The Hepsiburada payment status is unknown."
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__country_code
 msgid ""
 "The ISO country code in two chars. \n"
@@ -3482,8 +3704,17 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "The answer cannot be longer than 2,000 characters."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The commission direction, amount or currency is invalid."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3492,6 +3723,8 @@ msgid "The internal user in charge of this contact."
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_auto_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changeset_changes
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changeset_changes
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_pending_changeset_changes
@@ -3509,6 +3742,8 @@ msgid "The number of pending changes of this record"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_auto_reconcile__count_pending_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_pending_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_pending_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_pending_changesets
@@ -3526,6 +3761,8 @@ msgid "The number of pending changesets of this record"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_auto_reconcile__count_changesets
+#: model:ir.model.fields,help:hepsiburada_integration.field_account_payment__count_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_backend__count_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_cargo_mapping__count_changesets
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_claim__count_changesets
@@ -3548,6 +3785,14 @@ msgid "The payment communication of this sale order."
 msgstr ""
 
 #. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The payment covers incompatible commission types."
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__payment_currency_id
 msgid "The payment's currency."
 msgstr ""
@@ -3565,6 +3810,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields,help:hepsiburada_integration.field_hepsiburada_order__fedex_shipment_purpose
 msgid "The purpose of the shipment (FedEx)"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The settlement amount has an invalid sign."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3596,12 +3849,14 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid "This question has already been answered on Hepsiburada."
 msgstr ""
 
 #. module: hepsiburada_integration
 #. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid ""
@@ -3612,9 +3867,18 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_question.py:0
 #, python-format
 msgid ""
 "This question was rejected on Hepsiburada and can no longer be answered."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "This transaction type is not supported for automatic reconciliation."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3687,6 +3951,7 @@ msgstr ""
 #. module: hepsiburada_integration
 #. odoo-python
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Tracking could not be fetched: %s"
 msgstr ""
@@ -3697,6 +3962,14 @@ msgstr ""
 #: code:addons/hepsiburada_integration/models/hepsiburada_order.py:0
 #, python-format
 msgid "Tracking info has been fetched from Hepsiburada."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Transaction %s has no key for historical refresh."
 msgstr ""
 
 #. module: hepsiburada_integration
@@ -3810,6 +4083,11 @@ msgid "Unknown"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_package__hb_status__unpacked
+msgid "Unpacked"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__amount_untaxed
 msgid "Untaxed Amount"
 msgstr ""
@@ -3825,6 +4103,8 @@ msgid "User"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_auto_reconcile__user_can_see_changeset
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__user_can_see_changeset
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__user_can_see_changeset
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_cargo_mapping__user_can_see_changeset
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_claim__user_can_see_changeset
@@ -3883,6 +4163,26 @@ msgid "Warehouses to use for order fulfillment"
 msgstr ""
 
 #. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_url
+msgid "Webhook Base URL"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_password
+msgid "Webhook Password"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__webhook_username
+msgid "Webhook Username"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_backend_form
+msgid "Webhooks"
+msgstr ""
+
+#. module: hepsiburada_integration
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_backend__website_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_order__website_message_ids
 #: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__website_message_ids
@@ -3919,176 +4219,4 @@ msgstr ""
 #. module: hepsiburada_integration
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
-#, python-format
-msgid "A payment was posted before Hepsiburada marked the transaction Paid."
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model,name:hepsiburada_integration.model_account_auto_reconcile
-msgid "Account Auto Reconcile"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Check the commission amount, currency, partner and journal."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
-#, python-format
-msgid "Claim import exceeded 100,000 records"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_id
-msgid "Commission Invoice"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_number
-msgid "Commission Invoice Number"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_note
-msgid "Commission Match Note"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_state
-msgid "Commission Match State"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
-msgid "Commission Matching"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
-msgid "Commission Pending"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__commission_refund
-msgid "Commission Refund"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
-msgid "Commission Review"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Commission data changed; the existing payment was preserved."
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__hepsiburada_commission_settlement_ids
-msgid "Hepsiburada Commission Settlement"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__invoice_date
-msgid "Invoice Date"
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__is_hepsiburada_commission
-msgid "Is Hepsiburada Commission"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
-#, python-format
-msgid ""
-"Legacy commission payment has no matched supplier invoice and must be "
-"reviewed."
-msgstr ""
-
-#. module: hepsiburada_integration
-#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
-msgid "Match Commission Invoice"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Multiple posted customer documents require review."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
-#, python-format
-msgid "Question import exceeded %s pages"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "Reconciliation Failed"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
-#, python-format
-msgid "Settlement import exceeded 100,000 records for %(window)s"
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "The Hepsiburada payment status is unknown."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "The commission direction, amount or currency is invalid."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "The payment covers incompatible commission types."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "The settlement amount has an invalid sign."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
-#, python-format
-msgid "This transaction type is not supported for automatic reconciliation."
-msgstr ""
-
-#. module: hepsiburada_integration
-#. odoo-python
-#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
-#, python-format
-msgid "Transaction %s has no key for historical refresh."
 msgstr ""
