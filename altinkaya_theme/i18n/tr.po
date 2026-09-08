@@ -105,3 +105,17 @@ msgstr "Eşleşen menü bulunamadı."
 #, python-format
 msgid "Test Database"
 msgstr "TEST VERİTABANI"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Tools"
+msgstr "Araçlar"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Close tools"
+msgstr "Araçları kapat"

@@ -2,31 +2,31 @@
 // dark-first, but give Bootstrap real light/dark contrast colors below.
 $o-webclient-color-scheme: dark;
 
-$o-white: #202733;
-$o-black: #f3f6fc;
-$o-gray-100: #1b222e;
-$o-gray-200: #293344;
-$o-gray-300: #3d495d;
-$o-gray-400: #60708a;
-$o-gray-500: #8897ad;
-$o-gray-600: #a6b2c5;
-$o-gray-700: #ced7e4;
-$o-gray-800: #e4eaf3;
-$o-gray-900: #f3f6fc;
+$o-white: #262a30;
+$o-black: #f4f5f7;
+$o-gray-100: #202328;
+$o-gray-200: #30353d;
+$o-gray-300: #48515e;
+$o-gray-400: #768292;
+$o-gray-500: #a0aab7;
+$o-gray-600: #b5bdc8;
+$o-gray-700: #cbd1da;
+$o-gray-800: #e2e5e9;
+$o-gray-900: #f4f5f7;
 
-$o-altinkaya-canvas: #141b26;
-$o-altinkaya-input-bg: #171e29;
-$o-altinkaya-input-border: #62728a;
-$o-altinkaya-chatter-bg: #161d28;
+$o-altinkaya-canvas: #16181c;
+$o-altinkaya-input-bg: #191c21;
+$o-altinkaya-input-border: #7a8697;
+$o-altinkaya-chatter-bg: #1b1e23;
 $o-altinkaya-accent: #a9cbff;
 $o-altinkaya-accent-hover: #d3e3ff;
 $o-altinkaya-required-bg: #2b2638;
 $o-altinkaya-required-border: #9479b8;
 $o-altinkaya-required-text: #f0e9ff;
-$o-altinkaya-list-header-bg: #2f3d53;
-$o-altinkaya-list-header-border: #57708e;
-$o-altinkaya-list-stripe-bg: #253144;
-$o-altinkaya-list-hover-bg: #31445f;
+$o-altinkaya-list-header-bg: #353d49;
+$o-altinkaya-list-header-border: #75859a;
+$o-altinkaya-list-stripe-bg: #2c323b;
+$o-altinkaya-list-hover-bg: #303945;
 
 $o-community-color: #4168b0;
 $o-enterprise-color: $o-community-color;
@@ -49,7 +49,7 @@ $o-theme-text-colors: (
   "odoo": $o-altinkaya-accent,
 );
 
-$o-main-text-color: $o-gray-700;
+$o-main-text-color: $o-gray-800;
 $o-main-headings-color: $o-gray-900;
 $o-main-color-muted: $o-gray-600;
 $o-main-link-color: $o-altinkaya-accent;

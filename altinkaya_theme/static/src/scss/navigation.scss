@@ -2,8 +2,16 @@ body.o_web_client {
   .o_main_navbar {
     align-items: stretch;
 
-    .o_menu_sections > .dropdown {
+    .o_menu_sections > .dropdown,
+    .o_menu_systray > *,
+    .o_menu_systray > * > .dropdown {
       display: flex;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .o_menu_systray {
+      align-items: stretch;
       height: 100%;
       min-height: 0;
     }
@@ -11,7 +19,11 @@ body.o_web_client {
     .o_menu_sections > .dropdown > .dropdown-toggle,
     .o_menu_sections > .o_nav_entry,
     > .o_menu_brand,
-    .o_altinkaya_navigation > .o_nav_entry {
+    .o_altinkaya_navigation > .o_nav_entry,
+    .o_menu_systray > * > button,
+    .o_menu_systray > * > a,
+    .o_menu_systray > * > label,
+    .o_menu_systray > * > .dropdown > .dropdown-toggle {
       height: 100%;
       max-height: 100%;
       margin-top: 0;
@@ -62,8 +74,7 @@ body.o_web_client {
     white-space: nowrap;
   }
 
-  .o_altinkaya_launcher_button,
-  .o_altinkaya_sections_button {
+  .o_altinkaya_launcher_button {
     border: 0;
     cursor: pointer;
 
@@ -168,50 +179,5 @@ body.o_web_client {
 
   .o_altinkaya_sections_list {
     grid-template-columns: 1fr;
-  }
-
-  @include media-breakpoint-down(md) {
-    .o_main_navbar {
-      flex-wrap: wrap;
-      height: auto;
-      min-width: 0;
-
-      .o_altinkaya_navigation {
-        width: 100%;
-        height: var(--o-navbar-height);
-      }
-
-      .o_altinkaya_sections_button {
-        min-width: 0;
-        flex: 1;
-        justify-content: space-between;
-      }
-
-      .o_menu_systray {
-        width: 100%;
-        justify-content: flex-end;
-        border-top: 1px solid rgba(#fff, 0.15);
-
-        .dropdown-toggle,
-        > * > button,
-        > * > a {
-          height: 36px;
-          padding-right: 6px;
-          padding-left: 6px;
-        }
-      }
-    }
-
-    .o_altinkaya_menu {
-      border-radius: 0;
-    }
-
-    .o_altinkaya_menu_body {
-      padding: 16px;
-    }
-
-    .o_altinkaya_app_grid:not(.o_altinkaya_sections_list) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 }

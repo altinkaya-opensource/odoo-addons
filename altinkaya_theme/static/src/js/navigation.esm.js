@@ -1,10 +1,11 @@
 /** @odoo-module **/
-import {Component, useState} from "@odoo/owl";
+import {Component, useExternalListener, useState} from "@odoo/owl";
 import {browser} from "@web/core/browser/browser";
 import {Dialog} from "@web/core/dialog/dialog";
-import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {useAutofocus, useBus, useService} from "@web/core/utils/hooks";
 import {patch} from "@web/core/utils/patch";
 import {NavBar} from "@web/webclient/navbar/navbar";
+import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
 import {searchMenuEntries} from "@altinkaya_theme/js/menu_search.esm";
 
 /** Flatten the accessible menu tree, keeping group names as context. */
@@ -28,10 +29,7 @@ export class AltinkayaMenu extends Component {
   }
 
   get title() {
-    const app = this.menu.getCurrentApp();
-    return this.props.mode === "sections" && app
-      ? app.name
-      : this.env._t("Applications");
+    return this.env._t("Applications");
   }
 
   get placeholder() {
@@ -43,9 +41,7 @@ export class AltinkayaMenu extends Component {
     const query = this.state.query.trim();
     const apps = this.menu.getApps();
     let entries = apps.map((menu) => ({menu, path: ""}));
-    if (this.props.mode === "sections" && app) {
-      entries = collectMenuEntries(this.menu.getMenuAsTree(app.id).childrenTree);
-    } else if (query) {
+    if (query) {
       entries = collectMenuEntries(
         apps.map((menu) => this.menu.getMenuAsTree(menu.id))
       );
@@ -69,7 +65,7 @@ export class AltinkayaMenu extends Component {
 
   /** Keep ordinary links usable in a separate browser tab. */
   getHref(menu) {
-    return `#menu_id=${menu.id}&action=${menu.actionID}`;
+    return `#menu_id=${menu.id}${menu.actionID ? `&action=${menu.actionID}` : ""}`;
   }
 
   /** Navigate through the existing action service, preserving access rules. */
@@ -82,7 +78,10 @@ export class AltinkayaMenu extends Component {
 }
 AltinkayaMenu.template = "altinkaya_theme.Menu";
 AltinkayaMenu.components = {Dialog};
-AltinkayaMenu.props = {close: Function, mode: String};
+AltinkayaMenu.props = {close: Function};
+
+// Render the native mobile panel beside the tools toggle, exactly once.
+Object.assign(NavBar.components, {AltinkayaBurgerMenu: BurgerMenu});
 
 patch(NavBar.prototype, "altinkaya_theme.navigation", {
   /** Mark only explicit debug sessions served from localhost. */
@@ -101,15 +100,23 @@ patch(NavBar.prototype, "altinkaya_theme.navigation", {
   setup() {
     this._super(...arguments);
     this.altinkayaDialog = useService("dialog");
+    this.altinkayaNavigation = useState({toolsOpen: false});
+    useBus(this.env.bus, "ACTION_MANAGER:UPDATE", () => {
+      this.altinkayaNavigation.toolsOpen = false;
+    });
+    useExternalListener(window, "keydown", (event) => {
+      if (event.key === "Escape") this.altinkayaNavigation.toolsOpen = false;
+    });
+  },
+
+  /** Toggle the compact mobile tray without recreating systray components. */
+  handleToggleTools() {
+    this.altinkayaNavigation.toolsOpen = !this.altinkayaNavigation.toolsOpen;
   },
 
   /** Open the searchable application launcher. */
   handleOpenApplications() {
-    this.altinkayaDialog.add(AltinkayaMenu, {mode: "apps"});
-  },
-
-  /** Open the current application's sections on narrow screens. */
-  handleOpenSections() {
-    this.altinkayaDialog.add(AltinkayaMenu, {mode: "sections"});
+    this.altinkayaNavigation.toolsOpen = false;
+    this.altinkayaDialog.add(AltinkayaMenu, {});
   },
 });

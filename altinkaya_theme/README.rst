@@ -5,9 +5,24 @@ A shared backend design for Odoo 16 Community with modern light and dark
 palettes. Forms, navigation, buttons, notebooks, chatter, badges and alerts
 use the same component rules in both appearances. A searchable application
 launcher and a mobile section menu replace web_responsive. Uninstall
-web_responsive before installing or upgrading this theme. Compatible with
-``web_company_color`` and ``web_theme_classic``. Website and report bundles
-do not receive the backend component styles.
+``web_responsive`` and ``web_company_color`` before installing or upgrading
+this theme: the theme owns backend colors in both appearances. Compatible
+with ``web_theme_classic``. Website and report bundles do not receive the
+backend component styles.
+
+Neutral surfaces distinguish the workspace, form and chatter without tinting
+every area blue. Field labels remain opaque, including readonly and empty
+fields; links and active controls use the blue accent. List headers and
+alternating rows have separate tones with subtle column separators.
+
+On phones the navbar stays on one line; its tools tray keeps all systray
+integrations accessible. The native mobile panel button stays directly in
+the navbar beside the tools button; the current app name is a plain title.
+The application launcher fills the viewport even with ``web_dialog_size``
+installed. It uses a large-icon grid and searches all submenus. Mobile search,
+filters, the view switcher and the user menu use Odoo's native components.
+Touch controls, full-width forms and scrollable notebook tabs follow the
+mobile layout conventions of ``web_responsive``.
 
 Use **Dark Mode** in the user menu to switch appearances. Under profile
 preferences, **Use System Theme** follows the device's appearance. An explicit

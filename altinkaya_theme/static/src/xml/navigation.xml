@@ -11,6 +11,38 @@
                 name="t-att-class"
             >{'o_altinkaya_local_debug': isLocalDebug()}</attribute>
         </xpath>
+        <xpath expr="//div[hasclass('o_menu_systray')]" position="before">
+            <button
+                t-if="altinkayaNavigation.toolsOpen"
+                class="o_altinkaya_tools_backdrop d-md-none"
+                aria-label="Close tools"
+                tabindex="-1"
+                t-on-click="handleToggleTools"
+            />
+            <button
+                class="o_altinkaya_tools_button o_nav_entry d-md-none"
+                title="Tools"
+                aria-label="Tools"
+                t-att-aria-expanded="altinkayaNavigation.toolsOpen ? 'true' : 'false'"
+                t-on-click="handleToggleTools"
+            >
+                <i class="fa fa-ellipsis-h" aria-hidden="true" />
+            </button>
+            <div
+                class="o_altinkaya_mobile_burger d-md-none"
+                t-on-click="() => { altinkayaNavigation.toolsOpen = false; }"
+            >
+                <AltinkayaBurgerMenu />
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-component='item.Component']" position="attributes">
+            <attribute name="t-if">item.key !== 'burger_menu'</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_menu_systray')]" position="attributes">
+            <attribute
+                name="t-att-class"
+            >{'o_altinkaya_tools_open': altinkayaNavigation.toolsOpen}</attribute>
+        </xpath>
     </t>
     <t
         t-name="altinkaya_theme.NavBarApps"
@@ -33,14 +65,12 @@
                     t-if="isLocalDebug()"
                     class="o_altinkaya_test_badge"
                 >Test Database</span>
-                <button
+                <span
                     t-if="currentApp"
-                    class="o_altinkaya_sections_button o_nav_entry d-md-none"
-                    t-on-click="handleOpenSections"
+                    class="o_altinkaya_mobile_title d-md-none text-truncate"
                 >
-                    <span class="text-truncate" t-esc="currentApp.name" />
-                    <i class="fa fa-angle-down ms-2" aria-hidden="true" />
-                </button>
+                    <t t-esc="currentApp.name" />
+                </span>
             </div>
         </xpath>
     </t>
@@ -65,7 +95,7 @@
             </div>
             <div
                 class="o_altinkaya_app_grid"
-                t-att-class="{'o_altinkaya_sections_list': props.mode === 'sections' || state.query.trim().length > 0}"
+                t-att-class="{'o_altinkaya_sections_list': state.query.trim().length > 0}"
             >
                 <a
                     t-foreach="entries"
@@ -94,11 +124,6 @@
                             t-esc="entry.path"
                         />
                     </span>
-                    <i
-                        t-if="props.mode === 'sections'"
-                        class="fa fa-angle-right ms-auto"
-                        aria-hidden="true"
-                    />
                 </a>
             </div>
             <p

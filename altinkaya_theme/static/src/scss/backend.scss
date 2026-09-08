@@ -1,5 +1,5 @@
 // Shared component styles use the palette of the active color scheme.
-// Scoped overrides also support web_company_color and web_theme_classic.
+// Scoped overrides also support web_theme_classic required fields.
 body.o_web_client {
   a[href]:where(:not(.btn):not(.dropdown-item)),
   a[tabindex]:where(:not(.btn):not(.dropdown-item)),
@@ -76,18 +76,24 @@ body.o_web_client {
     }
   }
 
-  .dropdown-menu .dropdown-item {
-    color: $o-main-text-color;
+  .dropdown-menu {
+    border-color: $o-gray-400;
 
-    &:hover,
-    &:focus,
-    &.active {
-      color: $o-gray-900;
-    }
+    .dropdown-item {
+      color: $o-main-text-color;
 
-    &.disabled,
-    &:disabled {
-      color: $o-main-color-muted;
+      &:hover,
+      &:focus,
+      &.active {
+        background-color: $o-list-group-active-bg;
+        color: $o-gray-900;
+      }
+
+      &.disabled,
+      &:disabled {
+        background-color: transparent;
+        color: $o-main-color-muted;
+      }
     }
   }
 
@@ -173,8 +179,16 @@ body.o_web_client {
     }
 
     .o_form_label {
-      color: $o-gray-600;
-      font-weight: 500;
+      color: $o-gray-700;
+      font-weight: 600;
+
+      // Readonly/empty field labels still identify data: do not dim them.
+      &.o_form_label_empty,
+      &.o_form_label_false,
+      &.o_form_label_readonly {
+        opacity: 1;
+        font-weight: 600;
+      }
     }
 
     .o_horizontal_separator {

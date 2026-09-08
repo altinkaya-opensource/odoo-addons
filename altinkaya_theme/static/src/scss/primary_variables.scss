@@ -1,33 +1,33 @@
 // Light palette. Dark variables are prepended before these defaults.
 $o-webclient-color-scheme: light !default;
-$o-white: #eef2f6 !default;
+$o-white: #f7f7f5 !default;
 $o-black: #000000 !default;
-$o-gray-100: #f6f8fc !default;
-$o-gray-200: #edf1f7 !default;
-$o-gray-300: #dce3ee !default;
-$o-gray-400: #b4c0d3 !default;
-$o-gray-500: #8391a7 !default;
-$o-gray-600: #596980 !default;
-$o-gray-700: #334155 !default;
-$o-gray-800: #263449 !default;
-$o-gray-900: #172235 !default;
+$o-gray-100: #f2f3f2 !default;
+$o-gray-200: #e9ebed !default;
+$o-gray-300: #cdd1d6 !default;
+$o-gray-400: #9ba2ab !default;
+$o-gray-500: #6d757f !default;
+$o-gray-600: #565f6b !default;
+$o-gray-700: #454c56 !default;
+$o-gray-800: #2d333b !default;
+$o-gray-900: #20242a !default;
 
-$o-altinkaya-canvas: #dbe2eb !default;
-$o-altinkaya-input-bg: #f4f6f9 !default;
-$o-altinkaya-input-border: #78879e !default;
-$o-altinkaya-chatter-bg: #e5ebf2 !default;
-$o-altinkaya-accent: #164c94 !default;
-$o-altinkaya-accent-hover: #0e356a !default;
+$o-altinkaya-canvas: #e1e3e6 !default;
+$o-altinkaya-input-bg: #fcfcfa !default;
+$o-altinkaya-input-border: #7b838e !default;
+$o-altinkaya-chatter-bg: #eceeef !default;
+$o-altinkaya-accent: #174b87 !default;
+$o-altinkaya-accent-hover: #103762 !default;
 $o-altinkaya-required-bg: #e6dfed !default;
 $o-altinkaya-required-border: #8766ac !default;
 $o-altinkaya-required-text: #47335e !default;
-$o-altinkaya-required-placeholder: #79648f !default;
+$o-altinkaya-required-placeholder: #6b537f !default;
 $o-altinkaya-invalid-bg: #fbecf0 !default;
 $o-altinkaya-invalid-text: #a0334b !default;
-$o-altinkaya-list-header-bg: #cbd7e6 !default;
-$o-altinkaya-list-header-border: #8d9fb8 !default;
-$o-altinkaya-list-stripe-bg: #dfe6ef !default;
-$o-altinkaya-list-hover-bg: #cedef3 !default;
+$o-altinkaya-list-header-bg: #d5d9de !default;
+$o-altinkaya-list-header-border: #8b949f !default;
+$o-altinkaya-list-stripe-bg: #e6e8eb !default;
+$o-altinkaya-list-hover-bg: #e9edf1 !default;
 
 $o-community-color: #2455a1 !default;
 $o-enterprise-color: $o-community-color !default;
@@ -48,7 +48,7 @@ $o-theme-text-colors: (
   "odoo": $o-altinkaya-accent,
 ) !default;
 
-$o-main-text-color: $o-gray-700 !default;
+$o-main-text-color: $o-gray-900 !default;
 $o-main-headings-color: $o-gray-900 !default;
 $o-main-color-muted: $o-gray-600 !default;
 $o-main-link-color: $o-altinkaya-accent !default;
@@ -90,6 +90,6 @@ $input-focus-color: $o-gray-900 !default;
 $input-focus-border-color: $o-altinkaya-accent !default;
 $input-placeholder-color: $o-gray-600 !default;
 $input-disabled-bg: $o-gray-200 !default;
-$dropdown-link-hover-bg: $o-gray-100 !default;
+$dropdown-link-hover-bg: $o-list-group-active-bg !default;
 $dropdown-link-active-bg: $o-list-group-active-bg !default;
 $dropdown-link-active-color: $o-gray-900 !default;
