@@ -41,3 +41,12 @@ class TestHepsiburadaRequest(TransactionCase):
 
         self.assertEqual(len(records), 13)
         self.assertEqual(fetch.call_args_list[1].kwargs["offset"], 10)
+
+    def test_finance_reference_filters_use_the_documented_names(self):
+        self.client.get_transactions(
+            order_number="HB-ORDER", reference_document="HB-INVOICE"
+        )
+        params = self.client._make_request.call_args.kwargs["params"]
+        self.assertEqual(params["orderNumber"], "HB-ORDER")
+        self.assertEqual(params["ReferenceDocument"], "HB-INVOICE")
+        self.assertNotIn("recordDateStart", params)

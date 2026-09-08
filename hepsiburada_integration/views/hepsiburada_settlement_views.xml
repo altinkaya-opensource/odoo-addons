@@ -12,9 +12,15 @@
                         string="Reconcile"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': ['|', '|', '|', ('state', '=', 'reconciled'), ('transaction_type', 'not in', ['sale', 'return']), ('payment_status', '!=', 'Paid'), ('requires_manual_review', '=', True)]}"
+                        attrs="{'invisible': ['|', '|', '|', ('state', '=', 'reconciled'), ('transaction_type', 'not in', ['sale', 'return', 'commission', 'commission_refund']), ('payment_status', 'not in', ['Paid', 'WillBePaid']), ('requires_manual_review', '=', True)]}"
                     />
                     <field name="state" widget="statusbar" />
+                    <button
+                        name="action_reconcile_commission"
+                        string="Match Commission Invoice"
+                        type="object"
+                        attrs="{'invisible': [('commission_payment_id', '=', False)]}"
+                    />
                 </header>
                 <sheet>
                     <div
@@ -54,6 +60,7 @@
                     </group>
                     <group>
                         <group string="Payment Info">
+                            <field name="invoice_date" />
                             <field name="payment_date" />
                             <field name="payment_status" />
                             <field name="invoice_number" />
@@ -67,6 +74,14 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Commission Matching" name="commission_matching">
+                            <group>
+                                <field name="commission_invoice_number" />
+                                <field name="commission_invoice_id" />
+                                <field name="commission_match_state" />
+                                <field name="commission_match_note" />
+                            </group>
+                        </page>
                         <page string="Raw Data" name="raw_data">
                             <field name="raw_data" />
                         </page>
@@ -98,6 +113,8 @@
                 <field name="state" />
                 <field name="requires_manual_review" optional="show" />
                 <field name="odoo_invoice_id" optional="show" />
+                <field name="commission_invoice_id" optional="show" />
+                <field name="commission_match_state" optional="show" />
             </tree>
         </field>
     </record>
@@ -111,7 +128,19 @@
                 <field name="order_number" />
                 <field name="sku" />
                 <field name="hb_transaction_id" />
+                <field name="invoice_number" />
+                <field name="commission_invoice_id" />
                 <separator />
+                <filter
+                    name="commission_waiting"
+                    string="Commission Pending"
+                    domain="[('commission_match_state', '=', 'waiting')]"
+                />
+                <filter
+                    name="commission_review"
+                    string="Commission Review"
+                    domain="[('commission_match_state', '=', 'review')]"
+                />
                 <filter
                     name="imported"
                     string="To Reconcile"
@@ -141,7 +170,7 @@
                 <filter
                     name="commission"
                     string="Commissions"
-                    domain="[('transaction_type', '=', 'commission')]"
+                    domain="[('transaction_type', 'in', ['commission', 'commission_refund'])]"
                 />
                 <group expand="0" string="Group By">
                     <filter

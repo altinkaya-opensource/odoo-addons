@@ -649,3 +649,170 @@ msgstr "Değişiklikleri Görebilir"
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__warehouse_ids
 msgid "Warehouses"
 msgstr "Depolar"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_invoice_id
+msgid "Commission Invoice"
+msgstr "Komisyon Faturası"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_note
+msgid "Commission Match Note"
+msgstr "Komisyon Uzlaştırma Notu"
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_state
+msgid "Commission Match State"
+msgstr "Komisyon Uzlaştırma Durumu"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission Matching"
+msgstr "Komisyon Uzlaştırma"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr "Komisyon, ilgili tedarikçi belgesiyle uzlaştırıldı."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr "Komisyon uzlaştırması bekliyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"Commission payment %(payment)s for %(marketplace)s orders %(orders)s was "
+"reconciled with this invoice."
+msgstr ""
+"%(marketplace)s siparişleri %(orders)s için %(payment)s komisyon ödemesi bu "
+"faturayla uzlaştırıldı."
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr "Uzlaştırıldı"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
+msgstr ""
+"Bu komisyon fatura numarasıyla birden fazla tedarikçi belgesi bulundu."
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
+msgstr "İnceleme Gerekli"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+"Komisyon ödemesi, hesaplaşma satırlarındaki komisyon toplamıyla uyuşmuyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr "Komisyon ödemesi ile tedarikçi belgesinin para birimleri farklı."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr "Komisyon ödemesi, ilgili tedarikçi belgesinin açık bakiyesini aşıyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+"Komisyon ödemesi başka bir belgeyle eşleşmiş. Mevcut eşleşmeler korundu."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr "Komisyon ödemesi, tedarikçi belgesiyle eşleşmeden kapanmış."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the marketplace "
+"backend."
+msgstr ""
+"Komisyon ödemesinin iş ortağı veya şirketi pazaryeri entegrasyonuyla "
+"eşleşmiyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
+msgstr "Tedarikçi belgesinde uzlaştırılabilecek açık borç satırı yok."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr "Bu ödeme birden fazla komisyon faturasını kapsıyor. İnceleme gerekli."
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr "Bekliyor"
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from the marketplace."
+msgstr "Pazaryerinden komisyon faturası numarası bekleniyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr "Komisyon ödemesinin onaylanması bekleniyor."
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the referenced vendor bill or credit note to be posted."
+msgstr ""
+"Belirtilen tedarikçi faturasının veya iade belgesinin onaylanması "
+"bekleniyor."
