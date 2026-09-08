@@ -75,7 +75,7 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
         self.assertFalse(settlement.transaction_date)
         self.assertFalse(settlement.payment_date)
 
-    def test_will_be_paid_transaction_is_not_reconciled(self):
+    def test_unknown_status_is_not_reconciled(self):
         settlement = self.env["hepsiburada.settlement"].create(
             {
                 "backend_id": self.backend.id,
@@ -83,7 +83,7 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
                 "transaction_type": "sale",
                 "amount": 100,
                 "currency_code": "949",
-                "payment_status": "WillBePaid",
+                "payment_status": "Unknown",
             }
         )
 
@@ -91,13 +91,13 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
         self.assertEqual(settlement.state, "error")
         self.assertFalse(settlement.odoo_payment_id)
 
-    def test_non_paid_rows_stay_imported_after_a_sync(self):
+    def test_unsupported_rows_stay_imported_after_a_sync(self):
         settlements = self.env["hepsiburada.settlement"].create(
             [
                 {
                     "backend_id": self.backend.id,
                     "hb_transaction_id": "commission-row",
-                    "transaction_type": "commission",
+                    "transaction_type": "expense",
                     "amount": -40,
                     "currency_code": "949",
                     "payment_status": "Paid",
@@ -109,13 +109,13 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
                     "transaction_type": "sale",
                     "amount": 100,
                     "currency_code": "949",
-                    "payment_status": "WillBePaid",
+                    "payment_status": "Unknown",
                     "order_number": "ORDER-UNRECONCILED",
                 },
             ]
         )
 
-        self.backend._reconcile_paid_settlements(settlements)
+        self.backend._reconcile_settlements(settlements)
 
         self.assertEqual(set(settlements.mapped("state")), {"imported"})
         self.assertFalse(any(settlements.mapped("error_message")))
@@ -208,7 +208,6 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
             "TRY": "949",
             "USD": "840",
         }.get(invoice.currency_id.name, "")
-        payment_date = fields.Datetime.now()
         settlements = self.env["hepsiburada.settlement"].create(
             [
                 {
@@ -217,8 +216,8 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
                     "transaction_type": "sale",
                     "amount": 40,
                     "currency_code": currency_code,
-                    "payment_status": "Paid",
-                    "payment_date": payment_date,
+                    "payment_status": "WillBePaid",
+                    "payment_date": False,
                     "order_number": "ORDER-PAID",
                     "package_number": "PACKAGE-PAID",
                 },
@@ -228,8 +227,8 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
                     "transaction_type": "sale",
                     "amount": 60,
                     "currency_code": currency_code,
-                    "payment_status": "Paid",
-                    "payment_date": payment_date,
+                    "payment_status": "WillBePaid",
+                    "payment_date": False,
                     "order_number": "ORDER-PAID",
                     "package_number": "PACKAGE-PAID",
                 },
@@ -244,3 +243,11 @@ class TestHepsiburadaSettlement(HepsiburadaCommon):
         self.assertEqual(len(settlements.mapped("odoo_payment_id")), 1)
         self.assertEqual(settlements[0].odoo_payment_id.amount, 100)
         self.assertEqual(invoice.payment_state, "paid")
+
+        payment = settlements.odoo_payment_id
+        settlements.write(
+            {"payment_status": "Paid", "payment_date": fields.Datetime.now()}
+        )
+        self.assertTrue(settlements[1]._reconcile())
+        self.assertEqual(settlements.odoo_payment_id, payment)
+        self.assertFalse(settlements.commission_payment_id)

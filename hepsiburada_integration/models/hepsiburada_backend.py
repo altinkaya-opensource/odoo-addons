@@ -703,7 +703,7 @@ class HepsiburadaBackend(models.Model):
             _("Settlement import has been queued."),
         )
 
-    def _import_settlement_window(self, client, window_start, window_end):
+    def _import_settlement_window(self, client, window_start, window_end, **filters):
         """Import one settlement window.
 
         Returns:
@@ -711,8 +711,8 @@ class HepsiburadaBackend(models.Model):
             Only fetch errors mean the window was not fully read.
         """
         Settlement = self.env["hepsiburada.settlement"]
-        start_str = window_start.strftime("%Y-%m-%d")
-        end_str = window_end.strftime("%Y-%m-%d")
+        start_str = window_start.strftime("%Y-%m-%d") if window_start else None
+        end_str = window_end.strftime("%Y-%m-%d") if window_end else None
         imported = Settlement.browse()
         fetch_errors = []
         record_errors = []
@@ -724,6 +724,7 @@ class HepsiburadaBackend(models.Model):
                     record_date_end=end_str,
                     offset=offset,
                     limit=100,
+                    **filters,
                 )
             except HepsiburadaAPIError as error:
                 fetch_errors.append(f"{start_str} - {end_str}: {error}")
@@ -766,21 +767,26 @@ class HepsiburadaBackend(models.Model):
 
     @staticmethod
     def _is_reconcilable_settlement(settlement):
-        """Only paid sale/return rows may be handed to _reconcile()."""
+        """Clear known financial transactions; bank payout status is independent."""
         return (
-            settlement.transaction_type in ("sale", "return")
-            and str(settlement.payment_status or "").lower() == "paid"
+            settlement.transaction_type
+            in ("sale", "return", "commission", "commission_refund")
+            and str(settlement.payment_status or "").lower() in ("paid", "willbepaid")
             and settlement.state in ("imported", "error")
             and not settlement.requires_manual_review
         )
 
-    def _reconcile_paid_settlements(self, imported_settlements):
+    def _reconcile_settlements(self, imported_settlements):
         Settlement = self.env["hepsiburada.settlement"]
         retryable = Settlement.search(
             [
                 ("backend_id", "=", self.id),
-                ("transaction_type", "in", ("sale", "return")),
-                ("payment_status", "=ilike", "Paid"),
+                (
+                    "transaction_type",
+                    "in",
+                    ("sale", "return", "commission", "commission_refund"),
+                ),
+                ("payment_status", "in", ("Paid", "WillBePaid")),
                 ("state", "in", ("imported", "error")),
                 ("requires_manual_review", "=", False),
             ]
@@ -807,10 +813,83 @@ class HepsiburadaBackend(models.Model):
                     group_key,
                 )
 
+    def _refresh_pending_settlements(self, client):
+        """Re-read old references and payout statuses without moving the cursor."""
+        self.ensure_one()
+        Settlement = self.env["hepsiburada.settlement"]
+        pending = Settlement.search(
+            [
+                ("backend_id", "=", self.id),
+                "|",
+                ("payment_status", "=ilike", "WillBePaid"),
+                "&",
+                ("transaction_type", "in", ("commission", "commission_refund")),
+                ("commission_invoice_number", "=", False),
+            ]
+        )
+        refreshed = Settlement.browse()
+        errors = []
+        seen = set()
+        for row in pending:
+            reference = (row.invoice_number or "").strip()
+            filters = {}
+            start = end = None
+            if row.order_number and row.order_number != "None":
+                key = ("order_number", row.order_number)
+                filters = {"order_number": row.order_number}
+            elif reference and reference != ".":
+                key = ("reference_document", reference)
+                filters = {"reference_document": reference}
+            elif row.transaction_date:
+                start = fields.Datetime.to_datetime(row.transaction_date.date())
+                end = start + timedelta(days=1)
+                key = ("record_date", start)
+            else:
+                errors.append(
+                    _("Transaction %s has no key for historical refresh.")
+                    % row.hb_transaction_id
+                )
+                continue
+            if key in seen:
+                continue
+            seen.add(key)
+            rows, fetch_errors, record_errors = self._import_settlement_window(
+                client, start, end, **filters
+            )
+            refreshed |= rows
+            errors.extend(fetch_errors + record_errors)
+        return refreshed, errors
+
+    def _reconcile_pending_commissions(self):
+        """Retry open commission payments, including historical linked payments."""
+        self.ensure_one()
+        payments = (
+            self.env["hepsiburada.settlement"]
+            .search(
+                [
+                    ("backend_id", "=", self.id),
+                    ("commission_payment_id.state", "=", "posted"),
+                    ("commission_payment_id.is_reconciled", "=", False),
+                ]
+            )
+            .commission_payment_id
+        )
+        for payment in payments:
+            rows = payment.hepsiburada_commission_settlement_ids
+            try:
+                with self.env.cr.savepoint():
+                    rows[:1]._reconcile_commission_invoice()
+            except Exception as error:
+                rows._set_commission_match("review", str(error))
+                _logger.exception(
+                    "Failed to match HB commission payment %s", payment.id
+                )
+
     def _import_settlements(self):
         """Import settlements from Hepsiburada finance API.
 
-        Import complete financial records first, then reconcile paid order groups.
+        Refresh pending metadata and clear customer/vendor balances separately
+        from the marketplace's bank payout status.
         """
         self.ensure_one()
         client = self._get_api_client()
@@ -824,7 +903,8 @@ class HepsiburadaBackend(models.Model):
         completed_until = start_date
         total_imported = 0
         errors = []
-        imported_settlements = self.env["hepsiburada.settlement"].browse()
+        imported_settlements, refresh_errors = self._refresh_pending_settlements(client)
+        errors.extend(refresh_errors)
 
         while window_start < end_date:
             window_end = min(window_start + timedelta(days=14), end_date)
@@ -845,7 +925,8 @@ class HepsiburadaBackend(models.Model):
             window_start = window_end
 
         if self.auto_reconcile_settlements:
-            self._reconcile_paid_settlements(imported_settlements)
+            self._reconcile_settlements(imported_settlements)
+            self._reconcile_pending_commissions()
 
         vals = {"last_settlement_sync": completed_until}
         if errors:

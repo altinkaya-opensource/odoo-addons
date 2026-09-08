@@ -75,6 +75,9 @@ class TrendyolSettlement(models.Model):
     commission_payment_id = fields.Many2one(
         "account.payment",
     )
+    commission_invoice_number = fields.Char(
+        compute="_compute_commission_invoice_number", store=True, index=True
+    )
 
     # Status
     state = fields.Selection(
@@ -108,6 +111,17 @@ class TrendyolSettlement(models.Model):
         """Parse Trendyol timestamp (ms, GMT+3) to naive UTC datetime."""
         return _trendyol_ts_to_utc(timestamp)
 
+    @api.depends("raw_data")
+    def _compute_commission_invoice_number(self):
+        """Keep the API invoice reference, including existing stored payloads."""
+        for settlement in self:
+            try:
+                data = json.loads(settlement.raw_data or "{}")
+                number = (data.get("commissionInvoiceSerialNumber") or "").strip()
+            except (ValueError, TypeError, AttributeError):
+                number = False
+            settlement.commission_invoice_number = number or False
+
     @api.model
     def _import_settlement(self, backend, data):
         """Import a single settlement from Trendyol API response.
@@ -133,6 +147,7 @@ class TrendyolSettlement(models.Model):
             limit=1,
         )
         if existing:
+            existing._refresh_commission_reference(data)
             return existing
 
         # Find linked trendyol.order
@@ -189,6 +204,35 @@ class TrendyolSettlement(models.Model):
         except Exception as e:
             _logger.error("Failed to import settlement %s: %s", settlement_id, str(e))
             raise
+
+    def _refresh_commission_reference(self, data):
+        """Refresh metadata without rewriting posted amounts or reconciliation links."""
+        self.ensure_one()
+        number = (data.get("commissionInvoiceSerialNumber") or "").strip()
+        if not number or number == self.commission_invoice_number:
+            return
+        try:
+            stored_data = json.loads(self.raw_data or "{}")
+        except (ValueError, TypeError):
+            stored_data = {}
+        if not isinstance(stored_data, dict):
+            stored_data = {}
+        stored_data["commissionInvoiceSerialNumber"] = number
+        values = {"raw_data": json.dumps(stored_data, indent=2, ensure_ascii=False)}
+        if self.commission_payment_id:
+            values.update(
+                {
+                    "commission_invoice_id": False,
+                    "commission_match_state": "review"
+                    if self.commission_payment_id.is_reconciled
+                    else "waiting",
+                    "commission_match_note": _(
+                        "The API commission invoice reference was updated. "
+                        "Existing payment reconciliations were preserved."
+                    ),
+                }
+            )
+        self.write(values)
 
     def _marketplace_name(self):
         return _("Trendyol")
@@ -251,6 +295,7 @@ class TrendyolSettlement(models.Model):
         )
         if reconciled:
             self._join_reconciled_group(group, reconciled)
+            self._reconcile_commission_invoice()
             return
 
         super()._reconcile()
@@ -265,6 +310,7 @@ class TrendyolSettlement(models.Model):
                     "manual_review_required": False,
                 }
             )
+            self._reconcile_commission_invoice()
         elif self.state == "error":
             (group - self).write(
                 {
@@ -315,3 +361,26 @@ class TrendyolSettlement(models.Model):
                 ),
             }
         )
+
+    def _commission_payment_rows(self, payment):
+        """Return all settlement rows assigned to this commission payment."""
+        return payment.trendyol_commission_settlement_ids
+
+    def action_reconcile(self):
+        """Make a waiting commission explicit after successful customer collection."""
+        self.ensure_one()
+        action = super().action_reconcile()
+        if (
+            self.state == "reconciled"
+            and self.commission_payment_id
+            and self.commission_match_state != "matched"
+        ):
+            action["params"].update(
+                {
+                    "title": _("Customer Payment Reconciled"),
+                    "message": self.commission_match_note
+                    or _("Commission matching is pending."),
+                    "type": "warning",
+                }
+            )
+        return action

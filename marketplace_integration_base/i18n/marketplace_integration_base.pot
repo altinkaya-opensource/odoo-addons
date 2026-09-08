@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 07:17+0000\n"
-"PO-Revision-Date: 2026-04-27 07:17+0000\n"
+"POT-Creation-Date: 2026-09-08 07:30+0000\n"
+"PO-Revision-Date: 2026-09-08 07:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -129,6 +129,7 @@ msgid "Cargo Provider"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__changeset_change_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__changeset_change_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__changeset_change_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__changeset_change_ids
@@ -139,6 +140,7 @@ msgid "Changeset Changes"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__changeset_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__changeset_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__changeset_ids
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__changeset_ids
@@ -197,6 +199,7 @@ msgid ""
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__count_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__count_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__count_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__count_changesets
@@ -207,6 +210,7 @@ msgid "Count Changesets"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__count_pending_changeset_changes
@@ -217,6 +221,7 @@ msgid "Count Pending Changeset Changes"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__count_pending_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__count_pending_changesets
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__count_pending_changesets
@@ -317,6 +322,11 @@ msgstr ""
 #. module: marketplace_integration_base
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__invoice_sent_date
 msgid "Invoice Sent Date"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model,name:marketplace_integration_base.model_account_move_line
+msgid "Journal Item"
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -443,11 +453,20 @@ msgid "Reconciled"
 msgstr ""
 
 #. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Reconciliation Failed"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__transaction_type__return
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__transaction_type__return
 msgid "Return"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__transaction_type__sale
 #: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__transaction_type__sale
 msgid "Sale"
 msgstr ""
@@ -492,6 +511,7 @@ msgid "Settlements"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__smart_search
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__smart_search
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__smart_search
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__smart_search
@@ -524,6 +544,7 @@ msgid "Success"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_account_move_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__count_pending_changeset_changes
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order_mixin__count_pending_changeset_changes
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement_mixin__count_pending_changeset_changes
@@ -534,6 +555,7 @@ msgid "The number of pending changes of this record"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_account_move_line__count_pending_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__count_pending_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order_mixin__count_pending_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement_mixin__count_pending_changesets
@@ -551,6 +573,7 @@ msgid "The operation has been queued."
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,help:marketplace_integration_base.field_account_move_line__count_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_backend_mixin__count_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_order_mixin__count_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_marketplace_settlement_mixin__count_changesets
@@ -558,6 +581,13 @@ msgstr ""
 #: model:ir.model.fields,help:marketplace_integration_base.field_sale_order_line__count_changesets
 #: model:ir.model.fields,help:marketplace_integration_base.field_stock_picking__count_changesets
 msgid "The overall number of changesets of this record"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The settlement could not be reconciled."
 msgstr ""
 
 #. module: marketplace_integration_base
@@ -600,6 +630,7 @@ msgid "UNMAPPED: %(product)s (Qty: %(qty)s, Price: %(price)s)"
 msgstr ""
 
 #. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_account_move_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__user_can_see_changeset
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_order_mixin__user_can_see_changeset
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__user_can_see_changeset
@@ -615,15 +646,159 @@ msgid "Warehouses"
 msgstr ""
 
 #. module: marketplace_integration_base
-#. odoo-python
-#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
-#, python-format
-msgid "Reconciliation Failed"
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_state
+msgid "Commission Match State"
 msgstr ""
 
 #. module: marketplace_integration_base
 #. odoo-python
 #: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
 #, python-format
-msgid "The settlement could not be reconciled."
+msgid "Commission Matching"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"Commission payment %(payment)s for %(marketplace)s orders %(orders)s was "
+"reconciled with this invoice."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the marketplace "
+"backend."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from the marketplace."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the referenced vendor bill or credit note to be posted."
 msgstr ""

@@ -154,6 +154,10 @@ class TrendyolOrder(models.Model):
         Returns:
             trendyol.order record
         """
+        # Awaiting packages have not passed payment checks and can omit buyer data.
+        if self._map_status(order_data.get("status")) == "awaiting":
+            return False
+
         package_value = order_data.get("shipmentPackageId") or order_data.get("id")
         order_number_value = order_data.get("orderNumber")
 
@@ -196,7 +200,9 @@ class TrendyolOrder(models.Model):
                     "backend_id": backend.id,
                     "trendyol_order_number": order_number,
                     "trendyol_package_id": package_id,
-                    "trendyol_customer_id": str(order_data.get("customerId", "")),
+                    "trendyol_customer_id": self._normalize_customer_id(
+                        order_data.get("customerId")
+                    ),
                     "trendyol_status": self._map_status(order_data.get("status"))
                     or "created",
                     "cargo_provider_name": order_data.get("cargoProviderName"),
@@ -237,9 +243,17 @@ class TrendyolOrder(models.Model):
     def _update_from_trendyol_data(self, order_data):
         """Refresh mutable package data on an existing binding."""
         self.ensure_one()
+        new_status = self._map_status(order_data.get("status"))
+        if new_status == "awaiting":
+            return self
+
         vals = {
             "raw_data": json.dumps(order_data, indent=2, ensure_ascii=False),
         }
+        customer_id = self._normalize_customer_id(order_data.get("customerId"))
+        if customer_id and not self._normalize_customer_id(self.trendyol_customer_id):
+            vals["trendyol_customer_id"] = customer_id
+
         field_map = {
             "cargoProviderName": "cargo_provider_name",
             "cargoProviderId": "cargo_provider_id",
@@ -253,7 +267,6 @@ class TrendyolOrder(models.Model):
             if value:
                 vals[odoo_field] = value
 
-        new_status = self._map_status(order_data.get("status"))
         if new_status:
             vals["trendyol_status"] = new_status
 
@@ -290,6 +303,14 @@ class TrendyolOrder(models.Model):
             "AtCollectionPoint": "at_collection_point",
         }
         return status_map.get(trendyol_status)
+
+    @api.model
+    def _normalize_customer_id(self, customer_id):
+        """Return a positive Trendyol customer ID, or False for missing identity."""
+        customer_id = str(customer_id or "").strip()
+        if not customer_id.isdecimal() or int(customer_id) <= 0:
+            return False
+        return str(int(customer_id))
 
     @api.model
     def _partner_vat_digits(self, vat):
@@ -371,8 +392,12 @@ class TrendyolOrder(models.Model):
                     domain.append(("company_id", "in", [False, company_id]))
                 existing = Partner.search(domain, limit=1)
                 if existing:
-                    customer_id = partner_vals.get("trendyol_customer_id")
-                    if customer_id and not existing.trendyol_customer_id:
+                    customer_id = self._normalize_customer_id(
+                        partner_vals.get("trendyol_customer_id")
+                    )
+                    if customer_id and not self._normalize_customer_id(
+                        existing.trendyol_customer_id
+                    ):
                         existing.trendyol_customer_id = customer_id
                     _logger.warning(
                         "Reusing partner %s for Trendyol VAT %s after create error: %s",
@@ -424,7 +449,14 @@ class TrendyolOrder(models.Model):
         """
         Partner = self.env["res.partner"]
 
-        customer_id = str(order_data.get("customerId", ""))
+        customer_id = self._normalize_customer_id(order_data.get("customerId"))
+        if not customer_id:
+            raise UserError(
+                _(
+                    "Trendyol customer information is not available yet. "
+                    "Retry the import later."
+                )
+            )
         invoice_address = order_data.get("invoiceAddress", {})
         raw_tax = (invoice_address.get("taxNumber") or "").strip()
         vat = self._sanitize_partner_vat(raw_tax)
@@ -445,7 +477,7 @@ class TrendyolOrder(models.Model):
             )
             if partner:
                 # Update trendyol_customer_id if missing
-                if customer_id and not partner.trendyol_customer_id:
+                if not self._normalize_customer_id(partner.trendyol_customer_id):
                     partner.trendyol_customer_id = customer_id
                 return partner
 

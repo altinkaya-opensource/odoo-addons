@@ -4,4 +4,5 @@ from . import test_hepsiburada_question
 from . import test_hepsiburada_request
 from . import test_hepsiburada_security
 from . import test_hepsiburada_settlement
+from . import test_hepsiburada_commission
 from . import test_hepsiburada_webhook
