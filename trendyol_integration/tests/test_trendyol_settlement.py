@@ -192,6 +192,43 @@ class TestTrendyolSettlement(TrendyolTestCase):
             )
         )
 
+    def _invoice_messages(self, invoice):
+        """Read invoice notes without relying on a cached chatter relation."""
+        return self.env["mail.message"].search(
+            [("model", "=", "account.move"), ("res_id", "=", invoice.id)]
+        )
+
+    def test_commission_note_lists_unique_orders_without_notifications_or_repeats(self):
+        order, customer_invoice = self._prepare_payout_order()
+        bill = self._vendor_bill("DCF2026999900002", 30)
+        rows = self._create_settlement_row(
+            order, "NOTE-1", 10, bill.ref
+        ) | self._create_settlement_row(order, "NOTE-2", 10, bill.ref)
+        rows.order_number = "<b>FIRST-ORDER</b>"
+        third = self._create_settlement_row(order, "NOTE-3", 10, bill.ref)
+        third.order_number = "SECOND-ORDER"
+        rows |= third
+        before = self._invoice_messages(bill)
+        rows[0]._reconcile()
+        note = self._invoice_messages(bill) - before
+        self.assertEqual(len(note), 1)
+        self.assertTrue(note.is_internal)
+        self.assertEqual(note.subtype_id, self.env.ref("mail.mt_note"))
+        self.assertEqual(note.body.count("FIRST-ORDER"), 1)
+        self.assertIn("&lt;b&gt;FIRST-ORDER&lt;/b&gt;", note.body)
+        self.assertNotIn("<b>FIRST-ORDER</b>", note.body)
+        self.assertIn("SECOND-ORDER", note.body)
+        self.assertIn(rows.commission_payment_id.name, note.body)
+        self.assertFalse(note.notification_ids)
+        self.assertFalse(
+            self.env["mail.mail"].search([("mail_message_id", "=", note.id)])
+        )
+        self.assertEqual(customer_invoice.amount_residual, 0)
+        self.assertEqual(bill.amount_residual, 0)
+        rows[0].action_reconcile_commission()
+        self.backend._reconcile_pending_commissions()
+        self.assertEqual(self._invoice_messages(bill) - before, note)
+
     def test_commission_matches_api_invoice_instead_of_older_bill(self):
         order, invoice = self._prepare_payout_order()
         old = self._vendor_bill("DCF2026999900001", 15, "2026-01-21")
@@ -257,8 +294,13 @@ class TestTrendyolSettlement(TrendyolTestCase):
     def test_bulk_vendor_bill_accepts_commissions_from_multiple_orders(self):
         order, _invoice = self._prepare_payout_order()
         bill = self._vendor_bill("DCF2026999900002", 30)
+        before = self._invoice_messages(bill)
         first = self._create_settlement_row(order, "BULK-1", 10, bill.ref)
         first._reconcile()
+        first_note = self._invoice_messages(bill) - before
+        self.assertEqual(len(first_note), 1)
+        self.assertIn(first.order_number, first_note.body)
+        self.assertEqual(bill.amount_residual, 20)
         _sale, second_order = self._create_sale_and_order(package_id="SECOND-PACKAGE")
         second = self._create_settlement_row(second_order, "BULK-2", 20, bill.ref)
         payment = second._create_commission_payment("outbound")
@@ -268,6 +310,9 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertTrue(first.commission_payment_id.is_reconciled)
         self.assertTrue(second.commission_payment_id.is_reconciled)
         self.assertNotEqual(first.commission_payment_id, second.commission_payment_id)
+        second_note = self._invoice_messages(bill) - before - first_note
+        self.assertEqual(len(second_note), 1)
+        self.assertIn(second.order_number, second_note.body)
 
     def test_reference_refresh_revisits_old_transactions_without_new_payments(self):
         order, _invoice = self._prepare_payout_order()
@@ -518,6 +563,16 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertEqual(old.amount_residual, 15)
         self.assertEqual(target.amount_residual, 0)
         self.assertEqual(row.commission_match_state, "matched")
+        first_note = self._invoice_messages(target)
+        payment.move_id.line_ids.filtered(
+            lambda line: line.account_type == "liability_payable"
+        ).remove_move_reconcile()
+        self.backend._reconcile_pending_commissions()
+        new_note = (self._invoice_messages(target) - first_note).filtered(
+            lambda message: row.order_number in message.body
+        )
+        self.assertEqual(len(new_note), 1)
+        self.assertIn(row.order_number, new_note.body)
 
     def test_conflicting_invoice_references_wait_for_review(self):
         order, invoice = self._prepare_payout_order()
@@ -536,22 +591,26 @@ class TestTrendyolSettlement(TrendyolTestCase):
     def test_excess_payment_and_wrong_currency_do_not_reconcile(self):
         order, _invoice = self._prepare_payout_order()
         target = self._vendor_bill("DCF2026999900002", 5)
+        before = self._invoice_messages(target)
         row = self._create_settlement_row(order, "EXCESS-1", 15, target.ref)
         row._reconcile()
         self.assertEqual(row.commission_match_state, "review")
         self.assertFalse(row.commission_payment_id.is_reconciled)
         self.assertEqual(target.amount_residual, 5)
+        self.assertEqual(self._invoice_messages(target), before)
         other_currency = (
             self.env.ref("base.USD")
             if self.env.company.currency_id != self.env.ref("base.USD")
             else self.env.ref("base.EUR")
         )
         foreign = self._vendor_bill("DCF2026999900003", 15, currency=other_currency)
+        foreign_before = self._invoice_messages(foreign)
         row.raw_data = json.dumps({"commissionInvoiceSerialNumber": foreign.ref})
         row.action_reconcile_commission()
         self.assertEqual(row.commission_match_state, "review")
         self.assertFalse(row.commission_payment_id.is_reconciled)
         self.assertEqual(foreign.amount_residual, 15)
+        self.assertEqual(self._invoice_messages(foreign), foreign_before)
 
     def test_package_rows_are_reconciled_with_one_payment(self):
         order, invoice = self._prepare_payout_order()
