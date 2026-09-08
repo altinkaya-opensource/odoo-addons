@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t
+        t-name="altinkaya_theme.DebugHeader"
+        t-inherit="web.NavBar"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//nav[contains(@class, 'o_main_navbar')]" position="attributes">
+            <attribute
+                name="t-att-class"
+            >{'o_altinkaya_local_debug': isLocalDebug()}</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_menu_systray')]" position="before">
+            <button
+                t-if="altinkayaNavigation.toolsOpen"
+                class="o_altinkaya_tools_backdrop d-md-none"
+                aria-label="Close tools"
+                tabindex="-1"
+                t-on-click="handleToggleTools"
+            />
+            <button
+                class="o_altinkaya_tools_button o_nav_entry d-md-none"
+                title="Tools"
+                aria-label="Tools"
+                t-att-aria-expanded="altinkayaNavigation.toolsOpen ? 'true' : 'false'"
+                t-on-click="handleToggleTools"
+            >
+                <i class="fa fa-ellipsis-h" aria-hidden="true" />
+            </button>
+            <div
+                class="o_altinkaya_mobile_burger d-md-none"
+                t-on-click="() => { altinkayaNavigation.toolsOpen = false; }"
+            >
+                <AltinkayaBurgerMenu />
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-component='item.Component']" position="attributes">
+            <attribute name="t-if">item.key !== 'burger_menu'</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_menu_systray')]" position="attributes">
+            <attribute
+                name="t-att-class"
+            >{'o_altinkaya_tools_open': altinkayaNavigation.toolsOpen}</attribute>
+        </xpath>
+    </t>
+    <t
+        t-name="altinkaya_theme.NavBarApps"
+        t-inherit="web.NavBar.AppsMenu"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//Dropdown" position="replace">
+            <div class="o_altinkaya_navigation d-flex align-items-center">
+                <button
+                    class="o_altinkaya_launcher_button o_nav_entry"
+                    title="Applications"
+                    aria-label="Applications"
+                    data-hotkey="h"
+                    t-on-click="handleOpenApplications"
+                >
+                    <i class="fa fa-th-large" aria-hidden="true" />
+                </button>
+                <span
+                    t-if="isLocalDebug()"
+                    class="o_altinkaya_test_badge"
+                >Test Database</span>
+                <span
+                    t-if="currentApp"
+                    class="o_altinkaya_mobile_title d-md-none text-truncate"
+                >
+                    <t t-esc="currentApp.name" />
+                </span>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="altinkaya_theme.Menu" owl="1">
+        <Dialog
+            title="title"
+            size="'md'"
+            footer="false"
+            contentClass="'o_altinkaya_menu'"
+            bodyClass="'o_altinkaya_menu_body'"
+        >
+            <div class="o_altinkaya_menu_search">
+                <i class="fa fa-search" aria-hidden="true" />
+                <input
+                    type="search"
+                    class="form-control"
+                    t-att-value="state.query"
+                    t-on-input="handleSearchInput"
+                    t-on-keydown="handleSearchKeydown"
+                    t-ref="autofocus"
+                    t-att-placeholder="placeholder"
+                    t-att-aria-label="placeholder"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-haspopup="listbox"
+                    t-att-aria-controls="resultsId"
+                    t-att-aria-expanded="entries.length ? 'true' : 'false'"
+                    t-att-aria-activedescendant="state.activeIndex >= 0 ? resultsId + '_' + state.activeIndex : undefined"
+                />
+            </div>
+            <div
+                class="o_altinkaya_app_grid"
+                t-att-class="{'o_altinkaya_sections_list': state.query.trim().length > 0}"
+                t-ref="results"
+                t-att-id="resultsId"
+                role="listbox"
+                t-att-aria-label="title"
+                t-on-keydown="handleSearchKeydown"
+            >
+                <a
+                    t-foreach="entries"
+                    t-as="entry"
+                    t-key="entry.menu.id"
+                    class="o_altinkaya_app"
+                    t-attf-id="{{resultsId}}_{{entry_index}}"
+                    role="option"
+                    t-att-aria-selected="state.activeIndex === entry_index ? 'true' : 'false'"
+                    t-on-focus="() => { state.activeIndex = entry_index; }"
+                    t-att-href="getHref(entry.menu)"
+                    t-on-click="(ev) => this.handleSelect(ev, entry.menu)"
+                >
+                    <span class="o_altinkaya_app_icon">
+                        <img
+                            t-if="getIcon(entry.menu)"
+                            t-att-src="getIcon(entry.menu)"
+                            alt=""
+                        />
+                        <span
+                            t-else=""
+                            t-esc="getApplication(entry.menu).name.slice(0, 1)"
+                        />
+                    </span>
+                    <span class="o_altinkaya_app_label">
+                        <strong t-esc="entry.menu.name" />
+                        <small
+                            t-if="entry.path"
+                            class="text-muted"
+                            t-esc="entry.path"
+                        />
+                    </span>
+                </a>
+            </div>
+            <p
+                t-if="!entries.length"
+                class="text-muted text-center py-4 mb-0"
+            >No matching menu.</p>
+        </Dialog>
+    </t>
+</templates>

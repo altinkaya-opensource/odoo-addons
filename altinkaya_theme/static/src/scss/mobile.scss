@@ -1,0 +1,443 @@
+// Mobile layout follows Odoo/web_responsive's native search and navigation flow.
+// Keep these rules separate so desktop density and spacing remain independent.
+@include media-breakpoint-down(md) {
+  body.o_web_client {
+    height: 100vh;
+    height: 100dvh;
+
+    .o_navbar {
+      position: relative;
+      z-index: $zindex-dropdown + 1;
+      flex-shrink: 0;
+    }
+
+    .o_main_navbar {
+      --o-navbar-height: 48px;
+
+      position: relative;
+      flex-wrap: nowrap;
+      min-width: 0;
+      height: var(--o-navbar-height);
+
+      .o_altinkaya_navigation {
+        flex: 1 1 auto;
+        min-width: 0;
+        height: 100%;
+      }
+
+      .o_altinkaya_mobile_title {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0 8px;
+        color: $o-navbar-entry-color;
+        font-size: 15px;
+        cursor: default;
+      }
+
+      .o_altinkaya_mobile_burger {
+        flex: 0 0 48px;
+        height: 100%;
+
+        > div {
+          height: 100%;
+        }
+
+        .o_mobile_menu_toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 48px;
+          height: 100%;
+          padding: 0;
+          background-color: transparent;
+          color: $o-navbar-entry-color;
+          font-size: 20px;
+
+          &:hover,
+          &:focus-visible {
+            background-color: $o-navbar-entry-bg--hover;
+          }
+
+          &:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: -4px;
+          }
+        }
+      }
+
+      .o_altinkaya_tools_button {
+        flex: 0 0 44px;
+        justify-content: center;
+        height: 100%;
+        border: 0;
+      }
+
+      .o_altinkaya_tools_backdrop {
+        position: fixed;
+        inset: 48px 0 0;
+        border: 0;
+        background: rgba(#000, 0.16);
+      }
+
+      .o_menu_systray {
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 8px;
+        z-index: 1;
+        display: none !important;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        width: max-content;
+        max-width: calc(100vw - 16px);
+        height: auto;
+        padding: 4px;
+        border: 1px solid rgba(#fff, 0.2);
+        border-radius: 8px;
+        background-color: $o-navbar-background;
+        box-shadow: $o-dropdown-box-shadow;
+
+        &.o_altinkaya_tools_open {
+          display: flex !important;
+        }
+
+        > [data-index] {
+          display: none;
+        }
+
+        > * {
+          flex: 0 0 auto;
+          height: 44px;
+
+          > button,
+          > a,
+          > label,
+          > .dropdown > .dropdown-toggle {
+            justify-content: center;
+            min-width: 40px;
+            height: 100%;
+            padding: 0 10px;
+            line-height: normal;
+          }
+        }
+
+        .dropdown-menu {
+          max-width: calc(100vw - 24px);
+        }
+      }
+
+      &.o_altinkaya_local_debug .o_menu_systray {
+        background-color: #a52d3a;
+      }
+    }
+
+    .o_altinkaya_menu {
+      // web_dialog_size adds a wrapper and position-absolute to this node.
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+
+      .modal-header {
+        min-height: 48px;
+        padding: 4px 12px;
+      }
+    }
+
+    .o_dialog .o_modal_full .modal-dialog {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      margin: 0;
+
+      .modal-content {
+        height: 100%;
+        max-height: 100%;
+      }
+    }
+
+    .o_altinkaya_menu_body {
+      min-height: 0;
+      padding: 12px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+    }
+
+    .o_altinkaya_menu_search {
+      position: sticky;
+      top: -12px;
+      z-index: 1;
+      padding-top: 4px;
+      padding-bottom: 8px;
+      background-color: $o-view-background-color;
+
+      .form-control {
+        min-height: 44px;
+        font-size: 16px;
+      }
+    }
+
+    .o_altinkaya_app_grid:not(.o_altinkaya_sections_list) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+
+      .o_altinkaya_app {
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: 160px;
+        padding: 12px 4px;
+        text-align: center;
+      }
+
+      .o_altinkaya_app_icon {
+        flex-basis: auto;
+        width: 104px;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        border-radius: 18px;
+        font-size: 48px;
+
+        img {
+          width: 96px;
+          max-width: calc(100% - 8px);
+          height: auto;
+          aspect-ratio: 1;
+        }
+      }
+    }
+
+    .o_altinkaya_sections_list .o_altinkaya_app {
+      min-height: 44px;
+    }
+
+    .o_burger_menu {
+      width: 100%;
+
+      .o_burger_menu_topbar {
+        min-height: 48px;
+        background-color: $o-navbar-background;
+        color: #fff;
+      }
+
+      .o_burger_menu_content {
+        background-color: $o-view-background-color;
+
+        ul {
+          background-color: transparent;
+          box-shadow: none;
+        }
+
+        li,
+        button {
+          color: $o-main-text-color;
+
+          &:hover,
+          &:focus {
+            color: $o-altinkaya-accent;
+          }
+        }
+      }
+    }
+
+    .o_action_manager .o_action {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .o_control_panel {
+      padding: 8px 12px;
+
+      .o_cp_top {
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .o_cp_bottom {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        padding-top: 4px;
+      }
+
+      .o_cp_bottom_left,
+      .o_cp_bottom_right {
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .o_cp_bottom_right {
+        margin-left: auto;
+      }
+
+      .btn {
+        min-height: 40px;
+      }
+
+      .o_cp_buttons,
+      .o_cp_buttons > div {
+        width: auto;
+      }
+
+      .o_cp_searchview.o_searchview_quick {
+        flex: 1 1 auto;
+        min-width: 0;
+
+        > .o_searchview {
+          min-height: 40px;
+          margin: 0;
+          padding: 4px 6px !important;
+        }
+      }
+
+      .o_searchview_input {
+        font-size: 16px;
+      }
+
+      .o_enable_searchview,
+      .o_toggle_searchview_full,
+      .o_cp_switch_buttons > .dropdown > .dropdown-toggle {
+        flex-shrink: 0;
+        min-width: 40px;
+      }
+    }
+
+    .o_form_view {
+      .o_form_renderer,
+      .o_form_sheet_bg {
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .o_form_sheet_bg > .o_form_sheet {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        margin: 0;
+        padding: 12px;
+        border-radius: 0;
+      }
+
+      .o_group .o_field_widget {
+        min-width: 0;
+      }
+
+      .o_field_widget:not(.o_readonly_modifier) {
+        input.o_input,
+        select.o_input {
+          min-height: 40px;
+          font-size: 16px;
+        }
+      }
+
+      .oe_title h1 {
+        font-size: 24px;
+        overflow-wrap: anywhere;
+      }
+
+      .o_form_statusbar {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px 8px;
+      }
+
+      .o_statusbar_buttons {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .o_field_statusbar {
+        min-width: 0;
+        max-width: 100%;
+        margin-left: auto;
+      }
+
+      .o_notebook > .o_notebook_headers {
+        overflow-x: auto;
+
+        .nav-tabs {
+          flex-wrap: nowrap;
+          white-space: nowrap;
+        }
+
+        .nav-link {
+          padding: 10px 12px;
+        }
+      }
+    }
+
+    .o_FormRenderer_chatterContainer:not(.o-aside) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .o_ChatterTopbar {
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px;
+
+      .btn {
+        min-height: 40px;
+      }
+    }
+
+    .o_list_renderer {
+      max-width: 100%;
+
+      .o_list_table > tbody > .o_data_row > td {
+        height: 44px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      .o_list_record_selector .form-check-input {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .o_mobile_search {
+      --mobileSearch-bg: #{$o-view-background-color};
+      --mobileSearch__header-bg: #{$o-navbar-background};
+
+      .o_mobile_search_header,
+      .o_mobile_search_footer {
+        flex-shrink: 0;
+        min-height: 48px;
+      }
+
+      .o_mobile_search_footer {
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .o_searchview_input {
+        min-height: 40px;
+        font-size: 16px;
+      }
+
+      .o_mobile_search_filter .dropdown-toggle {
+        min-height: 44px;
+        text-align: left;
+      }
+
+      .o_searchview_facet {
+        min-height: 32px;
+      }
+    }
+
+    .o_search_panel_summary {
+      min-height: 44px;
+      border-radius: 0;
+      background-color: $o-white;
+      color: $o-main-text-color;
+      text-align: left;
+    }
+  }
+}
