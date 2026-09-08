@@ -38,6 +38,54 @@ Configuration
 4. Set up cargo provider mappings in the **Cargo Mapping** tab
 5. Verify the connection with **Test Connection**
 
+Commission invoice matching
+---------------------------
+
+Upgrade the module to ``16.0.1.2.0`` to enable invoice-specific commission
+matching. ``commissionInvoiceSerialNumber`` is extracted from the API payload,
+including previously saved raw data. A later nonempty reference refreshes an
+existing settlement without rewriting its posted financial amounts.
+
+Trendyol commission payments are excluded from the generic invoice-centric
+auto-reconciler, including its single-partner wizard entry point. Commission
+payments remain posted and open until every charged settlement row associated
+with the payment identifies the same vendor document. Only the matching posted
+DSM bill (or vendor credit note for an inbound commission refund), in the same
+company and currency, may be reconciled. Supplier, amount, payable-account and
+remaining-balance checks are required. Multiple references, duplicate documents
+or an existing reconciliation to another document require review.
+
+Customer payment reconciliation continues independently. The settlement's
+**Commission Matching** tab shows the API reference, target vendor document,
+matching state and waiting/review reason. **Match Commission Invoice** retries
+matching without creating another payment. Several order commissions may pay
+the same vendor invoice; that invoice can remain partially unpaid until all
+of its commissions are matched.
+
+The daily settlement import separately refreshes missing commission invoice
+references, including old settlements whose customer payment or commission
+payment is already reconciled and rows without a payment yet. It queries only
+the date windows containing missing references, in batches of at most 15 days,
+and only updates existing reference metadata in those historical windows.
+This refresh also runs when automatic settlement reconciliation is disabled.
+Order webhooks do not provide these financial reference updates.
+
+When automatic settlement reconciliation is enabled, the same import retries
+all posted, open Trendyol commission payments, including historical ones.
+A reference can arrive
+before its vendor bill: matching retries without another API refresh once the
+reference is known. Missing references or bills never fall back to matching
+the oldest open invoice.
+
+The cron does not remove existing reconciliations or recreate payments. Once
+an incorrect historical allocation is explicitly unreconciled, that same open
+payment becomes eligible for invoice-specific matching without another flag.
+Review the affected records and accounting side effects before removing an
+allocation; no migration bulk-unreconciles historical payments.
+
+The reference is documented in the `Trendyol domestic finance API
+<https://developers.trendyol.com/docs/cari-hesap-ekstresi-entegrasyonu>`_.
+
 Authors
 -------
 

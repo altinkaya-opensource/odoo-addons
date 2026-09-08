@@ -6973,8 +6973,191 @@ msgid "Waiting Fraud Check"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_number
+msgid "Commission Invoice Number"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_state
+msgid "Commission Match State"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#, python-format
+msgid "Commission Matching"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Customer Payment Reconciled"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__is_trendyol_commission
+msgid "Is Trendyol Commission"
+msgstr ""
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+msgid "Match Commission Invoice"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the Trendyol "
+"backend."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_settlement_ids
+msgid "Trendyol Commission Settlement"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from Trendyol."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Waiting for the referenced DSM vendor bill or credit note to be posted."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The API commission invoice reference was updated. Existing payment "
+"reconciliations were preserved."
+msgstr ""
+
+#. module: trendyol_integration
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_order.py:0
 #, python-format
-msgid "Trendyol customer information is not available yet. Retry the import later."
+msgid ""
+"Trendyol customer information is not available yet. Retry the import later."
 msgstr ""
