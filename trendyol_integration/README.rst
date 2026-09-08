@@ -62,6 +62,13 @@ matching without creating another payment. Several order commissions may pay
 the same vendor invoice; that invoice can remain partially unpaid until all
 of its commissions are matched.
 
+From version ``16.0.1.2.1``, each successful commission allocation adds a note to the
+vendor invoice listing the payment reference and its unique Trendyol order
+numbers. The note does not notify followers. Retrying an already reconciled
+payment does not add another note; explicitly unreconciling and matching it
+again records the new allocation as another event. Existing allocations are
+not backfilled with notes.
+
 The daily settlement import separately refreshes missing commission invoice
 references, including old settlements whose customer payment or commission
 payment is already reconciled and rows without a payment yet. It queries only

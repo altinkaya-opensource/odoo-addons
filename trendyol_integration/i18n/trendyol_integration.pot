@@ -7161,3 +7161,12 @@ msgstr ""
 msgid ""
 "Trendyol customer information is not available yet. Retry the import later."
 msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Commission payment %(payment)s for Trendyol orders %(orders)s was reconciled "
+"with this invoice."
+msgstr ""

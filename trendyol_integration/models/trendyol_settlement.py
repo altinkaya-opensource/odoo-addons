@@ -4,6 +4,8 @@
 import json
 import logging
 
+from markupsafe import escape
+
 from odoo import _, api, fields, models
 
 from .trendyol_backend import _trendyol_ts_to_utc
@@ -530,7 +532,24 @@ class TrendyolSettlement(models.Model):
                 invoice,
             )
         (payment_lines + invoice_lines).reconcile()
+        charged_rows._log_commission_reconciliation(invoice, payment)
         return rows._set_commission_match("matched", invoice=invoice)
+
+    def _log_commission_reconciliation(self, invoice, payment):
+        """Record the newly allocated orders without notifying invoice followers."""
+        order_numbers = sorted(set(self.mapped("order_number")) - {False, ""})
+        if not order_numbers:
+            return
+        invoice._message_log(
+            body=escape(
+                _(
+                    "Commission payment %(payment)s for Trendyol orders %(orders)s "
+                    "was reconciled with this invoice.",
+                    payment=payment.name,
+                    orders=", ".join(order_numbers),
+                )
+            )
+        )
 
     def action_reconcile(self):
         """Make a waiting commission explicit after successful customer collection."""
