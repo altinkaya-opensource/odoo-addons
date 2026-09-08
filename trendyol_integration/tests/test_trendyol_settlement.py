@@ -205,7 +205,6 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertEqual(target.amount_residual, 0)
         self.assertEqual(rows.commission_payment_id.reconciled_bill_ids, target)
         self.assertTrue(rows.commission_payment_id.is_trendyol_commission)
-        self.assertTrue(rows.commission_payment_id.trendyol_commission_auto_match)
         self.assertEqual(rows.mapped("commission_match_state"), ["matched", "matched"])
 
     def test_missing_reference_is_excluded_from_general_reconciliation(self):
@@ -318,7 +317,6 @@ class TestTrendyolSettlement(TrendyolTestCase):
         row.raw_data = json.dumps({"commissionAmount": 15, "credit": 100})
         row._reconcile()
         payment = row.commission_payment_id
-        payment.trendyol_commission_auto_match = False
         old = self._vendor_bill("DCF2026999900001", 15, "2026-01-21")
         (self._payable_lines(payment.move_id) + self._payable_lines(old)).reconcile()
         original_links = (
@@ -357,7 +355,6 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertEqual(row.commission_payment_id, payment)
         self.assertEqual(payment.reconciled_bill_ids, old)
         self.assertTrue(original_links.exists())
-        self.assertFalse(payment.trendyol_commission_auto_match)
         self.assertEqual(row.state, "reconciled")
         self.assertEqual(row.commission_match_state, "review")
         self.assertEqual(row.commission_amount, 15)
@@ -461,12 +458,11 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertFalse(row.commission_invoice_number)
         self.assertFalse(row.commission_payment_id)
 
-    def test_legacy_open_payments_are_protected_but_not_automatically_matched(self):
+    def test_existing_open_payments_are_matched_by_commission_cron(self):
         order, _invoice = self._prepare_payout_order()
         row = self._create_settlement_row(order, "LEGACY-OPEN", 15)
         row._reconcile()
         payment = row.commission_payment_id
-        payment.trendyol_commission_auto_match = False
         bill = self._vendor_bill("DCF2026999900002", 15)
         self.env["trendyol.settlement"]._import_settlement(
             self.backend,
@@ -475,18 +471,21 @@ class TestTrendyolSettlement(TrendyolTestCase):
                 "commissionInvoiceSerialNumber": bill.ref,
             },
         )
-        self.assertEqual(row.commission_match_state, "review")
-        self.backend._reconcile_pending_commissions()
-        row.action_reconcile_commission()
+        self.assertEqual(row.commission_match_state, "waiting")
         self.env["account.auto.reconcile"].reconcile_partner(
             self.backend.trendyol_partner_id
         )
         self.assertTrue(payment.is_trendyol_commission)
         self.assertFalse(payment.is_reconciled)
         self.assertEqual(bill.amount_residual, 15)
-        self.assertEqual(row.commission_match_state, "review")
+        self.backend._reconcile_pending_commissions()
+        self.assertEqual(row.commission_payment_id, payment)
+        self.assertTrue(payment.is_reconciled)
+        self.assertEqual(payment.reconciled_bill_ids, bill)
+        self.assertEqual(bill.amount_residual, 0)
+        self.assertEqual(row.commission_match_state, "matched")
 
-    def test_existing_wrong_reconciliation_is_never_rewritten(self):
+    def test_existing_match_is_preserved_until_manually_unreconciled(self):
         order, _invoice = self._prepare_payout_order()
         row = self._create_settlement_row(order, "WRONG-MATCH", 15)
         row._reconcile()
@@ -510,6 +509,15 @@ class TestTrendyolSettlement(TrendyolTestCase):
         self.assertTrue(original_links.exists())
         self.assertEqual(target.amount_residual, 15)
         self.assertEqual(row.commission_match_state, "review")
+        self.backend._reconcile_pending_commissions()
+        self.assertTrue(original_links.exists())
+        original_links.unlink()
+        self.backend._reconcile_pending_commissions()
+        self.assertEqual(row.commission_payment_id, payment)
+        self.assertEqual(payment.reconciled_bill_ids, target)
+        self.assertEqual(old.amount_residual, 15)
+        self.assertEqual(target.amount_residual, 0)
+        self.assertEqual(row.commission_match_state, "matched")
 
     def test_conflicting_invoice_references_wait_for_review(self):
         order, invoice = self._prepare_payout_order()

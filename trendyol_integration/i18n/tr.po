@@ -7226,30 +7226,9 @@ msgid "Customer Payment Reconciled"
 msgstr "Müşteri Tahsilatı Uzlaştırıldı"
 
 #. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_account_payment__trendyol_commission_auto_match
-msgid ""
-"Enabled only for commission payments created by the invoice-specific "
-"matching flow. Legacy payments require a separately reviewed correction."
-msgstr ""
-"Yalnızca faturaya özel eşleştirme akışında oluşturulan komisyon ödemeleri "
-"için etkinleştirilir. Eski ödemeler için ayrı bir inceleme ve düzeltme "
-"gerekir."
-
-#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__is_trendyol_commission
 msgid "Is Trendyol Commission"
 msgstr "Trendyol Komisyonu"
-
-#. module: trendyol_integration
-#. odoo-python
-#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
-#, python-format
-msgid ""
-"Legacy commission payments require a separately reviewed correction. No "
-"payment reconciliation was changed."
-msgstr ""
-"Eski komisyon ödemeleri için ayrı bir inceleme ve düzeltme gerekir. Ödeme "
-"uzlaşmalarında değişiklik yapılmadı."
 
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
@@ -7345,11 +7324,6 @@ msgid ""
 msgstr ""
 "Bu ödeme birden fazla komisyon faturası referansını kapsıyor. İnceleme "
 "gerekiyor."
-
-#. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_auto_match
-msgid "Trendyol Commission Auto Match"
-msgstr "Trendyol Komisyonu Otomatik Eşleştirme"
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_settlement_ids

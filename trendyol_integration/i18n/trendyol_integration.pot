@@ -7023,24 +7023,8 @@ msgid "Customer Payment Reconciled"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_account_payment__trendyol_commission_auto_match
-msgid ""
-"Enabled only for commission payments created by the invoice-specific "
-"matching flow. Legacy payments require a separately reviewed correction."
-msgstr ""
-
-#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__is_trendyol_commission
 msgid "Is Trendyol Commission"
-msgstr ""
-
-#. module: trendyol_integration
-#. odoo-python
-#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
-#, python-format
-msgid ""
-"Legacy commission payments require a separately reviewed correction. No "
-"payment reconciliation was changed."
 msgstr ""
 
 #. module: trendyol_integration
@@ -7127,11 +7111,6 @@ msgstr ""
 msgid ""
 "This payment covers multiple commission invoice references. Review is "
 "required."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_auto_match
-msgid "Trendyol Commission Auto Match"
 msgstr ""
 
 #. module: trendyol_integration

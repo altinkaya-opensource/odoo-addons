@@ -1035,13 +1035,12 @@ class TrendyolBackend(models.Model):
         return total_imported
 
     def _reconcile_pending_commissions(self):
-        """Retry only new-flow payments; never automatically repair legacy ones."""
+        """Retry all posted, open commission payments without changing closed ones."""
         self.ensure_one()
         Settlement = self.env["trendyol.settlement"]
         pending_commissions = Settlement.search(
             [
                 ("backend_id", "=", self.id),
-                ("commission_payment_id.trendyol_commission_auto_match", "=", True),
                 ("commission_payment_id.state", "=", "posted"),
                 ("commission_payment_id.is_reconciled", "=", False),
             ]

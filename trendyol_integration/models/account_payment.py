@@ -13,12 +13,6 @@ class AccountPayment(models.Model):
     is_trendyol_commission = fields.Boolean(
         compute="_compute_is_trendyol_commission", store=True, index=True
     )
-    trendyol_commission_auto_match = fields.Boolean(
-        readonly=True,
-        copy=False,
-        help="Enabled only for commission payments created by the invoice-specific "
-        "matching flow. Legacy payments require a separately reviewed correction.",
-    )
 
     @api.depends("trendyol_commission_settlement_ids")
     def _compute_is_trendyol_commission(self):

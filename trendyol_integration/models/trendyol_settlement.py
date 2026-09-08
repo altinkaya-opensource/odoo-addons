@@ -230,10 +230,7 @@ class TrendyolSettlement(models.Model):
                 {
                     "commission_invoice_id": False,
                     "commission_match_state": "review"
-                    if (
-                        not self.commission_payment_id.trendyol_commission_auto_match
-                        or self.commission_payment_id.is_reconciled
-                    )
+                    if self.commission_payment_id.is_reconciled
                     else "waiting",
                     "commission_match_note": _(
                         "The API commission invoice reference was updated. "
@@ -289,13 +286,6 @@ class TrendyolSettlement(models.Model):
             abs(amount)
             for amount in self._get_reconciliation_group().mapped("commission_amount")
         )
-
-    def _create_commission_payment(self, payment_type):
-        """Opt in only newly created payments to invoice-specific matching."""
-        payment = super()._create_commission_payment(payment_type)
-        if payment:
-            payment.trendyol_commission_auto_match = True
-        return payment
 
     def _reconcile(self):
         """Reconcile all rows for one package payout exactly once."""
@@ -395,15 +385,6 @@ class TrendyolSettlement(models.Model):
         if not payment:
             return False
         rows = payment.trendyol_commission_settlement_ids
-        if not payment.trendyol_commission_auto_match:
-            return rows._set_commission_match(
-                "review",
-                _(
-                    "Legacy commission payments require a separately reviewed "
-                    "correction. "
-                    "No payment reconciliation was changed."
-                ),
-            )
         currency = payment.currency_id
         charged_rows = rows.filtered(
             lambda row: not currency.is_zero(row.commission_amount)
