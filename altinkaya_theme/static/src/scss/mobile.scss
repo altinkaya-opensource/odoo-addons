@@ -309,6 +309,12 @@
     }
 
     .o_form_view {
+      .o_x2m_control_panel .o-kanban-button-new {
+        // Core gives this button full width on mobile; margins would add overflow.
+        margin-left: 0;
+        margin-right: 0;
+      }
+
       .o_form_renderer,
       .o_form_sheet_bg {
         min-width: 0;
@@ -320,7 +326,8 @@
         min-width: 0;
         max-width: 100%;
         margin: 0;
-        padding: 12px;
+        // Notebook headers use matching negative margins from Odoo's gutter.
+        padding: $o-horizontal-padding;
         border-radius: 0;
       }
 

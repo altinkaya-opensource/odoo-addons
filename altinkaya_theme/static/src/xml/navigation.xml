@@ -81,6 +81,7 @@
             footer="false"
             contentClass="'o_altinkaya_menu'"
             bodyClass="'o_altinkaya_menu_body'"
+            t-on-click="handleBackdropClick"
         >
             <div class="o_altinkaya_menu_search">
                 <i class="fa fa-search" aria-hidden="true" />
