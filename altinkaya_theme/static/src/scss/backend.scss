@@ -240,6 +240,13 @@ body.o_web_client {
       }
     }
 
+    @include media-breakpoint-up(md) {
+      .o_field_statusbar > .o_statusbar_status {
+        // A wrapped row may end with an arrow-bearing button, not first-child.
+        padding-inline-end: $o-statusbar-arrow-width;
+      }
+    }
+
     .o_field_statusbar > .o_statusbar_status > .o_arrow_button,
     .o_form_statusbar > .o_statusbar_status > .o_arrow_button {
       --altinkaya-status-bg: #{$o-view-background-color};
@@ -288,13 +295,13 @@ body.o_web_client {
 
     .o_statusbar_buttons .btn-secondary {
       background-color: transparent;
-      border-color: transparent;
+      border-color: $o-altinkaya-field-border;
       font-weight: 500;
       text-transform: none;
 
       &:hover {
         background-color: $o-gray-200;
-        border-color: $o-gray-300;
+        border-color: $o-altinkaya-input-border;
       }
     }
   }

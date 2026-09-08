@@ -188,4 +188,49 @@ body.o_web_client {
   .o_altinkaya_sections_list {
     grid-template-columns: 1fr;
   }
+
+  @include media-breakpoint-up(md) {
+    .o_dialog .modal-dialog:has(.o_altinkaya_menu) {
+      width: calc(100vw - 48px);
+      max-width: 800px;
+    }
+
+    .o_altinkaya_menu {
+      max-height: calc(100vh - 64px);
+      max-height: calc(100dvh - 64px);
+    }
+
+    .o_altinkaya_menu_body {
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .o_altinkaya_app_grid:not(.o_altinkaya_sections_list) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+
+      .o_altinkaya_app {
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: 152px;
+        padding: 12px 8px;
+        font-size: 14px;
+        text-align: center;
+      }
+
+      .o_altinkaya_app_icon {
+        flex-basis: 88px;
+        width: 88px;
+        height: 88px;
+        border-radius: 12px;
+        font-size: 44px;
+
+        img {
+          width: 80px;
+          height: 80px;
+        }
+      }
+    }
+  }
 }

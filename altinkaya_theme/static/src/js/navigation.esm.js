@@ -73,6 +73,13 @@ export class AltinkayaMenu extends Component {
     return searchMenuEntries(entries, query, app && app.id);
   }
 
+  /** Close the active launcher when its backdrop is clicked. */
+  handleBackdropClick(event) {
+    if (this.env.dialogData.isActive && event.target.classList.contains("modal")) {
+      this.props.close();
+    }
+  }
+
   /** Reset keyboard selection whenever the search text changes. */
   handleSearchInput(event) {
     this.state.query = event.target.value;
