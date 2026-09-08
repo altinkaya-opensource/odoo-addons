@@ -1,0 +1,570 @@
+// Shared component styles use the palette of the active color scheme.
+// Scoped overrides also support web_company_color and web_theme_classic.
+body.o_web_client {
+  a[href]:where(:not(.btn):not(.dropdown-item)),
+  a[tabindex]:where(:not(.btn):not(.dropdown-item)),
+  .btn-link,
+  .o_external_button {
+    color: $o-altinkaya-accent;
+
+    &:hover {
+      color: $o-altinkaya-accent-hover;
+    }
+  }
+
+  .o_main_navbar {
+    --o-navbar-badge-color: #ffffff;
+    --o-navbar-badge-text-shadow: none;
+
+    background: $o-navbar-background !important;
+    color: $o-navbar-entry-color !important;
+
+    .o_menu_brand,
+    .o_nav_entry,
+    .dropdown-toggle,
+    > .o_menu_brand,
+    > ul > li > a,
+    > ul > li > label,
+    .o_menu_systray > * > button,
+    .o_menu_systray > * > a {
+      color: $o-navbar-entry-color !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background-color: $o-navbar-entry-bg--hover !important;
+      }
+    }
+
+    .show .dropdown-toggle {
+      background-color: $o-navbar-entry-bg--hover !important;
+    }
+  }
+
+  .btn-primary:not(.disabled) {
+    color: #ffffff !important;
+    background-color: $o-brand-primary !important;
+    border-color: $o-brand-primary !important;
+
+    &:hover,
+    &:active {
+      background-color: #355896 !important;
+      border-color: #355896 !important;
+    }
+  }
+
+  .btn-secondary,
+  .btn-light {
+    color: $o-gray-800;
+    border-color: $o-gray-300;
+
+    &:hover {
+      color: $o-gray-900;
+      border-color: $o-gray-400;
+    }
+  }
+
+  .btn-outline-primary {
+    color: $o-altinkaya-accent;
+    border-color: $o-altinkaya-input-border;
+
+    &:hover,
+    &:active {
+      color: #ffffff;
+      background-color: $o-brand-primary;
+      border-color: $o-brand-primary;
+    }
+  }
+
+  .dropdown-menu .dropdown-item {
+    color: $o-main-text-color;
+
+    &:hover,
+    &:focus,
+    &.active {
+      color: $o-gray-900;
+    }
+
+    &.disabled,
+    &:disabled {
+      color: $o-main-color-muted;
+    }
+  }
+
+  .o_input,
+  .o_field_html > .note-editable,
+  div.o_searchview[role="search"] {
+    border-color: $o-gray-300 !important;
+    border-bottom-color: $o-altinkaya-input-border !important;
+    border-radius: $o-border-radius;
+    caret-color: $o-gray-900;
+
+    &:hover {
+      border-color: $o-altinkaya-input-border !important;
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: $o-altinkaya-accent !important;
+    }
+  }
+
+  .o_required_modifier:not(.o_readonly_modifier):not(.o_field_invalid) {
+    &.o_input,
+    .o_input,
+    &.o_field_selection {
+      color: $o-altinkaya-required-text;
+      background-color: $o-altinkaya-required-bg !important;
+      border-color: mix(
+        $o-altinkaya-required-border,
+        $o-altinkaya-required-bg,
+        40%
+      ) !important;
+      border-bottom-color: $o-altinkaya-required-border !important;
+      caret-color: $o-altinkaya-required-text;
+
+      &::placeholder {
+        color: $o-altinkaya-required-placeholder;
+      }
+
+      &:hover {
+        border-color: $o-altinkaya-required-border !important;
+      }
+
+      &:focus,
+      &:focus-within {
+        border-color: $o-altinkaya-accent !important;
+      }
+    }
+  }
+
+  .o_field_invalid {
+    &.o_input,
+    .o_input {
+      color: $o-altinkaya-invalid-text;
+      background-color: $o-altinkaya-invalid-bg !important;
+      border-color: $o-altinkaya-invalid-text !important;
+    }
+  }
+
+  .o_field_many2many_selection .o_input {
+    border: 0 !important;
+  }
+
+  .o_form_view {
+    .o_form_sheet {
+      border-radius: $o-border-radius-lg;
+    }
+
+    .oe_title {
+      h1 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+
+        .o_input {
+          padding: 0.35rem 0.6rem;
+        }
+      }
+
+      h2 {
+        color: $o-gray-600;
+        font-weight: 400;
+      }
+    }
+
+    .o_form_label {
+      color: $o-gray-600;
+      font-weight: 500;
+    }
+
+    .o_horizontal_separator {
+      color: $o-gray-800 !important;
+      font-size: 1rem;
+      font-weight: 600 !important;
+      text-transform: none !important;
+    }
+
+    .oe_button_box .oe_stat_button {
+      background-color: transparent;
+      border-color: $o-gray-300;
+
+      &:hover {
+        background-color: $o-white;
+      }
+
+      .o_button_icon,
+      .o_stat_info .o_stat_value,
+      > span .o_stat_value {
+        color: $o-altinkaya-accent !important;
+      }
+    }
+
+    .o_field_statusbar > .o_statusbar_status > .o_arrow_button,
+    .o_form_statusbar > .o_statusbar_status > .o_arrow_button {
+      --altinkaya-status-bg: #{$o-view-background-color};
+
+      display: inline-flex;
+      align-items: center;
+      height: $o-statusbar-height;
+      min-height: $o-statusbar-height;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-radius: 0 !important;
+      background-color: var(--altinkaya-status-bg);
+      color: $o-main-color-muted;
+      line-height: 1;
+      white-space: nowrap;
+
+      &:not(:first-child)::before,
+      &:not(:first-child)::after {
+        top: 0;
+        border-top-width: floor($o-statusbar-height / 2);
+        border-bottom-width: ceil($o-statusbar-height / 2);
+      }
+
+      &:not(:first-child)::after {
+        border-left-color: var(--altinkaya-status-bg) !important;
+      }
+
+      &:not(.o_arrow_button_current):hover {
+        --altinkaya-status-bg: #{mix($o-altinkaya-accent, $o-view-background-color, 10%)};
+        color: $o-main-headings-color;
+      }
+
+      &.o_arrow_button_current {
+        --altinkaya-status-bg: #{$o-brand-primary};
+
+        z-index: 1;
+        background-color: var(--altinkaya-status-bg) !important;
+        color: #ffffff !important;
+
+        &::before,
+        &::after {
+          border-left-color: var(--altinkaya-status-bg) !important;
+        }
+      }
+    }
+
+    .o_statusbar_buttons .btn-secondary {
+      background-color: transparent;
+      border-color: transparent;
+      font-weight: 500;
+      text-transform: none;
+
+      &:hover {
+        background-color: $o-gray-200;
+        border-color: $o-gray-300;
+      }
+    }
+  }
+
+  .o_control_panel {
+    background-color: $o-white;
+  }
+
+  .o_list_view .o_control_panel {
+    .o_cp_bottom {
+      padding-top: 8px;
+    }
+
+    .o_cp_bottom_right {
+      align-items: center;
+    }
+
+    .o_cp_switch_buttons {
+      margin-left: 6px;
+    }
+
+    .o_search_options {
+      margin-top: 0;
+    }
+  }
+
+  .o_list_renderer {
+    --ListRenderer-thead-bg-color: #{$o-altinkaya-list-header-bg};
+    --ListRenderer-thead-border-end-color: #{mix(
+        $o-altinkaya-list-header-border,
+        $o-altinkaya-list-header-bg,
+        25%
+      )};
+
+    > .o_list_table {
+      --table-striped-bg: #{$o-altinkaya-list-stripe-bg};
+      --table-hover-bg: #{$o-altinkaya-list-hover-bg};
+      --table-striped-color: inherit;
+      --table-hover-color: inherit;
+
+      > thead > tr > th {
+        --table-bg: #{$o-altinkaya-list-header-bg};
+        --table-accent-bg: transparent;
+
+        border-bottom: 2px solid $o-altinkaya-list-header-border;
+        color: $o-main-headings-color;
+        font-weight: 700;
+      }
+
+      > tbody > tr:not(.o_data_row):not(.o_group_header) > td {
+        --table-accent-bg: transparent;
+      }
+    }
+  }
+
+  .o_cp_searchview {
+    min-width: 0;
+
+    > .o_searchview {
+      min-width: 0;
+      min-height: 36px;
+      padding: 4px 30px 4px 6px !important;
+      border: 1px solid $o-altinkaya-input-border !important;
+      border-radius: 7px;
+      background-color: $o-altinkaya-input-bg;
+
+      &:focus-within {
+        border-color: $o-altinkaya-accent !important;
+      }
+    }
+
+    .o_searchview_input_container {
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .o_searchview_input {
+      flex: 1 1 110px;
+      width: 110px;
+      min-width: 75px;
+      max-width: 100%;
+      min-height: 26px;
+      padding: 2px 4px;
+      border: 0 !important;
+      background: transparent;
+      box-shadow: none;
+      color: $o-main-text-color;
+
+      &::placeholder {
+        color: $o-main-color-muted;
+      }
+    }
+
+    .o_searchview_icon {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      color: $o-main-color-muted;
+    }
+  }
+
+  .o_searchview .o_searchview_facet {
+    align-items: stretch;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+    min-height: 26px;
+    margin: 0;
+    padding: 0 !important;
+    border: 1px solid mix($o-altinkaya-accent, $o-view-background-color, 25%);
+    border-radius: 5px;
+    background-color: $o-list-group-active-bg;
+    color: $o-main-text-color;
+    overflow: hidden;
+
+    .o_searchview_facet_label {
+      padding: 3px 6px;
+      border: 0;
+      border-radius: 0;
+      background: transparent !important;
+      color: $o-altinkaya-accent !important;
+    }
+
+    .o_facet_values {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 3px 4px;
+      border: 0 !important;
+      background: transparent;
+      line-height: 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .o_facet_remove {
+      position: static;
+      flex: 0 0 24px;
+      width: 24px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      color: $o-main-color-muted !important;
+      opacity: 1 !important;
+
+      &:hover {
+        background-color: rgba($o-altinkaya-accent, 0.12);
+        color: $o-main-headings-color !important;
+      }
+    }
+  }
+
+  .o_control_panel .o_search_options {
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 0;
+
+    > .dropdown {
+      margin: 0 !important;
+
+      > .dropdown-toggle {
+        min-height: 30px;
+        padding: 4px 8px;
+        border: 1px solid transparent;
+        border-radius: 6px !important;
+        background: transparent;
+        box-shadow: none;
+        color: $o-main-text-color;
+
+        &:hover,
+        &[aria-expanded="true"] {
+          border-color: $o-gray-300;
+          background-color: $o-gray-200;
+          color: $o-altinkaya-accent;
+        }
+      }
+    }
+  }
+
+  .o_notebook {
+    --notebook-link-border-color-active-accent: #{$o-altinkaya-accent};
+
+    .nav-link.active {
+      color: $o-gray-900;
+    }
+
+    &:not(.vertical) .nav-link {
+      padding: 0.75rem 1rem;
+      border-radius: 0;
+
+      &.active {
+        &,
+        &:hover,
+        &:focus {
+          background-color: transparent;
+          border-color: transparent;
+          box-shadow: inset 0 -2px 0 $o-altinkaya-accent;
+        }
+      }
+    }
+  }
+
+  .o_ChatterContainer {
+    background-color: $o-altinkaya-chatter-bg;
+
+    // Chatter children have bg-view utilities that otherwise hide it.
+    .o_Chatter,
+    .o_MessageList {
+      background-color: $o-altinkaya-chatter-bg !important;
+    }
+  }
+
+  .o_ChatterTopbar {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    .btn-light:not(.btn-primary) {
+      border-color: transparent;
+
+      &:hover {
+        border-color: $o-gray-300;
+      }
+    }
+  }
+
+  .o_Message {
+    color: $o-main-text-color;
+  }
+
+  // Message dates also carry opacity-50, which dims muted text twice.
+  .o_Message_date {
+    color: $o-main-color-muted !important;
+    opacity: 1 !important;
+  }
+
+  @each $name in (primary, success, info, warning, danger) {
+    $tone: map-get($theme-colors, $name);
+    $text: map-get($o-theme-text-colors, $name);
+
+    .alert-#{$name} {
+      color: $text;
+      background-color: mix($tone, $o-view-background-color, 18%);
+      border-color: mix($tone, $o-view-background-color, 55%);
+
+      .alert-link {
+        color: $text;
+      }
+    }
+
+    .badge.bg-#{$name},
+    .badge.text-bg-#{$name} {
+      color: $text !important;
+      background-color: mix($tone, $o-view-background-color, 25%) !important;
+    }
+  }
+
+  .o-settings-form-view {
+    .o_base_settings {
+      --settings__tab-bg: #{$o-altinkaya-chatter-bg};
+      --settings__tab-bg--active: #{$o-list-group-active-bg};
+      --settings__tab-color: #{$o-main-text-color};
+      --settings__title-bg: #{$o-white};
+
+      .settings_tab .tab {
+        color: $o-main-text-color;
+
+        &:hover,
+        &.selected,
+        &.current {
+          color: $o-altinkaya-accent;
+          background-color: $o-list-group-active-bg;
+        }
+
+        &.selected,
+        &.current {
+          box-shadow: inset 3px 0 0 $o-altinkaya-accent;
+          font-weight: 600;
+        }
+
+        .app_name {
+          color: inherit;
+        }
+      }
+
+      .highlighter {
+        background-color: mix($o-warning, $o-view-background-color, 35%);
+        color: $o-main-text-color;
+      }
+    }
+
+    .o_cp_searchview {
+      flex: 0 1 420px !important;
+      width: 100%;
+      max-width: 420px;
+      margin-left: auto;
+    }
+  }
+
+  // These utilities mean literal light text, even when Odoo's $white is
+  // used as a dark surface token elsewhere in the compiled backend.
+  .text-white {
+    color: #ffffff !important;
+  }
+
+  .btn:focus-visible,
+  a:focus-visible,
+  .o_input:focus-visible {
+    outline: 2px solid $o-altinkaya-accent;
+    outline-offset: 2px;
+  }
+}

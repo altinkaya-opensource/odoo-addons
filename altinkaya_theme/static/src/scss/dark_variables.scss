@@ -1,0 +1,121 @@
+// Odoo uses its neutral scale for both surfaces and text. Keep that scale
+// dark-first, but give Bootstrap real light/dark contrast colors below.
+$o-webclient-color-scheme: dark;
+
+$o-white: #202733;
+$o-black: #f3f6fc;
+$o-gray-100: #1b222e;
+$o-gray-200: #293344;
+$o-gray-300: #3d495d;
+$o-gray-400: #60708a;
+$o-gray-500: #8897ad;
+$o-gray-600: #a6b2c5;
+$o-gray-700: #ced7e4;
+$o-gray-800: #e4eaf3;
+$o-gray-900: #f3f6fc;
+
+$o-altinkaya-canvas: #141b26;
+$o-altinkaya-input-bg: #171e29;
+$o-altinkaya-input-border: #62728a;
+$o-altinkaya-chatter-bg: #161d28;
+$o-altinkaya-accent: #a9cbff;
+$o-altinkaya-accent-hover: #d3e3ff;
+$o-altinkaya-required-bg: #2b2638;
+$o-altinkaya-required-border: #9479b8;
+$o-altinkaya-required-text: #f0e9ff;
+$o-altinkaya-list-header-bg: #2f3d53;
+$o-altinkaya-list-header-border: #57708e;
+$o-altinkaya-list-stripe-bg: #253144;
+$o-altinkaya-list-hover-bg: #31445f;
+
+$o-community-color: #4168b0;
+$o-enterprise-color: $o-community-color;
+$o-enterprise-primary-color: $o-community-color;
+$o-brand-odoo: $o-community-color;
+$o-brand-primary: $o-community-color;
+$o-brand-secondary: $o-gray-600;
+$o-brand-lightsecondary: $o-gray-200;
+
+$o-success: #237b60;
+$o-info: #286e89;
+$o-warning: #e4b568;
+$o-danger: #b4445c;
+$o-theme-text-colors: (
+  "primary": $o-altinkaya-accent,
+  "success": #83d8b5,
+  "info": #87cee8,
+  "warning": #edc787,
+  "danger": #f291a3,
+  "odoo": $o-altinkaya-accent,
+);
+
+$o-main-text-color: $o-gray-700;
+$o-main-headings-color: $o-gray-900;
+$o-main-color-muted: $o-gray-600;
+$o-main-link-color: $o-altinkaya-accent;
+$o-main-bg-color: $o-altinkaya-canvas;
+$o-webclient-background-color: $o-altinkaya-canvas;
+$o-view-background-color: $o-gray-100;
+$o-shadow-color: #000000;
+$o-main-favorite-color: #edc787;
+$o-main-code-color: #e9a5cb;
+$o-form-lightsecondary: $o-altinkaya-input-border;
+$o-input-border-required: $o-altinkaya-required-border;
+$o-form-separator-color: $o-gray-300;
+$o-list-footer-bg-color: $o-gray-200;
+$o-list-group-header-color: $o-gray-200;
+$o-list-group-active-bg: #2d4061;
+$o-list-group-active-color: $o-gray-900;
+$o-dropdown-box-shadow: 0 8px 24px rgba(#000, 0.3);
+$o-tooltip-arrow-color: $o-white;
+$o-datepicker-week-color: $o-gray-600;
+$o-datepicker-week-bg-color: $o-gray-200;
+$o-statusbar-disabled-bg: $o-gray-200;
+
+$o-navbar-background: #20395f;
+$o-navbar-border-bottom: 1px solid #344156;
+$o-navbar-entry-color: $o-gray-900;
+$o-navbar-entry-bg--hover: #2c3d59;
+$o-navbar-badge-bg: $o-success;
+
+$o-btn-secondary-bg: $o-white;
+$o-btn-secondary-hover-bg: $o-gray-200;
+$o-btn-secondary-hover-border: $o-gray-400;
+$o-btn-light-bg: $o-white;
+$o-btn-light-border: $o-gray-300;
+$o-btn-light-background-hover: $o-gray-200;
+
+$o-border-radius: 0.5rem;
+$o-border-radius-lg: 0.75rem;
+$o-input-padding-y: 4px;
+$o-input-padding-x: 8px;
+
+// Contrast must not use the inverted neutral endpoints. This also keeps
+// semantic buttons, checkboxes and badges legible on their colored fills.
+$min-contrast-ratio: 4.5;
+$color-contrast-light: #ffffff;
+$color-contrast-dark: #000000;
+$primary: $o-brand-primary;
+$component-active-bg: $o-list-group-active-bg;
+$component-active-color: $o-gray-900;
+$link-hover-color: $o-altinkaya-accent-hover;
+$input-color: $o-main-text-color;
+$input-bg: $o-altinkaya-input-bg;
+$input-focus-bg: $o-altinkaya-input-bg;
+$input-focus-color: $o-gray-900;
+$input-focus-border-color: $o-altinkaya-accent;
+$input-placeholder-color: $o-gray-600;
+$input-disabled-bg: $o-gray-200;
+$dropdown-link-hover-bg: $o-gray-200;
+$dropdown-link-active-bg: $o-list-group-active-bg;
+$dropdown-link-active-color: $o-gray-900;
+$nav-tabs-link-active-bg: $o-white;
+$nav-tabs-link-active-color: $o-gray-900;
+$nav-pills-link-active-color: $o-gray-900;
+$form-check-input-checked-color: #ffffff;
+$form-switch-checked-color: #ffffff;
+$modal-backdrop-bg: #000000;
+
+$o-altinkaya-invalid-bg: #482934;
+$o-altinkaya-invalid-text: #f291a3;
+$o-altinkaya-required-placeholder: #c6b5df;

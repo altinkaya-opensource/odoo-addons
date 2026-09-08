@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t
+        t-name="altinkaya_theme.DebugHeader"
+        t-inherit="web.NavBar"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//nav[contains(@class, 'o_main_navbar')]" position="attributes">
+            <attribute
+                name="t-att-class"
+            >{'o_altinkaya_local_debug': isLocalDebug()}</attribute>
+        </xpath>
+    </t>
+    <t
+        t-name="altinkaya_theme.NavBarApps"
+        t-inherit="web.NavBar.AppsMenu"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//Dropdown" position="replace">
+            <div class="o_altinkaya_navigation d-flex align-items-center">
+                <button
+                    class="o_altinkaya_launcher_button o_nav_entry"
+                    title="Applications"
+                    aria-label="Applications"
+                    data-hotkey="h"
+                    t-on-click="handleOpenApplications"
+                >
+                    <i class="fa fa-th-large" aria-hidden="true" />
+                </button>
+                <span
+                    t-if="isLocalDebug()"
+                    class="o_altinkaya_test_badge"
+                >Test Database</span>
+                <button
+                    t-if="currentApp"
+                    class="o_altinkaya_sections_button o_nav_entry d-md-none"
+                    t-on-click="handleOpenSections"
+                >
+                    <span class="text-truncate" t-esc="currentApp.name" />
+                    <i class="fa fa-angle-down ms-2" aria-hidden="true" />
+                </button>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="altinkaya_theme.Menu" owl="1">
+        <Dialog
+            title="title"
+            size="'md'"
+            footer="false"
+            contentClass="'o_altinkaya_menu'"
+            bodyClass="'o_altinkaya_menu_body'"
+        >
+            <div class="o_altinkaya_menu_search">
+                <i class="fa fa-search" aria-hidden="true" />
+                <input
+                    type="search"
+                    class="form-control"
+                    t-model="state.query"
+                    t-ref="autofocus"
+                    t-att-placeholder="placeholder"
+                    t-att-aria-label="placeholder"
+                />
+            </div>
+            <div
+                class="o_altinkaya_app_grid"
+                t-att-class="{'o_altinkaya_sections_list': props.mode === 'sections' || state.query.trim().length > 0}"
+            >
+                <a
+                    t-foreach="entries"
+                    t-as="entry"
+                    t-key="entry.menu.id"
+                    class="o_altinkaya_app"
+                    t-att-href="getHref(entry.menu)"
+                    t-on-click="(ev) => this.handleSelect(ev, entry.menu)"
+                >
+                    <span class="o_altinkaya_app_icon">
+                        <img
+                            t-if="getIcon(entry.menu)"
+                            t-att-src="getIcon(entry.menu)"
+                            alt=""
+                        />
+                        <span
+                            t-else=""
+                            t-esc="getApplication(entry.menu).name.slice(0, 1)"
+                        />
+                    </span>
+                    <span class="o_altinkaya_app_label">
+                        <strong t-esc="entry.menu.name" />
+                        <small
+                            t-if="entry.path"
+                            class="text-muted"
+                            t-esc="entry.path"
+                        />
+                    </span>
+                    <i
+                        t-if="props.mode === 'sections'"
+                        class="fa fa-angle-right ms-auto"
+                        aria-hidden="true"
+                    />
+                </a>
+            </div>
+            <p
+                t-if="!entries.length"
+                class="text-muted text-center py-4 mb-0"
+            >No matching menu.</p>
+        </Dialog>
+    </t>
+</templates>
