@@ -7153,3 +7153,11 @@ msgid ""
 "The API commission invoice reference was updated. Existing payment "
 "reconciliations were preserved."
 msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_order.py:0
+#, python-format
+msgid ""
+"Trendyol customer information is not available yet. Retry the import later."
+msgstr ""
