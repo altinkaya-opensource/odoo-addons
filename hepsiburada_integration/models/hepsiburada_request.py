@@ -462,6 +462,8 @@ class HepsiburadaRequest(MarketplaceRequest):
         transaction_types=None,
         offset=0,
         limit=100,
+        order_number=None,
+        reference_document=None,
     ):
         """Get financial transactions from the accounting API.
 
@@ -469,6 +471,8 @@ class HepsiburadaRequest(MarketplaceRequest):
             record_date_start: Start date string (YYYY-MM-DD)
             record_date_end: End date string (YYYY-MM-DD)
             transaction_types: Comma-separated types (e.g. "Payment,Commission")
+            order_number: Refresh all transactions of this order without date limits.
+            reference_document: Refresh transactions for this invoice reference.
             offset: Pagination offset
             limit: Page size (max 100)
 
@@ -486,6 +490,10 @@ class HepsiburadaRequest(MarketplaceRequest):
             params["recordDateEnd"] = record_date_end
         if transaction_types:
             params["transactionTypes"] = transaction_types
+        if order_number:
+            params["orderNumber"] = order_number
+        if reference_document:
+            params["ReferenceDocument"] = reference_document
 
         return self._make_request("GET", "finance", endpoint, params=params)
 

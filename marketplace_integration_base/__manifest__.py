@@ -3,7 +3,7 @@
 
 {
     "name": "Marketplace Integration Base",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "category": "Sales/Sales",
     "summary": "Shared helpers for marketplace integration modules",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",

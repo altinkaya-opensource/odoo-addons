@@ -3920,3 +3920,175 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_order__hb_status__cancelled
 msgid "İptal Edildi"
 msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#, python-format
+msgid "A payment was posted before Hepsiburada marked the transaction Paid."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model,name:hepsiburada_integration.model_account_auto_reconcile
+msgid "Account Auto Reconcile"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Check the commission amount, currency, partner and journal."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Claim import exceeded 100,000 records"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_invoice_number
+msgid "Commission Invoice Number"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__commission_match_state
+msgid "Commission Match State"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Commission Matching"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Commission Pending"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields.selection,name:hepsiburada_integration.selection__hepsiburada_settlement__transaction_type__commission_refund
+msgid "Commission Refund"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_search
+msgid "Commission Review"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Commission data changed; the existing payment was preserved."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__hepsiburada_commission_settlement_ids
+msgid "Hepsiburada Commission Settlement"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_hepsiburada_settlement__invoice_date
+msgid "Invoice Date"
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model:ir.model.fields,field_description:hepsiburada_integration.field_account_payment__is_hepsiburada_commission
+msgid "Is Hepsiburada Commission"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/migrations/16.0.1.1.0/post-migration.py:0
+#, python-format
+msgid ""
+"Legacy commission payment has no matched supplier invoice and must be "
+"reviewed."
+msgstr ""
+
+#. module: hepsiburada_integration
+#: model_terms:ir.ui.view,arch_db:hepsiburada_integration.view_hepsiburada_settlement_form
+msgid "Match Commission Invoice"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Multiple posted customer documents require review."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Question import exceeded %s pages"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "Reconciliation Failed"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Settlement import exceeded 100,000 records for %(window)s"
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The Hepsiburada payment status is unknown."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The commission direction, amount or currency is invalid."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The payment covers incompatible commission types."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "The settlement amount has an invalid sign."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_settlement.py:0
+#, python-format
+msgid "This transaction type is not supported for automatic reconciliation."
+msgstr ""
+
+#. module: hepsiburada_integration
+#. odoo-python
+#: code:addons/hepsiburada_integration/models/hepsiburada_backend.py:0
+#, python-format
+msgid "Transaction %s has no key for historical refresh."
+msgstr ""

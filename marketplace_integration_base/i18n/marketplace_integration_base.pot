@@ -644,3 +644,161 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_backend_mixin__warehouse_ids
 msgid "Warehouses"
 msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields,field_description:marketplace_integration_base.field_marketplace_settlement_mixin__commission_match_state
+msgid "Commission Match State"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission Matching"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"Commission payment %(payment)s for %(marketplace)s orders %(orders)s was "
+"reconciled with this invoice."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__matched
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__review
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the marketplace "
+"backend."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr ""
+
+#. module: marketplace_integration_base
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__hepsiburada_settlement__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__marketplace_settlement_mixin__commission_match_state__waiting
+#: model:ir.model.fields.selection,name:marketplace_integration_base.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from the marketplace."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr ""
+
+#. module: marketplace_integration_base
+#. odoo-python
+#: code:addons/marketplace_integration_base/models/marketplace_settlement.py:0
+#, python-format
+msgid "Waiting for the referenced vendor bill or credit note to be posted."
+msgstr ""
