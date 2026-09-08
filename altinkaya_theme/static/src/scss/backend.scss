@@ -1,5 +1,5 @@
 // Shared component styles use the palette of the active color scheme.
-// Scoped overrides also support web_theme_classic required fields.
+// Field and search borders are provided by the theme itself.
 body.o_web_client {
   a[href]:where(:not(.btn):not(.dropdown-item)),
   a[tabindex]:where(:not(.btn):not(.dropdown-item)),
@@ -98,9 +98,28 @@ body.o_web_client {
   }
 
   .o_input,
-  .o_field_html > .note-editable,
+  .o_field_html > .note-editable {
+    border: 1px solid $o-altinkaya-field-border !important;
+    border-radius: 5px;
+    background-color: $o-altinkaya-field-bg;
+    box-shadow: none;
+    caret-color: $o-gray-900;
+
+    &:hover {
+      border-color: $o-altinkaya-input-border !important;
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: $o-altinkaya-accent !important;
+      background-color: $o-white;
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba($o-altinkaya-accent, 0.14);
+    }
+  }
+
   div.o_searchview[role="search"] {
-    border-color: $o-gray-300 !important;
+    border: 1px solid $o-gray-300 !important;
     border-bottom-color: $o-altinkaya-input-border !important;
     border-radius: $o-border-radius;
     caret-color: $o-gray-900;
@@ -115,18 +134,17 @@ body.o_web_client {
     }
   }
 
-  .o_required_modifier:not(.o_readonly_modifier):not(.o_field_invalid) {
+  .o_required_modifier:where(:not(.o_readonly_modifier):not(.o_field_invalid)) {
     &.o_input,
-    .o_input,
-    &.o_field_selection {
+    .o_input {
       color: $o-altinkaya-required-text;
       background-color: $o-altinkaya-required-bg !important;
       border-color: mix(
         $o-altinkaya-required-border,
         $o-altinkaya-required-bg,
-        40%
+        45%
       ) !important;
-      border-bottom-color: $o-altinkaya-required-border !important;
+      border-inline-start: 2px solid $o-altinkaya-required-border !important;
       caret-color: $o-altinkaya-required-text;
 
       &::placeholder {
@@ -144,6 +162,11 @@ body.o_web_client {
     }
   }
 
+  // Selection widgets have their own input; keep the wrapper unpainted.
+  .o_field_selection.o_required_modifier:not(.o_readonly_modifier):not(.o_input) {
+    background-color: transparent !important;
+  }
+
   .o_field_invalid {
     &.o_input,
     .o_input {
@@ -153,8 +176,12 @@ body.o_web_client {
     }
   }
 
+  .o_input .o_input,
   .o_field_many2many_selection .o_input {
     border: 0 !important;
+    border-radius: 0;
+    background-color: transparent !important;
+    box-shadow: none;
   }
 
   .o_form_view {
@@ -168,7 +195,7 @@ body.o_web_client {
         letter-spacing: -0.02em;
 
         .o_input {
-          padding: 0.35rem 0.6rem;
+          padding: 0.2rem 0.4rem;
         }
       }
 
@@ -281,6 +308,19 @@ body.o_web_client {
   }
 
   .o_list_view .o_control_panel {
+    .o_list_buttons {
+      align-items: stretch;
+      flex-wrap: wrap;
+      gap: 6px;
+
+      > .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
+    }
+
     .o_cp_bottom {
       padding-top: 8px;
     }
@@ -306,11 +346,41 @@ body.o_web_client {
         25%
       )};
 
+    .o_list_record_selector .form-check-input {
+      float: none;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    // Required inputs already have a border; retain the cell's error indicator.
+    .o_data_row.o_selected_row
+      > .o_data_cell.o_required_modifier:not(.o_readonly_modifier):not(
+        .o_invalid_cell
+      ) {
+      border-bottom: 0;
+    }
+
     > .o_list_table {
       --table-striped-bg: #{$o-altinkaya-list-stripe-bg};
       --table-hover-bg: #{$o-altinkaya-list-hover-bg};
       --table-striped-color: inherit;
       --table-hover-color: inherit;
+
+      .o_list_record_selector {
+        padding-right: 8px;
+        padding-left: 8px;
+        vertical-align: middle;
+
+        .o-checkbox {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          margin: 0;
+          padding-left: 0;
+        }
+      }
 
       > thead > tr > th {
         --table-bg: #{$o-altinkaya-list-header-bg};
@@ -600,8 +670,7 @@ body.o_web_client {
   }
 
   .btn:focus-visible,
-  a:focus-visible,
-  .o_input:focus-visible {
+  a:focus-visible {
     outline: 2px solid $o-altinkaya-accent;
     outline-offset: 2px;
   }
