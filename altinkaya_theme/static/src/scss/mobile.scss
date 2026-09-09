@@ -309,6 +309,52 @@
     }
 
     .o_form_view {
+      .o_control_panel {
+        .o_cp_bottom_right {
+          justify-content: flex-start !important;
+          gap: 6px;
+        }
+
+        // Odoo keeps this invisible group in the layout even for saved records.
+        .o_form_status_indicator:has(.o_form_status_indicator_buttons.invisible) {
+          display: none;
+        }
+
+        .o_cp_action_menus {
+          display: flex;
+          gap: 6px;
+        }
+
+        .o_cp_action_menus .dropdown-toggle,
+        .oe_pager_refresh,
+        .o_form_button_create {
+          min-width: 40px;
+          margin: 0;
+          padding: 6px;
+        }
+
+        .o_cp_pager {
+          padding-left: 0;
+
+          .o_pager {
+            gap: 4px !important;
+            white-space: nowrap;
+          }
+
+          .btn {
+            min-width: 36px;
+          }
+        }
+      }
+
+      .o_form_button_create {
+        font-size: 0;
+
+        .o_altinkaya_mobile_icon {
+          font-size: 16px;
+        }
+      }
+
       .o_x2m_control_panel .o-kanban-button-new {
         // Core gives this button full width on mobile; margins would add overflow.
         margin-left: 0;
@@ -350,8 +396,53 @@
 
       .o_form_statusbar {
         flex-wrap: wrap;
-        gap: 4px;
-        padding: 4px 8px;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+
+        .o_statusbar_buttons > .btn,
+        .o_statusbar_buttons > .o-dropdown > .dropdown-toggle,
+        .o_field_statusbar .dropdown-toggle {
+          min-height: 40px;
+          margin: 0;
+          padding: 8px 12px;
+          font-weight: 600;
+          text-transform: none !important;
+        }
+
+        .o_field_statusbar .dropdown-toggle {
+          color: $o-main-text-color !important;
+          background-color: $o-altinkaya-field-bg !important;
+          border-color: $o-gray-300 !important;
+        }
+
+        .dropdown-menu {
+          max-width: calc(100vw - 16px);
+          max-height: 65vh;
+          overflow-y: auto;
+        }
+
+        .o_statusbar_button_dropdown_item {
+          padding: 0;
+
+          > .btn {
+            min-height: 40px;
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 0 !important;
+            text-align: left;
+            white-space: normal;
+          }
+
+          > .btn-secondary {
+            border: 0;
+            background-color: transparent;
+
+            &:hover {
+              background-color: $o-list-group-active-bg;
+            }
+          }
+        }
       }
 
       .o_statusbar_buttons {
@@ -363,6 +454,36 @@
         min-width: 0;
         max-width: 100%;
         margin-left: auto;
+      }
+
+      .o-form-buttonbox {
+        // Match the mobile sheet's 16px padding instead of the desktop 24px.
+        margin-top: -$o-horizontal-padding;
+        margin-bottom: $o-horizontal-padding;
+
+        .btn.oe_stat_button {
+          height: 56px;
+        }
+
+        > .btn.oe_stat_button:not(.dropdown) {
+          display: inline-flex;
+          align-items: center;
+
+          > .o_button_icon {
+            flex-shrink: 0;
+            line-height: 1;
+          }
+
+          > .o_stat_info,
+          > .o_field_statinfo {
+            min-width: 0;
+            white-space: normal;
+
+            .o_stat_text {
+              white-space: normal;
+            }
+          }
+        }
       }
 
       .o_notebook > .o_notebook_headers {
@@ -386,12 +507,51 @@
     }
 
     .o_ChatterTopbar {
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 4px;
       padding: 8px;
 
+      .o_ChatterTopbar_actions,
+      .o_ChatterTopbar_tools,
+      .o_ChatterTopbar_controllers,
+      .o_ChatterTopbar_rightSection {
+        flex-wrap: nowrap;
+        gap: 4px;
+      }
+
       .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
         min-height: 40px;
+        padding: 6px;
+      }
+
+      .o_ChatterTopbar_buttonSendMessage,
+      .o_ChatterTopbar_buttonLogNote,
+      .o_ChatterTopbar_followButton .btn {
+        font-size: 0;
+      }
+
+      .o_altinkaya_mobile_icon,
+      .o_ChatterTopbar_buttonScheduleActivity .fa {
+        font-size: 16px;
+        margin: 0 !important;
+      }
+
+      .o_FollowButton_unfollow > .position-relative {
+        display: none;
+      }
+
+      .o_FollowerListMenu_dropdown {
+        // Odoo anchors this fixed menu to the follower button's right edge.
+        left: 8px !important;
+        right: 8px;
+        width: auto;
+        max-width: none;
+        max-height: 60vh;
+        overflow-y: auto;
       }
     }
 

@@ -14,20 +14,20 @@ import {useAutofocus, useBus, useService} from "@web/core/utils/hooks";
 import {patch} from "@web/core/utils/patch";
 import {NavBar} from "@web/webclient/navbar/navbar";
 import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
-import {searchMenuEntries} from "@altinkaya_theme/js/menu_search.esm";
+import {
+  collectMenuEntries,
+  makeMenuEntry,
+  searchMenuEntries,
+} from "@altinkaya_theme/js/menu_search.esm";
 
 let nextMenuId = 0;
 
-/** Flatten the accessible menu tree, keeping group names as context. */
-function collectMenuEntries(nodes, parents = []) {
-  const entries = [];
-  for (const menu of nodes) {
-    if (menu.actionID) {
-      entries.push({menu, path: parents.join(" / ")});
-    }
-    entries.push(...collectMenuEntries(menu.childrenTree, [...parents, menu.name]));
-  }
-  return entries;
+/** Accept the raw base64 icons the menu service serves, or ready data URLs. */
+function getIconUrl(webIconData) {
+  if (!webIconData) return false;
+  if (webIconData.startsWith("data:image")) return webIconData;
+  const type = webIconData.startsWith("P") ? "svg+xml" : "png";
+  return `data:image/${type};base64,${webIconData.replace(/\s/g, "")}`;
 }
 
 export class AltinkayaMenu extends Component {
@@ -38,6 +38,11 @@ export class AltinkayaMenu extends Component {
     this.searchInput = useAutofocus();
     this.results = useRef("results");
     this.resultsId = `o_altinkaya_results_${nextMenuId++}`;
+    // Menus cannot change while the launcher is open: index them once.
+    this.apps = this.menu.getApps().map((menu) => makeMenuEntry(menu));
+    this.allEntries = null;
+    this.lastSearch = {query: "", entries: this.apps};
+    this.iconUrls = new Map();
     // Odoo maps Alt to Control on macOS, matching the launcher's data-hotkey.
     useHotkey("alt+h", () => this.props.close(), {
       bypassEditableProtection: true,
@@ -60,17 +65,24 @@ export class AltinkayaMenu extends Component {
     return this.env._t("Search menus...");
   }
 
+  /** Reuse one ranking per query: the template and key handler read it repeatedly. */
   get entries() {
-    const app = this.menu.getCurrentApp();
     const query = this.state.query.trim();
-    const apps = this.menu.getApps();
-    let entries = apps.map((menu) => ({menu, path: ""}));
-    if (query) {
-      entries = collectMenuEntries(
-        apps.map((menu) => this.menu.getMenuAsTree(menu.id))
-      );
+    if (this.lastSearch.query !== query) {
+      this.lastSearch = {query, entries: this.searchEntries(query)};
     }
-    return searchMenuEntries(entries, query, app && app.id);
+    return this.lastSearch.entries;
+  }
+
+  /** Rank the flattened menu tree, which is built on the first search. */
+  searchEntries(query) {
+    if (!query) return this.apps;
+    if (!this.allEntries) {
+      const trees = this.menu.getApps().map((menu) => this.menu.getMenuAsTree(menu.id));
+      this.allEntries = collectMenuEntries(trees);
+    }
+    const app = this.menu.getCurrentApp();
+    return searchMenuEntries(this.allEntries, query, app && app.id);
   }
 
   /** Close the active launcher when its backdrop is clicked. */
@@ -126,13 +138,13 @@ export class AltinkayaMenu extends Component {
     return this.menu.getMenu(menu.appID) || menu;
   }
 
-  /** Return the root app icon, or use its letter fallback. */
+  /** Return the root app icon built once per app, or false for its letter fallback. */
   getIcon(menu) {
     const app = this.getApplication(menu);
-    if (!app.webIconData) return false;
-    if (app.webIconData.startsWith("data:image")) return app.webIconData;
-    const type = app.webIconData.startsWith("P") ? "svg+xml" : "png";
-    return `data:image/${type};base64,${app.webIconData.replace(/\s/g, "")}`;
+    if (!this.iconUrls.has(app.id)) {
+      this.iconUrls.set(app.id, getIconUrl(app.webIconData));
+    }
+    return this.iconUrls.get(app.id);
   }
 
   /** Keep ordinary links usable in a separate browser tab. */
