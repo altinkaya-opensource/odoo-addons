@@ -102,6 +102,61 @@ body.o_web_client {
     }
   }
 
+  .bootstrap-datetimepicker-widget {
+    // The picker is compiled in common assets; supply the active backend palette.
+    --bs-datetimepicker-active-bg: #{$o-brand-primary};
+    --bs-datetimepicker-active-color: #ffffff;
+    --bs-datetimepicker-btn-hover-bg: #{$o-list-group-active-bg};
+    --bs-datetimepicker-disabled-color: #{$o-gray-500};
+    --bs-datetimepicker-alternate-color: #{$o-main-color-muted};
+    --bs-datetimepicker-secondary-border-color: #{$border-color};
+    --bs-datetimepicker-secondary-border-color-rgba: #{$border-color};
+    --bs-datetimepicker-primary-border-color: #{$o-view-background-color};
+    --datepicker-border-color: #{$border-color};
+
+    background-color: $o-view-background-color;
+    color: $o-main-text-color;
+
+    table {
+      color: $o-main-text-color;
+    }
+
+    .datepicker table {
+      --datepicker-color: #{$o-main-text-color};
+      --datepicker__thead-bg: #{$o-gray-200};
+
+      th,
+      td {
+        border-color: $border-color;
+      }
+
+      th.prev,
+      th.next,
+      td.old:not(.active):not(.disabled),
+      td.new:not(.active):not(.disabled) {
+        color: $o-main-color-muted;
+        opacity: 1;
+      }
+
+      th.disabled,
+      td.disabled {
+        color: var(--bs-datetimepicker-disabled-color);
+      }
+
+      td.today:not(.active)::before {
+        border-bottom-color: $o-altinkaya-accent;
+      }
+    }
+
+    .accordion-toggle span.fa {
+      color: $o-main-text-color;
+
+      &.primary {
+        color: $o-altinkaya-accent;
+      }
+    }
+  }
+
   .o_input,
   .o_field_html > .note-editable {
     border: 1px solid $o-altinkaya-field-border !important;
