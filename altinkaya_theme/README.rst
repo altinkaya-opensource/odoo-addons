@@ -33,8 +33,10 @@ Touch controls, full-width forms and scrollable notebook tabs follow the
 mobile layout conventions of ``web_responsive``.
 
 Use **Dark Mode** in the user menu to switch appearances. Under profile
-preferences, **Use System Theme** follows the device's appearance. An explicit
-switch disables system following. Preferences are stored per user.
+preferences, **Use System Theme** follows the device's appearance and is enabled
+by default for new users. An explicit switch disables system following.
+Preferences are stored per user. The appearance cookie is refreshed only on
+signed-in requests; requests without a signed-in session never receive it.
 
 In menu search, **Up/Down** highlights results and **Enter** opens the selected
 menu. Typing resets the selection; keyboard navigation keeps the search input

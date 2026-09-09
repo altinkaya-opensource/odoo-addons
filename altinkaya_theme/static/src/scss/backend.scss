@@ -554,8 +554,25 @@ body.o_web_client {
     }
   }
 
+  .o_FormRenderer_chatterContainer {
+    // The outer bottom spacing belongs to the canvas, not the white form view.
+    background-color: $o-altinkaya-canvas;
+    border-top: 0;
+
+    &.o-aside {
+      padding: $o-sheet-vpadding * 0.5;
+      border-left: 0;
+    }
+
+    &:not(.o-aside) .o_ChatterContainer {
+      border-radius: $o-border-radius-lg;
+    }
+  }
+
   .o_ChatterContainer {
     background-color: $o-altinkaya-chatter-bg;
+    border: 1px solid $border-color;
+    box-shadow: 0 5px 20px -15px rgba(#000, 0.4);
 
     // Chatter children have bg-view utilities that otherwise hide it.
     .o_Chatter,
@@ -565,14 +582,59 @@ body.o_web_client {
   }
 
   .o_ChatterTopbar {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    // Replace the legacy tab borders and margins with one padded toolbar.
+    --ChatterTopbar-border: 0;
+    --ChatterTopbar-padding-v: 0;
+    --ChatterTopbar-padding-left: 0;
+    --ChatterTopbar-padding-right: 0;
+
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border-bottom: 1px solid $o-gray-300;
+    gap: 8px;
+
+    .o_ChatterTopbar_actions,
+    .o_ChatterTopbar_tools {
+      min-width: 0;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .o_ChatterTopbar_controllers,
+    .o_ChatterTopbar_tools {
+      padding: 0 !important;
+    }
+
+    .o_ChatterTopbar_controllers,
+    .o_ChatterTopbar_rightSection {
+      align-items: center;
+      gap: 6px;
+    }
+
+    .o_ChatterTopbar_tools > .o_ChatterTopbar_borderLeft {
+      display: none;
+    }
+
+    .o_ChatterTopbar_rightSection {
+      margin-inline-start: auto;
+    }
+
+    .o_ChatterTopbar_button {
+      min-height: 32px;
+      margin: 0 !important;
+    }
+
+    .o_ChatterTopbar_followButton .btn {
+      padding-inline: 8px !important;
+      white-space: nowrap;
+    }
 
     .btn-light:not(.btn-primary) {
-      border-color: transparent;
+      border-color: $o-gray-300;
 
       &:hover {
-        border-color: $o-gray-300;
+        border-color: $o-gray-400;
       }
     }
   }

@@ -19,8 +19,15 @@ class IrHttp(models.AbstractModel):
 
     @classmethod
     def _set_color_scheme(cls, response):
-        """Keep the next page's asset bundle aligned with the user's choice."""
-        user = request.env.user
+        """Keep the next page's asset bundle aligned with the user's choice.
+
+        Requests without a signed-in session are left untouched. The session
+        user is read directly because ``auth="none"`` routes run with no env user.
+        """
+        uid = request.session.uid
+        if not uid:
+            return
+        user = request.env["res.users"].sudo().browse(uid)
         if user.dark_mode_device_dependent:
             return
         scheme = "dark" if user.dark_mode else "light"

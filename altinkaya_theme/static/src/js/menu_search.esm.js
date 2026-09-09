@@ -15,6 +15,24 @@ function getWords(value) {
   return normalizeMenuName(value).match(/[\p{L}\p{N}]+/gu) || [];
 }
 
+/** Normalize a menu's words once so each keystroke only scores them. */
+export function makeMenuEntry(menu, parents = []) {
+  const path = parents.join(" / ");
+  const nameWords = getWords(menu.name);
+  return {menu, path, nameWords, pathWords: getWords(path), name: nameWords.join(" ")};
+}
+
+/** Flatten the accessible menu tree, keeping group names as context. */
+export function collectMenuEntries(nodes, parents = [], entries = []) {
+  for (const menu of nodes) {
+    if (menu.actionID) {
+      entries.push(makeMenuEntry(menu, parents));
+    }
+    collectMenuEntries(menu.childrenTree, [...parents, menu.name], entries);
+  }
+  return entries;
+}
+
 /** Bounded edit distance including adjacent swapped letters. */
 function getEditDistance(source, target, limit) {
   let previous = Array.from({length: target.length + 1}, (_, i) => i);
@@ -81,9 +99,7 @@ export function searchMenuEntries(entries, query, currentAppId) {
   const phrase = tokens.join(" ");
   const results = [];
   for (const entry of entries) {
-    const nameWords = getWords(entry.menu.name);
-    const pathWords = getWords(entry.path);
-    const name = nameWords.join(" ");
+    const {name, nameWords, pathWords} = entry;
     let score = 0;
     let nameMatches = 0;
     for (const token of tokens) {
