@@ -150,4 +150,119 @@
             >No matching menu.</p>
         </Dialog>
     </t>
+    <!-- Mobile icon controls follow OCA/web_responsive (LGPL-3.0-or-later),
+         Copyright 2023 Onestein and 2025 Dixmit. -->
+    <t
+        t-name="altinkaya_theme.MobileForm"
+        t-inherit="web.FormView"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="attributes">
+            <attribute name="aria-label">New</attribute>
+            <attribute name="title">New</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="inside">
+            <i
+                class="o_altinkaya_mobile_icon fa fa-plus d-md-none"
+                aria-hidden="true"
+            />
+        </xpath>
+    </t>
+    <t
+        t-name="altinkaya_theme.MobileFormButtons"
+        t-inherit="web.FormView.Buttons"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="attributes">
+            <attribute name="aria-label">New</attribute>
+            <attribute name="title">New</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="inside">
+            <i
+                class="o_altinkaya_mobile_icon fa fa-plus d-md-none"
+                aria-hidden="true"
+            />
+        </xpath>
+    </t>
+    <t
+        t-name="altinkaya_theme.MobileChatter"
+        t-inherit="mail.ChatterTopbar"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonSendMessage')]"
+            position="attributes"
+        >
+            <attribute name="aria-label">Send message</attribute>
+            <attribute name="title">Send message</attribute>
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonSendMessage')]"
+            position="inside"
+        >
+            <i
+                class="o_altinkaya_mobile_icon fa fa-paper-plane d-md-none"
+                aria-hidden="true"
+            />
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonLogNote')]"
+            position="attributes"
+        >
+            <attribute name="aria-label">Log note</attribute>
+            <attribute name="title">Log note</attribute>
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonLogNote')]"
+            position="inside"
+        >
+            <i
+                class="o_altinkaya_mobile_icon fa fa-sticky-note-o d-md-none"
+                aria-hidden="true"
+            />
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonScheduleActivity')]"
+            position="attributes"
+        >
+            <attribute name="aria-label">Activities</attribute>
+            <attribute name="title">Activities</attribute>
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_ChatterTopbar_buttonScheduleActivity')]/span"
+            position="attributes"
+        >
+            <attribute name="class" add="d-none d-md-inline" separator=" " />
+        </xpath>
+    </t>
+    <t
+        t-name="altinkaya_theme.MobileFollowButton"
+        t-inherit="mail.FollowButton"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//button[hasclass('o_FollowButton_follow')]" position="attributes">
+            <attribute name="aria-label">Follow</attribute>
+            <attribute name="title">Follow</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('o_FollowButton_follow')]" position="inside">
+            <i class="o_altinkaya_mobile_icon fa fa-eye d-md-none" aria-hidden="true" />
+        </xpath>
+        <xpath
+            expr="//button[hasclass('o_FollowButton_unfollow')]"
+            position="attributes"
+        >
+            <attribute name="aria-label">Unfollow</attribute>
+            <attribute name="title">Unfollow</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('o_FollowButton_unfollow')]" position="inside">
+            <i
+                class="o_altinkaya_mobile_icon fa fa-eye-slash d-md-none"
+                aria-hidden="true"
+            />
+        </xpath>
+    </t>
 </templates>

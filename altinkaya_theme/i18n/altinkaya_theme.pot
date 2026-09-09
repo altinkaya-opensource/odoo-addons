@@ -117,3 +117,45 @@ msgstr ""
 #, python-format
 msgid "Close tools"
 msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "New"
+msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Send message"
+msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Log note"
+msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Activities"
+msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Follow"
+msgstr ""
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Unfollow"
+msgstr ""

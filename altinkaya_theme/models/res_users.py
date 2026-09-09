@@ -10,6 +10,7 @@ class ResUsers(models.Model):
     dark_mode = fields.Boolean()
     dark_mode_device_dependent = fields.Boolean(
         string="Use System Theme",
+        default=True,
         help="Follow this device's light or dark appearance setting.",
     )
 
