@@ -19,9 +19,14 @@ body.o_web_client {
     background: $o-navbar-background !important;
     color: $o-navbar-entry-color !important;
 
+    // Core marks a submenu toggler .dropdown-item, so excluding it keeps this
+    // rule on real navbar entries. Without that, the important colour also
+    // painted the language submenu toggler inside the open user menu panel,
+    // white on a white panel, and altinkaya_base cannot win it back: it sets
+    // the colour without !important, and !important beats specificity.
     .o_menu_brand,
     .o_nav_entry,
-    .dropdown-toggle,
+    .dropdown-toggle:not(.dropdown-item),
     > .o_menu_brand,
     > ul > li > a,
     > ul > li > label,
@@ -36,7 +41,7 @@ body.o_web_client {
       }
     }
 
-    .show .dropdown-toggle {
+    .show .dropdown-toggle:not(.dropdown-item) {
       background-color: $o-navbar-entry-bg--hover !important;
     }
   }

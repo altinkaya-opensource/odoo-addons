@@ -1,0 +1,49 @@
+// ks_dashboard_ninja carries its own design tokens (--ks-dn-*), its own dark
+// mode keyed on a data-color-mode attribute that Odoo never sets, and inline
+// styles hardcoded in its QWeb templates. None of that follows the color_scheme
+// cookie, so the dark palette only reaches it through generic Bootstrap and Odoo
+// rules on classes it happens to share. These rules repair the places where that
+// half-application leaves text or surfaces unreadable. Delete them if ks ever
+// registers its own ks_dashboard_ninja_dark.scss, which today sits in the
+// module unreferenced by any asset bundle.
+body.o_web_client .ks_dashboard_ninja {
+  // Core gives every .card-body a translucent card background
+  // (web/static/src/scss/bootstrap_review.scss). ks paints the surrounding
+  // .card a literal white, so in dark mode the body resolved to
+  // rgba(38, 42, 48, 0.9) and drew a dark frame around each white chart. The
+  // chart surface has to stay light because Chart.js renders its axis labels
+  // into a canvas that CSS cannot restyle, so drop the frame rather than
+  // darken the card.
+  .ks_chart_card_body {
+    background-color: transparent !important;
+  }
+
+  // ks paints this panel white in the template itself
+  // (ks_dashboard_ninja_templates.xml:15), in both colour schemes, and an inline
+  // style outranks any ordinary rule. So the text on it has to be dark in both.
+  // Not $o-main-text-color, which flips to near-white in dark and left these
+  // items at about 1.15:1 against the panel.
+  .config_dropdown .dropdown-menu .dropdown-item {
+    color: #212529;
+  }
+
+  // The same template hardcodes style="color: black" on the settings button
+  // (line 11), which reads fine on the light button and lands at about 1.4:1 on
+  // the dark one. !important is what it takes to outrank an inline style. The
+  // value has to follow the scheme, so it is the same $o-gray-800 that
+  // backend.scss already gives .btn-secondary, not a literal.
+  .config_dropdown .dropdown-toggle {
+    color: $o-gray-800 !important;
+  }
+
+  // The header action icons are <img src="ks_dashboard_ninja/.../icons/*.svg">
+  // with a dark fill baked into the file, so they came out navy on the blue
+  // button and neither color nor fill can reach them. A filter is the only way
+  // to repaint an img. $o-brand-primary is a mid-dark blue in both schemes, so
+  // white is right for both and this needs no per-scheme value. Scoped to the
+  // buttons: the welcome hand_wave.png sits in this header too and keeps its
+  // own colours.
+  .ks_dashboard_header .btn-primary > img {
+    filter: brightness(0) invert(1);
+  }
+}
