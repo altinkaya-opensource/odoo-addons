@@ -3,7 +3,7 @@
 {
     "name": "Altinkaya Theme",
     "summary": "Modern light and dark themes for the Odoo backend",
-    "version": "16.0.1.4.0",
+    "version": "16.0.1.4.3",
     "category": "Themes/Backend",
     "author": "Altinkaya Enclosures, initOS GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
@@ -29,6 +29,7 @@
             "altinkaya_theme/static/src/xml/navigation.xml",
             "altinkaya_theme/static/src/scss/navigation.scss",
             "altinkaya_theme/static/src/scss/mobile.scss",
+            "altinkaya_theme/static/src/scss/ks_dashboard.scss",
         ],
         "web.dark_mode_assets_common": [
             ("prepend", "altinkaya_theme/static/src/scss/dark_variables.scss"),
