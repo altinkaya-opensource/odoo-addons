@@ -31,7 +31,8 @@ class DbRetentionRule(models.Model):
         "ir.model.fields",
         required=True,
         ondelete="cascade",
-        domain="[('model_id', '=', model_id), ('ttype', 'in', ('date', 'datetime'))]",
+        domain="[('model_id', '=', model_id), ('ttype', 'in', ('date', 'datetime')), "
+        "('store', '=', True)]",
         help="Date/Datetime field compared against the retention threshold.",
     )
     date_field_name = fields.Char(
@@ -67,6 +68,16 @@ class DbRetentionRule(models.Model):
     def _get_domain(self):
         """Build the search domain: date threshold plus the optional user domain."""
         self.ensure_one()
+        date_field = self.env[self.model_name]._fields.get(self.date_field_name)
+        if (
+            self.date_field_id.model_id != self.model_id
+            or not date_field
+            or not date_field.store
+            or date_field.type not in ("date", "datetime")
+        ):
+            raise ValidationError(
+                _("Select a stored Date or Datetime field from the rule's model.")
+            )
         threshold = fields.Datetime.now() - relativedelta(days=self.retention_days)
         domain = [(self.date_field_name, "<", threshold)]
         extra = safe_eval(self.domain or "[]")

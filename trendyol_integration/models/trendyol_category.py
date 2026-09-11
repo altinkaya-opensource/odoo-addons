@@ -170,9 +170,7 @@ class TrendyolCategory(models.Model):
         try:
             result = client.get_category_attributes(self.trendyol_id)
             attrs_data = result.get("categoryAttributes", [])
-
-            # Clear existing attributes
-            self.attribute_ids.unlink()
+            seen_attribute_ids = set()
 
             for attr_data in attrs_data:
                 attr_id = attr_data.get("attribute", {}).get("id")
@@ -185,30 +183,52 @@ class TrendyolCategory(models.Model):
                 if not attr_id or not attr_name:
                     continue
 
-                attribute = Attribute.create(
-                    {
-                        "category_id": self.id,
-                        "trendyol_id": attr_id,
-                        "name": attr_name,
-                        "required": required,
-                        "allow_custom": allow_custom,
-                        "varianter": varianter,
-                        "slicer": slicer,
-                    }
-                )
+                seen_attribute_ids.add(attr_id)
+                attribute = self.attribute_ids.filtered(
+                    lambda item, trendyol_id=attr_id: item.trendyol_id == trendyol_id
+                )[:1]
+                vals = {
+                    "category_id": self.id,
+                    "trendyol_id": attr_id,
+                    "name": attr_name,
+                    "required": required,
+                    "allow_custom": allow_custom,
+                    "varianter": varianter,
+                    "slicer": slicer,
+                }
+                if attribute:
+                    attribute.write(vals)
+                else:
+                    attribute = Attribute.create(vals)
 
                 # Create attribute values
+                seen_value_ids = set()
                 for val_data in attr_data.get("attributeValues", []):
                     val_id = val_data.get("id")
                     val_name = val_data.get("name")
                     if val_id and val_name:
-                        AttributeValue.create(
-                            {
-                                "attribute_id": attribute.id,
-                                "trendyol_id": val_id,
-                                "name": val_name,
-                            }
-                        )
+                        seen_value_ids.add(val_id)
+                        value = attribute.value_ids.filtered(
+                            lambda item, trendyol_id=val_id: (
+                                item.trendyol_id == trendyol_id
+                            )
+                        )[:1]
+                        value_vals = {
+                            "attribute_id": attribute.id,
+                            "trendyol_id": val_id,
+                            "name": val_name,
+                        }
+                        if value:
+                            value.write(value_vals)
+                        else:
+                            AttributeValue.create(value_vals)
+                attribute.value_ids.filtered(
+                    lambda value: value.trendyol_id not in seen_value_ids
+                ).unlink()
+
+            self.attribute_ids.filtered(
+                lambda attribute: attribute.trendyol_id not in seen_attribute_ids
+            ).unlink()
 
             _logger.info(
                 "Synced %d attributes for category %s",

@@ -5,6 +5,7 @@ from . import hepsiburada_request
 from . import hepsiburada_backend
 from . import hepsiburada_cargo_mapping
 from . import hepsiburada_order
+from . import hepsiburada_package
 from . import sale_order
 from . import sale_order_line
 from . import res_partner
@@ -12,3 +13,5 @@ from . import stock_picking
 from . import hepsiburada_settlement
 from . import hepsiburada_question
 from . import hepsiburada_claim
+from . import account_payment
+from . import account_auto_reconcile

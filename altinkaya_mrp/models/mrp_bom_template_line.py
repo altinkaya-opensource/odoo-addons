@@ -206,6 +206,9 @@ class MrpBomTemplateLine(models.Model):
         product = fields.first(matched_products)
 
         # On the fly assign product to the line for further processing and
-        # Odoo MRP compatibility
-        self.product_id = product
+        # Odoo MRP compatibility. Cache-only: product_id is a non-stored
+        # dummy field, so a regular assignment goes through write() and
+        # bumps write_date on the line, which causes serialization
+        # failures under concurrent BoM explosions (e.g. price requests).
+        self._update_cache({"product_id": product.id})
         return product or False

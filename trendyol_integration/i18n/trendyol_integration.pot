@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 07:17+0000\n"
-"PO-Revision-Date: 2026-04-27 07:17+0000\n"
+"POT-Creation-Date: 2026-09-08 07:30+0000\n"
+"PO-Revision-Date: 2026-09-08 07:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -307,6 +307,11 @@ msgid "Accessory Products"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model,name:trendyol_integration.model_account_auto_reconcile
+msgid "Account Auto Reconcile"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__account_tag_ids
 msgid "Account Tags"
 msgstr ""
@@ -454,14 +459,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Answer Queued"
-msgstr ""
-
-#. module: trendyol_integration
-#. odoo-python
-#: code:addons/trendyol_integration/models/trendyol_question.py:0
-#, python-format
-msgid "Answer Trendyol question: %s"
+msgid "Answer Sent"
 msgstr ""
 
 #. module: trendyol_integration
@@ -482,6 +480,11 @@ msgstr ""
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_question__status__answered
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_question_search
 msgid "Answered"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__facet_application_ids
+msgid "Applications"
 msgstr ""
 
 #. module: trendyol_integration
@@ -528,6 +531,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__assembly_price
 msgid "Assembly Price"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__assembly_price
+msgid ""
+"Assembly share of the customization price in USD. This is a breakdown field;"
+" sales pricing uses Total Customization Price."
 msgstr ""
 
 #. module: trendyol_integration
@@ -909,6 +919,13 @@ msgid "Brand synchronization has been queued."
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Brand synchronization page limit reached."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_export_wizard__trendyol_brand_id
 msgid "Brand to use for all selected products (optional)"
 msgstr ""
@@ -939,6 +956,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_cnc
 msgid "CNC Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__cnc_price
+msgid ""
+"CNC share of the customization price in USD. This is a breakdown field; "
+"sales pricing uses Total Customization Price."
 msgstr ""
 
 #. module: trendyol_integration
@@ -1083,7 +1107,8 @@ msgid "Category to use for all selected products (optional)"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__changeset_change_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__changeset_change_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__changeset_change_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__changeset_change_ids
@@ -1109,7 +1134,8 @@ msgid "Changeset Changes"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__changeset_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__changeset_ids
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__changeset_ids
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__changeset_ids
@@ -1234,6 +1260,13 @@ msgid "Claims import has been queued."
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Claims import page limit reached."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__cnc_price
 msgid "Cnc Price"
 msgstr ""
@@ -1255,6 +1288,34 @@ msgid "Commission Amount"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_id
+msgid "Commission Invoice"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_invoice_number
+msgid "Commission Invoice Number"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_note
+msgid "Commission Match Note"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_match_state
+msgid "Commission Match State"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#, python-format
+msgid "Commission Matching"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_payment_id
 msgid "Commission Payment"
 msgstr ""
@@ -1262,6 +1323,30 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__commission_rate
 msgid "Commission Rate"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matched to the referenced vendor document."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Commission matching is pending."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Commission payment %(payment)s for Trendyol orders %(orders)s was reconciled"
+" with this invoice."
 msgstr ""
 
 #. module: trendyol_integration
@@ -1327,7 +1412,8 @@ msgid "Costing Method"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__count_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__count_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_changesets
@@ -1353,7 +1439,8 @@ msgid "Count Changesets"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_pending_changeset_changes
@@ -1379,7 +1466,8 @@ msgid "Count Pending Changeset Changes"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__count_pending_changesets
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__count_pending_changesets
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__count_pending_changesets
@@ -1595,6 +1683,13 @@ msgid "Customer Name"
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Customer Payment Reconciled"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__access_url
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__access_url
 msgid "Customer Portal URL"
@@ -1633,13 +1728,43 @@ msgid ""
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_attribute_value_id
+msgid "Customization Attribute Value"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_base_product_id
+msgid "Customization Base Product"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_flow_report_available
+msgid "Customization Flow Report Available"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_line_ids
 msgid "Customization Lines"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_mrp_signature
+msgid "Customization Mrp Signature"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_prices_auto_update
 msgid "Customization Prices Auto Update"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_request_id
+msgid "Customization Request"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__total_customization_price
+msgid "Customization surcharge used by sales pricing, in USD."
 msgstr ""
 
 #. module: trendyol_integration
@@ -1845,6 +1970,11 @@ msgid "Description on Receptions"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__facet_feature_ids
+msgid "Design Features"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__destination_port
 msgid "Destination port"
 msgstr ""
@@ -1912,6 +2042,11 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__v_min_iscilik_fiy
 msgid "En Az Toplam işçilik Fiyatı USD"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__facet_type_ids
+msgid "Enclosure Types"
 msgstr ""
 
 #. module: trendyol_integration
@@ -2124,6 +2259,13 @@ msgid "Failed to register webhook: %s"
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_question.py:0
+#, python-format
+msgid "Failed to send answer: %s"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_backend__default_product_id
 msgid ""
 "Fallback product for unmapped Trendyol items. If not set, unmapped items "
@@ -2158,6 +2300,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__carrier_id
 msgid "Fill this field if you plan to invoice the shipping based on picking."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_request_id
+msgid ""
+"Final customized product that owns this component. Only set on legacy staged"
+" component variants; new structures no longer generate component variants."
 msgstr ""
 
 #. module: trendyol_integration
@@ -2252,8 +2401,25 @@ msgid "Full Path"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_mrp_enabled
+msgid "Generate Customization Manufacturing"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__generate_type
 msgid "Generate Type"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_mrp_enabled
+msgid ""
+"Generate staged component variants and BoMs when a customized variant of "
+"this template is approved."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__generated_customization_bom_ids
+msgid "Generated Customization BoMs"
 msgstr ""
 
 #. module: trendyol_integration
@@ -2473,6 +2639,7 @@ msgstr ""
 
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_1920
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_ids
 msgid "Image"
 msgstr ""
 
@@ -2500,11 +2667,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__image_url
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_url
 msgid "Image URL"
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__image_ids
-msgid "Images"
 msgstr ""
 
 #. module: trendyol_integration
@@ -2580,6 +2742,11 @@ msgid "Imported"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__in_analysis
+msgid "In Analysis"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__standard_price
 msgid ""
 "In Standard Price & AVCO: value of the product (automatically computed in AVCO).\n"
@@ -2631,6 +2798,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__insert_installation_price
 msgid "Insert Installation Price"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__insert_installation_price
+msgid ""
+"Insert installation share of the customization price in USD. This is a "
+"breakdown field; sales pricing uses Total Customization Price."
 msgstr ""
 
 #. module: trendyol_integration
@@ -2784,6 +2958,11 @@ msgid "Is Published"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__is_trendyol_commission
+msgid "Is Trendyol Commission"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__has_configurable_attributes
 msgid "Is a configurable product"
 msgstr ""
@@ -2801,11 +2980,6 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_batch_request__result_data
 msgid "JSON data from batch request result"
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model,name:trendyol_integration.model_account_move_line
-msgid "Journal Item"
 msgstr ""
 
 #. module: trendyol_integration
@@ -2850,6 +3024,20 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__laser_marking_price
 msgid "Laser Marking Price"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__lasercut_price
+msgid ""
+"Laser cut share of the customization price in USD. This is a breakdown "
+"field; sales pricing uses Total Customization Price."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__laser_marking_price
+msgid ""
+"Laser marking share of the customization price in USD. This is a breakdown "
+"field; sales pricing uses Total Customization Price."
 msgstr ""
 
 #. module: trendyol_integration
@@ -2904,6 +3092,11 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_backend__last_question_sync
 msgid "Last Question Sync"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__last_sent_list_price
+msgid "Last Sent List Price"
 msgstr ""
 
 #. module: trendyol_integration
@@ -3032,6 +3225,11 @@ msgid "Main Vendor"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__maintenance_log_ids
+msgid "Maintenance Logs"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.module.category,description:trendyol_integration.module_category_trendyol
 msgid "Manage Trendyol marketplace integration"
 msgstr ""
@@ -3049,6 +3247,17 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__manual_code
 msgid "Manual Reference"
+msgstr ""
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
+msgid "Manual Review"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid "Manual Review Required"
 msgstr ""
 
 #. module: trendyol_integration
@@ -3098,6 +3307,11 @@ msgid "Manufacturing Lead Time"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__customization_mrp_locked
+msgid "Manufacturing Structure Locked"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__mrp_production_ids
 msgid "Manufacturing orders associated with this sales order."
 msgstr ""
@@ -3135,6 +3349,21 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_available_maske
 msgid "Maske Depo Mevcut"
+msgstr ""
+
+#. module: trendyol_integration
+#: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_form
+msgid "Match Commission Invoice"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__matched
+msgid "Matched"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__facet_material_ids
+msgid "Materials"
 msgstr ""
 
 #. module: trendyol_integration
@@ -3252,6 +3481,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qty_virtual_montaj
 msgid "Montaj Depo Tahmini"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Multiple vendor documents have this commission invoice reference."
 msgstr ""
 
 #. module: trendyol_integration
@@ -3726,6 +3962,13 @@ msgid "Order import has been queued."
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Order import page limit reached."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__invoice_policy
 msgid ""
 "Ordered Quantity: Invoice quantities ordered by the customer.\n"
@@ -3794,6 +4037,13 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__paint_price
 msgid "Paint Price"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__paint_price
+msgid ""
+"Paint share of the customization price in USD. This is a breakdown field; "
+"sales pricing uses Total Customization Price."
 msgstr ""
 
 #. module: trendyol_integration
@@ -3870,6 +4120,7 @@ msgid "Payment Terms"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model,name:trendyol_integration.model_account_payment
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__payment_ids
 msgid "Payments"
 msgstr ""
@@ -4024,6 +4275,11 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__categ_id
 msgid "Product Category"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__facet_ids
+msgid "Product Classes"
 msgstr ""
 
 #. module: trendyol_integration
@@ -4253,8 +4509,8 @@ msgid "Qty Increment Step"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qc_triggers
-msgid "Quality control triggers"
+#: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__qc_test_ids
+msgid "Quality Tests"
 msgstr ""
 
 #. module: trendyol_integration
@@ -4326,6 +4582,13 @@ msgstr ""
 #: code:addons/trendyol_integration/models/trendyol_backend.py:0
 #, python-format
 msgid "Question import has been queued."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Question import page limit reached."
 msgstr ""
 
 #. module: trendyol_integration
@@ -4608,6 +4871,11 @@ msgstr ""
 #. module: trendyol_integration
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_settlement_search
 msgid "Returns"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__review
+msgid "Review Required"
 msgstr ""
 
 #. module: trendyol_integration
@@ -4902,6 +5170,13 @@ msgid "Set to Draft"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_settlement__manual_review_required
+msgid ""
+"Set when reconciliation needs a human decision. Such rows are skipped by the"
+" automatic reconciliation pass."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_settlement__trendyol_settlement_id
 msgid "Settlement ID"
 msgstr ""
@@ -4916,6 +5191,13 @@ msgstr ""
 #: code:addons/trendyol_integration/models/trendyol_backend.py:0
 #, python-format
 msgid "Settlement import has been queued."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_backend.py:0
+#, python-format
+msgid "Settlement import page limit reached."
 msgstr ""
 
 #. module: trendyol_integration
@@ -5043,7 +5325,8 @@ msgid "Slicer"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__smart_search
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__smart_search
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__smart_search
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__smart_search
@@ -5096,6 +5379,11 @@ msgid ""
 "        Average Cost (AVCO): The products are valued at weighted average cost.\n"
 "        First In First Out (FIFO): The products are valued supposing those that enter the company first will also leave it first.\n"
 "        "
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_base_product_id
+msgid "Standard variant from which this customized product was created."
 msgstr ""
 
 #. module: trendyol_integration
@@ -5504,6 +5792,13 @@ msgid ""
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_mrp_locked
+msgid ""
+"Technical lock that prevents an already-generated customization "
+"specification from being changed in place."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_order__terms_type
 msgid "Terms & Conditions format"
 msgstr ""
@@ -5519,10 +5814,67 @@ msgid "Test Connection"
 msgstr ""
 
 #. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The API commission invoice reference was updated. Existing payment "
+"reconciliations were preserved."
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_order__country_code
 msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment amount differs from its settlement rows."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment and vendor document currencies differ."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment exceeds the referenced vendor document's remaining "
+"balance."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment is already reconciled with another document. Existing"
+" reconciliations were preserved."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The commission payment is closed without a matching vendor document."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"The commission payment partner or company does not match the Trendyol "
+"backend."
 msgstr ""
 
 #. module: trendyol_integration
@@ -5531,7 +5883,8 @@ msgid "The internal user in charge of this contact."
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_account_move_line__count_pending_changeset_changes
+#: model:ir.model.fields,help:trendyol_integration.field_account_auto_reconcile__count_pending_changeset_changes
+#: model:ir.model.fields,help:trendyol_integration.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_product_product__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_pending_changeset_changes
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_pending_changeset_changes
@@ -5557,7 +5910,8 @@ msgid "The number of pending changes of this record"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_account_move_line__count_pending_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_account_auto_reconcile__count_pending_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_product_product__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_pending_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_pending_changesets
@@ -5583,7 +5937,8 @@ msgid "The number of pending changesets of this record"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_account_move_line__count_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_account_auto_reconcile__count_changesets
+#: model:ir.model.fields,help:trendyol_integration.field_account_payment__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_product_product__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_product_template__count_changesets
 #: model:ir.model.fields,help:trendyol_integration.field_res_partner__count_changesets
@@ -5628,6 +5983,13 @@ msgstr ""
 msgid ""
 "The sale price is managed from the product template. Click on the 'Configure"
 " Variants' button to set the extra attribute prices."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "The vendor document has no compatible open payable lines."
 msgstr ""
 
 #. module: trendyol_integration
@@ -5691,6 +6053,25 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__price_extra
 msgid "This is the sum of the extra price of all attributes"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"This payment covers multiple commission invoice references. Review is "
+"required."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"This payout row arrived after the payout was reconciled. Its commission is "
+"not covered by the commission payment already recorded and needs manual "
+"review."
 msgstr ""
 
 #. module: trendyol_integration
@@ -5826,11 +6207,6 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__total_margin_rate
 msgid "Total margin * 100 / Turnover"
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__total_customization_price
-msgid "Total price for all customizations in USD."
 msgstr ""
 
 #. module: trendyol_integration
@@ -6053,6 +6429,11 @@ msgid "Trendyol Commission - Order %s"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__trendyol_commission_settlement_ids
+msgid "Trendyol Commission Settlement"
+msgstr ""
+
+#. module: trendyol_integration
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_order.py:0
 #, python-format
@@ -6240,6 +6621,14 @@ msgstr ""
 
 #. module: trendyol_integration
 #. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_order.py:0
+#, python-format
+msgid ""
+"Trendyol customer information is not available yet. Retry the import later."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
 #: code:addons/trendyol_integration/models/stock_picking.py:0
 #, python-format
 msgid ""
@@ -6352,8 +6741,27 @@ msgid "UTM source to set on Trendyol orders"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__print_price
+msgid ""
+"UV print share of the customization price in USD. This is a breakdown field;"
+" sales pricing uses Total Customization Price."
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_question__status__unanswered
+msgid "Unanswered"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_order__trendyol_status__undelivered
 msgid "Undelivered"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__customization_attribute_value_id
+msgid ""
+"Unique customization identifier shared by the final product and all of its "
+"generated components."
 msgstr ""
 
 #. module: trendyol_integration
@@ -6364,41 +6772,6 @@ msgstr ""
 #. module: trendyol_integration
 #: model:ir.model.fields,field_description:trendyol_integration.field_trendyol_product_binding__uom_name
 msgid "Unit of Measure Name"
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__cnc_price
-msgid "Unit price for CNC customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__print_price
-msgid "Unit price for UV print customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__assembly_price
-msgid "Unit price for assembly customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__insert_installation_price
-msgid "Unit price for insert installation customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__lasercut_price
-msgid "Unit price for laser cut customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__laser_marking_price
-msgid "Unit price for laser marking customization in USD."
-msgstr ""
-
-#. module: trendyol_integration
-#: model:ir.model.fields,help:trendyol_integration.field_trendyol_product_binding__paint_price
-msgid "Unit price for paint customization in USD."
 msgstr ""
 
 #. module: trendyol_integration
@@ -6482,7 +6855,8 @@ msgid "User"
 msgstr ""
 
 #. module: trendyol_integration
-#: model:ir.model.fields,field_description:trendyol_integration.field_account_move_line__user_can_see_changeset
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_auto_reconcile__user_can_see_changeset
+#: model:ir.model.fields,field_description:trendyol_integration.field_account_payment__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_product__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_product_template__user_can_see_changeset
 #: model:ir.model.fields,field_description:trendyol_integration.field_res_partner__user_can_see_changeset
@@ -6652,6 +7026,16 @@ msgid "Volume unit of measure label"
 msgstr ""
 
 #. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_settlement__commission_match_state__waiting
+msgid "Waiting"
+msgstr ""
+
+#. module: trendyol_integration
+#: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__waiting_fraud_check
+msgid "Waiting Fraud Check"
+msgstr ""
+
+#. module: trendyol_integration
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_claim__claim_status__waiting_in_action
 msgid "Waiting In Action"
 msgstr ""
@@ -6666,6 +7050,28 @@ msgstr ""
 #: model:ir.model.fields.selection,name:trendyol_integration.selection__trendyol_question__status__waiting_for_approve
 #: model_terms:ir.ui.view,arch_db:trendyol_integration.view_trendyol_question_search
 msgid "Waiting for Approve"
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission invoice number from Trendyol."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid "Waiting for the commission payment to be posted."
+msgstr ""
+
+#. module: trendyol_integration
+#. odoo-python
+#: code:addons/trendyol_integration/models/trendyol_settlement.py:0
+#, python-format
+msgid ""
+"Waiting for the referenced DSM vendor bill or credit note to be posted."
 msgstr ""
 
 #. module: trendyol_integration
@@ -6852,7 +7258,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/trendyol_integration/models/trendyol_question.py:0
 #, python-format
-msgid "Your answer has been queued for submission."
+msgid "Your answer has been submitted to Trendyol."
 msgstr ""
 
 #. module: trendyol_integration

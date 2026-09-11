@@ -19,6 +19,12 @@
                     class="oe_highlight"
                     context="{'date_start':date_start,'date_end':date_end}"
                 />
+                        <button
+                    name="print_excel"
+                    type="object"
+                    string="Excel"
+                    context="{'date_start':date_start,'date_end':date_end}"
+                />
                         or
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>

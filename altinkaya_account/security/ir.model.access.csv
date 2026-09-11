@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_create_currency_difference_invoices,access_create_currency_difference_invoices,model_create_currency_difference_invoice,account.group_account_invoice,1,1,1,0
+access_create_selected_currency_difference_invoice,access.create.selected.currency.difference.invoice,model_create_selected_currency_difference_invoice,account.group_account_invoice,1,1,1,0
 access_create_currency_valuation_move,access.create.currency.valuation.move,model_create_currency_valuation_move,account.group_account_manager,1,1,1,1
 access_account_accrual_upload_wizard,access.account.accrual.upload.wizard,model_account_accrual_upload_wizard,account.group_account_user,1,1,1,1
 access_currency_reconcile_fix_wizard,access.currency.reconcile.fix.wizard,model_currency_reconcile_fix_wizard,account.group_account_manager,1,1,1,1

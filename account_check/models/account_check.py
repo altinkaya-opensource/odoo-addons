@@ -679,8 +679,8 @@ class AccountCheck(models.Model):
         Recompute the amount in currency of the company of the check due
         """
         for rec in self:
-            due_date = rec.payment_date
             today = fields.Date.today()
+            due_date = rec.payment_date or today
             if today > due_date:
                 last_valid_date = due_date
             else:

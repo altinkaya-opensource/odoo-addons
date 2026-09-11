@@ -1,0 +1,100 @@
+// Light palette. Dark variables are prepended before these defaults.
+$o-webclient-color-scheme: light !default;
+$o-white: #f7f7f5 !default;
+$o-black: #000000 !default;
+$o-gray-100: #f2f3f2 !default;
+$o-gray-200: #e9ebed !default;
+$o-gray-300: #cdd1d6 !default;
+$o-gray-400: #9ba2ab !default;
+$o-gray-500: #6d757f !default;
+$o-gray-600: #565f6b !default;
+$o-gray-700: #454c56 !default;
+$o-gray-800: #2d333b !default;
+$o-gray-900: #20242a !default;
+
+$o-altinkaya-canvas: #e1e3e6 !default;
+$o-altinkaya-input-bg: #fcfcfa !default;
+$o-altinkaya-input-border: #7b838e !default;
+$o-altinkaya-field-bg: #eff1f3 !default;
+$o-altinkaya-field-border: #aeb6c1 !default;
+$o-altinkaya-chatter-bg: #eceeef !default;
+$o-altinkaya-accent: #174b87 !default;
+$o-altinkaya-accent-hover: #103762 !default;
+$o-altinkaya-required-bg: #e4d6ef !default;
+$o-altinkaya-required-border: #8766ac !default;
+$o-altinkaya-required-text: #47335e !default;
+$o-altinkaya-required-placeholder: #6b537f !default;
+$o-altinkaya-invalid-bg: #fbecf0 !default;
+$o-altinkaya-invalid-text: #a0334b !default;
+$o-altinkaya-warning-bg: #fff4da !default;
+$o-altinkaya-warning-text: #68490f !default;
+$o-altinkaya-warning-border: #cf9b37 !default;
+$o-altinkaya-list-header-bg: #d5d9de !default;
+$o-altinkaya-list-header-border: #8b949f !default;
+$o-altinkaya-list-stripe-bg: #e6e8eb !default;
+$o-altinkaya-list-hover-bg: #e9edf1 !default;
+
+$o-community-color: #2455a1 !default;
+$o-enterprise-color: $o-community-color !default;
+$o-enterprise-primary-color: $o-community-color !default;
+$o-brand-odoo: $o-community-color !default;
+$o-brand-primary: $o-community-color !default;
+$o-brand-lightsecondary: $o-gray-100 !default;
+$o-success: #237b60 !default;
+$o-info: #286e89 !default;
+$o-warning: #e4b568 !default;
+$o-danger: #b4445c !default;
+$o-theme-text-colors: (
+  "primary": $o-altinkaya-accent,
+  "success": #1e624c,
+  "info": #225a73,
+  "warning": #795115,
+  "danger": #982c46,
+  "odoo": $o-altinkaya-accent,
+) !default;
+
+$o-main-text-color: $o-gray-900 !default;
+$o-main-headings-color: $o-gray-900 !default;
+$o-main-color-muted: $o-gray-600 !default;
+$o-main-link-color: $o-altinkaya-accent !default;
+$o-main-bg-color: $o-altinkaya-canvas !default;
+$o-webclient-background-color: $o-altinkaya-canvas !default;
+$o-view-background-color: $o-white !default;
+$o-form-lightsecondary: $o-altinkaya-input-border !default;
+$o-input-border-required: $o-altinkaya-required-border !default;
+$o-form-separator-color: $o-gray-300 !default;
+$o-list-footer-bg-color: $o-gray-100 !default;
+$o-list-group-active-bg: #d7e3f5 !default;
+$o-dropdown-box-shadow: 0 8px 24px rgba(#172235, 0.12) !default;
+
+$o-navbar-background: #2455a1 !default;
+$o-navbar-border-bottom: 1px solid $o-gray-300 !default;
+$o-navbar-entry-color: #f3f6fc !default;
+$o-navbar-entry-bg--hover: #3466b2 !default;
+$o-navbar-badge-bg: $o-success !default;
+
+$o-btn-secondary-bg: $o-white !default;
+$o-btn-secondary-hover-bg: $o-gray-100 !default;
+$o-btn-secondary-hover-border: $o-gray-400 !default;
+$o-btn-light-bg: $o-white !default;
+$o-btn-light-border: $o-gray-300 !default;
+$o-btn-light-background-hover: $o-gray-100 !default;
+$o-border-radius: 0.5rem !default;
+$o-border-radius-lg: 0.75rem !default;
+$o-input-padding-y: 4px !default;
+$o-input-padding-x: 8px !default;
+
+$min-contrast-ratio: 4.5 !default;
+$color-contrast-light: #ffffff !default;
+$color-contrast-dark: #000000 !default;
+$link-hover-color: $o-altinkaya-accent-hover !default;
+$input-color: $o-main-text-color !default;
+$input-bg: $o-altinkaya-input-bg !default;
+$input-focus-bg: $o-altinkaya-input-bg !default;
+$input-focus-color: $o-gray-900 !default;
+$input-focus-border-color: $o-altinkaya-accent !default;
+$input-placeholder-color: $o-gray-600 !default;
+$input-disabled-bg: $o-gray-200 !default;
+$dropdown-link-hover-bg: $o-list-group-active-bg !default;
+$dropdown-link-active-bg: $o-list-group-active-bg !default;
+$dropdown-link-active-color: $o-gray-900 !default;

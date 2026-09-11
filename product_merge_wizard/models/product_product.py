@@ -16,6 +16,15 @@
 from odoo import api, models
 
 
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
+
+    def _create_variant_ids(self):
+        if self.env.context.get("merging_products"):
+            return True
+        return super()._create_variant_ids()
+
+
 class ProductProduct(models.Model):
     _inherit = "product.product"
 

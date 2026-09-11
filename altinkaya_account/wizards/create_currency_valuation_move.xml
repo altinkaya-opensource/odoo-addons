@@ -4,10 +4,11 @@
         <field name="name">create.currency.valuation.res.partner</field>
         <field name="model">create.currency.valuation.move</field>
         <field name="arch" type="xml">
-            <form string="Create Difference Invoices">
+            <form string="Create Currency Valuation Move">
                 <p>This action will currency valuation move for selected partners.</p>
                 <group>
                     <field name="move_date" />
+                    <field name="rate_field" />
                 </group>
                 <footer>
                     <button

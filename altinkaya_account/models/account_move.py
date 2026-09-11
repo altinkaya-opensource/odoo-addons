@@ -49,6 +49,31 @@ class AccountMove(models.Model):
         "account.move.line",
         string="Currency Difference Lines",
     )
+    is_manual_currency_difference = fields.Boolean(copy=False)
+    currency_difference_source_invoice_ids = fields.Many2many(
+        "account.move",
+        "account_move_currency_diff_source_invoice_rel",
+        "currency_difference_invoice_id",
+        "source_invoice_id",
+        string="Source Invoices",
+        copy=False,
+    )
+    currency_difference_source_payment_line_ids = fields.Many2many(
+        "account.move.line",
+        "account_move_currency_diff_source_payment_rel",
+        "currency_difference_invoice_id",
+        "source_payment_line_id",
+        string="Source Payments",
+        copy=False,
+    )
+    currency_difference_source_move_ids = fields.Many2many(
+        "account.move",
+        "account_move_currency_diff_source_move_rel",
+        "currency_difference_invoice_id",
+        "source_move_id",
+        string="Source Currency Difference Entries",
+        copy=False,
+    )
 
     full_reconcile_ids = fields.Many2many(
         "account.full.reconcile",
@@ -108,16 +133,6 @@ class AccountMove(models.Model):
             ):
                 invoice.currency_id = invoice.pricelist_id.invoice_currency_id
 
-    @api.depends("pricelist_id")
-    def _compute_currency_id(self):
-        """
-        Override to use invoice_currency_id from pricelist when
-        computing invoice's currency_id.
-        """
-        res = super()._compute_currency_id()
-        self._switch_to_pricelist_currency()
-        return res
-
     def _compute_tax_line_ids(self):
         for move in self:
             move.tax_line_ids = move.line_ids.filtered("tax_repartition_line_id")
@@ -142,6 +157,63 @@ class AccountMove(models.Model):
                 ]
             )
             inv.waiting_picking_ids = stocks
+
+    @api.depends(
+        "invoice_payment_term_id",
+        "invoice_date",
+        "currency_id",
+        "amount_total_in_currency_signed",
+        "invoice_date_due",
+        "partner_id",
+        "fiscal_position_id",
+        "line_ids.account_id",
+    )
+    def _compute_needed_terms(self):
+        res = super()._compute_needed_terms()
+        for move in self:
+            if not move.is_invoice(True) or not move.needed_terms:
+                continue
+
+            term_account = move.line_ids.filtered(
+                lambda line: line.display_type == "payment_term"
+            ).account_id[:1]
+            if not term_account:
+                partner = move.commercial_partner_id.with_company(move.company_id)
+                term_account = (
+                    partner.property_account_receivable_id
+                    if move.is_sale_document(include_receipts=True)
+                    else partner.property_account_payable_id
+                )
+                if term_account and move.fiscal_position_id:
+                    term_account = move.fiscal_position_id.map_account(term_account)
+
+            account_currency = term_account.currency_id
+            if not account_currency or account_currency == move.currency_id:
+                continue
+
+            company_currency = move.company_id.currency_id
+            conversion_date = (
+                move.invoice_date or move.date or fields.Date.context_today(move)
+            )
+            needed_terms = {
+                key: dict(values) for key, values in move.needed_terms.items()
+            }
+            for values in needed_terms.values():
+                values["amount_currency"] = company_currency._convert(
+                    values["balance"],
+                    account_currency,
+                    move.company_id,
+                    conversion_date,
+                )
+                if values.get("discount_balance"):
+                    values["discount_amount_currency"] = company_currency._convert(
+                        values["discount_balance"],
+                        account_currency,
+                        move.company_id,
+                        conversion_date,
+                    )
+            move.needed_terms = needed_terms
+        return res
 
     def action_post(self):
         res = super().action_post()
@@ -199,16 +271,37 @@ class AccountMove(models.Model):
         if not recv_line:
             return
         account = recv_line.account_id
-        krfrk_moves = self.env["account.move"].search(
-            [
-                ("journal_id", "=", self.company_id.currency_exchange_journal_id.id),
-                ("state", "=", "posted"),
-                ("reversed_entry_id", "=", False),
-                ("reversal_move_id", "=", False),
-                ("line_ids.partner_id", "=", self.commercial_partner_id.id),
-                ("line_ids.account_id", "=", account.id),
-            ]
-        )
+        if self.is_manual_currency_difference:
+            krfrk_moves = self.currency_difference_source_move_ids.filtered(
+                lambda move: (
+                    move.journal_id == self.company_id.currency_exchange_journal_id
+                    and move.state == "posted"
+                    and not move.reversed_entry_id
+                    and not move.reversal_move_id
+                    and move.line_ids.filtered(
+                        lambda line: (
+                            line.account_id == account
+                            and line.partner_id.commercial_partner_id
+                            == self.commercial_partner_id
+                        )
+                    )
+                )
+            )
+        else:
+            krfrk_moves = self.env["account.move"].search(
+                [
+                    (
+                        "journal_id",
+                        "=",
+                        self.company_id.currency_exchange_journal_id.id,
+                    ),
+                    ("state", "=", "posted"),
+                    ("reversed_entry_id", "=", False),
+                    ("reversal_move_id", "=", False),
+                    ("line_ids.partner_id", "=", self.commercial_partner_id.id),
+                    ("line_ids.account_id", "=", account.id),
+                ]
+            )
         if not krfrk_moves:
             _logger.info(
                 "Kur farkı faturası %s: ters kaydedilecek KRFRK kaydı yok, "
@@ -309,6 +402,11 @@ class AccountMove(models.Model):
 
     def button_cancel(self):
         res = super().button_cancel()
+        self._teardown_kfark_reversals()
+        return res
+
+    def button_draft(self):
+        res = super().button_draft()
         self._teardown_kfark_reversals()
         return res
 

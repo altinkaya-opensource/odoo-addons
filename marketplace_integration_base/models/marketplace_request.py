@@ -88,14 +88,7 @@ class MarketplaceRequest:
         if not skip_rate_limit and getattr(self, "rate_limiter", False):
             self.rate_limiter.acquire()
 
-        _logger.debug(
-            "%s API %s %s - params: %s, body: %s",
-            self.api_name,
-            method,
-            url,
-            params,
-            json_data,
-        )
+        _logger.debug("%s API %s %s", self.api_name, method, url)
 
         try:
             response = requests.request(
@@ -109,12 +102,7 @@ class MarketplaceRequest:
         except requests.RequestException as e:
             raise self.error_class(f"Request failed: {str(e)}") from e
 
-        _logger.debug(
-            "%s API response: %s - %s",
-            self.api_name,
-            response.status_code,
-            response.text[:500] if response.text else "",
-        )
+        _logger.debug("%s API response status: %s", self.api_name, response.status_code)
 
         if response.status_code in self.success_status_codes:
             try:

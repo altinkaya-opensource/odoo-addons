@@ -27,12 +27,12 @@
 
     <!-- Record Rules -->
 
-    <!-- Backend: Only managers can see all backends -->
+    <!-- Backends are always restricted to the user's allowed companies. -->
     <record id="rule_hepsiburada_backend_manager" model="ir.rule">
         <field name="name">Hepsiburada Backend: Manager Access</field>
         <field name="model_id" ref="model_hepsiburada_backend" />
         <field name="groups" eval="[(4, ref('group_hepsiburada_manager'))]" />
-        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
 
     <!-- Backend: Users can only see active backends in their company -->
@@ -45,10 +45,76 @@
         >[('active', '=', True), ('company_id', 'in', company_ids)]</field>
     </record>
 
-    <!-- Order: All users with group can see all orders -->
+    <!-- Marketplace business records follow their backend company. -->
     <record id="rule_hepsiburada_order" model="ir.rule">
         <field name="name">Hepsiburada Order: Access</field>
         <field name="model_id" ref="model_hepsiburada_order" />
-        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_package" model="ir.rule">
+        <field name="name">Hepsiburada Package: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_package" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_order_line" model="ir.rule">
+        <field name="name">Hepsiburada Order Line: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_order_line" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('hb_order_id.backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_cargo_mapping" model="ir.rule">
+        <field name="name">Hepsiburada Cargo Mapping: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_cargo_mapping" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_settlement" model="ir.rule">
+        <field name="name">Hepsiburada Settlement: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_settlement" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_question" model="ir.rule">
+        <field name="name">Hepsiburada Question: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_question" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_question_message" model="ir.rule">
+        <field name="name">Hepsiburada Question Message: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_question_message" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('question_id.backend_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hepsiburada_claim" model="ir.rule">
+        <field name="name">Hepsiburada Claim: Company Access</field>
+        <field name="model_id" ref="model_hepsiburada_claim" />
+        <field name="groups" eval="[(4, ref('group_hepsiburada_user'))]" />
+        <field
+            name="domain_force"
+        >[('backend_id.company_id', 'in', company_ids)]</field>
     </record>
 </odoo>

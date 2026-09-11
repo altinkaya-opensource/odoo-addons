@@ -27,7 +27,14 @@ class StockPicking(models.Model):
         """
         self.ensure_one()
         hb_binding = self._get_hepsiburada_binding()
-        if not hb_binding or not hb_binding.hb_package_number:
+        if not hb_binding:
+            return
+        package = self._get_hepsiburada_package(hb_binding)
+        if not package:
+            _logger.warning(
+                "Cannot identify the Hepsiburada package for picking %s",
+                self.name,
+            )
             return
 
         # Check for existing label (idempotent)
@@ -44,7 +51,7 @@ class StockPicking(models.Model):
 
         try:
             client = hb_binding.backend_id._get_api_client()
-            pdf_content = client.get_package_label(hb_binding.hb_package_number)
+            pdf_content = client.get_package_label(package.hb_package_number)
             self.env["ir.attachment"].create(
                 {
                     "name": f"{self.name}_hepsiburada_label.pdf",
@@ -63,9 +70,53 @@ class StockPicking(models.Model):
                 exc_info=True,
             )
 
+    def _get_hepsiburada_package(self, binding=None):
+        self.ensure_one()
+        binding = binding or self._get_hepsiburada_binding()
+        if not binding:
+            return self.env["hepsiburada.package"]
+        binding._ensure_package_records()
+        if len(binding.package_ids) == 1:
+            return binding.package_ids
+
+        picking_sale_lines = set(
+            self.move_ids_without_package.mapped("sale_line_id").ids
+        )
+        if not picking_sale_lines:
+            return self.env["hepsiburada.package"]
+        matches = binding.package_ids.filtered(
+            lambda package: (
+                picking_sale_lines <= set(package.line_ids.mapped("sale_line_id").ids)
+            )
+        )
+        if len(matches) == 1:
+            return fields.first(matches)
+        return self.env["hepsiburada.package"]
+
     def action_print_delivery_documents(self):
         """Print Hepsiburada labels via backend printer, delegate the rest to super."""
-        handled = self._marketplace_print_delivery_documents("_get_hepsiburada_binding")
+        handled = self.browse()
+        Attachment = self.env["ir.attachment"]
+        for picking in self:
+            binding = picking._get_hepsiburada_binding()
+            if not binding or not binding.backend_id.label_printer_id:
+                continue
+            picking._fetch_hepsiburada_label()
+            documents = Attachment.search(
+                [
+                    ("res_model", "=", "stock.picking"),
+                    ("res_id", "=", picking.id),
+                    ("is_delivery_document", "=", True),
+                ]
+            )
+            if not documents:
+                continue
+            for document in documents:
+                binding.backend_id.label_printer_id.print_document(
+                    report=None,
+                    content=base64.b64decode(document.datas),
+                )
+            handled |= picking
         remaining = self - handled
         if remaining:
             return super(StockPicking, remaining).action_print_delivery_documents()

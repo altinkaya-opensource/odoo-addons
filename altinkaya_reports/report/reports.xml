@@ -25,6 +25,16 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="label_stock_location_depo2" model="ir.actions.report">
+        <field name="name">Konum Barkodu (Depo2)</field>
+        <field name="model">stock.location</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">altinkaya_reports.location_report_godex_depo2</field>
+        <field name="report_file">altinkaya_reports.location_report_godex_depo2</field>
+        <field name="binding_model_id" ref="stock.model_stock_location" />
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="stock_pickingaltinkaya" model="ir.actions.report">
         <field name="name">Depo Fişi Ekrana</field>
         <field name="model">stock.picking</field>
@@ -122,6 +132,26 @@
         <field name="report_name">altinkaya_reports.report_picking_altinkayaO</field>
         <field name="report_file">altinkaya_reports.report_picking_altinkayaO</field>
         <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="stock_pickingaltinkayaK" model="ir.actions.report">
+        <field name="name">Depo Fişi Kardex</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">altinkaya_reports.report_picking_altinkayaK</field>
+        <field name="report_file">altinkaya_reports.report_picking_altinkayaK</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="mrp_production_altinkayaK" model="ir.actions.report">
+        <field name="name">Üretim Emri Kardex</field>
+        <field name="model">mrp.production</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">altinkaya_reports.report_mrporder_altinkayaK</field>
+        <field name="report_file">altinkaya_reports.report_mrporder_altinkayaK</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_production" />
         <field name="binding_type">report</field>
     </record>
 

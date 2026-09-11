@@ -91,7 +91,6 @@ class TrendyolProductBinding(models.Model):
         string="List Price",
         digits="Product Price",
         compute="_compute_prices",
-        store=True,
         help="List price in TRY from configured pricelist",
     )
     trendyol_sale_price = fields.Float(
@@ -109,6 +108,9 @@ class TrendyolProductBinding(models.Model):
         readonly=True,
     )
     last_sent_price = fields.Float(
+        readonly=True,
+    )
+    last_sent_list_price = fields.Float(
         readonly=True,
     )
 
@@ -131,7 +133,12 @@ class TrendyolProductBinding(models.Model):
         ),
     ]
 
-    @api.depends("odoo_id", "backend_id", "backend_id.pricelist_id")
+    @api.depends(
+        "odoo_id",
+        "odoo_id.lst_price",
+        "backend_id",
+        "backend_id.pricelist_id",
+    )
     def _compute_prices(self):
         for binding in self:
             if not binding.backend_id.pricelist_id or not binding.odoo_id:
@@ -331,7 +338,11 @@ class TrendyolProductBinding(models.Model):
         sale_price = self.trendyol_sale_price or list_price
 
         # Check if anything changed
-        if quantity == self.last_sent_quantity and sale_price == self.last_sent_price:
+        if (
+            quantity == self.last_sent_quantity
+            and sale_price == self.last_sent_price
+            and list_price == self.last_sent_list_price
+        ):
             return None
 
         return {
@@ -477,6 +488,7 @@ class TrendyolProductBinding(models.Model):
         """Sync stock and price to Trendyol API."""
         self.ensure_one()
         client = self.backend_id._get_api_client()
+        BatchRequest = self.env["trendyol.batch.request"]
 
         data = self._prepare_stock_price_data()
         if not data:
@@ -484,9 +496,19 @@ class TrendyolProductBinding(models.Model):
             return
 
         try:
-            client.update_price_and_inventory([data])
-            self.last_sent_quantity = data["quantity"]
-            self.last_sent_price = data["salePrice"]
+            result = client.update_price_and_inventory([data])
+            batch_id = result.get("batchRequestId")
+            if batch_id:
+                BatchRequest.create(
+                    {
+                        "backend_id": self.backend_id.id,
+                        "batch_request_id": batch_id,
+                        "request_type": "price_inventory",
+                        "state": "pending",
+                        "total_items": 1,
+                        "product_binding_ids": [(4, self.id)],
+                    }
+                )
             self.last_sync_date = fields.Datetime.now()
             _logger.info(
                 "Synced stock/price for %s: qty=%d, price=%.2f",

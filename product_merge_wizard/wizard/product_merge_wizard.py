@@ -5,12 +5,11 @@ Created on Nov 27, 2017
 """
 
 import functools
-import itertools
 import logging
 
 import psycopg2
 
-from odoo import _, api, exceptions, fields, models
+from odoo import Command, _, api, exceptions, fields, models
 from odoo.tools import mute_logger
 
 _logger = logging.getLogger(__name__)
@@ -59,66 +58,41 @@ class ProductMergeWizard(models.TransientModel):
 
     def action_merge(self):
         self.ensure_one()
+        target_template = self.product_tmpl_id
+        product_values = self._validate_merge()
+        products = self.product_line_ids.product_id
+        source_templates = products.product_tmpl_id - target_template
 
-        # To skip computing combination_indices field.
-        self = self.with_context(merging_products=True)
-
-        attribute_ids = {}
-        for line in self.attribute_line_ids:
-            if attribute_ids.get(line.attribute_id.id, False):
-                raise exceptions.ValidationError(
-                    _("You can not add an attribute more than once")
-                )
-            attribute_ids.update({line.attribute_id.id: True})
-
-        new_product_tmpl_id = (
-            self.product_tmpl_id
-        )  # self.product_line_ids[0].product_id.product_tmpl_id
-        new_product_tmpl_id.attribute_line_ids.unlink()
-        vals = {
-            "attribute_line_ids": [
-                (
-                    0,
-                    False,
-                    {
-                        "attribute_id": al.attribute_id.id,
-                        "value_ids": [(6, False, al.value_ids.ids)],
-                    },
-                )
-                for al in self.attribute_line_ids
-            ]
-        }
-
-        new_product_tmpl_id.with_context(create_product_product=False).write(vals)
-
-        for product_line in self.product_line_ids:
-            new_attribute_values = (
-                product_line.product_id.product_template_variant_value_ids.search(
-                    [
-                        ("product_tmpl_id", "=", new_product_tmpl_id.id),
-                        (
-                            "product_attribute_value_id",
-                            "in",
-                            product_line.value_ids.ids,
-                        ),
+        target_values = self._prepare_target_attribute_values()
+        merging_products = products.with_context(merging_products=True)
+        for product in products:
+            product.with_context(merging_products=True).write(
+                {
+                    "product_template_attribute_value_ids": [
+                        Command.set(
+                            [
+                                target_values[value.id].id
+                                for value in product_values[product.id]
+                            ]
+                        )
                     ]
-                )
+                }
             )
-            product_line.product_id.product_template_attribute_value_ids = [
-                (6, False, new_attribute_values.ids)
-            ]
 
-        product_tmpl_ids = self.mapped("product_line_ids.product_id.product_tmpl_id")
-        product_ids = self.mapped("product_line_ids.product_id")
-        product_ids.write({"product_tmpl_id": new_product_tmpl_id.id})
+        # NULL indices allow valid combination swaps within one transaction.
+        # They are recomputed with the normal Odoo implementation below.
+        merging_products._compute_combination_indices()
+        merging_products.flush_recordset(["combination_indices"])
+        merging_products.write({"product_tmpl_id": target_template.id})
+        self._prune_target_attribute_values()
+        products._compute_combination_indices()
+        products.flush_recordset(["combination_indices", "product_tmpl_id"])
 
-        for product_tmpl_id in product_tmpl_ids:
-            if product_tmpl_id.product_variant_count == 0:
-                if product_tmpl_id.id != new_product_tmpl_id.id:
-                    product_tmpl_id.attribute_line_ids.unlink()
-                # update product references
-                self._update_refs(product_tmpl_id, new_product_tmpl_id)
-                product_tmpl_id.unlink()
+        for source_template in source_templates:
+            source_template.invalidate_recordset(["product_variant_ids"])
+            if not source_template.with_context(active_test=False).product_variant_ids:
+                self._update_refs(source_template, target_template)
+                source_template.unlink()
 
         return {
             "name": _("Product"),
@@ -127,9 +101,172 @@ class ProductMergeWizard(models.TransientModel):
             "res_model": "product.template",
             "view_id": False,
             "type": "ir.actions.act_window",
-            "domain": [("id", "=", new_product_tmpl_id.id)],
+            "domain": [("id", "=", target_template.id)],
             "context": self.env.context,
         }
+
+    def _get_attribute_configuration(self):
+        configuration = {}
+        for line in self.attribute_line_ids:
+            if not line.attribute_id or not line.value_ids:
+                raise exceptions.ValidationError(
+                    _("Every attribute must have at least one value.")
+                )
+            if line.attribute_id.id in configuration:
+                raise exceptions.ValidationError(
+                    _("You can not add an attribute more than once")
+                )
+            if line.value_ids.attribute_id != line.attribute_id:
+                raise exceptions.ValidationError(
+                    _("Every value must belong to its attribute.")
+                )
+            configuration[line.attribute_id.id] = line.value_ids
+        return configuration
+
+    def _validate_merge(self):
+        configuration = self._get_attribute_configuration()
+        if not self.product_line_ids:
+            raise exceptions.ValidationError(_("Select at least one product to merge."))
+
+        products = self.product_line_ids.product_id
+        if len(products) != len(self.product_line_ids):
+            raise exceptions.ValidationError(
+                _("You can not add a product more than once.")
+            )
+
+        target_configuration = {
+            line.attribute_id.id: frozenset(line.value_ids.ids)
+            for line in self.product_tmpl_id.attribute_line_ids
+        }
+        requested_configuration = {
+            attribute_id: frozenset(values.ids)
+            for attribute_id, values in configuration.items()
+        }
+        target_products = self.product_tmpl_id.with_context(
+            active_test=False
+        ).product_variant_ids.filtered("active")
+        if target_configuration != requested_configuration:
+            missing_target_products = target_products - products
+            if missing_target_products:
+                raise exceptions.ValidationError(
+                    _(
+                        "Add every active variant of the target product when changing "
+                        "its attributes. Missing: %(products)s",
+                        products=", ".join(
+                            missing_target_products.mapped("display_name")
+                        ),
+                    )
+                )
+
+        variant_attribute_ids = {
+            attribute_id
+            for attribute_id in configuration
+            if self.env["product.attribute"].browse(attribute_id).create_variant
+            != "no_variant"
+        }
+        configured_value_ids = {
+            value.id for values in configuration.values() for value in values
+        }
+        product_values = {}
+        combinations = {}
+
+        for product_line in self.product_line_ids:
+            values = product_line.value_ids
+            selected_attribute_ids = set(values.attribute_id.ids)
+            if (
+                not set(values.ids) <= configured_value_ids
+                or selected_attribute_ids != variant_attribute_ids
+                or any(
+                    len(values.filtered(lambda value: value.attribute_id.id == attr_id))
+                    != 1
+                    for attr_id in variant_attribute_ids
+                )
+            ):
+                raise exceptions.ValidationError(
+                    _(
+                        "Select exactly one configured value for every variant "
+                        "attribute of %(product)s.",
+                        product=product_line.product_id.display_name,
+                    )
+                )
+            product_values[product_line.product_id.id] = values
+            self._register_combination(
+                combinations, frozenset(values.ids), product_line.product_id
+            )
+
+        for product in target_products - products:
+            values = product.product_template_attribute_value_ids.mapped(
+                "product_attribute_value_id"
+            )
+            self._register_combination(combinations, frozenset(values.ids), product)
+
+        return product_values
+
+    def _register_combination(self, combinations, combination, product):
+        if combination in combinations:
+            raise exceptions.ValidationError(
+                _(
+                    "%(first)s and %(second)s have the same attribute combination.",
+                    first=combinations[combination].display_name,
+                    second=product.display_name,
+                )
+            )
+        combinations[combination] = product
+
+    def _prepare_target_attribute_values(self):
+        configuration = self._get_attribute_configuration()
+        target_template = self.product_tmpl_id.with_context(merging_products=True)
+        lines_by_attribute = {
+            line.attribute_id.id: line for line in target_template.attribute_line_ids
+        }
+        AttributeLine = self.env["product.template.attribute.line"].with_context(
+            merging_products=True
+        )
+
+        for attribute_id, values in configuration.items():
+            line = lines_by_attribute.get(attribute_id)
+            if line:
+                additive_values = line.value_ids | values
+                if additive_values != line.value_ids:
+                    line.write({"value_ids": [Command.set(additive_values.ids)]})
+            else:
+                AttributeLine.create(
+                    {
+                        "product_tmpl_id": target_template.id,
+                        "attribute_id": attribute_id,
+                        "value_ids": [Command.set(values.ids)],
+                    }
+                )
+
+        self.env.flush_all()
+        target_template.invalidate_recordset(["attribute_line_ids"])
+        target_values = (
+            target_template.attribute_line_ids.product_template_value_ids.filtered(
+                "ptav_active"
+            )
+        )
+        values_by_id = {
+            value.product_attribute_value_id.id: value for value in target_values
+        }
+        missing_values = set().union(
+            *(set(values.ids) for values in configuration.values())
+        ) - set(values_by_id)
+        if missing_values:
+            raise exceptions.ValidationError(
+                _("The target product attribute values could not be created.")
+            )
+        return values_by_id
+
+    def _prune_target_attribute_values(self):
+        configuration = self._get_attribute_configuration()
+        target_template = self.product_tmpl_id.with_context(merging_products=True)
+        target_template.invalidate_recordset(["attribute_line_ids"])
+        for line in target_template.attribute_line_ids:
+            values = configuration.get(line.attribute_id.id)
+            if values is None:
+                line.unlink()
+            elif line.value_ids != values:
+                line.write({"value_ids": [Command.set(values.ids)]})
 
     def _update_refs(self, product_tmpl_id, new_product_tmpl_id):
         """
@@ -231,11 +368,15 @@ class ProductMergeWizard(models.TransientModel):
                                 tuple(src_products.ids),
                             ),
                         )
-                except psycopg2.Error:
-                    query = (
-                        'DELETE FROM "%(table)s" WHERE "%(column)s" IN %%s' % query_dic  # noqa
-                    )
-                    self._cr.execute(query, (tuple(src_products.ids),))
+                except psycopg2.Error as error:
+                    raise exceptions.UserError(
+                        _(
+                            "The references in %(table)s.%(column)s could not be "
+                            "moved safely.",
+                            table=table,
+                            column=column,
+                        )
+                    ) from error
 
     @api.model
     def _update_reference_fields(self, src_products, dst_product):
@@ -252,15 +393,19 @@ class ProductMergeWizard(models.TransientModel):
             records = Model.sudo().search(
                 [(field_model, "=", "product.template"), (field_id, "=", src.id)]
             )
-            try:
-                with mute_logger("odoo.sql_db"), self._cr.savepoint():
-                    records.sudo().write({field_id: dst_product.id})
-                    records.env.flush_all()
-            except psycopg2.Error:
-                # updating fails, most likely due to a violated unique constraint
-                # keeping record with nonexistent partner_id is useless,
-                # better delete it
-                records.sudo().unlink()
+            for record in records:
+                try:
+                    with mute_logger("odoo.sql_db"), self._cr.savepoint():
+                        record = record.sudo()
+                        record.write({field_id: dst_product.id})
+                        record.flush_recordset([field_id])
+                except psycopg2.Error as error:
+                    raise exceptions.UserError(
+                        _(
+                            "A %(model)s reference could not be moved safely.",
+                            model=model,
+                        )
+                    ) from error
 
         update_records = functools.partial(update_records)
 
@@ -312,18 +457,25 @@ class ProductMergeWizard(models.TransientModel):
             else:
                 return item
 
-        # get all fields that are not computed or x2many
+        # Fill only empty target fields. Rewriting values such as ``active``
+        # can trigger unrelated product-template side effects.
         values = dict()
         for column in model_fields:
             field = dst_product._fields[column]
-            if field.type not in ("many2many", "one2many") and field.compute is None:
-                for item in itertools.chain(src_products, [dst_product]):
-                    if item[column]:
-                        values[column] = write_serializer(item[column])
+            if (
+                field.type in ("many2many", "one2many")
+                or field.compute is not None
+                or dst_product[column]
+            ):
+                continue
+            for item in src_products:
+                if item[column]:
+                    values[column] = write_serializer(item[column])
 
-        # remove fields that can not be updated (id and parent_id)
+        # Remove fields that can not be updated.
         values.pop("id", None)
-        dst_product.write(values)
+        if values:
+            dst_product.with_context(merging_products=True).write(values)
 
 
 class ProductMergeAttributeLine(models.TransientModel):

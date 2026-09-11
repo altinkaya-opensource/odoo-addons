@@ -92,6 +92,20 @@ class ResPartner(models.Model):
 
         return super().create(vals_list)
 
+    def write(self, vals):
+        result = super().write(vals)
+        if "user_id" in vals:
+            companies = self.filtered("is_company")
+            if companies:
+                children = (
+                    self.env["res.partner"]
+                    .with_context(active_test=False)
+                    .search([("parent_id", "in", companies.ids)])
+                )
+                if children:
+                    children.write({"user_id": vals["user_id"]})
+        return result
+
     @api.constrains("country_id")
     def _check_country_accounts(self):
         """

@@ -24,7 +24,7 @@
                     <field
                         name="status"
                         widget="statusbar"
-                        statusbar_visible="waiting_for_answer,waiting_for_approve,answered"
+                        statusbar_visible="waiting_for_answer,waiting_for_approve,answered,rejected,reported,unanswered"
                     />
                 </header>
                 <sheet>

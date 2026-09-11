@@ -56,6 +56,7 @@
                             type="object"
                             string="Kur Farkı Faturası Oluştur"
                             attrs="{'invisible': [('parent_id','!=',False)]}"
+                            groups="account.group_account_invoice"
                             options="{}"
                         />
                     </group>

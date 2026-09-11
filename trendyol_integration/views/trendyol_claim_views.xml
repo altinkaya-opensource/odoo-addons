@@ -12,7 +12,7 @@
                         string="Approve Claim"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('claim_status', 'not in', ['created', 'waiting_in_action'])]}"
+                        attrs="{'invisible': [('claim_status', '!=', 'waiting_in_action')]}"
                         confirm="Are you sure you want to approve this return claim?"
                         groups="trendyol_integration.group_trendyol_manager"
                     />
@@ -30,7 +30,7 @@
                     <field
                         name="claim_status"
                         widget="statusbar"
-                        statusbar_visible="created,waiting_in_action,accepted"
+                        statusbar_visible="created,waiting_in_action,waiting_fraud_check,in_analysis,accepted,rejected,cancelled,unresolved"
                     />
                 </header>
                 <sheet>

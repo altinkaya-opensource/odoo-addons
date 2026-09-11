@@ -3,10 +3,11 @@
 
 import json
 import logging
+import re
 from datetime import datetime
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
 from .trendyol_request import TrendyolAPIError
@@ -14,6 +15,7 @@ from .trendyol_request import TrendyolAPIError
 _logger = logging.getLogger(__name__)
 
 INDIVIDUAL_VAT = "11111111111"
+PLACEHOLDER_VATS = frozenset({INDIVIDUAL_VAT, "2222222222"})
 
 
 class TrendyolOrder(models.Model):
@@ -152,12 +154,19 @@ class TrendyolOrder(models.Model):
         Returns:
             trendyol.order record
         """
-        package_id = str(order_data.get("id") or order_data.get("shipmentPackageId"))
-        order_number = str(order_data.get("orderNumber"))
+        # Awaiting packages have not passed payment checks and can omit buyer data.
+        if self._map_status(order_data.get("status")) == "awaiting":
+            return False
 
-        if not package_id or not order_number:
+        package_value = order_data.get("shipmentPackageId") or order_data.get("id")
+        order_number_value = order_data.get("orderNumber")
+
+        if not package_value or not order_number_value:
             _logger.warning("Invalid order data: missing package_id or order_number")
             return False
+
+        package_id = str(package_value)
+        order_number = str(order_number_value)
 
         # Check if already imported
         existing = self.search(
@@ -169,15 +178,7 @@ class TrendyolOrder(models.Model):
         )
 
         if existing:
-            # Update status if changed
-            new_status = self._map_status(order_data.get("status"))
-            if existing.trendyol_status != new_status:
-                existing.trendyol_status = new_status
-                existing.raw_data = json.dumps(order_data, indent=2, ensure_ascii=False)
-                existing._update_picking_delivery_state(new_status)
-                # Cancel the Odoo sale order if Trendyol status is cancelled
-                if new_status == "cancelled":
-                    existing.odoo_id.action_trendyol_cancel()
+            existing._update_from_trendyol_data(order_data)
             return existing
 
         # Create new order
@@ -199,8 +200,11 @@ class TrendyolOrder(models.Model):
                     "backend_id": backend.id,
                     "trendyol_order_number": order_number,
                     "trendyol_package_id": package_id,
-                    "trendyol_customer_id": str(order_data.get("customerId", "")),
-                    "trendyol_status": self._map_status(order_data.get("status")),
+                    "trendyol_customer_id": self._normalize_customer_id(
+                        order_data.get("customerId")
+                    ),
+                    "trendyol_status": self._map_status(order_data.get("status"))
+                    or "created",
                     "cargo_provider_name": order_data.get("cargoProviderName"),
                     "cargo_provider_id": order_data.get("cargoProviderId"),
                     "cargo_tracking_number": order_data.get("cargoTrackingNumber"),
@@ -236,6 +240,44 @@ class TrendyolOrder(models.Model):
             )
             raise
 
+    def _update_from_trendyol_data(self, order_data):
+        """Refresh mutable package data on an existing binding."""
+        self.ensure_one()
+        new_status = self._map_status(order_data.get("status"))
+        if new_status == "awaiting":
+            return self
+
+        vals = {
+            "raw_data": json.dumps(order_data, indent=2, ensure_ascii=False),
+        }
+        customer_id = self._normalize_customer_id(order_data.get("customerId"))
+        if customer_id and not self._normalize_customer_id(self.trendyol_customer_id):
+            vals["trendyol_customer_id"] = customer_id
+
+        field_map = {
+            "cargoProviderName": "cargo_provider_name",
+            "cargoProviderId": "cargo_provider_id",
+            "cargoTrackingNumber": "cargo_tracking_number",
+            "cargoTrackingLink": "cargo_tracking_link",
+        }
+        for api_field, odoo_field in field_map.items():
+            # An empty payload value means "not shipped yet" for Trendyol, so
+            # it must never clear tracking data we already stored.
+            value = order_data.get(api_field)
+            if value:
+                vals[odoo_field] = value
+
+        if new_status:
+            vals["trendyol_status"] = new_status
+
+        old_status = self.trendyol_status
+        self.write(vals)
+        if new_status and new_status != old_status:
+            self._update_picking_delivery_state(new_status)
+            if new_status == "cancelled":
+                self.odoo_id.action_trendyol_cancel()
+        return self
+
     @api.model
     def _map_status(self, trendyol_status):
         """Map Trendyol status to our status field.
@@ -260,7 +302,119 @@ class TrendyolOrder(models.Model):
             "UnSupplied": "unsupplied",
             "AtCollectionPoint": "at_collection_point",
         }
-        return status_map.get(trendyol_status, "created")
+        return status_map.get(trendyol_status)
+
+    @api.model
+    def _normalize_customer_id(self, customer_id):
+        """Return a positive Trendyol customer ID, or False for missing identity."""
+        customer_id = str(customer_id or "").strip()
+        if not customer_id.isdecimal() or int(customer_id) <= 0:
+            return False
+        return str(int(customer_id))
+
+    @api.model
+    def _partner_vat_digits(self, vat):
+        """Return the digits-only form of a tax number."""
+        return re.sub(r"\D+", "", vat or "")
+
+    @api.model
+    def _sanitize_partner_vat(self, vat):
+        """Return a VAT that partner constraints accept, or False.
+
+        Trendyol tax numbers are often mistyped. An invalid VAT must not
+        abort the whole order import.
+        """
+        digits = self._partner_vat_digits(vat)
+        if not digits:
+            return False
+        if digits in PLACEHOLDER_VATS:
+            return digits
+        Partner = self.env["res.partner"]
+        candidates = [digits]
+        if len(digits) == 11:
+            candidates.extend((digits[:10], digits[1:]))
+        elif len(digits) > 11:
+            candidates.extend((digits[:11], digits[:10], digits[-11:], digits[-10:]))
+        check_vat_tr = getattr(Partner, "check_vat_tr", None)
+        seen = set()
+        for candidate in candidates:
+            if not candidate or candidate in seen:
+                continue
+            seen.add(candidate)
+            if check_vat_tr:
+                if check_vat_tr(candidate):
+                    return candidate
+                continue
+            if len(candidate) in (10, 11):
+                return candidate
+        return False
+
+    @api.model
+    def _is_duplicate_vat_conflict(self, exc, vat):
+        """Return True when partner create failed because this VAT already exists."""
+        if not vat:
+            return False
+        msg = (getattr(exc, "name", None) or str(exc) or "").lower()
+        vat_token = vat.lower()
+        vat_digits = self._partner_vat_digits(vat)
+        mentions_vat = (
+            "vat" in msg or vat_token in msg or (vat_digits and vat_digits in msg)
+        )
+        if not mentions_vat:
+            return False
+        return any(
+            token in msg
+            for token in (
+                "unique",
+                "already exist",
+                "already registered",
+                "duplicate",
+            )
+        )
+
+    @api.model
+    def _create_main_partner(self, Partner, partner_vals):
+        """Create the invoice partner, dropping an invalid VAT if needed."""
+        try:
+            with self.env.cr.savepoint():
+                return Partner.create(partner_vals)
+        except (ValidationError, UserError) as exc:
+            vat = partner_vals.get("vat")
+            if not vat or vat in PLACEHOLDER_VATS:
+                raise
+            if self._is_duplicate_vat_conflict(exc, vat):
+                domain = [
+                    ("vat", "=", vat),
+                    ("parent_id", "=", False),
+                ]
+                company_id = partner_vals.get("company_id")
+                if company_id:
+                    domain.append(("company_id", "in", [False, company_id]))
+                existing = Partner.search(domain, limit=1)
+                if existing:
+                    customer_id = self._normalize_customer_id(
+                        partner_vals.get("trendyol_customer_id")
+                    )
+                    if customer_id and not self._normalize_customer_id(
+                        existing.trendyol_customer_id
+                    ):
+                        existing.trendyol_customer_id = customer_id
+                    _logger.warning(
+                        "Reusing partner %s for Trendyol VAT %s after create error: %s",
+                        existing.display_name,
+                        vat,
+                        exc,
+                    )
+                    return existing
+            _logger.warning(
+                "Invalid VAT %s for Trendyol partner %s: %s; creating without VAT",
+                vat,
+                partner_vals.get("name"),
+                exc,
+            )
+            partner_vals = dict(partner_vals)
+            partner_vals["vat"] = False
+            return Partner.create(partner_vals)
 
     @api.model
     def _get_or_create_partner(self, backend, order_data):
@@ -295,28 +449,37 @@ class TrendyolOrder(models.Model):
         """
         Partner = self.env["res.partner"]
 
-        customer_id = str(order_data.get("customerId", ""))
+        customer_id = self._normalize_customer_id(order_data.get("customerId"))
+        if not customer_id:
+            raise UserError(
+                _(
+                    "Trendyol customer information is not available yet. "
+                    "Retry the import later."
+                )
+            )
         invoice_address = order_data.get("invoiceAddress", {})
-        is_commercial = bool(invoice_address.get("taxNumber"))
+        raw_tax = (invoice_address.get("taxNumber") or "").strip()
+        vat = self._sanitize_partner_vat(raw_tax)
+        is_commercial = bool(raw_tax) and (
+            self._partner_vat_digits(raw_tax) not in PLACEHOLDER_VATS
+        )
 
         # For commercial orders, try VAT matching first
         # Skip matching for dummy/individual VAT to avoid address mismatches
-        if is_commercial:
-            vat = invoice_address.get("taxNumber", "").strip()
-            if vat and vat != INDIVIDUAL_VAT:
-                partner = Partner.search(
-                    [
-                        ("vat", "=", vat),
-                        ("company_id", "in", [False, backend.company_id.id]),
-                        ("parent_id", "=", False),
-                    ],
-                    limit=1,
-                )
-                if partner:
-                    # Update trendyol_customer_id if missing
-                    if customer_id and not partner.trendyol_customer_id:
-                        partner.trendyol_customer_id = customer_id
-                    return partner
+        if is_commercial and vat:
+            partner = Partner.search(
+                [
+                    ("vat", "=", vat),
+                    ("company_id", "in", [False, backend.company_id.id]),
+                    ("parent_id", "=", False),
+                ],
+                limit=1,
+            )
+            if partner:
+                # Update trendyol_customer_id if missing
+                if not self._normalize_customer_id(partner.trendyol_customer_id):
+                    partner.trendyol_customer_id = customer_id
+                return partner
 
         # Try to find by Trendyol customer ID
         if customer_id:
@@ -338,7 +501,8 @@ class TrendyolOrder(models.Model):
         partner_vals["trendyol_customer_id"] = customer_id
 
         if is_commercial:
-            partner_vals["vat"] = invoice_address.get("taxNumber", "").strip()
+            if vat:
+                partner_vals["vat"] = vat
             partner_vals["company_type"] = "company"
             tax_office = invoice_address.get("taxOffice", "").strip()
             if tax_office:
@@ -349,7 +513,7 @@ class TrendyolOrder(models.Model):
         else:
             partner_vals["vat"] = INDIVIDUAL_VAT
 
-        return Partner.create(partner_vals)
+        return self._create_main_partner(Partner, partner_vals)
 
     @api.model
     def _get_or_create_shipping_partner(self, backend, order_data, main_partner):
@@ -526,9 +690,9 @@ class TrendyolOrder(models.Model):
             Dict of sale.order.line values
         """
         barcode = line_data.get("barcode")
-        merchant_sku = line_data.get("merchantSku")
+        merchant_sku = line_data.get("merchantSku") or line_data.get("stockCode")
         quantity = line_data.get("quantity", 1)
-        price_incl = line_data.get("price", 0)
+        price_incl = line_data.get("price") or line_data.get("lineUnitPrice") or 0
         product_name = line_data.get("productName", "")
         vat_rate = line_data.get("vatRate", 0)
 
@@ -581,15 +745,28 @@ class TrendyolOrder(models.Model):
         # `price` is the unit price after discount.
         # We use `amount` as price_unit and compute the Odoo discount
         # percentage from the total discount to avoid double-discounting.
-        gross_unit_price = line_data.get("amount") or price_incl
-        price_unit = gross_unit_price
+        discount_details = line_data.get("discountDetails") or []
+        if discount_details:
+            gross_total = sum(item.get("lineItemPrice", 0) for item in discount_details)
+            discount_amount = sum(
+                item.get("lineItemSellerDiscount", 0)
+                + item.get("lineItemTyDiscount", 0)
+                for item in discount_details
+            )
+            gross_unit_price = gross_total / quantity if quantity else 0
+        else:
+            gross_unit_price = line_data.get("amount") or price_incl
+            discount_amount = line_data.get(
+                "discount", line_data.get("lineSellerDiscount", 0)
+            ) + line_data.get("tyDiscount", line_data.get("lineTyDiscount", 0))
+            gross_total = (
+                line_data.get("lineGrossAmount") or gross_unit_price * quantity
+            )
 
-        seller_discount = line_data.get("discount", 0)
-        ty_discount = line_data.get("tyDiscount", 0)
-        discount_amount = seller_discount + ty_discount
+        price_unit = gross_unit_price
         discount_pct = 0.0
-        if discount_amount and gross_unit_price:
-            discount_pct = (discount_amount / gross_unit_price) * 100
+        if discount_amount and gross_total:
+            discount_pct = (discount_amount / gross_total) * 100
 
         vals = {
             "order_id": sale_order.id,
@@ -809,9 +986,12 @@ class TrendyolOrder(models.Model):
         except (json.JSONDecodeError, TypeError):
             return []
         return [
-            {"lineId": line.get("id"), "quantity": line.get("quantity")}
+            {
+                "lineId": line.get("lineId") or line.get("id"),
+                "quantity": line.get("quantity"),
+            }
             for line in lines
-            if line.get("id")
+            if line.get("lineId") or line.get("id")
         ]
 
     def _update_picking_delivery_state(self, trendyol_status):
@@ -861,6 +1041,8 @@ class TrendyolOrder(models.Model):
             if str(package.get("id")) != self.trendyol_package_id:
                 continue
             new_status = self._map_status(package.get("status"))
+            if not new_status:
+                break
             if self.trendyol_status != new_status:
                 self.trendyol_status = new_status
                 self._update_picking_delivery_state(new_status)

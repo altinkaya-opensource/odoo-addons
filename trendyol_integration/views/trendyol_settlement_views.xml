@@ -15,6 +15,12 @@
                         attrs="{'invisible': [('state', '=', 'reconciled')]}"
                     />
                     <field name="state" widget="statusbar" />
+                    <button
+                        name="action_reconcile_commission"
+                        string="Match Commission Invoice"
+                        type="object"
+                        attrs="{'invisible': [('commission_payment_id', '=', False)]}"
+                    />
                 </header>
                 <sheet>
                     <div
@@ -24,6 +30,12 @@
                     >
                         <field name="error_message" />
                     </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Manual Review"
+                        bg_color="bg-warning"
+                        attrs="{'invisible': [('manual_review_required', '=', False)]}"
+                    />
                     <group>
                         <group string="Transaction Info">
                             <field name="backend_id" />
@@ -54,9 +66,18 @@
                             <field name="odoo_invoice_id" />
                             <field name="odoo_payment_id" />
                             <field name="commission_payment_id" />
+                            <field name="manual_review_required" />
                         </group>
                     </group>
                     <notebook>
+                        <page string="Commission Matching" name="commission_matching">
+                            <group>
+                                <field name="commission_invoice_number" />
+                                <field name="commission_invoice_id" />
+                                <field name="commission_match_state" />
+                                <field name="commission_match_note" />
+                            </group>
+                        </page>
                         <page string="Raw Data" name="raw_data">
                             <field name="raw_data" />
                         </page>
@@ -87,6 +108,8 @@
                 <field name="payment_order_id" />
                 <field name="state" />
                 <field name="odoo_invoice_id" optional="show" />
+                <field name="commission_invoice_number" optional="show" />
+                <field name="commission_match_state" optional="show" />
             </tree>
         </field>
     </record>
@@ -101,6 +124,7 @@
                 <field name="barcode" />
                 <field name="payment_order_id" />
                 <field name="trendyol_settlement_id" />
+                <field name="commission_invoice_number" />
                 <separator />
                 <filter
                     name="imported"
@@ -116,6 +140,11 @@
                     name="errors"
                     string="Errors"
                     domain="[('state', '=', 'error')]"
+                />
+                <filter
+                    name="manual_review"
+                    string="Manual Review"
+                    domain="[('manual_review_required', '=', True)]"
                 />
                 <separator />
                 <filter

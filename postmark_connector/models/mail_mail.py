@@ -125,9 +125,8 @@ class MailMail(models.Model):
                         failure_type=failure_type,
                     )
 
-                    # Commit at each e-mail processed to avoid any errors
-                    # invalidating state.
-                    self.env.cr.commit()  # pylint: disable=invalid-commit
+                    if auto_commit:
+                        self.env.cr.commit()  # pylint: disable=invalid-commit
 
                 except MissingRecipientError as exc:
                     failure_reason = str(exc)
@@ -486,12 +485,15 @@ class MailMail(models.Model):
     ):
         for mail in self:
             message = mail.mail_message_id
-            if mail.state == "exception" and message.model and message.res_id:
-                related_record = self.env[message.model].browse(message.res_id).exists()
-                if related_record:
-                    related_record.message_post(
-                        body=mail.failure_reason, message_type="notification"
-                    )
+            if mail.state != "exception" or not message.model or not message.res_id:
+                continue
+            if message.model not in self.pool:
+                continue
+            record = self.env[message.model].browse(message.res_id).exists()
+            # Transient wizards and non-chatter models have no message_post().
+            if not record or not isinstance(record, self.pool["mail.thread"]):
+                continue
+            record.message_post(body=mail.failure_reason, message_type="notification")
 
         return super()._postprocess_sent_message(
             success_pids=success_pids,

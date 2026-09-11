@@ -11,7 +11,7 @@
                         name="action_create_package"
                         string="Create Package"
                         type="object"
-                        attrs="{'invisible': ['|', ('hb_package_number', '!=', False), ('hb_status', '!=', 'open')]}"
+                        attrs="{'invisible': ['|', ('package_count', '!=', 0), ('hb_status', '!=', 'open')]}"
                     />
                     <button
                         name="action_send_invoice"
@@ -53,6 +53,8 @@
                             <field name="hb_customer_id" />
                             <field name="hb_customer_name" />
                             <field name="hb_package_number" />
+                            <field name="package_count" invisible="1" />
+                            <field name="package_mapping_incomplete" />
                             <field name="hb_cargo_barcode" />
                             <field name="delivery_type" />
                             <field name="due_date" />
@@ -74,10 +76,24 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Packages" name="packages">
+                            <field name="package_ids" readonly="1">
+                                <tree>
+                                    <field name="hb_package_number" />
+                                    <field name="hb_status" />
+                                    <field name="hb_cargo_barcode" />
+                                    <field name="cargo_provider_name" />
+                                    <field name="cargo_tracking_number" />
+                                    <field name="hb_missing_invoice" />
+                                    <field name="invoice_link_sent" />
+                                </tree>
+                            </field>
+                        </page>
                         <page string="HB Line Items" name="hb_lines">
                             <field name="hb_line_item_ids" readonly="1">
                                 <tree>
                                     <field name="hb_line_item_id" />
+                                    <field name="package_id" />
                                     <field name="hb_sku" />
                                     <field name="merchant_sku" />
                                     <field name="quantity" />
@@ -129,6 +145,7 @@
                 <field name="due_date" widget="remaining_days" />
                 <field name="hb_status" />
                 <field name="hb_package_number" />
+                <field name="package_mapping_incomplete" optional="show" />
                 <field name="cargo_tracking_number" />
                 <field name="hb_missing_invoice" />
                 <field name="invoice_link_sent" />

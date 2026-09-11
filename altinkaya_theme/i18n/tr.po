@@ -1,0 +1,163 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * altinkaya_theme
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-08 00:00+0000\n"
+"PO-Revision-Date: 2026-09-08 00:00+0000\n"
+"Last-Translator: Altinkaya Enclosures\n"
+"Language-Team: Altinkaya Enclosures\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: model:ir.model.fields,field_description:altinkaya_theme.field_res_users__dark_mode
+#: code:addons/altinkaya_theme/static/src/js/color_scheme_service.esm.js:0
+#, python-format
+msgid "Dark Mode"
+msgstr "Koyu Mod"
+
+#. module: altinkaya_theme
+#: model:ir.model.fields,field_description:altinkaya_theme.field_res_users__dark_mode_device_dependent
+msgid "Use System Theme"
+msgstr "Sistem Temasını Kullan"
+
+#. module: altinkaya_theme
+#: model:ir.model.fields,help:altinkaya_theme.field_res_users__dark_mode_device_dependent
+msgid "Follow this device's light or dark appearance setting."
+msgstr "Bu cihazın açık veya koyu görünüm ayarını takip edin."
+
+#. module: altinkaya_theme
+#: model_terms:ir.ui.view,arch_db:altinkaya_theme.view_users_form_simple_modif
+msgid "Appearance"
+msgstr "Görünüm"
+
+#. module: altinkaya_theme
+#: model:ir.model,name:altinkaya_theme.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP Yönlendirme"
+
+#. module: altinkaya_theme
+#: model:ir.model,name:altinkaya_theme.model_res_users
+msgid "User"
+msgstr "Kullanıcı"
+
+#. module: altinkaya_theme
+#: code:addons/altinkaya_theme/hooks.py:0
+#, python-format
+msgid "Finish the pending Dark Mode operation before installing Altinkaya Theme."
+msgstr "Altinkaya Theme kurulumundan önce bekleyen Koyu Mod işlemini tamamlayın."
+
+#. module: altinkaya_theme
+#: code:addons/altinkaya_theme/hooks.py:0
+#, python-format
+msgid "Update modules depending on web_dark_mode first: %s"
+msgstr "Önce web_dark_mode modülüne bağımlı modülleri güncelleyin: %s"
+
+#. module: altinkaya_theme
+#: code:addons/altinkaya_theme/hooks.py:0
+#, python-format
+msgid "Theme migration found conflicting external identifiers: %s"
+msgstr "Tema geçişinde çakışan harici kimlikler bulundu: %s"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/js/navigation.esm.js:0
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/js/navigation.esm.js:0
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Search menus..."
+msgstr "Menülerde ara..."
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/js/navigation.esm.js:0
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Search applications..."
+msgstr "Uygulama ara..."
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/js/navigation.esm.js:0
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "No matching menu."
+msgstr "Eşleşen menü bulunamadı."
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Test Database"
+msgstr "TEST VERİTABANI"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Tools"
+msgstr "Araçlar"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Close tools"
+msgstr "Araçları kapat"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "New"
+msgstr "Yeni"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Send message"
+msgstr "Mesaj Gönder"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Log note"
+msgstr "Not Ekle"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Activities"
+msgstr "Aktiviteler"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Follow"
+msgstr "Takip Et"
+
+#. module: altinkaya_theme
+#. odoo-javascript
+#: code:addons/altinkaya_theme/static/src/xml/navigation.xml:0
+#, python-format
+msgid "Unfollow"
+msgstr "Takibi Bırak"

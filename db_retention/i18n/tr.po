@@ -199,6 +199,13 @@ msgid "Run Now"
 msgstr "Şimdi Çalıştır"
 
 #. module: db_retention
+#. odoo-python
+#: code:addons/db_retention/models/db_retention_rule.py:0
+#, python-format
+msgid "Select a stored Date or Datetime field from the rule's model."
+msgstr "Kuralın modelinden veritabanında saklanan bir Tarih veya Tarih-Saat alanı seçin."
+
+#. module: db_retention
 #: model:ir.model.fields,field_description:db_retention.field_db_retention_rule__sequence
 msgid "Sequence"
 msgstr "Sıra"

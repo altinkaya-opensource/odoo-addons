@@ -1,7 +1,6 @@
 # Copyright 2026 Ahmet Yigit Budak (https://github.com/yibudak)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
-import json
 import logging
 
 from odoo import http
@@ -15,7 +14,7 @@ class TrendyolWebhookController(http.Controller):
 
     @http.route(
         "/ty/wh/<int:backend_id>",
-        type="json",
+        type="http",
         auth="none",
         methods=["POST"],
         csrf=False,
@@ -34,33 +33,43 @@ class TrendyolWebhookController(http.Controller):
         try:
             # Get backend
             backend = request.env["trendyol.backend"].sudo().browse(backend_id)
-            if not backend.exists():
+            if not backend.exists() or not backend.active:
                 _logger.warning("Webhook received for unknown backend: %s", backend_id)
-                return {"status": "error", "message": "Unknown backend"}
+                return request.make_json_response(
+                    {"status": "error", "message": "Unknown backend"}, status=404
+                )
 
             # Get request data
-            data = request.jsonrequest
+            data = request.get_json_data()
             if not data:
                 _logger.warning("Empty webhook data received")
-                return {"status": "error", "message": "Empty data"}
+                return request.make_json_response(
+                    {"status": "error", "message": "Empty data"}, status=400
+                )
 
-            # Verify API key if configured
-            if backend.webhook_api_key:
-                api_key = request.httprequest.headers.get("x-api-key")
-                if api_key != backend.webhook_api_key:
-                    _logger.warning(
-                        "Invalid webhook API key for backend %s", backend_id
-                    )
-                    return {"status": "error", "message": "Invalid API key"}
+            # Fail closed: this public endpoint must always have API-key auth.
+            api_key = request.httprequest.headers.get("x-api-key")
+            if not backend.webhook_api_key or api_key != backend.webhook_api_key:
+                _logger.warning("Invalid webhook API key for backend %s", backend_id)
+                return request.make_json_response(
+                    {"status": "error", "message": "Invalid API key"}, status=401
+                )
 
             # Process webhook
             self._process_webhook(backend, data)
 
-            return {"status": "success"}
+            return request.make_json_response({"status": "success"})
 
-        except Exception as e:
-            _logger.exception("Error processing webhook: %s", str(e))
-            return {"status": "error", "message": str(e)}
+        except (TypeError, ValueError):
+            _logger.warning("Invalid JSON webhook payload for backend %s", backend_id)
+            return request.make_json_response(
+                {"status": "error", "message": "Invalid JSON payload"}, status=400
+            )
+        except Exception:
+            _logger.exception("Error processing webhook for backend %s", backend_id)
+            return request.make_json_response(
+                {"status": "error", "message": "Internal error"}, status=500
+            )
 
     def _process_webhook(self, backend, data):
         """Process webhook data.
@@ -69,10 +78,12 @@ class TrendyolWebhookController(http.Controller):
             backend: trendyol.backend record
             data: Dict of webhook data
         """
+        packages = data.get("content") if isinstance(data, dict) else None
+        package_count = len(packages) if isinstance(packages, list) else 1
         _logger.info(
-            "Processing webhook for backend %s: %s",
+            "Processing Trendyol webhook for backend %s (%d package(s))",
             backend.id,
-            json.dumps(data, indent=2, ensure_ascii=False)[:500],
+            package_count,
         )
 
         # Queue processing via job

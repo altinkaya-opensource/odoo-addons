@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="partner_statement_altinkaya_xlsx" model="ir.actions.report">
+        <field name="name">Partner Statement (Excel)</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">altinkaya_reports.partner_statement_xlsx</field>
+        <field name="report_file">partner_statement</field>
+        <field name="print_report_name">'Cari_Hesap_Ekstresi_%s' % object.name</field>
+    </record>
+</odoo>

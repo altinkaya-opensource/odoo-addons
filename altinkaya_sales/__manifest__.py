@@ -24,6 +24,7 @@
     "depends": [
         "base",
         "sale",
+        "mrp",
         "crm",
         "stock",
         "contacts",
@@ -55,6 +56,7 @@
         "views/product_views.xml",
         "views/res_partner.xml",
         "data/mail_data.xml",
+        "data/ir_cron.xml",
         # "data/sale_portal_data.xml",
         "views/sale_portal_templates.xml",
         "views/res_partner_segment_view.xml",

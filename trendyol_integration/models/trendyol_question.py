@@ -18,7 +18,21 @@ QUESTION_STATUS_MAP = {
     "ANSWERED": "answered",
     "REPORTED": "reported",
     "REJECTED": "rejected",
+    "UNANSWERED": "unanswered",
 }
+
+# Statuses Trendyol reports once an answer has been submitted.
+ANSWERED_STATUSES = ("waiting_for_approve", "answered", "reported", "rejected")
+
+# Normalized error keys/codes Trendyol returns for a duplicate answer.
+ALREADY_ANSWERED_ERROR_CODES = (
+    "alreadyanswered",
+    "questionalreadyanswered",
+    "questionalreadyhasanswer",
+)
+
+# Last-resort fallback: Trendyol's localized rejection message.
+ALREADY_ANSWERED_MESSAGE = "bu soru daha önce cevaplandı"
 
 
 class TrendyolQuestion(models.Model):
@@ -51,6 +65,7 @@ class TrendyolQuestion(models.Model):
             ("answered", "Answered"),
             ("reported", "Reported"),
             ("rejected", "Rejected"),
+            ("unanswered", "Unanswered"),
         ],
         default="waiting_for_answer",
         required=True,
@@ -93,10 +108,11 @@ class TrendyolQuestion(models.Model):
         Returns:
             tuple (trendyol.question record, bool is_new)
         """
-        question_id = str(question_data.get("id", ""))
-        if not question_id:
+        question_value = question_data.get("id")
+        if not question_value:
             _logger.warning("Invalid question data: missing question ID")
             return False, False
+        question_id = str(question_value)
 
         existing = self.search(
             [
@@ -108,21 +124,19 @@ class TrendyolQuestion(models.Model):
 
         if existing:
             new_status = self._map_status(question_data.get("status"))
-            vals = {}
+            vals = {
+                "raw_data": json.dumps(question_data, indent=2, ensure_ascii=False),
+            }
             if existing.status != new_status:
                 vals["status"] = new_status
-            # Update answer if present
             answer_data = question_data.get("answer") or {}
+            # A locally saved answer is never overwritten by an import.
             if answer_data.get("text") and not existing.answer_text:
                 vals["answer_text"] = answer_data["text"]
                 vals["answer_date"] = self._parse_timestamp(
                     answer_data.get("creationDate")
                 )
-            if vals:
-                vals["raw_data"] = json.dumps(
-                    question_data, indent=2, ensure_ascii=False
-                )
-                existing.write(vals)
+            existing.write(vals)
             return existing, False
 
         # Parse answer data if already answered
@@ -157,7 +171,7 @@ class TrendyolQuestion(models.Model):
             raise
 
     def action_answer_question(self):
-        """Validate and queue the answer to be sent to Trendyol."""
+        """Validate and send the answer to Trendyol."""
         self.ensure_one()
         if self.status != "waiting_for_answer":
             raise UserError(_("Only questions waiting for answer can be answered."))
@@ -166,18 +180,18 @@ class TrendyolQuestion(models.Model):
         if len(self.answer_text) > 2000:
             raise UserError(_("Answer must be at most 2000 characters long."))
 
-        self.with_delay(
-            channel="root.trendyol.order",
-            description=_("Answer Trendyol question: %s") % self.trendyol_question_id,
-        )._answer_question()
+        try:
+            self._answer_question()
+        except TrendyolAPIError as e:
+            raise UserError(_("Failed to send answer: %s") % str(e)) from e
 
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
-                "title": _("Answer Queued"),
-                "message": _("Your answer has been queued for submission."),
-                "type": "info",
+                "title": _("Answer Sent"),
+                "message": _("Your answer has been submitted to Trendyol."),
+                "type": "success",
                 "sticky": False,
             },
         }
@@ -192,16 +206,74 @@ class TrendyolQuestion(models.Model):
             client.answer_question(
                 int(self.trendyol_question_id), self.answer_text.strip()
             )
-            self.status = "waiting_for_approve"
-            self.activity_ids.unlink()
-            _logger.info("Answered question %s", self.trendyol_question_id)
         except TrendyolAPIError as e:
-            _logger.error(
-                "Failed to answer question %s: %s",
+            if not self._is_already_answered(client, e):
+                _logger.error(
+                    "Failed to answer question %s: %s",
+                    self.trendyol_question_id,
+                    str(e),
+                )
+                raise
+            _logger.info(
+                "Question %s was already answered in Trendyol; "
+                "treating the submission as successful.",
                 self.trendyol_question_id,
-                str(e),
             )
-            raise
+
+        self.status = "waiting_for_approve"
+        self.answer_date = fields.Datetime.now()
+        self.activity_ids.unlink()
+        _logger.info("Answered question %s", self.trendyol_question_id)
+
+    def _is_already_answered(self, client, error):
+        """Tell whether Trendyol rejected the answer as a duplicate."""
+        self.ensure_one()
+        if error.status_code != 400:
+            return False
+
+        error_codes = self._api_error_codes(error.response_data)
+        if any(code in ALREADY_ANSWERED_ERROR_CODES for code in error_codes):
+            return True
+
+        try:
+            question_data = client.get_question(int(self.trendyol_question_id))
+        except TrendyolAPIError as fetch_error:
+            _logger.warning(
+                "Could not confirm the status of question %s: %s",
+                self.trendyol_question_id,
+                str(fetch_error),
+            )
+            return ALREADY_ANSWERED_MESSAGE in str(error).casefold()
+
+        if not question_data:
+            return ALREADY_ANSWERED_MESSAGE in str(error).casefold()
+
+        answer_data = question_data.get("answer") or {}
+        if answer_data.get("text"):
+            return True
+        return self._map_status(question_data.get("status")) in ANSWERED_STATUSES
+
+    @api.model
+    def _api_error_codes(self, response_data):
+        """Return normalized error keys/codes from an API error payload."""
+        if not isinstance(response_data, dict):
+            return []
+
+        entries = response_data.get("errors")
+        if not isinstance(entries, list):
+            entries = [response_data]
+
+        codes = []
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            for key in ("key", "code", "errorCode"):
+                value = entry.get(key)
+                if value:
+                    codes.append(
+                        str(value).replace("_", "").replace("-", "").casefold()
+                    )
+        return codes
 
     def action_open_in_trendyol(self):
         """Open the question's web URL in a new browser tab."""

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-08 07:23+0000\n"
-"PO-Revision-Date: 2026-05-08 07:23+0000\n"
+"POT-Creation-Date: 2026-08-11 08:31+0000\n"
+"PO-Revision-Date: 2026-08-11 08:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -168,6 +168,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__billing_point_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__billing_point_id
 msgid "Billing Point"
 msgstr ""
 
@@ -188,6 +189,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_usd_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
 msgid "Cancel"
 msgstr ""
@@ -265,6 +267,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_change_ids
@@ -296,6 +299,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__changeset_ids
@@ -323,6 +327,11 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_company
 msgid "Companies"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__company_id
+msgid "Company"
 msgstr ""
 
 #. module: altinkaya_account
@@ -371,6 +380,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
@@ -402,6 +412,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
@@ -433,6 +444,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
@@ -450,8 +462,14 @@ msgstr ""
 #. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
 #, python-format
 msgid "Create Currency Difference Invoice"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_create_selected_currency_difference_invoice
+msgid "Create Currency Difference Invoice From Selected Entries"
 msgstr ""
 
 #. module: altinkaya_account
@@ -461,6 +479,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.actions.act_window,name:altinkaya_account.action_res_partner_currency_valuation_move
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 msgid "Create Currency Valuation Move"
 msgstr ""
 
@@ -481,8 +500,12 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_create_difference_inv
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 msgid "Create Difference Invoices"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
+msgid "Create Invoice"
 msgstr ""
 
 #. module: altinkaya_account
@@ -502,6 +525,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_uid
 msgid "Created by"
@@ -514,6 +538,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_date
 msgid "Created on"
@@ -522,6 +547,7 @@ msgstr ""
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_res_currency
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__currency_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__company_currency_id
 msgid "Currency"
 msgstr ""
 
@@ -548,10 +574,14 @@ msgid "Currency Difference"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__difference_checked
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_checked
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_checked
 msgid "Currency Difference Checked"
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Currency Difference Entries"
 msgstr ""
 
 #. module: altinkaya_account
@@ -562,15 +592,13 @@ msgid "Currency Difference Lines"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_amls
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_amls
-msgid "Currency Difference Move Lines"
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+msgid "Currency Difference Sources"
 msgstr ""
 
 #. module: altinkaya_account
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_to_invoice
-#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_to_invoice
-msgid "Currency Difference to invoice"
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__rate_field
+msgid "Currency Rate Field"
 msgstr ""
 
 #. module: altinkaya_account
@@ -615,6 +643,13 @@ msgid "Currency Valuation Loss Account"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/account_move.py:0
+#, python-format
+msgid "Currency difference invoice %s"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_res_partner_search_inherit
 msgid "Customers"
 msgstr ""
@@ -647,6 +682,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__display_name
 msgid "Display Name"
@@ -702,6 +738,22 @@ msgid "Error in accounts definition"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid ""
+"Every selected invoice and payment must belong to a reconciliation that "
+"generated an outstanding currency difference entry."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Every selected invoice must use a foreign-currency receivable account."
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__exchange_moves_count
 msgid "Exchange Moves to Delete"
 msgstr ""
@@ -736,11 +788,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__log_ids
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.currency_reconcile_fix_wizard_form
 msgid "Execution Log"
-msgstr ""
-
-#. module: altinkaya_account
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
-msgid "Fark"
 msgstr ""
 
 #. module: altinkaya_account
@@ -804,6 +851,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__id
 msgid "ID"
@@ -843,6 +891,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__invoice_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__invoice_date
 msgid "Invoice Date"
 msgstr ""
 
@@ -852,8 +901,29 @@ msgid "Invoiced Installment Fee"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Invalid currency valuation rate type."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__invoice_ids
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
+msgid "Invoices"
+msgstr ""
+
+#. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
 msgid "Invoices in reconciliations"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__is_manual_currency_difference
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__is_manual_currency_difference
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__is_manual_currency_difference
+msgid "Is Manual Currency Difference"
 msgstr ""
 
 #. module: altinkaya_account
@@ -918,6 +988,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard____last_update
 msgid "Last Modified on"
@@ -930,6 +1001,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_uid
 msgid "Last Updated by"
@@ -942,6 +1014,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_date
 msgid "Last Updated on"
@@ -1011,8 +1084,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
-msgid ""
-"Missing TCMB forex-buying rate for currency id %(currency)s on %(date)s."
+msgid "Missing %(rate_type)s rate for %(currency)s on %(date)s."
 msgstr ""
 
 #. module: altinkaya_account
@@ -1046,6 +1118,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
+msgid "No exchange rate information found for %(currency)s at %(date)s!"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
 msgid "No exchange rate information found for the selected day!"
 msgstr ""
 
@@ -1058,6 +1137,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
+#: code:addons/altinkaya_account/wizards/create_currency_difference_invoice.py:0
 #: code:addons/altinkaya_account/wizards/create_currency_difference_invoice.py:0
 #, python-format
 msgid "No invoice created!"
@@ -1106,6 +1186,15 @@ msgstr ""
 #: code:addons/altinkaya_account/wizards/import_fee_accrual_wizard.py:0
 #, python-format
 msgid "Numeric parse error for value: %s"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid ""
+"One or more selected currency difference entries are already used by another"
+" draft invoice."
 msgstr ""
 
 #. module: altinkaya_account
@@ -1159,6 +1248,7 @@ msgid "Partials to unlink (no full_reconcile_id): %(count)d"
 msgstr ""
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__partner_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__partner_id
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Partner"
@@ -1207,6 +1297,7 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__payment_term_id
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__payment_term_id
 msgid "Payment Term"
 msgstr ""
 
@@ -1217,7 +1308,9 @@ msgstr ""
 
 #. module: altinkaya_account
 #: model:ir.model,name:altinkaya_account.model_account_payment
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__payment_line_ids
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
 msgid "Payments"
 msgstr ""
 
@@ -1404,6 +1497,15 @@ msgstr ""
 
 #. module: altinkaya_account
 #. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid ""
+"Please configure the currency difference journal and invoice account under "
+"Accounting Settings."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
 #: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
 #, python-format
 msgid "Please run analysis first."
@@ -1556,6 +1658,30 @@ msgid "Satınalma Masraf Hesabı"
 msgstr ""
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Select at least one invoice and one payment."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
+msgid "Eligible invoices are preselected. Adjust the selection if needed."
+msgstr ""
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
+msgid "Eligible payments are preselected. Adjust the selection if needed."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Selected invoices and payments must use the same receivable accounts."
+msgstr ""
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__address_contact_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move__address_contact_id
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__address_contact_id
@@ -1586,6 +1712,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__smart_search
@@ -1598,6 +1725,41 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__smart_search
 msgid "Smart Search"
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Some selected invoices are not eligible for currency difference."
+msgstr ""
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Some selected payments are not eligible for currency difference."
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__currency_difference_source_move_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__currency_difference_source_move_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__currency_difference_source_move_ids
+msgid "Source Currency Difference Entries"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__currency_difference_source_invoice_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__currency_difference_source_invoice_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__currency_difference_source_invoice_ids
+msgid "Source Invoices"
+msgstr ""
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_bank_statement_line__currency_difference_source_payment_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move__currency_difference_source_payment_line_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_payment__currency_difference_source_payment_line_ids
+msgid "Source Payments"
 msgstr ""
 
 #. module: altinkaya_account
@@ -1732,6 +1894,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_create_selected_currency_difference_invoice__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changeset_changes
@@ -1763,6 +1926,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_selected_currency_difference_invoice__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_pending_changesets
@@ -1794,6 +1958,7 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_account.field_change_partner_accounts_usd__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_create_currency_valuation_move__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_create_selected_currency_difference_invoice__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_communication__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_credit_control_policy__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_currency_reconcile_fix_log__count_changesets
@@ -1948,6 +2113,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_account.field_change_partner_accounts_usd__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_difference_invoice__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_currency_valuation_move__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_communication__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_credit_control_policy__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__user_can_see_changeset
