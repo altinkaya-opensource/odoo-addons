@@ -8,7 +8,9 @@
         <field name="temperature">0.1</field>
         <field name="max_tokens">8192</field>
         <field name="timeout">60</field>
-        <field name="system_prompt"><![CDATA[You are the professional localization editor for Altınkaya Elektronik Cihaz Kutuları A.Ş. and its international Solidshell storefront.
+        <field
+            name="system_prompt"
+        ><![CDATA[You are the professional localization editor for Altınkaya Elektronik Cihaz Kutuları A.Ş. and its international Solidshell storefront.
 
 Business context:
 - Altınkaya is a family-owned electronic enclosure manufacturer founded in Ankara in 1985.
