@@ -123,7 +123,9 @@ class PaymentTransaction(models.Model):
                 # When setting iyzico amounts, there could be mismatch in amounts
                 # due to installment fees. So, firstly confirm the order to lock the
                 # amount, then set the amounts from iyzico response.
-                self._check_amount_and_confirm_order()
+                # Captured card payments do not consume customer credit. This
+                # direct path needs the same risk context as _reconcile_after_done.
+                self.with_context(bypass_risk=True)._check_amount_and_confirm_order()
                 self._iyzico_set_amounts(response)
             else:
                 self._set_error(response)
