@@ -16,21 +16,11 @@
                 <sheet>
                     <group>
                         <field name="name" />
-                        <field name="openrouter_api_key" widget="password" />
-                        <field name="model" />
-                        <field name="temperature" />
-                        <field name="max_tokens" />
+                        <field name="llm_model_id" required="1" />
                         <field name="use_structured_output" />
                         <field name="active" />
                     </group>
                     <notebook>
-                        <page string="System Prompt">
-                            <field
-                                name="system_prompt"
-                                widget="text"
-                                placeholder="Enter the system prompt that defines translation behavior, company context, and terminology rules..."
-                            />
-                        </page>
                         <page string="Glossaries">
                             <span class="text-muted">
                                 1. Create a glossary with source and target languages.<br
@@ -55,7 +45,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
-                <field name="model" />
+                <field name="llm_model_id" />
                 <field name="active" />
             </tree>
         </field>
