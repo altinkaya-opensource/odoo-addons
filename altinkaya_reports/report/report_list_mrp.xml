@@ -25,7 +25,7 @@
                                     </td>
                                     <td>
                                         Makine :
-                                        <span t-field="o.x_makine.x_name" />
+                                        <span t-field="o.machine_workcenter_id.name" />
                                     </td>
                                     <td class="text-right">
                                         Tarih :
