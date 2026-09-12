@@ -25,10 +25,11 @@ $o-altinkaya-required-border: #8766ac !default;
 $o-altinkaya-required-text: #47335e !default;
 $o-altinkaya-required-placeholder: #6b537f !default;
 $o-altinkaya-invalid-bg: #fbecf0 !default;
-$o-altinkaya-invalid-text: #a0334b !default;
+$o-altinkaya-invalid-text: #c31835 !default;
 $o-altinkaya-warning-bg: #fff4da !default;
 $o-altinkaya-warning-text: #68490f !default;
 $o-altinkaya-warning-border: #cf9b37 !default;
+$o-altinkaya-alert-tint: 12% !default;
 $o-altinkaya-list-header-bg: #d5d9de !default;
 $o-altinkaya-list-header-border: #8b949f !default;
 $o-altinkaya-list-stripe-bg: #e6e8eb !default;
@@ -40,16 +41,16 @@ $o-enterprise-primary-color: $o-community-color !default;
 $o-brand-odoo: $o-community-color !default;
 $o-brand-primary: $o-community-color !default;
 $o-brand-lightsecondary: $o-gray-100 !default;
-$o-success: #237b60 !default;
-$o-info: #286e89 !default;
-$o-warning: #e4b568 !default;
-$o-danger: #b4445c !default;
+$o-success: #0f853d !default;
+$o-info: #0b7fa0 !default;
+$o-warning: #f5a300 !default;
+$o-danger: #d92638 !default;
 $o-theme-text-colors: (
   "primary": $o-altinkaya-accent,
-  "success": #1e624c,
-  "info": #225a73,
-  "warning": #795115,
-  "danger": #982c46,
+  "success": #0e7138,
+  "info": #086b8c,
+  "warning": #8f5600,
+  "danger": #c31835,
   "odoo": $o-altinkaya-accent,
 ) !default;
 
