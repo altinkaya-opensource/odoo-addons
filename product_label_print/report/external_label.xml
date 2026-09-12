@@ -17,7 +17,6 @@
 
     <template id="product_external_label_body">
         <t t-translation="off">
-            <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
             <t t-set="label_count" t-value="len(docs)" />
             <t t-if="printer_type == 'GODEX'">
 ^Q50,3
