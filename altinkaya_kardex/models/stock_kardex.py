@@ -3,7 +3,7 @@
 import uuid
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 
 from .jmif_request import JmifRequest
 
@@ -152,12 +152,33 @@ class StockKardex(models.Model):
             raise UserError(errors[code])
         return response
 
+    def _check_kardex_manager(self):
+        """Guard every operator-facing bring/return call.
+
+        This is the single chokepoint: the picking buttons, the per-tray
+        location buttons and the manual-drive path all funnel through
+        bring_tray/return_tray, and none of them run under sudo, so one check
+        here gates them all (Odoo forms and the mobile JSON-RPC path alike).
+        Internal automation (sudo) is allowed through; a real user must hold
+        the Kardex Manager group, with no admin bypass.
+        """
+        if self.env.su:
+            return
+        if not self.env.user.has_group("altinkaya_kardex.group_kardex_manager"):
+            raise AccessError(
+                _(
+                    "You are not allowed to operate the Kardex. "
+                    "Ask an administrator for the Kardex Manager permission."
+                )
+            )
+
     def bring_tray(self, carrier):
         """Bring a tray (storage unit ``carrier``) to the opening.
 
         Blocks until the tray has physically arrived, so the caller knows it is
         ready to scan.
         """
+        self._check_kardex_manager()
         return self._send("count", carrier)
 
     def return_tray(self, carrier):
@@ -165,6 +186,7 @@ class StockKardex(models.Model):
 
         Blocks until the machine confirms the tray has been taken back.
         """
+        self._check_kardex_manager()
         return self._send("release_tray", carrier)
 
     def action_test_connection(self):

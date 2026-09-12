@@ -13,6 +13,7 @@
                     string="Call Kardex Trays"
                     icon="fa-arrow-down"
                     attrs="{'invisible': [('has_kardex_operation', '=', False)]}"
+                    groups="altinkaya_kardex.group_kardex_manager"
                 />
                 <button
                     name="action_return_kardex_trays"
@@ -20,6 +21,7 @@
                     string="Send Trays Back"
                     icon="fa-arrow-up"
                     attrs="{'invisible': [('has_kardex_operation', '=', False)]}"
+                    groups="altinkaya_kardex.group_kardex_manager"
                 />
             </field>
         </field>
