@@ -5,20 +5,6 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
 
-class XMakine(models.Model):
-    _name = "x.makine"
-    _description = "X Makine"
-    _order = "name"
-
-    x_group = fields.Char(
-        "Bölüm",
-        size=128,
-    )
-    x_kod = fields.Char("Makine Kodu", size=128)
-    x_name = fields.Char("Makine Adı", size=128)
-    name = fields.Char("Makine Numarası", size=128)
-
-
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
     mo_printed = fields.Boolean("Manufacting Order Printed", default=False)
@@ -43,9 +29,12 @@ class MrpProduction(models.Model):
     )
     x_operator = fields.Many2one("hr.employee", "Uretimi Yapan Operator", tracking=True)
     x_note = fields.Text("Note")
-    # TODO: @dogan workcenter_id alanini kullanabiliriz
-    x_makine = fields.Many2one("x.makine", "Uretim Yapilan Makine", tracking=True)
-    x_makine_kod = fields.Char(related="x_makine.x_kod", string="Makine", readonly=1)
+    machine_workcenter_id = fields.Many2one(
+        "mrp.workcenter", string="Machine", tracking=True
+    )
+    machine_workcenter_code = fields.Char(
+        related="machine_workcenter_id.code", string="Machine Code", readonly=1
+    )
     similar_mo_ids = fields.Many2many(
         "mrp.production",
         compute="_compute_similar_mo_ids",
