@@ -4,3 +4,4 @@ from . import test_currency_difference_wizards
 from . import test_currency_valuation
 from . import test_payment_term_account_currency
 from . import test_payment_transaction
+from . import test_partner_statement_balance

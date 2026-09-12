@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo>
-    <!-- Partial cleanup cron removed - partials with full_reconcile_id now preserved -->
+<odoo noupdate="1">
+    <record id="ir_cron_recompute_statement_balances" model="ir.cron">
+        <field name="name">Refresh Partner Statement Balances</field>
+        <field name="model_id" ref="base.model_res_partner" />
+        <field name="state">code</field>
+        <field name="code">model._cron_recompute_statement_balances()</field>
+        <field name="interval_number" eval="1" />
+        <field name="interval_type">days</field>
+        <field name="numbercall" eval="-1" />
+        <field name="active" eval="True" />
+    </record>
 </odoo>
