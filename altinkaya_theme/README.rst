@@ -13,6 +13,11 @@ not receive the backend component styles.
 Refresh the Apps list after updating addon files so Odoo reloads the module
 exclusions; a command-line upgrade alone may leave the old exclusions stored.
 
+Semantic colours (success, info, warning, danger) are saturated so list
+decorations, alerts and status dots read as colour, while every text tone stays
+above 4.5:1 on the row surfaces of its scheme. Badges are solid fills with
+contrast-picked text.
+
 Neutral surfaces distinguish the workspace, form and chatter without tinting
 every area blue. Field labels remain opaque, including readonly and empty
 fields; links and active controls use the blue accent. List headers and
