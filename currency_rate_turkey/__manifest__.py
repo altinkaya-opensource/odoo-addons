@@ -3,7 +3,7 @@
 
 {
     "name": "Currency Rate Turkey",
-    "version": "16.0.1.1.1",
+    "version": "16.0.1.1.2",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "yibudak, Altinkaya Enclosures",
     "category": "Currency",
