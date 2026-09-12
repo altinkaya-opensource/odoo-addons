@@ -99,19 +99,16 @@ E</t>
  </t>
         <t t-out="'\n'" />
     </template>
-    <!-- Dialect follows the clicking user's own label printer. -->
+    <!-- printer_type is resolved from the report's actual destination. -->
     <template id="location_report_godex" name="location report godex">
-        <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
         <t t-call="altinkaya_reports.location_report_godex_body" />
     </template>
     <!-- Ostim variant: printing_printer_id (Ostim Barkod 2250) is set on the action in DB. -->
     <template id="location_report_godex_ostim" name="location report godex ostim">
-        <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
         <t t-call="altinkaya_reports.location_report_godex_body" />
     </template>
     <!-- Depo2 variant: printing_printer_id is set on the action in DB. -->
     <template id="location_report_godex_depo2" name="location report godex depo2">
-        <t t-set="printer_type" t-value="user.context_def_label_printer.type" />
         <t t-call="altinkaya_reports.location_report_godex_body" />
     </template>
 </odoo>
