@@ -16,6 +16,14 @@ Bu modül ne işe yarar?
 - Teslimat içerisinden direkt barkod bastırma özelliği.
 - Satış siparişinde, kargo firmalarından toplu şekilde fiyat alma sihirbazı.
 - Teslimat transfer sürecinde müşteriye SMS ile bilgi verir.
+- Müşteriye giden sevkiyatın kargo durumu `in_transit` olduğunda, takip numarası
+  hazırsa e-postayı da otomatik olarak kuyruğa alır. Takip numarası daha sonra
+  gelirse gönderim o anda kuyruğa alınır; SMS ayarının açık olması gerekmez.
+- Manuel toplu e-posta gönderimi kullanılmaya devam eder. Otomatik ve manuel
+  gönderimler aynı tekrar kontrolünü kullanır. `mail_sent`, yalnızca e-posta
+  göndericisi gönderimi başarılı olarak kaydettikten sonra işaretlenir.
+- E-posta dili gerçek alıcıdan alınır; dil boşsa İngilizce kullanılır. Modül
+  yükseltmesi, özelleştirilmiş şablonun metnini koruyarak dil ifadesini günceller.
 
 ### Gerekli Modüller:
 
