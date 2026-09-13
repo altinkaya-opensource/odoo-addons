@@ -20,12 +20,83 @@
 
 from datetime import date, datetime
 
-from odoo import models
+from odoo import fields, models
 from odoo.tools.translate import _
 
 
 class Partner(models.Model):
     _inherit = "res.partner"
+
+    def _get_statement_skip_journal_codes(self):
+        """Return journals omitted from the selected statement language."""
+        codes = ["ADVR", "KRFRK"]
+        if self.env.context.get("lang") != "tr_TR":
+            codes.append("KRDGR")
+        return codes
+
+    def _get_statement_currency_balances(self, date_end, due_only=False):
+        """Aggregate the signed balances displayed by the Turkish statement.
+
+        TRY tables show debit minus credit, including lines booked in a foreign
+        currency on a TRY account. Foreign account tables show amount_currency,
+        with currency-difference invoices suppressed just as in the report.
+        """
+        partners = self.commercial_partner_id.filtered("id")
+        if not partners:
+            return {}
+        domain = [
+            ("partner_id", "in", partners.ids),
+            ("company_id", "=", self.env.company.id),
+            (
+                "account_id.account_type",
+                "in",
+                ["asset_receivable", "liability_payable"],
+            ),
+            ("parent_state", "=", "posted"),
+            ("date", ">=", "2022-01-01"),
+            ("date", "<=", fields.Date.to_date(date_end)),
+            ("move_id.date", ">=", "2022-01-01"),
+            (
+                "journal_id.code",
+                "not in",
+                self.with_context(lang="tr_TR")._get_statement_skip_journal_codes(),
+            ),
+        ]
+        if due_only:
+            domain += [
+                "|",
+                ("date_maturity", "=", False),
+                ("date_maturity", "<=", fields.Date.to_date(date_end)),
+            ]
+        groups = self.env["account.move.line"].read_group(
+            domain,
+            ["balance:sum", "amount_currency:sum"],
+            ["partner_id", "account_id", "journal_id"],
+            lazy=False,
+        )
+        accounts = self.env["account.account"].browse(
+            [group["account_id"][0] for group in groups]
+        )
+        journals = self.env["account.journal"].browse(
+            [group["journal_id"][0] for group in groups]
+        )
+        accounts_by_id = {account.id: account for account in accounts}
+        journals_by_id = {journal.id: journal for journal in journals}
+        balances = {}
+        for group in groups:
+            account = accounts_by_id[group["account_id"][0]]
+            journal = journals_by_id[group["journal_id"][0]]
+            currency = account.currency_id or self.env.company.currency_id
+            amount = group["balance"]
+            if currency != self.env.company.currency_id:
+                amount = group["amount_currency"]
+                if journal.code == "KFARK" or account.code in ("646", "656", "646.F"):
+                    amount = 0.0
+            partner_balances = balances.setdefault(group["partner_id"][0], {})
+            partner_balances[currency.id] = (
+                partner_balances.get(currency.id, 0.0) + amount
+            )
+        return balances
 
     def _get_statement_data_currency(self, data=None):
         return self._get_statement_data(self)
@@ -125,6 +196,7 @@ class Partner(models.Model):
                 AND %s
             )
             AND L.PARTNER_ID = %s
+            AND L.COMPANY_ID = %s
             AND A.ACCOUNT_TYPE IN %s
             AND AM.STATE = 'posted'
             AND AM.date >= %s
@@ -148,9 +220,7 @@ class Partner(models.Model):
             ACCOUNT_CURRENCY,
             L.DATE
         """
-        skip_journal_codes = ["ADVR", "KRFRK"]
-        if ctx.get("lang") != "tr_TR":
-            skip_journal_codes.append("KRDGR")
+        skip_journal_codes = self._get_statement_skip_journal_codes()
 
         currency_difference_accounts = (
             self.env["account.account"]
@@ -171,6 +241,7 @@ class Partner(models.Model):
                 start_date,
                 end_date,
                 self.commercial_partner_id.id,
+                self.env.company.id,
                 move_type,
                 start_date,
             ),

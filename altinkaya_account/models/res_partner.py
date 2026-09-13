@@ -12,7 +12,11 @@ KFARK_MIN_AMOUNT = 1.0
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    @api.depends("property_account_receivable_id", "property_account_payable_id")
+    @api.depends(
+        "company_id",
+        "property_account_receivable_id.currency_id",
+        "property_account_payable_id.currency_id",
+    )
     def _compute_partner_currency(self):
         for partner in self:
             account_currency = (
@@ -23,95 +27,97 @@ class ResPartner(models.Model):
                 account_currency or self.env.company.currency_id
             )
 
-    @api.depends("move_line_ids")
+    @api.depends(
+        "company_id",
+        "partner_currency_id",
+        "property_rate_field",
+        "commercial_partner_id",
+        "commercial_partner_id.move_line_ids.balance",
+        "commercial_partner_id.move_line_ids.amount_currency",
+        "commercial_partner_id.move_line_ids.date",
+        "commercial_partner_id.move_line_ids.date_maturity",
+        "commercial_partner_id.move_line_ids.move_id.state",
+        "commercial_partner_id.move_line_ids.move_id.date",
+        "commercial_partner_id.move_line_ids.company_id",
+        "commercial_partner_id.move_line_ids.account_id.account_type",
+        "commercial_partner_id.move_line_ids.account_id.currency_id",
+        "commercial_partner_id.move_line_ids.account_id.code",
+        "commercial_partner_id.move_line_ids.journal_id.code",
+    )
     def _compute_balance_fields(self):
-        """Compute balance fields for partners using SQL for performance."""
-        if not self.ids:
-            return True
-        query = """
-        UPDATE
-          res_partner rp
-        SET
-          balance_due = CASE WHEN due_balance_table.due_balance > 0
-          THEN due_balance_table.due_balance ELSE 0 END,
-          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0
-          THEN due_balance_table.due_amount_currency ELSE 0 END,
-          balance = balance_table.balance,
-          currency_balance = balance_table.amount_currency
-        FROM
-          (
-            SELECT
-              aml.partner_id AS partner_id,
-              SUM(aml.debit) - SUM(aml.credit) AS due_balance,
-              SUM(
-            CASE
-              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
-              ELSE aml.amount_currency
-            END
-              ) AS due_amount_currency
-            FROM
-              account_move_line aml
-              LEFT JOIN account_account aa ON aa.id = aml.account_id
-              LEFT JOIN account_move am ON aml.move_id = am.id
-              LEFT JOIN account_journal aj ON am.journal_id = aj.id
-            WHERE
-              aa.account_type IN ('asset_receivable', 'liability_payable')
-              AND NOT aa.deprecated
-              AND aml.date >= '2022-01-01'
-              AND (aml.date_maturity <= CURRENT_DATE OR aml.date_maturity IS NULL)
-              AND aml.partner_id IN %s
-              AND am.state = 'posted'
-              AND am.date >= '2022-01-01'
-            GROUP BY
-              aml.partner_id
-          ) AS due_balance_table,
-          (
-            SELECT
-              aml.partner_id AS partner_id,
-              SUM(aml.debit) - SUM(aml.credit) AS balance,
-              SUM(
-            CASE
-              WHEN aj.code IN ('KFARK', 'KRFRK', 'KRDGR') THEN 0
-              ELSE aml.amount_currency
-            END
-              ) AS amount_currency
-            FROM
-              account_move_line aml
-              LEFT JOIN account_account aa ON aa.id = aml.account_id
-              LEFT JOIN account_move am ON aml.move_id = am.id
-              LEFT JOIN account_journal aj ON am.journal_id = aj.id
-            WHERE
-              aa.account_type IN ('asset_receivable', 'liability_payable')
-              AND NOT aa.deprecated
-              AND aml.date >= '2022-01-01'
-              AND aml.partner_id IN %s
-              AND am.state = 'posted'
-              AND am.date >= '2022-01-01'
-            GROUP BY
-              aml.partner_id
-          ) AS balance_table
-        WHERE
-          rp.id = due_balance_table.partner_id
-          AND rp.id = balance_table.partner_id
-          AND rp.id IN %s;
+        """Value each statement currency at today's partner-selected rate."""
+        self.env["res.currency.rate"].flush_model()
+        valuation_date = fields.Date.context_today(self)
+        for company in self.company_id | self.env.company:
+            partners = self.filtered(
+                lambda partner: (partner.company_id or self.env.company) == company
+            ).with_company(company)
+            balances = partners._get_statement_currency_balances(valuation_date)
+            due_balances = partners._get_statement_currency_balances(
+                valuation_date, due_only=True
+            )
+            for partner in partners:
+                partner.balance, partner.currency_balance = (
+                    partner._convert_statement_balances(
+                        balances.get(partner.commercial_partner_id.id, {}),
+                        valuation_date,
+                    )
+                )
+                balance_due, currency_balance_due = partner._convert_statement_balances(
+                    due_balances.get(partner.commercial_partner_id.id, {}),
+                    valuation_date,
+                )
+                partner.balance_due = max(balance_due, 0.0)
+                partner.currency_balance_due = max(currency_balance_due, 0.0)
 
-        """
-        params = (tuple(self.ids), tuple(self.ids), tuple(self.ids))
-        self._cr.execute(query, params)
-        # HACK: Since we are directly updating the database in a compute method,
-        # this causes the cache to be out of sync also invalidate_cache() method
-        # causes CacheMiss error, this looks like a bug in Odoo,
-        # so we are using search_read to update the cache.
-        self.search_read(
-            domain=[("id", "in", self.ids)],
-            fields=[
-                "balance",
-                "currency_balance",
-                "balance_due",
-                "currency_balance_due",
-            ],
+    def _convert_statement_balances(self, balances, valuation_date):
+        """Convert currency buckets, rounding only the final totals."""
+        self.ensure_one()
+        company = self.company_id or self.env.company
+        partner_currency = self.partner_currency_id or company.currency_id
+        currencies = self.env["res.currency"].with_context(
+            rate_type=self.property_rate_field or None
         )
-        return True
+        company_balance = 0.0
+        partner_balance = 0.0
+        for currency_id, amount in balances.items():
+            currency = currencies.browse(currency_id)
+            company_balance += currency._convert(
+                amount, company.currency_id, company, valuation_date, round=False
+            )
+            partner_balance += currency._convert(
+                amount, partner_currency, company, valuation_date, round=False
+            )
+        return (
+            company.currency_id.round(company_balance),
+            partner_currency.round(partner_balance),
+        )
+
+    @api.model
+    def _cron_recompute_statement_balances(self):
+        """Refresh stored valuations even when no accounting lines have changed."""
+        partners = self.with_context(active_test=False).search(
+            [
+                "|",
+                ("move_line_ids", "!=", False),
+                "|",
+                ("balance", "!=", 0),
+                "|",
+                ("currency_balance", "!=", 0),
+                "|",
+                ("balance_due", "!=", 0),
+                ("currency_balance_due", "!=", 0),
+            ]
+        )
+        partners = self.with_context(active_test=False).search(
+            [("commercial_partner_id", "in", partners.commercial_partner_id.ids)]
+        )
+        for offset in range(0, len(partners), 200):
+            batch = partners[offset : offset + 200]
+            batch._compute_balance_fields()
+            batch.flush_recordset(
+                ["balance", "currency_balance", "balance_due", "currency_balance_due"]
+            )
 
     def _compute_has_2breconciled(self):
         domain = [
