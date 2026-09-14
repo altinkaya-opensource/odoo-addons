@@ -3,6 +3,7 @@
 
 from . import test_trendyol_question
 from . import test_trendyol_claim
+from . import test_trendyol_cron
 from . import test_trendyol_order
 from . import test_trendyol_product_sync
 from . import test_trendyol_security
