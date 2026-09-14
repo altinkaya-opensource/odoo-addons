@@ -6,7 +6,7 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import _, fields, models, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -23,6 +23,17 @@ RATE_FIELD_MAPPING = {
 
 class ResCurrencyRateSecond(models.Model):
     _inherit = "res.currency.rate"
+
+    def init(self):
+        """Index the latest applicable rate by currency and company."""
+        res = super().init()
+        tools.create_index(
+            self.env.cr,
+            "res_currency_rate_currency_company_date_idx",
+            self._table,
+            ["currency_id", "company_id", "name DESC"],
+        )
+        return res
 
     second_rate = fields.Float(
         digits=(12, 6),
