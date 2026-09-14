@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Grants the right to call/return Kardex trays, in Odoo and in the
+         mobile app. Assigned through a res.users.role; without it the
+         Call/Return buttons are hidden and the underlying methods refuse
+         to run (see stock_kardex._check_kardex_manager). -->
+    <record id="group_kardex_manager" model="res.groups">
+        <field name="name">Kardex Manager</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+        <field
+            name="comment"
+        >Users allowed to call/return Kardex trays (Odoo + mobile).</field>
+    </record>
+</odoo>
