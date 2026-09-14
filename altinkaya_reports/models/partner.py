@@ -347,16 +347,18 @@ class Partner(models.Model):
                 filtered_lines[curr_count] = statement_data3
                 continue
             new_lines = [n for n in statement_data3 if n not in old_lines]
-            last_line = old_lines[-1]
+            last_line = old_lines[-1].copy()
             last_line["seq"] = 1
             last_line["date"] = ""
             last_line["due_date"] = ""
             last_line["description"] = _("Previous Balance")
             last_line["currency_rate"] = 0
-            last_line["amount_currency"] = 0
-            last_line["amount"] = 0
-            last_line["debit"] = 0
-            last_line["credit"] = 0
+            last_line["amount_currency"] = sum(x["amount_currency"] for x in old_lines)
+            last_line["amount"] = sum(x["amount"] for x in old_lines)
+            last_line["debit"] = max(last_line["amount"], 0.0)
+            last_line["credit"] = max(-last_line["amount"], 0.0)
+            last_line["debit_currency"] = max(last_line["amount_currency"], 0.0)
+            last_line["credit_currency"] = max(-last_line["amount_currency"], 0.0)
             new_idx = 2
             for new in new_lines:
                 new["seq"] = new_idx
