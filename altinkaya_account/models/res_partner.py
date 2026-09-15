@@ -2,11 +2,20 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
+from psycopg2.extras import execute_values
+
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
+STATEMENT_BALANCE_BATCH_SIZE = 10_000
+STATEMENT_BALANCE_FIELDS = (
+    "balance",
+    "currency_balance",
+    "balance_due",
+    "currency_balance_due",
+)
 
 
 class ResPartner(models.Model):
@@ -45,9 +54,34 @@ class ResPartner(models.Model):
         "commercial_partner_id.move_line_ids.journal_id.code",
     )
     def _compute_balance_fields(self):
-        """Value each statement currency at today's partner-selected rate."""
-        self.env["res.currency.rate"].flush_model()
+        """Refresh stored balances through SQL, including direct cron calls."""
+        balance_field = self._fields["balance"]
+        if self - self.env.protected(balance_field):
+            # Let Odoo clear pending computations and protect these fields before
+            # flushing inputs. Persistence below remains SQL, without write hooks.
+            for offset in range(0, len(self), STATEMENT_BALANCE_BATCH_SIZE):
+                batch = self[
+                    offset : offset + STATEMENT_BALANCE_BATCH_SIZE
+                ].with_prefetch()
+                balance_field.compute_value(batch)
+                batch.filtered("id").invalidate_recordset()
+            return
+
         valuation_date = fields.Date.context_today(self)
+        for offset in range(0, len(self), STATEMENT_BALANCE_BATCH_SIZE):
+            batch = self[offset : offset + STATEMENT_BALANCE_BATCH_SIZE].with_prefetch()
+            batch._update_statement_balance_batch(valuation_date)
+
+    def _update_statement_balance_batch(self, valuation_date):
+        """Persist a compute batch and populate clean cache values for the ORM."""
+        if not self:
+            return
+        persisted = self.filtered("id")
+        persisted.check_access_rights("write")
+        persisted.check_access_rule("write")
+        persisted.flush_recordset(STATEMENT_BALANCE_FIELDS)
+        self.env["res.currency.rate"].flush_model()
+        values = []
         for company in self.company_id | self.env.company:
             partners = self.filtered(
                 lambda partner: (partner.company_id or self.env.company) == company
@@ -57,18 +91,57 @@ class ResPartner(models.Model):
                 valuation_date, due_only=True
             )
             for partner in partners:
-                partner.balance, partner.currency_balance = (
-                    partner._convert_statement_balances(
-                        balances.get(partner.commercial_partner_id.id, {}),
-                        valuation_date,
-                    )
+                balance, currency_balance = partner._convert_statement_balances(
+                    balances.get(partner.commercial_partner_id.id, {}), valuation_date
                 )
                 balance_due, currency_balance_due = partner._convert_statement_balances(
                     due_balances.get(partner.commercial_partner_id.id, {}),
                     valuation_date,
                 )
-                partner.balance_due = max(balance_due, 0.0)
-                partner.currency_balance_due = max(currency_balance_due, 0.0)
+                values.append(
+                    (
+                        partner.id,
+                        balance,
+                        currency_balance,
+                        max(balance_due, 0.0),
+                        max(currency_balance_due, 0.0),
+                    )
+                )
+        rows = [row for row in values if row[0]]
+        changed = self.browse()
+        if rows:
+            execute_values(
+                self.env.cr,
+                """
+                UPDATE res_partner AS partner
+                   SET balance = totals.balance,
+                       currency_balance = totals.currency_balance,
+                       balance_due = totals.balance_due,
+                       currency_balance_due = totals.currency_balance_due
+                  FROM (VALUES %s) AS totals
+                       (id, balance, currency_balance, balance_due,
+                        currency_balance_due)
+                 WHERE partner.id = totals.id
+                   AND (partner.balance, partner.currency_balance,
+                        partner.balance_due, partner.currency_balance_due)
+                       IS DISTINCT FROM
+                       (totals.balance, totals.currency_balance,
+                        totals.balance_due, totals.currency_balance_due)
+                RETURNING partner.id
+                """,
+                rows,
+                page_size=len(rows),
+            )
+            changed = self.browse([row[0] for row in self.env.cr.fetchall()])
+
+        # SQL has already persisted these rounded floats. Cache them as clean,
+        # including unchanged rows and NewIds, without triggering a second write.
+        records = self.browse([row[0] for row in values])
+        for index, name in enumerate(STATEMENT_BALANCE_FIELDS, start=1):
+            self.env.cache.update(
+                records, self._fields[name], [row[index] for row in values]
+            )
+        changed.modified(STATEMENT_BALANCE_FIELDS)
 
     def _convert_statement_balances(self, balances, valuation_date):
         """Convert currency buckets, rounding only the final totals."""
@@ -95,29 +168,17 @@ class ResPartner(models.Model):
 
     @api.model
     def _cron_recompute_statement_balances(self):
-        """Refresh stored valuations even when no accounting lines have changed."""
-        partners = self.with_context(active_test=False).search(
-            [
-                "|",
-                ("move_line_ids", "!=", False),
-                "|",
-                ("balance", "!=", 0),
-                "|",
-                ("currency_balance", "!=", 0),
-                "|",
-                ("balance_due", "!=", 0),
-                ("currency_balance_due", "!=", 0),
-            ]
-        )
-        partners = self.with_context(active_test=False).search(
-            [("commercial_partner_id", "in", partners.commercial_partner_id.ids)]
-        )
-        for offset in range(0, len(partners), 200):
-            batch = partners[offset : offset + 200]
-            batch._compute_balance_fields()
-            batch.flush_recordset(
-                ["balance", "currency_balance", "balance_due", "currency_balance_due"]
+        """Refresh date/rate-sensitive balances daily in bounded SQL batches."""
+        partners = self.with_context(active_test=False)
+        last_id = 0
+        while True:
+            batch = partners.search(
+                [("id", ">", last_id)], order="id", limit=STATEMENT_BALANCE_BATCH_SIZE
             )
+            if not batch:
+                break
+            last_id = batch[-1].id
+            batch._compute_balance_fields()
 
     def _compute_has_2breconciled(self):
         domain = [
