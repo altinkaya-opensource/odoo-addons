@@ -10,6 +10,7 @@
     "category": "Stock",
     "depends": ["stock", "base_sparse_field"],
     "data": [
+        "security/kardex_security.xml",
         "security/ir.model.access.csv",
         "views/stock_location_tray_type_views.xml",
         "views/stock_kardex_views.xml",
