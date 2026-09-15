@@ -1,7 +1,7 @@
 name: Automatic OCR review
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
 permissions:
   contents: read
 jobs:
