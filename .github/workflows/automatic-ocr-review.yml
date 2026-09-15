@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   review:
-    uses: altinkaya-opensource/altinkaya-open-code-review/.github/workflows/ocr-review.yml@802204311f1ab61fe85f163f7b7120cf7ee99641
+    uses: altinkaya-opensource/altinkaya-open-code-review/.github/workflows/ocr-review.yml@7d29a2cfacda37fea9a5e5cbbcb781a8194fcf33
     secrets:
       OCR_BOT_TOKEN: ${{ secrets.OCR_BOT_TOKEN }}
       OCR_LLM_TOKEN: ${{ secrets.OCR_LLM_TOKEN }}
