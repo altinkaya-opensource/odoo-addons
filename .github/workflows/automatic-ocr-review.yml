@@ -10,6 +10,7 @@ on:
         type: string
 permissions:
   contents: read
+  checks: write
 jobs:
   review:
     uses: altinkaya-opensource/altinkaya-open-code-review/.github/workflows/ocr-review.yml@latest
