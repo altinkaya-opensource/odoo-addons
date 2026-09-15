@@ -1,8 +1,12 @@
+import runpy
 from datetime import timedelta
 from unittest.mock import patch
 
 from odoo import Command, fields
+from odoo.modules.module import get_module_resource
 from odoo.tests import TransactionCase, tagged
+
+from ..models import res_partner as partner_module
 
 
 @tagged("post_install", "-at_install")
@@ -144,9 +148,29 @@ class TestPartnerStatementBalance(TransactionCase):
         self._create_move(self.eur_account, self.eur, 50.0, 2000.0)
         self._create_move(self.try_account, self.try_currency, 1000.0, 1000.0)
 
+    def _refresh_balances(self, partners=None):
+        """Run the real cron with discovery restricted to the test partners."""
+        partners = self.partner if partners is None else partners
+        search = type(self.partner).search
+
+        def search_partners(records, domain, *args, **kwargs):
+            return search(
+                records, domain + [("id", "in", partners.ids)], *args, **kwargs
+            )
+
+        with patch.object(type(self.partner), "search", search_partners):
+            self.env["res.partner"]._cron_recompute_statement_balances()
+
     def _assert_balances(
-        self, company_balance, partner_balance, company_due=0.0, partner_due=0.0
+        self,
+        company_balance,
+        partner_balance,
+        company_due=0.0,
+        partner_due=0.0,
+        refresh=True,
     ):
+        if refresh:
+            self._refresh_balances()
         self.env.flush_all()
         self.partner.invalidate_recordset(
             ["balance", "currency_balance", "balance_due", "currency_balance_due"]
@@ -272,12 +296,206 @@ class TestPartnerStatementBalance(TransactionCase):
         self.assertEqual(empty.balance, 0.0)
         self.assertEqual(empty.currency_balance, 0.0)
 
+    def test_cron_does_not_write_or_create_audit_records(self):
+        """Refresh stale snapshots without invoking partner write hooks."""
+        self._create_three_currency_balance()
+        self.env.flush_all()
+        self.partner.write({"balance": 1.0, "currency_balance": 1.0})
+        self.env.flush_all()
+        write_date = fields.Datetime.to_datetime("2000-01-01 00:00:00")
+        self.env.cr.execute(
+            "UPDATE res_partner SET write_date = %s WHERE id = %s",
+            (write_date, self.partner.id),
+        )
+        self.partner.invalidate_recordset()
+        with patch.object(
+            type(self.partner),
+            "write",
+            side_effect=AssertionError("Balance computation called partner.write"),
+        ):
+            self._refresh_balances()
+            self._assert_balances(7500.0, 187.50, refresh=False)
+        self.assertEqual(self.partner.write_date, write_date)
+
+    def test_sql_batch_skips_unchanged_rows(self):
+        """One UPDATE handles a batch; the next identical run writes no rows."""
+        self._create_three_currency_balance()
+        execute_values = partner_module.execute_values
+        row_counts = []
+
+        def execute_batch(cr, *args, **kwargs):
+            result = execute_values(cr, *args, **kwargs)
+            row_counts.append(cr.rowcount)
+            return result
+
+        with patch.object(partner_module, "execute_values", execute_batch):
+            self._refresh_balances()
+            self._refresh_balances()
+        self.assertEqual(row_counts, [1, 0])
+        self._assert_balances(7500.0, 187.50, refresh=False)
+
+    def test_migration_preserves_legacy_cron_schedule_and_custom_code(self):
+        """Only the known legacy body is replaced; user scheduling stays intact."""
+        code = (
+            "# Legacy refresh\n"
+            "all_partners = model.search([])\n"
+            "all_partners._compute_balance_fields()\n"
+        )
+        cron = self.env["ir.cron"].create(
+            {
+                "name": "Test legacy balance cron",
+                "model_id": self.env.ref("base.model_res_partner").id,
+                "state": "code",
+                "code": code,
+                "active": False,
+                "interval_number": 3,
+                "interval_type": "hours",
+            }
+        )
+        custom = cron.copy({"code": code + "log('Custom action')\n"})
+        schedule_fields = [
+            "active",
+            "interval_number",
+            "interval_type",
+            "nextcall",
+            "user_id",
+        ]
+        schedule = cron.read(schedule_fields)
+        migration = runpy.run_path(
+            get_module_resource(
+                "altinkaya_account", "migrations", "16.0.1.7.1", "post-migration.py"
+            )
+        )
+        migration["migrate"](self.env.cr, "16.0.1.7.0")
+        self.assertEqual(cron.code, "model._cron_recompute_statement_balances()")
+        self.assertEqual(cron.read(schedule_fields), schedule)
+        self.assertEqual(custom.code, code + "log('Custom action')\n")
+
+    def test_direct_compute_limits_batch_prefetch_and_releases_cache(self):
+        """Batching must bound reads and leave the persisted totals accessible."""
+        self._create_three_currency_balance()
+        contacts = self.env["res.partner"].create(
+            [
+                {"name": f"Balance batch contact {index}", "parent_id": self.partner.id}
+                for index in range(3)
+            ]
+        )
+        partners = self.partner | contacts
+        self.env.flush_all()
+        original = type(partners)._get_statement_currency_balances
+        batch_sizes = []
+
+        def get_balances(records, *args, **kwargs):
+            batch_sizes.append(len(records))
+            self.assertLessEqual(len(records._prefetch_ids), 2)
+            return original(records, *args, **kwargs)
+
+        with (
+            patch(
+                "odoo.addons.altinkaya_account.models.res_partner."
+                "STATEMENT_BALANCE_BATCH_SIZE",
+                2,
+            ),
+            patch.object(
+                type(partners), "_get_statement_currency_balances", get_balances
+            ),
+        ):
+            partners._compute_balance_fields()
+        self.assertEqual(batch_sizes, [2, 2, 2, 2])
+        for partner in partners:
+            self.assertFalse(
+                self.env.cache.contains(partner, partner._fields["balance"])
+            )
+        self.assertEqual(partners.mapped("balance"), [7500.0] * 4)
+        self.assertEqual(partners.mapped("currency_balance"), [187.50] * 4)
+
+    def test_balances_change_only_when_cron_runs(self):
+        """Posting, editing, and reading must not refresh stored snapshots."""
+        for name in (
+            "balance",
+            "currency_balance",
+            "balance_due",
+            "currency_balance_due",
+        ):
+            self.assertFalse(self.partner._fields[name].compute)
+        with patch.object(
+            type(self.partner),
+            "_update_statement_balance_batch",
+            side_effect=AssertionError("Balances refreshed outside the cron"),
+        ):
+            move = self._create_move(self.usd_account, self.usd, 100.0, 3000.0)
+            self._assert_balances(0.0, 0.0, refresh=False)
+        self._assert_balances(4000.0, 100.0)
+        with patch.object(
+            type(self.partner),
+            "_update_statement_balance_batch",
+            side_effect=AssertionError("Balances refreshed outside the cron"),
+        ):
+            move.button_cancel()
+            self.partner.property_rate_field = "tcmb_forex_buying"
+            self._assert_balances(4000.0, 100.0, refresh=False)
+        self._assert_balances(0.0, 0.0)
+
+    def test_cron_batches_include_archived_contacts_and_clear_empty_partners(self):
+        """Keyset batches visit every partner once, even with no due/move rows."""
+        self._create_three_currency_balance()
+        contact = self.env["res.partner"].create(
+            {
+                "name": "Archived balance contact",
+                "parent_id": self.partner.id,
+                "active": False,
+            }
+        )
+        empty = self.env["res.partner"].create(
+            {
+                "name": "Stale balance without movements",
+                "balance": 42.0,
+                "currency_balance": 12.0,
+                "balance_due": 7.0,
+                "currency_balance_due": 4.0,
+            }
+        )
+        partners = self.partner | contact | empty
+        original = type(partners)._update_statement_balance_batch
+        batches = []
+
+        def update_batch(records, valuation_date):
+            batches.append(records.ids)
+            self.assertLessEqual(len(records._prefetch_ids), 2)
+            return original(records, valuation_date)
+
+        with (
+            patch(
+                "odoo.addons.altinkaya_account.models.res_partner."
+                "STATEMENT_BALANCE_BATCH_SIZE",
+                2,
+            ),
+            patch.object(
+                type(partners), "_update_statement_balance_batch", update_batch
+            ),
+        ):
+            self._refresh_balances(partners)
+        self.assertEqual(
+            batches, [partners.sorted("id").ids[:2], partners.sorted("id").ids[2:]]
+        )
+        self.assertEqual(contact.balance, 7500.0)
+        self.assertEqual(contact.currency_balance, 187.50)
+        self.assertEqual(
+            [
+                empty.balance,
+                empty.currency_balance,
+                empty.balance_due,
+                empty.currency_balance_due,
+            ],
+            [0.0] * 4,
+        )
+
     def test_contact_matches_its_commercial_partner_statement(self):
         child = self.env["res.partner"].create(
             {"name": "Statement balance contact", "parent_id": self.partner.id}
         )
         self._create_three_currency_balance()
-        self.env.flush_all()
+        self._refresh_balances(self.partner | child)
         self.assertEqual(child.balance, 7500.0)
         self.assertEqual(child.currency_balance, 187.50)
 
@@ -336,10 +554,6 @@ class TestPartnerStatementBalance(TransactionCase):
         tomorrow = self.today + timedelta(days=1)
         self._create_move(self.usd_account, self.usd, 100.0, 3000.0, maturity=tomorrow)
         self._assert_balances(4000.0, 100.0)
-        # Limit cron discovery to this fixture; execute its real refresh and flush.
-        with (
-            patch.object(fields.Date, "context_today", return_value=tomorrow),
-            patch.object(type(self.partner), "search", return_value=self.partner),
-        ):
-            self.partner._cron_recompute_statement_balances()
-        self._assert_balances(4000.0, 100.0, 4000.0, 100.0)
+        with patch.object(fields.Date, "context_today", return_value=tomorrow):
+            self._refresh_balances()
+        self._assert_balances(4000.0, 100.0, 4000.0, 100.0, refresh=False)
