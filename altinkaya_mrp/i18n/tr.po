@@ -589,7 +589,7 @@ msgstr "Üretim Emri Yazdır"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__product_id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_id
 msgid "Product"
-msgstr "Ürün Şablonu"
+msgstr "Ürün"
 
 #. module: altinkaya_mrp
 #: model:ir.ui.menu,name:altinkaya_mrp.menu_product_category_on_mrp

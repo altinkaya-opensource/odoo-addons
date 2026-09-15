@@ -16,6 +16,7 @@
         "hr",
         "mrp_sale_info",
         "stock_related_move_shortcut",
+        "gs1_digital_link",
     ],
     "data": [
         "security/ir.model.access.csv",
