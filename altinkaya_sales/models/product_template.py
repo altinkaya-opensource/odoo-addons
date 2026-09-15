@@ -36,6 +36,13 @@ class ProductTemplateAttributeLine(models.Model):
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    cut_to_order = fields.Boolean(
+        string="Cut to Order",
+        help=(
+            "This product is cut to the customer's specified dimensions when ordered."
+        ),
+    )
+
     # for sale configurator
     attr_price = fields.Float(
         digits="Product Price",

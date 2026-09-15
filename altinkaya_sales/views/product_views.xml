@@ -9,6 +9,17 @@
     />
 
     <data>
+        <record id="product_template_form_cut_to_order" model="ir.ui.view">
+            <field name="name">product.template.form.cut.to.order</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_general']" position="inside">
+                    <field name="cut_to_order" />
+                </xpath>
+            </field>
+        </record>
+
         <record id="product_template_old_price_form_attr_price" model="ir.ui.view">
             <field name="name">product.template.altinkaya_form_attr_price</field>
             <field name="model">product.template</field>
