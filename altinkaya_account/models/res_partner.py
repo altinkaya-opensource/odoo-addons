@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
-STATEMENT_BALANCE_BATCH_SIZE = 200
+STATEMENT_BALANCE_BATCH_SIZE = 10_000
 STATEMENT_BALANCE_FIELDS = (
     "balance",
     "currency_balance",
