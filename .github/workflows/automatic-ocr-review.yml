@@ -1,0 +1,12 @@
+name: Automatic OCR review
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+jobs:
+  review:
+    uses: altinkaya-opensource/altinkaya-ci/.github/workflows/ocr-review.yml@1591f76aece924d90bc5771d51889fbb0a045d13
+    secrets:
+      OCR_BOT_TOKEN: ${{ secrets.OCR_BOT_TOKEN }}
+      OCR_LLM_TOKEN: ${{ secrets.OCR_LLM_TOKEN }}
