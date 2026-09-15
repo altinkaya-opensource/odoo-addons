@@ -1,11 +1,11 @@
 # # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import base64
-import logging
 
-from odoo import fields, models
+from odoo import _, fields, models
 
-_logger = logging.getLogger(__name__)
+from odoo.addons.queue_job.exception import RetryableJobError
+from odoo.addons.queue_job.job import identity_exact
 
 
 class StockPicking(models.Model):
@@ -154,22 +154,32 @@ class StockPicking(models.Model):
                 picking.sale_shipping_cost_try = try_currency
 
     def _tracking_status_notification(self):
-        if (
-            self.carrier_id.delivery_type not in [False, "base_on_rule", "fixed"]
-            and self.carrier_id.send_sms_customer
-            and self.carrier_id.sms_service_id
-        ):
-            self.carrier_id.with_delay()._sms_notificaton_send(self)
+        """Queue shipment notices after the carrier status has been saved."""
+        for picking in self:
+            if (
+                picking.carrier_id.delivery_type not in [False, "base_on_rule", "fixed"]
+                and picking.carrier_id.send_sms_customer
+                and picking.carrier_id.sms_service_id
+            ):
+                picking.carrier_id.with_delay()._sms_notificaton_send(picking)
+        self.button_mail_send()
         return True
 
     def write(self, vals):
-        if "delivery_state" in vals:
-            if (
-                vals["delivery_state"] == "in_transit"
-                and vals["delivery_state"] != self.delivery_state
-            ):
-                self._tracking_status_notification()
-        return super().write(vals)
+        """Notify once on departure, or when a missing tracking number arrives."""
+        entering_transit = self.browse()
+        awaiting_tracking = self.browse()
+        if vals.get("delivery_state") == "in_transit":
+            entering_transit = self.filtered(lambda p: p.delivery_state != "in_transit")
+        if vals.get("shipping_number"):
+            awaiting_tracking = self.filtered(lambda p: not p.shipping_number)
+
+        result = super().write(vals)
+        entering_transit._tracking_status_notification()
+        (awaiting_tracking - entering_transit).filtered(
+            lambda p: p.delivery_state == "in_transit"
+        ).button_mail_send()
+        return result
 
     def action_print_delivery_documents(self):
         """
@@ -201,25 +211,59 @@ class StockPicking(models.Model):
         return self.env["res.partner"]
 
     def button_mail_send(self):
-        """
-        Send the shipment status by email
-        :return: boolean
-        """
-        mail_template = self.env.ref("delivery_integration_base.delivery_mail_template")
+        """Queue one customer shipment email, shared by automatic and manual sends."""
         for picking in self:
-            partner = picking._get_delivery_mail_partner()
-            if picking.mail_sent:
-                continue
-            if not partner:
-                _logger.info(
-                    "Skipping delivery email for picking %s without recipient email.",
-                    picking.name,
-                )
-                continue
-
-            picking.with_delay().message_post_with_template(mail_template.id)
-            picking.mail_sent = True
+            if picking._can_send_delivery_mail():
+                picking.with_delay(identity_key=identity_exact)._send_delivery_mail()
         return True
+
+    def _send_delivery_mail(self):
+        """Send in the queue worker and mark success only after provider acceptance."""
+        self.ensure_one()
+        # Pending-job identity deduplication does not cover an already running
+        # job. Serialize manual/automatic jobs for this picking before sending.
+        self.flush_recordset(["mail_sent"])
+        self.env.cr.execute(
+            "SELECT id FROM stock_picking WHERE id = %s FOR UPDATE", (self.id,)
+        )
+        self.invalidate_recordset()
+        if not self._can_send_delivery_mail():
+            return False
+
+        template = self.env.ref("delivery_integration_base.delivery_mail_template")
+        mail_id = template.send_mail(
+            self.id,
+            email_values={
+                # Inspect the result before cleanup. Keep the message on the
+                # picking even when the outgoing mail is subsequently deleted.
+                "auto_delete": False,
+                "is_notification": True,
+            },
+        )
+        mail = self.env["mail.mail"].sudo().browse(mail_id)
+        mail.send()
+        # Some connectors, including Postmark, record failures without raising.
+        if mail.state != "sent":
+            raise RetryableJobError(
+                _("Shipment email was not sent: %s", mail.failure_reason or mail.state)
+            )
+        self.mail_sent = True
+        if template.auto_delete:
+            mail.unlink()
+        return True
+
+    def _can_send_delivery_mail(self):
+        """Only notify customers about numbered, non-cancelled outgoing shipments."""
+        self.ensure_one()
+        return bool(
+            not self.mail_sent
+            and self.shipping_number
+            and self.state != "cancel"
+            and self.delivery_state != "canceled_shipment"
+            and self.picking_type_code == "outgoing"
+            and self.location_dest_id.usage == "customer"
+            and self._get_delivery_mail_partner()
+        )
 
     def _add_delivery_cost_to_so(self):
         """
