@@ -167,7 +167,7 @@ class TestPartnerStatementBalance(TransactionCase):
         partner_balance,
         company_due=0.0,
         partner_due=0.0,
-        refresh=True,
+        refresh=False,
     ):
         if refresh:
             self._refresh_balances()
@@ -320,6 +320,9 @@ class TestPartnerStatementBalance(TransactionCase):
     def test_sql_batch_skips_unchanged_rows(self):
         """One UPDATE handles a batch; the next identical run writes no rows."""
         self._create_three_currency_balance()
+        self.env.flush_all()
+        self.partner.write({"balance": 1.0})
+        self.env.flush_all()
         execute_values = partner_module.execute_values
         row_counts = []
 
@@ -409,32 +412,72 @@ class TestPartnerStatementBalance(TransactionCase):
         self.assertEqual(partners.mapped("balance"), [7500.0] * 4)
         self.assertEqual(partners.mapped("currency_balance"), [187.50] * 4)
 
-    def test_balances_change_only_when_cron_runs(self):
-        """Posting, editing, and reading must not refresh stored snapshots."""
-        for name in (
-            "balance",
-            "currency_balance",
-            "balance_due",
-            "currency_balance_due",
-        ):
-            self.assertFalse(self.partner._fields[name].compute)
-        with patch.object(
-            type(self.partner),
-            "_update_statement_balance_batch",
-            side_effect=AssertionError("Balances refreshed outside the cron"),
-        ):
-            move = self._create_move(self.usd_account, self.usd, 100.0, 3000.0)
-            self._assert_balances(0.0, 0.0, refresh=False)
+    def test_live_recompute_uses_sql_and_leaves_clean_cache(self):
+        """Automatic recomputation must not fall back to either ORM write path."""
+        move = self._create_move(self.usd_account, self.usd, 100.0, 3000.0)
         self._assert_balances(4000.0, 100.0)
-        with patch.object(
-            type(self.partner),
-            "_update_statement_balance_batch",
-            side_effect=AssertionError("Balances refreshed outside the cron"),
+        names = partner_module.STATEMENT_BALANCE_FIELDS
+        for name in names:
+            self.assertEqual(
+                self.partner._fields[name].compute, "_compute_balance_fields"
+            )
+        write_date = fields.Datetime.to_datetime("2000-01-01 00:00:00")
+        self.env.cr.execute(
+            "UPDATE res_partner SET write_date = %s WHERE id = %s",
+            (write_date, self.partner.id),
+        )
+        self.partner.invalidate_recordset()
+        write = type(self.partner).write
+        low_level_write = type(self.partner)._write
+
+        def write_partner(records, vals):
+            self.assertFalse(set(vals).intersection(names))
+            return write(records, vals)
+
+        def flush_partner(records, vals):
+            self.assertFalse(set(vals).intersection(names))
+            return low_level_write(records, vals)
+
+        with (
+            patch.object(type(self.partner), "write", write_partner),
+            patch.object(type(self.partner), "_write", flush_partner),
         ):
             move.button_cancel()
-            self.partner.property_rate_field = "tcmb_forex_buying"
-            self._assert_balances(4000.0, 100.0, refresh=False)
-        self._assert_balances(0.0, 0.0)
+            self.assertEqual(self.partner.balance, 0.0)
+            self.assertFalse(
+                self.env.cache.has_dirty_fields(
+                    self.partner, [self.partner._fields[name] for name in names]
+                )
+            )
+            self._assert_balances(0.0, 0.0)
+        self.assertEqual(self.partner.write_date, write_date)
+
+    def test_direct_call_with_pending_recompute_clears_the_queue(self):
+        """A legacy cron call must not recurse when these fields are pending."""
+        move = self._create_move(self.usd_account, self.usd, 100.0, 3000.0)
+        self._assert_balances(4000.0, 100.0)
+        line = move.line_ids.filtered(lambda line: line.account_id == self.usd_account)
+        line.date_maturity = self.today
+        balance_field = self.partner._fields["balance"]
+        self.assertTrue(self.env.is_to_compute(balance_field, self.partner))
+        self.partner._compute_balance_fields()
+        self._assert_balances(4000.0, 100.0, 4000.0, 100.0)
+        self.assertFalse(self.env.is_to_compute(balance_field, self.partner))
+
+    def test_unsaved_partner_balances_are_cached_without_sql(self):
+        """Onchange records need values in cache but cannot be sent to SQL."""
+        partner = self.env["res.partner"].new(
+            {"name": "Unsaved balance customer", "company_id": self.company.id}
+        )
+        with patch.object(
+            partner_module,
+            "execute_values",
+            side_effect=AssertionError("NewId passed to SQL"),
+        ):
+            self.assertEqual(
+                [partner[name] for name in partner_module.STATEMENT_BALANCE_FIELDS],
+                [0.0] * 4,
+            )
 
     def test_cron_batches_include_archived_contacts_and_clear_empty_partners(self):
         """Keyset batches visit every partner once, even with no due/move rows."""
@@ -495,7 +538,7 @@ class TestPartnerStatementBalance(TransactionCase):
             {"name": "Statement balance contact", "parent_id": self.partner.id}
         )
         self._create_three_currency_balance()
-        self._refresh_balances(self.partner | child)
+        self.env.flush_all()
         self.assertEqual(child.balance, 7500.0)
         self.assertEqual(child.currency_balance, 187.50)
 
