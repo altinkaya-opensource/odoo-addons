@@ -1439,5 +1439,5 @@ msgstr ""
 
 #. module: altinkaya_sales
 #: model:ir.model.fields,help:altinkaya_sales.field_product_category__cut_to_order
-msgid "Products assigned to this category are cut to order."
+msgid "Products in this category and its subcategories are cut to order."
 msgstr ""
