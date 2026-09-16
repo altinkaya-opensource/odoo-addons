@@ -1424,6 +1424,7 @@ msgid "İlgili Kişi"
 msgstr ""
 
 #. module: altinkaya_sales
+#: model:ir.model.fields,field_description:altinkaya_sales.field_product_category__cut_to_order
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_product__cut_to_order
 #: model:ir.model.fields,field_description:altinkaya_sales.field_product_template__cut_to_order
 msgid "Cut to Order"
@@ -1434,4 +1435,9 @@ msgstr ""
 #: model:ir.model.fields,help:altinkaya_sales.field_product_template__cut_to_order
 msgid ""
 "This product is cut to the customer's specified dimensions when ordered."
+msgstr ""
+
+#. module: altinkaya_sales
+#: model:ir.model.fields,help:altinkaya_sales.field_product_category__cut_to_order
+msgid "Products in this category and its subcategories are cut to order."
 msgstr ""
