@@ -16,8 +16,10 @@ import base64
 import hashlib
 import hmac
 import json
+import logging
 import random
 import string
+import time
 from datetime import datetime
 
 import requests
@@ -25,7 +27,10 @@ import requests
 from odoo import _, fields
 from odoo.exceptions import ValidationError
 
+from ..const import REQUEST_TIMEOUT, RETRY_BACKOFF, RETRY_COUNT
 from ..controllers.main import _IYZICO_RETURN_URL
+
+_logger = logging.getLogger(__name__)
 
 
 class iyzicoConnector:
@@ -164,12 +169,16 @@ class iyzicoConnector:
         assert encrypted_data == response_data["signature"], _("Invalid signature")
         return True
 
-    def _request(self, method, endpoint, data=None):
+    def _request(self, method, endpoint, data=None, retries=0):
         """Make an authenticated request to the Iyzico API.
 
         :param str method: HTTP method (e.g., 'POST').
         :param str endpoint: API endpoint.
         :param dict data: Request data.
+        :param int retries: How many times to retry when iyzico cannot be
+            reached. Pass a non-zero value only for endpoints that cannot move
+            money: a reset connection is no proof that iyzico did not process
+            the request.
         :return: Response data.
         :rtype: dict
         """
@@ -178,9 +187,26 @@ class iyzicoConnector:
         headers = {"Content-Type": "application/json"} if data else {}
 
         headers.update(self._generate_auth_headers(endpoint, body))
-        response = self._session.request(
-            method, url, headers=headers, data=body, timeout=30
-        )
+        for attempt in range(retries + 1):
+            try:
+                response = self._session.request(
+                    method, url, headers=headers, data=body, timeout=REQUEST_TIMEOUT
+                )
+                break
+            except requests.ConnectionError:
+                # Read timeouts are deliberately not retried: the request
+                # already reached iyzico and the customer has waited the full
+                # timeout for it.
+                if attempt == retries:
+                    raise
+                _logger.warning(
+                    "[iyzico] %s unreachable, retrying (%s/%s)",
+                    endpoint,
+                    attempt + 1,
+                    retries,
+                )
+                time.sleep(RETRY_BACKOFF * (attempt + 1))
+
         response.raise_for_status()
 
         response_data = response.json()
@@ -191,6 +217,8 @@ class iyzicoConnector:
 
     def check_installment(self, price, card_number=None):
         """Check available installment options for a given price and card.
+
+        Read-only call, so it is retried while iyzico is unreachable.
 
         :param float price: The transaction price.
         :param str card_number: The card number (optional).
@@ -205,7 +233,9 @@ class iyzicoConnector:
         if card_number:
             data["binNumber"] = card_number[:8]
 
-        return self._request("POST", "/payment/iyzipos/installment", data)
+        return self._request(
+            "POST", "/payment/iyzipos/installment", data, retries=RETRY_COUNT
+        )
 
     def _get_installed_included_price(self):
         """Calculate the total price including installment fees.
@@ -389,6 +419,9 @@ class iyzicoConnector:
     def initialize_3ds_process(self):
         """Initialize the 3DS payment process.
 
+        No money moves at this step, so the call is retried while iyzico is
+        unreachable.
+
         :return: 3DS HTML content.
         :rtype: str
         :raises ValidationError: If initialization fails.
@@ -396,11 +429,24 @@ class iyzicoConnector:
         data = self._prepare_payment_request_data()
         response = {}
         try:
-            response = self._request("POST", "/payment/3dsecure/initialize", data)
-            return response["threeDSHtmlContent"]
+            response = self._request(
+                "POST", "/payment/3dsecure/initialize", data, retries=RETRY_COUNT
+            )
+            html_content = response["threeDSHtmlContent"]
+            if response.get("paymentId"):
+                # Trust the authenticated initialization response, not the
+                # payment ID subsequently supplied to the public callback.
+                self.tx.provider_reference = str(response["paymentId"])
+            return html_content
         except KeyError:
-            raise ValidationError(response["errorMessage"])
+            raise ValidationError(
+                response.get("errorMessage")
+                or _("An error occurred. Please contact the administrator.")
+            )
         except Exception:
+            _logger.exception(
+                "[iyzico] 3DS initialization failed for %s", self.conversation_id
+            )
             raise ValidationError(
                 _("An error occurred. Please contact the administrator.")
             )
@@ -408,38 +454,75 @@ class iyzicoConnector:
     def make_non_3ds_payment(self):
         """Make a non-3DS payment.
 
-        :return: Tuple of status and response data.
+        This call charges the card, so it is never retried.
+
+        :return: ``(status, payload)``; see `auth_3ds_response` for the meaning
+            of each status.
         :rtype: tuple
-        :raises ValidationError: If payment fails.
         """
         data = self._prepare_payment_request_data()
-        response = {}
         try:
             res = self._request("POST", "/payment/auth", data)
-            if res.get("status") == "success":
-                return ("success", res)
-            else:
-                return ("error", f"({res.get('errorCode')}) {res.get('errorMessage')}")
-        except KeyError:
-            raise ValidationError(response["errorMessage"])
-        except Exception:
-            raise ValidationError(
-                _("An error occurred. Please contact the administrator.")
+        except requests.RequestException as e:
+            _logger.exception(
+                "[iyzico] payment left unconfirmed for %s", self.conversation_id
             )
+            return ("unknown", str(e))
+        except Exception as e:
+            _logger.exception("[iyzico] payment failed for %s", self.conversation_id)
+            return ("error", str(e))
+
+        if res.get("status") == "success":
+            return ("success", res)
+        return ("error", f"({res.get('errorCode')}) {res.get('errorMessage')}")
 
     def auth_3ds_response(self, response_data):
         """Authenticate the 3DS response.
 
+        This call charges the card, so it is never retried.
+
         :param dict response_data: 3DS response data.
-        :return: Tuple of status and response data or error message.
-        :rtype: tuple or str
+        :return: ``(status, payload)``. ``success`` carries the iyzico
+            response, ``error`` an error message, and ``unknown`` means iyzico
+            never confirmed the outcome, so the card may or may not have been
+            charged.
+        :rtype: tuple
         """
         try:
             data = self._prepare_3ds_auth_data(response_data)
             res = self._request("POST", "/payment/3dsecure/auth", data)
-            if res.get("status") == "success" and res.get("mdStatus") == 1:
-                return ("success", res)
-            else:
-                return ("error", f"({res.get('errorCode')}) {res.get('errorMessage')}")
+        except requests.RequestException as e:
+            _logger.exception(
+                "[iyzico] 3DS auth unanswered for paymentId %s",
+                response_data.get("paymentId"),
+            )
+            return ("unknown", str(e))
         except Exception as e:
-            return str(e)
+            _logger.exception(
+                "[iyzico] 3DS auth failed for paymentId %s",
+                response_data.get("paymentId"),
+            )
+            return ("error", str(e))
+
+        if res.get("status") == "success" and res.get("mdStatus") == 1:
+            return ("success", res)
+        return ("error", f"({res.get('errorCode')}) {res.get('errorMessage')}")
+
+    def retrieve_payment(self, payment_id=None, conversation_id=None):
+        """Ask iyzico for the final state of a payment it never confirmed.
+
+        Read-only call, so it is retried while iyzico is unreachable.
+
+        :param str payment_id: The iyzico payment id, when one was recorded.
+        :param str conversation_id: The conversation id of the original
+            payment request, used when no payment id is available.
+        :return: Response data, including the `paymentStatus` of the payment.
+        :rtype: dict
+        """
+        data = {"locale": self.locale, "conversationId": self.conversation_id}
+        if payment_id:
+            data["paymentId"] = payment_id
+        else:
+            data["paymentConversationId"] = conversation_id
+
+        return self._request("POST", "/payment/detail", data, retries=RETRY_COUNT)
