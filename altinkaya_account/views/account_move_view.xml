@@ -119,6 +119,7 @@
                 <page string="Payments">
                     <field name="payment_ids">
                         <tree>
+                            <field name="state" invisible="1" />
                             <field name="date" string="Payment Date" />
                             <field name="move_id" />
                             <field name="ref" />
