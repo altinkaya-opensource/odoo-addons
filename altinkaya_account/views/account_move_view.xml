@@ -112,26 +112,6 @@
                 <field name="total_balance" string="Total Balance" />
             </xpath>
 
-            <xpath
-                expr="/form/sheet/notebook/page[@name='other_info']"
-                position="after"
-            >
-                <page string="Payments">
-                    <field name="payment_ids">
-                        <tree>
-                            <field name="state" invisible="1" />
-                            <field name="date" string="Payment Date" />
-                            <field name="move_id" />
-                            <field name="ref" />
-                            <field name="name" />
-                            <field name="journal_id" />
-                            <field name="currency_id" invisible="1" />
-                            <field name="amount_total" currency_field="currency_id" />
-                        </tree>
-                    </field>
-                </page>
-            </xpath>
-
             <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
                 <field name="move_type" invisible="1" />
                 <field
