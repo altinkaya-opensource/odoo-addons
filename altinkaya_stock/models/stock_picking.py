@@ -49,6 +49,7 @@ class StockPicking(models.Model):
             ("A", "Boyada"),
             ("B", "Piyasadan Teminde"),
             ("C", "Otomatta"),
+            ("D", "Rafında"),
         ],
         "Durumu",
         index=True,
