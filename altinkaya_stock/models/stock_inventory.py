@@ -1,6 +1,7 @@
 # Copyright 2024 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import fields, models
+from odoo.osv import expression
 
 
 class StockInventory(models.Model):
@@ -13,10 +14,13 @@ class StockInventory(models.Model):
 
     def _get_quants(self, locations):
         """
-        Filter out positive quantities if negative_qty filter is selected
+        Return only the negative quants of the given locations when the
+        negative_qty filter is selected.
         :return: stock.quant
         """
-        res = super()._get_quants(locations)
-        if self.product_selection == "negative_qty":
-            res = res.filtered(lambda x: x.quantity < 0)
-        return res
+        if self.product_selection != "negative_qty":
+            return super()._get_quants(locations)
+        domain = expression.AND(
+            [self._get_base_domain(locations), [("quantity", "<", 0)]]
+        )
+        return self.env["stock.quant"].search(domain)

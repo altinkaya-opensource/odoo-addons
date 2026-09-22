@@ -943,7 +943,7 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_inventory__product_selection__negative_qty
 msgid "Negative Quantities"
-msgstr ""
+msgstr "Negatif Miktarlar"
 
 #. module: altinkaya_stock
 #. odoo-python
