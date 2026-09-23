@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 07:15+0000\n"
-"PO-Revision-Date: 2026-07-10 07:15+0000\n"
+"POT-Creation-Date: 2026-09-23 09:04+0000\n"
+"PO-Revision-Date: 2026-09-23 09:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -568,11 +568,6 @@ msgid "Exist package to bind the selected move lines to."
 msgstr ""
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_location_inherit_altinkaya
-msgid "External note..."
-msgstr ""
-
-#. module: altinkaya_stock
 #: model:res.groups,name:altinkaya_stock.stock_force_avail_button
 msgid "Force Avail. Button"
 msgstr ""
@@ -687,18 +682,18 @@ msgid "Invoice Address"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
+msgid "Is Pallet"
+msgstr ""
+
+#. module: altinkaya_stock
 #. odoo-python
 #: code:addons/altinkaya_stock/models/stock_quant.py:0
 #, python-format
 msgid ""
 "It is not possible to unreserve more products of %s than you have in stock.\n"
 "Please contact your system administrator to rectify this issue."
-msgstr ""
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
-msgid "Is Pallet"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1210,6 +1205,11 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_stock_quant
 msgid "Quants"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__d
+msgid "Rafında"
 msgstr ""
 
 #. module: altinkaya_stock
@@ -1783,6 +1783,11 @@ msgstr ""
 #: model:ir.model,name:altinkaya_stock.model_stock_warehouse
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__warehouse_id
 msgid "Warehouse"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.altinkaya_customV7_stock_picking_out_form
+msgid "Warehouse Note"
 msgstr ""
 
 #. module: altinkaya_stock
