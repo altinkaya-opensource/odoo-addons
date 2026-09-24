@@ -3,7 +3,7 @@
 {
     "name": "Altinkaya Theme",
     "summary": "Modern light and dark themes for the Odoo backend",
-    "version": "16.0.1.4.3",
+    "version": "16.0.1.5.0",
     "category": "Themes/Backend",
     "author": "Altinkaya Enclosures, initOS GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",

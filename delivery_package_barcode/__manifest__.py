@@ -7,10 +7,9 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",
-    "version": "16.0.1.1.0",
+    "version": "16.0.1.2.0",
     "depends": [
         "base",
-        "barcodes",
         "sale",
         "stock",
         "account",
@@ -21,16 +20,9 @@
         "account_move_exception",
     ],
     "data": [
-        "security/ir.model.access.csv",
-        "wizard/delivery_package_barcode_wiz_views.xml",
         "views/res_partner_views.xml",
         "views/sale_order_views.xml",
         "reports/autoinvoicing_fail_notify_report.xml",
     ],
-    "assets": {
-        "web.assets_backend": [
-            "delivery_package_barcode/static/src/js/delivery_package_barcode.js",
-        ],
-    },
     "installable": True,
 }

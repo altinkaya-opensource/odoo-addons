@@ -73,17 +73,3 @@ class WizarPartnerStatement(models.TransientModel):
                 },
             )
         )
-
-
-class IrActionsReport(models.Model):
-    _inherit = "ir.actions.report"
-
-    def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
-        if (
-            report_ref
-            and str(report_ref).startswith("altinkaya_reports.report_partner_statement")
-            and self._context.get("active_model") == "res.partner"
-            and not res_ids
-        ):
-            res_ids = self._context.get("active_ids", [])
-        return super()._render_qweb_pdf(report_ref, res_ids=res_ids, data=data)

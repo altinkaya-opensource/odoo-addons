@@ -478,3 +478,10 @@ msgstr ""
 #: model_terms:payment.provider,auth_msg:payment_iyzico_altinkaya.payment_provider_iyzico
 msgid "Ödemeniz onaylandı."
 msgstr ""
+
+#. module: payment_iyzico_altinkaya
+#. odoo-python
+#: code:addons/payment_iyzico_altinkaya/models/payment_transaction.py:0
+#, python-format
+msgid "iyzico: The payment does not match this transaction."
+msgstr "iyzico: Ödeme bu işlemle eşleşmiyor."

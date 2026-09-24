@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo>
+<odoo noupdate="1">
     <!-- Import Orders Cron - Every 15 minutes -->
     <record id="cron_import_orders" model="ir.cron">
         <field name="name">Trendyol: Import Orders</field>

@@ -105,7 +105,19 @@
                     </group>
                 </xpath>
 
-                <xpath expr="//page[@name='note']" position='inside' />
+                <xpath expr="//group[@name='notes']" position="inside">
+                    <xpath
+                        expr="//page[@name='note']/field[@name='note']"
+                        position="move"
+                    />
+                </xpath>
+                <xpath
+                    expr="//group[@name='notes']/field[@name='note']"
+                    position="attributes"
+                >
+                    <attribute name="string">Warehouse Note</attribute>
+                    <attribute name="nolabel">0</attribute>
+                </xpath>
 
                 <field name="priority" position="replace" />
                 <field name="date_done" position="replace" />

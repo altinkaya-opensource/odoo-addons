@@ -6,7 +6,7 @@
 
 import logging
 
-from odoo import fields, models
+from odoo import _, fields, models, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -23,6 +23,17 @@ RATE_FIELD_MAPPING = {
 
 class ResCurrencyRateSecond(models.Model):
     _inherit = "res.currency.rate"
+
+    def init(self):
+        """Index the latest applicable rate by currency and company."""
+        res = super().init()
+        tools.create_index(
+            self.env.cr,
+            "res_currency_rate_currency_company_date_idx",
+            self._table,
+            ["currency_id", "company_id", "name DESC"],
+        )
+        return res
 
     second_rate = fields.Float(
         digits=(12, 6),
@@ -111,11 +122,11 @@ class ResCurrencyRateSecond(models.Model):
         :return:
         """
         return [
-            ("rate", "Rate"),
-            ("tcmb_forex_buying", "TCMB Forex Buying"),
-            ("tcmb_forex_selling", "TCMB Forex Selling"),
-            ("tcmb_banknote_buying", "TCMB Banknote Buying"),
-            ("tcmb_banknote_selling", "TCMB Banknote Selling"),
-            ("altinkaynak_buying", "Altinkaynak Buying"),
-            ("altinkaynak_selling", "Altinkaynak Selling"),
+            ("rate", _("Rate")),
+            ("tcmb_forex_buying", _("TCMB Forex Buying")),
+            ("tcmb_forex_selling", _("TCMB Forex Selling")),
+            ("tcmb_banknote_buying", _("TCMB Banknote Buying")),
+            ("tcmb_banknote_selling", _("TCMB Banknote Selling")),
+            ("altinkaynak_buying", _("Altinkaynak Buying")),
+            ("altinkaynak_selling", _("Altinkaynak Selling")),
         ]

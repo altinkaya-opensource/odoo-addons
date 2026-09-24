@@ -3,14 +3,15 @@
 {
     "name": "AI Translate",
     "summary": "Translate any fields in web dialog using OpenRouter LLM.",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
-    "depends": ["web", "export_translation_file"],
+    "depends": ["web", "export_translation_file", "altinkaya_llm"],
     "external_dependencies": {"python": ["polib", "requests"]},
     "data": [
         "security/security.xml",
+        "data/llm_model_data.xml",
         "views/ai_translation_config_view.xml",
         "views/ai_translation_glossary_view.xml",
         "views/menus.xml",

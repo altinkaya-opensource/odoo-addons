@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 07:15+0000\n"
-"PO-Revision-Date: 2026-07-10 07:15+0000\n"
+"POT-Creation-Date: 2026-09-23 09:04+0000\n"
+"PO-Revision-Date: 2026-09-23 09:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,7 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_mrp_bom_line
 msgid "Bill of Material Line"
-msgstr "Ürün Reçetesi Satırları"
+msgstr "Ürün Ağacı Satırı"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_boya
@@ -568,11 +568,6 @@ msgid "Exist package to bind the selected move lines to."
 msgstr "Hareket satırlarını bağlamak için mevcut paket."
 
 #. module: altinkaya_stock
-#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_location_inherit_altinkaya
-msgid "External note..."
-msgstr "Not..."
-
-#. module: altinkaya_stock
 #: model:res.groups,name:altinkaya_stock.stock_force_avail_button
 msgid "Force Avail. Button"
 msgstr "Uygunluğu Zorla Butonu"
@@ -687,6 +682,12 @@ msgid "Invoice Address"
 msgstr "Fatura Adresi"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
+msgid "Is Pallet"
+msgstr "Palet mi"
+
+#. module: altinkaya_stock
 #. odoo-python
 #: code:addons/altinkaya_stock/models/stock_quant.py:0
 #, python-format
@@ -694,15 +695,8 @@ msgid ""
 "It is not possible to unreserve more products of %s than you have in stock.\n"
 "Please contact your system administrator to rectify this issue."
 msgstr ""
-"%s ürünü için mevcut rezervasyondan daha fazla miktarın rezervasyonu "
-"kaldırılamaz.\n"
+"%s ürünü için mevcut rezervasyondan daha fazla miktarın rezervasyonu kaldırılamaz.\n"
 "Sorunu düzeltmek için lütfen sistem yöneticinize başvurun."
-
-#. module: altinkaya_stock
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_package_type__is_pallet
-#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_quant_package__is_pallet
-msgid "Is Pallet"
-msgstr "Palet mi"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_mrp_production__qty_available_kaplama
@@ -943,7 +937,7 @@ msgstr ""
 #. module: altinkaya_stock
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_inventory__product_selection__negative_qty
 msgid "Negative Quantities"
-msgstr ""
+msgstr "Negatif Miktarlar"
 
 #. module: altinkaya_stock
 #. odoo-python
@@ -1187,7 +1181,7 @@ msgstr "Ürün Türü"
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_product_product
 msgid "Product Variant"
-msgstr "Ürün"
+msgstr "Ürün Varyantı"
 
 #. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_mrp_production
@@ -1214,6 +1208,11 @@ msgstr "Miktar"
 #: model:ir.model,name:altinkaya_stock.model_stock_quant
 msgid "Quants"
 msgstr "Stok Parçaları"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__d
+msgid "Rafında"
+msgstr ""
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_location__priority
@@ -1796,6 +1795,11 @@ msgstr "Hacim Ölçü Birimleri"
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_change_picking_warehouse__warehouse_id
 msgid "Warehouse"
 msgstr "Depo"
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.altinkaya_customV7_stock_picking_out_form
+msgid "Warehouse Note"
+msgstr "Depo Notu"
 
 #. module: altinkaya_stock
 #. odoo-python

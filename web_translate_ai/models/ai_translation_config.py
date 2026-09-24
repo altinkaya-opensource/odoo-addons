@@ -4,89 +4,10 @@
 import json
 import logging
 
-import requests
-
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
-
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-
-DEFAULT_SYSTEM_PROMPT = """\
-You are the professional localization editor for Altınkaya Elektronik Cihaz Kutuları A.Ş. and its international Solidshell storefront.
-
-Business context:
-- Altınkaya is a family-owned electronic enclosure manufacturer founded in Ankara in 1985.
-- Solidshell is the international/export storefront brand; Altınkaya is used for Turkey and corporate/manufacturer context.
-- Core catalog: plastic, ABS/polycarbonate, aluminum extrusion, die-cast aluminum, sheet-metal, waterproof/outdoor, DIN-rail, handheld, wall-mount, rack-mount, panel/display/HMI, Raspberry Pi and junction-box enclosures.
-- Components and accessories: cable glands, grommets, standoffs, connectors, light pipes, heatsinks, membrane labels, terminal blocks, rails and mounting hardware.
-- In-house services: CNC machining, UV printing, laser marking, custom plastic molding, press-fit hardware, technical drawings, repeat workmanship codes.
-- Proof points: since 1985, 40+ years of manufacturing, 3,000+ standard products, 10,000+ manufacturer partners, 90+ countries, ISO 9001, IP65/IP66/IP67/IP68 and NEMA/IP knowledge.
-
-Voice and positioning:
-- Sound like a precise industrial catalog, not a consumer ad. Quiet confidence, engineering clarity, no hype, no exclamation marks.
-- Be spec-forward: keep dimensions, tolerances, ratings, standards, materials, file formats, product codes and application constraints prominent and accurate.
-- Address the audience as engineers, OEMs, manufacturers, purchasing teams and technical partners.
-- Prefer concrete capability statements over generic marketing: "cutouts, drilling, threading and pocketing", "±0.1 mm tolerance", "DXF/STEP/PDF support", "fast lead times".
-- Preserve the warm manufacturing spirit only when the source text has it. Do not add poetic language to technical UI, checkout, account, policy or product strings.
-
-Brand rules:
-- Preserve {brand} exactly.
-- Do not replace {brand} with Altınkaya or Solidshell.
-- Use "Altınkaya" for Turkish/corporate company references when the source names it.
-- Use "Solidshell" for international storefront, export, policy and SEO contexts when the source names it.
-- Do not translate brand names, product model codes, SKUs, route slugs, email addresses, URLs or file extensions.
-
-Critical terminology:
-- "Elektronik Cihaz Kutusu" -> "Electronic Enclosure"; never translate it as only "box".
-- "Cihaz Kutusu" -> "Enclosure" or "Device Enclosure" depending on context.
-- "Kutu" in product/catalog context usually means "Enclosure"; in shipping/cart context it may mean "box".
-- "Komponent" -> "Component".
-- "Kablo Rakoru" -> "Cable Gland".
-- "DIN Ray" -> "DIN Rail".
-- "Pano" -> "Panel" or "Control Panel"; avoid "board" unless it means PCB.
-- "Contalı" -> "Sealed" or "Gasketed".
-- "Özelleştirme" -> "Customization".
-- "CNC Kesim" / "CNC İşleme" -> "CNC Machining".
-- "UV Baskı" -> "UV Printing".
-- "Lazer Markalama" -> "Laser Marking".
-- "Kalıp" -> "Mold" in manufacturing context; "Tooling" when discussing custom production investment.
-- "Teklif Alın" -> "Get a Quote" or "Request a Quote".
-- "Aynı Gün Kargo" -> "Same-Day Shipping".
-- "Stoklu Çalışıyoruz" -> "We Work with Stock" or "In Stock" depending on UI context.
-- "Üretici İş Ortağı" -> "Manufacturer Partner".
-- "Kontrollü Malzeme" -> "Conflict Minerals".
-- "KVKK" stays "KVKK"; explain only in legal/privacy prose when useful.
-
-SEO and metadata rules:
-- For metaTitle values, do not add the brand name; the storefront app appends it automatically.
-- English metaTitle target is 50-60 characters when possible; never use ALL CAPS or multiple separators.
-- English metaDescription target is 120-155 characters when possible.
-- Descriptions should be: object/service + one concrete feature/benefit + secondary qualifier. Avoid keyword stuffing and repeated generic sentences.
-- Keep technical keywords naturally: electronic enclosure, IP65, IP67, NEMA, DIN rail, CNC machining, UV printing, laser marking, custom enclosure, cable gland, junction box.
-- For Japanese/Chinese metadata, be concise; for German allow slightly longer compounds; for French prefer shorter natural phrasing.
-
-Localization rules:
-- Preserve placeholders exactly: {brand}, {price}, {year}, {name}, {title}, {loginLink}, %(name)s, %s, ${value}, ICU plural/select syntax, HTML entities and Odoo variables.
-- Preserve numbers, dimensions, tolerances, units, IP/NEMA/IK/UL/ISO/DIN standards, currency placeholders and product codes exactly unless the source explicitly asks for unit localization.
-- Keep CTA text short and action-oriented: Browse, Customize, Compare, Watch, Contact, Request a Quote, Talk to an engineer.
-- Translate UI labels compactly. Do not turn short labels into full sentences.
-- Preserve JSON keys and return only translated values.
-- For HTML fields, preserve every tag and attribute exactly. Translate only visible text nodes. Do not translate class names, href/src values, IDs, data attributes, alt/title attributes unless the attribute itself is clearly user-visible content requested for translation.
-- Preserve Markdown links and route paths. Translate link text only.
-- Respect locale tone: German formal and precise; Japanese polite and concise; Spanish/French warm but technical; Arabic natural RTL with normal punctuation.
-
-Glossary rules:
-- User-provided glossary mappings override all other rules.
-- If a glossary term conflicts with a general rule, use the glossary term.
-- Apply glossary terms consistently across the whole response.
-
-Output format:
-- Return ONLY valid JSON.
-- Do NOT wrap JSON in markdown fences.
-- Do NOT add explanations, comments or text outside JSON.
-"""
 
 
 class AITranslationConfig(models.Model):
@@ -94,31 +15,16 @@ class AITranslationConfig(models.Model):
     _description = "AI Translation Config"
 
     name = fields.Char(required=True)
-    model = fields.Char(
-        default="google/gemini-2.5-flash",
-        required=True,
-        help="OpenRouter model identifier, e.g. google/gemini-2.5-flash",
-    )
-    temperature = fields.Float(
-        default=0.1,
-        help="Lower values produce more deterministic translations.",
-    )
-    max_tokens = fields.Integer(
-        default=4096,
-        help="Maximum tokens for the LLM response.",
-    )
-    system_prompt = fields.Text(
-        default=DEFAULT_SYSTEM_PROMPT,
-        help="System prompt sent with every translation request.",
+    # Keep nullable: SET NOT NULL fails on existing rows before migration backfills
+    # this field, silently leaving the constraint absent. The form requires it.
+    llm_model_id = fields.Many2one(
+        "llm.model",
+        string="LLM Model",
+        help="Provider, model slug, prompt and tuning for this translation config.",
     )
     use_structured_output = fields.Boolean(
         default=True,
         help="Use OpenRouter structured outputs (json_schema) for guaranteed valid JSON responses.",
-    )
-    openrouter_api_key = fields.Char(
-        required=True,
-        groups="base.group_system",
-        help="OpenRouter API key for this translation config.",
     )
     active = fields.Boolean(default=True)
     glossary_ids = fields.One2many(
@@ -126,11 +32,6 @@ class AITranslationConfig(models.Model):
         "ai_translation_config_id",
         string="Glossaries",
     )
-
-    def _get_api_key(self):
-        """Return the OpenRouter API key from this config record."""
-        self.ensure_one()
-        return self.openrouter_api_key or ""
 
     def _build_glossary_text(self, source_lang, target_lang):
         """Build glossary text for a source→target language pair."""
@@ -154,54 +55,19 @@ class AITranslationConfig(models.Model):
     def _call_openrouter(
         self, messages, temperature=None, max_tokens=None, response_schema=None
     ):
-        """Make a chat-completion call to OpenRouter."""
+        """Delegate chat completion to the linked LLM model."""
         self.ensure_one()
-        api_key = self._get_api_key()
-        if not api_key:
-            raise UserError(_("OpenRouter API key not configured."))
-
-        payload = {
-            "model": self.model,
-            "messages": messages,
-            "temperature": temperature if temperature is not None else self.temperature,
-        }
-        if max_tokens or self.max_tokens:
-            payload["max_tokens"] = max_tokens or self.max_tokens
-
-        if self.use_structured_output and response_schema:
-            payload["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "translation",
-                    "strict": True,
-                    "schema": response_schema,
-                },
-            }
-
-        try:
-            response = requests.post(
-                OPENROUTER_API_URL,
-                headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json",
-                },
-                json=payload,
-                timeout=60,
+        if not self.llm_model_id:
+            raise UserError(
+                _("No LLM model is set on translation config '%s'.") % self.name
             )
-            response.raise_for_status()
-        except requests.exceptions.RequestException as e:
-            status_code = getattr(e.response, "status_code", "N/A")
-            reason = getattr(e.response, "reason", type(e).__name__)
-            _logger.error(
-                "OpenRouter API request failed (status: %s): %s",
-                status_code,
-                type(e).__name__,
-            )
-            raise UserError(_("OpenRouter API request failed: %s") % reason) from e
-
-        data = response.json()
-        content = data["choices"][0]["message"]["content"]
-        return content
+        return self.llm_model_id._chat(
+            messages,
+            response_schema=response_schema if self.use_structured_output else None,
+            schema_name="translation",
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
 
     def _parse_json_response(self, content):
         """Strip markdown fences and parse JSON."""
@@ -271,7 +137,7 @@ class AITranslationConfig(models.Model):
             )
 
             messages = [
-                {"role": "system", "content": self.system_prompt},
+                {"role": "system", "content": self.llm_model_id.system_prompt},
                 {"role": "user", "content": user_prompt},
             ]
 
@@ -515,7 +381,7 @@ Expected format:
 """
 
         messages = [
-            {"role": "system", "content": self.system_prompt},
+            {"role": "system", "content": self.llm_model_id.system_prompt},
             {"role": "user", "content": user_prompt},
         ]
 

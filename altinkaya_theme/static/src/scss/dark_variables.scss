@@ -28,6 +28,7 @@ $o-altinkaya-required-text: #f0e9ff;
 $o-altinkaya-warning-bg: #302b22;
 $o-altinkaya-warning-text: #f4d69b;
 $o-altinkaya-warning-border: #9a7739;
+$o-altinkaya-alert-tint: 18%;
 $o-altinkaya-list-header-bg: #353d49;
 $o-altinkaya-list-header-border: #75859a;
 $o-altinkaya-list-stripe-bg: #2c323b;
@@ -41,16 +42,16 @@ $o-brand-primary: $o-community-color;
 $o-brand-secondary: $o-gray-600;
 $o-brand-lightsecondary: $o-gray-200;
 
-$o-success: #237b60;
-$o-info: #286e89;
-$o-warning: #e4b568;
-$o-danger: #b4445c;
+$o-success: #0f853d;
+$o-info: #0b7fa0;
+$o-warning: #f5a300;
+$o-danger: #d92638;
 $o-theme-text-colors: (
   "primary": $o-altinkaya-accent,
-  "success": #83d8b5,
-  "info": #87cee8,
-  "warning": #edc787,
-  "danger": #f291a3,
+  "success": #3cdd77,
+  "info": #30b8f8,
+  "warning": #fabc1e,
+  "danger": #ff828d,
   "odoo": $o-altinkaya-accent,
 );
 
@@ -122,5 +123,5 @@ $form-switch-checked-color: #ffffff;
 $modal-backdrop-bg: #000000;
 
 $o-altinkaya-invalid-bg: #482934;
-$o-altinkaya-invalid-text: #f291a3;
+$o-altinkaya-invalid-text: #ff828d;
 $o-altinkaya-required-placeholder: #c6b5df;
