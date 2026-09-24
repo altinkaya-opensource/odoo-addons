@@ -136,7 +136,7 @@
                                 <tr>
                                     <td>
                                         <h6>Makine Adı:
-                                            <span t-field="o.x_makine" />
+                                            <span t-field="o.machine_workcenter_id" />
                                         </h6>
                                     </td>
                                     <td>
