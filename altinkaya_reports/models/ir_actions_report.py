@@ -1,4 +1,4 @@
-from odoo import _, models
+from odoo import _, api, models
 from odoo.exceptions import UserError
 
 GODEX_LABEL_REPORTS = (
@@ -13,6 +13,32 @@ GODEX_LABEL_REPORTS = (
 
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
+
+    @api.model
+    def _unbind_legacy_warehouse_slips(self):
+        """Keep old actions callable by older apps, but remove menu duplicates."""
+        current = self.env.ref(
+            "altinkaya_reports.stock_pickingaltinkaya"
+        ) | self.env.ref("altinkaya_reports.stock_pickingaltinkaya_print")
+        self.search(
+            [
+                ("model", "=", "stock.picking"),
+                ("report_name", "=like", "altinkaya_reports.report_picking_altinkaya%"),
+                ("id", "not in", current.ids),
+                ("binding_model_id", "!=", False),
+            ]
+        ).write({"binding_model_id": False})
+
+    def _get_user_default_printer(self, user):
+        printer = super()._get_user_default_printer(user)
+        if (
+            self.report_name == "altinkaya_reports.report_picking_altinkaya_print"
+            and not printer
+        ):
+            raise UserError(
+                _("Set your default printer before printing a warehouse slip.")
+            )
+        return printer
 
     def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         if (

@@ -401,6 +401,10 @@ Stokta:
         </xpath>
     </template>
 
+    <template id="report_picking_altinkaya_print">
+        <t t-call="altinkaya_reports.report_picking_altinkaya" />
+    </template>
+
     <template id="report_picking_altinkayaB">
         <t t-call="altinkaya_reports.report_picking_altinkaya" />
     </template>

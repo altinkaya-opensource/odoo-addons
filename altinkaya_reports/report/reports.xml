@@ -45,6 +45,24 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="stock_pickingaltinkaya_print" model="ir.actions.report">
+        <field name="name">Depo Fişi Yazdır</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field
+            name="report_name"
+        >altinkaya_reports.report_picking_altinkaya_print</field>
+        <field
+            name="report_file"
+        >altinkaya_reports.report_picking_altinkaya_print</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">report</field>
+        <field
+            name="property_printing_action_id"
+            ref="base_report_to_printer.printing_action_1"
+        />
+    </record>
+
     <record id="stock_pickingaltinkayaS" model="ir.actions.report">
         <field name="name">Depo Fişi Sincan</field>
         <field name="model">stock.picking</field>
@@ -144,6 +162,8 @@
         <field name="binding_model_id" ref="stock.model_stock_picking" />
         <field name="binding_type">report</field>
     </record>
+
+    <function model="ir.actions.report" name="_unbind_legacy_warehouse_slips" />
 
     <record id="mrp_production_altinkayaK" model="ir.actions.report">
         <field name="name">Üretim Emri Kardex</field>
