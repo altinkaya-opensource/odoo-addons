@@ -1966,3 +1966,9 @@ msgstr "₺ Bakiye"
 #: model_terms:ir.ui.view,arch_db:altinkaya_reports.report_partner_statement_currency_table
 msgid "₺ Tutar"
 msgstr "₺ Tutar"
+
+#. module: altinkaya_reports
+#: code:addons/altinkaya_reports/models/ir_actions_report.py:0
+#, python-format
+msgid "Set your default printer before printing a warehouse slip."
+msgstr "Depo fişi yazdırmadan önce varsayılan yazıcınızı ayarlayın."
