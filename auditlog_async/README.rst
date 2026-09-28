@@ -22,9 +22,3 @@ is historical: logging used to be deferred to `queue_job`.
 Rules are configured as usual in Settings > Technical > Audit > Rules. `log_type` keeps
 its meaning: a full rule logs every audited field on create and the names of x2many
 records, a fast rule logs the fields given to `create` and x2many ids.
-
-## Former backlog
-
-Entries left in `auditlog.pending` by the queue_job-based version are drained by the
-"Auditlog: Process Pending Entries" cron, which runs again right away while entries
-remain. Processed entries are deleted after 7 days.
