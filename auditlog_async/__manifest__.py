@@ -3,7 +3,7 @@
 
 {
     "name": "Auditlog Async",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "category": "Tools",
     "summary": "Async audit logging with queue_job for better performance",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",
