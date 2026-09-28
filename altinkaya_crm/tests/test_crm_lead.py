@@ -32,3 +32,8 @@ class TestCRMLeadCurrency(TransactionCase):
 
         lead.currency_id = usd
         self.assertEqual(lead.expected_revenue_usd, 1000.0)
+
+    def test_lead_created_without_currency_gets_the_company_one(self):
+        lead = self.env["crm.lead"].create({"name": "Lead from code"})
+        self.assertEqual(lead.currency_id, lead.company_id.currency_id)
+        self.assertEqual(lead.currency_id, self.env.company.currency_id)
