@@ -11,6 +11,13 @@ _logger = logging.getLogger(__name__)
 
 
 class AuditlogPending(models.Model):
+    """Backlog of the former queue_job-based capture.
+
+    Changes are now logged in their own transaction (see auditlog.rule), so no
+    new entries are created. The cron drains what is left, then this model can
+    be removed.
+    """
+
     _name = "auditlog.pending"
     _description = "Pending Audit Log Entries"
     _order = "create_date"
@@ -51,8 +58,8 @@ class AuditlogPending(models.Model):
     retry_count = fields.Integer(default=0)
 
     @api.model
-    def process_pending_batch(self, batch_size=5000):
-        """Process pending entries - called by queue_job.
+    def process_pending_batch(self, batch_size=1000):
+        """Process one batch of pending entries.
 
         Uses FOR UPDATE SKIP LOCKED for concurrent worker safety.
         Returns True if more work may exist, False otherwise.
@@ -215,14 +222,9 @@ class AuditlogPending(models.Model):
 
     @api.model
     def trigger_processing(self):
-        """Trigger async processing via queue_job."""
-        # Check if there are pending entries before creating a job
-        if self.search_count([("state", "=", "pending")]) > 0:
-            self.with_delay(
-                priority=5,
-                channel="root.auditlog",
-                description="Process audit log entries",
-            ).process_pending_batch()
+        """Process one batch from the cron and run it again until none is left."""
+        if self.process_pending_batch():
+            self.env.ref("auditlog_async.ir_cron_process_pending_auditlog")._trigger()
 
     @api.model
     def cleanup_done(self, days=7):
