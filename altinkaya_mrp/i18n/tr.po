@@ -933,15 +933,15 @@ msgstr ""
 #. odoo-python
 #: code:addons/altinkaya_mrp/wizards/change_production_qty.py:0
 #, python-format
-msgid "You can only increase or decrease the quantity by 10%"
-msgstr "Miktarı sadece %10 artırabilir veya azaltabilirsiniz"
+msgid "You can change the quantity by at most %(tolerance)s%%."
+msgstr "Miktarı en fazla %%%(tolerance)s değiştirebilirsiniz."
 
 #. module: altinkaya_mrp
 #. odoo-python
 #: code:addons/altinkaya_mrp/models/mrp_production.py:0
 #, python-format
-msgid "You can only produce 10% more than the original quantity."
-msgstr "Üretim miktarının %10'undan daha fazla üretim yapamazsınız."
+msgid "You can produce at most %(tolerance)s%% more than planned."
+msgstr "Planlanan miktarı en fazla %%%(tolerance)s aşabilirsiniz."
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
