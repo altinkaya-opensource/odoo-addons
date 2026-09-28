@@ -78,100 +78,106 @@ class AuditlogPending(models.Model):
             return False
 
         for pending in self.browse(pending_ids):
-            pending._process_single()
+            try:
+                # A database error aborts the transaction; without the
+                # savepoint it would roll back the whole batch forever.
+                with self.env.cr.savepoint():
+                    pending._process_single()
+            except Exception as e:
+                _logger.exception("Error processing auditlog pending %s", pending.id)
+                pending.write(
+                    {
+                        "state": "error",
+                        "error_message": str(e),
+                        "retry_count": pending.retry_count + 1,
+                    }
+                )
 
         return True
 
     def _process_single(self):
-        """Process a single pending entry."""
+        """Process a single pending entry. Errors are handled by the caller."""
         self.ensure_one()
-        try:
-            rule_model = self.env["auditlog.rule"]
+        rule_model = self.env["auditlog.rule"]
 
-            # Check if model still exists in registry
-            if self.model_name not in self.env:
-                self.write(
-                    {
-                        "state": "error",
-                        "error_message": _("Model %s not found in registry")
-                        % self.model_name,
-                    }
-                )
-                return
-
-            model_obj = self.env[self.model_name]
-
-            old_values = json.loads(self.old_values_json or "{}")
-
-            # Prepare old/new value dicts for create_logs
-            if self.method == "write":
-                # old_values were captured before write - use them directly
-                old_vals = {self.res_id: old_values}
-                # new_values must be read from DB because vals may contain
-                # x2many command tuples like [[3, id]] instead of actual IDs
-                record = model_obj.browse(self.res_id)
-                if record.exists():
-                    fields_list = rule_model.get_auditlog_fields(model_obj)
-                    new_values = {self.res_id: record.sudo().read(fields_list)[0]}
-                else:
-                    # Record was deleted after write
-                    new_values = {self.res_id: {}}
-
-            elif self.method == "create":
-                record = model_obj.browse(self.res_id)
-                if record.exists():
-                    fields_list = rule_model.get_auditlog_fields(model_obj)
-                    new_values = {self.res_id: record.sudo().read(fields_list)[0]}
-                else:
-                    # Record was deleted after create - skip logging
-                    # Input values contain x2many command tuples that can't be processed
-                    _logger.debug(
-                        "Skipping create log for %s(%s) - record deleted",
-                        self.model_name,
-                        self.res_id,
-                    )
-                    self.write({"state": "done"})
-                    return
-                old_vals = {}
-
-            elif self.method == "unlink":
-                # For unlink, we captured old values before deletion
-                # Filter out x2many fields with cascade-deleted related records
-                filtered_values = self._filter_deleted_x2many(model_obj, old_values)
-                old_vals = {self.res_id: filtered_values}
-                new_values = {}
-
-            else:
-                self.write(
-                    {
-                        "state": "error",
-                        "error_message": _("Unknown method: %s") % self.method,
-                    }
-                )
-                return
-
-            # Create the actual audit log using existing auditlog infrastructure
-            rule_model.sudo().create_logs(
-                self.user_id,
-                self.model_name,
-                [self.res_id],
-                self.method,
-                old_vals or None,
-                new_values or None,
-                {"log_type": self.log_type},
-            )
-
-            self.write({"state": "done"})
-
-        except Exception as e:
-            _logger.exception("Error processing auditlog pending %s", self.id)
+        # Check if model still exists in registry
+        if self.model_name not in self.env:
             self.write(
                 {
                     "state": "error",
-                    "error_message": str(e),
-                    "retry_count": self.retry_count + 1,
+                    "error_message": _("Model %s not found in registry")
+                    % self.model_name,
                 }
             )
+            return
+
+        model_obj = self.env[self.model_name]
+
+        old_values = json.loads(self.old_values_json or "{}")
+
+        # Prepare old/new value dicts for create_logs
+        if self.method == "write":
+            # old_values were captured before write - use them directly
+            old_vals = {self.res_id: old_values}
+            # new_values must be read from DB because vals may contain
+            # x2many command tuples like [[3, id]] instead of actual IDs
+            record = model_obj.browse(self.res_id)
+            if record.exists():
+                fields_list = rule_model.get_auditlog_fields(model_obj)
+                new_values = {self.res_id: record.sudo().read(fields_list)[0]}
+            else:
+                # Record was deleted after write
+                new_values = {self.res_id: {}}
+
+        elif self.method == "create":
+            record = model_obj.browse(self.res_id)
+            if record.exists():
+                fields_list = rule_model.get_auditlog_fields(model_obj)
+                new_values = {self.res_id: record.sudo().read(fields_list)[0]}
+            else:
+                # Record was deleted after create - skip logging
+                # Input values contain x2many command tuples that can't be processed
+                _logger.debug(
+                    "Skipping create log for %s(%s) - record deleted",
+                    self.model_name,
+                    self.res_id,
+                )
+                self.write({"state": "done"})
+                return
+            old_vals = {}
+
+        elif self.method == "unlink":
+            # For unlink, we captured old values before deletion
+            # Filter out x2many fields with cascade-deleted related records
+            filtered_values = self._filter_deleted_x2many(model_obj, old_values)
+            old_vals = {self.res_id: filtered_values}
+            new_values = {}
+
+        else:
+            self.write(
+                {
+                    "state": "error",
+                    "error_message": _("Unknown method: %s") % self.method,
+                }
+            )
+            return
+
+        # A user deleted since the change would violate the log's foreign key;
+        # log it without a user, as the FK's ON DELETE SET NULL would have.
+        user = self.env["res.users"].browse(self.user_id).exists()
+
+        # Create the actual audit log using existing auditlog infrastructure
+        rule_model.sudo().create_logs(
+            user.id,
+            self.model_name,
+            [self.res_id],
+            self.method,
+            old_vals or None,
+            new_values or None,
+            {"log_type": self.log_type},
+        )
+
+        self.write({"state": "done"})
 
     def _filter_deleted_x2many(self, model_obj, old_values):
         """Filter x2many fields to remove IDs of cascade-deleted records.
