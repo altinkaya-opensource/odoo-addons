@@ -1,8 +1,11 @@
 # Copyright 2026 Altinkaya Enclosures
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from unittest.mock import patch
+
 from odoo import Command
 from odoo.tests.common import new_test_user, tagged
+from odoo.tools import mute_logger
 
 from odoo.addons.auditlog.tests.common import AuditLogRuleCommon
 from odoo.addons.base.models.res_users import name_boolean_group
@@ -120,3 +123,25 @@ class TestAuditlogBuffer(AuditLogRuleCommon):
         log = self._search_logs(self.user, "write")
         self.assertEqual(log.line_ids.field_name, "groups_id")
         self.assertIn(str(group.id), log.line_ids.new_value)
+
+    def test_logging_failure_keeps_the_change(self):
+        rule_class = type(self.env["auditlog.rule"])
+        create_logs = rule_class._create_buffered_logs
+
+        def failing_create_logs(rule, logs):
+            create_logs(rule, logs)
+            rule.env.cr.execute("SELECT 1 / 0")
+
+        self.partner.name = "Kept"
+        with (
+            patch.object(rule_class, "_create_buffered_logs", failing_create_logs),
+            mute_logger("odoo.sql_db"),
+            self.assertLogs("odoo.addons.auditlog_async.models.rule", level="ERROR"),
+        ):
+            self.env.cr.flush()
+
+        self.assertFalse(self._search_logs(self.partner, "write"))
+        self.env.cr.execute(
+            "SELECT name FROM res_partner WHERE id = %s", [self.partner.id]
+        )
+        self.assertEqual(self.env.cr.fetchone()[0], "Kept")

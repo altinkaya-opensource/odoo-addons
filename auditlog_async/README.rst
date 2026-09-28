@@ -16,6 +16,8 @@ is historical: logging used to be deferred to `queue_job`.
 - A rolled back transaction or savepoint logs nothing. Changes made through a parent,
   such as order lines saved from the order form, are logged like any other change.
 - The HTTP request and session of the log are the ones that made the change.
+- If writing the logs fails, the error is logged and the change is committed without
+  its logs.
 
 Rules are configured as usual in Settings > Technical > Audit > Rules. `log_type` keeps
 its meaning: a full rule logs every audited field on create and the names of x2many

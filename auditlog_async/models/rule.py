@@ -1,6 +1,7 @@
 # Copyright 2024 Altinkaya Enclosures
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
 from collections import defaultdict
 
 from odoo import _, api, models
@@ -8,6 +9,8 @@ from odoo.tools import clean_context
 
 from odoo.addons.auditlog.models.rule import FIELDS_BLACKLIST
 from odoo.addons.base.models.res_users import is_reified_group
+
+_logger = logging.getLogger(__name__)
 
 BUFFER_KEY = "auditlog_async.buffer"
 X2MANY_TYPES = ("one2many", "many2many")
@@ -165,15 +168,28 @@ class AuditlogRule(models.Model):
         buffer["logs"] += self._prepare_logs(records, unlink_entries)
 
     def _flush_buffer(self):
-        """Write the buffered changes as audit logs just before commit."""
+        """Write the buffered changes as audit logs just before commit.
+
+        A failure here loses these logs but never the audited change: the
+        error is logged and the transaction commits without them.
+        """
         buffer = self.env.cr.precommit.data.pop(BUFFER_KEY, None)
         if not buffer:
             return
         rule_model = self.sudo().with_context(clean_context(self.env.context))
-        logs = buffer["logs"] + rule_model._prepare_buffered_logs(buffer["entries"])
-        rule_model._create_buffered_logs(logs)
-        # This runs after the transaction's last flush; flush our own records.
+        # Persist what other precommit hooks left in the cache, so that
+        # clearing it after a failure only drops the audit records.
         self.env.flush_all()
+        try:
+            # A flushing savepoint would run the precommit hooks again.
+            with self.env.cr.savepoint(flush=False):
+                logs = buffer["logs"]
+                logs += rule_model._prepare_buffered_logs(buffer["entries"])
+                rule_model._create_buffered_logs(logs)
+                self.env.flush_all()
+        except Exception:
+            self.env.clear()
+            _logger.exception("Audit logs could not be written, change kept")
 
     @api.model
     def _prepare_buffered_logs(self, entries):
