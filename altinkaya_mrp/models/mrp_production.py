@@ -456,8 +456,10 @@ class MrpProduction(models.Model):
 
     def _get_next_open_move(self, moves):
         """Return the first open move taking the finished product of ``moves``
-        onwards. A component move of another production is not followed: its
-        bill of materials decides the quantity it needs."""
+        onwards. Several open moves at one step are backorder splits of the
+        same demand, so the difference goes to one of them, not to each. A
+        component move of another production is not followed: its bill of
+        materials decides the quantity it needs."""
         self.ensure_one()
         return moves.move_dest_ids.filtered(
             lambda m: (
