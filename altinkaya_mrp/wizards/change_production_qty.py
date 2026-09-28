@@ -4,6 +4,8 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+from ..models.mrp_production import PRODUCTION_QTY_TOLERANCE_PERCENT
+
 
 class ChangeProductionQty(models.TransientModel):
     _inherit = "change.production.qty"
@@ -71,14 +73,15 @@ class ChangeProductionQty(models.TransientModel):
         return res
 
     def _check_change_permitted(self):
-        """Check increase or decrease percentage is not more than 10%"""
+        """Check the new quantity stays within the production tolerance"""
         for wizard in self:
-            if (
-                abs(wizard.product_qty - wizard.mo_id.product_qty)
-                / wizard.mo_id.product_qty
-                >= 0.1
+            if not wizard.mo_id._is_within_qty_tolerance(
+                wizard.product_qty
             ) and not self.env.user.has_group("altinkaya_mrp.change_production_qty"):
                 raise ValidationError(
-                    _("You can only increase or decrease the quantity by 10%")
+                    _(
+                        "You can change the quantity by at most %(tolerance)s%%.",
+                        tolerance=PRODUCTION_QTY_TOLERANCE_PERCENT,
+                    )
                 )
         return True

@@ -930,14 +930,14 @@ msgstr ""
 #. odoo-python
 #: code:addons/altinkaya_mrp/wizards/change_production_qty.py:0
 #, python-format
-msgid "You can only increase or decrease the quantity by 10%"
+msgid "You can change the quantity by at most %(tolerance)s%%."
 msgstr ""
 
 #. module: altinkaya_mrp
 #. odoo-python
 #: code:addons/altinkaya_mrp/models/mrp_production.py:0
 #, python-format
-msgid "You can only produce 10% more than the original quantity."
+msgid "You can produce at most %(tolerance)s%% more than planned."
 msgstr ""
 
 #. module: altinkaya_mrp
