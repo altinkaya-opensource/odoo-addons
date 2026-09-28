@@ -4,11 +4,13 @@
 import json
 from unittest.mock import patch
 
+from odoo.tests.common import tagged
 from odoo.tools import mute_logger
 
 from odoo.addons.auditlog.tests.common import AuditLogRuleCommon
 
 
+@tagged("post_install", "-at_install")
 class TestAuditlogPending(AuditLogRuleCommon):
     @classmethod
     def setUpClass(cls):
@@ -93,3 +95,15 @@ class TestAuditlogPending(AuditLogRuleCommon):
         self.assertEqual(healthy.state, "done")
         self.assertEqual(len(self._search_logs(self.partner)), 1)
         self.assertFalse(self._search_logs(self.broken_partner))
+
+    def test_cron_runs_again_while_entries_remain(self):
+        self._create_pending(self.partner, self.env.uid)
+        cron = self.env.ref("auditlog_async.ir_cron_process_pending_auditlog")
+        trigger_domain = [("cron_id", "=", cron.id)]
+        triggers = self.env["ir.cron.trigger"].search(trigger_domain)
+
+        self.env["auditlog.pending"].trigger_processing()
+
+        new_triggers = self.env["ir.cron.trigger"].search(trigger_domain) - triggers
+        self.assertEqual(len(new_triggers), 1)
+        self.assertEqual(len(self._search_logs(self.partner)), 1)
