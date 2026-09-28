@@ -1,6 +1,6 @@
 {
     "name": "Altinkaya Stock",
-    "version": "16.0.0.1.2",
+    "version": "16.0.0.1.3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "author": "Ahmet Altınışık,OnurUgur,Codequarters,Yavuz Avcı,Altinkaya Enclosures",
@@ -26,6 +26,7 @@
         "views/stock_quant_view.xml",
         "views/stock_picking_views.xml",
         "views/stock_view.xml",
+        "views/stock_scrap_views.xml",
         "views/stock_location_view.xml",
         # "views/stock_location_route_views.xml",
         "views/sale_view.xml",
