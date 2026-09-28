@@ -497,6 +497,11 @@ msgid "Demand Quantity"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_scrap__description
+msgid "Description"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_choose_delivery_package__package_dimensions_uom_id
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet__package_dimensions_uom_id
 msgid "Dimensions Unit of Measure"

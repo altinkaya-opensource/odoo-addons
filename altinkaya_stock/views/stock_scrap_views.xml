@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_scrap_form_view_description" model="ir.ui.view">
+        <field name="name">stock.scrap.form.description</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group>
+                    <field name="description" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_scrap_form_view2_description" model="ir.ui.view">
+        <field name="name">stock.scrap.form2.description</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_form_view2" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/group" position="after">
+                <group>
+                    <field name="description" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
