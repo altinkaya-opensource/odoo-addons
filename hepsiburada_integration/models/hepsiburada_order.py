@@ -826,8 +826,8 @@ class HepsiburadaOrder(models.Model):
         """Prepare sale.order.line values from HB package line item.
 
         Product matching cascade:
-            productBarcode -> merchantSku -> normalized merchantSku -> hbSku
-            -> fallback.
+            merchantSku as default code -> merchantSku as barcode
+            -> productBarcode -> hbSku -> fallback.
         """
         merchant_sku = str(item.get("merchantSku") or "").strip()
         hb_sku = str(item.get("hbSku") or "").strip()
@@ -861,46 +861,32 @@ class HepsiburadaOrder(models.Model):
         )
         total_discount = hb_discount + merchant_discount
 
-        # Product matching cascade
+        # Product matching cascade. The merchantSku is the seller's own stock
+        # code and comes first: Hepsiburada locks the productBarcode (EAN) of
+        # a listing, and that EAN may be the barcode of another Odoo product.
         Product = self.env["product.product"]
         product = False
 
-        # 1. Match by productBarcode
-        if product_barcode:
-            product = Product.search([("barcode", "=", product_barcode)], limit=1)
-        # 2. Match by merchantSku as barcode
-        if not product and merchant_sku:
-            product = Product.search([("barcode", "=", merchant_sku)], limit=1)
-        # 3. Match by merchantSku as default_code
-        if not product and merchant_sku:
-            product = Product.search([("default_code", "=", merchant_sku)], limit=1)
-
-        # 4. Hepsiburada listings may contain Odoo's display-name form, e.g.
-        # ``[PC-278-0-0-S-0]``, instead of the raw default code. Only use the
-        # unwrapped value when it identifies a single product.
+        # Hepsiburada listings may contain Odoo's display-name form, e.g.
+        # ``[PC-278-0-0-S-0]``, instead of the raw default code.
         normalized_merchant_sku = merchant_sku
         if merchant_sku.startswith("[") and merchant_sku.endswith("]"):
             normalized_merchant_sku = merchant_sku[1:-1].strip()
-        if (
-            not product
-            and normalized_merchant_sku
-            and normalized_merchant_sku != merchant_sku
-        ):
-            candidates = Product.search(
-                [("default_code", "=", normalized_merchant_sku)], limit=2
-            )
-            if len(candidates) == 1:
-                product = candidates
-            elif candidates:
-                _logger.warning(
-                    "Ambiguous normalized merchantSku %s for order %s",
-                    normalized_merchant_sku,
-                    sale_order.name,
-                )
 
-        # 5. Match by hbSku as default_code
+        # 1. Match by merchantSku as default_code
+        if normalized_merchant_sku:
+            product = self._find_product_by_default_code(
+                normalized_merchant_sku, sale_order
+            )
+        # 2. Match by merchantSku as barcode
+        if not product and merchant_sku:
+            product = Product.search([("barcode", "=", merchant_sku)], limit=1)
+        # 3. Match by productBarcode
+        if not product and product_barcode:
+            product = Product.search([("barcode", "=", product_barcode)], limit=1)
+        # 4. Match by hbSku as default_code
         if not product and hb_sku:
-            product = Product.search([("default_code", "=", hb_sku)], limit=1)
+            product = self._find_product_by_default_code(hb_sku, sale_order)
 
         sku_info = merchant_sku or hb_sku or _("N/A")
 
@@ -952,6 +938,23 @@ class HepsiburadaOrder(models.Model):
             vals["tax_id"] = [(6, 0, [tax.id])]
 
         return vals
+
+    @api.model
+    def _find_product_by_default_code(self, code, sale_order):
+        """Return the product whose internal reference is ``code``.
+
+        Internal references are not unique, so an ambiguous code matches no
+        product instead of an arbitrary one.
+        """
+        products = self.env["product.product"].search(
+            [("default_code", "=", code)], limit=2
+        )
+        if len(products) > 1:
+            _logger.warning(
+                "Ambiguous default code %s for order %s", code, sale_order.name
+            )
+            return products.browse()
+        return products
 
     @api.model
     def _get_tax_for_rate(self, backend, vat_rate):
