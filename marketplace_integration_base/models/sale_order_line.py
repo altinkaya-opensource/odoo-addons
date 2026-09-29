@@ -23,6 +23,17 @@ class SaleOrderLine(models.Model):
         )
         return super(SaleOrderLine, self - marketplace_lines)._compute_price_unit()
 
+    def _compute_tax_id(self):
+        """Keep marketplace API taxes when the order's fiscal position changes.
+
+        API prices are VAT-included, so falling back to the product's
+        VAT-excluded default tax would add the VAT on top of the price.
+        """
+        marketplace_lines = self.filtered(
+            lambda line: line._is_marketplace_api_priced_line() and line.tax_id
+        )
+        return super(SaleOrderLine, self - marketplace_lines)._compute_tax_id()
+
     def explode_set_contents(self):
         """Distribute marketplace set prices across exploded component lines."""
         marketplace_set_lines = self.filtered(

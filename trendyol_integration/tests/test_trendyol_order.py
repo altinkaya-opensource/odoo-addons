@@ -8,6 +8,7 @@ from unittest.mock import Mock, patch
 
 from odoo import fields
 from odoo.exceptions import UserError, ValidationError
+from odoo.tests import tagged
 
 from .common import TrendyolTestCase
 
@@ -412,3 +413,57 @@ class TestTrendyolOrder(TrendyolTestCase):
         self.assertFalse(created.vat)
         self.assertEqual(created.trendyol_customer_id, "ty-invalid-reuse")
         self.assertFalse(decoy.trendyol_customer_id)
+
+
+@tagged("post_install", "-at_install")
+class TestTrendyolOrderTaxes(TrendyolTestCase):
+    """Run after every module loads: some add tax recompute triggers."""
+
+    def test_customer_change_keeps_marketplace_taxes(self):
+        """A new customer must not swap the VAT-included API tax."""
+        Tax = self.env["account.tax"]
+        included_tax = Tax.create(
+            {
+                "name": "TY VAT 10 Included",
+                "amount": 10,
+                "price_include": True,
+                "type_tax_use": "sale",
+            }
+        )
+        excluded_tax = Tax.create(
+            {"name": "TY VAT 10", "amount": 10, "type_tax_use": "sale"}
+        )
+        product = self.env["product.product"].create(
+            {
+                "name": "Marketplace Tax Product",
+                "type": "product",
+                "detailed_type": "product",
+                "taxes_id": [(6, 0, excluded_tax.ids)],
+            }
+        )
+        fiscal_position = self.env["account.fiscal.position"].create(
+            {"name": "Marketplace Fiscal Position"}
+        )
+        pricelist = self.env["product.pricelist"].create(
+            {"name": "Marketplace Tax Pricelist"}
+        )
+        sale, _order = self._create_sale_and_order(package_id="TAX")
+        sale.write(
+            {"pricelist_id": pricelist.id, "fiscal_position_id": fiscal_position.id}
+        )
+        line = self.env["sale.order.line"].create(
+            {
+                "order_id": sale.id,
+                "product_id": product.id,
+                "price_unit": 110,
+                "tax_id": [(6, 0, included_tax.ids)],
+            }
+        )
+
+        sale.partner_id = self.env["res.partner"].create(
+            {"name": "Real Customer", "property_product_pricelist": pricelist.id}
+        )
+
+        self.assertNotEqual(sale.fiscal_position_id, fiscal_position)
+        self.assertEqual(line.tax_id, included_tax)
+        self.assertAlmostEqual(sale.amount_total, 110)
