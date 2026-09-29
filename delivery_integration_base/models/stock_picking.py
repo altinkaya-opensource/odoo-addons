@@ -230,10 +230,11 @@ class StockPicking(models.Model):
         if not self._can_send_delivery_mail():
             return False
 
-        template = self.env.ref("delivery_integration_base.delivery_mail_template")
+        template = self._get_delivery_mail_template()
         mail_id = template.send_mail(
             self.id,
             email_values={
+                **self._prepare_delivery_mail_values(),
                 # Inspect the result before cleanup. Keep the message on the
                 # picking even when the outgoing mail is subsequently deleted.
                 "auto_delete": False,
@@ -263,7 +264,32 @@ class StockPicking(models.Model):
             and self.picking_type_code == "outgoing"
             and self.location_dest_id.usage == "customer"
             and self._get_delivery_mail_partner()
+            and self._get_delivery_mail_template()
         )
+
+    def _get_delivery_mail_template(self):
+        """Return the shipment email template, or none for an export shipment.
+
+        The default template is written for domestic customers. A module that
+        sends export shipping documents overrides this for international
+        shipments.
+        """
+        self.ensure_one()
+        if self._is_international_shipment():
+            return self.env["mail.template"]
+        return self.env.ref("delivery_integration_base.delivery_mail_template")
+
+    def _is_international_shipment(self):
+        """Tell whether the delivery address is outside the company's country."""
+        self.ensure_one()
+        company_country = self.company_id.country_id
+        country = self.partner_id.country_id
+        return bool(company_country and country and country != company_country)
+
+    def _prepare_delivery_mail_values(self):
+        """Return extra mail values, such as attachments, for the shipment email."""
+        self.ensure_one()
+        return {}
 
     def _add_delivery_cost_to_so(self):
         """

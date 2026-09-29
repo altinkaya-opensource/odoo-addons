@@ -1,5 +1,6 @@
 # Copyright 2026 Altinkaya Enclosures
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import base64
 import importlib.util
 from pathlib import Path
 from unittest.mock import patch
@@ -242,6 +243,29 @@ class TestDeliveryEmail(TransactionCase):
         self.customer.lang = False
         picking = self._picking(shipping_number="TRACK-1")
         self.assertEqual(self.template._render_lang(picking.ids)[picking.id], "en_US")
+
+    def test_international_shipment_needs_an_export_template(self):
+        self.env.company.country_id = self.env.ref("base.tr")
+        self.customer.country_id = self.env.ref("base.de")
+        picking = self._picking(shipping_number="TRACK-1")
+        with trap_jobs() as trap:
+            picking.delivery_state = "in_transit"
+            picking.button_mail_send()
+            trap.assert_jobs_count(0)
+        self.assertFalse(picking._send_delivery_mail())
+        self.assertFalse(self.sent)
+
+    def test_extra_mail_values_reach_the_message(self):
+        picking = self._picking(shipping_number="TRACK-1")
+        label = ("label.pdf", base64.b64encode(b"%PDF-1.4 label"))
+        with patch.object(
+            type(picking),
+            "_prepare_delivery_mail_values",
+            return_value={"attachments": [label]},
+        ):
+            picking._send_delivery_mail()
+        message = self.env["mail.message"].browse(self.sent[0]["message_id"])
+        self.assertEqual(message.attachment_ids.mapped("name"), ["label.pdf"])
 
     def test_template_upgrade_preserves_customized_copy(self):
         template = self.template.with_context(lang="en_US")

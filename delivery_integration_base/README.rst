@@ -24,6 +24,9 @@ Bu modül ne işe yarar?
   göndericisi gönderimi başarılı olarak kaydettikten sonra işaretlenir.
 - E-posta dili gerçek alıcıdan alınır; dil boşsa İngilizce kullanılır. Modül
   yükseltmesi, özelleştirilmiş şablonun metnini koruyarak dil ifadesini günceller.
+- Teslimat adresi şirketin ülkesi dışındaysa genel şablon gönderilmez. İhracat
+  belgelerini gönderen bir modül, `_get_delivery_mail_template` ile kendi
+  şablonunu, `_prepare_delivery_mail_values` ile de eklerini verebilir.
 
 ### Gerekli Modüller:
 
