@@ -2,7 +2,13 @@ from collections import defaultdict
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.tools.safe_eval import safe_eval
+
+# Customers accept a ±5% quantity change on custom productions (see the
+# quotation template in altinkaya_py3o_reports), so production may deviate
+# from the planned quantity that much.
+PRODUCTION_QTY_TOLERANCE_PERCENT = 5
 
 
 class MrpProduction(models.Model):
@@ -375,12 +381,92 @@ class MrpProduction(models.Model):
         res = super()._button_mark_done_sanity_checks()
         for order in self:
             if (
-                order.qty_producing
-                and (order.qty_producing - order.product_qty) / order.product_qty > 0.1
+                order.qty_producing > order.product_qty
+                and not order._is_within_qty_tolerance(order.qty_producing)
                 and not self.env.user.has_group("altinkaya_mrp.change_production_qty")
             ):
                 raise ValidationError(
-                    _("You can only produce 10% more than the original quantity.")
+                    _(
+                        "You can produce at most %(tolerance)s%% more than planned.",
+                        tolerance=PRODUCTION_QTY_TOLERANCE_PERCENT,
+                    )
                 )
 
         return res
+
+    def _post_inventory(self, cancel_backorder=False):
+        """Carry a produced quantity that differs from the planned one within
+        the tolerance over to the moves taking the product onwards, so the
+        transfer and the delivery move what was actually produced.
+
+        A shortage split into a backorder is not a difference: the backorder
+        still produces it, and the split already set product_qty to
+        qty_producing."""
+        qty_differences = {}
+        for production in self:
+            qty_difference = production.qty_producing - production.product_qty
+            if float_is_zero(
+                qty_difference, precision_rounding=production.product_uom_id.rounding
+            ):
+                continue
+            if production._is_within_qty_tolerance(production.qty_producing):
+                qty_differences[production] = qty_difference
+        res = super()._post_inventory(cancel_backorder=cancel_backorder)
+        for production, qty_difference in qty_differences.items():
+            production._propagate_qty_difference(qty_difference)
+        return res
+
+    def _propagate_qty_difference(self, qty_difference):
+        """Add ``qty_difference`` to each open move chained after the finished
+        product move, one move per step, down to the delivery."""
+        self.ensure_one()
+        finished_moves = self.move_finished_ids.filtered(
+            lambda m: m.product_id == self.product_id and m.state == "done"
+        )
+        first_move = self._get_next_open_move(finished_moves)
+        next_move = first_move
+        while next_move:
+            new_qty = next_move.product_uom_qty + self.product_uom_id._compute_quantity(
+                qty_difference, next_move.product_uom
+            )
+            if (
+                float_compare(
+                    new_qty, 0.0, precision_rounding=next_move.product_uom.rounding
+                )
+                <= 0
+            ):
+                break
+            next_move.product_uom_qty = new_qty
+            next_move = self._get_next_open_move(next_move)
+        # Doing the finished move reserved the first move for the planned
+        # quantity; reserve the difference as well. The later moves still
+        # wait for their origin, so they are left alone.
+        first_move._action_assign()
+
+    def _get_next_open_move(self, moves):
+        """Return the first open move taking the finished product of ``moves``
+        onwards. Several open moves at one step are backorder splits of the
+        same demand, so the difference goes to one of them, not to each. A
+        component move of another production is not followed: its bill of
+        materials decides the quantity it needs."""
+        self.ensure_one()
+        return moves.move_dest_ids.filtered(
+            lambda m: (
+                m.state not in ("done", "cancel")
+                and m.product_id == self.product_id
+                and not m.raw_material_production_id
+            )
+        )[:1]
+
+    def _is_within_qty_tolerance(self, qty):
+        """Return whether ``qty`` is at most PRODUCTION_QTY_TOLERANCE_PERCENT
+        away from the planned quantity, in either direction."""
+        self.ensure_one()
+        return (
+            float_compare(
+                abs(qty - self.product_qty),
+                self.product_qty * PRODUCTION_QTY_TOLERANCE_PERCENT / 100,
+                precision_rounding=self.product_uom_id.rounding,
+            )
+            <= 0
+        )

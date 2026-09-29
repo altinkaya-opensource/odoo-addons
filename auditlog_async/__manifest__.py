@@ -3,19 +3,13 @@
 
 {
     "name": "Auditlog Async",
-    "version": "16.0.1.0.0",
+    "version": "16.0.3.0.0",
     "category": "Tools",
-    "summary": "Async audit logging with queue_job for better performance",
+    "summary": "Log audited changes once per transaction, just before commit",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
-    "depends": ["auditlog", "queue_job"],
-    "data": [
-        "security/ir.model.access.csv",
-        "data/queue_job_channel.xml",
-        "data/ir_cron.xml",
-        "views/pending_views.xml",
-    ],
+    "depends": ["auditlog"],
     "installable": True,
     "auto_install": False,
 }
