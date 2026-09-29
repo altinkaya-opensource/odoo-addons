@@ -161,11 +161,13 @@ class StockKardex(models.Model):
         return self._send("count", carrier)
 
     def return_tray(self, carrier):
-        """Send a tray (storage unit ``carrier``) back to storage.
+        """Send the tray at the opening (storage unit ``carrier``) back to storage.
 
-        Blocks until the machine confirms the tray has been taken back.
+        JMIF returns a tray with a tray 0 request; code 42 (releaseTray) is C3000-only
+        and leaves the tray in the opening, so ``carrier`` is not sent. Blocks until
+        the machine confirms the tray has been taken back.
         """
-        return self._send("release_tray", carrier)
+        return self._send("release", "0")
 
     def action_test_connection(self):
         """Ping the machine by requesting tray 0 (a harmless browse)."""

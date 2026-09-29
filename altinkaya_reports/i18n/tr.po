@@ -16,6 +16,19 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_reports
+#. odoo-python
+#: code:addons/altinkaya_reports/models/ir_actions_report.py:0
+msgid "No printer is configured for this label report."
+msgstr "Bu etiket raporu için yazıcı tanımlanmamış."
+
+#. module: altinkaya_reports
+#. odoo-python
+#: code:addons/altinkaya_reports/models/ir_actions_report.py:0
+#, python-format
+msgid "Set the printer type to GODEX or GODEX300 for '%s'."
+msgstr "'%s' yazıcısının türünü GODEX veya GODEX300 olarak ayarlayın."
+
+#. module: altinkaya_reports
 #: model:mail.template,body_html:altinkaya_reports.email_template_edi_send_statement
 msgid ""
 "\n"

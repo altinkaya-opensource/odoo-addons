@@ -263,6 +263,32 @@ class MailMail(models.Model):
         return len(normalized_emails)
 
     @api.model
+    def _postmark_reactivate_email(self, email):
+        """Reactivate one recipient; callers remove the local blacklist on success."""
+        normalized_email = tools.email_normalize(email, strict=False)
+        api_key = config.get("postmark_api_key")
+        if not normalized_email or not api_key or not postmark_sync:
+            return "unavailable"
+
+        try:
+            with postmark_sync.ServerClient(
+                api_key, timeout=self._postmark_get_timeout()
+            ) as postmark:
+                results = postmark.suppressions.delete("outbound", [normalized_email])
+        except Exception:
+            _logger.warning("Postmark recipient reactivation failed", exc_info=True)
+            return "unavailable"
+
+        if len(results) != 1 or results[0].email_address.lower() != normalized_email:
+            return "unavailable"
+        if results[0].status == "Deleted":
+            return "unblocked"
+        # Spam complaints and administrator suppressions require Postmark support.
+        if results[0].status == "Failed":
+            return "support_required"
+        return "unavailable"
+
+    @api.model
     def _postmark_sync_suppressions(self, stream_id="outbound"):
         """Import Postmark suppressions into Odoo's mail blacklist."""
         api_key = config.get("postmark_api_key")

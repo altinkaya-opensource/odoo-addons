@@ -164,13 +164,23 @@ class iyzicoCoontroller(http.Controller):
     def iyzico_return_from_3ds_auth(self, **kwargs):
         """Handle the return from the 3DS authentication.
 
+        This is where the customer lands on their way back from the bank, so
+        it always redirects: a traceback here would surface as an internal
+        server error in the middle of a checkout.
+
         :param dict kwargs: Notification data from Iyzico.
         :return: Redirect response to status page.
         :rtype: werkzeug.wrappers.Response
         """
-        request.env["payment.transaction"].sudo()._handle_notification_data(
-            "iyzico_altinkaya", kwargs
-        )
+        try:
+            request.env["payment.transaction"].sudo()._handle_notification_data(
+                "iyzico_altinkaya", kwargs
+            )
+        except Exception:
+            _logger.exception(
+                "[iyzico] could not handle the 3DS return of %s",
+                kwargs.get("conversationId"),
+            )
 
         # Redirect the user to the status page
         return request.redirect("/payment/status")

@@ -15,7 +15,6 @@ JMIF_OPERATION_CODES = {
     "count": "0",  # bring the tray to the opening (tray call / browse)
     "put": "1",  # singleIn (store)
     "get": "2",  # singleOut (pick)
-    "release_tray": "42",  # releaseTray (send the tray back to storage)
 }
 
 # OCA request key -> JMIF JSON field. "task_type" is handled separately above.

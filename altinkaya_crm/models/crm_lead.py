@@ -5,9 +5,13 @@ class CRMLead(models.Model):
     _inherit = "crm.lead"
 
     linkedin = fields.Char(string="LinkedIn")
+    # The column is NOT NULL and the compute runs after the insert, since it
+    # cannot be precomputed (company_id is not), so a lead created from code
+    # without a currency needs the default to be inserted at all.
     currency_id = fields.Many2one(
         comodel_name="res.currency",
         compute="_compute_currency_id",
+        default=lambda self: self.env.company.currency_id,
         readonly=False,
         required=True,
         store=True,

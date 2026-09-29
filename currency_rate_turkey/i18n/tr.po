@@ -6,47 +6,60 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 13:09+0000\n"
-"PO-Revision-Date: 2025-03-28 13:09+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2026-09-12 13:48+0000\n"
+"PO-Revision-Date: 2026-09-12 13:48+0000\n"
+"Last-Translator: Altinkaya Enclosures\n"
+"Language-Team: Turkish\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields.selection,name:currency_rate_turkey.selection__res_currency_rate_provider__service__altinkaynak
 msgid "Altinkaynak"
-msgstr ""
+msgstr "Altınkaynak"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__altinkaynak_buying
+#, python-format
 msgid "Altinkaynak Buying"
 msgstr "Altınkaynak Alış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__altinkaynak_buying_inverse
 msgid "Altinkaynak Buying Inverse"
-msgstr "Altınkaynak Alış Ters"
+msgstr "Altınkaynak Alış (Ters Kur)"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__altinkaynak_selling
+#, python-format
 msgid "Altinkaynak Selling"
-msgstr "Altinkaynak Satış"
+msgstr "Altınkaynak Satış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__altinkaynak_selling_inverse
 msgid "Altinkaynak Selling Inverse"
-msgstr "Altinkaynak Satış Ters"
+msgstr "Altınkaynak Satış (Ters Kur)"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__amount_total_company_currency
 msgid "Amount Total in Company Currency"
-msgstr "Şirket Para BirimI Toplam Miktar"
+msgstr "Şirket Para Birimiyle Toplam Tutar"
+
+#. module: currency_rate_turkey
+#: model:ir.model,name:currency_rate_turkey.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Banka Ekstresi Satırı"
 
 #. module: currency_rate_turkey
 #. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #: model:ir.model.fields.selection,name:currency_rate_turkey.selection__res_currency_rate_provider__service_rate_type__altinkaynakbuying
 #, python-format
@@ -54,26 +67,26 @@ msgid "Buying"
 msgstr "Alış"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__changeset_change_ids
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__changeset_change_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__changeset_change_ids
 msgid "Changeset Changes"
-msgstr ""
+msgstr "Değişiklik Kümesindeki Değişiklikler"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__changeset_ids
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__changeset_ids
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__changeset_ids
 msgid "Changesets"
-msgstr ""
+msgstr "Değişiklik Kümeleri"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__company_currency_id
@@ -83,40 +96,40 @@ msgstr "Şirket Para Birimi"
 #. module: currency_rate_turkey
 #: model:ir.model,name:currency_rate_turkey.model_res_partner
 msgid "Contact"
-msgstr "İletişim"
+msgstr "Kişi"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__count_changesets
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__count_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__count_changesets
 msgid "Count Changesets"
-msgstr ""
+msgstr "Değişiklik Kümesi Sayısı"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__count_pending_changeset_changes
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
-msgstr ""
+msgstr "Bekleyen Değişiklik Sayısı"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__count_pending_changesets
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__count_pending_changesets
 msgid "Count Pending Changesets"
-msgstr ""
+msgstr "Bekleyen Değişiklik Kümesi Sayısı"
 
 #. module: currency_rate_turkey
 #: model:ir.model,name:currency_rate_turkey.model_res_currency
@@ -132,10 +145,11 @@ msgstr "Döviz Kuru"
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__property_rate_field
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_users__property_rate_field
 msgid "Currency Rate Field"
-msgstr "Kur Alanı"
+msgstr "Kur Türü"
 
 #. module: currency_rate_turkey
 #. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #, python-format
 msgid ""
@@ -144,18 +158,21 @@ msgid ""
 "                        %(date_from)s until %(date_to)s:\n"
 "%(error)s"
 msgstr ""
+"\"%(provider_name)s\" kur sağlayıcısından %(date_from)s - %(date_to)s tarihleri için veri alınamadı:\n"
+"%(error)s"
 
 #. module: currency_rate_turkey
 #. odoo-python
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #, python-format
 msgid "Currency Rate Provider Failure"
-msgstr "Kur Sağlayıcı Hatası"
+msgstr "Kur Sağlayıcısı Hatası"
 
 #. module: currency_rate_turkey
 #: model:ir.model,name:currency_rate_turkey.model_res_currency_rate_provider
 msgid "Currency Rates Provider"
-msgstr "Kur Sağlayıcıları"
+msgstr "Kur Sağlayıcısı"
 
 #. module: currency_rate_turkey
 #: model:ir.model,name:currency_rate_turkey.model_account_move
@@ -165,10 +182,11 @@ msgstr "Yevmiye Kaydı"
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__main_rate_field
 msgid "Main Rate Field"
-msgstr "Ana Kur Alanı"
+msgstr "Ana Kur Türü"
 
 #. module: currency_rate_turkey
 #. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #, python-format
 msgid "N/A"
@@ -178,19 +196,23 @@ msgstr "Mevcut Değil"
 #. odoo-python
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #, python-format
 msgid "No currency rate on %s"
-msgstr "%s tarihinde kur yok"
-
-#. module: currency_rate_turkey
-#: model:ir.model,name:currency_rate_turkey.model_account_payment
-msgid "Payments"
-msgstr "Ödemeler"
+msgstr "%s tarihinde döviz kuru bulunamadı"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__service
 msgid "Provider"
-msgstr "Servis Kaynağı"
+msgstr "Kur Sağlayıcısı"
+
+#. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
+#, python-format
+msgid "Rate"
+msgstr "Kur"
 
 #. module: currency_rate_turkey
 #: model:ir.model,name:currency_rate_turkey.model_sale_order
@@ -205,10 +227,11 @@ msgstr "İkinci Kur"
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__second_rate_field
 msgid "Second Rate Field"
-msgstr "İkinici Kur Alanı"
+msgstr "İkinci Kur Türü"
 
 #. module: currency_rate_turkey
 #. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider_altinkaynak.py:0
 #: model:ir.model.fields.selection,name:currency_rate_turkey.selection__res_currency_rate_provider__service_rate_type__altinkaynakselling
 #, python-format
@@ -216,8 +239,8 @@ msgid "Selling"
 msgstr "Satış"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__smart_search
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__smart_search
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__smart_search
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__smart_search
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__smart_search
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__smart_search
@@ -227,82 +250,94 @@ msgid "Smart Search"
 msgstr "Akıllı Arama"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_banknote_buying
+#, python-format
 msgid "TCMB Banknote Buying"
 msgstr "TCMB Efektif Alış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_banknote_buying_inverse
 msgid "TCMB Banknote Buying Inverse"
-msgstr "TCMB Efektif Alış Ters"
+msgstr "TCMB Efektif Alış (Ters Kur)"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_banknote_selling
+#, python-format
 msgid "TCMB Banknote Selling"
 msgstr "TCMB Efektif Satış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_banknote_selling_inverse
 msgid "TCMB Banknote Selling Inverse"
-msgstr "TCMB Efektif Satış Ters"
+msgstr "TCMB Efektif Satış (Ters Kur)"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_forex_buying
+#, python-format
 msgid "TCMB Forex Buying"
 msgstr "TCMB Döviz Alış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_forex_buying_inverse
 msgid "TCMB Forex Buying Inverse"
-msgstr "TCMB Döviz Alış Ters"
+msgstr "TCMB Döviz Alış (Ters Kur)"
 
 #. module: currency_rate_turkey
+#. odoo-python
+#: code:addons/currency_rate_turkey/models/res_currency_rate.py:0
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_forex_selling
+#, python-format
 msgid "TCMB Forex Selling"
 msgstr "TCMB Döviz Satış"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__tcmb_forex_selling_inverse
 msgid "TCMB Forex Selling Inverse"
-msgstr "TCMB Döviz Satış Ters"
+msgstr "TCMB Döviz Satış (Ters Kur)"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__service_rate_type
 msgid "TCMB Rate Type"
-msgstr "Servis Kur Tipi"
+msgstr "TCMB Kur Türü"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,help:currency_rate_turkey.field_account_bank_statement_line__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_account_move__count_pending_changeset_changes
-#: model:ir.model.fields,help:currency_rate_turkey.field_account_payment__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate_provider__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_partner__count_pending_changeset_changes
 #: model:ir.model.fields,help:currency_rate_turkey.field_sale_order__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
-msgstr ""
+msgstr "Bu kaydın bekleyen değişiklik sayısı"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,help:currency_rate_turkey.field_account_bank_statement_line__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_account_move__count_pending_changesets
-#: model:ir.model.fields,help:currency_rate_turkey.field_account_payment__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate_provider__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_partner__count_pending_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_sale_order__count_pending_changesets
 msgid "The number of pending changesets of this record"
-msgstr ""
+msgstr "Bu kaydın bekleyen değişiklik kümesi sayısı"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,help:currency_rate_turkey.field_account_bank_statement_line__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_account_move__count_changesets
-#: model:ir.model.fields,help:currency_rate_turkey.field_account_payment__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate_provider__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_partner__count_changesets
 #: model:ir.model.fields,help:currency_rate_turkey.field_sale_order__count_changesets
 msgid "The overall number of changesets of this record"
-msgstr ""
+msgstr "Bu kaydın toplam değişiklik kümesi sayısı"
 
 #. module: currency_rate_turkey
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__altinkaynak_buying
@@ -313,22 +348,23 @@ msgstr ""
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__tcmb_forex_buying
 #: model:ir.model.fields,help:currency_rate_turkey.field_res_currency_rate__tcmb_forex_selling
 msgid "The second rate of the currency to the currency of rate 1"
-msgstr "Para biriminin ikinci kuru"
+msgstr "Para biriminin, kuru 1 olan para birimine göre ikinci kuru"
 
 #. module: currency_rate_turkey
 #. odoo-python
 #: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
+#: code:addons/currency_rate_turkey/models/res_currency_rate_provider.py:0
 #, python-format
 msgid "Unknown currency from %(provider)s: %(rate)s"
-msgstr "Para bitimi hatası: %(provider)s: %(rate)s"
+msgstr "%(provider)s sağlayıcısından bilinmeyen para birimi geldi: %(rate)s"
 
 #. module: currency_rate_turkey
+#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_bank_statement_line__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_account_move__user_can_see_changeset
-#: model:ir.model.fields,field_description:currency_rate_turkey.field_account_payment__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_currency_rate_provider__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_res_partner__user_can_see_changeset
 #: model:ir.model.fields,field_description:currency_rate_turkey.field_sale_order__user_can_see_changeset
 msgid "User Can See Changeset"
-msgstr ""
+msgstr "Kullanıcı Değişiklik Kümesini Görebilir"

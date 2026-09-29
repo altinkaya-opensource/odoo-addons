@@ -715,7 +715,7 @@ body.o_web_client {
 
     .alert-#{$name} {
       color: $text;
-      background-color: mix($tone, $o-view-background-color, 18%);
+      background-color: mix($tone, $o-view-background-color, $o-altinkaya-alert-tint);
       border-color: mix($tone, $o-view-background-color, 55%);
 
       .alert-link {
@@ -723,10 +723,11 @@ body.o_web_client {
       }
     }
 
+    // Solid fills: a 25% tint left the pill almost invisible against the view.
     .badge.bg-#{$name},
     .badge.text-bg-#{$name} {
-      color: $text !important;
-      background-color: mix($tone, $o-view-background-color, 25%) !important;
+      color: color-contrast($tone) !important;
+      background-color: $tone !important;
     }
   }
 

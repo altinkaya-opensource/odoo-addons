@@ -18,7 +18,7 @@
                             'D2': 'z_tevkifatli_mi${"Yes" if value else "No"}#{border=thin_border;align=left;style=text}',
                             'E2': '${"Tevkifatlı Alış" if object.z_tevkifatli_mi else object.journal_id.name}#{border=thin_border;align=left;style=text}',
                             'F2': 'partner_id.name${value or ""}#{border=thin_border;align=left;style=text}',
-                            'G2': '${"\'%s" % (object.partner_id.vat or "")}#{border=thin_border;align=left;style=text}',
+                            'G2': '${object.partner_id.vat or ""}#{border=thin_border;align=left;style=text}',
                             'H2': 'partner_id.vat${value or ""}#{border=thin_border;align=left;style=text}',
                             'I2': 'amount_untaxed${"%.2f" % (object.currency_rate * value) or ""}#{border=thin_border;align=left;style=number}',
                             'J2': '${"\'%s" % (object.partner_id.z_payable_export or "") if object.move_type != "out_refund" else "\'%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',

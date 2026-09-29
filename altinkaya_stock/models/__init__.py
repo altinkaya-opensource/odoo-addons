@@ -16,3 +16,4 @@ from . import sale_order
 from . import stock_package_type
 from . import stock_quant_package
 from . import procurement_group
+from . import stock_scrap

@@ -9,7 +9,7 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "category": "Uncategorized",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "depends": ["excel_import_export", "purchase", "account"],
     "data": [
         # Account

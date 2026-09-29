@@ -10,7 +10,7 @@ import requests
 from odoo import api, models
 from odoo.exceptions import ValidationError
 
-VERIMOR_SEND_SMS_ENDPOINT = "http://sms.verimor.com.tr/v2/send.json"
+VERIMOR_SEND_SMS_ENDPOINT = "https://sms.verimor.com.tr/v2/send.json"
 VERIMOR_GET_BALANCE_ENDPOINT = "http://sms.verimor.com.tr/v2/balance"
 
 

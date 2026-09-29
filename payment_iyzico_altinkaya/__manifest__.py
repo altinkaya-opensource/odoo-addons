@@ -15,7 +15,7 @@
 
 {
     "name": "Payment Provider: iyzico",
-    "version": "16.0.0.1.1",
+    "version": "16.0.0.2.0",
     "category": "Accounting/Payment Providers",
     "license": "LGPL-3",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
@@ -30,6 +30,7 @@
         "views/payment_provider_views.xml",
         "views/payment_transaction_views.xml",
         "data/payment_provider_data.xml",
+        "data/ir_cron.xml",
     ],
     "assets": {
         "web.assets_frontend": [

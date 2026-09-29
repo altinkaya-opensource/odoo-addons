@@ -14,6 +14,29 @@ class ProductProduct(models.Model):
         compute="_compute_name_variant_report_name", string="Variant Name"
     )
 
+    @api.model
+    def default_get(self, fields_list):
+        """Initialize shared variant fields from the selected template."""
+        defaults = super().default_get(fields_list)
+        template_id = defaults.get("product_tmpl_id") or self.env.context.get(
+            "default_product_tmpl_id"
+        )
+        template = self.env["product.template"].browse(template_id).exists()
+        if not template:
+            return defaults
+
+        for name in fields_list:
+            field = self._fields.get(name)
+            if (
+                field
+                and field.inherited
+                and not field.readonly
+                and field.type != "one2many"
+                and f"default_{name}" not in self.env.context
+            ):
+                defaults[name] = field.convert_to_write(template[name], template)
+        return defaults
+
     @api.model_create_multi
     def create(self, vals_list):
         """

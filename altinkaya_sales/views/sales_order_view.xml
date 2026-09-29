@@ -119,6 +119,15 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field eval="100" name="priority" />
         <field name="arch" type="xml">
+            <xpath
+                expr="//button[@name='action_preview_sale_order']"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'invisible': [('state', '=', 'draft')]}</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='partner_invoice_id']" position="replace">
                 <field
                     name="partner_invoice_id"
