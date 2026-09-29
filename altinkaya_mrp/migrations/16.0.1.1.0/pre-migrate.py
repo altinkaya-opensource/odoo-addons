@@ -3,11 +3,12 @@
 """Pre-migration 16.0.1.1.0 - x.makine -> mrp.workcenter (backfill side).
 
 Runs BEFORE the model reload (so the legacy ``x_makine`` column/table still
-exist) and AFTER altinkaya_mobile (PR A) has created the machine work centers.
-Backfills ``mrp.production.machine_workcenter_id`` from the legacy ``x_makine``
+exist). When altinkaya_mobile has already created the machine work centers it
+backfills ``mrp.production.machine_workcenter_id`` from the legacy ``x_makine``
 via a code join, then drops the orphan ``x_makine`` column and the two saved
-filters. The x.makine model/table/views are removed by Odoo's normal module
-update (they are gone from the code).
+filters; otherwise it defers to that module's migration. The x.makine
+model/table/views are removed by Odoo's normal module update (they are gone
+from the code).
 
 Idempotent: if a prior run already dropped ``x_makine`` there is nothing to do.
 """
@@ -46,11 +47,16 @@ def migrate(cr, version):
     )
     mappable = cr.fetchone()[0]
     if total and mappable < total / 2:
-        raise Exception(
-            f"x.makine backfill aborted: only {mappable} of {total} MOs resolve "
-            "to a work center. Deploy altinkaya_mobile (machine work center "
-            "creation) before altinkaya_mrp."
+        # A combined -u run updates this module before altinkaya_mobile has
+        # created the machines; that migration then backfills and drops the
+        # column itself. Leave everything in place for it.
+        _logger.warning(
+            "x.makine backfill deferred: only %s of %s MOs resolve to a work "
+            "center. altinkaya_mobile's migration finishes it.",
+            mappable,
+            total,
         )
+        return
 
     # Backfill by machine code. Rows whose machine has no matching work center
     # code (the combined B-01/B-03 row, a leftover Maske machine, blanks) keep a
