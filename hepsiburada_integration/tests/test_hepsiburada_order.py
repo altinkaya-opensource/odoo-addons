@@ -54,6 +54,78 @@ class TestHepsiburadaOrder(HepsiburadaCommon):
 
         self.assertEqual(values["product_id"], product.id)
 
+    def _prepare_line(self, item):
+        backend = SimpleNamespace(
+            company_id=self.env.company,
+            default_product_id=False,
+            default_vat_rate=20.0,
+        )
+        sale = SimpleNamespace(id=25, name="SS-HB")
+        return self.env["hepsiburada.order"]._prepare_line_values(
+            backend,
+            sale,
+            {"quantity": 1, "price": {"amount": 100}, **item},
+        )
+
+    def test_merchant_sku_wins_over_product_barcode(self):
+        """Hepsiburada's locked EAN may belong to another Odoo product."""
+        ean_product = self.env["product.product"].create(
+            {
+                "name": "EAN Owner",
+                "default_code": "HB-EAN",
+                "barcode": "HB-EAN-1",
+                "detailed_type": "product",
+            }
+        )
+        sku_product = self.env["product.product"].create(
+            {
+                "name": "Sold Product",
+                "default_code": "HB-SOLD",
+                "detailed_type": "product",
+            }
+        )
+
+        values = self._prepare_line(
+            {"merchantSku": "HB-SOLD", "productBarcode": ean_product.barcode}
+        )
+
+        self.assertEqual(values["product_id"], sku_product.id)
+
+    def test_ambiguous_merchant_sku_falls_back_to_product_barcode(self):
+        # Internal references repeat across the variants of one template.
+        attribute = self.env["product.attribute"].create(
+            {
+                "name": "HB Size",
+                "value_ids": [(0, 0, {"name": "S"}), (0, 0, {"name": "L"})],
+            }
+        )
+        template = self.env["product.template"].create(
+            {
+                "name": "HB Twin",
+                "detailed_type": "product",
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": attribute.id,
+                            "value_ids": [(6, 0, attribute.value_ids.ids)],
+                        },
+                    )
+                ],
+            }
+        )
+        template.product_variant_ids.write({"default_code": "HB-TWIN"})
+        ean_product = self.env["product.product"].create(
+            {"name": "EAN Owner", "barcode": "HB-EAN-2", "detailed_type": "product"}
+        )
+
+        values = self._prepare_line(
+            {"merchantSku": "HB-TWIN", "productBarcode": ean_product.barcode}
+        )
+
+        self.assertEqual(values["product_id"], ean_product.id)
+
     def test_packages_are_tracked_independently(self):
         binding = self._create_binding("ORDER-MULTI")
 
