@@ -162,23 +162,75 @@ class TestTrendyolOrder(TrendyolTestCase):
         )
         sale, _order = self._create_sale_and_order(package_id="PRICE")
 
+        discount_detail = {
+            "lineItemPrice": 70,
+            "lineItemSellerDiscount": 20,
+            "lineItemTyDiscount": 10,
+        }
         vals = self.env["trendyol.order"]._prepare_line_values(
             self.backend,
             sale,
             {
                 "stockCode": product.default_code,
                 "quantity": 2,
-                "lineUnitPrice": 100,
-                "lineGrossAmount": 200,
+                "lineUnitPrice": 70,
+                "lineGrossAmount": 100,
                 "lineSellerDiscount": 20,
                 "lineTyDiscount": 10,
+                "discountDetails": [discount_detail, discount_detail],
                 "vatRate": 20,
             },
         )
 
         self.assertEqual(vals["product_id"], product.id)
         self.assertEqual(vals["price_unit"], 100)
-        self.assertEqual(vals["discount"], 15)
+        self.assertAlmostEqual(vals["discount"], 30)
+
+    def test_package_discount_is_applied_once(self):
+        """Package 4179939176: 753 gross - 40 seller discount = 713."""
+        sale, _order = self._create_sale_and_order(package_id="DISCOUNT")
+        lines = [
+            ("TY-BLUE", 420.0, 22.31, 397.69),
+            ("TY-WHITE", 333.0, 17.69, 315.31),
+        ]
+        net_total = 0.0
+        for code, gross, discount, net in lines:
+            self.env["product.product"].create(
+                {
+                    "name": code,
+                    "default_code": code,
+                    "type": "product",
+                    "detailed_type": "product",
+                }
+            )
+            vals = self.env["trendyol.order"]._prepare_line_values(
+                self.backend,
+                sale,
+                {
+                    "stockCode": code,
+                    "quantity": 1,
+                    "amount": gross,
+                    "lineGrossAmount": gross,
+                    "price": net,
+                    "lineUnitPrice": net,
+                    "discount": discount,
+                    "lineSellerDiscount": discount,
+                    "tyDiscount": 0.0,
+                    "lineTyDiscount": 0.0,
+                    "discountDetails": [
+                        {
+                            "lineItemPrice": net,
+                            "lineItemSellerDiscount": discount,
+                            "lineItemTyDiscount": 0.0,
+                        }
+                    ],
+                    "vatRate": 10.0,
+                },
+            )
+            self.assertEqual(vals["price_unit"], gross)
+            net_total += vals["price_unit"] * (1 - vals["discount"] / 100)
+
+        self.assertAlmostEqual(net_total, 713.0, places=2)
 
     def test_order_cursor_is_kept_when_one_package_fails(self):
         old_cursor = fields.Datetime.now() - timedelta(hours=1)

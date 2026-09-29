@@ -740,33 +740,18 @@ class TrendyolOrder(models.Model):
                     price_incl,
                 )
 
-        # Trendyol prices are VAT-included.
-        # `amount` is the original (undiscounted) unit price,
-        # `price` is the unit price after discount.
-        # We use `amount` as price_unit and compute the Odoo discount
-        # percentage from the total discount to avoid double-discounting.
-        discount_details = line_data.get("discountDetails") or []
-        if discount_details:
-            gross_total = sum(item.get("lineItemPrice", 0) for item in discount_details)
-            discount_amount = sum(
-                item.get("lineItemSellerDiscount", 0)
-                + item.get("lineItemTyDiscount", 0)
-                for item in discount_details
-            )
-            gross_unit_price = gross_total / quantity if quantity else 0
-        else:
-            gross_unit_price = line_data.get("amount") or price_incl
-            discount_amount = line_data.get(
-                "discount", line_data.get("lineSellerDiscount", 0)
-            ) + line_data.get("tyDiscount", line_data.get("lineTyDiscount", 0))
-            gross_total = (
-                line_data.get("lineGrossAmount") or gross_unit_price * quantity
-            )
-
-        price_unit = gross_unit_price
+        # Trendyol prices are VAT-included and per unit.
+        # `amount` / `lineGrossAmount` is the undiscounted unit price,
+        # `price` / `lineUnitPrice` the unit price after the seller and
+        # Trendyol discounts. `discountDetails[].lineItemPrice` is also
+        # discounted, so it must not be used as the gross price.
+        # We use the gross price as price_unit and derive the Odoo discount
+        # percentage from the discounted price to avoid double-discounting.
+        price_unit = line_data.get("amount") or line_data.get("lineGrossAmount")
+        price_unit = price_unit or price_incl
         discount_pct = 0.0
-        if discount_amount and gross_total:
-            discount_pct = (discount_amount / gross_total) * 100
+        if price_unit > price_incl:
+            discount_pct = (1 - price_incl / price_unit) * 100
 
         vals = {
             "order_id": sale_order.id,
