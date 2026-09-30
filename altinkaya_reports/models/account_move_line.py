@@ -46,6 +46,7 @@ class AccountMoveLine(models.Model):
     )
     def _compute_kdv_amount(self):
         for aml in self:
+            aml.kdv_amount = 0.0
             if (
                 aml.parent_state == "draft"
                 and aml.display_type != "product"
@@ -59,19 +60,18 @@ class AccountMoveLine(models.Model):
 
             for tax in aml.tax_ids:
                 if aml.move_id.move_type in ["out_refund", "in_refund"]:
-                    tax_code = tax.refund_repartition_line_ids.filtered(
-                        lambda x: x.refund_tax_id
-                    ).account_id.code
-
+                    distributions = tax.refund_repartition_line_ids
                 else:
-                    tax_code = tax.invoice_repartition_line_ids.filtered(
-                        lambda x: x.invoice_tax_id
-                    ).account_id.code
-
-                if tax_code and tax_code.startswith("191.0"):
-                    _kdv_amount -= aml.price_subtotal * tax.amount / 100
-                elif tax_code and tax_code.startswith("391.0"):
-                    _kdv_amount += aml.price_subtotal * tax.amount / 100
+                    distributions = tax.invoice_repartition_line_ids
+                for distribution in distributions.filtered(
+                    lambda line: line.repartition_type == "tax"
+                ):
+                    tax_code = distribution.account_id.code or ""
+                    amount = aml.price_subtotal * tax.amount / 100 * distribution.factor
+                    if tax_code.startswith("191.0"):
+                        _kdv_amount -= amount
+                    elif tax_code.startswith("391.0"):
+                        _kdv_amount += amount
 
             # Convert to company currency (currency_rate = company units per
             # 1 foreign unit, e.g. TRY per EUR, so multiply the foreign amount)
