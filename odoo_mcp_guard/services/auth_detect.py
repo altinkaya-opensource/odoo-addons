@@ -7,6 +7,11 @@ supplied credential matched a ``res.users.apikeys`` row whose ``name`` starts
 with ``"mcp_"``. Password auth, web-session auth, and API keys without the
 prefix all leave the flag ``False``.
 
+The flag lives only for one RPC call: ``odoo.service.model.dispatch`` clears it
+when the call ends. Prefork workers serve every request on the same thread,
+and web or webhook requests never pass through ``Users.check``, so a flag left
+behind would mark them as MCP traffic.
+
 The wrapper caches the ``(db, uid, passwd) -> bool`` classification in a small
 module-level dict so PBKDF2 only runs on first use per (user, secret) pair.
 """
@@ -62,6 +67,28 @@ def _build_wrapper(original):
     setattr(guarded_check, _PATCHED_MARKER, True)
     guarded_check.__wrapped__ = original
     return classmethod(guarded_check)
+
+
+def patch_model_dispatch():
+    """Clear the flag when an RPC call ends. Idempotent."""
+    import odoo.service.model as service_model
+
+    if getattr(service_model.dispatch, _PATCHED_MARKER, False):
+        return
+    service_model.dispatch = _build_dispatch_wrapper(service_model.dispatch)
+    _logger.info("mcp_guard: rpc dispatch patched to end api-key detection")
+
+
+def _build_dispatch_wrapper(original):
+    def guarded_dispatch(method, params):
+        try:
+            return original(method, params)
+        finally:
+            threading.current_thread().mcp_guard_via_api_key = False
+
+    setattr(guarded_dispatch, _PATCHED_MARKER, True)
+    guarded_dispatch.__wrapped__ = original
+    return guarded_dispatch
 
 
 def _classify(db, uid, passwd):
