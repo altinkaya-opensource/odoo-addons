@@ -97,8 +97,14 @@ class StockMove(models.Model):
         return res
 
     def _get_split_procurement_unit_factor(self, production_id, special_qty=0.0):
+        """Return the unit factor of one half of an MTS/MTO split raw move.
+
+        Both halves come from the same BoM line, so together they hold the
+        component quantity of the whole MO, whatever the BoM line ratio is.
+        The quantity needed for the quantity being produced is taken from the
+        MTS move first; the MTO move gets the rest.
+        """
         self.ensure_one()
-        factor = 1.0
         mo = production_id
         split_mto_move = mo.move_raw_ids.filtered(
             lambda m: (
@@ -119,45 +125,31 @@ class StockMove(models.Model):
         production_qty = (
             special_qty or mo.qty_producing or (mo.product_qty - mo.qty_produced) or 1
         )
+        split_move = split_mto_move or split_mts_move
+        if not split_move:
+            return self.product_uom_qty / production_qty
+
+        per_unit_qty = (self.product_uom_qty + split_move.product_uom_qty) / (
+            mo.product_qty or 1
+        )
+        needed_qty = per_unit_qty * production_qty
+        rounding = self.product_uom.rounding
         if split_mto_move:
+            # This is the MTS move: it is consumed first.
             if (
                 float_compare(
-                    self.product_uom_qty,
-                    production_qty,
-                    precision_rounding=self.product_uom.rounding,
+                    self.product_uom_qty, needed_qty, precision_rounding=rounding
                 )
                 >= 0
             ):
-                factor = 1.0
-            else:
-                factor = self.product_uom_qty / production_qty
+                return per_unit_qty
+            return self.product_uom_qty / production_qty
 
-        elif split_mts_move:
-            if (
-                float_compare(
-                    split_mts_move.product_uom_qty,
-                    production_qty,
-                    precision_rounding=self.product_uom.rounding,
-                )
-                < 0
-            ):
-                real_qty = production_qty - split_mts_move.product_uom_qty
-            elif (
-                float_compare(
-                    split_mts_move.product_uom_qty,
-                    production_qty,
-                    precision_rounding=self.product_uom.rounding,
-                )
-                >= 0
-            ):
-                real_qty = 0.0
-            else:  # This case should not happen
-                real_qty = self.product_uom_qty - production_qty
-
-            factor = real_qty / production_qty
-        else:
-            factor = self.product_uom_qty / production_qty
-        return factor
+        # This is the MTO move: it covers what the MTS move cannot.
+        remaining_qty = needed_qty - split_mts_move.product_uom_qty
+        if float_compare(remaining_qty, 0.0, precision_rounding=rounding) <= 0:
+            return 0.0
+        return remaining_qty / production_qty
 
     @api.depends(
         "product_uom_qty",
