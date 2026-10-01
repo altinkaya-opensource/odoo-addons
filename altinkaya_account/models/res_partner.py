@@ -1043,24 +1043,12 @@ class ResPartner(models.Model):
                 )
             dif_inv = inv_obj.create(invoice_vals)
 
-            # Force the receivable line onto this FX account and make it
-            # TRY-only so the invoice never distorts the FX balance.
-            self.env.cr.execute(
-                """
-                UPDATE account_move_line
-                SET amount_currency = 0.0, currency_id = %s, account_id = %s
-                WHERE move_id = %s AND account_id = %s
-            """,
-                (
-                    company.currency_id.id,
-                    account.id,
-                    dif_inv.id,
-                    dif_inv.partner_id.property_account_receivable_id.id,
-                ),
-            )
-            dif_inv.line_ids.invalidate_recordset(
-                ["amount_currency", "currency_id", "account_id"]
-            )
+            # Book the receivable on this FX account. A KFARK line carries no
+            # foreign amount (account.move.line._compute_currency_id), so the
+            # invoice never distorts the FX balance.
+            dif_inv.line_ids.filtered(
+                lambda line: line.display_type == "payment_term"
+            ).account_id = account
             created_invoices |= dif_inv
 
         return created_invoices or False

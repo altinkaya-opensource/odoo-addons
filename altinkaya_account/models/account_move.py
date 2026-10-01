@@ -6,6 +6,8 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+from .account_move_line import CURRENCY_DIFFERENCE_JOURNAL_CODES
+
 _logger = logging.getLogger(__name__)
 
 
@@ -167,6 +169,7 @@ class AccountMove(models.Model):
         "partner_id",
         "fiscal_position_id",
         "line_ids.account_id",
+        "journal_id",
     )
     def _compute_needed_terms(self):
         res = super()._compute_needed_terms()
@@ -198,7 +201,15 @@ class AccountMove(models.Model):
             needed_terms = {
                 key: dict(values) for key, values in move.needed_terms.items()
             }
+            is_currency_difference = (
+                move.journal_id.code in CURRENCY_DIFFERENCE_JOURNAL_CODES
+            )
             for values in needed_terms.values():
+                if is_currency_difference:
+                    values["amount_currency"] = 0.0
+                    if values.get("discount_balance"):
+                        values["discount_amount_currency"] = 0.0
+                    continue
                 values["amount_currency"] = company_currency._convert(
                     values["balance"],
                     account_currency,
@@ -213,6 +224,24 @@ class AccountMove(models.Model):
                         conversion_date,
                     )
             move.needed_terms = needed_terms
+        return res
+
+    def _compute_amount(self):
+        """Take the residual of a currency-difference document in TRY.
+
+        Its line on the foreign-currency account carries no foreign amount, so
+        the core residual (from amount_residual_currency) is always 0 and the
+        document would look paid whatever its reconciliation.
+        """
+        res = super()._compute_amount()
+        for move in self:
+            if (
+                move.journal_id.code in CURRENCY_DIFFERENCE_JOURNAL_CODES
+                and move.currency_id == move.company_currency_id
+            ):
+                move.amount_residual = (
+                    -move.direction_sign * move.amount_residual_signed
+                )
         return res
 
     def action_post(self):

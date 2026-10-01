@@ -365,6 +365,16 @@ class TestCurrencyDifferenceWizards(TransactionCase):
         self.assertTrue(selected_exchange.reversal_move_id)
         self.assertFalse(other_exchange.reversal_move_id)
         self.assertTrue(invoice.currency_difference_line_ids)
+        receivable_line = invoice.line_ids.filtered(
+            lambda line: line.display_type == "payment_term"
+        )
+        self.assertEqual(receivable_line.account_id, self.receivable_account)
+        self.assertEqual(receivable_line.currency_id, self.foreign_currency)
+        self.assertEqual(receivable_line.amount_currency, 0.0)
+        # Settled by the KRFRK reversal: TRY residual 0, so not shown as open.
+        self.assertEqual(invoice.amount_residual, 0.0)
+        self.assertEqual(invoice.move_type, "out_refund")
+        self.assertEqual(invoice.payment_state, "reversed")
 
         invoice.button_draft()
         selected_exchange.invalidate_recordset(["reversal_move_id"])

@@ -90,7 +90,8 @@ class Partner(models.Model):
             amount = group["balance"]
             if currency != self.env.company.currency_id:
                 amount = group["amount_currency"]
-                if journal.code == "KFARK" or account.code in ("646", "656", "646.F"):
+                is_currency_difference = journal.code in ("KFARK", "AKFRK")
+                if is_currency_difference or account.code in ("646", "656", "646.F"):
                     amount = 0.0
             partner_balances = balances.setdefault(group["partner_id"][0], {})
             partner_balances[currency.id] = (
@@ -232,8 +233,10 @@ class Partner(models.Model):
             .search([("code", "in", skip_journal_codes)])
             .mapped("id")
         )
-        currency_diff_invoice_journal = (
-            self.env["account.journal"].search([("code", "=", "KFARK")], limit=1).id
+        currency_diff_invoice_journals = (
+            self.env["account.journal"]
+            .search([("code", "in", ("KFARK", "AKFRK"))])
+            .mapped("id")
         )
         self.env.cr.execute(
             query,
@@ -264,7 +267,7 @@ class Partner(models.Model):
             seq += 1
             if (
                 sl["account_id"] in currency_difference_accounts
-                or sl["journal_id"] == currency_diff_invoice_journal
+                or sl["journal_id"] in currency_diff_invoice_journals
             ):
                 # if line is currency difference currency values shall be cleared
                 sl["currency_rate"] = 0.0

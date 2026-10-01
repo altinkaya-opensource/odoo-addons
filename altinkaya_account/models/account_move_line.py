@@ -15,6 +15,10 @@
 
 from odoo import api, fields, models
 
+# Currency-difference invoices (KFARK) and bills (AKFRK): TRY amounts whose
+# lines on a foreign-currency account carry no foreign amount.
+CURRENCY_DIFFERENCE_JOURNAL_CODES = ("KFARK", "AKFRK")
+
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
@@ -133,6 +137,10 @@ class AccountMoveLine(models.Model):
         Inherited to set the currency_id based on the account currency.
         Depends on account_id so the currency re-computes when the account
         (which carries the currency) changes, not only the move currency.
+
+        Currency-difference invoices (KFARK) and bills (AKFRK) carry no
+        foreign amount, so they never move the partner's foreign-currency
+        balance.
         """
         super()._compute_currency_id()
         for line in self:
@@ -144,6 +152,9 @@ class AccountMoveLine(models.Model):
                 and line.currency_id != account_currency
             ):
                 line.currency_id = account_currency
+                if line.move_id.journal_id.code in CURRENCY_DIFFERENCE_JOURNAL_CODES:
+                    line.amount_currency = 0.0
+                    continue
                 line.invalidate_recordset(["currency_rate"])
                 line.amount_currency = line.currency_id.round(
                     line.balance * line.currency_rate
