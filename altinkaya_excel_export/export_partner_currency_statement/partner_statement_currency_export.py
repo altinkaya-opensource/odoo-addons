@@ -56,8 +56,8 @@ class ReportPartnerStatementCurrency(models.TransientModel):
     def _get_statement_data(self, partner_id):
         cr = self.env.cr
         statement_data = []
-        diff_inv_journal = self.env["account.journal"].search(
-            [("code", "=", "KFARK")], limit=1
+        diff_inv_journals = self.env["account.journal"].search(
+            [("code", "in", ("KFARK", "AKFRK"))]
         )
         balance, sec_curr_balance, seq = 0.00, 0.00, 0
         start_date = self.date_start
@@ -114,7 +114,7 @@ class ReportPartnerStatementCurrency(models.TransientModel):
 
             if (
                 partner.property_account_receivable_id.currency_id
-                and each_dict["journal_id"] != diff_inv_journal.id
+                and each_dict["journal_id"] not in diff_inv_journals.ids
             ):
                 move_date = each_dict["date"].strftime("%Y-%m-%d")
                 cr.execute(
