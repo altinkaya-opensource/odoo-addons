@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo noupdate="1">
+<odoo>
     <template
         id="report_picking_altinkaya"
         inherit_id="stock.report_picking"
@@ -8,6 +8,10 @@
         <xpath expr="//t[@t-call='web.html_container']" position="replace">
             <t t-foreach="docs" t-as="o">
                 <t t-set="o" t-value="o.with_context(lang='tr_TR')" />
+                <t
+                    t-set="show_qc_qr"
+                    t-value="'draft_inspection_id' in o.move_ids._fields and any(m.draft_inspection_id.qr_image_256 for m in o.move_ids)"
+                />
                 <t t-call="web.html_container">
                     <t t-call="web.basic_layout">
                         <div class="header">
@@ -62,8 +66,8 @@
                                             style="border-color: #ffffff; text-align: center; vertical-align: center;"
                                         >
                                             <img
-                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
-                                                style="width:300px;height:50px;"
+                                                t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(o.env['gs1.digital.link'].build_picking_link(o.name)), 300, 300, 0)"
+                                                style="width:90px;height:90px;"
                                             />
                                         </td>
                                     </tr>
@@ -242,7 +246,7 @@
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>QR</th>
+                                        <th t-if="show_qc_qr">QR</th>
                                         <th>
                                             <strong>Ürün</strong>
                                         </th>
@@ -260,7 +264,7 @@
                                             </th>
                                         </t>
                                         <th>
-                                            <strong>Barkod</strong>
+                                            <strong>QR</strong>
                                         </th>
                                         <th>
                                             <strong>Rezerve Konum</strong>
@@ -271,7 +275,7 @@
                                     <tr t-foreach="o.move_ids" t-as="move">
                                         <t>
                                             <td
-                                                t-if="move.draft_inspection_id.qr_image_256"
+                                                t-if="show_qc_qr and move.draft_inspection_id.qr_image_256"
                                             >
                                                 <img
                                                     t-att-src="image_data_uri(move.draft_inspection_id.qr_image_256)"
@@ -343,13 +347,15 @@ Stokta:
                                                         </span>
                                                 </td>
                                             </t>
-                                            <td style="width: 180px;">
+                                            <td
+                                                style="width: 180px; text-align: center;"
+                                            >
                                                 <span
                                                     t-if="move.product_id and move.product_id.barcode"
                                                 >
                                                     <img
-                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', move.product_id.barcode, 360, 80)"
-                                                        style="width:178px;height:40px"
+                                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('QR', quote_plus(o.env['gs1.digital.link'].build_product_link(move.product_id.barcode)), 300, 300, 0)"
+                                                        style="width:60px;height:60px;"
                                                     />
                                                 </span>
                                             </td>
