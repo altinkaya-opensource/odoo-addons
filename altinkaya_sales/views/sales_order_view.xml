@@ -128,6 +128,17 @@
                 >{'invisible': [('state', '=', 'draft')]}</attribute>
             </xpath>
 
+            <!-- Orders are invoiced from their deliveries, not from the order -->
+            <xpath expr="//button[@id='create_invoice']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//button[@id='create_invoice_percentage']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='partner_invoice_id']" position="replace">
                 <field
                     name="partner_invoice_id"
