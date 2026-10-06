@@ -32,7 +32,7 @@ AA,16,139,1,1,0,0E,<t
                 />
 <t t-if="label.label1.pieces_in_pack > 0.0">
 AT,16,162,30,36,0,0E,0,0,<t
-                    t-out="Markup(label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or '')"
+                    t-out="Markup(int(label.label1.pieces_in_pack) if label.label1.pieces_in_pack == int(label.label1.pieces_in_pack) else label.label1.pieces_in_pack)"
                 /> <t t-out="Markup(label.label1.uom_name or '')" />
 </t>
 AB,16,206,1,1,0,0E,Lot <t t-out="Markup(label.label1.lot_id.name or '')" />
@@ -52,7 +52,7 @@ AA,431,139,1,1,0,0E,<t
                 />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,431,162,30,36,0,0E,0,0,<t
-                    t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
+                    t-out="Markup(int(label.label2.pieces_in_pack) if label.label2.pieces_in_pack == int(label.label2.pieces_in_pack) else label.label2.pieces_in_pack)"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
 AB,431,206,1,1,0,0E,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />
@@ -93,7 +93,7 @@ AT,24,240,33,36,0,0E,0,0,<t
                 />
 <t t-if="label.label1.pieces_in_pack > 0.0">
 AT,24,292,45,49,0,0E,0,0,<t
-                    t-out="Markup(label.label1.pieces_in_pack if label.label1.product_id.uom_id.category_id.id != 1 else int(label.label1.pieces_in_pack) or '')"
+                    t-out="Markup(int(label.label1.pieces_in_pack) if label.label1.pieces_in_pack == int(label.label1.pieces_in_pack) else label.label1.pieces_in_pack)"
                 /> <t t-out="Markup(label.label1.uom_name or '')" />
 </t>
 AT,24,356,53,45,0,0E,0,0,Lot <t t-out="Markup(label.label1.lot_id.name or '')" />
@@ -113,7 +113,7 @@ AT,650,240,33,36,0,0E,0,0,<t
                 />
 <t t-if="label.label2.pieces_in_pack > 0.0">
 AT,650,292,45,49,0,0E,0,0,<t
-                    t-out="Markup(label.label2.pieces_in_pack if label.label2.product_id.uom_id.category_id.id != 1 else int(label.label2.pieces_in_pack) or '')"
+                    t-out="Markup(int(label.label2.pieces_in_pack) if label.label2.pieces_in_pack == int(label.label2.pieces_in_pack) else label.label2.pieces_in_pack)"
                 /> <t t-out="Markup(label.label2.uom_name or '')" />
 </t>
 AT,650,356,53,45,0,0E,0,0,Lot <t t-out="Markup(label.label2.lot_id.name or '')" />

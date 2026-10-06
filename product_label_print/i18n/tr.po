@@ -493,3 +493,15 @@ msgstr "Yazdırmak için bir etiket yazıcısı ayarlamalısınız."
 #: model_terms:ir.ui.view,arch_db:product_label_print.view_print_pack_barcode_form
 msgid "Ürün Etiketi Yazdır"
 msgstr ""
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_product_product_label__uom_id
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_uom_id
+msgid "Unit of Measure"
+msgstr "Ölçü Birimi"
+
+#. module: product_label_print
+#. odoo-python
+#: code:addons/product_label_print/models/product.py:0
+msgid "The label unit must belong to the product's unit category."
+msgstr "Etiket birimi, ürünün ölçü birimi kategorisinde olmalıdır."
