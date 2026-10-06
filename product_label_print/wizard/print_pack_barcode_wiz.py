@@ -36,6 +36,15 @@ class PrintPackBarcodeWizard(models.TransientModel):
         readonly=False,
         domain="[('product_id', '=', single_label_product_id)]",
     )
+    single_label_uom_category_id = fields.Many2one(
+        related="single_label_product_id.uom_id.category_id"
+    )
+    single_label_uom_id = fields.Many2one(
+        string="Unit of Measure",
+        related="single_label_id.uom_id",
+        readonly=False,
+        domain="[('category_id', '=', single_label_uom_category_id)]",
+    )
     single_label_uom_name = fields.Char(
         string="UOM Name", related="single_label_id.uom_name"
     )
@@ -134,7 +143,7 @@ class PrintPackBarcodeWizard(models.TransientModel):
                 "barcode": product_id.barcode,
                 "lot_ids": [(6, 0, lot_ids.ids)] if lot_ids else False,
                 "model_ref_id": f"{model._name},{model.id}",
-                "uom_name": product_id.uom_id.name,
+                "uom_id": product_id.uom_id.id,
                 "product_id": product_id.id,
             }
         )
@@ -150,11 +159,6 @@ class PrintPackBarcodeWizard(models.TransientModel):
         Label_Res = []
         label_template_obj = self.env["label.twoinrow"]
         for product_label in self.product_label_ids:
-            product_label.pieces_in_pack = (
-                product_label.pieces_in_pack
-                if product_label.product_id.uom_id.category_id.id != 1
-                else int(product_label.pieces_in_pack)
-            )
             model = product_label.model_ref_id
             if product_label.product_id.tracking != "none":
                 if len(product_label.lot_ids) > 1:

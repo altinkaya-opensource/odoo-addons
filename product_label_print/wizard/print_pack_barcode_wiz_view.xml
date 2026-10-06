@@ -19,6 +19,12 @@
                             />
                             <field name="single_label_note" />
                             <field name="single_label_pieces_in_pack" />
+                            <field name="single_label_uom_category_id" invisible="1" />
+                            <field
+                                name="single_label_uom_id"
+                                options="{'no_create': True}"
+                                required="1"
+                            />
                             <field name="single_label_label_to_print" />
                         </group>
                         <group>

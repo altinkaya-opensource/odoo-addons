@@ -1,6 +1,6 @@
 {
     "name": "Product Label Print",
-    "version": "16.0.1.1.1",
+    "version": "16.0.1.2.0",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Stock",
     "summary": "Product Label Print",

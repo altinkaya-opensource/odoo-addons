@@ -52,12 +52,34 @@ class ProductProductLabel(models.TransientModel):
     barcode = fields.Char()
     lot_id = fields.Many2one("stock.lot")
     lot_ids = fields.Many2many("stock.lot", string="Lots")
-    uom_name = fields.Char(string="UOM Name", size=10)
+    uom_id = fields.Many2one(
+        "uom.uom",
+        string="Unit of Measure",
+        compute="_compute_uom_id",
+        store=True,
+        readonly=False,
+        required=True,
+    )
+    uom_name = fields.Char(string="UOM Name", related="uom_id.name")
+
     batch_code = fields.Char(store=False)
     model_ref_id = fields.Reference(selection="_selection_model", string="Reference")
     gs1_url = fields.Char(string="GS1 Digital Link", compute="_compute_gs1_url")
 
-    @api.depends("barcode", "lot_id", "pieces_in_pack")
+    @api.depends("product_id")
+    def _compute_uom_id(self):
+        for label in self:
+            label.uom_id = label.product_id.uom_id
+
+    @api.constrains("uom_id", "product_id")
+    def _check_uom_category(self):
+        for label in self:
+            if label.uom_id.category_id != label.product_id.uom_id.category_id:
+                raise UserError(
+                    _("The label unit must belong to the product's unit category.")
+                )
+
+    @api.depends("barcode", "lot_id", "pieces_in_pack", "uom_id", "product_id.uom_id")
     def _compute_gs1_url(self):
         """GS1 Digital Link the carton QR encodes: product (01) + lot (10) +
         pieces-in-pack as the variable count (30)."""
@@ -66,13 +88,14 @@ class ProductProductLabel(models.TransientModel):
             if not label.barcode:
                 label.gs1_url = False
                 continue
-            qty = label.pieces_in_pack
+            qty = label.uom_id._compute_quantity(
+                label.pieces_in_pack, label.product_id.uom_id, round=False
+            )
             if not qty or qty <= 0:
                 qty = None
             elif float(qty).is_integer():
                 qty = int(qty)
-            # ponytail: AI 30 is an item count; a non-unit UOM pack would emit a
-            # float here — refine only if such packs ever carry a Digital Link.
+            # Scanners interpret quantity in the product's default unit.
             label.gs1_url = builder.build_product_link(
                 label.barcode, lot=label.lot_id.name or None, qty=qty
             )
