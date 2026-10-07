@@ -220,6 +220,26 @@ class TestCurrencyDifference(TransactionCase):
         self.assertEqual(self._row()["amount"], 0.0)
         self.assertFalse(self._is_listed())
 
+    def test_partner_button_opens_the_fifo_wizard(self):
+        term = self.env.ref("account.account_payment_term_immediate")
+        self.partner.property_payment_term_id = term
+        action = self.partner.action_generate_currency_diff_invoice()
+
+        self.assertEqual(action["res_model"], "create.currency.difference.invoice")
+        wizard = (
+            self.env[action["res_model"]]
+            .with_context(**action["context"])
+            .create(
+                {
+                    "billing_point_id": self.env["account.billing.point"]
+                    .search([], limit=1)
+                    .id
+                }
+            )
+        )
+        self.assertEqual(wizard.payment_term_id, term)
+        self.assertEqual(wizard.env.context["active_ids"], self.partner.ids)
+
     def test_filter_skips_differences_below_the_minimum(self):
         self._create_invoice(self.early, 1.0)
         self._create_payment(self.late, 1.0)
