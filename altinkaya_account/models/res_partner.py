@@ -532,16 +532,14 @@ class ResPartner(models.Model):
             )
 
     def action_generate_currency_diff_invoice(self):
+        """Run the FIFO currency difference wizard for this partner alone."""
         self.ensure_one()
-        view = self.env.ref(
-            "altinkaya_account.selected_currency_difference_invoice_form"
-        )
+        view = self.env.ref("altinkaya_account.res_partner_create_difference_inv")
         return {
             "name": _("Create Currency Difference Invoice"),
             "type": "ir.actions.act_window",
-            "view_type": "form",
             "view_mode": "form",
-            "res_model": "create.selected.currency.difference.invoice",
+            "res_model": "create.currency.difference.invoice",
             "views": [(view.id, "form")],
             "view_id": view.id,
             "target": "new",
@@ -550,6 +548,9 @@ class ResPartner(models.Model):
                 "active_model": "res.partner",
                 "active_id": self.id,
                 "active_ids": self.ids,
+                "default_payment_term_id": (
+                    self.commercial_partner_id.property_payment_term_id.id
+                ),
             },
         }
 

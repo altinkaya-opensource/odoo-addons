@@ -272,23 +272,22 @@ class TestCurrencyDifferenceWizards(TransactionCase):
         )
         return invoice, payment_line, exchange_move, first_partial
 
-    def _create_selected_wizard(self, invoice, payment_line):
-        action = self.partner.action_generate_currency_diff_invoice()
-        self.assertEqual(
-            action["res_model"], "create.selected.currency.difference.invoice"
+    def _selected_wizard_model(self):
+        return self.env["create.selected.currency.difference.invoice"].with_context(
+            active_model="res.partner",
+            active_id=self.partner.id,
+            active_ids=self.partner.ids,
         )
-        return (
-            self.env[action["res_model"]]
-            .with_context(**action["context"])
-            .create(
-                {
-                    "invoice_date": self.payment_date,
-                    "payment_term_id": self.payment_term.id,
-                    "billing_point_id": self.billing_point.id,
-                    "invoice_ids": [Command.set(invoice.ids)],
-                    "payment_line_ids": [Command.set(payment_line.ids)],
-                }
-            )
+
+    def _create_selected_wizard(self, invoice, payment_line):
+        return self._selected_wizard_model().create(
+            {
+                "invoice_date": self.payment_date,
+                "payment_term_id": self.payment_term.id,
+                "billing_point_id": self.billing_point.id,
+                "invoice_ids": [Command.set(invoice.ids)],
+                "payment_line_ids": [Command.set(payment_line.ids)],
+            }
         )
 
     def test_bulk_currency_difference_wizard(self):
@@ -387,10 +386,9 @@ class TestCurrencyDifferenceWizards(TransactionCase):
         source_invoice, payment_line, _exchange, _partial = (
             self._create_reconciled_pair("PREFILL")
         )
-        action = self.partner.action_generate_currency_diff_invoice()
         with Form(
-            self.env[action["res_model"]].with_context(**action["context"]),
-            view=action["view_id"],
+            self._selected_wizard_model(),
+            view="altinkaya_account.selected_currency_difference_invoice_form",
         ) as wizard_form:
             wizard_form.invoice_date = self.payment_date
             wizard_form.billing_point_id = self.billing_point
