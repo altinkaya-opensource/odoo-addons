@@ -156,6 +156,50 @@ class TestCurrencyDifference(TransactionCase):
         )
         self._post(move)
 
+    def _create_customer_difference_bill(self, amount):
+        """The customer's own currency difference invoice to us (AKFRK)."""
+        company = self.env.company
+        journal = self.env["account.journal"].search(
+            [("code", "=", "AKFRK"), ("company_id", "=", company.id)], limit=1
+        ) or self.env["account.journal"].create(
+            {
+                "name": "Exchange difference bills",
+                "code": "AKFRK",
+                "type": "purchase",
+                "company_id": company.id,
+            }
+        )
+        self.partner.property_account_payable_id = self.env["account.account"].create(
+            {
+                "name": "Currency difference payable",
+                "code": "KFF.TEST.PAY",
+                "account_type": "liability_payable",
+                "reconcile": True,
+                "currency_id": self.currency.id,
+                "company_id": company.id,
+            }
+        )
+        bill = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "journal_id": journal.id,
+                "partner_id": self.partner.id,
+                "currency_id": company.currency_id.id,
+                "invoice_date": self.late,
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "KUR FARKI",
+                            "account_id": self.revenue.id,
+                            "price_unit": amount,
+                            "tax_ids": [Command.clear()],
+                        }
+                    )
+                ],
+            }
+        )
+        self._post(bill)
+
     def _balance(self, move):
         """Booked TL of the move on the foreign-currency receivable."""
         return sum(
@@ -238,4 +282,14 @@ class TestCurrencyDifference(TransactionCase):
             self.assertFalse(self._is_listed())
 
         self.partner.country_id = self.env.ref("base.de")
+        self.assertFalse(self._is_listed())
+
+    def test_customer_currency_difference_bill_offsets_the_difference(self):
+        self._create_invoice(self.early)
+        self._create_payment(self.late)
+        to_receive = -self._row()["amount"]
+        self.assertGreaterEqual(to_receive, partner_module.KFARK_MIN_AMOUNT)
+
+        self._create_customer_difference_bill(to_receive)
+        self.assertAlmostEqual(self._row()["amount"], 0.0, places=2)
         self.assertFalse(self._is_listed())

@@ -13,6 +13,8 @@ from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
 
+from .account_move_line import CURRENCY_DIFFERENCE_JOURNAL_CODES
+
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
 # Currency difference is only invoiced on accounts paid since this date.
@@ -563,15 +565,18 @@ class ResPartner(models.Model):
 
         Each foreign-currency receivable statement (posted lines from
         _CURRENCY_VALUATION_START_DATE to ``date``; ADVR, KRFRK and KRDGR
-        excluded) goes through _match_currency_difference_lines. Accounts
-        without a payment since KFARK_PAYMENT_START are skipped. ``partner_ids``
-        limits the commercial partners; None means all of them.
+        excluded) goes through _match_currency_difference_lines, together
+        with the customer's own currency difference bills (AKFRK), which sit
+        on the payable account of the same currency. Accounts without a
+        payment since KFARK_PAYMENT_START are skipped. ``partner_ids`` limits
+        the commercial partners; None means all of them.
         """
         for model_name in ("account.move", "account.move.line", "res.partner"):
             self.env[model_name].flush_model()
         self.env.cr.execute(
             """
-            SELECT l.partner_id, l.account_id, l.date, l.amount_currency,
+            SELECT l.partner_id, a.currency_id, a.account_type, l.account_id,
+                   l.date, l.amount_currency,
                    l.debit - l.credit AS balance, aj.code AS journal_code,
                    m.id AS move_id, m.move_type,
                    (l.credit > 0
@@ -586,16 +591,19 @@ class ResPartner(models.Model):
                AND (%(partner_ids)s::int[] IS NULL
                     OR l.partner_id = ANY(%(partner_ids)s::int[]))
                AND p.country_id = %(country_id)s
-               AND a.account_type = 'asset_receivable'
-               AND a.currency_id IS NOT NULL
+               AND a.currency_id != %(company_currency_id)s
+               AND (a.account_type = 'asset_receivable'
+                    OR (a.account_type = 'liability_payable'
+                        AND aj.code = 'AKFRK'))
                AND m.state = 'posted'
                AND l.date BETWEEN %(start_date)s AND %(date)s
                AND m.date >= %(start_date)s
                AND aj.code NOT IN ('ADVR', 'KRFRK', 'KRDGR')
-             ORDER BY l.partner_id, l.account_id, l.date, l.id
+             ORDER BY l.partner_id, a.currency_id, l.date, l.id
             """,
             {
                 "company_id": self.env.company.id,
+                "company_currency_id": self.env.company.currency_id.id,
                 "partner_ids": partner_ids,
                 "country_id": self.env.ref("base.tr").id,
                 "start_date": self._CURRENCY_VALUATION_START_DATE,
@@ -604,13 +612,25 @@ class ResPartner(models.Model):
         )
         payment_start = fields.Date.to_date(KFARK_PAYMENT_START)
         rows = []
-        for (partner_id, account_id), lines in groupby(
-            self.env.cr.dictfetchall(), key=itemgetter("partner_id", "account_id")
+        for (partner_id, _currency_id), lines in groupby(
+            self.env.cr.dictfetchall(), key=itemgetter("partner_id", "currency_id")
         ):
+            lines = list(lines)
+            # The chart has one receivable account per currency; the AKFRK
+            # bills on the payable of that currency count toward it.
+            receivable_ids = [
+                line["account_id"]
+                for line in lines
+                if line["account_type"] == "asset_receivable"
+            ]
+            if not receivable_ids:
+                continue
             row = self._match_currency_difference_lines(lines)
             last_payment_date = row["last_payment_date"]
             if last_payment_date and last_payment_date >= payment_start:
-                rows.append(dict(row, partner_id=partner_id, account_id=account_id))
+                rows.append(
+                    dict(row, partner_id=partner_id, account_id=receivable_ids[0])
+                )
         return rows
 
     @api.model
@@ -620,9 +640,9 @@ class ResPartner(models.Model):
         Lines are matched FIFO in date order: a payment closes the oldest open
         invoices, and an advance payment is closed by the invoices after it.
         Each matched foreign amount realizes the gap between its invoice and
-        payment TL. TL-only lines (KFARK invoices) offset what was already
-        invoiced, so the result is idempotent. The open foreign balance stays
-        out: its difference is not realized yet.
+        payment TL. TL-only lines (our KFARK invoices, the customer's AKFRK
+        bills) offset what was already invoiced, so the result is idempotent.
+        The open foreign balance stays out: its difference is not realized yet.
 
         Returns the TL ``amount`` to invoice (positive bills the customer), the
         ``last_payment_date`` and the ``source_invoice_ids`` matched after the
@@ -637,10 +657,9 @@ class ResPartner(models.Model):
                 last_payment_date = line["date"]
             amount_currency = line["amount_currency"] or 0.0
             balance = line["balance"] or 0.0
-            if line["journal_code"] == "KFARK" or float_is_zero(
-                amount_currency, precision_digits=2
-            ):
-                if line["journal_code"] == "KFARK":
+            is_difference = line["journal_code"] in CURRENCY_DIFFERENCE_JOURNAL_CODES
+            if is_difference or float_is_zero(amount_currency, precision_digits=2):
+                if is_difference:
                     last_kfark_date = line["date"]
                 realized += balance
                 continue
