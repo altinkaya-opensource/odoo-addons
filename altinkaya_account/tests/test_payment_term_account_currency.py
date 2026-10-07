@@ -121,6 +121,25 @@ class TestPaymentTermAccountCurrency(TransactionCase):
         self.assertEqual(bill.amount_residual, bill.amount_total)
         self.assertEqual(bill.payment_state, "not_paid")
 
+    def test_currency_difference_balance_survives_a_rate_change(self):
+        # Without a foreign amount the TL balance must not be re-derived from
+        # it when the line's rate changes: that would zero it.
+        self.env["res.currency.rate"].create(
+            {
+                "name": self.invoice_date + timedelta(days=1),
+                "currency_id": self.foreign_currency.id,
+                "company_id": self.company.id,
+                "rate": 0.04,
+            }
+        ).flush_recordset()
+        bill = self._create_bill(self.currency_difference_journal)
+        rate = self._term_line(bill).currency_rate
+
+        bill.invoice_date = self.invoice_date + timedelta(days=2)
+        self.assertNotEqual(self._term_line(bill).currency_rate, rate)
+        self._assert_no_foreign_amount(bill)
+        self.assertEqual(bill.amount_total, 1000.0)
+
     def test_draft_bill_switched_to_and_from_currency_difference_journal(self):
         bill = self._create_bill(self.purchase_journal)
         self.assertEqual(

@@ -587,6 +587,12 @@ msgid "Currency Difference"
 msgstr "Kur Farkı"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_to_invoice
+#: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_to_invoice
+msgid "Currency Difference to Invoice"
+msgstr "Kur Farkı Kesilecek"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__currency_difference_checked
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_users__currency_difference_checked
 msgid "Currency Difference Checked"

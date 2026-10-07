@@ -118,6 +118,11 @@
                     string="Sıfır Değil"
                     domain="['|','|','|',('currency_balance','&gt;',1),('currency_balance','&lt;',-1),('balance','&gt;',10),('balance','&lt;',-10)]"
                 />
+                <filter
+                    name="currency_difference_to_invoice"
+                    string="Kur Farkı Kesilecek"
+                    domain="[('currency_difference_to_invoice', '=', True)]"
+                />
                 <separator />
                 <filter
                     name="turkey"

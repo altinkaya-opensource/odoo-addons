@@ -115,7 +115,7 @@ class TestCurrencyDifferenceWizards(TransactionCase):
         self.partner = self.env["res.partner"].create(
             {
                 "name": "Currency difference wizard partner",
-                "country_id": self.env.ref("base.us").id,
+                "country_id": self.env.ref("base.tr").id,
                 "property_account_receivable_id": self.receivable_account.id,
                 "property_payment_term_id": self.payment_term.id,
             }
