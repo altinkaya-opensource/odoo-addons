@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from contextlib import contextmanager
+
 from odoo import api, fields, models
 
 # Currency-difference invoices (KFARK) and bills (AKFRK): TRY amounts whose
@@ -130,6 +132,24 @@ class AccountMoveLine(models.Model):
             line._inverse_product_id()
             line._inverse_account_id()
             line._inverse_amount_currency()
+
+    @contextmanager
+    def _sync_invoice(self, container):
+        """Keep the TL balance of currency-difference lines as written.
+
+        Their foreign amount is always zero, so re-deriving the balance from
+        it after a rate change (e.g. a partner rate type applied on create but
+        not on a later recompute) would zero the receivable/payable line.
+        """
+        lines = container["records"].filtered(
+            lambda line: (
+                line.journal_id.code in CURRENCY_DIFFERENCE_JOURNAL_CODES
+                and line.currency_id != line.company_currency_id
+            )
+        )
+        with self.env.protecting([self._fields["balance"]], lines):
+            with super()._sync_invoice(container):
+                yield
 
     @api.depends("move_id.currency_id", "account_id")
     def _compute_currency_id(self):  # pylint: disable=W8110
