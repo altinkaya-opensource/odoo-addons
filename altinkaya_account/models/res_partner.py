@@ -2,13 +2,21 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 
+from collections import deque
+from itertools import groupby
+from math import copysign
+from operator import itemgetter
+
 from psycopg2.extras import execute_values
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero
 
 # Ignore TL residuals below this (rounding noise).
 KFARK_MIN_AMOUNT = 1.0
+# Currency difference is only invoiced on accounts paid since this date.
+KFARK_PAYMENT_START = "2026-01-01"
 STATEMENT_BALANCE_BATCH_SIZE = 10_000
 STATEMENT_BALANCE_FIELDS = (
     "balance",
@@ -329,6 +337,11 @@ class ResPartner(models.Model):
         default=False,
         help="Manual check for currency difference",
     )
+    currency_difference_to_invoice = fields.Boolean(
+        string="Currency Difference to Invoice",
+        compute="_compute_currency_difference_to_invoice",
+        search="_search_currency_difference_to_invoice",
+    )
 
     def _compute_due_days(self):
         for record in self:
@@ -541,132 +554,149 @@ class ResPartner(models.Model):
         }
 
     def _get_currency_difference_balances(self, date):
-        """TL residual and FX balance per foreign-currency receivable account.
-
-        Statement rule (mirrors the partner statement in altinkaya_reports):
-        posted lines since 2022-01-01, ADVR and KRFRK journals excluded,
-        KFARK/KRDGR lines counted as TRY-only. Customer invoices after each
-        account's last payment on or before ``date`` are excluded. Lines not
-        yet due at ``date`` are also excluded; KFARK lines are exempt so the
-        calculation remains idempotent.
-        """
+        """Currency difference still to invoice on this partner's FX accounts."""
         self.ensure_one()
+        return self._get_currency_difference_rows(date, self.commercial_partner_id.ids)
+
+    def _get_currency_difference_rows(self, date, partner_ids=None):
+        """Currency difference still to invoice, per Turkish customer FX account.
+
+        Each foreign-currency receivable statement (posted lines from
+        _CURRENCY_VALUATION_START_DATE to ``date``; ADVR, KRFRK and KRDGR
+        excluded) goes through _match_currency_difference_lines. Accounts
+        without a payment since KFARK_PAYMENT_START are skipped. ``partner_ids``
+        limits the commercial partners; None means all of them.
+        """
+        for model_name in ("account.move", "account.move.line", "res.partner"):
+            self.env[model_name].flush_model()
         self.env.cr.execute(
             """
-            WITH last_payment AS (
-                SELECT p.account_id, MAX(p.date) AS last_payment_date
-                  FROM account_move_line p
-                  JOIN account_account pa ON pa.id = p.account_id
-                  JOIN account_move pm ON pm.id = p.move_id
-                 WHERE p.partner_id = %s
-                   AND p.company_id = %s
-                   AND pa.account_type = 'asset_receivable'
-                   AND pa.currency_id IS NOT NULL
-                   AND pm.state = 'posted'
-                   AND p.date BETWEEN %s AND %s
-                   AND p.credit > 0
-                   AND (p.payment_id IS NOT NULL
-                        OR p.statement_line_id IS NOT NULL)
-                 GROUP BY p.account_id
-            )
-            SELECT l.account_id,
-                   ROUND(SUM(l.debit - l.credit)::numeric, 2) AS tl_net,
-                   ROUND(SUM(CASE WHEN aj.code IN ('KFARK', 'KRDGR') THEN 0
-                                  ELSE l.amount_currency END)::numeric, 4) AS fx_net,
-                   lp.last_payment_date
+            SELECT l.partner_id, l.account_id, l.date, l.amount_currency,
+                   l.debit - l.credit AS balance, aj.code AS journal_code,
+                   m.id AS move_id, m.move_type,
+                   (l.credit > 0
+                    AND (l.payment_id IS NOT NULL
+                         OR l.statement_line_id IS NOT NULL)) AS is_payment
               FROM account_move_line l
               JOIN account_account a ON a.id = l.account_id
               JOIN account_move m ON m.id = l.move_id
               JOIN account_journal aj ON aj.id = m.journal_id
-              JOIN last_payment lp ON lp.account_id = l.account_id
-             WHERE l.partner_id = %s
-               AND l.company_id = %s
+              JOIN res_partner p ON p.id = l.partner_id
+             WHERE l.company_id = %(company_id)s
+               AND (%(partner_ids)s::int[] IS NULL
+                    OR l.partner_id = ANY(%(partner_ids)s::int[]))
+               AND p.country_id = %(country_id)s
                AND a.account_type = 'asset_receivable'
                AND a.currency_id IS NOT NULL
                AND m.state = 'posted'
-               AND l.date >= %s
-               AND l.date <= %s
-               AND m.date >= %s
-               AND aj.code NOT IN ('ADVR', 'KRFRK')
-               AND (aj.code = 'KFARK'
-                    OR m.move_type NOT IN ('out_invoice', 'out_refund')
-                    OR COALESCE(m.invoice_date, l.date) <= lp.last_payment_date)
-               AND (l.date_maturity IS NULL
-                    OR l.date_maturity <= %s
-                    OR aj.code = 'KFARK')
-             GROUP BY l.account_id, lp.last_payment_date
+               AND l.date BETWEEN %(start_date)s AND %(date)s
+               AND m.date >= %(start_date)s
+               AND aj.code NOT IN ('ADVR', 'KRFRK', 'KRDGR')
+             ORDER BY l.partner_id, l.account_id, l.date, l.id
             """,
-            (
-                self.commercial_partner_id.id,
-                self.env.company.id,
-                self._CURRENCY_VALUATION_START_DATE,
-                date,
-                self.commercial_partner_id.id,
-                self.env.company.id,
-                self._CURRENCY_VALUATION_START_DATE,
-                date,
-                self._CURRENCY_VALUATION_START_DATE,
-                date,
-            ),
+            {
+                "company_id": self.env.company.id,
+                "partner_ids": partner_ids,
+                "country_id": self.env.ref("base.tr").id,
+                "start_date": self._CURRENCY_VALUATION_START_DATE,
+                "date": date,
+            },
         )
-        return self.env.cr.dictfetchall()
+        payment_start = fields.Date.to_date(KFARK_PAYMENT_START)
+        rows = []
+        for (partner_id, account_id), lines in groupby(
+            self.env.cr.dictfetchall(), key=itemgetter("partner_id", "account_id")
+        ):
+            row = self._match_currency_difference_lines(lines)
+            last_payment_date = row["last_payment_date"]
+            if last_payment_date and last_payment_date >= payment_start:
+                rows.append(dict(row, partner_id=partner_id, account_id=account_id))
+        return rows
 
-    def _get_fx_residual_try_value(self, account, fx_net, date):
-        """TRY value of the partner's remaining FX balance at ``date``.
+    @api.model
+    def _match_currency_difference_lines(self, lines):
+        """Realized exchange difference of one FX account statement.
 
-        The remaining foreign-currency debt is not exchange difference — its
-        TRY equivalent must stay open on the account. Uses the TCMB forex
-        buying rate, like calc_currency_valuation.
+        Lines are matched FIFO in date order: a payment closes the oldest open
+        invoices, and an advance payment is closed by the invoices after it.
+        Each matched foreign amount realizes the gap between its invoice and
+        payment TL. TL-only lines (KFARK invoices) offset what was already
+        invoiced, so the result is idempotent. The open foreign balance stays
+        out: its difference is not realized yet.
+
+        Returns the TL ``amount`` to invoice (positive bills the customer), the
+        ``last_payment_date`` and the ``source_invoice_ids`` matched after the
+        last KFARK (all matched invoices when none is).
         """
-        if not fx_net:
-            return 0.0
-        rate = self.env["res.currency.rate"].search(
-            [("currency_id", "=", account.currency_id.id), ("name", "<=", date)],
-            order="name desc",
-            limit=1,
+        open_lots = deque()  # [amount_currency, balance, invoice move id]
+        realized = 0.0
+        matches = []  # (date, invoice move id)
+        last_kfark_date = last_payment_date = None
+        for line in lines:
+            if line["is_payment"]:
+                last_payment_date = line["date"]
+            amount_currency = line["amount_currency"] or 0.0
+            balance = line["balance"] or 0.0
+            if line["journal_code"] == "KFARK" or float_is_zero(
+                amount_currency, precision_digits=2
+            ):
+                if line["journal_code"] == "KFARK":
+                    last_kfark_date = line["date"]
+                realized += balance
+                continue
+            invoice_id = line["move_id"] if line["move_type"] == "out_invoice" else 0
+            while open_lots and (open_lots[0][0] > 0) != (amount_currency > 0):
+                lot = open_lots[0]
+                share = min(abs(lot[0]), abs(amount_currency))
+                lot_balance = lot[1] * share / abs(lot[0])
+                line_balance = balance * share / abs(amount_currency)
+                realized += lot_balance + line_balance
+                matches.append((line["date"], lot[2] or invoice_id))
+                lot[0] -= copysign(share, lot[0])
+                lot[1] -= lot_balance
+                amount_currency -= copysign(share, amount_currency)
+                balance -= line_balance
+                if float_is_zero(lot[0], precision_digits=2):
+                    open_lots.popleft()
+                if float_is_zero(amount_currency, precision_digits=2):
+                    break
+            else:
+                open_lots.append([amount_currency, balance, invoice_id])
+        matched_ids = [invoice_id for _date, invoice_id in matches if invoice_id]
+        new_ids = [
+            invoice_id
+            for match_date, invoice_id in matches
+            if invoice_id and (not last_kfark_date or match_date > last_kfark_date)
+        ]
+        return {
+            "amount": round(-realized, 2),
+            "last_payment_date": last_payment_date,
+            "source_invoice_ids": list(dict.fromkeys(new_ids or matched_ids)),
+        }
+
+    def _get_currency_difference_partner_ids(self, date, partner_ids=None):
+        """Commercial partners with at least KFARK_MIN_AMOUNT to invoice."""
+        return {
+            row["partner_id"]
+            for row in self._get_currency_difference_rows(date, partner_ids)
+            if abs(row["amount"]) >= KFARK_MIN_AMOUNT
+        }
+
+    def _compute_currency_difference_to_invoice(self):
+        partner_ids = self._get_currency_difference_partner_ids(
+            fields.Date.context_today(self), self.commercial_partner_id._origin.ids
         )
-        if not rate or not rate.tcmb_forex_buying:
-            raise UserError(
-                _(
-                    "No exchange rate information found for %(currency)s at %(date)s!",
-                    currency=account.currency_id.name,
-                    date=date,
-                )
+        for partner in self:
+            partner.currency_difference_to_invoice = (
+                partner.commercial_partner_id.id in partner_ids
             )
-        return round(fx_net / rate.tcmb_forex_buying, 2)
 
-    def _get_difference_source_invoices(self, account, payment_date):
-        """Invoices through the last payment, after the last posted KFARK.
-
-        Used for the KDV mix and the e-invoice comment. Falls back to the
-        whole statement window when no invoice exists after the last KFARK.
-        """
-        aml_obj = self.env["account.move.line"]
-        base_domain = [
-            ("partner_id", "=", self.commercial_partner_id.id),
-            ("company_id", "=", self.env.company.id),
-            ("account_id", "=", account.id),
-            ("move_id.state", "=", "posted"),
-            ("date", ">=", self._CURRENCY_VALUATION_START_DATE),
-        ]
-        last_kfark_line = aml_obj.search(
-            base_domain + [("move_id.journal_id.code", "=", "KFARK")],
-            order="date desc",
-            limit=1,
+    def _search_currency_difference_to_invoice(self, operator, value):
+        partner_ids = self._get_currency_difference_partner_ids(
+            fields.Date.context_today(self)
         )
-        invoice_domain = base_domain + [
-            ("move_id.move_type", "in", ("out_invoice", "out_refund")),
-            ("move_id.journal_id.code", "!=", "KFARK"),
-            ("move_id.invoice_date", "<=", payment_date),
-        ]
-        invoice_lines = aml_obj.search(
-            invoice_domain + [("date", ">", last_kfark_line.date)]
-            if last_kfark_line
-            else invoice_domain
-        )
-        if not invoice_lines and last_kfark_line:
-            invoice_lines = aml_obj.search(invoice_domain)
-        return invoice_lines.mapped("move_id")
+        positive = (operator == "=") == bool(value)
+        return [("id", "in" if positive else "not in", list(partner_ids))]
 
     @api.model
     def _get_kdv_distribution(self, invoices, kdv_rates):
@@ -960,26 +990,12 @@ class ResPartner(models.Model):
         )
         for row in rows:
             account = self.env["account.account"].browse(row["account_id"])
-            if "amount" in row:
-                amount = row["amount"]
-            else:
-                # Only the exchange-rate component of the TL residual is invoiced;
-                # the TRY value of the remaining FX balance stays open on the
-                # account (the customer still owes it in currency).
-                fx_try_value = self._get_fx_residual_try_value(
-                    account, row["fx_net"], date
-                )
-                amount = -(row["tl_net"] - fx_try_value)
+            amount = row["amount"]
             if abs(amount) < KFARK_MIN_AMOUNT:
                 continue
             inv_type = "out_invoice" if amount > 0 else "out_refund"
 
-            if "source_invoice_ids" in row:
-                source_invoices = inv_obj.browse(row["source_invoice_ids"])
-            else:
-                source_invoices = self._get_difference_source_invoices(
-                    account, row["last_payment_date"]
-                )
+            source_invoices = inv_obj.browse(row["source_invoice_ids"])
             inv_lines_to_create = []
             comment_einvoice = ""
             if source_invoices:
