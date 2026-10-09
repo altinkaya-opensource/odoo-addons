@@ -14,4 +14,15 @@
             </xpath>
         </field>
     </record>
+    <record id="view_mrp_bom_line_tree_inherit_dynamic_materials" model="ir.ui.view">
+        <field name="name">mrp.bom.line.tree.inherit.dynamic.materials</field>
+        <field name="model">mrp.bom.line</field>
+        <field name="inherit_id" ref="altinkaya_mrp.mrp_bom_line_view_tree" />
+        <field name="arch" type="xml">
+            <field name="product_uom_id" position="after">
+                <field name="factor_attribute_id" optional="show" />
+                <field name="attribute_factor" optional="show" />
+            </field>
+        </field>
+    </record>
 </odoo>

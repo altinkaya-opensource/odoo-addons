@@ -13,4 +13,15 @@
             </xpath>
         </field>
     </record>
+    <record id="mrp_bom_line_tree_inherit_free_qty" model="ir.ui.view">
+        <field name="name">mrp.bom.line.tree.inherit.free.qty</field>
+        <field name="model">mrp.bom.line</field>
+        <field name="inherit_id" ref="altinkaya_mrp.mrp_bom_line_view_tree" />
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <field name="product_uom_id" position="after">
+                <field name="free_qty" optional="show" />
+            </field>
+        </field>
+    </record>
 </odoo>

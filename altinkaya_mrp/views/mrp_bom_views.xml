@@ -7,6 +7,23 @@
         parent="mrp.menu_mrp_bom"
         sequence="16"
     />
+    <record id="mrp_bom_line_view_tree" model="ir.ui.view">
+        <field name="name">mrp.bom.line.tree</field>
+        <field name="model">mrp.bom.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id" />
+                <field name="product_qty" />
+                <field name="product_uom_id" groups="uom.group_uom" />
+                <field
+                    name="operation_id"
+                    groups="mrp.group_mrp_routings"
+                    optional="show"
+                />
+                <field name="manual_consumption" optional="show" />
+            </tree>
+        </field>
+    </record>
     <data>
         <record id="mrp_bom_form_inherit_parameter" model="ir.ui.view">
             <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
