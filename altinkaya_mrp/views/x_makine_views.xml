@@ -10,6 +10,7 @@
                     <field name="x_kod" />
                     <field name="x_name" />
                     <field name="name" />
+                    <field name="product_id" options="{'no_create': True}" />
                 </group>
             </form>
         </field>

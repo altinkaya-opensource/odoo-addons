@@ -982,3 +982,8 @@ msgstr "BoM Türü"
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_product_id
 msgid "BoM Product"
 msgstr "Ürün"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__product_id
+msgid "Machine Product"
+msgstr "Makine Ürünü"

@@ -5,6 +5,11 @@ from odoo.tools import sql
 class AccountInvoiceReport(models.Model):
     _inherit = "account.invoice.report"
 
+    _depends = {
+        "account.move": ["usd_rate", "currency_rate"],
+        "account.move.line": ["company_currency_id"],
+    }
+
     def init(self):
         res = super().init()
         sql.create_index(
@@ -26,6 +31,12 @@ class AccountInvoiceReport(models.Model):
     )
     state_id = fields.Many2one("res.country.state", readonly=True)
     price_total_usd = fields.Float(string="Untaxed Total USD", readonly=True)
+    price_total_incl_tax_usd = fields.Float(
+        string="Total Including Taxes (USD)",
+        readonly=True,
+        help="Tax-inclusive line total in USD, using the booked currency conversion "
+        "and the invoice's USD rate. Uses the same sign as Total in Currency.",
+    )
     price_total_usd_abs = fields.Float(string="Untaxed Total USD Abs", readonly=True)
     price_subtotal_abs = fields.Float(string="Untaxed Total Abs", readonly=True)
     total_tax = fields.Float(string="Tax Total", readonly=True)
@@ -139,6 +150,14 @@ class AccountInvoiceReport(models.Model):
             line.kdv_amount as total_tax,
             template.id as product_tmpl_id,
             -line.balance * currency_table.rate * move.usd_rate AS price_total_usd,
+            line.price_total
+                * (CASE WHEN move.move_type IN
+                             ('in_invoice', 'out_refund', 'in_receipt')
+                        THEN -1 ELSE 1 END)
+                * (CASE WHEN line.currency_id = line.company_currency_id THEN 1.0
+                        ELSE COALESCE(line.balance / NULLIF(line.amount_currency, 0.0),
+                                      move.currency_rate) END)
+                * currency_table.rate * move.usd_rate AS price_total_incl_tax_usd,
             abs(
                 line.balance * currency_table.rate * move.usd_rate
             ) AS price_total_usd_abs,
