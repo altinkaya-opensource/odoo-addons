@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_ups_price_list_import_form" model="ir.ui.view">
+        <field name="model">ups.price.list.import</field>
+        <field name="arch" type="xml">
+            <form string="Import UPS Price List">
+                <p class="text-muted">
+                    Upload the region and price lists sent by UPS. All price rules of
+                    the carrier are replaced and the UPS regions get the countries of
+                    the region list.
+                </p>
+                <group>
+                    <field name="carrier_id" readonly="1" />
+                    <field name="region_file" filename="region_filename" />
+                    <field name="region_filename" invisible="1" />
+                    <field name="price_file" filename="price_filename" />
+                    <field name="price_filename" invisible="1" />
+                </group>
+                <footer>
+                    <button
+                        string="Import"
+                        type="object"
+                        name="action_import"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ups_price_list_import" model="ir.actions.act_window">
+        <field name="name">Import UPS Price List</field>
+        <field name="res_model">ups.price.list.import</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

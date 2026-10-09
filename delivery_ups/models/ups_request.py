@@ -18,7 +18,6 @@ UPS_API_URL = {
 
 UPS_SERVICES_URL = {
     "auth": "/security/v1/oauth/token",
-    "rate": "/api/rating/v2409/Rate",
     "shipment": "/api/shipments/v2409/ship",
     "void": "/api/shipments/v2409/void/cancel/%(shipmentId)s",
     "tracking": "/api/track/v1/details/%(inquiryNumber)s",
@@ -207,10 +206,6 @@ class UPSRequest:
             raise UserError(self._format_errors(result, e)) from e
 
         return res
-
-    def get_rate(self, data):
-        res = self._send_api_request("POST", "rate", data=data)
-        return res.json()
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)

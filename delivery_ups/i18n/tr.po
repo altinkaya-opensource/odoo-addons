@@ -18,6 +18,13 @@ msgstr ""
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "%(count)s price rules imported."
+msgstr "%(count)s fiyat kuralı içe aktarıldı."
+
+#. module: delivery_ups
+#. odoo-python
 #: code:addons/delivery_ups/models/delivery_carrier.py:0
 #, python-format
 msgid "%(time)s %(date)s - [%(code)s] %(description)s"
@@ -130,11 +137,9 @@ msgid "Air Service Center"
 msgstr "Hava Servis Merkezi"
 
 #. module: delivery_ups
-#. odoo-python
-#: code:addons/delivery_ups/models/delivery_carrier.py:0
-#, python-format
-msgid "Cannot get rates for an order with existing pickings."
-msgstr "Mevcut transferleri olan bir sipariş için tarife alınamaz."
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Cancel"
+msgstr "İptal"
 
 #. module: delivery_ups
 #. odoo-python
@@ -150,14 +155,21 @@ msgstr ""
 "%(errors)s"
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__carrier_id
+msgid "Carrier"
+msgstr "Nakliyeci"
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_change_ids
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__changeset_change_ids
 msgid "Changeset Changes"
 msgstr "Changeset Değişiklikleri"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_ids
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__changeset_ids
 msgid "Changesets"
 msgstr "Değişiklikler"
 
@@ -178,20 +190,40 @@ msgstr "Bağlantı"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_changesets
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_changesets
 msgid "Count Changesets"
 msgstr "Sayım Değişiklik Setleri"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
 msgstr "Bekleyen Değişiklik Seti Değişikliklerini Say"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changesets
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_pending_changesets
 msgid "Count Pending Changesets"
 msgstr "Bekleyen Değişiklik Setlerini Say"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__create_uid
+msgid "Created by"
+msgstr "Oluşturan"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__create_date
+msgid "Created on"
+msgstr "Oluşturulma"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "Currency %(currency)s is not active."
+msgstr "%(currency)s para birimi aktif değil."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__03
@@ -224,6 +256,11 @@ msgid "Delivery Information"
 msgstr "Teslimat Bilgileri"
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__display_name
+msgid "Display Name"
+msgstr "Görünüm Adı"
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__gift
 msgid "Gift"
 msgstr "Hediye"
@@ -232,6 +269,27 @@ msgstr "Hediye"
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__03
 msgid "Ground"
 msgstr "Karayolu"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__id
+msgid "ID"
+msgstr "ID"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Import"
+msgstr "İçe Aktar"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Import Price List"
+msgstr "Fiyat Listesini İçe Aktar"
+
+#. module: delivery_ups
+#: model:ir.actions.act_window,name:delivery_ups.action_ups_price_list_import
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Import UPS Price List"
+msgstr "UPS Fiyat Listesini İçe Aktar"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__intercompanydata
@@ -253,9 +311,29 @@ msgid "Large Express Box"
 msgstr "Büyük Express Kutu"
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import____last_update
+msgid "Last Modified on"
+msgstr "Son Düzenleme"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__write_uid
+msgid "Last Updated by"
+msgstr "Son Güncelleyen"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__write_date
+msgid "Last Updated on"
+msgstr "Son Güncelleme"
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__19
 msgid "Letter Center"
 msgstr "Mektup Merkezi"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Logistics"
+msgstr "Lojistik"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_packaging_type__2b
@@ -276,6 +354,13 @@ msgstr "Ertesi Gün Hava Erken"
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__13
 msgid "Next Day Air Saver"
 msgstr "Ertesi Gün Hava Tasarruflu"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "No country was found in the UPS region list."
+msgstr "UPS bölge listesinde ülke bulunamadı."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__07
@@ -308,6 +393,16 @@ msgstr ""
 "aldığı ve ayrıca alım çağrısı yapılmasına gerek olmadığı anlamına gelir."
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__price_filename
+msgid "Price Filename"
+msgstr "Fiyat Listesi Dosya Adı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__price_file
+msgid "Price List"
+msgstr "Fiyat Listesi"
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Sağlayıcı"
@@ -323,6 +418,16 @@ msgstr "Alıcı"
 #, python-format
 msgid "Recipient"
 msgstr "Alıcı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__region_filename
+msgid "Region Filename"
+msgstr "Bölge Listesi Dosya Adı"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__region_file
+msgid "Region List"
+msgstr "Bölge Listesi"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__repair
@@ -380,24 +485,43 @@ msgstr "Küçük Express Kutu"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__smart_search
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__smart_search
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__smart_search
 msgid "Smart Search"
 msgstr "Akıllı Arama"
 
 #. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "The UPS price list does not have the expected layout."
+msgstr "UPS fiyat listesi beklenen düzende değil."
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "The file is not a UPS price list export."
+msgstr "Dosya bir UPS fiyat listesi çıktısı değil."
+
+#. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
 msgstr "Bu kaydın bekleyen değişiklik sayısı"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changesets
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changesets
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_pending_changesets
 msgid "The number of pending changesets of this record"
 msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_changesets
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_changesets
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "Bu kaydın toplam değişiklik seti sayısı"
 
@@ -494,6 +618,18 @@ msgid "UPS Pickup Request Number"
 msgstr "UPS Alım Talep Numarası"
 
 #. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "UPS Price List"
+msgstr "UPS Fiyat Listesi"
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_ups_price_list_import
+msgid "UPS Price List Import"
+msgstr "UPS Fiyat Listesi İçe Aktarma"
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__65
 msgid "UPS Saver"
 msgstr "UPS Tasarruflu"
@@ -518,15 +654,22 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_carrier.py:0
 #, python-format
-msgid "UPS rate response missing RatedShipment data."
-msgstr "UPS tarife yanıtında RatedShipment verisi eksik."
+msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
+msgstr "UPS gönderisi oluşturuldu. Takip numarası: <strong>%(tracking)s</strong>."
 
 #. module: delivery_ups
 #. odoo-python
-#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
 #, python-format
-msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
-msgstr "UPS gönderisi oluşturuldu. Takip numarası: <strong>%(tracking)s</strong>."
+msgid "Unexpected value in the UPS price list: %(value)s"
+msgstr "UPS fiyat listesinde beklenmeyen değer: %(value)s"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "Unknown country codes skipped: %(codes)s"
+msgstr "Bilinmeyen ülke kodları atlandı: %(codes)s"
 
 #. module: delivery_ups
 #. odoo-python
@@ -541,6 +684,14 @@ msgstr "Desteklenmeyen UPS servisi: %s"
 #, python-format
 msgid "Unsupported request type, only use 'GET', 'POST', 'DELETE'"
 msgstr "Desteklenmeyen istek türü, yalnızca 'GET', 'POST', 'DELETE' kullanın"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid ""
+"Upload the region and price lists sent by UPS. All price rules of\n"
+"                    the carrier are replaced and the UPS regions get the countries of\n"
+"                    the region list."
+msgstr "UPS'in gönderdiği bölge ve fiyat listelerini yükleyin. Nakliyecinin tüm fiyat kuralları değiştirilir ve UPS bölgeleri bölge listesindeki ülkeleri alır."
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_account_number
@@ -600,6 +751,7 @@ msgstr "UPS Servis Türü"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__user_can_see_changeset
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__user_can_see_changeset
 msgid "User Can See Changeset"
 msgstr "Kullanıcı Değişiklikleri Görebilir"
 
