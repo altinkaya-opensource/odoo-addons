@@ -216,3 +216,18 @@ class MRPBoM(models.Model):
                 )
 
         return boms_done, lines_done
+
+
+class MrpBomLine(models.Model):
+    _inherit = "mrp.bom.line"
+
+    bom_product_id = fields.Many2one(related="bom_id.product_id", string="BoM Product")
+    bom_product_qty = fields.Float(related="bom_id.product_qty", string="BoM Quantity")
+    bom_product_uom_id = fields.Many2one(
+        related="bom_id.product_uom_id", string="BoM Unit of Measure"
+    )
+    bom_code = fields.Char(related="bom_id.code")
+    bom_routing_id = fields.Many2one(related="bom_id.routing_id")
+    bom_tool_product_id = fields.Many2one(related="bom_id.tool_product_id")
+    bom_type = fields.Selection(related="bom_id.type")
+    bom_checked = fields.Boolean(related="bom_id.checked")

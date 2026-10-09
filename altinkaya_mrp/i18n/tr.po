@@ -408,6 +408,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__checked
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_checked
 msgid "Kontrol Edildi"
 msgstr ""
 
@@ -603,6 +604,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_bom_line_view_tree
 msgid "Product Template"
 msgstr "Ürün Şablonu"
 
@@ -659,8 +661,9 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__code
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_code
 msgid "Reference"
-msgstr ""
+msgstr "Referans"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__user_id
@@ -677,8 +680,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__name
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_form_view
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_routing_id
 msgid "Routing"
-msgstr ""
+msgstr "Rota"
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_routing_action
@@ -865,8 +869,9 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__tool_product_id
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_tool_product_id
 msgid "Tool"
-msgstr ""
+msgstr "Takım"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_tree_without_route
@@ -957,6 +962,26 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_production_search_inherit
 msgid "Öncelik"
 msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_product_qty
+msgid "BoM Quantity"
+msgstr "Ürün Ağacı Miktarı"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_product_uom_id
+msgid "BoM Unit of Measure"
+msgstr "Ürün Ağacı Ölçü Birimi"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_type
+msgid "BoM Type"
+msgstr "BoM Türü"
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_line__bom_product_id
+msgid "BoM Product"
+msgstr "Ürün"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__product_id
