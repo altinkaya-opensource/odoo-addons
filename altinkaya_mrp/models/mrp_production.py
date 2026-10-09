@@ -23,6 +23,7 @@ class XMakine(models.Model):
     x_kod = fields.Char("Makine Kodu", size=128)
     x_name = fields.Char("Makine Adı", size=128)
     name = fields.Char("Makine Numarası", size=128)
+    product_id = fields.Many2one("product.product", string="Machine Product")
 
 
 class MrpProduction(models.Model):
