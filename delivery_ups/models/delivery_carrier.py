@@ -234,36 +234,6 @@ class DeliveryCarrier(models.Model):
             data["TaxIdentificationNumber"] = partner.vat
         return data
 
-    def _prepare_ups_dummy_packages(self, order):
-        """Build UPS Package entries from dummy packages (used for rating)."""
-        if order.picking_ids:
-            raise UserError(_("Cannot get rates for an order with existing pickings."))
-
-        raw_packages = self._generate_dummy_packages(order.sale_deci)
-        packages = []
-        for pack in raw_packages:
-            dims = pack.get("dimensions", {})
-            packages.append(
-                {
-                    "PackagingType": {
-                        "Code": "30"
-                        if pack.get("is_pallet")
-                        else self.ups_packaging_type
-                    },
-                    "Dimensions": {
-                        "UnitOfMeasurement": {"Code": "CM"},
-                        "Length": str(round(dims.get("length", 0.0), 2)),
-                        "Width": str(round(dims.get("width", 0.0), 2)),
-                        "Height": str(round(dims.get("height", 0.0), 2)),
-                    },
-                    "PackageWeight": {
-                        "UnitOfMeasurement": {"Code": "KGS"},
-                        "Weight": str(round(max(pack.get("weight") or 0.0, 0.1), 2)),
-                    },
-                }
-            )
-        return packages
-
     def _prepare_ups_real_packages(self, picking):
         """Build UPS Package entries from the actual picking packages.
 
@@ -390,44 +360,6 @@ class DeliveryCarrier(models.Model):
             forms["TermsOfShipment"] = invoice.invoice_incoterm_id.code
         return forms
 
-    def _prepare_ups_base_rate_data(self, warehouse_partner, recipient_partner):
-        return {
-            "RateRequest": {
-                "Request": {
-                    "TransactionReference": {"CustomerContext": "Altinkaya Odoo Rating"}
-                },
-                "Shipment": {
-                    "Shipper": self._prepare_ups_shipper_block(warehouse_partner),
-                    "ShipTo": self._prepare_ups_party_block(recipient_partner),
-                    "ShipFrom": self._prepare_ups_party_block(warehouse_partner),
-                    "PaymentDetails": {
-                        "ShipmentCharge": [
-                            {
-                                "Type": "01",
-                                "BillShipper": {
-                                    "AccountNumber": self.ups_account_number or "",
-                                },
-                            }
-                        ]
-                    },
-                    "Service": {
-                        "Code": self.ups_service_type or "11",
-                    },
-                },
-            }
-        }
-
-    def _prepare_ups_sale_rate_data(self, order):
-        data = self._prepare_ups_base_rate_data(
-            order.warehouse_id.partner_id, order.partner_shipping_id
-        )
-        shipment = data["RateRequest"]["Shipment"]
-        shipment["Package"] = self._prepare_ups_dummy_packages(order)
-        shipment["NumOfPieces"] = str(len(shipment["Package"]))
-        if self.ups_negotiated_rates:
-            shipment["ShipmentRatingOptions"] = {"NegotiatedRatesIndicator": "Y"}
-        return data
-
     def _prepare_ups_shipment_data(self, picking):
         warehouse_partner = picking.location_id.warehouse_id.partner_id
         recipient = picking.partner_id
@@ -484,28 +416,6 @@ class DeliveryCarrier(models.Model):
     # ---------------------------------------------------------------------
     # Response formatters
     # ---------------------------------------------------------------------
-    def _format_ups_rate_data(self, response):
-        """Return {'price', 'currency'} from a RateResponse, preferring negotiated."""
-        try:
-            rated = response["RateResponse"]["RatedShipment"]
-        except (KeyError, TypeError) as exc:
-            raise UserError(_("UPS rate response missing RatedShipment data.")) from exc
-
-        if isinstance(rated, list):
-            rated = rated[0]
-
-        negotiated = rated.get("NegotiatedRateCharges", {}).get("TotalCharge")
-        if negotiated:
-            return {
-                "price": float(negotiated.get("MonetaryValue") or 0.0),
-                "currency": negotiated.get("CurrencyCode") or "",
-            }
-        total = rated.get("TotalCharges", {})
-        return {
-            "price": float(total.get("MonetaryValue") or 0.0),
-            "currency": total.get("CurrencyCode") or "",
-        }
-
     def _format_shipment_rate(self, shipment_results):
         """Return {'price', 'currency', 'billing_weight'} from ShipmentResults."""
         negotiated = shipment_results.get("NegotiatedRateCharges", {}).get(
@@ -643,49 +553,8 @@ class DeliveryCarrier(models.Model):
     # Carrier entry points (dispatched by delivery.carrier by delivery_type)
     # ---------------------------------------------------------------------
     def ups_rate_shipment(self, order):
-        """Return {success, price, error_message, warning_message} for a sale order."""
-        price = 0.0
-        try:
-            ups_request = UPSRequest(
-                prod=self.prod_environment,
-                client_id=self.ups_client_id,
-                client_secret=self.ups_client_secret,
-                account_number=self.ups_account_number,
-                delivery_carrier=self,
-            )
-            payload = self._prepare_ups_sale_rate_data(order)
-            response = ups_request.get_rate(payload)
-
-            rate_data = self._format_ups_rate_data(response)
-            price = rate_data["price"]
-            currency_code = rate_data["currency"]
-
-            if currency_code and currency_code != order.currency_id.name:
-                currency = self.env["res.currency"].search(
-                    [("name", "=", currency_code)], limit=1
-                )
-                if currency:
-                    price = currency._convert(
-                        price,
-                        order.currency_id,
-                        order.company_id,
-                        fields.Date.today(),
-                    )
-        except Exception as exc:
-            _logger.error("UPS rate_shipment failed: %s", exc, exc_info=True)
-            return {
-                "success": False,
-                "price": 0.0,
-                "error_message": str(exc),
-                "warning_message": False,
-            }
-
-        return {
-            "success": True,
-            "price": price,
-            "error_message": False,
-            "warning_message": False,
-        }
+        """UPS cannot rate our negotiated global prices, so use the rules."""
+        return self.base_on_rule_rate_shipment(order)
 
     def _ups_label_gif_to_pdf(self, gif_b64):
         """Convert a UPS GIF label (base64) to a portrait PDF (base64).

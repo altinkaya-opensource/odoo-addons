@@ -53,6 +53,17 @@
                             <field name="ups_commercial_invoice" />
                         </group>
                     </group>
+                    <group string="Logistics">
+                        <button
+                            name="%(action_ups_price_list_import)d"
+                            type="action"
+                            string="Import Price List"
+                            class="btn-secondary"
+                            context="{'default_carrier_id': id}"
+                            colspan="2"
+                        />
+                        <field name="price_rule_ids" nolabel="1" colspan="2" />
+                    </group>
                 </page>
             </xpath>
         </field>

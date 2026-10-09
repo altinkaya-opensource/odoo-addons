@@ -6,14 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-04 10:44+0000\n"
-"PO-Revision-Date: 2026-05-04 10:44+0000\n"
+"POT-Creation-Date: 2026-10-09 14:08+0000\n"
+"PO-Revision-Date: 2026-10-09 14:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "%(count)s price rules imported."
+msgstr ""
 
 #. module: delivery_ups
 #. odoo-python
@@ -127,10 +134,8 @@ msgid "Air Service Center"
 msgstr ""
 
 #. module: delivery_ups
-#. odoo-python
-#: code:addons/delivery_ups/models/delivery_carrier.py:0
-#, python-format
-msgid "Cannot get rates for an order with existing pickings."
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Cancel"
 msgstr ""
 
 #. module: delivery_ups
@@ -144,14 +149,21 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__carrier_id
+msgid "Carrier"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_change_ids
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_change_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__changeset_change_ids
 msgid "Changeset Changes"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__changeset_ids
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__changeset_ids
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__changeset_ids
 msgid "Changesets"
 msgstr ""
 
@@ -170,19 +182,39 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_changesets
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_changesets
 msgid "Count Changesets"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__count_pending_changesets
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__count_pending_changesets
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__count_pending_changesets
 msgid "Count Pending Changesets"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "Currency %(currency)s is not active."
 msgstr ""
 
 #. module: delivery_ups
@@ -216,6 +248,11 @@ msgid "Delivery Information"
 msgstr ""
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_reason_for_export__gift
 msgid "Gift"
 msgstr ""
@@ -223,6 +260,27 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__03
 msgid "Ground"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__id
+msgid "ID"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Import"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Import Price List"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.actions.act_window,name:delivery_ups.action_ups_price_list_import
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid "Import UPS Price List"
 msgstr ""
 
 #. module: delivery_ups
@@ -243,8 +301,28 @@ msgid "Large Express Box"
 msgstr ""
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_pickup_type__19
 msgid "Letter Center"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form
+msgid "Logistics"
 msgstr ""
 
 #. module: delivery_ups
@@ -265,6 +343,13 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__13
 msgid "Next Day Air Saver"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "No country was found in the UPS region list."
 msgstr ""
 
 #. module: delivery_ups
@@ -295,6 +380,16 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__price_filename
+msgid "Price Filename"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__price_file
+msgid "Price List"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr ""
@@ -309,6 +404,16 @@ msgstr ""
 #: code:addons/delivery_ups/models/delivery_carrier.py:0
 #, python-format
 msgid "Recipient"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__region_filename
+msgid "Region Filename"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__region_file
+msgid "Region List"
 msgstr ""
 
 #. module: delivery_ups
@@ -366,24 +471,43 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__smart_search
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__smart_search
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__smart_search
 msgid "Smart Search"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "The UPS price list does not have the expected layout."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "The file is not a UPS price list export."
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changeset_changes
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changeset_changes
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_pending_changesets
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_pending_changesets
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_pending_changesets
 msgid "The number of pending changesets of this record"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__count_changesets
 #: model:ir.model.fields,help:delivery_ups.field_stock_picking__count_changesets
+#: model:ir.model.fields,help:delivery_ups.field_ups_price_list_import__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr ""
 
@@ -478,6 +602,18 @@ msgid "UPS Pickup Request Number"
 msgstr ""
 
 #. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "UPS Price List"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_ups_price_list_import
+msgid "UPS Price List Import"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_service_type__65
 msgid "UPS Saver"
 msgstr ""
@@ -500,14 +636,21 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_carrier.py:0
 #, python-format
-msgid "UPS rate response missing RatedShipment data."
+msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
 msgstr ""
 
 #. module: delivery_ups
 #. odoo-python
-#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
 #, python-format
-msgid "UPS shipment created. Tracking number: <strong>%(tracking)s</strong>."
+msgid "Unexpected value in the UPS price list: %(value)s"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/wizards/ups_price_list_import.py:0
+#, python-format
+msgid "Unknown country codes skipped: %(codes)s"
 msgstr ""
 
 #. module: delivery_ups
@@ -522,6 +665,14 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Unsupported request type, only use 'GET', 'POST', 'DELETE'"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_ups_price_list_import_form
+msgid ""
+"Upload the region and price lists sent by UPS. All price rules of\n"
+"                    the carrier are replaced and the UPS regions get the countries of\n"
+"                    the region list."
 msgstr ""
 
 #. module: delivery_ups
@@ -582,6 +733,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__user_can_see_changeset
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__user_can_see_changeset
+#: model:ir.model.fields,field_description:delivery_ups.field_ups_price_list_import__user_can_see_changeset
 msgid "User Can See Changeset"
 msgstr ""
 
