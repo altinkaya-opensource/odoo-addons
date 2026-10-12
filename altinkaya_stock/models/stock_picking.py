@@ -55,6 +55,9 @@ class StockPicking(models.Model):
         index=True,
     )
     hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
+    operation_line_count = fields.Integer(
+        string="Line Count", compute="_compute_operation_line_count"
+    )
     country_id = fields.Many2one(
         "res.country",
         string="Country",
@@ -91,6 +94,12 @@ class StockPicking(models.Model):
     halted_procurements = fields.Boolean(
         store=False, search="_search_halted_procurements"
     )
+
+    @api.depends("move_ids_without_package")
+    def _compute_operation_line_count(self):
+        """Count product rows shown in the Operations tab, not detailed operations."""
+        for picking in self:
+            picking.operation_line_count = len(picking.move_ids_without_package)
 
     def _search_halted_procurements(self, operator, value):
         if operator != "=":
