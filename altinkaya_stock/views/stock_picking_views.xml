@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <function model="stock.picking" name="_initialize_workload_totals" />
+
+    <record id="view_picking_tree_workload" model="ir.ui.view">
+        <field name="name">stock.picking.tree.workload</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="operation_line_count" optional="show" sum="Total Lines" />
+                <field name="picking_total_deci" optional="show" sum="Total Desi" />
+            </xpath>
+        </field>
+    </record>
+
+    <function model="stock.picking" name="_register_custom_workload_views" />
+
     <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit_altinkaya</field>
         <field name="model">stock.picking</field>

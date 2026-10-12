@@ -1944,3 +1944,18 @@ msgstr ""
 #: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__1
 msgid "İthal Eksik"
 msgstr ""
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__operation_line_count
+msgid "Line Count"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_tree_workload
+msgid "Total Lines"
+msgstr ""
+
+#. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_tree_workload
+msgid "Total Desi"
+msgstr ""
