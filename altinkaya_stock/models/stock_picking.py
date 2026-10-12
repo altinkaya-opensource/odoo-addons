@@ -101,6 +101,39 @@ class StockPicking(models.Model):
         for picking in self:
             picking.operation_line_count = len(picking.move_ids_without_package)
 
+    @api.model
+    def _register_custom_workload_views(self):
+        """Extend legacy database-only transfer lists on install and upgrade."""
+        template = self.env.ref("altinkaya_stock.view_picking_tree_workload")
+        views = self.env["ir.ui.view"].search(
+            [
+                ("model", "=", "stock.picking"),
+                ("type", "=", "tree"),
+                ("mode", "=", "primary"),
+                ("inherit_id", "=", False),
+                (
+                    "name",
+                    "in",
+                    ["stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"],
+                ),
+            ]
+        )
+        for view in views:
+            self.env["ir.ui.view"]._load_records(
+                [
+                    {
+                        "xml_id": f"altinkaya_stock.view_picking_workload_{view.id}",
+                        "values": {
+                            "name": f"{view.name}.workload",
+                            "model": "stock.picking",
+                            "inherit_id": view.id,
+                            "arch_db": template.arch_db,
+                        },
+                    }
+                ],
+                update=True,
+            )
+
     def _search_halted_procurements(self, operator, value):
         if operator != "=":
             return []

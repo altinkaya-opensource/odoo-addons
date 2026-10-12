@@ -12,6 +12,8 @@
         </field>
     </record>
 
+    <function model="stock.picking" name="_register_custom_workload_views" />
+
     <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit_altinkaya</field>
         <field name="model">stock.picking</field>
