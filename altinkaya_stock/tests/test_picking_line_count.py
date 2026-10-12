@@ -26,7 +26,7 @@ class TestPickingLineCount(TransactionCase):
             arch = parent._get_combined_arch()
             self.assertEqual(
                 arch.xpath("./field/@name"),
-                ["name", "operation_line_count", "picking_total_deci", "origin"],
+                ["name", "origin", "operation_line_count", "picking_total_deci"],
             )
             for column in arch.xpath("./field[@optional]"):
                 self.assertEqual(column.get("optional"), "show")

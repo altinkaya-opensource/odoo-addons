@@ -5,10 +5,10 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.vpicktree" />
         <field name="arch" type="xml">
-            <field name="name" position="after">
+            <xpath expr="//tree" position="inside">
                 <field name="operation_line_count" optional="show" />
                 <field name="picking_total_deci" optional="show" />
-            </field>
+            </xpath>
         </field>
     </record>
 
