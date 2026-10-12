@@ -78,6 +78,19 @@ class TestPickingLineCount(TransactionCase):
         )
         self.assertEqual(pickings.mapped("operation_line_count"), [1, 2])
         domain = [("id", "in", pickings.ids)]
+        worker = self.env["hr.employee"].create({"name": "Workload preparer"})
+        pickings.hazirlayan = worker
+        groups = pickings.read_group(
+            domain,
+            ["operation_line_count:sum", "picking_total_deci:sum"],
+            ["hazirlayan"],
+        )
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]["hazirlayan"][0], worker.id)
+        self.assertEqual(groups[0]["operation_line_count"], 3)
+        self.assertAlmostEqual(
+            groups[0]["picking_total_deci"], sum(pickings.mapped("picking_total_deci"))
+        )
         for field in ("operation_line_count", "picking_total_deci"):
             self.assertTrue(pickings._fields[field].store)
             self.assertEqual(
@@ -159,6 +172,7 @@ class TestPickingLineCount(TransactionCase):
             )
             for column in arch.xpath("./field[@optional]"):
                 self.assertEqual(column.get("optional"), "show")
+                self.assertTrue(column.get("sum"))
 
     def test_operations_count_not_quantity_or_detailed_lines(self):
         picking = self.env["stock.picking"].new({})
@@ -188,3 +202,4 @@ class TestPickingLineCount(TransactionCase):
             columns = arch.xpath(f"./field[@name='{name}']")
             self.assertEqual(len(columns), 1)
             self.assertEqual(columns[0].get("optional"), "show")
+            self.assertTrue(columns[0].get("sum"))
