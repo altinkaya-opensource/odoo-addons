@@ -22,6 +22,7 @@
 
 from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
+from odoo.tools.sql import column_exists, create_column, table_exists
 
 
 class StockPicking(models.Model):
@@ -56,8 +57,9 @@ class StockPicking(models.Model):
     )
     hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
     operation_line_count = fields.Integer(
-        string="Line Count", compute="_compute_operation_line_count"
+        string="Line Count", compute="_compute_operation_line_count", store=True
     )
+    picking_total_deci = fields.Float(store=True)
     country_id = fields.Many2one(
         "res.country",
         string="Country",
@@ -95,11 +97,62 @@ class StockPicking(models.Model):
         store=False, search="_search_halted_procurements"
     )
 
-    @api.depends("move_ids_without_package")
+    def _auto_init(self):
+        if not table_exists(self.env.cr, self._table):
+            return super()._auto_init()
+        # Populate existing transfers in batches instead of queuing the whole table.
+        for name, column_type in (
+            ("operation_line_count", "int4"),
+            ("picking_total_deci", "float8"),
+        ):
+            if not column_exists(self.env.cr, self._table, name):
+                create_column(self.env.cr, self._table, name, column_type)
+        return super()._auto_init()
+
+    @api.model
+    def _initialize_workload_totals(self):
+        """Populate newly stored fields without retaining all transfers in memory."""
+        last_id = 0
+        while True:
+            # ORM numeric domains treat NULL and zero alike; only NULL needs backfill.
+            self.env.cr.execute(
+                """
+                SELECT id FROM stock_picking
+                 WHERE id > %s
+                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL)
+                 ORDER BY id LIMIT 1000
+                """,
+                [last_id],
+            )
+            ids = [row[0] for row in self.env.cr.fetchall()]
+            if not ids:
+                break
+            pickings = self.browse(ids)
+            pickings._compute_operation_line_count()
+            pickings._compute_picking_total_deci()
+            self.env.invalidate_all()
+            last_id = ids[-1]
+
+    @api.depends(
+        "move_ids",
+        "move_ids.state",
+        "move_ids.scrap_ids",
+        "move_ids.package_level_id",
+        "move_ids.move_line_ids.package_level_id",
+        "picking_type_id.show_entire_packs",
+        "immediate_transfer",
+    )
     def _compute_operation_line_count(self):
         """Count product rows shown in the Operations tab, not detailed operations."""
         for picking in self:
-            picking.operation_line_count = len(picking.move_ids_without_package)
+            picking.operation_line_count = len(picking._get_move_ids_without_package())
+
+    @api.depends(
+        "move_ids.sale_line_id.last_deci", "carrier_id.factor_a", "carrier_id.factor_b"
+    )
+    def _compute_picking_total_deci(self):
+        """Keep the existing desi formula while tracking its stored inputs."""
+        return super()._compute_picking_total_deci()
 
     @api.model
     def _register_custom_workload_views(self):

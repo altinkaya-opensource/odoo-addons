@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <function model="stock.picking" name="_initialize_workload_totals" />
+
     <record id="view_picking_tree_workload" model="ir.ui.view">
         <field name="name">stock.picking.tree.workload</field>
         <field name="model">stock.picking</field>
