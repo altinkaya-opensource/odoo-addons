@@ -37,6 +37,15 @@
                 <field name="has_2breconciled_supplier" />
             </xpath>
 
+            <field name="property_payment_term_id" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('risk_allow_edit', '=', False)]}</attribute>
+            </field>
+            <field name="property_payment_term_id" position="after">
+                <field name="risk_allow_edit" invisible="1" />
+            </field>
+
             <button name="action_view_partner_invoices" position="after">
                 <button
                     class="oe_stat_button"

@@ -10,7 +10,7 @@ from operator import itemgetter
 from psycopg2.extras import execute_values
 
 from odoo import Command, _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.tools import float_is_zero
 
 from .account_move_line import CURRENCY_DIFFERENCE_JOURNAL_CODES
@@ -19,6 +19,7 @@ from .account_move_line import CURRENCY_DIFFERENCE_JOURNAL_CODES
 KFARK_MIN_AMOUNT = 1.0
 # Currency difference is only invoiced on accounts paid since this date.
 KFARK_PAYMENT_START = "2026-01-01"
+RISK_MANAGER_GROUP = "account_financial_risk.group_account_financial_risk_manager"
 STATEMENT_BALANCE_BATCH_SIZE = 10_000
 STATEMENT_BALANCE_FIELDS = (
     "balance",
@@ -400,12 +401,26 @@ class ResPartner(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            self._check_payment_term_access(vals)
             self._ensure_unique_ref_vals(vals)
         partners = super().create(vals_list)
         partners._update_export_account_codes()
         return partners
 
+    def _check_payment_term_access(self, vals):
+        """Only financial risk managers may set the customer payment term.
+
+        Commercial field sync to contacts runs as sudo and is not blocked.
+        """
+        if "property_payment_term_id" not in vals or self.env.su:
+            return
+        if not self.env.user.has_group(RISK_MANAGER_GROUP):
+            raise AccessError(
+                _("Only Financial Risk managers can change the payment terms.")
+            )
+
     def write(self, vals):
+        self._check_payment_term_access(vals)
         result = super().write(vals)
         if "country_id" in vals or "ref" in vals:
             self._update_export_account_codes()
