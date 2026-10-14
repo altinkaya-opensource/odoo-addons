@@ -1225,6 +1225,13 @@ msgid ""
 msgstr "Seçilen kur farkı başka bir taslak faturada kullanılıyor."
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/models/res_partner.py:0
+#, python-format
+msgid "Only Financial Risk managers can change the payment terms."
+msgstr "Ödeme koşullarını yalnızca Risk Limitleri yöneticileri değiştirebilir."
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line__partner_order_ref
 msgid "Order Reference"
 msgstr "Sipariş Referansı"

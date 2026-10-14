@@ -1,4 +1,5 @@
-from odoo.tests.common import TransactionCase
+from odoo.exceptions import AccessError
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 class TestResPartnerExportAccounts(TransactionCase):
@@ -86,3 +87,58 @@ class TestResPartnerExportAccounts(TransactionCase):
         self.assertNotEqual(partner.z_receivable_export, "120.Y92997")
         self.assertEqual(partner.z_receivable_export, f"120.Y{partner.ref.strip()}")
         self.assertEqual(partner.z_payable_export, f"320.Y{partner.ref.strip()}")
+
+
+class TestPaymentTermAccess(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        groups = (
+            "base.group_partner_manager,sales_team.group_sale_salesman,"
+            "account.group_account_invoice"
+        )
+        cls.salesman = new_test_user(
+            cls.env, login="payment_term_salesman", groups=groups
+        )
+        cls.risk_manager = new_test_user(
+            cls.env,
+            login="payment_term_risk_manager",
+            groups=f"{groups},account_financial_risk.group_account_financial_risk_manager",
+        )
+        cls.cash_term = cls.env["account.payment.term"].create({"name": "Cash test"})
+        cls.credit_term = cls.env["account.payment.term"].create(
+            {"name": "Credit test"}
+        )
+        cls.company = cls.env["res.partner"].create(
+            {
+                "name": "Payment term access company",
+                "is_company": True,
+                "property_payment_term_id": cls.cash_term.id,
+            }
+        )
+
+    def test_only_risk_manager_sets_payment_term(self):
+        partners = self.env["res.partner"].with_user(self.salesman)
+        company = self.company.with_user(self.salesman)
+        with self.assertRaises(AccessError):
+            company.property_payment_term_id = self.credit_term
+        with self.assertRaises(AccessError):
+            partners.create(
+                {
+                    "name": "Payment term forged on create",
+                    "property_payment_term_id": self.credit_term.id,
+                }
+            )
+
+        # Commercial field sync to contacts still works for sales.
+        contact = partners.create(
+            {"name": "Payment term contact", "parent_id": company.id}
+        )
+        self.assertEqual(contact.property_payment_term_id, self.cash_term)
+        company.company_registry = "PAYMENT-TERM-TEST"
+        self.assertEqual(contact.company_registry, "PAYMENT-TERM-TEST")
+
+        manager_company = self.company.with_user(self.risk_manager)
+        manager_company.property_payment_term_id = self.credit_term
+        self.assertEqual(self.company.property_payment_term_id, self.credit_term)
+        self.assertEqual(contact.property_payment_term_id, self.credit_term)
