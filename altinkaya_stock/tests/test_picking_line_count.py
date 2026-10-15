@@ -1,3 +1,7 @@
+from pathlib import Path
+from runpy import run_path
+from unittest.mock import patch
+
 from lxml import etree
 
 from odoo.tests import TransactionCase, tagged
@@ -82,16 +86,16 @@ class TestPickingLineCount(TransactionCase):
         pickings.hazirlayan = worker
         groups = pickings.read_group(
             domain,
-            ["operation_line_count:sum", "picking_total_deci:sum"],
+            ["operation_line_count:sum", "workload_deci:sum"],
             ["hazirlayan"],
         )
         self.assertEqual(len(groups), 1)
         self.assertEqual(groups[0]["hazirlayan"][0], worker.id)
         self.assertEqual(groups[0]["operation_line_count"], 3)
         self.assertAlmostEqual(
-            groups[0]["picking_total_deci"], sum(pickings.mapped("picking_total_deci"))
+            groups[0]["workload_deci"], sum(pickings.mapped("picking_total_deci"))
         )
-        for field in ("operation_line_count", "picking_total_deci"):
+        for field in ("operation_line_count", "picking_total_deci", "workload_deci"):
             self.assertTrue(pickings._fields[field].store)
             self.assertEqual(
                 pickings.search(domain, order=f"{field} desc").ids,
@@ -100,10 +104,24 @@ class TestPickingLineCount(TransactionCase):
             self.assertEqual(
                 pickings.search(domain, order=f"{field} asc").ids, [first.id, second.id]
             )
+        first.picking_total_weight = 150
+        self.assertEqual(first.workload_deci, 150)
+        self.assertNotEqual(first.picking_total_deci, 150)
+        self.assertEqual(
+            pickings.search(domain, order="workload_deci desc").ids,
+            [first.id, second.id],
+        )
+        groups = pickings.read_group(domain, ["workload_deci:sum"], ["hazirlayan"])
+        self.assertAlmostEqual(
+            groups[0]["workload_deci"], 150 + second.picking_total_deci
+        )
+        first.picking_total_weight = 0
+        self.assertEqual(first.workload_deci, first.picking_total_deci)
         lines[0].last_deci = 40
         self.assertAlmostEqual(
             first.picking_total_deci, 40 * carrier._get_dimension_factor(40)
         )
+        self.assertEqual(first.workload_deci, first.picking_total_deci)
         carrier.factor_a = 3
         carrier.factor_b = 0.2
         self.assertAlmostEqual(
@@ -127,13 +145,185 @@ class TestPickingLineCount(TransactionCase):
         first.picking_type_id.show_entire_packs = False
         self.assertEqual(first.operation_line_count, 1)
 
+    def _create_product_fallback_moves(self, picking, quantity=1000, count=2):
+        """Use grams and cubic centimetres like the reported purchase receipt."""
+        litre = self.env.ref("uom.product_uom_litre")
+        cm3 = self.env["uom.uom"].create(
+            {
+                "name": "Workload cm3",
+                "category_id": litre.category_id.id,
+                "uom_type": "smaller",
+                "factor": 1000,
+                "rounding": 0.0001,
+            }
+        )
+        product = self.env["product.product"].create(
+            {
+                "name": "Receipt product",
+                "type": "consu",
+                "weight_uom_id": self.env.ref("uom.product_uom_gram").id,
+                "product_weight": 20.2,
+                "volume_uom_id": cm3.id,
+                "volume": 0.58,
+            }
+        )
+        return self.env["stock.move"].create(
+            [
+                {
+                    "name": "Receipt row",
+                    "picking_id": picking.id,
+                    "product_id": product.id,
+                    "product_uom": product.uom_id.id,
+                    "product_uom_qty": quantity,
+                    "location_id": picking.location_id.id,
+                    "location_dest_id": picking.location_dest_id.id,
+                }
+                for _ in range(count)
+            ]
+        )
+
+    def test_product_fallback_planned_done_and_cancelled_quantities(self):
+        picking = self._create_workload_pickings(1)
+        moves = self._create_product_fallback_moves(picking)
+        self.assertAlmostEqual(picking.picking_total_deci, 40.4)
+        self.assertAlmostEqual(picking.workload_deci, 40.4)
+        moves[0].quantity_done = 600
+        moves[1].quantity_done = 400
+        moves.state = "done"
+        self.assertAlmostEqual(picking.picking_total_deci, 20.2)
+        moves[1].quantity_done = 0
+        self.assertAlmostEqual(picking.picking_total_deci, 12.12)
+        moves[1].state = "cancel"
+        self.assertAlmostEqual(picking.picking_total_deci, 12.12)
+        moves[0].location_dest_id = self.env["stock.location"].create(
+            {"name": "Workload scrap", "usage": "inventory", "scrap_location": True}
+        )
+        self.assertEqual(picking.picking_total_deci, 0)
+
+    def test_product_fallback_uoms_volume_carrier_and_dependencies(self):
+        picking = self._create_workload_pickings(1)
+        move = self._create_product_fallback_moves(picking, quantity=2, count=1)
+        product = move.product_id
+        product.product_weight = 1000
+        product.volume_uom_id = self.env.ref("uom.product_uom_litre")
+        product.volume = 6
+        move.product_uom = self.env.ref("uom.product_uom_dozen")
+        self.assertAlmostEqual(picking.picking_total_deci, 48)
+        carrier = self.env["delivery.carrier"].create(
+            {
+                "name": "Receipt carrier",
+                "product_id": product.id,
+                "delivery_type": "fixed",
+                "currency_id": self.env.company.currency_id.id,
+                "deci_type": "6000",
+                "factor_a": 1,
+                "factor_b": 0.1,
+            }
+        )
+        picking.carrier_id = carrier
+        self.assertAlmostEqual(picking.picking_total_deci, 24)
+        carrier.deci_type = "3000"
+        self.assertAlmostEqual(picking.picking_total_deci, 48)
+        carrier.deci_type = "6000"
+        carrier.factor_a = 2
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 24 * carrier._get_dimension_factor(24)
+        )
+        product.product_weight = 2000
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 48 * carrier._get_dimension_factor(48)
+        )
+        product.volume = 0
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 48 * carrier._get_dimension_factor(48)
+        )
+        move.product_uom_qty = 1
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 24 * carrier._get_dimension_factor(24)
+        )
+        picking.picking_total_weight = 15
+        self.assertEqual(picking.workload_deci, 15)
+        picking.picking_total_weight = 0
+        self.assertAlmostEqual(
+            picking.workload_deci, 24 * carrier._get_dimension_factor(24)
+        )
+
+    def test_sales_link_keeps_existing_formula_and_migration_scope(self):
+        picking, sales_picking = self._create_workload_pickings()
+        self._create_product_fallback_moves(picking)
+        sales_moves = self._create_product_fallback_moves(sales_picking)
+        order = self.env["sale.order"].create(
+            {"partner_id": self.env["res.partner"].create({"name": "Desi buyer"}).id}
+        )
+        line = self.env["sale.order.line"].create(
+            {
+                "order_id": order.id,
+                "product_id": sales_moves[0].product_id.id,
+                "last_deci": 7,
+            }
+        )
+        sales_moves[0].sale_line_id = line
+        self.assertEqual(sales_picking.picking_total_deci, 7)
+        line.last_deci = 0
+        self.assertEqual(sales_picking.picking_total_deci, 0)
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE stock_picking SET picking_total_deci = 0, workload_deci = 0 "
+            "WHERE id = %s",
+            [picking.id],
+        )
+        self.env.cr.execute(
+            "UPDATE stock_picking SET picking_total_deci = 99, workload_deci = 99 "
+            "WHERE id = %s",
+            [sales_picking.id],
+        )
+        (picking | sales_picking).invalidate_recordset()
+        migration = run_path(
+            str(
+                Path(__file__).parents[1]
+                / "migrations"
+                / "16.0.0.1.8"
+                / "post-migrate.py"
+            )
+        )["migrate"]
+        original_search = type(picking).search
+        visited = []
+
+        def search_test_pickings(records, domain, **kwargs):
+            result = original_search(
+                records,
+                domain + [("id", "in", (picking | sales_picking).ids)],
+                **kwargs,
+            )
+            visited.extend(result.ids)
+            return result
+
+        with patch.object(type(picking), "search", search_test_pickings):
+            migration(self.env.cr, "16.0.0.1.7")
+            migration(self.env.cr, "16.0.0.1.7")
+        self.assertEqual(visited, [picking.id, sales_picking.id] * 2)
+        self.assertAlmostEqual(picking.workload_deci, 40.4)
+        self.assertEqual(sales_picking.workload_deci, 99)
+        sales_moves[0].sale_line_id = False
+        self.assertAlmostEqual(sales_picking.picking_total_deci, 40.4)
+
+    def test_desi_measured_weight_without_system_desi(self):
+        picking = self._create_workload_pickings(1)
+        self.assertEqual(picking.workload_deci, 0)
+        picking.picking_total_weight = 15
+        self.assertEqual(picking.picking_total_deci, 0)
+        self.assertEqual(picking.workload_deci, 15)
+        picking.picking_total_weight = 0
+        self.assertEqual(picking.workload_deci, 0)
+
     def test_backfill_batches_and_zero_values(self):
         pickings = self._create_workload_pickings(1001)
+        pickings[0].picking_total_weight = 15
         self.env.flush_all()
         # Simulate old rows after the nullable columns are introduced on upgrade.
         self.env.cr.execute(
             "UPDATE stock_picking SET operation_line_count = NULL, "
-            "picking_total_deci = NULL WHERE id IN %s",
+            "picking_total_deci = NULL, workload_deci = NULL WHERE id IN %s",
             [tuple(pickings.ids)],
         )
         pickings.invalidate_recordset()
@@ -144,6 +334,16 @@ class TestPickingLineCount(TransactionCase):
             [tuple(pickings.ids)],
         )
         self.assertEqual(self.env.cr.fetchone()[0], 1001)
+        self.assertEqual(pickings[0].workload_deci, 15)
+        self.assertEqual(set(pickings[1:].mapped("workload_deci")), {0})
+        # Existing stored inputs still need the new display field backfilled.
+        self.env.cr.execute(
+            "UPDATE stock_picking SET workload_deci = NULL WHERE id = %s",
+            [pickings[0].id],
+        )
+        pickings[0].invalidate_recordset()
+        self.env["stock.picking"]._initialize_workload_totals()
+        self.assertEqual(pickings[0].workload_deci, 15)
         self.env["stock.picking"]._initialize_workload_totals()
         self.assertEqual(set(pickings.mapped("operation_line_count")), {0})
 
@@ -168,7 +368,7 @@ class TestPickingLineCount(TransactionCase):
             arch = parent._get_combined_arch()
             self.assertEqual(
                 arch.xpath("./field/@name"),
-                ["name", "origin", "operation_line_count", "picking_total_deci"],
+                ["name", "origin", "operation_line_count", "workload_deci"],
             )
             for column in arch.xpath("./field[@optional]"):
                 self.assertEqual(column.get("optional"), "show")
@@ -197,8 +397,11 @@ class TestPickingLineCount(TransactionCase):
         view = self.env["stock.picking"].get_view(
             view_id=self.env.ref("stock.vpicktree").id, view_type="tree"
         )
+        self.assertEqual(
+            self.env["stock.picking"]._fields["workload_deci"].string, "Desi"
+        )
         arch = etree.fromstring(view["arch"])
-        for name in ("operation_line_count", "picking_total_deci"):
+        for name in ("operation_line_count", "workload_deci"):
             columns = arch.xpath(f"./field[@name='{name}']")
             self.assertEqual(len(columns), 1)
             self.assertEqual(columns[0].get("optional"), "show")

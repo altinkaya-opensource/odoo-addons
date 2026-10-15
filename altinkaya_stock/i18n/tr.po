@@ -16,6 +16,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__workload_deci
+msgid "Desi"
+msgstr "Desi"
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,help:altinkaya_stock.field_stock_quant_package__picking_state
 msgid ""
 " * Draft: The transfer is not confirmed yet. Reservation doesn't apply.\n"

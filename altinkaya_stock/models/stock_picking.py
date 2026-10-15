@@ -60,6 +60,9 @@ class StockPicking(models.Model):
         string="Line Count", compute="_compute_operation_line_count", store=True
     )
     picking_total_deci = fields.Float(store=True)
+    workload_deci = fields.Float(
+        string="Desi", compute="_compute_workload_deci", store=True
+    )
     country_id = fields.Many2one(
         "res.country",
         string="Country",
@@ -104,6 +107,7 @@ class StockPicking(models.Model):
         for name, column_type in (
             ("operation_line_count", "int4"),
             ("picking_total_deci", "float8"),
+            ("workload_deci", "float8"),
         ):
             if not column_exists(self.env.cr, self._table, name):
                 create_column(self.env.cr, self._table, name, column_type)
@@ -119,7 +123,8 @@ class StockPicking(models.Model):
                 """
                 SELECT id FROM stock_picking
                  WHERE id > %s
-                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL)
+                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL
+                        OR workload_deci IS NULL)
                  ORDER BY id LIMIT 1000
                 """,
                 [last_id],
@@ -130,6 +135,7 @@ class StockPicking(models.Model):
             pickings = self.browse(ids)
             pickings._compute_operation_line_count()
             pickings._compute_picking_total_deci()
+            pickings._compute_workload_deci()
             self.env.invalidate_all()
             last_id = ids[-1]
 
@@ -148,11 +154,60 @@ class StockPicking(models.Model):
             picking.operation_line_count = len(picking._get_move_ids_without_package())
 
     @api.depends(
-        "move_ids.sale_line_id.last_deci", "carrier_id.factor_a", "carrier_id.factor_b"
+        "move_ids.sale_line_id.last_deci",
+        "move_ids.state",
+        "move_ids.scrapped",
+        "move_ids.product_uom_qty",
+        "move_ids.quantity_done",
+        "move_ids.product_uom",
+        "move_ids.product_id.uom_id",
+        "move_ids.product_id.weight",
+        "move_ids.product_id.volume",
+        "move_ids.product_id.volume_uom_id",
+        "carrier_id.factor_a",
+        "carrier_id.factor_b",
+        "carrier_id.deci_type",
     )
     def _compute_picking_total_deci(self):
-        """Keep the existing desi formula while tracking its stored inputs."""
-        return super()._compute_picking_total_deci()
+        """Use transfer quantities when the picking has no sales lines."""
+        result = super()._compute_picking_total_deci()
+        weight_uom = self.env[
+            "product.template"
+        ]._get_weight_uom_id_from_ir_config_parameter()
+        kg_uom = self.env.ref("uom.product_uom_kgm")
+        litre_uom = self.env.ref("uom.product_uom_litre")
+        for picking in self.filtered(lambda p: not p.move_ids.sale_line_id):
+            deci = 0.0
+            divisor = float(picking.carrier_id.deci_type or 3000)
+            for move in picking.move_ids.filtered(
+                lambda m: m.state != "cancel" and not m.scrapped
+            ):
+                product = move.product_id
+                quantity = (
+                    move.quantity_done if move.state == "done" else move.product_uom_qty
+                )
+                quantity = move.product_uom._compute_quantity(
+                    quantity, product.uom_id, round=False
+                )
+                weight = weight_uom._compute_quantity(
+                    quantity * product.weight, kg_uom, round=False
+                )
+                volume = product.volume_uom_id._compute_quantity(
+                    quantity * product.volume, litre_uom, round=False
+                )
+                deci += max(weight, volume * 1000 / divisor)
+            picking.picking_total_deci = (
+                deci * picking.carrier_id._get_dimension_factor(deci)
+            )
+        return result
+
+    @api.depends("picking_total_weight", "picking_total_deci")
+    def _compute_workload_deci(self):
+        """Prefer the measured shipment value for transfer-list workload totals."""
+        for picking in self:
+            picking.workload_deci = (
+                picking.picking_total_weight or picking.picking_total_deci
+            )
 
     @api.model
     def _register_custom_workload_views(self):
