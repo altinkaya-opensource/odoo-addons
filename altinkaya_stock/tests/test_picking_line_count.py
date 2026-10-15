@@ -1,3 +1,7 @@
+from pathlib import Path
+from runpy import run_path
+from unittest.mock import patch
+
 from lxml import etree
 
 from odoo.tests import TransactionCase, tagged
@@ -140,6 +144,168 @@ class TestPickingLineCount(TransactionCase):
         self.assertEqual(first.operation_line_count, 0)
         first.picking_type_id.show_entire_packs = False
         self.assertEqual(first.operation_line_count, 1)
+
+    def _create_product_fallback_moves(self, picking, quantity=1000, count=2):
+        """Use grams and cubic centimetres like the reported purchase receipt."""
+        litre = self.env.ref("uom.product_uom_litre")
+        cm3 = self.env["uom.uom"].create(
+            {
+                "name": "Workload cm3",
+                "category_id": litre.category_id.id,
+                "uom_type": "smaller",
+                "factor": 1000,
+                "rounding": 0.0001,
+            }
+        )
+        product = self.env["product.product"].create(
+            {
+                "name": "Receipt product",
+                "type": "consu",
+                "weight_uom_id": self.env.ref("uom.product_uom_gram").id,
+                "product_weight": 20.2,
+                "volume_uom_id": cm3.id,
+                "volume": 0.58,
+            }
+        )
+        return self.env["stock.move"].create(
+            [
+                {
+                    "name": "Receipt row",
+                    "picking_id": picking.id,
+                    "product_id": product.id,
+                    "product_uom": product.uom_id.id,
+                    "product_uom_qty": quantity,
+                    "location_id": picking.location_id.id,
+                    "location_dest_id": picking.location_dest_id.id,
+                }
+                for _ in range(count)
+            ]
+        )
+
+    def test_product_fallback_planned_done_and_cancelled_quantities(self):
+        picking = self._create_workload_pickings(1)
+        moves = self._create_product_fallback_moves(picking)
+        self.assertAlmostEqual(picking.picking_total_deci, 40.4)
+        self.assertAlmostEqual(picking.workload_deci, 40.4)
+        moves[0].quantity_done = 600
+        moves[1].quantity_done = 400
+        moves.state = "done"
+        self.assertAlmostEqual(picking.picking_total_deci, 20.2)
+        moves[1].quantity_done = 0
+        self.assertAlmostEqual(picking.picking_total_deci, 12.12)
+        moves[1].state = "cancel"
+        self.assertAlmostEqual(picking.picking_total_deci, 12.12)
+        moves[0].location_dest_id = self.env["stock.location"].create(
+            {"name": "Workload scrap", "usage": "inventory", "scrap_location": True}
+        )
+        self.assertEqual(picking.picking_total_deci, 0)
+
+    def test_product_fallback_uoms_volume_carrier_and_dependencies(self):
+        picking = self._create_workload_pickings(1)
+        move = self._create_product_fallback_moves(picking, quantity=2, count=1)
+        product = move.product_id
+        product.product_weight = 1000
+        product.volume_uom_id = self.env.ref("uom.product_uom_litre")
+        product.volume = 6
+        move.product_uom = self.env.ref("uom.product_uom_dozen")
+        self.assertAlmostEqual(picking.picking_total_deci, 48)
+        carrier = self.env["delivery.carrier"].create(
+            {
+                "name": "Receipt carrier",
+                "product_id": product.id,
+                "delivery_type": "fixed",
+                "currency_id": self.env.company.currency_id.id,
+                "deci_type": "6000",
+                "factor_a": 1,
+                "factor_b": 0.1,
+            }
+        )
+        picking.carrier_id = carrier
+        self.assertAlmostEqual(picking.picking_total_deci, 24)
+        carrier.deci_type = "3000"
+        self.assertAlmostEqual(picking.picking_total_deci, 48)
+        carrier.deci_type = "6000"
+        carrier.factor_a = 2
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 24 * carrier._get_dimension_factor(24)
+        )
+        product.product_weight = 2000
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 48 * carrier._get_dimension_factor(48)
+        )
+        product.volume = 0
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 48 * carrier._get_dimension_factor(48)
+        )
+        move.product_uom_qty = 1
+        self.assertAlmostEqual(
+            picking.picking_total_deci, 24 * carrier._get_dimension_factor(24)
+        )
+        picking.picking_total_weight = 15
+        self.assertEqual(picking.workload_deci, 15)
+        picking.picking_total_weight = 0
+        self.assertAlmostEqual(
+            picking.workload_deci, 24 * carrier._get_dimension_factor(24)
+        )
+
+    def test_sales_link_keeps_existing_formula_and_migration_scope(self):
+        picking, sales_picking = self._create_workload_pickings()
+        self._create_product_fallback_moves(picking)
+        sales_moves = self._create_product_fallback_moves(sales_picking)
+        order = self.env["sale.order"].create(
+            {"partner_id": self.env["res.partner"].create({"name": "Desi buyer"}).id}
+        )
+        line = self.env["sale.order.line"].create(
+            {
+                "order_id": order.id,
+                "product_id": sales_moves[0].product_id.id,
+                "last_deci": 7,
+            }
+        )
+        sales_moves[0].sale_line_id = line
+        self.assertEqual(sales_picking.picking_total_deci, 7)
+        line.last_deci = 0
+        self.assertEqual(sales_picking.picking_total_deci, 0)
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE stock_picking SET picking_total_deci = 0, workload_deci = 0 "
+            "WHERE id = %s",
+            [picking.id],
+        )
+        self.env.cr.execute(
+            "UPDATE stock_picking SET picking_total_deci = 99, workload_deci = 99 "
+            "WHERE id = %s",
+            [sales_picking.id],
+        )
+        (picking | sales_picking).invalidate_recordset()
+        migration = run_path(
+            str(
+                Path(__file__).parents[1]
+                / "migrations"
+                / "16.0.0.1.8"
+                / "post-migrate.py"
+            )
+        )["migrate"]
+        original_search = type(picking).search
+        visited = []
+
+        def search_test_pickings(records, domain, **kwargs):
+            result = original_search(
+                records,
+                domain + [("id", "in", (picking | sales_picking).ids)],
+                **kwargs,
+            )
+            visited.extend(result.ids)
+            return result
+
+        with patch.object(type(picking), "search", search_test_pickings):
+            migration(self.env.cr, "16.0.0.1.7")
+            migration(self.env.cr, "16.0.0.1.7")
+        self.assertEqual(visited, [picking.id, sales_picking.id] * 2)
+        self.assertAlmostEqual(picking.workload_deci, 40.4)
+        self.assertEqual(sales_picking.workload_deci, 99)
+        sales_moves[0].sale_line_id = False
+        self.assertAlmostEqual(sales_picking.picking_total_deci, 40.4)
 
     def test_desi_measured_weight_without_system_desi(self):
         picking = self._create_workload_pickings(1)
