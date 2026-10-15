@@ -82,16 +82,16 @@ class TestPickingLineCount(TransactionCase):
         pickings.hazirlayan = worker
         groups = pickings.read_group(
             domain,
-            ["operation_line_count:sum", "picking_total_deci:sum"],
+            ["operation_line_count:sum", "workload_deci:sum"],
             ["hazirlayan"],
         )
         self.assertEqual(len(groups), 1)
         self.assertEqual(groups[0]["hazirlayan"][0], worker.id)
         self.assertEqual(groups[0]["operation_line_count"], 3)
         self.assertAlmostEqual(
-            groups[0]["picking_total_deci"], sum(pickings.mapped("picking_total_deci"))
+            groups[0]["workload_deci"], sum(pickings.mapped("picking_total_deci"))
         )
-        for field in ("operation_line_count", "picking_total_deci"):
+        for field in ("operation_line_count", "picking_total_deci", "workload_deci"):
             self.assertTrue(pickings._fields[field].store)
             self.assertEqual(
                 pickings.search(domain, order=f"{field} desc").ids,
@@ -100,10 +100,24 @@ class TestPickingLineCount(TransactionCase):
             self.assertEqual(
                 pickings.search(domain, order=f"{field} asc").ids, [first.id, second.id]
             )
+        first.picking_total_weight = 150
+        self.assertEqual(first.workload_deci, 150)
+        self.assertNotEqual(first.picking_total_deci, 150)
+        self.assertEqual(
+            pickings.search(domain, order="workload_deci desc").ids,
+            [first.id, second.id],
+        )
+        groups = pickings.read_group(domain, ["workload_deci:sum"], ["hazirlayan"])
+        self.assertAlmostEqual(
+            groups[0]["workload_deci"], 150 + second.picking_total_deci
+        )
+        first.picking_total_weight = 0
+        self.assertEqual(first.workload_deci, first.picking_total_deci)
         lines[0].last_deci = 40
         self.assertAlmostEqual(
             first.picking_total_deci, 40 * carrier._get_dimension_factor(40)
         )
+        self.assertEqual(first.workload_deci, first.picking_total_deci)
         carrier.factor_a = 3
         carrier.factor_b = 0.2
         self.assertAlmostEqual(
@@ -127,13 +141,23 @@ class TestPickingLineCount(TransactionCase):
         first.picking_type_id.show_entire_packs = False
         self.assertEqual(first.operation_line_count, 1)
 
+    def test_desi_measured_weight_without_system_desi(self):
+        picking = self._create_workload_pickings(1)
+        self.assertEqual(picking.workload_deci, 0)
+        picking.picking_total_weight = 15
+        self.assertEqual(picking.picking_total_deci, 0)
+        self.assertEqual(picking.workload_deci, 15)
+        picking.picking_total_weight = 0
+        self.assertEqual(picking.workload_deci, 0)
+
     def test_backfill_batches_and_zero_values(self):
         pickings = self._create_workload_pickings(1001)
+        pickings[0].picking_total_weight = 15
         self.env.flush_all()
         # Simulate old rows after the nullable columns are introduced on upgrade.
         self.env.cr.execute(
             "UPDATE stock_picking SET operation_line_count = NULL, "
-            "picking_total_deci = NULL WHERE id IN %s",
+            "picking_total_deci = NULL, workload_deci = NULL WHERE id IN %s",
             [tuple(pickings.ids)],
         )
         pickings.invalidate_recordset()
@@ -144,6 +168,16 @@ class TestPickingLineCount(TransactionCase):
             [tuple(pickings.ids)],
         )
         self.assertEqual(self.env.cr.fetchone()[0], 1001)
+        self.assertEqual(pickings[0].workload_deci, 15)
+        self.assertEqual(set(pickings[1:].mapped("workload_deci")), {0})
+        # Existing stored inputs still need the new display field backfilled.
+        self.env.cr.execute(
+            "UPDATE stock_picking SET workload_deci = NULL WHERE id = %s",
+            [pickings[0].id],
+        )
+        pickings[0].invalidate_recordset()
+        self.env["stock.picking"]._initialize_workload_totals()
+        self.assertEqual(pickings[0].workload_deci, 15)
         self.env["stock.picking"]._initialize_workload_totals()
         self.assertEqual(set(pickings.mapped("operation_line_count")), {0})
 
@@ -168,7 +202,7 @@ class TestPickingLineCount(TransactionCase):
             arch = parent._get_combined_arch()
             self.assertEqual(
                 arch.xpath("./field/@name"),
-                ["name", "origin", "operation_line_count", "picking_total_deci"],
+                ["name", "origin", "operation_line_count", "workload_deci"],
             )
             for column in arch.xpath("./field[@optional]"):
                 self.assertEqual(column.get("optional"), "show")
@@ -197,8 +231,11 @@ class TestPickingLineCount(TransactionCase):
         view = self.env["stock.picking"].get_view(
             view_id=self.env.ref("stock.vpicktree").id, view_type="tree"
         )
+        self.assertEqual(
+            self.env["stock.picking"]._fields["workload_deci"].string, "Desi"
+        )
         arch = etree.fromstring(view["arch"])
-        for name in ("operation_line_count", "picking_total_deci"):
+        for name in ("operation_line_count", "workload_deci"):
             columns = arch.xpath(f"./field[@name='{name}']")
             self.assertEqual(len(columns), 1)
             self.assertEqual(columns[0].get("optional"), "show")

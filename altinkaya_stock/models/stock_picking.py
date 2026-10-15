@@ -60,6 +60,9 @@ class StockPicking(models.Model):
         string="Line Count", compute="_compute_operation_line_count", store=True
     )
     picking_total_deci = fields.Float(store=True)
+    workload_deci = fields.Float(
+        string="Desi", compute="_compute_workload_deci", store=True
+    )
     country_id = fields.Many2one(
         "res.country",
         string="Country",
@@ -104,6 +107,7 @@ class StockPicking(models.Model):
         for name, column_type in (
             ("operation_line_count", "int4"),
             ("picking_total_deci", "float8"),
+            ("workload_deci", "float8"),
         ):
             if not column_exists(self.env.cr, self._table, name):
                 create_column(self.env.cr, self._table, name, column_type)
@@ -119,7 +123,8 @@ class StockPicking(models.Model):
                 """
                 SELECT id FROM stock_picking
                  WHERE id > %s
-                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL)
+                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL
+                        OR workload_deci IS NULL)
                  ORDER BY id LIMIT 1000
                 """,
                 [last_id],
@@ -130,6 +135,7 @@ class StockPicking(models.Model):
             pickings = self.browse(ids)
             pickings._compute_operation_line_count()
             pickings._compute_picking_total_deci()
+            pickings._compute_workload_deci()
             self.env.invalidate_all()
             last_id = ids[-1]
 
@@ -153,6 +159,14 @@ class StockPicking(models.Model):
     def _compute_picking_total_deci(self):
         """Keep the existing desi formula while tracking its stored inputs."""
         return super()._compute_picking_total_deci()
+
+    @api.depends("picking_total_weight", "picking_total_deci")
+    def _compute_workload_deci(self):
+        """Prefer the measured shipment value for transfer-list workload totals."""
+        for picking in self:
+            picking.workload_deci = (
+                picking.picking_total_weight or picking.picking_total_deci
+            )
 
     @api.model
     def _register_custom_workload_views(self):

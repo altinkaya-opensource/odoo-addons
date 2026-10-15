@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
                 <field name="operation_line_count" optional="show" sum="Total Lines" />
-                <field name="picking_total_deci" optional="show" sum="Total Desi" />
+                <field name="workload_deci" optional="show" sum="Total Desi" />
             </xpath>
         </field>
     </record>
