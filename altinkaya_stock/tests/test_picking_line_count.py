@@ -1,10 +1,13 @@
 from pathlib import Path
 from runpy import run_path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from lxml import etree
 
+from odoo.modules.migration import MigrationManager
 from odoo.tests import TransactionCase, tagged
+from odoo.tools.convert import xml_import
 
 
 @tagged("post_install", "-at_install")
@@ -315,6 +318,69 @@ class TestPickingLineCount(TransactionCase):
         self.assertEqual(picking.workload_deci, 15)
         picking.picking_total_weight = 0
         self.assertEqual(picking.workload_deci, 0)
+
+    def test_backfill_xml_runs_only_on_install(self):
+        root = etree.parse(
+            str(Path(__file__).parents[1] / "views" / "stock_picking_views.xml")
+        ).getroot()
+        # Exercise the shipped initializer declaration, including its parent flags.
+        for child in list(root):
+            if not child.xpath(
+                "descendant-or-self::function[@name='_initialize_workload_totals']"
+            ):
+                root.remove(child)
+        self.assertEqual(len(root), 1)
+        with patch.object(
+            type(self.env["stock.picking"]),
+            "_initialize_workload_totals",
+            autospec=True,
+        ) as initialize:
+            initialize._api = "model"
+            xml_import(self.env.cr, "altinkaya_stock", {}, "init").parse(root)
+            initialize.assert_called_once()
+            initialize.reset_mock()
+            xml_import(self.env.cr, "altinkaya_stock", {}, "update").parse(root)
+            initialize.assert_not_called()
+
+    def test_backfill_migration_runs_only_when_crossing_its_version(self):
+        picking = self._create_workload_pickings(1)
+        picking.picking_total_weight = 15
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE stock_picking SET operation_line_count = NULL, "
+            "picking_total_deci = NULL, workload_deci = NULL WHERE id = %s",
+            [picking.id],
+        )
+        picking.invalidate_recordset()
+        package = SimpleNamespace(
+            name="altinkaya_stock",
+            state="to upgrade",
+            installed_version="16.0.0.1.8",
+            data={"version": "16.0.0.1.9"},
+        )
+        manager = MigrationManager(self.env.cr, [package])
+        original = type(picking)._initialize_workload_totals
+        with patch.object(
+            type(picking),
+            "_initialize_workload_totals",
+            autospec=True,
+            side_effect=original,
+        ) as initialize:
+            manager.migrate_module(package, "post")
+            initialize.assert_called_once()
+            self.assertEqual(picking.operation_line_count, 0)
+            self.assertEqual(picking.picking_total_deci, 0)
+            self.assertEqual(picking.workload_deci, 15)
+            self.assertEqual(picking.picking_total_weight, 15)
+            initialize.reset_mock()
+            package.installed_version = "16.0.0.1.9"
+            manager.migrate_module(package, "post")
+            package.data["version"] = "16.0.0.1.10"
+            manager.migrate_module(package, "post")
+            package.state = "to install"
+            package.installed_version = ""
+            manager.migrate_module(package, "post")
+            initialize.assert_not_called()
 
     def test_backfill_batches_and_zero_values(self):
         pickings = self._create_workload_pickings(1001)
