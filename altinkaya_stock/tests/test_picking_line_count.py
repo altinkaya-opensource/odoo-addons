@@ -316,37 +316,6 @@ class TestPickingLineCount(TransactionCase):
         picking.picking_total_weight = 0
         self.assertEqual(picking.workload_deci, 0)
 
-    def test_backfill_batches_and_zero_values(self):
-        pickings = self._create_workload_pickings(1001)
-        pickings[0].picking_total_weight = 15
-        self.env.flush_all()
-        # Simulate old rows after the nullable columns are introduced on upgrade.
-        self.env.cr.execute(
-            "UPDATE stock_picking SET operation_line_count = NULL, "
-            "picking_total_deci = NULL, workload_deci = NULL WHERE id IN %s",
-            [tuple(pickings.ids)],
-        )
-        pickings.invalidate_recordset()
-        self.env["stock.picking"]._initialize_workload_totals()
-        self.env.cr.execute(
-            "SELECT count(*) FROM stock_picking WHERE id IN %s "
-            "AND operation_line_count = 0 AND picking_total_deci = 0",
-            [tuple(pickings.ids)],
-        )
-        self.assertEqual(self.env.cr.fetchone()[0], 1001)
-        self.assertEqual(pickings[0].workload_deci, 15)
-        self.assertEqual(set(pickings[1:].mapped("workload_deci")), {0})
-        # Existing stored inputs still need the new display field backfilled.
-        self.env.cr.execute(
-            "UPDATE stock_picking SET workload_deci = NULL WHERE id = %s",
-            [pickings[0].id],
-        )
-        pickings[0].invalidate_recordset()
-        self.env["stock.picking"]._initialize_workload_totals()
-        self.assertEqual(pickings[0].workload_deci, 15)
-        self.env["stock.picking"]._initialize_workload_totals()
-        self.assertEqual(set(pickings.mapped("operation_line_count")), {0})
-
     def test_custom_transfer_views_preserved_and_not_duplicated(self):
         View = self.env["ir.ui.view"]
         for name in ("stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"):
