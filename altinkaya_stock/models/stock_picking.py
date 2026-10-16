@@ -22,7 +22,6 @@
 
 from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
-from odoo.tools.sql import column_exists, create_column, table_exists
 
 
 class StockPicking(models.Model):
@@ -99,45 +98,6 @@ class StockPicking(models.Model):
     halted_procurements = fields.Boolean(
         store=False, search="_search_halted_procurements"
     )
-
-    def _auto_init(self):
-        if not table_exists(self.env.cr, self._table):
-            return super()._auto_init()
-        # Populate existing transfers in batches instead of queuing the whole table.
-        for name, column_type in (
-            ("operation_line_count", "int4"),
-            ("picking_total_deci", "float8"),
-            ("workload_deci", "float8"),
-        ):
-            if not column_exists(self.env.cr, self._table, name):
-                create_column(self.env.cr, self._table, name, column_type)
-        return super()._auto_init()
-
-    @api.model
-    def _initialize_workload_totals(self):
-        """Populate newly stored fields without retaining all transfers in memory."""
-        last_id = 0
-        while True:
-            # ORM numeric domains treat NULL and zero alike; only NULL needs backfill.
-            self.env.cr.execute(
-                """
-                SELECT id FROM stock_picking
-                 WHERE id > %s
-                   AND (operation_line_count IS NULL OR picking_total_deci IS NULL
-                        OR workload_deci IS NULL)
-                 ORDER BY id LIMIT 1000
-                """,
-                [last_id],
-            )
-            ids = [row[0] for row in self.env.cr.fetchall()]
-            if not ids:
-                break
-            pickings = self.browse(ids)
-            pickings._compute_operation_line_count()
-            pickings._compute_picking_total_deci()
-            pickings._compute_workload_deci()
-            self.env.invalidate_all()
-            last_id = ids[-1]
 
     @api.depends(
         "move_ids",
