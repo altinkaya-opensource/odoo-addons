@@ -263,9 +263,9 @@
                                 >
                                     <t t-if="route[0] == 'picking'">
                                         <td
-                                            style="border-color: #ffffff; text-align: left; vertical-align: center;width: 210px;"
+                                            style="border-color: #ffffff; text-align: left; vertical-align: middle; width: 80px; padding: 4px; line-height: 1;"
                                         >
-                                            <div style="width: 200px;">
+                                            <div>
                                                 <div
                                                     style="align-content: center;text-align:center;"
                                                 >
@@ -307,9 +307,9 @@
                                     </t>
                                     <t t-if="route[0] == 'production'">
                                         <td
-                                            style="border-color: #ffffff; text-align: left; vertical-align: center;width: 210px;"
+                                            style="border-color: #ffffff; text-align: left; vertical-align: middle; width: 80px; padding: 4px; line-height: 1;"
                                         >
-                                            <div style="width: 200px;">
+                                            <div>
                                                 <div
                                                     style="align-content: center;text-align:center;"
                                                 >
