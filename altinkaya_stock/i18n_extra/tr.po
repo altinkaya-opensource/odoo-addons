@@ -1,0 +1,22 @@
+# Turkish picking role labels.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"PO-Revision-Date: 2026-10-19 00:00+0000\n"
+"Last-Translator: Altinkaya\n"
+"Language-Team: Turkish\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_picking__user_id
+msgid "Responsible"
+msgstr "Sipariş Sorumlusu"
+
+#. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__hazirlayan
+msgid "Sevki Hazırlayan"
+msgstr "Mal Kabul Yapan"
