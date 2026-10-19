@@ -1335,7 +1335,7 @@ msgstr "Sevkteki paketin sırası."
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_stock_picking__hazirlayan
 msgid "Sevki Hazırlayan"
-msgstr ""
+msgstr "Mal Kabul Yapan"
 
 #. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__shipping_weight
