@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_ups_pickup" model="ir.ui.view">
+        <field name="name">stock.picking.ups.pickup</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='carrier_data']" position="after">
+                <group
+                    string="UPS Pickup"
+                    attrs="{'invisible': [('delivery_type', '!=', 'ups')]}"
+                >
+                    <field name="ups_pickup_prn" />
+                    <field name="ups_pickup_date" />
+                    <field
+                        name="ups_pickup_error"
+                        attrs="{'invisible': [('ups_pickup_error', '=', False)]}"
+                    />
+                    <button
+                        name="action_request_ups_pickup"
+                        type="object"
+                        string="Request UPS Pickup"
+                        groups="stock.group_stock_user"
+                        confirm="Confirm with UPS that no pickup is already booked, including manual bookings or requests that timed out. Request collection for this existing label?"
+                        attrs="{'invisible': ['|', '|', '|', '|', ('ups_pickup_prn', '!=', False), ('shipping_number', '=', False), ('picking_type_code', '!=', 'outgoing'), ('state', '=', 'cancel'), ('delivery_state', '!=', 'shipping_recorded_in_carrier')]}"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

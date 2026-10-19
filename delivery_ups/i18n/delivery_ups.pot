@@ -771,3 +771,92 @@ msgstr ""
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_label_stock_size_width
 msgid "ZPL label width in inches (UPS uses 4)."
 msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+msgid "Only inventory users can request a UPS pickup."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+msgid "This transfer already has a UPS pickup booking."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+msgid ""
+"Only an uncollected UPS shipment with its own label can request pickup."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+msgid "Choose a non-daily UPS pickup type before requesting collection."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_picking_ups_pickup
+msgid "UPS Pickup"
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/stock_picking.py:0
+msgid "UPS pickup booked."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+msgid ""
+"UPS pickup requires a street, city or state, contact, phone and countries."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+msgid "UPS pickup street address must not exceed 73 characters."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+msgid "UPS pickup requires packages with a positive total weight."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+msgid "UPS did not confirm the pickup with a successful status and a PRN."
+msgstr ""
+
+#. module: delivery_ups
+#. odoo-python
+#: code:addons/delivery_ups/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"UPS pickup was not confirmed. The shipping label is still valid. Check with "
+"UPS before retrying to avoid a duplicate pickup.<br/>Error: %(error)s"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_pickup_error
+msgid "UPS Pickup Error"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_picking_ups_pickup
+msgid "Request UPS Pickup"
+msgstr ""
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_picking_ups_pickup
+msgid ""
+"Confirm with UPS that no pickup is already booked, including manual bookings"
+" or requests that timed out. Request collection for this existing label?"
+msgstr ""

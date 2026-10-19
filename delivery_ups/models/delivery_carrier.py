@@ -10,6 +10,7 @@ from io import BytesIO
 
 import phonenumbers
 import pytz
+from markupsafe import Markup
 from PIL import Image
 
 from odoo import _, fields, models
@@ -660,20 +661,11 @@ class DeliveryCarrier(models.Model):
                     )
                 )
 
-            # Non-daily pickup types need an explicit pickup request. We treat
-            # Daily Pickup (01) as "no call needed" — UPS collects at the
-            # scheduled daily time.
+            # Keep the label if pickup fails; expose the separate pickup result.
             if self.ups_pickup_type and self.ups_pickup_type != "01":
-                try:
-                    self._ups_request_pickup(
-                        picking, master_tracking, rate_info["billing_weight"]
-                    )
-                except Exception as exc:
-                    _logger.error(
-                        "UPS pickup request failed for picking %s: %s",
-                        picking.name,
-                        exc,
-                    )
+                self._ups_try_request_pickup(
+                    picking, master_tracking, rate_info["billing_weight"]
+                )
 
             # Convert price into picking's currency for uniform reporting.
             if (
@@ -845,14 +837,70 @@ class DeliveryCarrier(models.Model):
 
         return pickup_dt.strftime("%Y%m%d"), ready_time, "1700"
 
+    def _ups_try_request_pickup(self, picking, tracking_number, total_weight):
+        """Record pickup failure without rolling back a successful shipment."""
+        try:
+            with self.env.cr.savepoint():
+                self._ups_request_pickup(picking, tracking_number, total_weight)
+        except Exception as exc:
+            _logger.exception("UPS pickup request failed for picking %s", picking.name)
+            picking.ups_pickup_error = str(exc)
+            picking._ups_pickup_message(
+                Markup(
+                    _(
+                        "UPS pickup was not confirmed."
+                        " The shipping label is still valid."
+                        " Check with UPS before retrying to avoid a duplicate pickup."
+                        "<br/>Error: %(error)s"
+                    )
+                )
+                % {"error": str(exc)}
+            )
+            return False
+        return True
+
     def _ups_request_pickup(self, picking, tracking_number, total_weight):
         """Schedule a UPS pickup for non-daily pickup types."""
         self.ensure_one()
         warehouse_partner = picking.location_id.warehouse_id.partner_id
 
         pickup_date, ready_time, close_time = self._get_ups_pickup_window()
-        address_lines = self._split_ups_address_lines(warehouse_partner)
-        pickup_note = self._get_pickup_note_from_invoice(picking, max_length=57)
+        address_line = " ".join(
+            " ".join(
+                [warehouse_partner.street or "", warehouse_partner.street2 or ""]
+            ).split()
+        )
+        city = self._prepare_ups_address(warehouse_partner)["City"]
+        phone = self._format_phone(warehouse_partner)
+        package_count = self._get_package_count(picking.package_ids)
+        total_weight = total_weight or sum(
+            [p.shipping_weight * p.package_multiplier for p in picking.package_ids]
+        )
+        if not all(
+            [
+                address_line,
+                city,
+                phone,
+                warehouse_partner.name,
+                warehouse_partner.country_id.code,
+                picking.partner_id.country_id.code,
+            ]
+        ):
+            raise UserError(
+                _(
+                    "UPS pickup requires a street, city or state,"
+                    " contact, phone and countries."
+                )
+            )
+        if len(address_line) > 73:
+            raise UserError(
+                _("UPS pickup street address must not exceed 73 characters.")
+            )
+        if package_count < 1 or total_weight <= 0:
+            raise UserError(
+                _("UPS pickup requires packages with a positive total weight.")
+            )
+        pickup_note = self._get_pickup_note_from_invoice(picking.sudo(), max_length=57)
 
         payload = {
             "PickupCreationRequest": {
@@ -880,8 +928,8 @@ class DeliveryCarrier(models.Model):
                         :27
                     ],
                     "ContactName": (warehouse_partner.name or "")[:22],
-                    "AddressLine": address_lines,
-                    "City": warehouse_partner.city or "",
+                    "AddressLine": [address_line],
+                    "City": city,
                     "StateProvince": (
                         warehouse_partner.state_id.code
                         or warehouse_partner.state_id.name
@@ -890,13 +938,13 @@ class DeliveryCarrier(models.Model):
                     "PostalCode": warehouse_partner.zip or "",
                     "CountryCode": warehouse_partner.country_id.code or "",
                     "ResidentialIndicator": "N",
-                    "Phone": {"Number": self._format_phone(warehouse_partner)},
+                    "Phone": {"Number": phone},
                 },
                 "AlternateAddressIndicator": "N",
                 "PickupPiece": [
                     {
                         "ServiceCode": self._get_ups_pickup_service_code(),
-                        "Quantity": str(self._get_package_count(picking.package_ids)),
+                        "Quantity": str(package_count),
                         "DestinationCountryCode": (
                             picking.partner_id.country_id.code or ""
                         ),
@@ -925,22 +973,29 @@ class DeliveryCarrier(models.Model):
         )
         response = ups_request.request_pickup(payload)
 
-        prn = (response.get("PickupCreationResponse") or {}).get("PRN")
-        if prn:
-            picking.ups_pickup_prn = prn
-            picking.ups_pickup_date = datetime.strptime(pickup_date, "%Y%m%d")
-            posted_invoice = picking.invoice_ids.filtered(
-                lambda m: m.state == "posted"
-            )[:1]
-            if posted_invoice:
-                posted_invoice.message_post(
-                    body=_(
-                        "UPS pickup scheduled for <strong>%(date)s</strong>."
-                        " PRN: <strong>%(prn)s</strong>.",
-                        date=pickup_date,
-                        prn=prn,
-                    )
+        pickup_response = response.get("PickupCreationResponse") or {}
+        prn = pickup_response.get("PRN")
+        status = (pickup_response.get("Response") or {}).get("ResponseStatus") or {}
+        if not prn or status.get("Code") != "1":
+            raise UserError(
+                _("UPS did not confirm the pickup with a successful status and a PRN.")
+            )
+        picking.write(
+            {
+                "ups_pickup_prn": prn,
+                "ups_pickup_date": datetime.strptime(pickup_date, "%Y%m%d").date(),
+                "ups_pickup_error": False,
+            }
+        )
+        picking._ups_pickup_message(
+            Markup(
+                _(
+                    "UPS pickup scheduled for <strong>%(date)s</strong>."
+                    " PRN: <strong>%(prn)s</strong>."
                 )
+            )
+            % {"date": pickup_date, "prn": prn}
+        )
         return True
 
     # ---------------------------------------------------------------------
@@ -950,6 +1005,7 @@ class DeliveryCarrier(models.Model):
         res = super().clear_delivery_data(picking)
         picking.ups_pickup_prn = False
         picking.ups_pickup_date = False
+        picking.ups_pickup_error = False
         return res
 
     def get_tracking_link(self, picking):

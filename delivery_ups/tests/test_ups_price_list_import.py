@@ -28,7 +28,7 @@ PRICE_LIST = """<html><head><meta charset="utf-8" /></head><body><table>
 class TestUpsPriceListImport(TransactionCase):
     def test_import_replaces_carrier_rules(self):
         product = self.env["product.product"].create(
-            {"name": "UPS shipping", "type": "service"}
+            {"name": "UPS shipping", "type": "service", "barcode": "UPS-PRICE-TEST"}
         )
         carrier = self.env["delivery.carrier"].create(
             {

@@ -4,7 +4,7 @@
 {
     "name": "Delivery UPS",
     "summary": "Delivery Carrier implementation for UPS API",
-    "version": "16.0.1.1.0",
+    "version": "16.0.1.2.0",
     "category": "Stock",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Altinkaya Enclosures, Ahmet Yigit Budak",
@@ -24,5 +24,6 @@
         "security/ir.model.access.csv",
         "wizards/ups_price_list_import_views.xml",
         "views/delivery_ups_view.xml",
+        "views/stock_picking_views.xml",
     ],
 }
