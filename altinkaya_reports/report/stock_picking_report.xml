@@ -348,7 +348,7 @@ Stokta:
                                                 </td>
                                             </t>
                                             <td
-                                                style="width: 180px; text-align: center;"
+                                                style="width: 68px; padding: 4px; line-height: 1; text-align: center; vertical-align: middle;"
                                             >
                                                 <span
                                                     t-if="move.product_id and move.product_id.barcode"
@@ -362,7 +362,9 @@ Stokta:
 
                                             <t t-if="move.move_lines_count">
                                                 <td style="line-height: 1;">
-                                                    <ul style="list-style:none;">
+                                                    <ul
+                                                        style="list-style:none; margin:0; padding:0;"
+                                                    >
                                                         <li
                                                             t-foreach="move.move_line_ids"
                                                             t-as="quant"
