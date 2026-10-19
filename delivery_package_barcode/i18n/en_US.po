@@ -419,3 +419,8 @@ msgstr ""
 #: model:ir.model,name:delivery_package_barcode.model_delivery_package_barcode_wiz
 msgid "Wizard to read barcode for delivery package"
 msgstr ""
+
+#. module: delivery_package_barcode
+#: model:ir.model.fields,field_description:delivery_package_barcode.field_stock_picking__shipping_approved_by_id
+msgid "Approved By"
+msgstr "Approved By"

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form_shipping_approver" model="ir.ui.view">
+        <field name="name">stock.picking.form.shipping.approver</field>
+        <field name="model">stock.picking</field>
+        <field
+            name="inherit_id"
+            ref="delivery_integration_base.view_carrier_picking_withcarrier_out_form"
+        />
+        <field name="arch" type="xml">
+            <field name="carrier_package_count" position="after">
+                <field
+                    name="shipping_approved_by_id"
+                    attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

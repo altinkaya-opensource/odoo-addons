@@ -5,7 +5,7 @@ from unittest.mock import Mock
 
 from odoo.exceptions import UserError
 from odoo.tests import tagged
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 @tagged("post_install", "-at_install")
@@ -53,6 +53,12 @@ class TestPackageAndInvoice(TransactionCase):
         cls.carrier = cls.env["delivery.carrier"].search([], limit=1)
         if not cls.carrier:
             raise SkipTest("No delivery carrier is available.")
+        cls.shipping_user = new_test_user(
+            cls.env,
+            login="shipping_approver",
+            groups="stock.group_stock_user",
+            password="ShippingTest123!",
+        )
 
     def setUp(self):
         super().setUp()
@@ -108,11 +114,12 @@ class TestPackageAndInvoice(TransactionCase):
         picking.partner_id.commercial_partner_id.block_autoinvoicing = True
         invoice_count = self.env["account.move"].search_count([])
 
-        result = picking.package_and_invoice(3, 12.5)
+        result = picking.with_user(self.shipping_user).package_and_invoice(3, 12.5)
 
         self.assertEqual(picking.carrier_package_count, 3)
         self.assertEqual(picking.picking_total_weight, 12.5)
         self.assertTrue(picking.is_packaged)
+        self.assertEqual(picking.shipping_approved_by_id, self.shipping_user)
         self.assertEqual(self.env["account.move"].search_count([]), invoice_count)
         self.assertEqual(result["picking_id"], picking.id)
         self.assertEqual(result["picking_name"], picking.name)
@@ -121,6 +128,30 @@ class TestPackageAndInvoice(TransactionCase):
         self.assertFalse(result["print_queued"])
         self.print_document.assert_not_called()
         self.action_post.assert_not_called()
+
+    def test_merged_picking_records_shipping_approver(self):
+        first = self._create_picking(quantity=5)
+        second = self._create_picking(quantity=5)
+        first.partner_id.commercial_partner_id.block_autoinvoicing = True
+        sources = first | second
+        moves = sources.move_ids
+
+        result = sources.with_user(self.shipping_user).package_and_invoice(3, 12.5)
+
+        merged = self.env["stock.picking"].browse(result["picking_id"])
+        self.assertNotIn(merged, sources)
+        self.assertEqual(merged.shipping_approved_by_id, self.shipping_user)
+        self.assertEqual(merged.move_ids, moves)
+        self.assertEqual(set(sources.mapped("state")), {"cancel"})
+        self.assertFalse(any(sources.mapped("shipping_approved_by_id")))
+        self.print_document.assert_not_called()
+        self.action_post.assert_not_called()
+
+    def test_copy_does_not_inherit_shipping_approver(self):
+        picking = self._create_picking(validate=False)
+        picking.shipping_approved_by_id = self.shipping_user
+
+        self.assertFalse(picking.copy().shipping_approved_by_id)
 
     def test_similarity_guard(self):
         first = self._create_picking(quantity=5)
@@ -132,9 +163,11 @@ class TestPackageAndInvoice(TransactionCase):
             pickings.package_and_invoice(3, 12.5)
 
         self.assertFalse(any(pickings.mapped("is_packaged")))
+        self.assertFalse(any(pickings.mapped("shipping_approved_by_id")))
 
     def test_refuses_a_picking_that_is_not_done(self):
         picking = self._create_picking(validate=False)
         with self.assertRaises(UserError):
             picking.package_and_invoice(3, 12.5)
         self.assertFalse(picking.is_packaged)
+        self.assertFalse(picking.shipping_approved_by_id)

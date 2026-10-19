@@ -7,7 +7,7 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",
-    "version": "16.0.1.2.0",
+    "version": "16.0.1.2.1",
     "depends": [
         "base",
         "sale",
@@ -22,6 +22,7 @@
     "data": [
         "views/res_partner_views.xml",
         "views/sale_order_views.xml",
+        "views/stock_picking_views.xml",
         "reports/autoinvoicing_fail_notify_report.xml",
     ],
     "installable": True,

@@ -11,6 +11,9 @@ _logger = logging.getLogger(__name__)
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     is_packaged = fields.Boolean(string="Is packaged", default=False)
+    shipping_approved_by_id = fields.Many2one(
+        "res.users", string="Approved By", readonly=True, copy=False
+    )
 
     block_autoinvoicing = fields.Boolean(
         compute="_compute_block_autoinvoicing",
@@ -114,6 +117,7 @@ class StockPicking(models.Model):
                 "carrier_package_count": package_count,
                 "picking_total_weight": package_weight,
                 "is_packaged": True,
+                "shipping_approved_by_id": self.env.uid,
             }
         )
         invoice = self.env["account.move"]
