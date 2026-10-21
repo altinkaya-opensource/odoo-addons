@@ -310,6 +310,7 @@
                                                     >
                                                         <span
                                                             t-field="move.product_uom_qty"
+                                                            t-options="{'widget': 'integer' if move.product_uom_qty.is_integer() else 'float'}"
                                                         />
                                                         <span
                                                             t-field="move.product_uom"
