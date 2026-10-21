@@ -4,12 +4,6 @@
 from odoo import _, api, models
 from odoo.exceptions import AccessError
 
-LOCATION_RESTRICTED_MESSAGE = _(
-    "Invalid Location. You cannot process this move since "
-    "you do not control the location "
-    '"%s". Please contact your Adminstrator.'
-)
-
 
 class StockMove(models.Model):
     _inherit = "stock.move"
@@ -35,9 +29,14 @@ class StockMove(models.Model):
             warehouses |= stock_move.picking_type_id.warehouse_id
             warehouses |= stock_move.warehouse_id
 
-            if (warehouses - user_warehouses) == warehouses:
+            if warehouses and not (warehouses & user_warehouses):
                 raise AccessError(
-                    LOCATION_RESTRICTED_MESSAGE % stock_move.warehouse_id.name
+                    _(
+                        "Invalid Location. You cannot process this move since "
+                        "you do not control the location "
+                        '"%s". Please contact your Adminstrator.',
+                        ", ".join(warehouses.mapped("name")),
+                    )
                 )
 
         return True
