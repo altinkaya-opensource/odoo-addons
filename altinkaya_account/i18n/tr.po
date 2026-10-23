@@ -27,6 +27,17 @@ msgid "$₺€ V.Gelen"
 msgstr "$₺€ V.Gelen"
 
 #. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/account_move_line_change_account.py:0
+#, python-format
+msgid ""
+"%(account)s is kept in %(currency)s, but these invoices are in another currency:\n"
+"%(moves)s"
+msgstr ""
+"%(account)s hesabı %(currency)s cinsinden tutuluyor, ancak bu faturalar başka bir para biriminde:\n"
+"%(moves)s"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__data_file
 msgid ".xlsx File"
 msgstr "Excel Dosyası"
@@ -202,6 +213,7 @@ msgstr "Uzlaşabilir"
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_currency_valuation_move
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.selected_currency_difference_invoice_form
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_line_change_account_view_form
 msgid "Cancel"
 msgstr "İptal"
 
@@ -220,6 +232,12 @@ msgid "Carrier changed from %(frm)s to %(to)s through invoice by %(user)s"
 msgstr ""
 "Nakliyeci %(user)s tarafından fatura yoluyla %(frm)s iken %(to)s olarak "
 "değiştirildi"
+
+#. module: altinkaya_account
+#: model:ir.actions.act_window,name:altinkaya_account.action_account_move_line_change_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_line_change_account_view_form
+msgid "Change Account"
+msgstr "Hesap Değiştir"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_change_accounts_eur_view
@@ -264,6 +282,11 @@ msgid "Change Partner Accounts to USD"
 msgstr "İş Ortağı Hesaplarını USD'ye Değiştir"
 
 #. module: altinkaya_account
+#: model:ir.model,name:altinkaya_account.model_account_move_line_change_account
+msgid "Change the Account of Journal Items"
+msgstr "Yevmiye Kalemlerinin Hesabını Değiştir"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_account_reconcile__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_accrual_upload_wizard__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_auto_reconcile__changeset_change_ids
@@ -292,6 +315,7 @@ msgstr "İş Ortağı Hesaplarını USD'ye Değiştir"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__changeset_change_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__changeset_change_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__changeset_change_ids
 msgid "Changeset Changes"
 msgstr "Değişiklikler"
 
@@ -324,6 +348,7 @@ msgstr "Değişiklikler"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__changeset_ids
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__changeset_ids
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__changeset_ids
 msgid "Changesets"
 msgstr "Değişiklikler"
 
@@ -405,6 +430,7 @@ msgstr "Excel dosyası okunamadı: %s"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__count_changesets
 msgid "Count Changesets"
 msgstr "Değişiklik Sayısı"
 
@@ -437,6 +463,7 @@ msgstr "Değişiklik Sayısı"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__count_pending_changeset_changes
 msgid "Count Pending Changeset Changes"
 msgstr "Bekleyen Değişiklik Sayısı"
 
@@ -469,6 +496,7 @@ msgstr "Bekleyen Değişiklik Sayısı"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__count_pending_changesets
 msgid "Count Pending Changesets"
 msgstr "Bekleyen Değişiklikler Sayısı"
 
@@ -541,6 +569,7 @@ msgstr "Yevmiye Oluştur"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__create_uid
 msgid "Created by"
 msgstr "Oluşturan"
 
@@ -554,6 +583,7 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__create_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__create_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__create_date
 msgid "Created on"
 msgstr "Oluşturulma"
 
@@ -704,6 +734,7 @@ msgstr "İnd. Birim Fiyatı"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__display_name
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__display_name
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
 
@@ -875,6 +906,7 @@ msgstr "Bu faturaya bağlı tam uzlaşmalar"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__id
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__id
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__id
 msgid "ID"
 msgstr "ID"
 
@@ -977,6 +1009,11 @@ msgid "Journal Item"
 msgstr "Yevmiye Kalemi"
 
 #. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__line_ids
+msgid "Journal Items"
+msgstr "Yevmiye Kalemleri"
+
+#. module: altinkaya_account
 #: model:ir.model.fields,field_description:altinkaya_account.field_account_journal__name
 msgid "Journal Name"
 msgstr "Yevmiye Adı"
@@ -1016,6 +1053,7 @@ msgstr "Kur Farkı Faturası Oluştur"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log____last_update
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard____last_update
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account____last_update
 msgid "Last Modified on"
 msgstr "Son Güncelleme"
 
@@ -1029,6 +1067,7 @@ msgstr "Son Güncelleme"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_uid
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_uid
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__write_uid
 msgid "Last Updated by"
 msgstr "Son Güncelleyen"
 
@@ -1042,6 +1081,7 @@ msgstr "Son Güncelleyen"
 #: model:ir.model.fields,field_description:altinkaya_account.field_create_selected_currency_difference_invoice__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_log__write_date
 #: model:ir.model.fields,field_description:altinkaya_account.field_currency_reconcile_fix_wizard__write_date
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__write_date
 msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
@@ -1139,6 +1179,11 @@ msgstr "Referans"
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.res_partner_balance_tree
 msgid "Name"
 msgstr "Ad"
+
+#. module: altinkaya_account
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__account_id
+msgid "New Account"
+msgstr "Yeni Hesap"
 
 #. module: altinkaya_account
 #. odoo-python
@@ -1763,6 +1808,7 @@ msgstr "Yevmiye kayıtlarında önek olarak kullanılan kısa ad."
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__smart_search
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__smart_search
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__smart_search
 msgid "Smart Search"
 msgstr "Akıllı Arama"
 
@@ -1948,6 +1994,7 @@ msgstr "Para birimi ters kur"
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_pending_changeset_changes
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_pending_changeset_changes
+#: model:ir.model.fields,help:altinkaya_account.field_account_move_line_change_account__count_pending_changeset_changes
 msgid "The number of pending changes of this record"
 msgstr "Bu kayıt için bekleyen değişiklikler"
 
@@ -1980,6 +2027,7 @@ msgstr "Bu kayıt için bekleyen değişiklikler"
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_pending_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_pending_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_move_line_change_account__count_pending_changesets
 msgid "The number of pending changesets of this record"
 msgstr "Bu kayıt için bekleyen değişiklik sayısı"
 
@@ -2012,6 +2060,7 @@ msgstr "Bu kayıt için bekleyen değişiklik sayısı"
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_currency_rate__count_changesets
 #: model:ir.model.fields,help:altinkaya_account.field_res_partner__count_changesets
+#: model:ir.model.fields,help:altinkaya_account.field_account_move_line_change_account__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "Bu kayıt için bekleyen genel değişiklik sayısı"
 
@@ -2110,6 +2159,16 @@ msgid "Total Balance"
 msgstr "Toplam Miktar"
 
 #. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_line_change_account_view_form
+msgid "Total Debit"
+msgstr "Toplam Borç"
+
+#. module: altinkaya_account
+#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_line_change_account_view_form
+msgid "Total Credit"
+msgstr "Toplam Alacak"
+
+#. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/wizards/currency_reconcile_fix_wizard.py:0
 #, python-format
@@ -2131,6 +2190,17 @@ msgstr "Kur Değerleme Hareketi için Geçici Model"
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.inherit_view_account_invoice_report_search
 msgid "Türkiye"
 msgstr "Türkiye"
+
+#. module: altinkaya_account
+#. odoo-python
+#: code:addons/altinkaya_account/wizards/account_move_line_change_account.py:0
+#, python-format
+msgid ""
+"Unreconcile these entries before changing their account:\n"
+"%(moves)s"
+msgstr ""
+"Hesaplarını değiştirmeden önce bu kayıtların denkleştirmesini kaldırın:\n"
+"%(moves)s"
 
 #. module: altinkaya_account
 #: model_terms:ir.ui.view,arch_db:altinkaya_account.view_accrual_upload_wizard_form
@@ -2172,6 +2242,7 @@ msgstr "Fiyat Tahakkuku Yükle"
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_currency_rate__user_can_see_changeset
 #: model:ir.model.fields,field_description:altinkaya_account.field_res_partner__user_can_see_changeset
+#: model:ir.model.fields,field_description:altinkaya_account.field_account_move_line_change_account__user_can_see_changeset
 msgid "User Can See Changeset"
 msgstr "Kullanıcı Yapılan Değişiklikleri Görebilir"
 
