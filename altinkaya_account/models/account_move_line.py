@@ -179,3 +179,14 @@ class AccountMoveLine(models.Model):
                 line.amount_currency = line.currency_id.round(
                     line.balance * line.currency_rate
                 )
+
+    @api.constrains("account_id", "display_type")
+    def _check_payable_receivable(self):
+        """Let the change-account wizard move invoice lines across account types.
+
+        Accountants net a customer's invoice against their supplier balance by
+        moving its receivable line to a payable account, and the other way round.
+        """
+        if self.env.context.get("skip_payable_receivable_check"):
+            return
+        return super()._check_payable_receivable()
