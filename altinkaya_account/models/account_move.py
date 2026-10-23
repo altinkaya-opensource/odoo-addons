@@ -435,7 +435,12 @@ class AccountMove(models.Model):
         return res
 
     def button_draft(self):
-        res = super().button_draft()
+        # Resetting to draft leaves debits and credits as they are, so entries
+        # already unbalanced (migrated from Odoo 12) can be reset and fixed.
+        # They are checked again when they are saved or posted.
+        res = super(
+            AccountMove, self.with_context(check_move_validity=False)
+        ).button_draft()
         self._teardown_kfark_reversals()
         return res
 

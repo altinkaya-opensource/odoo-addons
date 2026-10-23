@@ -26,6 +26,8 @@ class AccountMoveLineChangeAccount(models.TransientModel):
         The write runs the checks Odoo applies to posted entries (lock dates,
         reconciliation, hashed entries, allowed journals) and recomputes the
         line currency from the new account, so the change is all or nothing.
+        Only the check that ties account types to invoice types is skipped, so
+        a receivable can be moved to a payable account and back.
         """
         self.ensure_one()
         # Items already on the new account are left as they are.
@@ -63,5 +65,7 @@ class AccountMoveLineChangeAccount(models.TransientModel):
                     moves="\n".join(mismatched.move_id.mapped("name")),
                 )
             )
-        lines.write({"account_id": self.account_id.id})
+        lines.with_context(skip_payable_receivable_check=True).write(
+            {"account_id": self.account_id.id}
+        )
         return {"type": "ir.actions.act_window_close"}
