@@ -5,3 +5,4 @@ from . import test_currency_valuation
 from . import test_payment_term_account_currency
 from . import test_payment_transaction
 from . import test_partner_statement_balance
+from . import test_move_line_change_account

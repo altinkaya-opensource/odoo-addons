@@ -4,7 +4,7 @@
 {
     "name": "Altinkaya Account",
     "summary": "Accounting Extension for Altinkaya Enclosures",
-    "version": "16.0.1.8.1",
+    "version": "16.0.1.9.0",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Ismail Çağan Yılmaz, Altinkaya Enclosures",
     "license": "AGPL-3",
@@ -50,6 +50,7 @@
         "wizards/create_currency_valuation_move.xml",
         "wizards/currency_reconcile_fix_wizard.xml",
         "wizards/import_fee_accrual_wizard.xml",
+        "wizards/account_move_line_change_account.xml",
     ],
     "assets": {
         "web.assets_backend": [
