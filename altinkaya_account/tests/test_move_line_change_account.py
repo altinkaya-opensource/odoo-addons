@@ -176,7 +176,8 @@ class TestMoveLineChangeAccount(TransactionCase):
         self.env.invalidate_all()
 
         move.button_draft()
+        self.env.flush_all()
 
         self.assertEqual(move.state, "draft")
-        with self.assertRaises(UserError):
+        with self.assertRaisesRegex(UserError, "not balanced"):
             move.action_post()

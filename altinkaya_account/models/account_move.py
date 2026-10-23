@@ -435,12 +435,14 @@ class AccountMove(models.Model):
         return res
 
     def button_draft(self):
-        # Resetting to draft leaves debits and credits as they are, so entries
-        # already unbalanced (migrated from Odoo 12) can be reset and fixed.
-        # They are checked again when they are saved or posted.
-        res = super(
-            AccountMove, self.with_context(check_move_validity=False)
-        ).button_draft()
+        # Resetting a journal entry to draft leaves its debits and credits as
+        # they are, so entries already unbalanced (migrated from Odoo 12) can be
+        # reset and fixed. They are checked again when they are saved or posted.
+        # Invoices keep the check: resetting them re-syncs their lines.
+        moves = self
+        if all(move.move_type == "entry" for move in self):
+            moves = self.with_context(check_move_validity=False)
+        res = super(AccountMove, moves).button_draft()
         self._teardown_kfark_reversals()
         return res
 
