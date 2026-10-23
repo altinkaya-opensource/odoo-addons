@@ -18,8 +18,7 @@ msgstr ""
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_crm_claim_mapping
 msgid "Base model for CRM Claim - Odoo models integration"
-msgstr ""
-"CRM Talepler ve Odoo modelleri arasında bağlantı kurmak için temel model"
+msgstr "CRM Şikayetler ve Odoo modelleri arasında bağlantı kurmak için temel model"
 
 #. module: crm_claim_shortcut
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_crm_claim__carrier_id
@@ -49,7 +48,7 @@ msgstr ""
 #. module: crm_claim_shortcut
 #: model:ir.model,name:crm_claim_shortcut.model_crm_claim
 msgid "Claim"
-msgstr "Talep"
+msgstr "Şikayet"
 
 #. module: crm_claim_shortcut
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_bank_statement_line__crm_claim_count
@@ -60,7 +59,7 @@ msgstr "Talep"
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_sale_order__crm_claim_count
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_stock_picking__crm_claim_count
 msgid "Claim Count"
-msgstr "Talep Sayısı"
+msgstr "Şikayet Sayısı"
 
 #. module: crm_claim_shortcut
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_bank_statement_line__crm_claim_ids
@@ -75,7 +74,7 @@ msgstr "Talep Sayısı"
 #: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_picking_form_crm
 #: model_terms:ir.ui.view,arch_db:crm_claim_shortcut.view_product_form_crm
 msgid "Claims"
-msgstr "Talepler"
+msgstr "Şikayetler"
 
 #. module: crm_claim_shortcut
 #: model:ir.model.fields,field_description:crm_claim_shortcut.field_account_move__count_changesets
