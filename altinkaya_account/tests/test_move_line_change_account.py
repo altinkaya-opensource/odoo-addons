@@ -33,6 +33,7 @@ class TestMoveLineChangeAccount(TransactionCase):
             "MLCA.XMC", "asset_receivable", currency=self.foreign_currency
         )
         self.bank_account = self._create_account("MLCA.BNK", "asset_current")
+        self.payable = self._create_account("MLCA.PAY", "liability_payable")
         self.journal = self.env["account.journal"].create(
             {
                 "name": "Change account",
@@ -54,7 +55,7 @@ class TestMoveLineChangeAccount(TransactionCase):
                 "name": code,
                 "code": code,
                 "account_type": account_type,
-                "reconcile": account_type == "asset_receivable",
+                "reconcile": account_type in ("asset_receivable", "liability_payable"),
                 "currency_id": currency and currency.id,
                 "company_id": self.company.id,
             }
@@ -121,10 +122,15 @@ class TestMoveLineChangeAccount(TransactionCase):
         # Items already on the chosen account are skipped, not refused.
         self._change_account(lines, self.receivable)
 
-    def test_invoice_in_other_currency_is_refused(self):
-        invoice = self.env["account.move"].create(
+    def _create_invoice(self):
+        # A billing point without e-invoicing, so posting needs no UBL data.
+        billing_point = self.env["account.billing.point"].create(
+            {"name": "Change account billing point", "company_id": self.company.id}
+        )
+        return self.env["account.move"].create(
             {
                 "move_type": "out_invoice",
+                "billing_point_id": billing_point.id,
                 "partner_id": self.partner.id,
                 "invoice_date": self.move_date,
                 "currency_id": self.company.currency_id.id,
@@ -133,10 +139,45 @@ class TestMoveLineChangeAccount(TransactionCase):
                 ],
             }
         )
-        term_line = invoice.line_ids.filtered(
-            lambda aml: aml.display_type == "payment_term"
-        )
+
+    def _term_line(self, invoice):
+        return invoice.line_ids.filtered(lambda aml: aml.display_type == "payment_term")
+
+    def test_invoice_in_other_currency_is_refused(self):
+        term_line = self._term_line(self._create_invoice())
 
         with self.assertRaises(UserError):
             self._change_account(term_line, self.foreign_receivable)
         self.assertEqual(term_line.account_id, self.receivable)
+
+    def test_invoice_receivable_moves_to_payable(self):
+        invoice = self._create_invoice()
+        invoice.action_post()
+        term_line = self._term_line(invoice)
+        residual = invoice.amount_residual
+        # Outside the wizard Odoo still keeps payables off sale invoices.
+        with self.assertRaises(UserError):
+            term_line.write({"account_id": self.payable.id})
+
+        self._change_account(term_line, self.payable)
+
+        self.assertEqual(invoice.state, "posted")
+        self.assertEqual(term_line.account_id, self.payable)
+        self.assertEqual(invoice.amount_residual, residual)
+
+    def test_unbalanced_entry_resets_to_draft(self):
+        move = self._post_entry(self.receivable, self.bank_account)
+        # Entries migrated from Odoo 12 can be posted while unbalanced.
+        self.env.cr.execute(
+            "UPDATE account_move_line SET debit = 90, balance = 90, "
+            "amount_currency = 90 WHERE id = %s",
+            [move.line_ids.filtered("debit").id],
+        )
+        self.env.invalidate_all()
+
+        move.button_draft()
+        self.env.flush_all()
+
+        self.assertEqual(move.state, "draft")
+        with self.assertRaisesRegex(UserError, "not balanced"):
+            move.action_post()
