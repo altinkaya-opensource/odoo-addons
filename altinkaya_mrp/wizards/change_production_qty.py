@@ -1,10 +1,7 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import _, fields, models
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 from odoo.tools.float_utils import float_compare, float_is_zero
-
-from ..models.mrp_production import PRODUCTION_QTY_TOLERANCE_PERCENT
 
 
 class ChangeProductionQty(models.TransientModel):
@@ -30,7 +27,6 @@ class ChangeProductionQty(models.TransientModel):
                     return move_id
             return False
 
-        self._check_change_permitted()
         # Core resets qty_producing to the new total on workorder-less MOs;
         # remember deliberately partial values so we can restore them after.
         partial_qty_producing = {}
@@ -71,17 +67,3 @@ class ChangeProductionQty(models.TransientModel):
                         lambda m: m.product_id == production.product_id
                     ).write({"product_uom_qty": wizard.product_qty})
         return res
-
-    def _check_change_permitted(self):
-        """Check the new quantity stays within the production tolerance"""
-        for wizard in self:
-            if not wizard.mo_id._is_within_qty_tolerance(
-                wizard.product_qty
-            ) and not self.env.user.has_group("altinkaya_mrp.change_production_qty"):
-                raise ValidationError(
-                    _(
-                        "You can change the quantity by at most %(tolerance)s%%.",
-                        tolerance=PRODUCTION_QTY_TOLERANCE_PERCENT,
-                    )
-                )
-        return True
