@@ -71,17 +71,8 @@
                     >
                         <field name="move_line_id" readonly="1" />
                         <field name="lot_id" readonly="1" />
-                        <field
-                            name="qty_to_pack"
-                            widget="uom"
-                            options="{'uom_field': 'product_uom_id'}"
-                            readonly="1"
-                        />
-                        <field
-                            name="product_uom_qty"
-                            widget="uom"
-                            options="{'uom_field': 'product_uom_id'}"
-                        />
+                        <field name="qty_to_pack" readonly="1" />
+                        <field name="product_uom_qty" />
                         <field name="product_uom_id" />
                     </tree>
                 </field>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="purchase_order_form_uom" model="ir.ui.view">
+        <field name="name">purchase.order.uom.precision.purchase_order_form_uom</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='qty_to_receive']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='qty_received']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='virtual_available']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='qty_received']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_tree_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >purchase.order.line.uom.precision.purchase_order_line_tree_uom</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_tree" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_menu_tree_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >purchase.order.line.uom.precision.purchase_order_line_menu_tree_uom</field>
+        <field name="model">purchase.order.line</field>
+        <field
+            name="inherit_id"
+            ref="purchase_order_line_menu.purchase_order_line_tree"
+        />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_received']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//tree/field[@name='qty_received_manual']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_to_receive']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_form2_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >purchase.order.line.uom.precision.purchase_order_line_form2_uom</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_form2" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_history_tree_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >purchase.order.line.uom.precision.purchase_history_tree_uom</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_history_tree" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
+                <field name="product_uom" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_compare_tree_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >purchase.order.line.uom.precision.purchase_order_line_compare_tree_uom</field>
+        <field name="model">purchase.order.line</field>
+        <field
+            name="inherit_id"
+            ref="purchase_requisition.purchase_order_line_compare_tree"
+        />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -10,62 +10,21 @@
             </field>
 
             <xpath
-                expr="//field[@name='order_line']/form//field[@name='product_uom_qty']"
-                position="attributes"
-            >
-                <attribute name="widget">uom</attribute>
-                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-            </xpath>
-            <xpath
-                expr="//field[@name='order_line']/form//field[@name='customer_lead']"
-                position="attributes"
-            >
-                <attribute name="widget">uom</attribute>
-                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-            </xpath>
-            <xpath
                 expr="//field[@name='order_line']/form//field[@name='unit_discounted']"
                 position="after"
             >
-                <field
-                    name="qty_unreserved_sincan"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
-                <field
-                    name="qty_unreserved_merkez"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
-                <field
-                    name="producible_qty"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
+                <field name="qty_unreserved_sincan" />
+                <field name="qty_unreserved_merkez" />
+                <field name="producible_qty" />
             </xpath>
 
             <xpath
                 expr="//field[@name='order_line']/tree/field[@name='price_unit']"
                 position="before"
             >
-                <field
-                    name="qty_unreserved_merkez"
-                    string="Merkez"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
-                <field
-                    name="qty_unreserved_sincan"
-                    string="Sincan"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
-                <field
-                    name="producible_qty"
-                    string="Producible"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
+                <field name="qty_unreserved_merkez" string="Merkez" />
+                <field name="qty_unreserved_sincan" string="Sincan" />
+                <field name="producible_qty" string="Producible" />
             </xpath>
             <xpath
                 expr="//field[@name='order_line']/tree/field[@name='route_id']"

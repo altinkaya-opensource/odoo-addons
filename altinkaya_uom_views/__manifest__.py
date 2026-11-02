@@ -1,0 +1,35 @@
+{
+    "name": "Altinkaya UoM Views",
+    "summary": "Show quantities with the view precision of their unit of measure",
+    "version": "16.0.1.0.0",
+    "author": "Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "license": "AGPL-3",
+    "category": "Hidden",
+    "depends": [
+        "altinkaya_mrp",
+        "altinkaya_purchase",
+        "altinkaya_sales",
+        "altinkaya_stock",
+        "hepsiburada_integration",
+        "purchase_order_line_menu",
+        "purchase_requisition",
+        "split_stock_move_picking",
+        "stock_split_picking",
+        "trendyol_integration",
+        "web_widget_uom_view_precision",
+    ],
+    "data": [
+        "views/mrp_views.xml",
+        "views/product_views.xml",
+        "views/purchase_views.xml",
+        "views/sale_views.xml",
+        "views/stock_views.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "altinkaya_uom_views/static/src/js/quantity_widgets.js",
+        ],
+    },
+    "installable": True,
+}

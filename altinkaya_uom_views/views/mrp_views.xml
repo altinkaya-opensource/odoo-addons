@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_production_form_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.production.uom.precision.mrp_production_form_view_uom</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='qty_producing'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_sincan'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_sincan'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_sincan'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_cnc'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_cnc'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_cnc'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_merkez'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_merkez'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_merkez'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_metal'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_metal'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_metal'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_enjeksiyon'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_enjeksiyon'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_enjeksiyon'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_boya'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_boya'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_boya'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_montaj'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_montaj'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_montaj'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_baski'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_baski'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_baski'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_torna'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_torna'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_torna'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_available_kaplama'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_unreserved_kaplama'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='qty_virtual_kaplama'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath expr="//button/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)][not(ancestor::button)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='forecast_availability']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='product_uom_qty']"
+                position="attributes"
+            >
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
+                position="attributes"
+            >
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//page[@name='finished_products']/field[@name='move_finished_ids']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_byproduct_ids']/tree/field[@name='product_uom_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_byproduct_ids']/tree/field[@name='quantity_done']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//page[@name='finished_products']/field[@name='move_finished_ids']/tree/field[@name='product_id']"
+                position="after"
+            >
+                <field name="product_uom" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_tree_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.production.uom.precision.mrp_production_tree_view_uom</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_tree_without_route_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.production.uom.precision.mrp_production_tree_without_route_uom</field>
+        <field name="model">mrp.production</field>
+        <field
+            name="inherit_id"
+            ref="altinkaya_mrp.mrp_production_tree_without_route"
+        />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_workorder_tree_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.workorder.uom.precision.mrp_production_workorder_tree_view_uom</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='qty_produced']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_remaining']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_workorder_tree_editable_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.workorder.uom.precision.mrp_production_workorder_tree_editable_view_uom</field>
+        <field name="model">mrp.workorder</field>
+        <field
+            name="inherit_id"
+            ref="mrp.mrp_production_workorder_tree_editable_view"
+        />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='qty_produced']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_remaining']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_form_view_uom" model="ir.ui.view">
+        <field name="name">mrp.bom.uom.precision.mrp_bom_form_view_uom</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='bom_line_ids']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='bom_line_ids']/tree/field[@name='free_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='byproduct_ids']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_line_view_form_uom" model="ir.ui.view">
+        <field name="name">mrp.bom.line.uom.precision.mrp_bom_line_view_form_uom</field>
+        <field name="model">mrp.bom.line</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_line_view_form" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_line_view_tree_uom" model="ir.ui.view">
+        <field name="name">mrp.bom.line.uom.precision.mrp_bom_line_view_tree_uom</field>
+        <field name="model">mrp.bom.line</field>
+        <field name="inherit_id" ref="altinkaya_mrp.mrp_bom_line_view_tree" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='free_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_byproduct_form_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.bom.byproduct.uom.precision.mrp_bom_byproduct_form_view_uom</field>
+        <field name="model">mrp.bom.byproduct</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_byproduct_form_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_template_line_form_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.bom.template.line.uom.precision.mrp_bom_template_line_form_view_uom</field>
+        <field name="model">mrp.bom.template.line</field>
+        <field name="inherit_id" ref="altinkaya_mrp.mrp_bom_template_line_form_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_template_line_tree_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.bom.template.line.uom.precision.mrp_bom_template_line_tree_view_uom</field>
+        <field name="model">mrp.bom.template.line</field>
+        <field name="inherit_id" ref="altinkaya_mrp.mrp_bom_template_line_tree_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_workorder_form_view_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.workorder.uom.precision.mrp_production_workorder_form_view_uom</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='reserved_availability']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='quantity_done']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='product_qty_available']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='product_virtual_available']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='move_raw_ids']/tree/field[@name='product_qty']"
+                position="after"
+            >
+                <field name="product_uom" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_split_form_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.production.split.uom.precision.view_mrp_production_split_form_uom</field>
+        <field name="model">mrp.production.split</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_split_form" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_split_multi_form_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.production.split.multi.uom.precision.view_mrp_production_split_multi_form_uom</field>
+        <field name="model">mrp.production.split.multi</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_split_multi_form" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='production_ids']/tree/field[@name='product_qty']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_bom_tree_view_uom" model="ir.ui.view">
+        <field name="name">mrp.bom.uom.precision.mrp_bom_tree_view_uom</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_qty']" position="attributes">
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_change_production_qty_wizard_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >change.production.qty.uom.precision.view_change_production_qty_wizard_uom</field>
+        <field name="model">change.production.qty</field>
+        <field name="inherit_id" ref="mrp.view_change_production_qty_wizard" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'mrp_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='product_qty'][not(ancestor::field)]"
+                position="after"
+            >
+                <field name="mrp_uom_id" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_consumption_warning_form_uom" model="ir.ui.view">
+        <field
+            name="name"
+        >mrp.consumption.warning.uom.precision.view_mrp_consumption_warning_form_uom</field>
+        <field name="model">mrp.consumption.warning</field>
+        <field name="inherit_id" ref="mrp.view_mrp_consumption_warning_form" />
+        <field name="priority" eval="1000" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='mrp_consumption_warning_line_ids']/tree/field[@name='product_consumed_qty_uom']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='mrp_consumption_warning_line_ids']/tree/field[@name='product_expected_qty_uom']"
+                position="attributes"
+            >
+                <attribute name="widget">uom</attribute>
+                <attribute name="options">{'uom_field': 'product_uom_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
