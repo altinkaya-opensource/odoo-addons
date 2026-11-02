@@ -66,6 +66,20 @@ class TestUPSTransit(TransactionCase):
         self.assertEqual(days, 3)
 
     @patch("odoo.addons.delivery_ups.models.delivery_carrier.UPSRequest")
+    def test_transit_days_from_list_reply(self, ups_request):
+        # Live replies for a UK cart came back as a one-item list.
+        rated = UPS_TRANSIT_RESPONSE["RateResponse"]["RatedShipment"]
+        ups_request.return_value.get_transit_time.return_value = {
+            "RateResponse": {"RatedShipment": [rated]}
+        }
+
+        days = DeliveryCarrier._ups_transit_days(
+            self._transit_carrier(), SimpleNamespace(name="SO1")
+        )
+
+        self.assertEqual(days, 3)
+
+    @patch("odoo.addons.delivery_ups.models.delivery_carrier.UPSRequest")
     def test_transit_error_returns_none(self, ups_request):
         ups_request.return_value.get_transit_time.side_effect = UserError(
             "UPS Error: [111546] Invalid Weight."

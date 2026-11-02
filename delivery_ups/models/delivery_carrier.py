@@ -652,6 +652,9 @@ class DeliveryCarrier(models.Model):
                 self._prepare_ups_transit_data(order)
             )
             rated = response["RateResponse"]["RatedShipment"]
+            # UPS sends a single object or a one-item list, depending on the reply.
+            if isinstance(rated, list):
+                rated = rated[0]
             arrival = rated["TimeInTransit"]["ServiceSummary"]["EstimatedArrival"]
             return int(arrival["BusinessDaysInTransit"])
         except Exception as e:
