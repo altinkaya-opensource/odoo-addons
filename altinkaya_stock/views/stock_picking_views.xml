@@ -41,21 +41,6 @@
             </button>
 
             <xpath
-                expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']"
-                position="attributes"
-            >
-                <attribute name="widget">uom</attribute>
-                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-            </xpath>
-            <xpath
-                expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
-                position="attributes"
-            >
-                <attribute name="widget">uom</attribute>
-                <attribute name="options">{'uom_field': 'product_uom'}</attribute>
-            </xpath>
-
-            <xpath
                 expr="//field[@name='move_ids_without_package']/tree/button[@name='action_show_details']"
                 position="after"
             >
@@ -65,18 +50,8 @@
                 <field name="domain_orig_move_picking" invisible="1" />
                 <field name="domain_dest_move_production" invisible="1" />
                 <field name="domain_dest_move_picking" invisible="1" />
-                <field
-                    name="qty_available_merkez"
-                    string="Merkez"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
-                <field
-                    name="qty_available_sincan"
-                    string="Sincan"
-                    widget="uom"
-                    options="{'uom_field': 'product_uom'}"
-                />
+                <field name="qty_available_merkez" string="Merkez" />
+                <field name="qty_available_sincan" string="Sincan" />
                 <!-- <button
                     name="action_open_detailed_form"
                     type="object"

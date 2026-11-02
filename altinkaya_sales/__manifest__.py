@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Altinkaya Sale Order Extensions",
-    "version": "16.0.1.2.0",
+    "version": "16.0.1.2.1",
     "category": "General",
     "depends": [
         "base",

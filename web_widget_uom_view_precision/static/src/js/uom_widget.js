@@ -5,8 +5,6 @@ import { registry } from "@web/core/registry";
 import { formatFloat } from "@web/views/fields/formatters";
 import rpc from "web.rpc";
 
-const { useState } = owl;
-
 // Fetch the UOM precisions from the backend
 let backendUomPrecisions = {};
 
@@ -17,31 +15,22 @@ rpc.query({
     backendUomPrecisions = precision_data;
 });
 
+/**
+ * @param {Object} record
+ * @param {String} fieldName
+ * @returns {Array|undefined} digits of the unit named by the field's uom_field option
+ */
+export function getUomDigits(record, fieldName) {
+    const uomField = record.activeFields[fieldName].options.uom_field;
+    const uom = uomField && record.data[uomField];
+    const uomPrecision = uom ? backendUomPrecisions[uom[0]] : undefined;
+    return uomPrecision === undefined ? undefined : [16, uomPrecision];
+}
+
 export class UomWidgetOwl extends FloatField {
-    setup() {
-        super.setup();
-        this.backendUomPrecisions = backendUomPrecisions;
-        this.record = useState(this.props.record);
-    }
-
-
     get formattedValue() {
-        var field_data = this.record.activeFields[this.props.name];
-        let digits = this.props.digits;
-        if (field_data.widget === "uom") {
-            let uom_field = field_data.options.uom_field;
-
-            if (uom_field) {
-                let uom_id = this.record.data[uom_field] && this.record.data[uom_field][0];
-                let uom_precision = this.backendUomPrecisions[uom_id];
-                if (uom_precision !== undefined) {
-                    digits = [16, uom_precision];
-                }
-
-            }
-
-        }
-        return formatFloat(this.props.value, { digits: digits });
+        const digits = getUomDigits(this.props.record, this.props.name) || this.props.digits;
+        return formatFloat(this.props.value, { digits });
     }
 }
 
