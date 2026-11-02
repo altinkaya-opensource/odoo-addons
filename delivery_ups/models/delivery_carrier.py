@@ -556,8 +556,9 @@ class DeliveryCarrier(models.Model):
         """UPS cannot rate our negotiated global prices, so use the rules.
 
         With ``delivery_transit_days`` in the context (the storefront's
-        shipping-method list), also ask UPS for the transit time. The extra
-        request stays out of every other rating call.
+        shipping-method list and the Add Shipping rates table), also ask UPS
+        for the transit time. The extra request stays out of every other
+        rating call.
         """
         res = self.base_on_rule_rate_shipment(order)
         if res.get("success") and self.env.context.get("delivery_transit_days"):

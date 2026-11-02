@@ -55,6 +55,7 @@ class ChooseDeliveryCarrier(models.TransientModel):
                         "price": result["price"],
                         "order_id": wizard.order_id.id,
                         "currency_id": result["currency_id"],
+                        "transit_days": result.get("transit_days") or 0,
                     }
                     if result["currency_id"] != company_id.currency_id.id:
                         # Convert the price to the company currency
@@ -95,7 +96,9 @@ class ChooseDeliveryCarrier(models.TransientModel):
             ):
                 continue
 
-            data = carrier.rate_shipment(order)
+            # delivery_transit_days: carriers also return their transit
+            # estimate (UPS needs an extra request for it).
+            data = carrier.with_context(delivery_transit_days=True).rate_shipment(order)
             if not data:
                 continue
 
@@ -126,5 +129,11 @@ class DeliveryCarrierLines(models.TransientModel):
         currency_field="try_currency_id",
     )
     order_id = fields.Many2one("sale.order", string="Sale Order")
+    transit_days = fields.Integer(
+        string="Transit (Business Days)",
+        help="The carrier's estimated delivery time in business days, counted "
+        "from when the parcel is handed to the carrier. Empty when the "
+        "carrier gives no estimate.",
+    )
 
     selected = fields.Boolean()

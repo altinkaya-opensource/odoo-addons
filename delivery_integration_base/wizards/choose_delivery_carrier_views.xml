@@ -25,6 +25,11 @@
                                 attrs="{'invisible': [('try_currency_id', '=', 'currency_id')]}"
                                 currency_field="try_currency_id"
                             />
+                            <field
+                                name="transit_days"
+                                readonly="1"
+                                attrs="{'invisible': [('transit_days', '=', 0)]}"
+                            />
                             <field name="selected" />
                         </tree>
                     </field>
