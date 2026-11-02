@@ -455,6 +455,17 @@ class DeliveryCarrier(models.Model):
 
         return data
 
+    def _dhl_transit_days(self, response):
+        """
+        Business days in transit from a DHL rate response, counted by DHL
+        from pickup to delivery. None when DHL does not return it.
+        """
+        try:
+            capabilities = response["products"][0]["deliveryCapabilities"]
+            return int(capabilities["totalTransitDays"])
+        except (KeyError, IndexError, TypeError, ValueError):
+            return None
+
     def dhl_rate_shipment(self, order):
         """
         Get DHL rate for the given sale order.
@@ -466,8 +477,10 @@ class DeliveryCarrier(models.Model):
             delivery_carrier=self,
         )
         payload = self._prepare_dhl_sale_rate_data(order)
+        transit_days = None
         try:
             response = dhl_request.get_rate(payload)
+            transit_days = self._dhl_transit_days(response)
 
             currency_name = response["exchangeRates"][0]["baseCurrency"]
 
@@ -500,6 +513,7 @@ class DeliveryCarrier(models.Model):
             "price": price,
             "error_message": False,
             "warning_message": False,
+            "transit_days": transit_days,
         }
 
     # def dhl_account_rate_shipment(self, account_move):

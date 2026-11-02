@@ -23,6 +23,7 @@ UPS_SERVICES_URL = {
     "tracking": "/api/track/v1/details/%(inquiryNumber)s",
     "pickup_create": "/api/pickupcreation/v2409/pickup",
     "pickup_cancel": "/api/shipments/v2409/pickup/02",
+    "rating_transit": "/api/rating/v2409/Ratetimeintransit",
 }
 
 REQUEST_TIMEOUT = 15  # seconds
@@ -209,6 +210,10 @@ class UPSRequest:
 
     def create_shipment(self, data):
         res = self._send_api_request("POST", "shipment", data=data)
+        return res.json()
+
+    def get_transit_time(self, data):
+        res = self._send_api_request("POST", "rating_transit", data=data)
         return res.json()
 
     def cancel_shipment(self, shipment_id):

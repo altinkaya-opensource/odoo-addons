@@ -4,7 +4,7 @@
 import base64
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import phonenumbers
 
@@ -447,6 +447,8 @@ class DeliveryCarrier(models.Model):
         data["requestedShipment"]["requestedPackageLineItems"] = (
             self._prepare_fedex_dummy_packages(order)
         )
+        # Adds the estimated delivery date to the reply (no extra request).
+        data["rateRequestControlParameters"] = {"returnTransitTimes": True}
 
         return data
 
@@ -744,6 +746,26 @@ class DeliveryCarrier(models.Model):
             "currency": account_rate_detail["currency"],
         }
 
+    def _fedex_transit_days(self, response, ship_date):
+        """
+        Business days from ship_date to FedEx's estimated delivery date.
+        FedEx returns only the date, so count the business days in between.
+        None when FedEx does not return a delivery date.
+        """
+        try:
+            detail = response["output"]["rateReplyDetails"][0]
+            delivery = (detail.get("operationalDetail") or {}).get("deliveryDate") or (
+                (detail.get("commit") or {}).get("dateDetail") or {}
+            ).get("dayFormat")
+            delivery_date = fields.Date.to_date(delivery[:10])
+        except (KeyError, IndexError, TypeError, ValueError):
+            return None
+        days = sum(
+            self._is_tr_business_day(ship_date + timedelta(days=offset))
+            for offset in range(1, (delivery_date - ship_date).days + 1)
+        )
+        return days or None
+
     def fedex_rate_shipment(self, order):
         """
         Get FedEx rate for the given sale order.
@@ -776,8 +798,13 @@ class DeliveryCarrier(models.Model):
             prod=self.prod_environment,
         )
 
+        transit_days = None
         try:
             response = fedex_request.get_rates(payload)
+            transit_days = self._fedex_transit_days(
+                response,
+                fields.Date.to_date(payload["requestedShipment"]["shipDateStamp"]),
+            )
 
             rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
@@ -802,6 +829,7 @@ class DeliveryCarrier(models.Model):
             "price": price,
             "error_message": False,
             "warning_message": False,
+            "transit_days": transit_days,
         }
 
     def fedex_account_rate_shipment(self, account_move):

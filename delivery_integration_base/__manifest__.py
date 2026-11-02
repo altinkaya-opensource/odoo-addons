@@ -7,7 +7,7 @@
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",
-    "version": "16.0.1.1.2",
+    "version": "16.0.1.2.0",
     "depends": [
         "stock",
         "delivery",
