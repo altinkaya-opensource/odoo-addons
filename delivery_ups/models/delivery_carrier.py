@@ -553,8 +553,110 @@ class DeliveryCarrier(models.Model):
     # Carrier entry points (dispatched by delivery.carrier by delivery_type)
     # ---------------------------------------------------------------------
     def ups_rate_shipment(self, order):
-        """UPS cannot rate our negotiated global prices, so use the rules."""
-        return self.base_on_rule_rate_shipment(order)
+        """UPS cannot rate our negotiated global prices, so use the rules.
+
+        With ``delivery_transit_days`` in the context (the storefront's
+        shipping-method list), also ask UPS for the transit time. The extra
+        request stays out of every other rating call.
+        """
+        res = self.base_on_rule_rate_shipment(order)
+        if res.get("success") and self.env.context.get("delivery_transit_days"):
+            res["transit_days"] = self._ups_transit_days(order)
+        return res
+
+    def _prepare_ups_transit_data(self, order):
+        """Rating "Ratetimeintransit" request for an order's dummy packages."""
+        warehouse_partner = order.warehouse_id.partner_id
+        origin = {
+            "Name": (warehouse_partner.name or "")[:35],
+            "Address": self._prepare_ups_address(warehouse_partner),
+        }
+        recipient = order.partner_shipping_id
+        kgs = {"Code": "KGS", "Description": "Kilograms"}
+        cms = {"Code": "CM", "Description": "Centimeters"}
+
+        packages = []
+        for pack in self._generate_dummy_packages(order.sale_deci):
+            dimensions = pack["dimensions"]
+            packages.append(
+                {
+                    "PackagingType": {"Code": "30" if pack["is_pallet"] else "02"},
+                    "Dimensions": {
+                        "UnitOfMeasurement": cms,
+                        "Length": str(round(dimensions["length"], 2)),
+                        "Width": str(round(dimensions["width"], 2)),
+                        "Height": str(round(dimensions["height"], 2)),
+                    },
+                    "PackageWeight": {
+                        "UnitOfMeasurement": kgs,
+                        "Weight": str(max(round(pack["weight"], 1), 0.1)),
+                    },
+                }
+            )
+        total_weight = sum(float(p["PackageWeight"]["Weight"]) for p in packages)
+
+        # UPS wants the goods value in the origin country's currency.
+        company = order.company_id
+        goods_value = order.currency_id._convert(
+            order.amount_untaxed, company.currency_id, company, fields.Date.today()
+        )
+
+        return {
+            "RateRequest": {
+                "Request": {"TransactionReference": {"CustomerContext": order.name}},
+                "Shipment": {
+                    "Shipper": {
+                        **origin,
+                        "ShipperNumber": self.ups_account_number or "",
+                    },
+                    "ShipFrom": origin,
+                    "ShipTo": {
+                        "Name": (recipient.name or "")[:35],
+                        "Address": self._prepare_ups_address(recipient),
+                    },
+                    "Service": {"Code": self.ups_service_type or "11"},
+                    "NumOfPieces": str(len(packages)),
+                    "Package": packages,
+                    "ShipmentTotalWeight": {
+                        "UnitOfMeasurement": kgs,
+                        "Weight": str(round(total_weight, 1)),
+                    },
+                    "InvoiceLineTotal": {
+                        "CurrencyCode": company.currency_id.name,
+                        "MonetaryValue": str(max(int(round(goods_value)), 1)),
+                    },
+                    "DeliveryTimeInformation": {
+                        "PackageBillType": "03",
+                        "Pickup": {"Date": fields.Date.today().strftime("%Y%m%d")},
+                    },
+                },
+            }
+        }
+
+    def _ups_transit_days(self, order):
+        """Business days in transit from UPS, or None when UPS cannot tell.
+
+        Never raises: a missing estimate must not affect the rule price.
+        """
+        # ponytail: a new OAuth token and a 15 s timeout per call, like the
+        # other UPS requests; cache the token if checkout latency hurts.
+        try:
+            ups_request = UPSRequest(
+                prod=self.prod_environment,
+                client_id=self.ups_client_id,
+                client_secret=self.ups_client_secret,
+                account_number=self.ups_account_number,
+                delivery_carrier=self,
+            )
+            response = ups_request.get_transit_time(
+                self._prepare_ups_transit_data(order)
+            )
+            rated = response["RateResponse"]["RatedShipment"]
+            arrival = rated["TimeInTransit"]["ServiceSummary"]["EstimatedArrival"]
+            return int(arrival["BusinessDaysInTransit"])
+        except Exception as e:
+            _logger.warning("UPS transit time unavailable for %s: %s", order.name, e)
+            return None
 
     def _ups_label_gif_to_pdf(self, gif_b64):
         """Convert a UPS GIF label (base64) to a portrait PDF (base64).
