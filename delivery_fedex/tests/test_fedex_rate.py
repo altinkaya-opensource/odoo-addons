@@ -29,6 +29,16 @@ def _rate_reply(delivery_date=None, commit_date=None):
     return {"output": {"rateReplyDetails": [detail]}}
 
 
+class FakeRecordSet(list):
+    """The recordset methods a customs builder calls, on plain test objects."""
+
+    def filtered(self, predicate):
+        return FakeRecordSet(item for item in self if predicate(item))
+
+    def mapped(self, field_name):
+        return [getattr(item, field_name) for item in self]
+
+
 @tagged("post_install", "-at_install")
 class TestFedExSaleCustoms(TransactionCase):
     def _product(self, name, category):
@@ -105,6 +115,102 @@ class TestFedExSaleCustoms(TransactionCase):
         customs = carrier._prepare_fedex_sale_customs_data(order, 9.0)
 
         self.assertEqual(customs["commodities"], [])
+
+    def test_sale_commodities_are_split_above_9999_units(self):
+        hs_code = self.env["hs.code"].create(
+            {"local_code": "39269097", "description": "Plastic enclosures"}
+        )
+        category = self.env["product.category"].create(
+            {"name": "Enclosures", "hs_code_id": hs_code.id}
+        )
+        product = self._product("Enclosure", category)
+        order = self.env["sale.order"].create(
+            {
+                "partner_id": self.env["res.partner"].create({"name": "Buyer"}).id,
+                "order_line": [(0, 0, self._line(product, 25000, 1.0))],
+            }
+        )
+        carrier = self.env["delivery.carrier"].new({})
+
+        commodities = carrier._prepare_fedex_sale_customs_data(order, 30.0)[
+            "commodities"
+        ]
+
+        self.assertEqual(
+            [commodity["quantity"] for commodity in commodities],
+            [9999, 9999, 5002],
+        )
+        self.assertAlmostEqual(
+            sum(commodity["customsValue"]["amount"] for commodity in commodities),
+            25000.0,
+        )
+        self.assertAlmostEqual(
+            sum(commodity["weight"]["value"] for commodity in commodities),
+            30.0,
+        )
+        for commodity in commodities:
+            self.assertEqual(commodity["unitPrice"]["amount"], 1.0)
+            self.assertEqual(commodity["name"], "Enclosure")
+            self.assertEqual(commodity["harmonizedCode"], hs_code.hs_code)
+
+    def test_commodity_at_the_9999_unit_limit_is_not_split(self):
+        hs_code = self.env["hs.code"].create({"local_code": "39269097"})
+        category = self.env["product.category"].create(
+            {"name": "Enclosures", "hs_code_id": hs_code.id}
+        )
+        product = self._product("Enclosure", category)
+        carrier = self.env["delivery.carrier"].new({})
+
+        commodity = carrier._prepare_fedex_commodities_entry(
+            product, 9999, 9999.0, "EUR", 10.0
+        )
+
+        self.assertEqual(carrier._split_fedex_commodity(commodity), [commodity])
+
+    def test_shipment_commodities_are_split_above_9999_units(self):
+        hs_code = self.env["hs.code"].create({"local_code": "39269097"})
+        category = self.env["product.category"].create(
+            {"name": "Enclosures", "hs_code_id": hs_code.id}
+        )
+        product = self._product("Enclosure", category)
+        product.default_code = "ENCL-1"
+        line = SimpleNamespace(
+            product_id=product, quantity=25000, price_subtotal=25000.0
+        )
+        invoice = SimpleNamespace(
+            state="posted", invoice_line_ids=FakeRecordSet([line])
+        )
+        sale = SimpleNamespace(
+            fedex_shipment_purpose="SOLD",
+            currency_id=SimpleNamespace(name="EUR"),
+        )
+        picking = SimpleNamespace(
+            location_id=SimpleNamespace(warehouse_id=None),
+            partner_id=self.env["res.partner"].create({"name": "Buyer"}),
+            sale_id=sale,
+            invoice_ids=FakeRecordSet([invoice]),
+        )
+        carrier = self.env["delivery.carrier"].new(
+            {"fedex_customs_payment_type": "RECIPIENT"}
+        )
+
+        customs = carrier._prepare_fedex_customs_data(picking, 30.0)
+
+        self.assertEqual(
+            [commodity["quantity"] for commodity in customs["commodities"]],
+            [9999, 9999, 5002],
+        )
+        self.assertAlmostEqual(
+            sum(
+                commodity["customsValue"]["amount"]
+                for commodity in customs["commodities"]
+            ),
+            25000.0,
+        )
+        self.assertAlmostEqual(
+            sum(commodity["weight"]["value"] for commodity in customs["commodities"]),
+            30.0,
+        )
 
 
 class TestFedExRate(TransactionCase):

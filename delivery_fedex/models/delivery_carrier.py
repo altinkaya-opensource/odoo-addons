@@ -26,6 +26,11 @@ FEDEX_SERVICES = [
 
 FEDEX_FREIGHT_MIN_PACKAGE_WEIGHT_KG = 68.01
 
+# FedEx rejects a commodity line above this many units with
+# COMMODITY.NUMBEROFPIECES.REQUIRED; a larger quantity must be declared on
+# several commodity lines.
+FEDEX_MAX_COMMODITY_QUANTITY = 9999
+
 FEDEX_PICKUP_TYPES = [
     ("CONTACT_FEDEX_TO_SCHEDULE", "Contact FedEx to Schedule"),
     ("DROPOFF_AT_FEDEX_LOCATION", "Dropoff at FedEx Location"),
@@ -369,6 +374,48 @@ class DeliveryCarrier(models.Model):
             },
         }
 
+    def _split_fedex_commodity(self, commodity):
+        """
+        Split a commodity entry above FedEx's 9,999-unit limit.
+
+        FedEx answers COMMODITY.NUMBEROFPIECES.REQUIRED for a commodity line
+        with more than 9,999 units, so the same goods are declared on several
+        lines and the customs value and weight are divided by quantity.
+        """
+        quantity = commodity["quantity"]
+        if quantity <= FEDEX_MAX_COMMODITY_QUANTITY:
+            return [commodity]
+
+        entries = []
+        remaining_quantity = quantity
+        remaining_value = commodity["customsValue"]["amount"]
+        remaining_weight = commodity["weight"]["value"]
+        while remaining_quantity > 0:
+            chunk = min(remaining_quantity, FEDEX_MAX_COMMODITY_QUANTITY)
+            if chunk == remaining_quantity:
+                chunk_value = remaining_value
+                chunk_weight = remaining_weight
+            else:
+                chunk_value = round(
+                    commodity["customsValue"]["amount"] * chunk / quantity, 2
+                )
+                chunk_weight = round(commodity["weight"]["value"] * chunk / quantity, 3)
+            entries.append(
+                {
+                    **commodity,
+                    "quantity": chunk,
+                    "customsValue": {
+                        **commodity["customsValue"],
+                        "amount": chunk_value,
+                    },
+                    "weight": {**commodity["weight"], "value": chunk_weight},
+                }
+            )
+            remaining_quantity -= chunk
+            remaining_value = round(remaining_value - chunk_value, 2)
+            remaining_weight = round(remaining_weight - chunk_weight, 3)
+        return entries
+
     def _prepare_fedex_customs_data(self, picking, shipping_weight):
         """
         Prepare estimated customs data for FedEx
@@ -392,14 +439,17 @@ class DeliveryCarrier(models.Model):
         # Estimate the customs value and weight
         # based on the order lines
         data["commodities"] = [
-            self._prepare_fedex_commodities_entry(
-                ol.product_id,
-                ol.quantity,
-                ol.price_subtotal,
-                picking.sale_id.currency_id.name,
-                shipping_weight / len(lines_to_ship),
-            )
+            commodity
             for ol in lines_to_ship
+            for commodity in self._split_fedex_commodity(
+                self._prepare_fedex_commodities_entry(
+                    ol.product_id,
+                    ol.quantity,
+                    ol.price_subtotal,
+                    picking.sale_id.currency_id.name,
+                    shipping_weight / len(lines_to_ship),
+                )
+            )
         ]
 
         data["totalCustomsValue"] = {
@@ -425,8 +475,13 @@ class DeliveryCarrier(models.Model):
         )
         return {
             "commodities": [
-                self._prepare_fedex_sale_commodity(line, shipping_weight / len(lines))
+                commodity
                 for line in lines
+                for commodity in self._split_fedex_commodity(
+                    self._prepare_fedex_sale_commodity(
+                        line, shipping_weight / len(lines)
+                    )
+                )
             ]
         }
 
