@@ -4,7 +4,7 @@
 {
     "name": "Delivery DHL",
     "summary": "Delivery Carrier implementation for DHL API",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.0.2",
     "category": "Stock",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "author": "Erol Develi, Altinkaya Enclosures",
