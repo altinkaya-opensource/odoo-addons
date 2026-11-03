@@ -299,3 +299,21 @@ class TestFedExRate(TransactionCase):
         self.assertEqual(result["price"], 0.0)
         self.assertIn("68.01 kg", result["error_message"])
         self.assertIn("6.40 kg", result["error_message"])
+
+
+@tagged("post_install", "-at_install")
+class TestFedExAddress(TransactionCase):
+    def _address(self, **values):
+        partner = self.env["res.partner"].create(
+            dict(name="Buyer", country_id=self.env.ref("base.it").id, **values)
+        )
+        return self.env["delivery.carrier"].new({})._prepare_fedex_address(partner)
+
+    def test_postal_code_is_trimmed(self):
+        # FedEx answers DESTINATION.POSTALCODE.MISSING.ORINVALID to "12345 ".
+        address = self._address(zip="12345 ", city="Milan")
+
+        self.assertEqual(address["postalCode"], "12345")
+
+    def test_missing_postal_code_is_sent_as_an_empty_string(self):
+        self.assertEqual(self._address()["postalCode"], "")
