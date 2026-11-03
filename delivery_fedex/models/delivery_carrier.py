@@ -253,7 +253,9 @@ class DeliveryCarrier(models.Model):
         address = {
             "streetLines": street_lines,
             "city": normalize_turkish(partner.city or partner.state_id.name or ""),
-            "postalCode": partner.zip,
+            # FedEx rejects a postal code with a trailing space with
+            # DESTINATION.POSTALCODE.MISSING.ORINVALID, so trim it.
+            "postalCode": (partner.zip or "").strip(),
             "countryCode": partner.country_id.code,
             "residential": False,  # TODO: Maybe this need to be dynamic?
         }
