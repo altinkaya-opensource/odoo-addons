@@ -2,6 +2,7 @@ from datetime import date
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 
 from odoo.addons.delivery_fedex.models.delivery_carrier import DeliveryCarrier
@@ -28,11 +29,93 @@ def _rate_reply(delivery_date=None, commit_date=None):
     return {"output": {"rateReplyDetails": [detail]}}
 
 
+@tagged("post_install", "-at_install")
+class TestFedExSaleCustoms(TransactionCase):
+    def _product(self, name, category):
+        return self.env["product.product"].create(
+            {
+                "name": name,
+                "categ_id": category.id,
+                "type": "consu",
+                "barcode": f"fedex-customs-test-{name}",
+            }
+        )
+
+    def _line(self, product, quantity, price, **values):
+        return {
+            "name": product.name,
+            "product_id": product.id,
+            "product_uom_qty": quantity,
+            "price_unit": price,
+            "tax_id": [(6, 0, [])],
+            **values,
+        }
+
+    def test_commodities_come_from_the_goods_on_the_order(self):
+        hs_code = self.env["hs.code"].create(
+            {"local_code": "39269097", "description": "Plastic enclosures"}
+        )
+        with_hs = self.env["product.category"].create(
+            {"name": "Enclosures", "hs_code_id": hs_code.id}
+        )
+        without_hs = self.env["product.category"].create({"name": "Custom"})
+        enclosure = self._product("Enclosure", with_hs)
+        sample = self._product("Sample", with_hs)
+        custom = self._product("Custom part", without_hs)
+        delivery = self._product("Shipping", without_hs)
+        order = self.env["sale.order"].create(
+            {
+                "partner_id": self.env["res.partner"].create({"name": "Buyer"}).id,
+                "order_line": [
+                    (0, 0, self._line(enclosure, 2, 10.0)),
+                    (0, 0, self._line(sample, 1, 0.0)),
+                    (0, 0, self._line(custom, 1, 5.0)),
+                    (0, 0, self._line(delivery, 1, 30.0, is_delivery=True)),
+                    (0, 0, {"name": "Note", "display_type": "line_note"}),
+                ],
+            }
+        )
+        carrier = self.env["delivery.carrier"].new(
+            {"fedex_customs_payment_type": "RECIPIENT"}
+        )
+
+        customs = carrier._prepare_fedex_sale_customs_data(order, 9.0)
+
+        # FedEx answers RATE.PAYMENTTYPE.NOTALLOWED to a RECIPIENT payment.
+        self.assertNotIn("dutiesPayment", customs)
+        commodities = {entry["name"]: entry for entry in customs["commodities"]}
+        self.assertEqual(set(commodities), {"Enclosure", "Sample", "Custom part"})
+        self.assertEqual(commodities["Enclosure"]["description"], "Plastic enclosures")
+        self.assertEqual(commodities["Enclosure"]["harmonizedCode"], hs_code.hs_code)
+        self.assertEqual(commodities["Enclosure"]["customsValue"]["amount"], 20.0)
+        self.assertEqual(commodities["Enclosure"]["unitPrice"]["amount"], 10.0)
+        self.assertEqual(commodities["Enclosure"]["weight"]["value"], 3.0)
+        # A free line still needs a value.
+        self.assertEqual(commodities["Sample"]["customsValue"]["amount"], 1.0)
+        # No HS code anywhere: the name describes it and no false code is sent.
+        self.assertEqual(commodities["Custom part"]["description"], "Custom part")
+        self.assertNotIn("harmonizedCode", commodities["Custom part"])
+
+    def test_order_without_goods_has_no_commodities(self):
+        order = self.env["sale.order"].create(
+            {"partner_id": self.env["res.partner"].create({"name": "Buyer"}).id}
+        )
+        carrier = self.env["delivery.carrier"].new({})
+
+        customs = carrier._prepare_fedex_sale_customs_data(order, 9.0)
+
+        self.assertEqual(customs["commodities"], [])
+
+
 class TestFedExRate(TransactionCase):
-    def test_sale_rate_data_requests_transit_times(self):
+    def test_sale_rate_data_sends_customs_with_transit_times(self):
         carrier = SimpleNamespace(
             _prepare_fedex_base_rate_data=lambda *_args: {"requestedShipment": {}},
-            _prepare_fedex_dummy_packages=lambda _order: [],
+            _prepare_fedex_dummy_packages=lambda _order: [
+                {"weight": {"units": "KG", "value": 2.0}},
+                {"weight": {"units": "KG", "value": 3.0}},
+            ],
+            _prepare_fedex_sale_customs_data=lambda _order, weight: {"weight": weight},
         )
 
         data = DeliveryCarrier._prepare_fedex_sale_rate_data(
@@ -41,6 +124,9 @@ class TestFedExRate(TransactionCase):
 
         self.assertEqual(
             data["rateRequestControlParameters"], {"returnTransitTimes": True}
+        )
+        self.assertEqual(
+            data["requestedShipment"]["customsClearanceDetail"], {"weight": 5.0}
         )
 
     def test_transit_days_count_business_days_after_ship_date(self):

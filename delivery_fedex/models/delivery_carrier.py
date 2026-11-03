@@ -411,6 +411,42 @@ class DeliveryCarrier(models.Model):
 
         return data
 
+    def _prepare_fedex_sale_customs_data(self, order, shipping_weight):
+        """
+        Prepare customs data for a FedEx quote from the sale order lines.
+        Commodities only: FedEx refuses a RECIPIENT dutiesPayment on a quote.
+        """
+        lines = order.order_line.filtered(
+            lambda line: (
+                not line.is_delivery
+                and not line.display_type
+                and line.product_uom_qty > 0
+            )
+        )
+        return {
+            "commodities": [
+                self._prepare_fedex_sale_commodity(line, shipping_weight / len(lines))
+                for line in lines
+            ]
+        }
+
+    def _prepare_fedex_sale_commodity(self, line, weight):
+        """
+        Prepare a commodity entry for a FedEx quote. A product may have no HS
+        code on its category, which must not cost the customer the quote.
+        """
+        commodity = self._prepare_fedex_commodities_entry(
+            line.product_id,
+            line.product_uom_qty,
+            max(line.price_subtotal, 1.0),  # Some countries require a minimum value
+            line.currency_id.name,
+            weight,
+        )
+        commodity["description"] = commodity["description"] or commodity["name"]
+        if not commodity["harmonizedCode"]:
+            del commodity["harmonizedCode"]
+        return commodity
+
     def _prepare_fedex_base_rate_data(self, warehouse_id, partner_id, delivery_date):
         """
         Prepare base rate data for FedEx API requests.
@@ -444,11 +480,16 @@ class DeliveryCarrier(models.Model):
 
         # We use dummy packages because when getting rates
         # from sale.order we don't have actual packages yet.
-        data["requestedShipment"]["requestedPackageLineItems"] = (
-            self._prepare_fedex_dummy_packages(order)
-        )
+        packages = self._prepare_fedex_dummy_packages(order)
+        data["requestedShipment"]["requestedPackageLineItems"] = packages
         # Adds the estimated delivery date to the reply (no extra request).
         data["rateRequestControlParameters"] = {"returnTransitTimes": True}
+        # FedEx rejects an international quote with transit times without this.
+        data["requestedShipment"]["customsClearanceDetail"] = (
+            self._prepare_fedex_sale_customs_data(
+                order, sum(package["weight"]["value"] for package in packages)
+            )
+        )
 
         return data
 
