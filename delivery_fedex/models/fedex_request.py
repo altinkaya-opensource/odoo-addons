@@ -153,14 +153,16 @@ class FedExRequest:
             if content_type == "multipart/form-data":
                 del request_data["files"]["attachment"]
 
-            self.delivery_carrier.log_xml(
-                json.dumps(request_data, indent=4),
-                func=f"fedex_{service_type}_request",
-            )
-            self.delivery_carrier.log_xml(
-                json.dumps(result, indent=4),
-                func=f"fedex_{service_type}_response",
-            )
+            # The token exchange carries the client secret and the access token.
+            if service_type != "auth":
+                self.delivery_carrier.log_xml(
+                    json.dumps(request_data, indent=4),
+                    func=f"fedex_{service_type}_request",
+                )
+                self.delivery_carrier.log_xml(
+                    json.dumps(result, indent=4),
+                    func=f"fedex_{service_type}_response",
+                )
             res.raise_for_status()
         except requests.exceptions.Timeout as tmo:
             raise UserError(
