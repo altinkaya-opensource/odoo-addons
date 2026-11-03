@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import requests
 
-from odoo import Command
+from odoo import Command, _
 from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase, tagged
 
@@ -133,6 +133,43 @@ class TestIyzicoPaymentRecovery(TransactionCase):
 
         retrieve.assert_called_once_with(conversation_id=self.tx.reference)
         self.assertEqual(self.tx.state, "done")
+
+    def test_failed_callback_logs_the_3ds_status(self):
+        """A failed 3-D Secure return must log iyzico's mdStatus for support."""
+        self.tx.write({"state": "draft", "provider_reference": "original-payment"})
+        notification = self._notification("original-payment", status="failure")
+        notification["mdStatus"] = "0"
+
+        with self.assertLogs(
+            "odoo.addons.payment_iyzico_altinkaya.models.payment_transaction",
+            level="WARNING",
+        ) as logs:
+            self.tx._process_notification_data(notification)
+
+        self.assertEqual(self.tx.state, "error")
+        self.assertEqual(
+            self.tx.state_message,
+            _("3DS: Something went wrong during the payment. Please try again."),
+        )
+        log = "\n".join(logs.output)
+        self.assertIn(self.tx.reference, log)
+        self.assertIn("original-payment", log)
+        self.assertIn("mdStatus=0", log)
+
+    def test_failed_callback_without_md_status_still_errors(self):
+        """A failed callback without mdStatus keeps the generic error."""
+        self.tx.write({"state": "draft"})
+        notification = self._notification("original-payment", status="failure")
+        notification.pop("mdStatus")
+
+        with self.assertLogs(
+            "odoo.addons.payment_iyzico_altinkaya.models.payment_transaction",
+            level="WARNING",
+        ) as logs:
+            self.tx._process_notification_data(notification)
+
+        self.assertEqual(self.tx.state, "error")
+        self.assertIn("mdStatus=-", "\n".join(logs.output))
 
     def test_recovery_rejects_a_different_provider_payment(self):
         """Even a stored callback identity must not select the queried payment."""

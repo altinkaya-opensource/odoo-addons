@@ -241,6 +241,15 @@ class PaymentTransaction(models.Model):
             self._iyzico_finalize_payment(status, payload)
 
         else:
+            md_status = notification_data.get("mdStatus")
+            _logger.warning(
+                "iyzico: 3DS verification failed for %s (paymentId %s): "
+                "status=%s, mdStatus=%s",
+                self.reference,
+                payment_id or self.provider_reference or "-",
+                notification_data.get("status") or "-",
+                md_status if md_status is not None else "-",
+            )
             self._set_error(
                 _("3DS: Something went wrong during the payment. Please try again.")
             )
