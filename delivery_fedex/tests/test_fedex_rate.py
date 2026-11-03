@@ -81,7 +81,8 @@ class TestFedExSaleCustoms(TransactionCase):
 
         customs = carrier._prepare_fedex_sale_customs_data(order, 9.0)
 
-        self.assertEqual(customs["dutiesPayment"], {"paymentType": "RECIPIENT"})
+        # FedEx answers RATE.PAYMENTTYPE.NOTALLOWED to a RECIPIENT payment.
+        self.assertNotIn("dutiesPayment", customs)
         commodities = {entry["name"]: entry for entry in customs["commodities"]}
         self.assertEqual(set(commodities), {"Enclosure", "Sample", "Custom part"})
         self.assertEqual(commodities["Enclosure"]["description"], "Plastic enclosures")
@@ -99,9 +100,7 @@ class TestFedExSaleCustoms(TransactionCase):
         order = self.env["sale.order"].create(
             {"partner_id": self.env["res.partner"].create({"name": "Buyer"}).id}
         )
-        carrier = self.env["delivery.carrier"].new(
-            {"fedex_customs_payment_type": "RECIPIENT"}
-        )
+        carrier = self.env["delivery.carrier"].new({})
 
         customs = carrier._prepare_fedex_sale_customs_data(order, 9.0)
 

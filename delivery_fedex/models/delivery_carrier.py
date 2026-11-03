@@ -414,10 +414,8 @@ class DeliveryCarrier(models.Model):
     def _prepare_fedex_sale_customs_data(self, order, shipping_weight):
         """
         Prepare customs data for a FedEx quote from the sale order lines.
+        Commodities only: FedEx refuses a RECIPIENT dutiesPayment on a quote.
         """
-        data = self._prepare_fedex_base_customs_data(
-            order.warehouse_id, order.partner_id
-        )
         lines = order.order_line.filtered(
             lambda line: (
                 not line.is_delivery
@@ -425,11 +423,12 @@ class DeliveryCarrier(models.Model):
                 and line.product_uom_qty > 0
             )
         )
-        data["commodities"] = [
-            self._prepare_fedex_sale_commodity(line, shipping_weight / len(lines))
-            for line in lines
-        ]
-        return data
+        return {
+            "commodities": [
+                self._prepare_fedex_sale_commodity(line, shipping_weight / len(lines))
+                for line in lines
+            ]
+        }
 
     def _prepare_fedex_sale_commodity(self, line, weight):
         """
