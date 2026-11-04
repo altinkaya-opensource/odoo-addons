@@ -1,4 +1,4 @@
-from odoo import _, fields, models
+from odoo import Command, _, fields, models
 from odoo.exceptions import UserError
 
 from ..models.account_move_line import CURRENCY_DIFFERENCE_JOURNAL_CODES
@@ -28,6 +28,9 @@ class AccountMoveLineChangeAccount(models.TransientModel):
         line currency from the new account, so the change is all or nothing.
         Only the check that ties account types to invoice types is skipped, so
         a receivable can be moved to a payable account and back.
+        A posted line keeps its taxes: changing its account would otherwise
+        make Odoo recompute them from the product or the new account, and a
+        posted entry cannot drop a tax line.
         """
         self.ensure_one()
         # Items already on the new account are left as they are.
@@ -65,7 +68,18 @@ class AccountMoveLineChangeAccount(models.TransientModel):
                     moves="\n".join(mismatched.move_id.mapped("name")),
                 )
             )
-        lines.with_context(skip_payable_receivable_check=True).write(
-            {"account_id": self.account_id.id}
-        )
+        lines = lines.with_context(skip_payable_receivable_check=True)
+        # Changing the account of a product line makes Odoo recompute its
+        # taxes, and a posted entry cannot lose a tax line. Keep the taxes the
+        # posted lines already have, so the same write only moves them.
+        for line in lines.filtered(lambda line: line.move_id.state == "posted"):
+            line.write(
+                {
+                    "account_id": self.account_id.id,
+                    "tax_ids": [Command.set(line.tax_ids.ids)],
+                }
+            )
+        draft_lines = lines.filtered(lambda line: line.move_id.state != "posted")
+        if draft_lines:
+            draft_lines.write({"account_id": self.account_id.id})
         return {"type": "ir.actions.act_window_close"}

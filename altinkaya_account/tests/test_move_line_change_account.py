@@ -61,6 +61,42 @@ class TestMoveLineChangeAccount(TransactionCase):
             }
         )
 
+    def _create_tax(self, name, amount, account):
+        return self.env["account.tax"].create(
+            {
+                "name": name,
+                "amount": amount,
+                "amount_type": "percent",
+                "type_tax_use": "purchase",
+                "company_id": self.company.id,
+                "country_id": self.company.account_fiscal_country_id.id,
+                "invoice_repartition_line_ids": [
+                    Command.create(
+                        {"repartition_type": "base", "factor_percent": 100.0}
+                    ),
+                    Command.create(
+                        {
+                            "repartition_type": "tax",
+                            "factor_percent": 100.0,
+                            "account_id": account.id,
+                        }
+                    ),
+                ],
+                "refund_repartition_line_ids": [
+                    Command.create(
+                        {"repartition_type": "base", "factor_percent": 100.0}
+                    ),
+                    Command.create(
+                        {
+                            "repartition_type": "tax",
+                            "factor_percent": 100.0,
+                            "account_id": account.id,
+                        }
+                    ),
+                ],
+            }
+        )
+
     def _post_entry(self, debit_account, credit_account, amount=100.0):
         move = self.env["account.move"].create(
             {
@@ -181,3 +217,68 @@ class TestMoveLineChangeAccount(TransactionCase):
         self.assertEqual(move.state, "draft")
         with self.assertRaisesRegex(UserError, "not balanced"):
             move.action_post()
+
+    def test_posted_product_line_keeps_its_taxes(self):
+        expense = self._create_account("MLCA.EXP", "expense")
+        other_expense = self._create_account("MLCA.EXP2", "expense")
+        vat = self._create_account("MLCA.VAT", "asset_current")
+        tax = self._create_tax("MLCA 10%", 10.0, vat)
+        # The product's own purchase tax differs from the tax of the bill line,
+        # so changing the account would recompute the line's taxes.
+        product_tax = self._create_tax("MLCA 20%", 20.0, vat)
+        product = self.env["product.product"].create(
+            {
+                "name": "Change account service",
+                "type": "service",
+                "supplier_taxes_id": [Command.set(product_tax.ids)],
+            }
+        )
+        bill = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "partner_id": self.partner.id,
+                "invoice_date": self.move_date,
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "product_id": product.id,
+                            "name": "Service",
+                            "price_unit": 100.0,
+                            "account_id": expense.id,
+                            "tax_ids": [Command.set(tax.ids)],
+                        }
+                    ),
+                    # The product tax already has a line on the bill, so the
+                    # tax recompute of the first line would have to remove the
+                    # line of its own tax instead of renaming it.
+                    Command.create(
+                        {
+                            "product_id": product.id,
+                            "name": "Other service",
+                            "price_unit": 50.0,
+                            "account_id": expense.id,
+                        }
+                    ),
+                ],
+            }
+        )
+        bill.action_post()
+        line = bill.invoice_line_ids[0]
+        tax_line = bill.line_ids.filtered(lambda aml: aml.tax_line_id == tax)
+        other_tax_line = bill.line_ids.filtered(
+            lambda aml: aml.tax_line_id == product_tax
+        )
+        self.assertEqual(line.tax_ids, tax)
+        self.assertEqual(tax_line.balance, 10.0)
+        self.assertEqual(other_tax_line.balance, 10.0)
+
+        self._change_account(line, other_expense)
+
+        self.assertEqual(bill.state, "posted")
+        self.assertEqual(line.account_id, other_expense)
+        self.assertEqual(line.tax_ids, tax)
+        self.assertTrue(tax_line.exists())
+        self.assertEqual(tax_line.balance, 10.0)
+        self.assertEqual(other_tax_line.balance, 10.0)
+        self.assertEqual(bill.amount_tax, 20.0)
+        self.assertEqual(bill.amount_total, 170.0)
