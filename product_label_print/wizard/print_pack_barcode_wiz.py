@@ -1,6 +1,8 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+LABEL_LANGS = [("en_US", "English"), ("tr_TR", "Turkish")]
+
 
 class PrintPackBarcodeWizard(models.TransientModel):
     _name = "print.pack.barcode.wiz"
@@ -9,6 +11,12 @@ class PrintPackBarcodeWizard(models.TransientModel):
     product_label_ids = fields.Many2many("product.product.label", string="Products")
     label_ids = fields.Many2many("label.twoinrow", string="Labels")
     skip_first = fields.Boolean("Skip First Label")
+    lang = fields.Selection(
+        LABEL_LANGS,
+        string="Label Language",
+        required=True,
+        default=lambda self: self._default_lang(),
+    )
     restrict_single = fields.Boolean("Restrict to single product", default=False)
     single_label_id = fields.Many2one(
         "product.product.label", compute="_compute_single_label", store=True
@@ -118,24 +126,10 @@ class PrintPackBarcodeWizard(models.TransientModel):
                 shortcode = "-".join(codeparts[0:4])
         else:
             shortcode = product_id.default_code
-        nameline = 1
-        nameL = {1: "", 2: "", 3: "", 4: ""}
-        fullname = product_id.display_name.replace(f"[{product_id.default_code}] ", "")
-        for word in fullname.split():
-            if len(nameL[nameline] + " " + word) < 32:
-                nameL[nameline] = (nameL[nameline] + " " + word).strip()
-            else:
-                nameline = nameline + 1
-                if nameline > 4:
-                    break
-                nameL[nameline] = (nameL[nameline] + " " + word).strip()
+        lang = res.get("lang") or self._default_lang()
         product_label_id = product_label_obj.create(
             {
-                "name": product_id.name,
-                "nameL1": nameL[1],
-                "nameL2": nameL[2],
-                "nameL3": nameL[3],
-                "nameL4": nameL[4],
+                **self._label_name_values(product_id.with_context(lang=lang)),
                 "default_code": product_id.default_code,
                 "short_code": shortcode,
                 "note": "",
@@ -152,6 +146,59 @@ class PrintPackBarcodeWizard(models.TransientModel):
             {"product_label_ids": [(6, 0, product_ids)] or [], "skip_first": False}
         )
         return res
+
+    @api.model
+    def _default_lang(self):
+        return self.env.lang if self.env.lang in dict(LABEL_LANGS) else "en_US"
+
+    @api.model
+    def _label_name_values(self, product):
+        """The product name and its four printed lines, in the env language."""
+        nameline = 1
+        nameL = {1: "", 2: "", 3: "", 4: ""}
+        fullname = product.display_name.replace(f"[{product.default_code}] ", "")
+        for word in fullname.split():
+            if len(nameL[nameline] + " " + word) < 32:
+                nameL[nameline] = (nameL[nameline] + " " + word).strip()
+            else:
+                nameline = nameline + 1
+                if nameline > 4:
+                    break
+                nameL[nameline] = (nameL[nameline] + " " + word).strip()
+        return {
+            "name": product.name,
+            "nameL1": nameL[1],
+            "nameL2": nameL[2],
+            "nameL3": nameL[3],
+            "nameL4": nameL[4],
+        }
+
+    def _apply_lang(self):
+        """Rewrite the printed names in the chosen language. The names are
+        read-only on the form, so nothing typed by the user is lost."""
+        for wizard in self:
+            for label in wizard.product_label_ids.filtered("product_id"):
+                product = label.product_id.with_context(lang=wizard.lang)
+                label.write(self._label_name_values(product))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        wizards = super().create(vals_list)
+        # The web form builds the names before the user picks a language.
+        wizards._apply_lang()
+        return wizards
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "lang" in vals:
+            self._apply_lang()
+        return res
+
+    @api.onchange("lang")
+    def _onchange_lang(self):
+        product = self.single_label_product_id.with_context(lang=self.lang)
+        if product:
+            self.single_label_name = product.name
 
     def generate_labels(self):
         last_label = self.product_label_ids[0]
@@ -250,7 +297,11 @@ class PrintPackBarcodeWizard(models.TransientModel):
         return (
             self.env.ref("product_label_print.label_product_product")
             .with_context(
-                **dict(self.env.context, active_model="print.pack.barcode.wiz")
+                **dict(
+                    self.env.context,
+                    active_model="print.pack.barcode.wiz",
+                    lang=self.lang,
+                )
             )
             .report_action(docids=[self.id])
         )
@@ -262,8 +313,9 @@ class PrintPackBarcodeWizard(models.TransientModel):
         printer = self.env.user.context_def_label_printer
         if not printer:
             raise Warning(_("You need to set a label printer in order to print."))
+        # The unit name follows the label language too.
         report = self.env.ref("product_label_print.label_product_product").with_context(
-            **self.env.context
+            lang=self.lang
         )
         payload = report._render_qweb_text(
             "product_label_print.label_product_product",

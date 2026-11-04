@@ -148,6 +148,11 @@ msgid "Do not print first label"
 msgstr "İlk Etiketi Atla"
 
 #. module: product_label_print
+#: model:ir.model.fields.selection,name:product_label_print.selection__print_pack_barcode_wiz__lang__en_us
+msgid "English"
+msgstr "İngilizce"
+
+#. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__id
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__id
 #: model:ir.model.fields,field_description:product_label_print.field_product_product_label__id
@@ -163,6 +168,11 @@ msgstr "Etiket 1"
 #: model:ir.model.fields,field_description:product_label_print.field_label_twoinrow__label2
 msgid "Label 2"
 msgstr "Etiket 2"
+
+#. module: product_label_print
+#: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__lang
+msgid "Label Language"
+msgstr "Etiket Dili"
 
 #. module: product_label_print
 #: model:ir.model,name:product_label_print.model_label_twoinrow
@@ -447,6 +457,11 @@ msgstr "Bu kaydın bekleyen değişiklik setlerinin sayısı"
 #: model:ir.model.fields,help:product_label_print.field_stock_move__count_changesets
 msgid "The overall number of changesets of this record"
 msgstr "Bu kaydın toplam değişiklik seti sayısı"
+
+#. module: product_label_print
+#: model:ir.model.fields.selection,name:product_label_print.selection__print_pack_barcode_wiz__lang__tr_tr
+msgid "Turkish"
+msgstr "Türkçe"
 
 #. module: product_label_print
 #: model:ir.model.fields,field_description:product_label_print.field_print_pack_barcode_wiz__single_label_uom_name

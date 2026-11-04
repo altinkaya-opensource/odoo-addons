@@ -12,6 +12,11 @@
                             <field name="single_label_default_code" readonly="1" />
                             <field name="single_label_barcode" readonly="1" />
                             <field name="single_label_name" readonly="1" />
+                            <field
+                                name="lang"
+                                widget="radio"
+                                options="{'horizontal': true}"
+                            />
                             <field name="single_label_product_id" />
                             <field
                                 name="single_label_lot_ids"
