@@ -54,6 +54,16 @@
                 <field name="process_id" />
             </xpath>
 
+            <xpath expr="//div[@class='oe_title']" position="after">
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    attrs="{'invisible': [('grammage_warning', '=', False)]}"
+                >
+                    <field name="grammage_warning" nolabel="1" />
+                </div>
+            </xpath>
+
             <xpath expr="//button[@name='do_unreserve']" position="after">
                 <button
                     name="button_print_prod_order"
