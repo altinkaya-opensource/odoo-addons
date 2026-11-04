@@ -1,8 +1,15 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_round
+from odoo.tools import float_round, formatLang
+
+# Raw materials are mostly weighed in grams while the product card carries
+# kilograms, so a line entered in the wrong unit is off by a factor of 1000.
+# Grams entered instead of kilograms drop a main material, which weighs about as
+# much as the product, to a ratio of 0.001, so the lower bound stays above that.
+GRAMMAGE_MIN_RATIO = 0.002
+GRAMMAGE_MAX_RATIO = 10.0
 
 
 class MrpBoMWCParameter(models.Model):
@@ -37,6 +44,11 @@ class MRPBoM(models.Model):
     checked = fields.Boolean(
         string="Kontrol Edildi", help="Bileşenler ve ağırlıkları kontrol edildi."
     )
+    grammage_warning = fields.Text(
+        string="Gramaj Uyarısı",
+        compute="_compute_grammage_warning",
+        help="Bileşen miktarı mamul ağırlığıyla uyuşmadığında uyarı metni dolar.",
+    )
     tool_product_id = fields.Many2one("product.product", string="Tool")
 
     # TODO: Delete this field in the future. Read mrp_routing.py
@@ -58,6 +70,63 @@ class MRPBoM(models.Model):
     #     self.wc_parameter_ids = [(0, False, val) for val in vals]
 
     #     return res
+
+    @api.depends(
+        "bom_line_ids.product_id",
+        "bom_line_ids.product_qty",
+        "bom_line_ids.product_uom_id",
+        "product_id",
+        "product_tmpl_id",
+        "product_qty",
+        "product_uom_id",
+    )
+    def _compute_grammage_warning(self):
+        """Warn about weight lines that do not fit the produced weight."""
+        kilogram = self.env.ref("uom.product_uom_kgm")
+        for bom in self:
+            output_kg = bom._grammage_output_kg(kilogram)
+            warnings = []
+            for line in bom.bom_line_ids:
+                uom = line.product_uom_id
+                if (
+                    not output_kg
+                    or line.product_qty <= 0
+                    or uom.category_id != kilogram.category_id
+                ):
+                    continue
+                line_kg = uom._compute_quantity(line.product_qty, kilogram, round=False)
+                ratio = line_kg / output_kg
+                if not GRAMMAGE_MIN_RATIO <= ratio <= GRAMMAGE_MAX_RATIO:
+                    digits = 6 if ratio < 1 else 2
+                    warnings.append(
+                        _(
+                            "%(product)s: %(qty)s %(uom)s, "
+                            "mamul ağırlığının %(ratio)s katı"
+                        )
+                        % {
+                            "product": line.product_id.display_name,
+                            "qty": line.product_qty,
+                            "uom": uom.name,
+                            "ratio": formatLang(self.env, ratio, digits=digits),
+                        }
+                    )
+            header = _("Şüpheli gramaj, birimleri ve mamul ağırlığını kontrol edin:")
+            bom.grammage_warning = "\n".join([header] + warnings) if warnings else False
+
+    def _grammage_output_kg(self, kilogram):
+        """Return the produced weight in kilograms, 0.0 when it is unknown."""
+        self.ensure_one()
+        uom = self.product_uom_id
+        if uom.category_id == kilogram.category_id:
+            return uom._compute_quantity(self.product_qty, kilogram, round=False)
+        variant_weights = self.product_tmpl_id.product_variant_ids.mapped("weight")
+        unit_weight = self.product_id.weight or max(variant_weights, default=0.0)
+        if not unit_weight:
+            return 0.0
+        product_qty = uom._compute_quantity(
+            self.product_qty, self.product_tmpl_id.uom_id, round=False
+        )
+        return product_qty * unit_weight
 
     def _ensure_bom_is_free(self):
         """Disable the upstream ``sale_mrp`` guard.

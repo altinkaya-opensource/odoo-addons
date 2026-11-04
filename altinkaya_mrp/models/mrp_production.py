@@ -61,6 +61,7 @@ class MrpProduction(models.Model):
         string="Similar MO Count",
         compute="_compute_similar_mo_ids",
     )
+    grammage_warning = fields.Text(related="bom_id.grammage_warning")
 
     @api.depends("sale_id", "sale_id.date_order", "procurement_group_id")
     def _compute_sale_date(self):

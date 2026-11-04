@@ -58,6 +58,16 @@
                     <field name="checked" />
                 </field>
 
+                <xpath expr="//notebook" position="before">
+                    <div
+                        class="alert alert-warning"
+                        role="alert"
+                        attrs="{'invisible': [('grammage_warning', '=', False)]}"
+                    >
+                        <field name="grammage_warning" nolabel="1" />
+                    </div>
+                </xpath>
+
                 <xpath expr="//notebook" position="inside">
                     <page name="wcparameters" string="Workcenter Parameters">
                         <field name="wc_parameter_ids">
