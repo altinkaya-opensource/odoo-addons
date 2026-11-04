@@ -98,7 +98,7 @@ class DeliveryCarrier(models.Model):
         """
         address_data = {
             "postalCode": partner.zip or "",
-            "cityName": partner.city or partner.state_id.name or "",
+            "cityName": self._prepare_dhl_city_name(partner),
             "countryCode": partner.country_id.code or "TR",
             "addressLine1": partner.street or "",
         }
@@ -107,6 +107,22 @@ class DeliveryCarrier(models.Model):
             address_data["addressLine2"] = partner.street2
 
         return address_data
+
+    def _prepare_dhl_city_name(self, partner):
+        """
+        Prepare the city name for DHL address data.
+
+        Turkish addresses keep the locality in the district, the city field is
+        hidden by l10n_tr_address. DHL expects the district next to the
+        province for those addresses, e.g. "Sincan Ankara".
+        """
+        if partner.city:
+            return partner.city
+
+        if partner.district_id:
+            return f"{partner.district_id.name} {partner.state_id.name}"
+
+        return partner.state_id.name or ""
 
     def _prepare_dhl_contact(self, partner):
         """
