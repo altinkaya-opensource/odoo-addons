@@ -3,3 +3,4 @@ from . import test_partner_statement_opening
 from . import test_tax_distribution
 from . import test_dashboard_usd
 from . import test_gs1_qr_reports
+from . import test_mrp_source_location_report
