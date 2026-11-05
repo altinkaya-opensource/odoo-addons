@@ -237,7 +237,17 @@
                                     </td>
 
                                     <td style="font-size:10px;" class="text-center">
-                                        <span t-field="line.location_id.display_name" />
+                                        <t
+                                            t-foreach="line.move_line_ids.location_id"
+                                            t-as="source_location"
+                                        >
+                                            <div t-out="source_location.display_name" />
+                                        </t>
+                                        <t t-if="not line.move_line_ids">
+                                            <span
+                                                t-field="line.location_id.display_name"
+                                            />
+                                        </t>
                                     </td>
                                 </tr>
                             </tbody>
