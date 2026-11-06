@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -11,6 +11,11 @@ class StockMove(models.Model):
     qty_available_merkez = fields.Float(
         "Merkez Depo Mevcut", related="product_id.qty_available_merkez"
     )
+
+    @api.depends("product_id.weight")
+    def _cal_move_weight(self):
+        """Recompute the stored move weight when the product weight changes."""
+        return super()._cal_move_weight()
 
     # def force_assign(self, moves):
     #     for move in moves:
