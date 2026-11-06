@@ -54,10 +54,22 @@ class SaleOrderLine(models.Model):
             deci = max(line.weight, (line.volume * 1000) / deci_type)
             line.deci = deci
 
-    @api.depends("product_id", "product_uom_qty", "product_uom", "state", "is_delivery")
+    @api.depends(
+        "product_id",
+        "product_id.weight",
+        "product_id.volume",
+        "product_id.weight_uom_id",
+        "product_id.volume_uom_id",
+        "product_id.uom_id",
+        "product_uom_qty",
+        "product_uom",
+        "state",
+        "is_delivery",
+    )
     def _compute_line_weight_volume(self):
         # volume in litre, weight in Kg
         uom_kg = self.env.ref("uom.product_uom_kgm")
+        uom_litre = self.env.ref("uom.product_uom_litre")
         uom_dp = 4
         for line in self:
             product = line.product_id
@@ -66,10 +78,14 @@ class SaleOrderLine(models.Model):
                 line.weight = 0.0
                 continue
 
+            # Read the stored measures and their units: product_weight and
+            # product_volume are non stored computes of product_logistics_uom
+            # that do not follow a measure change, and a stale value here
+            # would keep the line stale as well.
             # One of the two is enough: deci takes the larger of them.
             if product.type == "product" and (
-                float_is_zero(product.product_weight, uom_dp)
-                and float_is_zero(product.product_volume, uom_dp)
+                float_is_zero(product.weight, uom_dp)
+                and float_is_zero(product.volume, uom_dp)
             ):
                 _logger.warning(
                     "Cannot calculate Volume, Weight or "
@@ -91,24 +107,18 @@ class SaleOrderLine(models.Model):
                 line.weight = 0.0
                 continue
 
-            line_kg = product.weight_uom_id._compute_quantity(
-                qty=line_qty * product.product_weight,
+            odoo_weight_uom = (
+                product.product_tmpl_id._get_weight_uom_id_from_ir_config_parameter()
+            )
+            line_kg = odoo_weight_uom._compute_quantity(
+                qty=line_qty * product.weight,
                 to_unit=uom_kg,
                 round=False,
             )
-            if line.product_id.volume_uom_id.uom_type == "smaller":
-                line_litre = (
-                    line_qty
-                    * line.product_id.product_volume
-                    * line.product_id.volume_uom_id.factor_inv
-                )
-            elif line.product_id.volume_uom_id.uom_type == "bigger":
-                line_litre = (
-                    line_qty
-                    * line.product_id.product_volume
-                    * line.product_id.volume_uom_id.factor
-                )
-            else:
-                line_litre = line_qty * line.product_id.product_volume
+            line_litre = product.volume_uom_id._compute_quantity(
+                qty=line_qty * product.volume,
+                to_unit=uom_litre,
+                round=False,
+            )
             line.volume = line_litre
             line.weight = line_kg

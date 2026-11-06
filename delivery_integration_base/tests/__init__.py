@@ -4,3 +4,4 @@
 from . import test_delivery_tracking
 from . import test_carrier_rates_transit
 from . import test_dummy_packages
+from . import test_measurement_recompute
