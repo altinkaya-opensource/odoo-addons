@@ -500,10 +500,8 @@ class DeliveryCarrier(models.Model):
 
             volumetric_weight -= pack_weight
 
-        if (
-            not packages
-            or volumetric_weight > self.dummy_remainder_threshold_percent * pack_weight
-        ):
+        remainder_threshold = self.dummy_remainder_threshold_percent / 100 * pack_weight
+        if not packages or volumetric_weight > remainder_threshold:
             packages.append(
                 {
                     "weight": volumetric_weight,
