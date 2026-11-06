@@ -66,9 +66,10 @@ class SaleOrderLine(models.Model):
                 line.weight = 0.0
                 continue
 
+            # One of the two is enough: deci takes the larger of them.
             if product.type == "product" and (
                 float_is_zero(product.product_weight, uom_dp)
-                or float_is_zero(product.product_volume, uom_dp)
+                and float_is_zero(product.product_volume, uom_dp)
             ):
                 _logger.warning(
                     "Cannot calculate Volume, Weight or "

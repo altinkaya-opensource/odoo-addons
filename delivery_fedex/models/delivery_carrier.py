@@ -532,7 +532,7 @@ class DeliveryCarrier(models.Model):
         based on the sale order.
         """
         data = self._prepare_fedex_base_rate_data(
-            order.warehouse_id, order.partner_id, fields.Date.today()
+            order.warehouse_id, order.partner_shipping_id, fields.Date.today()
         )
 
         # We use dummy packages because when getting rates
@@ -550,36 +550,18 @@ class DeliveryCarrier(models.Model):
 
         return data
 
-    def _prepare_fedex_account_rate_data(self, account_move):
+    def _prepare_fedex_picking_rate_data(self, picking):
         """
-        Prepare rate data for FedEx API requests
-        based on the account move (invoice).
+        Prepare rate data for FedEx API requests from a picking's
+        packages, built the same way as its shipment.
         """
-        account_move.picking_ids.ensure_one()
-
         data = self._prepare_fedex_base_rate_data(
-            account_move.picking_ids.location_id.warehouse_id,
-            account_move.partner_shipping_id,
+            picking.location_id.warehouse_id,
+            picking.partner_id,
             fields.Date.today(),
         )
 
-        packages = []
-        total_weight = 0
-
-        for pack in account_move.picking_ids.package_ids:
-            packages.append(
-                {
-                    "weight": {"units": "KG", "value": pack.shipping_weight},
-                    "dimensions": {
-                        "length": pack.pack_length,
-                        "width": pack.width,
-                        "height": pack.height,
-                        "units": pack.length_uom_id.name.upper(),
-                    },
-                }
-            )
-            total_weight += pack.shipping_weight
-
+        packages, _total_weight = self._prepare_fedex_picking_packages(picking)
         data["requestedShipment"]["requestedPackageLineItems"] = packages
         data["requestedShipment"]["totalPackageCount"] = len(packages)
 
@@ -647,6 +629,57 @@ class DeliveryCarrier(models.Model):
             )
 
         return document_id
+
+    def _prepare_fedex_picking_packages(self, picking):
+        """
+        Prepare the FedEx package line items of a picking: its pallets if it
+        has any, its packages otherwise, each repeated package_multiplier
+        times. Returns the line items and their total weight.
+        """
+        packages = []
+        total_weight = 0
+
+        pallets = picking.package_ids.filtered(lambda p: p.is_pallet)
+        if pallets:
+            # If there are pallets, we prepare the packages based on pallets
+            for pallet in pallets:
+                for _i in range(pallet.package_multiplier):
+                    packages.append(
+                        {
+                            "groupPackageCount": "1",
+                            "sequenceNumber": len(packages) + 1,
+                            "weight": {"units": "KG", "value": pallet.shipping_weight},
+                            "subPackagingType": "PALLET",
+                            "dimensions": {
+                                "length": pallet.pack_length,
+                                "width": pallet.width,
+                                "height": pallet.height,
+                                "units": pallet.length_uom_id.name.upper(),
+                            },
+                        }
+                    )
+                    total_weight += pallet.shipping_weight
+                pallet.sequence = len(packages)
+        else:
+            # If there are no pallets, we use the packages directly
+            for package in picking.package_ids:
+                for _i in range(package.package_multiplier):
+                    packages.append(
+                        {
+                            "sequenceNumber": len(packages) + 1,
+                            "weight": {"units": "KG", "value": package.shipping_weight},
+                            "dimensions": {
+                                "length": package.pack_length,
+                                "width": package.width,
+                                "height": package.height,
+                                "units": package.length_uom_id.name.upper(),
+                            },
+                        }
+                    )
+                    total_weight += package.shipping_weight
+                package.sequence = len(packages)
+
+        return packages, total_weight
 
     def _prepare_fedex_shipment_data(self, picking):
         """
@@ -733,48 +766,8 @@ class DeliveryCarrier(models.Model):
             # Add the commercial invoice details
         }
 
-        packages = []
-        total_weight = 0
-
         pallets = picking.package_ids.filtered(lambda p: p.is_pallet)
-        if pallets:
-            # If there are pallets, we prepare the packages based on pallets
-            for pallet in pallets:
-                for _i in range(pallet.package_multiplier):
-                    packages.append(
-                        {
-                            "groupPackageCount": "1",
-                            "sequenceNumber": len(packages) + 1,
-                            "weight": {"units": "KG", "value": pallet.shipping_weight},
-                            "subPackagingType": "PALLET",
-                            "dimensions": {
-                                "length": pallet.pack_length,
-                                "width": pallet.width,
-                                "height": pallet.height,
-                                "units": pallet.length_uom_id.name.upper(),
-                            },
-                        }
-                    )
-                    total_weight += pallet.shipping_weight
-                pallet.sequence = len(packages)
-        else:
-            # If there are no pallets, we use the packages directly
-            for package in picking.package_ids:
-                for _i in range(package.package_multiplier):
-                    packages.append(
-                        {
-                            "sequenceNumber": len(packages) + 1,
-                            "weight": {"units": "KG", "value": package.shipping_weight},
-                            "dimensions": {
-                                "length": package.pack_length,
-                                "width": package.width,
-                                "height": package.height,
-                                "units": package.length_uom_id.name.upper(),
-                            },
-                        }
-                    )
-                    total_weight += package.shipping_weight
-                package.sequence = len(packages)
+        packages, total_weight = self._prepare_fedex_picking_packages(picking)
 
         data["requestedShipment"]["customsClearanceDetail"] = (
             self._prepare_fedex_customs_data(picking, total_weight)
@@ -951,14 +944,17 @@ class DeliveryCarrier(models.Model):
             delivery_carrier=self,
             prod=self.prod_environment,
         )
-        payload = self._prepare_fedex_account_rate_data(account_move)
-        try:
+        # Each picking is shipped on its own, so it is rated on its own.
+        # A failed request raises: a zero price must not reach the invoice.
+        total_price = 0.0
+        for picking in account_move.picking_ids:
+            payload = self._prepare_fedex_picking_rate_data(picking)
             response = fedex_request.get_rates(payload)
 
             rate_data = self._format_fedex_rate_data(response)
             price = rate_data.get("price")
 
-            # If needed, convert the price to the order's currency
+            # If needed, convert the price to the invoice's currency
             if rate_data.get("currency") != account_move.currency_id.name:
                 currency = self.env["res.currency"].search(
                     [("name", "=", rate_data.get("currency"))], limit=1
@@ -970,9 +966,8 @@ class DeliveryCarrier(models.Model):
                     account_move.company_id,
                     fields.Date.today(),
                 )
-        except Exception as __:  # This means there is no rate or the request failed
-            price = 0.0
-        return price
+            total_price += price
+        return total_price
 
     def _validate_fedex_shipping_data(self, picking):
         """
@@ -1158,13 +1153,23 @@ class DeliveryCarrier(models.Model):
                     "shipmentRating"
                 ]["shipmentRateDetails"][0]
 
-                price = shipment_rate_details["totalNetChargeWithDutiesAndTaxes"]
+                total = shipment_rate_details["totalNetChargeWithDutiesAndTaxes"]
+                vat = shipment_rate_details["totalTaxes"]
 
-                picking.carrier_shipping_cost = shipment_rate_details["totalBaseCharge"]
-                picking.carrier_shipping_vat = shipment_rate_details["totalTaxes"]
-                picking.carrier_shipping_total = shipment_rate_details[
-                    "totalNetChargeWithDutiesAndTaxes"
-                ]
+                # totalBaseCharge is the list price before the account
+                # discount; the cost is what FedEx bills, without VAT.
+                picking.carrier_shipping_cost = total - vat
+                picking.carrier_shipping_vat = vat
+                picking.carrier_shipping_total = total
+
+                # Odoo reads exact_price in the order's currency
+                # (carrier_price and the "sent to carrier" message).
+                order_currency = (
+                    picking.sale_id.currency_id or picking.company_id.currency_id
+                )
+                price = self.currency_id._convert(
+                    total, order_currency, picking.company_id, fields.Date.today()
+                )
 
                 picking.carrier_total_deci = shipment_rate_details[
                     "totalBillingWeight"
