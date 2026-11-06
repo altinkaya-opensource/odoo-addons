@@ -10,8 +10,6 @@ from dateutil import parser as dateutil_parser
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons.queue_job.exception import RetryableJobError
-
 from .hepsiburada_request import HepsiburadaAPIError, HepsiburadaRequest
 
 _logger = logging.getLogger(__name__)
@@ -289,24 +287,22 @@ class HepsiburadaBackend(models.Model):
             }
         )
 
-    def _queue_webhook_sync(self):
-        """Coalesce notifications into a refresh of authoritative API data."""
-        self.ensure_one()
-        self.with_delay(
-            channel=self._marketplace_queue_channel(),
-            identity_key=f"hepsiburada-webhook-sync-{self.id}",
-            description=_("Refresh Hepsiburada orders after webhook: %s") % self.name,
-        )._sync_webhook_orders()
-
     def _sync_webhook_orders(self):
-        """Run the shared import and retry incomplete API reads."""
+        """Refresh orders from the API for a webhook notification.
+
+        Called directly by the webhook controller, so the request waits for
+        the import: a notification is only an acknowledgement that something
+        changed, and applying its stale snapshot would be worse than waiting.
+        The periodic import cron stays the source of truth for anything this
+        run could not read.
+
+        Returns:
+            True when every endpoint was read, False when a fetch failed.
+        """
         self.ensure_one()
         if not self.active or not self.webhook_enabled:
-            return
-        if not self._import_orders():
-            raise RetryableJobError(
-                _("Hepsiburada webhook refresh failed; retrying."), seconds=60
-            )
+            return True
+        return self._import_orders()
 
     def _sync_unpacked_packages(self, client):
         """Reconcile unpacked package history for polling and webhooks alike."""

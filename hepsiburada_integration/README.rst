@@ -78,12 +78,13 @@ correct Odoo database. Hepsiburada calls these paths beneath it using Basic Auth
 * ``PUT /lineitems/<line_item_id>/cancel`` returns HTTP 204.
 * ``PUT /orders/<order_number>/shippingaddress`` returns HTTP 204.
 
-Notifications enqueue a refresh of the current Hepsiburada API data. Pending
-refresh jobs are coalesced per backend; the request body and credentials are not
-stored in job arguments. Replayed notifications fetch current state instead of
-applying old snapshots. Unpacked packages retain their history but release their
-active line mappings so replacement packages can be created. Monitor failures in
-the job queue and the backend's synchronization error field.
+Notifications fetch the current Hepsiburada API data during the request itself and
+acknowledge it afterwards; no job is queued and the request body and credentials are
+not stored. Replayed notifications fetch current state instead of applying old
+snapshots. A failed refresh is logged and still acknowledged, so the polling below
+recovers the data. Unpacked packages retain their history but release their active
+line mappings so replacement packages can be created. Monitor failures in the server
+log and the backend's synchronization error field.
 
 Keep the existing 15-minute polling enabled as a fallback. Hepsiburada does not
 echo actions performed through its API back as webhooks. Enabling the receiver

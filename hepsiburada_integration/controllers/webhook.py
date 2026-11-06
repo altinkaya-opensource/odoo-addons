@@ -78,7 +78,7 @@ class HepsiburadaWebhookController(http.Controller):
         return self._receive(backend_id, "shippingaddress", order_number)
 
     def _receive(self, backend_id, event, resource_id=None):
-        """Authenticate before reading data and acknowledge only durable jobs."""
+        """Authenticate before reading data, then refresh orders in the request."""
         backend = request.env["hepsiburada.backend"].sudo().browse(backend_id).exists()
         auth = request.httprequest.authorization
         if not self._authorized(backend, auth):
@@ -99,7 +99,14 @@ class HepsiburadaWebhookController(http.Controller):
 
         # Webhooks can arrive late or more than once. Fetch current API state
         # rather than applying their potentially stale order/address snapshots.
-        backend.with_company(backend.company_id)._queue_webhook_sync()
+        # The periodic import cron remains the source of truth, so a failed
+        # refresh is logged instead of asking Hepsiburada to redeliver.
+        try:
+            backend.with_company(backend.company_id)._sync_webhook_orders()
+        except Exception:
+            _logger.exception(
+                "Hepsiburada webhook refresh failed for backend %s", backend.id
+            )
         _logger.info("Accepted HB %s webhook for backend %s", event, backend.id)
         return request.make_response(
             "", status=201 if event in ("orders", "packages") else 204
