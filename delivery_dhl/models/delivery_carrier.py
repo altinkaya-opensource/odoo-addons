@@ -250,7 +250,7 @@ class DeliveryCarrier(models.Model):
         """
         data = self._prepare_dhl_base_rate_data(
             order.company_id,
-            order.partner_id,
+            order.partner_shipping_id,
             self._prepare_dhl_estimated_pickup_date(),
         )
 
