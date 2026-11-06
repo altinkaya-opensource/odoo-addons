@@ -35,20 +35,12 @@ class TestPickingLineCount(TransactionCase):
         pickings = self._create_workload_pickings()
         first, second = pickings
         product = self.env["product.product"].create(
-            {"name": "Workload product", "type": "consu", "detailed_type": "consu"}
-        )
-        order = self.env["sale.order"].create(
             {
-                "partner_id": self.env["res.partner"]
-                .create({"name": "Workload buyer"})
-                .id
+                "name": "Workload product",
+                "type": "consu",
+                "detailed_type": "consu",
+                "weight": 0.001,
             }
-        )
-        lines = self.env["sale.order.line"].create(
-            [
-                {"order_id": order.id, "product_id": product.id, "last_deci": value}
-                for value in (10, 20)
-            ]
         )
         carrier = self.env["delivery.carrier"].create(
             {
@@ -71,13 +63,8 @@ class TestPickingLineCount(TransactionCase):
                     "product_uom_qty": 1000,
                     "location_id": picking.location_id.id,
                     "location_dest_id": picking.location_dest_id.id,
-                    "sale_line_id": line.id,
                 }
-                for picking, line in (
-                    (first, lines[0]),
-                    (second, lines[0]),
-                    (second, lines[1]),
-                )
+                for picking in (first, second, second)
             ]
         )
         self.assertEqual(pickings.mapped("operation_line_count"), [1, 2])
@@ -95,6 +82,14 @@ class TestPickingLineCount(TransactionCase):
         self.assertAlmostEqual(
             groups[0]["workload_deci"], sum(pickings.mapped("picking_total_deci"))
         )
+        # The deci comes from the picking's own moves: 1 kg gives 2 desi,
+        # 2 kg gives 2 * 1.9699 desi.
+        self.assertAlmostEqual(
+            first.picking_total_deci, carrier._get_dimension_factor(1)
+        )
+        self.assertAlmostEqual(
+            second.picking_total_deci, 2 * carrier._get_dimension_factor(2)
+        )
         for field in ("operation_line_count", "picking_total_deci", "workload_deci"):
             self.assertTrue(pickings._fields[field].store)
             self.assertEqual(
@@ -102,7 +97,8 @@ class TestPickingLineCount(TransactionCase):
                 [second.id, first.id],
             )
             self.assertEqual(
-                pickings.search(domain, order=f"{field} asc").ids, [first.id, second.id]
+                pickings.search(domain, order=f"{field} asc").ids,
+                [first.id, second.id],
             )
         first.picking_total_weight = 150
         self.assertEqual(first.workload_deci, 150)
@@ -117,28 +113,29 @@ class TestPickingLineCount(TransactionCase):
         )
         first.picking_total_weight = 0
         self.assertEqual(first.workload_deci, first.picking_total_deci)
-        lines[0].last_deci = 40
+        # A product measure change refreshes the stored deci on every picking.
+        product.weight = 0.04
         self.assertAlmostEqual(
             first.picking_total_deci, 40 * carrier._get_dimension_factor(40)
         )
-        self.assertEqual(first.workload_deci, first.picking_total_deci)
+        self.assertAlmostEqual(
+            second.picking_total_deci, 80 * carrier._get_dimension_factor(80)
+        )
         carrier.factor_a = 3
         carrier.factor_b = 0.2
         self.assertAlmostEqual(
-            second.picking_total_deci, 60 * carrier._get_dimension_factor(60)
+            second.picking_total_deci, 80 * carrier._get_dimension_factor(80)
         )
         moves[-1].picking_id = first
         self.assertEqual(pickings.mapped("operation_line_count"), [2, 1])
         self.assertAlmostEqual(
-            first.picking_total_deci, 60 * carrier._get_dimension_factor(60)
+            first.picking_total_deci, 80 * carrier._get_dimension_factor(80)
         )
         first.carrier_id = False
-        self.assertEqual(first.picking_total_deci, 60)
+        self.assertEqual(first.picking_total_deci, 80)
         moves[-1].unlink()
         self.assertEqual(first.operation_line_count, 1)
         self.assertEqual(first.picking_total_deci, 40)
-        moves[0].sale_line_id = lines[1]
-        self.assertEqual(first.picking_total_deci, 20)
         first.picking_type_id.show_entire_packs = True
         moves[0].state = "done"
         self.assertEqual(first.operation_line_count, 0)
@@ -248,24 +245,26 @@ class TestPickingLineCount(TransactionCase):
             picking.workload_deci, 24 * carrier._get_dimension_factor(24)
         )
 
-    def test_sales_link_keeps_existing_formula_and_migration_scope(self):
+    def test_partial_shipment_uses_own_quantity_and_migration_scope(self):
         picking, sales_picking = self._create_workload_pickings()
-        self._create_product_fallback_moves(picking)
-        sales_moves = self._create_product_fallback_moves(sales_picking)
+        partial_moves = self._create_product_fallback_moves(picking, quantity=500)
+        self._create_product_fallback_moves(sales_picking)
         order = self.env["sale.order"].create(
             {"partner_id": self.env["res.partner"].create({"name": "Desi buyer"}).id}
         )
         line = self.env["sale.order.line"].create(
             {
                 "order_id": order.id,
-                "product_id": sales_moves[0].product_id.id,
+                "product_id": partial_moves[0].product_id.id,
                 "last_deci": 7,
             }
         )
-        sales_moves[0].sale_line_id = line
-        self.assertEqual(sales_picking.picking_total_deci, 7)
-        line.last_deci = 0
-        self.assertEqual(sales_picking.picking_total_deci, 0)
+        partial_moves.sale_line_id = line
+        # The partial picking carries its own 500 pieces, not the whole line.
+        self.assertAlmostEqual(picking.picking_total_deci, 20.2)
+        self.assertAlmostEqual(sales_picking.picking_total_deci, 40.4)
+        # The migration recomputes the desi of every picking once and the
+        # stored weights of the pickings that are still open.
         self.env.flush_all()
         self.env.cr.execute(
             "UPDATE stock_picking SET picking_total_deci = 0, workload_deci = 0 "
@@ -273,8 +272,8 @@ class TestPickingLineCount(TransactionCase):
             [picking.id],
         )
         self.env.cr.execute(
-            "UPDATE stock_picking SET picking_total_deci = 99, workload_deci = 99 "
-            "WHERE id = %s",
+            "UPDATE stock_picking SET picking_total_deci = 99, workload_deci = 99, "
+            "weight = 0 WHERE id = %s",
             [sales_picking.id],
         )
         (picking | sales_picking).invalidate_recordset()
@@ -282,7 +281,7 @@ class TestPickingLineCount(TransactionCase):
             str(
                 Path(__file__).parents[1]
                 / "migrations"
-                / "16.0.0.1.8"
+                / "16.0.0.1.11"
                 / "post-migrate.py"
             )
         )["migrate"]
@@ -299,13 +298,16 @@ class TestPickingLineCount(TransactionCase):
             return result
 
         with patch.object(type(picking), "search", search_test_pickings):
-            migration(self.env.cr, "16.0.0.1.7")
-            migration(self.env.cr, "16.0.0.1.7")
+            migration(self.env.cr, "16.0.0.1.10")
+            migration(self.env.cr, "16.0.0.1.10")
         self.assertEqual(visited, [picking.id, sales_picking.id] * 2)
-        self.assertAlmostEqual(picking.workload_deci, 40.4)
-        self.assertEqual(sales_picking.workload_deci, 99)
-        sales_moves[0].sale_line_id = False
+        self.assertAlmostEqual(picking.picking_total_deci, 20.2)
+        self.assertAlmostEqual(picking.workload_deci, 20.2)
         self.assertAlmostEqual(sales_picking.picking_total_deci, 40.4)
+        self.assertAlmostEqual(sales_picking.weight, 40.4)
+        # Removing the sale link does not change the picking deci.
+        partial_moves[0].sale_line_id = False
+        self.assertAlmostEqual(picking.picking_total_deci, 20.2)
 
     def test_desi_measured_weight_without_system_desi(self):
         picking = self._create_workload_pickings(1)

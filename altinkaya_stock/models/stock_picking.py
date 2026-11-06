@@ -114,7 +114,6 @@ class StockPicking(models.Model):
             picking.operation_line_count = len(picking._get_move_ids_without_package())
 
     @api.depends(
-        "move_ids.sale_line_id.last_deci",
         "move_ids.state",
         "move_ids.scrapped",
         "move_ids.product_uom_qty",
@@ -129,23 +128,30 @@ class StockPicking(models.Model):
         "carrier_id.deci_type",
     )
     def _compute_picking_total_deci(self):
-        """Use transfer quantities when the picking has no sales lines."""
-        result = super()._compute_picking_total_deci()
+        """Compute the shipment deci from the picking's own moves.
+
+        A partial shipment or a backorder must not inherit the deci of the
+        whole sale line: every picking carries the deci of its own content,
+        calculated with the current product measures.
+        """
         weight_uom = self.env[
             "product.template"
         ]._get_weight_uom_id_from_ir_config_parameter()
         kg_uom = self.env.ref("uom.product_uom_kgm")
         litre_uom = self.env.ref("uom.product_uom_litre")
-        for picking in self.filtered(lambda p: not p.move_ids.sale_line_id):
+        for picking in self:
             deci = 0.0
             divisor = float(picking.carrier_id.deci_type or 3000)
-            for move in picking.move_ids.filtered(
-                lambda m: m.state != "cancel" and not m.scrapped
-            ):
+            for move in picking.move_ids:
+                if move.state == "cancel" or move.scrapped:
+                    continue
                 product = move.product_id
                 quantity = (
                     move.quantity_done if move.state == "done" else move.product_uom_qty
                 )
+                if quantity <= 0:
+                    # Return and credit moves do not add shipment deci.
+                    continue
                 quantity = move.product_uom._compute_quantity(
                     quantity, product.uom_id, round=False
                 )
@@ -159,7 +165,6 @@ class StockPicking(models.Model):
             picking.picking_total_deci = (
                 deci * picking.carrier_id._get_dimension_factor(deci)
             )
-        return result
 
     @api.depends("picking_total_weight", "picking_total_deci")
     def _compute_workload_deci(self):
