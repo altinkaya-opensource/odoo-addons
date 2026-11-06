@@ -2,6 +2,7 @@ from datetime import date
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 
@@ -225,7 +226,10 @@ class TestFedExRate(TransactionCase):
         )
 
         data = DeliveryCarrier._prepare_fedex_sale_rate_data(
-            carrier, SimpleNamespace(warehouse_id=None, partner_id=None)
+            carrier,
+            SimpleNamespace(
+                warehouse_id=None, partner_id=None, partner_shipping_id=None
+            ),
         )
 
         self.assertEqual(
@@ -299,6 +303,99 @@ class TestFedExRate(TransactionCase):
         self.assertEqual(result["price"], 0.0)
         self.assertIn("68.01 kg", result["error_message"])
         self.assertIn("6.40 kg", result["error_message"])
+
+    def test_sale_rate_is_quoted_to_the_delivery_address(self):
+        calls = []
+        carrier = SimpleNamespace(
+            _prepare_fedex_base_rate_data=lambda *args: (
+                calls.append(args) or {"requestedShipment": {}}
+            ),
+            _prepare_fedex_dummy_packages=lambda _order: [],
+            _prepare_fedex_sale_customs_data=lambda _order, _weight: {},
+        )
+        order = SimpleNamespace(
+            warehouse_id="warehouse",
+            partner_id="billing",
+            partner_shipping_id="delivery",
+        )
+
+        DeliveryCarrier._prepare_fedex_sale_rate_data(carrier, order)
+
+        self.assertEqual(calls[0][1], "delivery")
+
+    def test_picking_packages_follow_pallets_and_multipliers(self):
+        uom = SimpleNamespace(name="cm")
+        box = SimpleNamespace(
+            is_pallet=False,
+            package_multiplier=3,
+            shipping_weight=29.2,
+            pack_length=58,
+            width=77,
+            height=49,
+            length_uom_id=uom,
+        )
+        pallet = SimpleNamespace(
+            is_pallet=True,
+            package_multiplier=2,
+            shipping_weight=161.0,
+            pack_length=120,
+            width=80,
+            height=170,
+            length_uom_id=uom,
+        )
+
+        packages, weight = DeliveryCarrier._prepare_fedex_picking_packages(
+            None, SimpleNamespace(package_ids=FakeRecordSet([box]))
+        )
+        self.assertEqual(len(packages), 3)
+        self.assertAlmostEqual(weight, 87.6)
+
+        # With pallets, only the pallets are sent.
+        packages, weight = DeliveryCarrier._prepare_fedex_picking_packages(
+            None, SimpleNamespace(package_ids=FakeRecordSet([box, pallet]))
+        )
+        self.assertEqual(
+            [package["subPackagingType"] for package in packages], ["PALLET"] * 2
+        )
+        self.assertEqual(weight, 322.0)
+
+    def _invoice_rate_carrier(self):
+        return SimpleNamespace(
+            payment_type="sender_pays",
+            fedex_client_id="id",
+            fedex_client_secret="secret",
+            prod_environment=False,
+            _prepare_fedex_picking_rate_data=lambda picking: {"picking": picking},
+            _format_fedex_rate_data=self.env[
+                "delivery.carrier"
+            ]._format_fedex_rate_data,
+        )
+
+    @patch("odoo.addons.delivery_fedex.models.delivery_carrier.FedExRequest")
+    def test_invoice_rate_adds_up_each_picking(self, fedex_request):
+        fedex_request.return_value.get_rates.return_value = _rate_reply()
+        invoice = SimpleNamespace(
+            picking_ids=["sevk1", "sevk2"], currency_id=SimpleNamespace(name="EUR")
+        )
+
+        price = DeliveryCarrier.fedex_account_rate_shipment(
+            self._invoice_rate_carrier(), invoice
+        )
+
+        self.assertAlmostEqual(price, 53.02)
+        self.assertEqual(fedex_request.return_value.get_rates.call_count, 2)
+
+    @patch("odoo.addons.delivery_fedex.models.delivery_carrier.FedExRequest")
+    def test_failed_invoice_rate_raises(self, fedex_request):
+        fedex_request.return_value.get_rates.side_effect = UserError("FedEx error")
+        invoice = SimpleNamespace(
+            picking_ids=["sevk1"], currency_id=SimpleNamespace(name="EUR")
+        )
+
+        with self.assertRaises(UserError):
+            DeliveryCarrier.fedex_account_rate_shipment(
+                self._invoice_rate_carrier(), invoice
+            )
 
 
 @tagged("post_install", "-at_install")

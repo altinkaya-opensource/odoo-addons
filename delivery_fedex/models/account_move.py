@@ -21,23 +21,31 @@ class AccountMove(models.Model):
 
     def get_fedex_rates(self):
         self.ensure_one()
-        if self.carrier_id.delivery_type != "fedex":
+        carrier = self.carrier_id
+        if carrier.delivery_type != "fedex":
             return False
 
-        price = self.carrier_id.fedex_account_rate_shipment(self)
+        # The same margin as the order's quote (delivery.carrier.rate_shipment).
+        cost = carrier.fedex_account_rate_shipment(self)
+        price = cost * (1.0 + carrier.margin / 100.0)
 
-        # Delete old delivery line if exists
-        self.line_ids.filtered(
-            lambda ml: ml.product_id == self.carrier_id.product_id
-        ).unlink()
-
-        self.env["account.move.line"].create(
-            {
-                "move_id": self.id,
-                "name": self.carrier_id.product_id.name,
-                "quantity": 1,
-                "price_unit": price,
-                "product_id": self.carrier_id.product_id.id,
-            }
+        delivery_lines = self.invoice_line_ids.filtered(
+            lambda line: line.product_id == carrier.product_id
         )
+        if not delivery_lines:
+            self.env["account.move.line"].create(
+                {
+                    "move_id": self.id,
+                    "name": carrier.product_id.name,
+                    "quantity": 1,
+                    "price_unit": price,
+                    "product_id": carrier.product_id.id,
+                }
+            )
+            return True
+
+        # Keep the lines so their sale order lines stay invoiced; the rate
+        # replaces all of them.
+        delivery_lines[0].price_unit = price
+        (delivery_lines - delivery_lines[0]).price_unit = 0.0
         return True
