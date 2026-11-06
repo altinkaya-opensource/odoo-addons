@@ -9,8 +9,6 @@ from unittest.mock import Mock, patch
 from odoo.exceptions import AccessError
 from odoo.tests import HttpCase, tagged
 
-from odoo.addons.queue_job.exception import RetryableJobError
-
 from ..models.hepsiburada_request import HepsiburadaAPIError
 from .common import HepsiburadaCommon
 
@@ -27,6 +25,17 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
                 "webhook_password": "dedicated-webhook-secret",
             }
         )
+
+    def setUp(self):
+        super().setUp()
+        # The webhook answers by importing the API state inside the request,
+        # so every request needs an API client instead of the real service.
+        self.api_client = self._api_client()
+        patcher = patch.object(
+            type(self.backend), "_get_api_client", return_value=self.api_client
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def _request(self, path, payload, method="POST", authorization=None, raw=False):
         """Send a real HTTP request to the public webhook routes."""
@@ -57,13 +66,29 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
         }
 
     def _jobs(self):
+        """Return the queue jobs the webhook path must not create any more."""
         return self.env["queue.job"].search(
-            [("identity_key", "=", f"hepsiburada-webhook-sync-{self.backend.id}")]
+            [("method_name", "in", ("_sync_webhook_orders", "_queue_webhook_sync"))]
         )
 
-    def _api_client(self):
+    def _api_client(self, paid_orders=None):
         """Supply complete API data independently of the webhook snapshot."""
-        item = {
+        client = SimpleNamespace(get_paid_orders=Mock(return_value=paid_orders or []))
+        for name in (
+            "get_unpacked_packages",
+            "get_payment_awaiting_orders",
+            "get_packages",
+            "get_cancelled_orders",
+            "get_shipped_packages",
+            "get_delivered_packages",
+            "get_undelivered_packages",
+        ):
+            setattr(client, name, Mock(return_value=[]))
+        return client
+
+    def _paid_order_payload(self):
+        """Return a paid order the API reports for the ORDER-1 notification."""
+        return {
             "id": "LINE-1",
             "orderNumber": "ORDER-1",
             "customerId": "CUSTOMER-1",
@@ -88,30 +113,15 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
                 }
             },
         }
-        client = SimpleNamespace(get_paid_orders=Mock(return_value=[item]))
-        for name in (
-            "get_unpacked_packages",
-            "get_payment_awaiting_orders",
-            "get_packages",
-            "get_cancelled_orders",
-            "get_shipped_packages",
-            "get_delivered_packages",
-            "get_undelivered_packages",
-        ):
-            setattr(client, name, Mock(return_value=[]))
-        return client
 
-    def test_order_notifications_are_accepted_and_coalesced(self):
+    def test_order_notifications_are_refreshed_inline_without_jobs(self):
         payload = self._order_notification()
         first = self._request("orders", payload)
         second = self._request("orders", payload)
         self.assertEqual(first.status_code, 201)
         self.assertEqual(second.status_code, 201)
-        jobs = self._jobs()
-        self.assertEqual(len(jobs), 1)
-        self.assertEqual(jobs.method_name, "_sync_webhook_orders")
-        self.assertNotIn("dedicated-webhook-secret", jobs.func_string)
-        self.assertNotIn("Stale Webhook Customer", jobs.func_string)
+        self.assertFalse(self._jobs())
+        self.assertEqual(self.api_client.get_paid_orders.call_count, 2)
 
     def test_all_documented_notification_routes(self):
         requests = [
@@ -152,7 +162,7 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
                 response = self._request(path, payload, method=method)
                 self.assertEqual(response.status_code, status)
                 self.assertFalse(response.content)
-        self.assertEqual(len(self._jobs()), 1)
+        self.assertFalse(self._jobs())
 
     def test_wrong_or_missing_authentication_never_queues(self):
         for authorization in ("", "Basic !!!", "Bearer token", "Basic dXNlcjpwYXNz"):
@@ -231,30 +241,38 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
         )
         self.assertFalse(self._jobs())
 
-    def test_queue_failure_is_not_acknowledged(self):
-        with patch.object(
-            type(self.backend),
-            "_queue_webhook_sync",
-            side_effect=RuntimeError("Queue unavailable"),
+    def test_refresh_failure_is_acknowledged_and_logged(self):
+        with (
+            patch.object(
+                type(self.backend),
+                "_sync_webhook_orders",
+                side_effect=RuntimeError("API unavailable"),
+            ),
+            self.assertLogs(
+                "odoo.addons.hepsiburada_integration.controllers.webhook",
+                level="ERROR",
+            ),
         ):
             response = self._request("orders", self._order_notification())
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 201)
         self.assertFalse(self._jobs())
 
     def test_refresh_uses_api_customer_and_remains_idempotent(self):
+        self.api_client.get_paid_orders.return_value = [self._paid_order_payload()]
         self.assertEqual(
             self._request("orders", self._order_notification()).status_code, 201
         )
-        with patch.object(
-            type(self.backend), "_get_api_client", return_value=self._api_client()
-        ):
-            self.backend._sync_webhook_orders()
-            self.backend._sync_webhook_orders()
         orders = self.env["hepsiburada.order"].search(
             [("backend_id", "=", self.backend.id)]
         )
         self.assertEqual(len(orders), 1)
         self.assertEqual(orders.partner_id.name, "Fresh API Customer")
+        self.backend._sync_webhook_orders()
+        self.backend._sync_webhook_orders()
+        orders = self.env["hepsiburada.order"].search(
+            [("backend_id", "=", self.backend.id)]
+        )
+        self.assertEqual(len(orders), 1)
         self.assertEqual(len(orders.hb_line_item_ids), 1)
 
     def test_unpacked_packages_release_lines_without_cancelling_the_order(self):
@@ -326,19 +344,17 @@ class TestHepsiburadaWebhook(HepsiburadaCommon, HttpCase):
         self.assertFalse(order.invoice_link_sent)
         self.assertFalse(order.package_mapping_incomplete)
 
-    def test_api_failures_are_retryable(self):
+    def test_fetch_failures_are_reported_without_raising(self):
         client = self._api_client()
         client.get_unpacked_packages.side_effect = HepsiburadaAPIError("Unavailable")
         with patch.object(type(self.backend), "_get_api_client", return_value=client):
-            with self.assertRaises(RetryableJobError):
-                self.backend._sync_webhook_orders()
+            self.assertFalse(self.backend._sync_webhook_orders())
         client.get_unpacked_packages.side_effect = None
         with (
             patch.object(type(self.backend), "_get_api_client", return_value=client),
             patch.object(type(self.backend), "_import_orders", return_value=False),
         ):
-            with self.assertRaises(RetryableJobError):
-                self.backend._sync_webhook_orders()
+            self.assertFalse(self.backend._sync_webhook_orders())
 
     def test_webhook_credentials_are_hidden_from_regular_users(self):
         user = (

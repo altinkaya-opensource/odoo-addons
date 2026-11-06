@@ -1158,6 +1158,10 @@ class TrendyolBackend(models.Model):
     def _process_webhook_data(self, data):
         """Process webhook data from Trendyol.
 
+        Runs inside the webhook request. Each package is isolated in its own
+        savepoint so a single rejected package cannot roll back the packages
+        that were already processed.
+
         Args:
             data: Dict from webhook payload
         """
@@ -1170,26 +1174,56 @@ class TrendyolBackend(models.Model):
         if not isinstance(packages, list):
             raise ValueError("Invalid Trendyol webhook content")
 
+        failed = 0
         for package_data in packages:
-            if not isinstance(package_data, dict):
-                _logger.warning("Ignoring invalid Trendyol webhook package")
-                continue
-            package_value = package_data.get("shipmentPackageId") or package_data.get(
-                "id"
+            if not self._process_webhook_package(Order, package_data):
+                failed += 1
+        if failed:
+            _logger.error(
+                "Trendyol webhook for backend %s left %d of %d package(s) "
+                "unprocessed; the order cron will retry them",
+                self.id,
+                failed,
+                len(packages),
             )
-            if not package_value:
-                _logger.warning("Trendyol webhook package is missing its ID")
-                continue
-            package_id = str(package_value)
-            order = Order.search(
-                [
-                    ("backend_id", "=", self.id),
-                    ("trendyol_package_id", "=", package_id),
-                ],
-                limit=1,
+
+    def _process_webhook_package(self, Order, package_data):
+        """Apply one package of a webhook delivery.
+
+        Returns:
+            True when the package was applied or is a no-op, False on failure.
+        """
+        if not isinstance(package_data, dict):
+            _logger.warning("Ignoring invalid Trendyol webhook package")
+            return True
+        package_value = package_data.get("shipmentPackageId") or package_data.get("id")
+        if not package_value:
+            _logger.warning("Trendyol webhook package is missing its ID")
+            return True
+        package_id = str(package_value)
+        # Awaiting packages carry no buyer data and never change our order;
+        # importing them would create a sale order that is immediately wrong.
+        if (package_data.get("status") or "").strip().lower() == "awaiting":
+            return True
+        try:
+            with self.env.cr.savepoint():
+                order = Order.search(
+                    [
+                        ("backend_id", "=", self.id),
+                        ("trendyol_package_id", "=", package_id),
+                    ],
+                    limit=1,
+                )
+                if order:
+                    order._update_from_trendyol_data(package_data)
+                else:
+                    _logger.info(
+                        "Webhook for unknown package %s, importing it", package_id
+                    )
+                    Order._import_order(self, package_data)
+        except Exception:
+            _logger.exception(
+                "Failed to process Trendyol webhook for package %s", package_id
             )
-            if order:
-                order._update_from_trendyol_data(package_data)
-            else:
-                _logger.info("Webhook for unknown package %s, importing it", package_id)
-                Order._import_order(self, package_data)
+            return False
+        return True

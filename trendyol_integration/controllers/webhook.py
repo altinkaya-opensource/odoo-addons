@@ -86,11 +86,10 @@ class TrendyolWebhookController(http.Controller):
             package_count,
         )
 
-        # Queue processing via job
-        backend.with_delay(
-            channel="root.trendyol.webhook",
-            description="Process Trendyol webhook",
-        )._process_webhook_data(data)
+        # Process in the request itself: the runner would otherwise open a
+        # second transaction for the very same payload and race the cron
+        # importer, and a failed job is invisible to the sender anyway.
+        backend.with_company(backend.company_id)._process_webhook_data(data)
 
     @http.route(
         "/ty/wh/<int:backend_id>/test",

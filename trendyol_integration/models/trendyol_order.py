@@ -6,6 +6,8 @@ import logging
 import re
 from datetime import datetime
 
+import psycopg2
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -14,8 +16,18 @@ from .trendyol_request import TrendyolAPIError
 
 _logger = logging.getLogger(__name__)
 
+PACKAGE_UNIQUE_CONSTRAINT = "trendyol_order_package_id_backend_uniq"
+
 INDIVIDUAL_VAT = "11111111111"
 PLACEHOLDER_VATS = frozenset({INDIVIDUAL_VAT, "2222222222"})
+
+
+def _payload_last_modified(order_data):
+    """Return the lastModifiedDate of a Trendyol payload as an integer."""
+    try:
+        return int(order_data.get("lastModifiedDate") or 0)
+    except (AttributeError, TypeError, ValueError):
+        return 0
 
 
 class TrendyolOrder(models.Model):
@@ -147,12 +159,17 @@ class TrendyolOrder(models.Model):
     def _import_order(self, backend, order_data):
         """Import a single order from Trendyol API response.
 
+        The import is idempotent: when a webhook delivery and the order cron
+        (or two webhook deliveries) import the same package at the same
+        moment, the loser of the race refreshes the order created by the
+        winner instead of raising the unique constraint error.
+
         Args:
             backend: trendyol.backend record
             order_data: Dict from API response
 
         Returns:
-            trendyol.order record
+            trendyol.order record or False
         """
         # Awaiting packages have not passed payment checks and can omit buyer data.
         if self._map_status(order_data.get("status")) == "awaiting":
@@ -169,69 +186,34 @@ class TrendyolOrder(models.Model):
         order_number = str(order_number_value)
 
         # Check if already imported
-        existing = self.search(
-            [
-                ("backend_id", "=", backend.id),
-                ("trendyol_package_id", "=", package_id),
-            ],
-            limit=1,
-        )
-
+        existing = self._find_package(backend, package_id)
         if existing:
             existing._update_from_trendyol_data(order_data)
             return existing
 
         # Create new order
         try:
-            main_partner, shipping_partner = self._get_or_create_partner(
-                backend, order_data
-            )
-            order_vals = self._prepare_order_values(
-                backend, order_data, main_partner, shipping_partner
-            )
-            sale_order = self.env["sale.order"].create(order_vals)
-
-            # Create binding before lines so that trendyol_binding_ids
-            # exists when _compute_price_unit and explode_set_contents
-            # run on the new sale order lines.
-            binding = self.create(
-                {
-                    "odoo_id": sale_order.id,
-                    "backend_id": backend.id,
-                    "trendyol_order_number": order_number,
-                    "trendyol_package_id": package_id,
-                    "trendyol_customer_id": self._normalize_customer_id(
-                        order_data.get("customerId")
-                    ),
-                    "trendyol_status": self._map_status(order_data.get("status"))
-                    or "created",
-                    "cargo_provider_name": order_data.get("cargoProviderName"),
-                    "cargo_provider_id": order_data.get("cargoProviderId"),
-                    "cargo_tracking_number": order_data.get("cargoTrackingNumber"),
-                    "cargo_tracking_link": order_data.get("cargoTrackingLink"),
-                    "raw_data": json.dumps(order_data, indent=2, ensure_ascii=False),
-                }
-            )
-
-            # Create order lines
-            lines = order_data.get("lines", [])
-            for line_data in lines:
-                line_vals = self._prepare_line_values(backend, sale_order, line_data)
-                if line_vals:
-                    self.env["sale.order.line"].create(line_vals)
-
-            # Auto-confirm if configured
-            if backend.auto_confirm_orders:
-                sale_order.ignore_exception = True
-                sale_order.with_context(bypass_risk=True).action_confirm()
-
+            with self.env.cr.savepoint():
+                return self._create_order(backend, order_data, package_id, order_number)
+        except psycopg2.errors.UniqueViolation as error:
+            # Another worker imported the same package while we were creating
+            # ours, and committed first: our insert hit the unique constraint.
+            # The package exists now, so only refresh it with our payload.
+            if error.diag.constraint_name != PACKAGE_UNIQUE_CONSTRAINT:
+                _logger.error("Failed to import order %s", order_number)
+                raise
+            self.env.invalidate_all()
+            existing = self._find_package(backend, package_id)
+            if not existing:
+                _logger.error("Failed to import order %s", order_number)
+                raise
             _logger.info(
-                "Imported order %s (package: %s)",
+                "Order %s (package: %s) was imported concurrently, refreshing it",
                 order_number,
                 package_id,
             )
-            return binding
-
+            existing._update_from_trendyol_data(order_data)
+            return existing
         except Exception as e:
             _logger.error(
                 "Failed to import order %s: %s",
@@ -240,11 +222,98 @@ class TrendyolOrder(models.Model):
             )
             raise
 
+    @api.model
+    def _find_package(self, backend, package_id):
+        """Return the order bound to a package, if it is already imported."""
+        return self.search(
+            [
+                ("backend_id", "=", backend.id),
+                ("trendyol_package_id", "=", package_id),
+            ],
+            limit=1,
+        )
+
+    def _create_order(self, backend, order_data, package_id, order_number):
+        """Create the binding, its sale order and its lines from a payload.
+
+        Must run inside a savepoint: the unique constraint on the package is
+        what makes two concurrent imports of the same package safe, and the
+        savepoint discards the sale order and the partners of the loser.
+        """
+        main_partner, shipping_partner = self._get_or_create_partner(
+            backend, order_data
+        )
+        order_vals = self._prepare_order_values(
+            backend, order_data, main_partner, shipping_partner
+        )
+        sale_order = self.env["sale.order"].create(order_vals)
+
+        # Create binding before lines so that trendyol_binding_ids
+        # exists when _compute_price_unit and explode_set_contents
+        # run on the new sale order lines.
+        binding = self.create(
+            {
+                "odoo_id": sale_order.id,
+                "backend_id": backend.id,
+                "trendyol_order_number": order_number,
+                "trendyol_package_id": package_id,
+                "trendyol_customer_id": self._normalize_customer_id(
+                    order_data.get("customerId")
+                ),
+                "trendyol_status": self._map_status(order_data.get("status"))
+                or "created",
+                "cargo_provider_name": order_data.get("cargoProviderName"),
+                "cargo_provider_id": order_data.get("cargoProviderId"),
+                "cargo_tracking_number": order_data.get("cargoTrackingNumber"),
+                "cargo_tracking_link": order_data.get("cargoTrackingLink"),
+                "raw_data": json.dumps(order_data, indent=2, ensure_ascii=False),
+            }
+        )
+
+        # Create order lines
+        lines = order_data.get("lines", [])
+        for line_data in lines:
+            line_vals = self._prepare_line_values(backend, sale_order, line_data)
+            if line_vals:
+                self.env["sale.order.line"].create(line_vals)
+
+        # Auto-confirm if configured
+        if backend.auto_confirm_orders:
+            sale_order.ignore_exception = True
+            sale_order.with_context(bypass_risk=True).action_confirm()
+
+        # Surface a constraint error inside the savepoint instead of at the
+        # next flush, which would happen outside of the try/except above.
+        self.env.flush_all()
+
+        _logger.info(
+            "Imported order %s (package: %s)",
+            order_number,
+            package_id,
+        )
+        return binding
+
     def _update_from_trendyol_data(self, order_data):
         """Refresh mutable package data on an existing binding."""
         self.ensure_one()
         new_status = self._map_status(order_data.get("status"))
         if new_status == "awaiting":
+            return self
+
+        incoming_modified = _payload_last_modified(order_data)
+        applied_modified = self._last_modified_date()
+        if (
+            incoming_modified
+            and applied_modified
+            and incoming_modified < applied_modified
+        ):
+            _logger.info(
+                "Ignoring stale payload for order %s (package: %s): %s < %s",
+                self.trendyol_order_number,
+                self.trendyol_package_id,
+                incoming_modified,
+                applied_modified,
+            )
             return self
 
         vals = {
@@ -277,6 +346,15 @@ class TrendyolOrder(models.Model):
             if new_status == "cancelled":
                 self.odoo_id.action_trendyol_cancel()
         return self
+
+    def _last_modified_date(self):
+        """Return the lastModifiedDate of the payload already applied."""
+        self.ensure_one()
+        try:
+            applied_data = json.loads(self.raw_data or "{}")
+        except (TypeError, ValueError):
+            return 0
+        return _payload_last_modified(applied_data)
 
     @api.model
     def _map_status(self, trendyol_status):
