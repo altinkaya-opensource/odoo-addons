@@ -360,6 +360,11 @@ class DeliveryCarrier(models.Model):
                 "|",
                 ("delivery_state", "=", False),
                 ("delivery_state", "!=", "customer_delivered"),
+                # Integrated carriers get their state from tracking
+                # (_update_all_picking_status).
+                "|",
+                ("carrier_id", "=", False),
+                ("carrier_id.delivery_type", "in", ["fixed", "base_on_rule"]),
             ]
         )
         for picking in pickings:

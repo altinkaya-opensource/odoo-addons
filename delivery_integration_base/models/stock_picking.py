@@ -138,7 +138,7 @@ class StockPicking(models.Model):
                 sale_deci = sum(sale_id.mapped("order_line.last_deci"))
                 ol_deci = ol.last_deci
                 deliver_cost = sum(
-                    sale_id.order_line.filtered("is_delivery").mapped("price_unit")
+                    sale_id.order_line.filtered("is_delivery").mapped("price_subtotal")
                 )
 
                 if deliver_cost and sale_deci:
