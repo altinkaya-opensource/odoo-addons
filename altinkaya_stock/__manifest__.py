@@ -1,6 +1,6 @@
 {
     "name": "Altinkaya Stock",
-    "version": "16.0.0.1.10",
+    "version": "16.0.0.1.11",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "author": "Ahmet Altınışık,OnurUgur,Codequarters,Yavuz Avcı,Altinkaya Enclosures",
