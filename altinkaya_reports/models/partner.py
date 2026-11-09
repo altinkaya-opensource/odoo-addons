@@ -130,7 +130,10 @@ class Partner(models.Model):
             A.CODE,
             A.CURRENCY_ID AS ACCOUNT_CURRENCY,
             AJ.NAME AS JOURNAL,
+            AJ.CODE AS JOURNAL_CODE,
+            AJ.TYPE AS JOURNAL_TYPE,
             AM.NAME,
+            AM.MOVE_TYPE AS MOVE_TYPE,
             AM.NUMBER,
             AM.SUPPLIER_INVOICE_NUMBER,
             L.MOVE_ID,
@@ -203,10 +206,13 @@ class Partner(models.Model):
             AND AM.date >= %s
             GROUP BY
             AJ.NAME,
+            AJ.CODE,
+            AJ.TYPE,
             A.CODE,
             A.CURRENCY_ID,
             L.MOVE_ID,
             AM.NAME,
+            AM.MOVE_TYPE,
             AM.STATE,
             L.DATE,
             L.DATE_MATURITY,
@@ -304,6 +310,9 @@ class Partner(models.Model):
                 {
                     "seq": seq,
                     "number": sl["name"],
+                    "move_type": sl["move_type"],
+                    "journal_code": sl["journal_code"],
+                    "journal_type": sl["journal_type"],
                     "date": sl["date"]
                     and datetime.strptime(str(sl["date"]), "%Y-%m-%d").strftime(
                         "%d.%m.%Y"

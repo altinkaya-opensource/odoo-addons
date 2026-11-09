@@ -91,18 +91,20 @@ class TestPartnerStatementOpening(TransactionCase):
             }
         )
         move.action_post()
+        return move
 
     def _check_opening(self, local_credit, foreign_credit, foreign_credit_local):
         """Check signed opening amounts through the source and both renderers."""
+        moves = self.env["account.move"]
         for currency, amount, balance in [
             (self.currency, 1000.0, 1000.0),
             (self.currency, -local_credit, -local_credit),
             (self.foreign, 100.0, 3000.0),
             (self.foreign, -foreign_credit, -foreign_credit_local),
         ]:
-            self._create_move(currency, amount, balance, "2026-01-15")
-        self._create_move(self.currency, 50.0, 50.0, "2026-02-01")
-        self._create_move(self.foreign, 10.0, 500.0, "2026-02-01")
+            moves |= self._create_move(currency, amount, balance, "2026-01-15")
+        moves |= self._create_move(self.currency, 50.0, 50.0, "2026-02-01")
+        moves |= self._create_move(self.foreign, 10.0, 500.0, "2026-02-01")
         self.env.flush_all()
         data = {
             "date_start": "2026-02-01",
@@ -120,8 +122,17 @@ class TestPartnerStatementOpening(TransactionCase):
             self.currency.id: (1000.0 - local_credit, 1000.0 - local_credit),
             self.foreign.id: (100.0 - foreign_credit, 3000.0 - foreign_credit_local),
         }
+        moves_by_number = {move.name: move for move in moves}
         for lines in statement.values():
             opening, current = lines
+            for line in lines:
+                self.assertIn("move_type", line)
+                self.assertIn("journal_code", line)
+                self.assertIn("journal_type", line)
+                move = moves_by_number[line["number"]]
+                self.assertEqual(line["move_type"], move.move_type)
+                self.assertEqual(line["journal_code"], move.journal_id.code)
+                self.assertEqual(line["journal_type"], move.journal_id.type)
             currency_id = opening["account_currency"]
             foreign_amount, local_amount = expected[currency_id]
             self.assertFalse(opening["date"])
