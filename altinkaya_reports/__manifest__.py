@@ -1,6 +1,6 @@
 {
     "name": "Altinkaya Reports",
-    "version": "16.0.1.3.3",
+    "version": "16.0.1.3.4",
     "category": "General",
     "depends": [
         "base",
