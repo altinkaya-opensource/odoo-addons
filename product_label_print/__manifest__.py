@@ -1,6 +1,6 @@
 {
     "name": "Product Label Print",
-    "version": "16.0.1.3.0",
+    "version": "16.0.1.4.0",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Stock",
     "summary": "Product Label Print",
@@ -10,6 +10,7 @@
         "product",
         "stock",
         "mrp",
+        "sale_mrp",
         "base_report_to_printer",
         "altinkaya_reports",
         "gs1_digital_link",

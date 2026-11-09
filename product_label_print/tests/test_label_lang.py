@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from odoo import Command
 from odoo.tests import TransactionCase, tagged
 
 
@@ -57,6 +58,99 @@ class TestLabelLanguage(TransactionCase):
         self.assertEqual(wizard.lang, "tr_TR")
         self.assertEqual(wizard.single_label_name, "Etiket dili kutusu")
         self.assertEqual(self._wizard("de_DE").lang, "en_US")
+
+    def _delivery(self):
+        customer = self.env["res.partner"].create(
+            {"name": "Label customer", "is_company": True, "lang": "tr_TR"}
+        )
+        address = self.env["res.partner"].create(
+            {"parent_id": customer.id, "type": "delivery", "lang": "en_US"}
+        )
+        order = self.env["sale.order"].create(
+            {
+                "partner_id": customer.id,
+                "partner_shipping_id": address.id,
+                "order_line": [Command.create({"product_id": self.product.id})],
+            }
+        )
+        group = self.env["procurement.group"].create(
+            {"name": order.name, "sale_id": order.id}
+        )
+        order.procurement_group_id = group
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": order.warehouse_id.out_type_id.id,
+                "location_id": order.warehouse_id.lot_stock_id.id,
+                "location_dest_id": address.property_stock_customer.id,
+                "partner_id": address.id,
+            }
+        )
+        move = self.env["stock.move"].create(
+            {
+                "name": self.product.name,
+                "product_id": self.product.id,
+                "product_uom": self.unit.id,
+                "location_id": picking.location_id.id,
+                "location_dest_id": picking.location_dest_id.id,
+                "picking_id": picking.id,
+                "group_id": group.id,
+            }
+        )
+        return order, move
+
+    def test_mto_delivery_defaults_to_shipping_language(self):
+        order, move = self._delivery()
+        order.order_line.route_id = self.env.ref("stock.route_warehouse0_mto")
+        action_context = move.action_print_product_label()["context"]
+        self.assertEqual(action_context["default_lang"], "en_US")
+        wizard = (
+            self.env["print.pack.barcode.wiz"]
+            .with_context(
+                active_model="stock.move",
+                active_id=move.id,
+                lang="tr_TR",
+                **action_context,
+            )
+            .create({})
+        )
+        self.assertEqual(wizard.lang, "en_US")
+        self.assertEqual(wizard.single_label_name, "Label language enclosure")
+
+        address = move.picking_id.partner_id
+        address.lang = False
+        order.partner_id.lang = "en_US"
+        self.assertEqual(
+            move.action_print_product_label()["context"]["default_lang"], "en_US"
+        )
+        order.partner_id.lang = False
+        self.assertEqual(
+            move.action_print_product_label()["context"]["default_lang"], "tr_TR"
+        )
+        self.env["res.lang"]._activate_lang("de_DE")
+        address.lang = "de_DE"
+        self.assertEqual(
+            move.action_print_product_label()["context"]["default_lang"], "en_US"
+        )
+
+    def test_default_requires_mto_and_outgoing_delivery(self):
+        order, move = self._delivery()
+        picking = move.picking_id
+        self.assertNotIn("default_lang", move.action_print_product_label()["context"])
+        self.env["mrp.production"].create(
+            {
+                "product_id": self.product.id,
+                "product_uom_id": self.unit.id,
+                "product_qty": 1,
+                "picking_type_id": order.warehouse_id.manu_type_id.id,
+                "procurement_group_id": picking.group_id.id,
+                "move_dest_ids": [Command.link(move.id)],
+            }
+        )
+        self.assertEqual(
+            move.action_print_product_label()["context"]["default_lang"], "en_US"
+        )
+        picking.picking_type_id = order.warehouse_id.int_type_id
+        self.assertNotIn("default_lang", move.action_print_product_label()["context"])
 
     def test_switching_language_rewrites_names_and_unit(self):
         wizard = self._wizard("tr_TR")
