@@ -13,17 +13,8 @@ class MakeMtsMove(models.TransientModel):
 
     move_id = fields.Many2one("stock.move", readonly=True)
 
-    def find_orig_move_ids(self, moves):
-        orig_moves = moves
-        for move in moves:
-            if move.move_orig_ids:
-                orig_moves |= self.find_orig_move_ids(move.move_orig_ids)
-            if move.production_id.move_raw_ids:
-                orig_moves |= self.find_orig_move_ids(move.production_id.move_raw_ids)
-        return orig_moves
-
     def cancel_move_origs(self, move_id):
-        moves_with_origs = self.find_orig_move_ids(move_id)
+        moves_with_origs = self.env["stock.move"].find_orig_move_ids(move_id)
         moves_with_origs = moves_with_origs.filtered(
             lambda m: m.state not in ["done", "cancel"]
         )

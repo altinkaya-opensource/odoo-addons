@@ -79,12 +79,18 @@ class StockMove(models.Model):
         }
 
     def find_orig_move_ids(self, moves):
-        orig_moves = moves
-        for move in moves:
-            if move.move_orig_ids:
-                orig_moves |= self.find_orig_move_ids(move.move_orig_ids)
-            if move.production_id.move_raw_ids:
-                orig_moves |= self.find_orig_move_ids(move.production_id.move_raw_ids)
+        """Return every origin move reachable from ``moves``, once each.
+
+        Move origins can form a cycle (a move that is its own origin), so walk
+        the relation iteratively with a visited set instead of recursing.
+        """
+        orig_moves = self.env["stock.move"]
+        moves_to_visit = moves
+        while moves_to_visit:
+            orig_moves |= moves_to_visit
+            moves_to_visit = (
+                moves_to_visit.move_orig_ids | moves_to_visit.production_id.move_raw_ids
+            ) - orig_moves
         return orig_moves
 
     def cancel_move_origs(self, move_id):
