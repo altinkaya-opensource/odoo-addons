@@ -206,11 +206,18 @@ class DeliveryCarrier(models.Model):
                 {
                     "composition_mode": "comment",
                     "body": message,
-                    "numbers": picking.partner_id.mobile,
                     "res_model": "stock.picking",
                     "res_id": picking.id,
                 }
             )
+            if not composer.recipient_single_valid:
+                _logger.warning(
+                    "SMS notification skipped for picking %s: partner %s has no "
+                    "valid phone number.",
+                    picking.name,
+                    picking.partner_id.id,
+                )
+                return True
             composer.action_send_sms()
 
         return True
