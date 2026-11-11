@@ -131,6 +131,54 @@ class TestProductMergeWizard(TransactionCase):
         self.assertCombinationIndexIsCurrent(target_product)
         self.assertCombinationIndexIsCurrent(source_product)
 
+    def test_merge_moves_followers_without_unique_constraint_error(self):
+        target = self._create_template("Follower Target", [(self.color, self.red)])
+        target_product = target.product_variant_id
+        source = self._create_template("Follower Source")
+        source_product = source.product_variant_id
+        common_follower = self.env["res.partner"].create(
+            {"name": "Merge Common Follower"}
+        )
+        source_follower = self.env["res.partner"].create(
+            {"name": "Merge Source Follower"}
+        )
+        source_subtype = self.env["mail.message.subtype"].create(
+            {
+                "name": "Merge Follower Subtype",
+                "res_model": "product.template",
+                "default": False,
+            }
+        )
+        target.message_subscribe(partner_ids=common_follower.ids)
+        source.message_subscribe(
+            partner_ids=common_follower.ids, subtype_ids=source_subtype.ids
+        )
+        source.message_subscribe(partner_ids=source_follower.ids)
+
+        wizard = self._create_merge_wizard(
+            target,
+            [(self.color, self.red | self.blue)],
+            [(target_product, self.red), (source_product, self.blue)],
+        )
+        wizard.action_merge()
+
+        followers = self.env["mail.followers"].search(
+            [
+                ("res_model", "=", "product.template"),
+                ("res_id", "=", target.id),
+            ]
+        )
+        self.assertFalse(source.exists())
+        self.assertEqual(
+            set(followers.partner_id.ids),
+            {common_follower.id, source_follower.id},
+        )
+        common_follower_row = followers.filtered(
+            lambda follower: follower.partner_id == common_follower
+        )
+        self.assertEqual(len(common_follower_row), 1)
+        self.assertIn(source_subtype, common_follower_row.subtype_ids)
+
     def test_merge_rejects_duplicate_combinations_before_mutation(self):
         target = self._create_template("Duplicate Target", [(self.color, self.red)])
         target_product = target.product_variant_id

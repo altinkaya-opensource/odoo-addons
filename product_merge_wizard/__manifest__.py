@@ -2,7 +2,7 @@
     "name": "Product Merge Wizard",
     "author": "CODEQUARTERS, Altinkaya Enclosures",
     "website": "https://github.com/altinkaya-opensource/odoo-addons",
-    "version": "16.0.0.1.0",
+    "version": "16.0.0.1.1",
     "depends": ["product", "sale"],
     "license": "LGPL-3",
     "category": "Tools",
