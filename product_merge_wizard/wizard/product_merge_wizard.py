@@ -379,6 +379,49 @@ class ProductMergeWizard(models.TransientModel):
                     ) from error
 
     @api.model
+    def _update_followers(self, src_products, dst_product):
+        """Move followers to the destination template, merging duplicates.
+
+        A partner may follow both the source and the destination template.
+        Writing the destination id on both rows would break the unique
+        (res_model, res_id, partner_id) constraint, so the subtypes of the
+        duplicate are merged into the destination follower before unlinking it.
+        """
+        Follower = self.env["mail.followers"].sudo()
+        dst_followers = {
+            follower.partner_id.id: follower
+            for follower in Follower.search(
+                [
+                    ("res_model", "=", "product.template"),
+                    ("res_id", "=", dst_product.id),
+                ]
+            )
+        }
+        for product in src_products:
+            src_followers = Follower.search(
+                [
+                    ("res_model", "=", "product.template"),
+                    ("res_id", "=", product.id),
+                ]
+            )
+            for follower in src_followers:
+                dst_follower = dst_followers.get(follower.partner_id.id)
+                if not dst_follower:
+                    follower.write({"res_id": dst_product.id})
+                    dst_followers[follower.partner_id.id] = follower
+                    continue
+                dst_follower.write(
+                    {
+                        "subtype_ids": [
+                            Command.set(
+                                (dst_follower.subtype_ids | follower.subtype_ids).ids
+                            )
+                        ]
+                    }
+                )
+                follower.unlink()
+
+    @api.model
     def _update_reference_fields(self, src_products, dst_product):
         _logger.debug(
             "_update_reference_fields for dst_product: %s for src_products: %r",
@@ -411,10 +454,11 @@ class ProductMergeWizard(models.TransientModel):
 
         for product in src_products:
             update_records("ir.attachment", src=product, field_model="res_model")
-            update_records("mail.followers", src=product, field_model="res_model")
             update_records("mail.activity", src=product, field_model="res_model")
             update_records("mail.message", src=product)
             update_records("ir.model.data", src=product)
+
+        self._update_followers(src_products, dst_product)
 
         records = (
             self.env["ir.model.fields"].sudo().search([("ttype", "=", "reference")])
