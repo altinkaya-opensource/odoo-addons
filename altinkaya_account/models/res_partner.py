@@ -356,14 +356,34 @@ class ResPartner(models.Model):
                 record.due_days = 0
 
     def _ref_is_taken(self, ref):
-        """Return whether ``ref`` is already used by a commercial partner."""
+        """Return whether another commercial partner already uses ``ref``."""
         if not ref:
             return False
         return bool(
             self.sudo()
             .with_context(active_test=False)
-            .search([("ref", "=", ref), ("parent_id", "=", False)], limit=1)
+            .search(
+                [
+                    ("ref", "=", ref),
+                    ("parent_id", "=", False),
+                    ("id", "not in", self.ids),
+                ],
+                limit=1,
+            )
         )
+
+    def _ensure_unique_ref(self):
+        """Give a contact that became a commercial partner its own ref.
+
+        ``ref`` is a commercial field, so a contact carries its company's
+        ref. Once it is detached or made a company it keeps that ref, and
+        ``base_partner_sequence`` only fills an empty one, so the partner
+        would share the company's Zirve export codes.
+        """
+        for partner in self:
+            if partner._ref_is_taken(partner.ref):
+                super(ResPartner, partner).write({"ref": partner._get_next_ref()})
+        return True
 
     def _ensure_unique_ref_vals(self, vals):
         """Assign a unique sequence ref when the given one is missing or taken.
@@ -421,9 +441,18 @@ class ResPartner(models.Model):
 
     def write(self, vals):
         self._check_payment_term_access(vals)
+        contacts = self.env["res.partner"]
+        if "parent_id" in vals or "is_company" in vals:
+            contacts = self.filtered(lambda partner: not partner._needs_ref())
         result = super().write(vals)
+        new_commercial_partners = contacts.filtered(
+            lambda partner: partner._needs_ref()
+        )
+        new_commercial_partners._ensure_unique_ref()
         if "country_id" in vals or "ref" in vals:
             self._update_export_account_codes()
+        else:
+            new_commercial_partners._update_export_account_codes()
         return result
 
     def change_accounts_to_usd(self):
