@@ -52,6 +52,40 @@ class TestResPartnerExportAccounts(TransactionCase):
         self.assertNotEqual(duplicate.z_receivable_export, original.z_receivable_export)
         self.assertEqual(duplicate.z_receivable_export, f"120.{duplicate.ref.strip()}")
 
+    def test_detached_contact_gets_own_ref_and_export_codes(self):
+        """A contact carries its company's ref; detached, it needs its own."""
+        norway = self.env.ref("base.no")
+        company = self.env["res.partner"].create(
+            {"name": "Detach company", "is_company": True, "country_id": norway.id}
+        )
+        contact = self.env["res.partner"].create(
+            {"name": "Detach contact", "parent_id": company.id, "country_id": norway.id}
+        )
+        self.assertEqual(contact.ref, company.ref)
+
+        contact.parent_id = False
+
+        self.assertTrue(contact.ref)
+        self.assertNotEqual(contact.ref, company.ref)
+        self.assertEqual(contact.z_receivable_export, f"120.Y{contact.ref.strip()}")
+        self.assertEqual(contact.z_payable_export, f"320.Y{contact.ref.strip()}")
+        self.assertEqual(company.z_receivable_export, f"120.Y{company.ref.strip()}")
+
+    def test_parent_write_keeps_ref_of_commercial_partner(self):
+        """Only a contact that becomes commercial gets a new ref."""
+        turkey = self.env.ref("base.tr")
+        original = self.env["res.partner"].create(
+            {"name": "Ref owner", "country_id": turkey.id}
+        )
+        partner = self.env["res.partner"].create(
+            {"name": "Shares ref", "country_id": turkey.id}
+        )
+        partner.ref = original.ref
+
+        partner.write({"parent_id": False, "is_company": True})
+
+        self.assertEqual(partner.ref, original.ref)
+
     def test_portal_template_user_copy_gets_unique_ref_and_export_codes(self):
         """Storefront signup copies the portal template user via _inherits."""
         template_user_id = int(
