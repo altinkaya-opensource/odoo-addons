@@ -320,7 +320,7 @@ class DeliveryCarrier(models.Model):
             "delivery_state": ARAS_OPERATION_CODES[int(response["DURUM_KODU"])][1],
             "shipping_number": response["KARGO_TAKIP_NO"],
             "carrier_shipping_cost": float(response["TUTAR"]),
-            "carrier_total_deci": float(response["HACIMSEL_AGIRLIK"]),
+            "carrier_total_deci": float(response["DESI"]),
         }
 
         if picking.tracking_state != vals["tracking_state"]:
