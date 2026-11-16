@@ -160,6 +160,11 @@ msgid "Baskı Depo Mevcut"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields.selection,name:altinkaya_stock.selection__stock_picking__x_durum__e
+msgid "Baskıda"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_mrp_bom_line
 msgid "Bill of Material Line"
 msgstr "Ürün Ağacı Satırı"
