@@ -6,6 +6,8 @@ import logging
 from odoo import http
 from odoo.http import request
 
+from ..models.trendyol_backend import CONCURRENCY_ERRORS
+
 _logger = logging.getLogger(__name__)
 
 
@@ -60,6 +62,9 @@ class TrendyolWebhookController(http.Controller):
 
             return request.make_json_response({"status": "success"})
 
+        except CONCURRENCY_ERRORS:
+            # Let Odoo retry the whole delivery in a fresh transaction.
+            raise
         except (TypeError, ValueError):
             _logger.warning("Invalid JSON webhook payload for backend %s", backend_id)
             return request.make_json_response(

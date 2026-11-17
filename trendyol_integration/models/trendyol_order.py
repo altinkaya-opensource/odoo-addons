@@ -10,8 +10,13 @@ import psycopg2
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import mute_logger
 
-from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
+from .trendyol_backend import (
+    CONCURRENCY_ERRORS,
+    _trendyol_ts_to_utc,
+    _utc_to_trendyol_ts,
+)
 from .trendyol_request import TrendyolAPIError
 
 _logger = logging.getLogger(__name__)
@@ -161,15 +166,15 @@ class TrendyolOrder(models.Model):
 
         The import is idempotent: when a webhook delivery and the order cron
         (or two webhook deliveries) import the same package at the same
-        moment, the loser of the race refreshes the order created by the
-        winner instead of raising the unique constraint error.
+        moment, the loser of the race leaves the order to the winner and
+        returns False instead of raising the unique constraint error.
 
         Args:
             backend: trendyol.backend record
             order_data: Dict from API response
 
         Returns:
-            trendyol.order record or False
+            trendyol.order record, or False when nothing was imported
         """
         # Awaiting packages have not passed payment checks and can omit buyer data.
         if self._map_status(order_data.get("status")) == "awaiting":
@@ -193,27 +198,28 @@ class TrendyolOrder(models.Model):
 
         # Create new order
         try:
-            with self.env.cr.savepoint():
+            # A lost race is expected here, so keep sql_db from logging it as
+            # a "bad query"; any other error is still logged and raised below.
+            with self.env.cr.savepoint(), mute_logger("odoo.sql_db"):
                 return self._create_order(backend, order_data, package_id, order_number)
         except psycopg2.errors.UniqueViolation as error:
-            # Another worker imported the same package while we were creating
-            # ours, and committed first: our insert hit the unique constraint.
-            # The package exists now, so only refresh it with our payload.
             if error.diag.constraint_name != PACKAGE_UNIQUE_CONSTRAINT:
                 _logger.error("Failed to import order %s", order_number)
                 raise
+            # Another transaction imported the same package and committed
+            # while we were creating ours. Odoo cursors are REPEATABLE READ, so
+            # our snapshot cannot see that order: searching for it here finds
+            # nothing. The order exists, with the winner's payload.
             self.env.invalidate_all()
-            existing = self._find_package(backend, package_id)
-            if not existing:
-                _logger.error("Failed to import order %s", order_number)
-                raise
             _logger.info(
-                "Order %s (package: %s) was imported concurrently, refreshing it",
+                "Order %s (package: %s) was imported by a concurrent transaction",
                 order_number,
                 package_id,
             )
-            existing._update_from_trendyol_data(order_data)
-            return existing
+            return False
+        except CONCURRENCY_ERRORS:
+            # Retried by the caller (the request or the next cron run).
+            raise
         except Exception as e:
             _logger.error(
                 "Failed to import order %s: %s",
