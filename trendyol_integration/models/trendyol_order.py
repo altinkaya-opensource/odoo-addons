@@ -12,7 +12,11 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import mute_logger
 
-from .trendyol_backend import _trendyol_ts_to_utc, _utc_to_trendyol_ts
+from .trendyol_backend import (
+    CONCURRENCY_ERRORS,
+    _trendyol_ts_to_utc,
+    _utc_to_trendyol_ts,
+)
 from .trendyol_request import TrendyolAPIError
 
 _logger = logging.getLogger(__name__)
@@ -213,6 +217,9 @@ class TrendyolOrder(models.Model):
                 package_id,
             )
             return False
+        except CONCURRENCY_ERRORS:
+            # Retried by the caller (the request or the next cron run).
+            raise
         except Exception as e:
             _logger.error(
                 "Failed to import order %s: %s",
