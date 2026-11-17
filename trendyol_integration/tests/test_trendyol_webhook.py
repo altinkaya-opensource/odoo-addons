@@ -5,6 +5,8 @@ import json
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from psycopg2.errors import SerializationFailure
+
 from odoo.http import Response
 
 from odoo.addons.trendyol_integration.controllers.webhook import (
@@ -198,30 +200,51 @@ class TestTrendyolWebhook(TrendyolTestCase):
         self.assertEqual(order.trendyol_status, "picking")
         self.assertEqual(order.cargo_tracking_number, "WEBHOOK-TRACKING")
 
-    def test_concurrent_import_refreshes_winner_without_orphans(self):
-        """The import that lost the unique constraint race refreshes the winner."""
+    def test_lost_import_race_leaves_order_to_winner(self):
+        """The import that lost the unique constraint race is not a failure.
+
+        In production the loser's REPEATABLE READ snapshot cannot see the
+        winner's order, so _find_package keeps returning nothing.
+        """
         self.backend.auto_confirm_orders = False
         payload = self._customer_package(905, 987654325, status="Picking")
-        _sale, existing = self._create_sale_and_order(
-            package_id="905", status="created"
-        )
+        _sale, winner = self._create_sale_and_order(package_id="905")
         Order = self.env["trendyol.order"]
         sale_count = self.env["sale.order"].search_count([])
         partner_count = self.env["res.partner"].search_count([])
-        finds = []
 
-        def find_package(*_args, **_kwargs):
-            finds.append(True)
-            return Order.browse() if len(finds) == 1 else existing
-
-        with patch.object(type(Order), "_find_package", side_effect=find_package):
+        with (
+            patch.object(type(Order), "_find_package", return_value=Order.browse()),
+            self.assertNoLogs("odoo.addons.trendyol_integration", level="ERROR"),
+            self.assertNoLogs("odoo.sql_db", level="ERROR"),
+        ):
             imported = Order._import_order(self.backend, payload)
 
-        self.assertEqual(imported, existing)
-        self.assertEqual(existing.trendyol_status, "picking")
+        self.assertFalse(imported)
+        self.assertEqual(winner.trendyol_status, "created")
         # The loser's partners and sale order were rolled back by the savepoint.
         self.assertEqual(self.env["sale.order"].search_count([]), sale_count)
         self.assertEqual(self.env["res.partner"].search_count([]), partner_count)
+
+    def test_concurrency_error_is_left_to_the_request_retry(self):
+        Order = self.env["trendyol.order"]
+        controller = TrendyolWebhookController()
+        payload = {"content": [self._customer_package(909, 987654328)]}
+        fake_request = FakeRequest(
+            self.env, payload, api_key=self.backend.webhook_api_key
+        )
+
+        with (
+            patch(
+                "odoo.addons.trendyol_integration.controllers.webhook.request",
+                fake_request,
+            ),
+            patch.object(
+                type(Order), "_import_order", side_effect=SerializationFailure()
+            ),
+            self.assertRaises(SerializationFailure),
+        ):
+            controller.webhook(self.backend.id)
 
     def test_stale_payload_keeps_newer_status(self):
         _sale, order = self._create_sale_and_order(status="created")

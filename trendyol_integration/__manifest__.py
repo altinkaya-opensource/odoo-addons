@@ -3,7 +3,7 @@
 
 {
     "name": "Trendyol Marketplace Integration",
-    "version": "16.0.1.2.4",
+    "version": "16.0.1.2.5",
     "category": "Sales/Sales",
     "summary": "Integrate Odoo with Trendyol marketplace",
     "author": "Ahmet Yigit Budak, Altinkaya Enclosures",

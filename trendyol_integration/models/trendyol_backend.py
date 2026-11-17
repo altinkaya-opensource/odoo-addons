@@ -5,6 +5,8 @@ import logging
 import secrets
 from datetime import UTC, datetime, timedelta
 
+from psycopg2.errors import DeadlockDetected, LockNotAvailable, SerializationFailure
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -12,6 +14,9 @@ from .trendyol_request import TrendyolAPIError, TrendyolRequest
 
 _logger = logging.getLogger(__name__)
 
+# The errors Odoo retries a whole request on (PG_CONCURRENCY_ERRORS_TO_RETRY).
+# The webhook must let them through instead of reporting a failed package.
+CONCURRENCY_ERRORS = (DeadlockDetected, LockNotAvailable, SerializationFailure)
 
 # Trendyol API uses GMT+3 (Turkey time) for all timestamps
 TRENDYOL_UTC_OFFSET = timedelta(hours=3)
@@ -1160,7 +1165,8 @@ class TrendyolBackend(models.Model):
 
         Runs inside the webhook request. Each package is isolated in its own
         savepoint so a single rejected package cannot roll back the packages
-        that were already processed.
+        that were already processed. A concurrency error is raised instead, so
+        that Odoo retries the whole delivery in a new transaction.
 
         Args:
             data: Dict from webhook payload
@@ -1221,6 +1227,9 @@ class TrendyolBackend(models.Model):
                         "Webhook for unknown package %s, importing it", package_id
                     )
                     Order._import_order(self, package_data)
+        except CONCURRENCY_ERRORS:
+            # Our snapshot is stale: Odoo reruns the request in a new one.
+            raise
         except Exception:
             _logger.exception(
                 "Failed to process Trendyol webhook for package %s", package_id
