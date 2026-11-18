@@ -497,6 +497,11 @@ msgid "Currency"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model:ir.model.fields,field_description:altinkaya_stock.field_res_partner__default_picking_responsible_id
+msgid "Default Order Responsible"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model,name:altinkaya_stock.model_choose_delivery_package
 msgid "Delivery Package Selection Wizard"
 msgstr ""

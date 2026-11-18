@@ -100,6 +100,37 @@ class StockPicking(models.Model):
         store=False, search="_search_halted_procurements"
     )
 
+    @api.onchange("partner_id")
+    def _onchange_responsible_from_partner(self):
+        for picking in self:
+            responsible = (
+                picking.partner_id.commercial_partner_id.default_picking_responsible_id
+            )
+            if responsible:
+                picking.user_id = responsible
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        default_partner_id = self.default_get(["partner_id"]).get("partner_id")
+        partners = self.env["res.partner"]
+        for vals in vals_list:
+            if not vals.get("user_id"):
+                partner = partners.browse(vals.get("partner_id", default_partner_id))
+                responsible = (
+                    partner.commercial_partner_id.default_picking_responsible_id
+                )
+                if responsible:
+                    vals["user_id"] = responsible.id
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if vals.get("partner_id") and "user_id" not in vals:
+            partner = self.env["res.partner"].browse(vals["partner_id"])
+            responsible = partner.commercial_partner_id.default_picking_responsible_id
+            if responsible:
+                vals = dict(vals, user_id=responsible.id)
+        return super().write(vals)
+
     @api.depends(
         "move_ids",
         "move_ids.state",
