@@ -41,17 +41,12 @@ class ProductAttributeValue(models.Model):
 
     @api.onchange("name")
     def onchange_name(self):
-        if self.attr_type == "numeric":
+        if self.attr_type == "numeric" and self.name:
             try:
                 self.numeric_value = float(
                     ("".join([c for c in self.name if c in "1234567890,."])).replace(
                         ",", "."
                     )
-                )
-                self.attribute_code = (
-                    ("".join([c for c in self.name if c in "1234567890,."]))
-                    .replace(",", "")
-                    .replace(".", "")
                 )
             except Exception as exc:
                 _logger.error(
@@ -103,28 +98,6 @@ class ProductAttributeValue(models.Model):
                                         ]
                                     )
                                 ).replace(",", ".")
-                            )
-                        except Exception as exc:
-                            _logger.error(
-                                "Error converting attribute value %s to numeric: %s",
-                                vals.get("name", ""),
-                                exc,
-                            )
-
-                    if record.numeric_value != 0.0:
-                        try:
-                            record.attribute_code = (
-                                (
-                                    "".join(
-                                        [
-                                            c
-                                            for c in vals.get("name", "")
-                                            if c in "1234567890,."
-                                        ]
-                                    )
-                                )
-                                .replace(",", "")
-                                .replace(".", "")
                             )
                         except Exception as exc:
                             _logger.error(
