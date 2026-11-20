@@ -1,2 +1,3 @@
 from . import test_dhl_address
 from . import test_dhl_rate
+from . import test_dhl_errors
