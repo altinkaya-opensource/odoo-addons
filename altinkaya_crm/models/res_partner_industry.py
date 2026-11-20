@@ -19,7 +19,7 @@ class ResPartnerIndustry(models.Model):
     _inherit = "res.partner.industry"
     _order = "code"
     _rec_name = "complete_name"
-    _rec_names_search = "complete_name"
+    _rec_names_search = ["complete_name"]
 
     # Add missing field after res.partner.nace -> res.partner.industry migration
     complete_name = fields.Char(compute="_compute_complete_name", store=True)
