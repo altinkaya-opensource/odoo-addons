@@ -136,6 +136,7 @@ class UPSRequest:
         if data is None:
             data = {}
         result = {}
+        res = None
         url = self._get_service_url(service_type, url_params=url_params)
 
         request_data = {}
@@ -203,8 +204,15 @@ class UPSRequest:
                 )
             ) from tmo
         except Exception as e:
-            _logger.error(self._format_errors(result, e), exc_info=True)
-            raise UserError(self._format_errors(result, e)) from e
+            message = self._format_errors(result, e)
+            # 400/422 with the carrier's own explanation: it refused the data
+            # we sent (weight, address, service). The UserError tells the user;
+            # it is not a server fault.
+            if res is not None and res.status_code in (400, 422) and result:
+                _logger.info(message)
+            else:
+                _logger.error(message, exc_info=True)
+            raise UserError(message) from e
 
         return res
 
