@@ -94,20 +94,13 @@ class MailMail(models.Model):
                     )
                     _logger.info("Sending mail.mail %s through Postmark.", email.id)
                     response = postmark.outbound.send(params)
-                    inactive_emails = email._postmark_validate_response(response)
-                    if inactive_emails:
-                        inactive = {
-                            tools.email_normalize(address, strict=False)
-                            for address in inactive_emails
-                        }
-                        recipients = [
-                            recipient
-                            for recipient in recipients
-                            if tools.email_normalize(recipient, strict=False)
-                            not in inactive
-                        ]
+                    if email._postmark_validate_response(response):
+                        # The inactive recipients are blacklisted now.
+                        recipients, inactive_recipients = (
+                            email._postmark_filter_blacklisted_recipients(recipients)
+                        )
                         blacklisted_recipients = (
-                            blacklisted_recipients + inactive_emails
+                            blacklisted_recipients + inactive_recipients
                         )
 
                     email.write(
