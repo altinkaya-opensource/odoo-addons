@@ -78,6 +78,7 @@ class DHLRequest:
         if data is None:
             data = {}
         result = {}
+        res = None
         url = self._get_service_url(service_type)
 
         if url_format_params is not None:
@@ -137,7 +138,12 @@ class DHLRequest:
                 raise UserError(
                     _("Unsupported request type, only use 'GET', 'POST', 'DELETE'")
                 )
-            result = res.json()
+            try:
+                result = res.json()
+            except ValueError:
+                # An outage page is HTML; raise_for_status below reports its
+                # HTTP status instead of a JSON decoding error.
+                result = {}
             self.delivery_carrier.log_xml(
                 json.dumps(request_data, indent=4),
                 func=f"dhl_{service_type}_request",
@@ -159,8 +165,15 @@ class DHLRequest:
                 ),
             ) from tmo
         except Exception as e:
-            _logger.error(self._format_error(result, e), exc_info=True)
-            raise UserError(self._format_error(result, e)) from e
+            message = self._format_error(result, e)
+            # 400/422 with the carrier's own explanation: it refused the data
+            # we sent (weight, address, service). The UserError tells the user;
+            # it is not a server fault.
+            if res is not None and res.status_code in (400, 422) and result:
+                _logger.info(message)
+            else:
+                _logger.error(message, exc_info=True)
+            raise UserError(message) from e
 
         return res
 
