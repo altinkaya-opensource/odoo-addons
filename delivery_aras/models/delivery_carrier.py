@@ -198,7 +198,11 @@ class DeliveryCarrier(models.Model):
                         zebra_zpls = aras_response.string
 
                 except Exception as e:
-                    _logger.error(
+                    # 1004: Aras is still preparing the barcode of a new
+                    # shipment. The generated label below covers it.
+                    not_ready = str(e).startswith("1004:")
+                    _logger.log(
+                        logging.INFO if not_ready else logging.ERROR,
                         "Error while getting barcode for picking %s: %s",
                         picking.name,
                         e,
@@ -313,11 +317,16 @@ class DeliveryCarrier(models.Model):
         if isinstance(response, list):
             response = response[-1]
 
+        # A status code Aras added later keeps the current delivery state;
+        # the tracking text below still shows Aras' own description of it.
+        _label, delivery_state = ARAS_OPERATION_CODES.get(
+            int(response["DURUM_KODU"]), (None, picking.delivery_state)
+        )
         vals = {
             "tracking_state": f"""{response["DURUMU"]} -
             {response["DURUM_EN"]} -
             {response.get("IADE_SEBEBI", "")}""",
-            "delivery_state": ARAS_OPERATION_CODES[int(response["DURUM_KODU"])][1],
+            "delivery_state": delivery_state,
             "shipping_number": response["KARGO_TAKIP_NO"],
             "carrier_shipping_cost": float(response["TUTAR"]),
             "carrier_total_deci": float(response["DESI"]),
