@@ -4,7 +4,7 @@
         <t t-foreach="docs" t-as="o">
             <t t-translation="off">
                 <t t-if="o.printer_type == 'GODEX'">
-<t t-if="o.label_ids[:1].first_label_empty">^B52</t>
+<t t-if="o.label_ids[0].first_label_empty">^B52</t>
 ^Q50,3
 ^W104
 ^H10
@@ -67,7 +67,7 @@ E
 </t>
 </t>
                 <t t-if="o.printer_type == 'GODEX300'">
-<t t-if="o.label_ids[:1].first_label_empty">^B52</t>
+<t t-if="o.label_ids[0].first_label_empty">^B52</t>
 ^Q50,3
 ^W<t t-out="104 if any(not row.second_label_empty for row in o.label_ids) else 50" />
 ^H10

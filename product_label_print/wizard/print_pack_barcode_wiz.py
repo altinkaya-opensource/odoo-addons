@@ -201,6 +201,10 @@ class PrintPackBarcodeWizard(models.TransientModel):
             self.single_label_name = product.name
 
     def generate_labels(self):
+        if not any(label.label_to_print > 0 for label in self.product_label_ids):
+            raise UserError(
+                _("Nothing to print. Set the number of labels to 1 or more.")
+            )
         last_label = self.product_label_ids[0]
         leap_label = False
         Label_Res = []
