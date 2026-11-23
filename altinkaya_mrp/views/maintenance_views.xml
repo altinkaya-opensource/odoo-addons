@@ -53,6 +53,7 @@
                     <group>
                         <field name="product_id" />
                         <field name="performed_by_id" />
+                        <field name="department_id" />
                         <field name="duration" />
                         <field name="duration_uom_id" />
                         <field name="create_date" readonly="1" />
@@ -67,11 +68,54 @@
         </field>
     </record>
 
+    <record id="view_maintenance_log_search" model="ir.ui.view">
+        <field name="name">maintenance.log.search</field>
+        <field name="model">maintenance.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id" />
+                <field name="performed_by_id" />
+                <field name="department_id" />
+                <field name="create_uid" />
+                <field name="note" />
+                <group expand="0">
+                    <filter
+                        name="group_product"
+                        string="Product"
+                        context="{'group_by': 'product_id'}"
+                    />
+                    <filter
+                        name="group_performed_by"
+                        string="Performed By"
+                        context="{'group_by': 'performed_by_id'}"
+                    />
+                    <filter
+                        name="group_department"
+                        string="Department"
+                        context="{'group_by': 'department_id'}"
+                    />
+                    <filter
+                        name="group_create_uid"
+                        string="Created by"
+                        context="{'group_by': 'create_uid'}"
+                    />
+                    <filter
+                        name="group_create_date"
+                        string="Created on"
+                        context="{'group_by': 'create_date'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Grouped by product as a search default, so the facet can be removed. -->
     <record id="action_maintenance_log" model="ir.actions.act_window">
         <field name="name">Maintenance Logs</field>
         <field name="res_model">maintenance.log</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'group_by': ['product_id']}</field>
+        <field name="search_view_id" ref="view_maintenance_log_search" />
+        <field name="context">{'search_default_group_product': 1}</field>
     </record>
 
     <menuitem

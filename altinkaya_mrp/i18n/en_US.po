@@ -222,6 +222,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_uid
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_uid
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_maintenance_log_search
 msgid "Created by"
 msgstr ""
 
@@ -232,6 +233,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_cancel_more__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__create_date
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_x_makine__create_date
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_maintenance_log_search
 msgid "Created on"
 msgstr ""
 
@@ -253,6 +255,12 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__date_start2
 msgid "Date Start"
+msgstr ""
+
+#. module: altinkaya_mrp
+#: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__department_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_maintenance_log_search
+msgid "Department"
 msgstr ""
 
 #. module: altinkaya_mrp
@@ -559,6 +567,7 @@ msgstr ""
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__performed_by_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_maintenance_log_search
 msgid "Performed By"
 msgstr ""
 
@@ -586,6 +595,7 @@ msgstr ""
 #: model:ir.model,name:altinkaya_mrp.model_product_template
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__product_id
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__product_id
+#: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_maintenance_log_search
 msgid "Product"
 msgstr ""
 
