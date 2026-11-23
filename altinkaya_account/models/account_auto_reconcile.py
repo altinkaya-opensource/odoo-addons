@@ -279,21 +279,22 @@ class AccountAutoReconcile(models.AbstractModel):
 
             if diff <= RESIDUAL_TOLERANCE:
                 try:
-                    lines_to_reconcile = payment_line + pay_term_lines
-                    lines_to_reconcile.reconcile()
+                    with self.env.cr.savepoint():
+                        lines_to_reconcile = payment_line + pay_term_lines
+                        lines_to_reconcile.reconcile()
 
-                    _logger.info(
-                        "Exact match: Invoice %s with payment %s (diff: %.2f)",
-                        move.name,
-                        payment_line.move_id.name,
-                        diff,
-                    )
+                        _logger.info(
+                            "Exact match: Invoice %s with payment %s (diff: %.2f)",
+                            move.name,
+                            payment_line.move_id.name,
+                            diff,
+                        )
 
-                    # Create ADVR for invoice residual if not fully matched
-                    if diff > 0.01:
-                        self._create_advr_for_residual_invoice_lines(pay_term_lines)
+                        # Create ADVR for invoice residual if not fully matched
+                        if diff > 0.01:
+                            self._create_advr_for_residual_invoice_lines(pay_term_lines)
 
-                    return True
+                        return True
                 except Exception as e:
                     _logger.error("Exact match failed for %s: %s", move.name, e)
                     continue
@@ -349,22 +350,23 @@ class AccountAutoReconcile(models.AbstractModel):
             return False
 
         try:
-            lines_to_reconcile = pay_term_lines + selected_payments
-            lines_to_reconcile.reconcile()
+            with self.env.cr.savepoint():
+                lines_to_reconcile = pay_term_lines + selected_payments
+                lines_to_reconcile.reconcile()
 
-            match_percentage = min(running_total, invoice_amount) / invoice_amount
-            _logger.info(
-                "N:1 reconcile: Invoice %s with %d payments (%.1f%% match)",
-                move.name,
-                len(selected_payments),
-                match_percentage * 100,
-            )
+                match_percentage = min(running_total, invoice_amount) / invoice_amount
+                _logger.info(
+                    "N:1 reconcile: Invoice %s with %d payments (%.1f%% match)",
+                    move.name,
+                    len(selected_payments),
+                    match_percentage * 100,
+                )
 
-            # ADVR only for near-matches (>=90%), skip for large gaps
-            if match_percentage >= MATCH_THRESHOLD:
-                self._create_advr_for_residual_invoice_lines(pay_term_lines)
+                # ADVR only for near-matches (>=90%), skip for large gaps
+                if match_percentage >= MATCH_THRESHOLD:
+                    self._create_advr_for_residual_invoice_lines(pay_term_lines)
 
-            return True
+                return True
         except Exception as e:
             _logger.error("N:1 reconciliation failed for %s: %s", move.name, e)
             return False
@@ -445,21 +447,22 @@ class AccountAutoReconcile(models.AbstractModel):
                 continue
 
             try:
-                lines_to_reconcile = payment_line + all_invoice_lines
-                lines_to_reconcile.reconcile()
+                with self.env.cr.savepoint():
+                    lines_to_reconcile = payment_line + all_invoice_lines
+                    lines_to_reconcile.reconcile()
 
-                _logger.info(
-                    "1:N reconcile: Payment %s with %d invoices (%.1f%% match)",
-                    payment_line.move_id.name,
-                    len(other_invoices) + 1,
-                    match_percentage * 100,
-                )
+                    _logger.info(
+                        "1:N reconcile: Payment %s with %d invoices (%.1f%% match)",
+                        payment_line.move_id.name,
+                        len(other_invoices) + 1,
+                        match_percentage * 100,
+                    )
 
-                # ADVR for shortfall when payment doesn't fully cover invoices
-                if payment_amount < total_invoice_amount:
-                    self._create_advr_for_residual_invoice_lines(all_invoice_lines)
+                    # ADVR for shortfall when payment doesn't fully cover invoices
+                    if payment_amount < total_invoice_amount:
+                        self._create_advr_for_residual_invoice_lines(all_invoice_lines)
 
-                return True
+                    return True
             except Exception as e:
                 _logger.error("1:N reconciliation failed: %s", e)
                 continue

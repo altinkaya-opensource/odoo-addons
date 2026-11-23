@@ -7,3 +7,4 @@ from . import test_reconcile_partner_rate_type
 from . import test_payment_transaction
 from . import test_partner_statement_balance
 from . import test_move_line_change_account
+from . import test_auto_reconcile_savepoint
