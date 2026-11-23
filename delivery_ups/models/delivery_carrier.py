@@ -416,25 +416,41 @@ class DeliveryCarrier(models.Model):
     # ---------------------------------------------------------------------
     # Response formatters
     # ---------------------------------------------------------------------
-    def _format_shipment_rate(self, shipment_results):
-        """Return {'price', 'currency', 'billing_weight'} from ShipmentResults."""
-        negotiated = shipment_results.get("NegotiatedRateCharges", {}).get(
-            "TotalCharge"
-        )
-        if negotiated:
-            price = float(negotiated.get("MonetaryValue") or 0.0)
-            currency = negotiated.get("CurrencyCode") or ""
-        else:
-            charges = shipment_results.get("ShipmentCharges", {}).get(
-                "TotalCharges", {}
-            )
-            price = float(charges.get("MonetaryValue") or 0.0)
-            currency = charges.get("CurrencyCode") or ""
-
-        billing_weight = float(
+    def _ups_billing_weight(self, shipment_results):
+        """The weight UPS bills for a shipment, from its ShipmentResults."""
+        return float(
             (shipment_results.get("BillingWeight", {}) or {}).get("Weight") or 0.0
         )
-        return {"price": price, "currency": currency, "billing_weight": billing_weight}
+
+    def _ups_contract_cost(self, picking, billing_weight):
+        """Price UPS's billing weight from the price rules, in carrier currency.
+
+        UPS does not return our negotiated rates (rating alert 120900), so the
+        charges in its reply are the reference tariff, about ten times what it
+        bills. The cost comes from the rules that quote the order (see
+        ups_rate_shipment), without the sale margin.
+        Zero when the picking has no sale order or no rule matches: a shipment
+        must not fail on its cost.
+        """
+        order = picking.sale_id
+        if not order:
+            return 0.0
+        try:
+            price = self._get_price_available_price_section(
+                order, order.sale_weight, order.sale_volume, billing_weight
+            )
+        except UserError:
+            _logger.warning(
+                "UPS: no price rule gives the cost of picking %s.", picking.name
+            )
+            return 0.0
+        # The rules helper answers in the company currency.
+        return order.company_id.currency_id._convert(
+            price,
+            self.currency_id,
+            order.company_id,
+            order.date_order or fields.Date.today(),
+        )
 
     # ---------------------------------------------------------------------
     # Validation
@@ -719,15 +735,14 @@ class DeliveryCarrier(models.Model):
                 ", ".join(per_package_numbers) if len(per_package_numbers) > 1 else ""
             )
 
-            rate_info = self._format_shipment_rate(shipment_results)
-            price = rate_info["price"]
-            currency_code = rate_info["currency"]
+            billing_weight = self._ups_billing_weight(shipment_results)
+            cost = self._ups_contract_cost(picking, billing_weight)
 
-            # Store costs on picking (convert to picking/order currency if needed).
-            picking.carrier_shipping_cost = price
+            # The cost fields are in the carrier currency.
+            picking.carrier_shipping_cost = cost
             picking.carrier_shipping_vat = False
-            picking.carrier_shipping_total = price
-            picking.carrier_total_deci = rate_info["billing_weight"]
+            picking.carrier_shipping_total = cost
+            picking.carrier_total_deci = billing_weight
             picking.carrier_tracking_ref = master_tracking
             picking.shipping_number = master_tracking
 
@@ -771,9 +786,7 @@ class DeliveryCarrier(models.Model):
             # scheduled daily time.
             if self.ups_pickup_type and self.ups_pickup_type != "01":
                 try:
-                    self._ups_request_pickup(
-                        picking, master_tracking, rate_info["billing_weight"]
-                    )
+                    self._ups_request_pickup(picking, master_tracking, billing_weight)
                 except Exception as exc:
                     _logger.error(
                         "UPS pickup request failed for picking %s: %s",
@@ -781,25 +794,14 @@ class DeliveryCarrier(models.Model):
                         exc,
                     )
 
-            # Convert price into picking's currency for uniform reporting.
-            if (
-                currency_code
-                and picking.sale_id
-                and currency_code != picking.sale_id.currency_id.name
-            ):
-                currency = self.env["res.currency"].search(
-                    [("name", "=", currency_code)], limit=1
-                )
-                if currency:
-                    price = currency._convert(
-                        price,
-                        picking.sale_id.currency_id,
-                        picking.sale_id.company_id,
-                        fields.Date.today(),
-                    )
-                    picking.carrier_shipping_cost = price
-                    picking.carrier_shipping_total = price
-
+            # Odoo reads exact_price in the order's currency (carrier_price
+            # and the "sent to carrier" message).
+            order_currency = (
+                picking.sale_id.currency_id or picking.company_id.currency_id
+            )
+            price = self.currency_id._convert(
+                cost, order_currency, picking.company_id, fields.Date.today()
+            )
             result.append({"exact_price": price, "tracking_number": master_tracking})
 
         return result
