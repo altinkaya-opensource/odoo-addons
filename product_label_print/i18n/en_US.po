@@ -270,6 +270,13 @@ msgstr ""
 
 #. module: product_label_print
 #. odoo-python
+#: code:addons/product_label_print/wizard/print_pack_barcode_wiz.py:0
+#, python-format
+msgid "Nothing to print. Set the number of labels to 1 or more."
+msgstr ""
+
+#. module: product_label_print
+#. odoo-python
 #: code:addons/product_label_print/models/product.py:0
 #, python-format
 msgid "Please define printer for this label"
