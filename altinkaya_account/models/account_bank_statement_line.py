@@ -48,6 +48,19 @@ class AccountBankStatementLine(models.Model):
                     line.manual_partner_id.property_account_receivable_id
                 )
 
+    def _get_reconcile_line(self, line, kind, **kwargs):
+        """
+        Overriden to convert a counterpart with the Currency Rate Field of its
+        partner, as the partner's invoices do. `res.currency._convert` reads
+        `rate_type` from the context of the currency it is called on, and the
+        widget takes currencies from the statement line and from the line.
+        """
+        partner = line.partner_id or self.partner_id
+        if partner.property_rate_field not in (False, "rate"):
+            self = self.with_context(rate_type=partner.property_rate_field)
+            line = line.with_env(self.env)
+        return super()._get_reconcile_line(line, kind, **kwargs)
+
     def _get_manual_reconcile_vals(self):
         """
         Overriden to honor the account's own currency on manual/write-off
@@ -56,8 +69,12 @@ class AccountBankStatementLine(models.Model):
         is created with an explicit currency_id), so we set the line currency
         and amount from the chosen account here. Fires on manual_account_id
         change via OCA's `_onchange_manual_reconcile_vals`, so changing the
-        account re-derives the currency too.
+        account re-derives the currency too. The amount is converted with the
+        Currency Rate Field of the line's partner.
         """
+        partner = self.manual_partner_id or self.partner_id
+        if partner.property_rate_field not in (False, "rate"):
+            self = self.with_context(rate_type=partner.property_rate_field)
         vals = super()._get_manual_reconcile_vals()
         account_currency = self.manual_account_id.currency_id
         company_currency = self.company_id.currency_id
