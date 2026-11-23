@@ -23,9 +23,11 @@ from odoo.tools import config
 _logger = logging.getLogger(__name__)
 
 POSTMARK_DEFAULT_TIMEOUT = 15
+# The address list ends at ". " or at the end of the message; the addresses
+# themselves contain dots.
 POSTMARK_INACTIVE_ADDRESS_PATTERNS = (
-    r"Found inactive addresses: ([^.]+)",
-    r"inactive addresses: ([^.]+)",
+    r"Found inactive addresses: (.+?)(?:\.\s|\.?$)",
+    r"inactive addresses: (.+?)(?:\.\s|\.?$)",
 )
 
 
@@ -92,7 +94,14 @@ class MailMail(models.Model):
                     )
                     _logger.info("Sending mail.mail %s through Postmark.", email.id)
                     response = postmark.outbound.send(params)
-                    email._postmark_validate_response(response)
+                    if email._postmark_validate_response(response):
+                        # The inactive recipients are blacklisted now.
+                        recipients, inactive_recipients = (
+                            email._postmark_filter_blacklisted_recipients(recipients)
+                        )
+                        blacklisted_recipients = (
+                            blacklisted_recipients + inactive_recipients
+                        )
 
                     email.write(
                         {
@@ -189,15 +198,22 @@ class MailMail(models.Model):
             return POSTMARK_DEFAULT_TIMEOUT
 
     def _postmark_validate_response(self, response):
-        """Validate a Postmark send response and blacklist inactive recipients."""
+        """Validate a Postmark send response and blacklist inactive recipients.
+
+        Return the inactive recipients when Postmark delivered to the others:
+        it answers error code 0 with "Message OK, but will not deliver to
+        these inactive addresses".
+        """
         self.ensure_one()
         if response.success and response.message == "OK":
-            return
+            return []
 
         inactive_emails = self._postmark_extract_inactive_recipients(response.message)
         self._postmark_blacklist_emails(
             inactive_emails, source="Postmark send response"
         )
+        if response.error_code == 0 and inactive_emails:
+            return inactive_emails
         raise PostmarkAPIException(
             response.message,
             error_code=response.error_code,
@@ -407,7 +423,11 @@ class MailMail(models.Model):
         )
 
     def _postmark_get_success_partner_ids(self, recipients):
-        """Return recipient partner ids that stayed in the Postmark To list."""
+        """Return the recipient partners that stayed in the Postmark To list.
+
+        Core compares notification partners with these, so they must be
+        records: with plain ids every notification counted as failed.
+        """
         self.ensure_one()
         normalized_recipients = {
             tools.email_normalize(recipient, strict=False)
@@ -419,7 +439,7 @@ class MailMail(models.Model):
                 tools.email_normalize(partner.email, strict=False)
                 in normalized_recipients
             )
-        ).ids
+        )
 
     @api.model
     def _postmark_get_blacklisted_failure_reason(self, blacklisted_recipients):
