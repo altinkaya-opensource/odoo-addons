@@ -34,7 +34,7 @@ msgstr "<span class=\"o_stat_text\">Benzer Üre.</span>"
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__active
 msgid "Active"
-msgstr ""
+msgstr "Etkin"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__active_rule_id
@@ -49,7 +49,7 @@ msgstr "Varyantlara Uygula"
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
 msgid "Archived"
-msgstr ""
+msgstr "Arşivlenmiş"
 
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.view_production_form_inherit_print_product_label
@@ -216,7 +216,7 @@ msgstr "Bekleyen Değişiklik Setlerini Say"
 #. module: altinkaya_mrp
 #: model_terms:ir.actions.act_window,help:altinkaya_mrp.mrp_routing_action
 msgid "Create a new routing"
-msgstr ""
+msgstr "Yeni bir rota oluşturun"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__create_uid
@@ -261,7 +261,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__note
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__display_name
@@ -339,7 +339,7 @@ msgstr ""
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
 msgid "Group By..."
-msgstr ""
+msgstr "Grupla..."
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_gorsel_menu
@@ -368,7 +368,7 @@ msgstr ""
 msgid ""
 "If the active field is set to False, it will allow you to hide the routing "
 "without removing it."
-msgstr ""
+msgstr "Etkin alanı işaretlenmezse rota silinmeden gizlenir."
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__inherited_attribute_ids
@@ -405,6 +405,9 @@ msgid ""
 "Set a location if you produce at a fixed location. This can be a partner "
 "location if you subcontract the manufacturing operations."
 msgstr ""
+"Hammaddelerin bulunduğu konumda üretim yapıyorsanız boş bırakın. Sabit bir "
+"konumda üretim yapıyorsanız bir konum seçin. Üretim işlemlerini fasona "
+"veriyorsanız bu bir iş ortağı konumu olabilir."
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom__checked
@@ -526,7 +529,7 @@ msgstr "İsim"
 #: code:addons/altinkaya_mrp/models/mrp_routing.py:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_maintenance_log__note
@@ -537,7 +540,7 @@ msgstr "Not"
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_form_view
 msgid "Notes"
-msgstr ""
+msgstr "Notlar"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_template_line__operation_id
@@ -616,7 +619,7 @@ msgstr "Ürün"
 #. module: altinkaya_mrp
 #: model_terms:ir.ui.view,arch_db:altinkaya_mrp.mrp_routing_search_view
 msgid "Production Location"
-msgstr ""
+msgstr "Üretim Konumu"
 
 #. module: altinkaya_mrp
 #: model:ir.model,name:altinkaya_mrp.model_mrp_production
@@ -648,7 +651,7 @@ msgstr "Miktar"
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__location_id
 msgid "Raw Materials Location"
-msgstr ""
+msgstr "Hammadde Konumu"
 
 #. module: altinkaya_mrp
 #. odoo-python
@@ -668,7 +671,7 @@ msgstr "Referans"
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_routing__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Sorumlu"
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_production__process_id
@@ -698,6 +701,9 @@ msgid ""
 "                done to realize a Manufacturing Order. Each operation from\n"
 "                a Routing is done at a specific Work Center and has a specific duration."
 msgstr ""
+"Rotalar, bir üretim emrini tamamlamak için yapılması gereken ardışık "
+"işlemleri tanımlar. Bir rotadaki her işlem belirli bir iş merkezinde yapılır"
+" ve belirli bir süresi vardır."
 
 #. module: altinkaya_mrp
 #: model:ir.actions.act_window,name:altinkaya_mrp.mrp_sac_menu
@@ -856,6 +862,7 @@ msgid ""
 "The user responsible for this routing. This is used for notifications and "
 "follow-ups."
 msgstr ""
+"Bu rotadan sorumlu kullanıcı. Bildirimler ve takipler için kullanılır."
 
 #. module: altinkaya_mrp
 #: model:ir.model.fields,field_description:altinkaya_mrp.field_mrp_bom_wcparameter__time_stop
