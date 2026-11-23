@@ -23,4 +23,11 @@ class MaintenanceLog(models.Model):
         ],
     )
     performed_by_id = fields.Many2one("hr.employee")
+    # Stored so the list can group by it; follows the employee if they move.
+    department_id = fields.Many2one(
+        "hr.department",
+        related="performed_by_id.department_id",
+        store=True,
+        string="Department",
+    )
     # created_by = create_uid, date = create_date (automatic)
