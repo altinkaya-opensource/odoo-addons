@@ -100,13 +100,20 @@
                     <field name='x_durum' />
                 </field>
 
+                <!-- l10n_tr_stock repeats Operation Type under the locations,
+                     so take the last one: that is the one users see. -->
+                <xpath
+                    expr="(//group/field[@name='picking_type_id'])[last()]"
+                    position="after"
+                >
+                    <field name="sale_note" />
+                </xpath>
+
                 <xpath
                     expr="//field[@name='move_ids_without_package']"
                     position='after'
                 >
-                    <group name="notes">
-                        <field name="sale_note" />
-                    </group>
+                    <group name="notes" />
                 </xpath>
 
                 <xpath expr="//group[@name='notes']" position="inside">

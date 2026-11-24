@@ -5,7 +5,7 @@ from odoo.tests import Form, TransactionCase, tagged
 
 @tagged("post_install", "-at_install")
 class TestPickingNoteView(TransactionCase):
-    def test_transfer_note_under_sales_note(self):
+    def test_sale_note_on_top_and_transfer_note_under_operations(self):
         view = (
             self.env["stock.picking"]
             .with_context(lang="en_US")
@@ -15,12 +15,15 @@ class TestPickingNoteView(TransactionCase):
             )
         )
         arch = etree.fromstring(view["arch"])
+        sale_note = arch.xpath("//field[@name='sale_note']")
+        self.assertEqual(len(sale_note), 1)
+        self.assertEqual(sale_note[0].getprevious().get("name"), "picking_type_id")
         notes = arch.xpath("//page[@name='operations']/group[@name='notes']")
         self.assertEqual(len(notes), 1)
         fields = notes[0].xpath("./field")
-        self.assertEqual([field.get("name") for field in fields], ["sale_note", "note"])
-        self.assertEqual(fields[1].get("string"), "Warehouse Note")
-        self.assertEqual(fields[1].get("nolabel"), "0")
+        self.assertEqual([field.get("name") for field in fields], ["note"])
+        self.assertEqual(fields[0].get("string"), "Warehouse Note")
+        self.assertEqual(fields[0].get("nolabel"), "0")
         self.assertEqual(len(arch.xpath("//field[@name='note']")), 1)
         self.assertFalse(arch.xpath("//page[@name='note']//field[@name='note']"))
         if "comment_irsaliye" in self.env["stock.picking"]._fields:
