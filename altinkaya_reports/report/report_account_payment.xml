@@ -38,13 +38,13 @@
                                 </strong>
                             <br />
                             <div style="line-height:80%">
-                                <span style="font-size:7pt">Ostim OSB, 1231. Cd. No:1
-                                        06374
-                                    </span>
+                                <span style="font-size:7pt">
+                                    <t
+                                        t-call="altinkaya_reports.company_address_lines"
+                                    />
+                                </span>
                                 <br />
-                                <span style="font-size:7pt">Tel:+90(312) 395 2768
-                                        Yenimahalle/ANKARA
-                                    </span>
+                                <span style="font-size:7pt">Tel:+90(312) 395 2768</span>
                                 <br />
                                 <span
                                     style="font-size:8pt"

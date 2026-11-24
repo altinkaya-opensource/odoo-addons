@@ -42,11 +42,7 @@
                         TİC. A.Ş.
                     </strong>
                     <br />
-                    <span>1231. Cd. No:1</span>
-                    <br />
-                    <span>Ostim OSB</span>
-                    <br />
-                    <span>06374 Yenimahalle / ANKARA</span>
+                    <t t-call="altinkaya_reports.company_address_lines" />
                 </div>
                 <div class="col-5">
                     <strong class="text-end" style="font-size:12pt">PARTNER STATEMENT
@@ -64,10 +60,6 @@
                             </strong>
                             <br />
                             <strong>
-                                <span>Fax:</span>
-                            </strong>
-                            <br />
-                            <strong>
                                 <span>E-mail:</span>
                             </strong>
                             <br />
@@ -76,8 +68,6 @@
                             <span>0610422947</span>
                             <br />
                             <span>+90 850 432 25 15</span>
-                            <br />
-                            <span>+90 312 395 2772</span>
                             <br />
                             <span>sales@altinkaya.com</span>
                             <br />

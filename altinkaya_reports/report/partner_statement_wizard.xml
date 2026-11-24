@@ -26,11 +26,7 @@
 								TİC. A.Ş.
 							</strong>
                     <br />
-                    <span>1231. Cd. No:1 </span>
-                    <br />
-                    <span>Ostim OSB</span>
-                    <br />
-                    <span>06374 Yenimahalle / ANKARA</span>
+                    <t t-call="altinkaya_reports.company_address_lines" />
                 </div>
                 <div class="col-5">
                     <strong class="text-right" style="font-size:16pt">HESAP EKSTRESİ
@@ -43,8 +39,6 @@
                             <br />
                             <span>Tel:</span>
                             <br />
-                            <span>Faks:</span>
-                            <br />
                             <span>Eposta:</span>
                             <br />
                         </div>
@@ -52,8 +46,6 @@
                             <span>0610422947</span>
                             <br />
                             <span>+90 312 395 2768</span>
-                            <br />
-                            <span>+90 312 395 2772</span>
                             <br />
                             <span>muhasebe@altinkaya.com</span>
                             <br />
@@ -65,9 +57,11 @@
         <div class="footer">
             <div class="row" style="border-top:2px solid black;font-size:14pt">
                 <div class="col-12 text-center">
-                    <span>Telefon: +90 312 395 2768 |
-								www.altinkaya.com | Sincan Vergi Dairesi 0610422947
-							</span>
+                    <span>Telefon: <t
+                        t-out="res_company.phone"
+                    /> | www.altinkaya.com | Sincan Vergi
+                        Dairesi <t t-out="res_company.vat" />
+                    </span>
                     <br />
                     <span>Garanti Bankası: 682-6294510 IBAN: TR40 0006 2000 6820 0006
 								2945 10 (TL)
