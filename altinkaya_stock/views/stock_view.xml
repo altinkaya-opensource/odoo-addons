@@ -137,6 +137,36 @@
             </field>
         </record>
 
+        <!-- Keep the shipment dates with the other dates. DB_picking_forminherit,
+             a view made in the UI at priority 999, adds Created on and Date of
+             Transfer after the source document, so this view runs after it.
+             Without that view, the source document is the last of the two. -->
+        <record id="view_picking_form_dates_together" model="ir.ui.view">
+            <field name="name">stock.picking.form.dates.together</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="priority" eval="1000" />
+            <field name="arch" type="xml">
+                <xpath
+                    expr="(//field[@name='origin'] | //field[@name='date_done'])[last()]"
+                    position="after"
+                >
+                    <xpath expr="//field[@name='date_shipped']" position="move" />
+                    <xpath expr="//field[@name='date_delivered']" position="move" />
+                </xpath>
+                <field name="date_shipped" position="attributes">
+                    <attribute
+                        name="attrs"
+                    >{'invisible': ['|', ('state', '!=', 'done'), ('carrier_id', '=', False)]}</attribute>
+                </field>
+                <field name="date_delivered" position="attributes">
+                    <attribute
+                        name="attrs"
+                    >{'invisible': ['|', ('state', '!=', 'done'), ('carrier_id', '=', False)]}</attribute>
+                </field>
+            </field>
+        </record>
+
         <record id="view_stock_move_form" model="ir.ui.view">
             <field name="name">stock.move.form</field>
             <field name="model">stock.move</field>

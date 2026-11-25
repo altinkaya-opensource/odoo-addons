@@ -1,3 +1,5 @@
+import json
+
 from lxml import etree
 
 from odoo.tests import Form, TransactionCase, tagged
@@ -104,3 +106,51 @@ class TestPickingResponsible(TransactionCase):
         preparer = arch.xpath("//field[@name='hazirlayan']")[0]
         self.assertEqual(preparer.getnext().get("name"), "user_id")
         self.assertEqual(preparer.getnext().get("domain"), "[('share', '=', False)]")
+
+    def test_responsible_is_read_only_but_still_set(self):
+        picking = Form(
+            self.Picking.with_context(default_picking_type_id=self.picking_type.id),
+            view=self.env.ref("stock.view_picking_form"),
+        )
+        picking.partner_id = self.contact
+        with self.assertRaises(AssertionError):
+            picking.user_id = self.env.user
+        record = picking.save()
+        self.assertEqual(record.user_id, self.responsible)
+        # The mobile app assigns the responsible over RPC.
+        record.write({"user_id": self.env.user.id})
+        self.assertEqual(record.user_id, self.env.user)
+
+
+@tagged("post_install", "-at_install")
+class TestPickingListsAndDates(TransactionCase):
+    def _arch(self, xmlid, view_type):
+        view = self.env["stock.picking"].get_view(self.env.ref(xmlid).id, view_type)
+        return etree.fromstring(view["arch"])
+
+    def test_transfers_list_newest_first(self):
+        newest_first = self.env.ref("altinkaya_stock.view_picking_tree_newest_first")
+        self.assertEqual(
+            self.env.ref("stock.action_picking_tree_all").view_id, newest_first
+        )
+        arch = self._arch("altinkaya_stock.view_picking_tree_newest_first", "tree")
+        self.assertEqual(arch.get("default_order"), "create_date desc")
+        self.assertTrue(arch.xpath("//field[@name='workload_deci']"))
+        # The Overview work queues keep starred first, then the oldest planned date.
+        self.assertIsNone(self._arch("stock.vpicktree", "tree").get("default_order"))
+
+    def test_shipment_dates_follow_the_transfer_date(self):
+        arch = self._arch("stock.view_picking_form", "form")
+        anchor = arch.xpath(
+            "(//field[@name='origin'] | //field[@name='date_done'])[last()]"
+        )[0]
+        if arch.xpath("//field[@name='date_done']"):
+            self.assertEqual(anchor.get("name"), "date_done")
+        dates = [anchor.getnext(), anchor.getnext().getnext()]
+        self.assertEqual(
+            [field.get("name") for field in dates], ["date_shipped", "date_delivered"]
+        )
+        for field in dates:
+            self.assertIn("invisible", json.loads(field.get("modifiers")))
+        self.assertEqual(len(arch.xpath("//field[@name='date_shipped']")), 1)
+        self.assertEqual(len(arch.xpath("//field[@name='date_delivered']")), 1)

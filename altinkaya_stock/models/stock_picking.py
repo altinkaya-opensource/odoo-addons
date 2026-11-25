@@ -56,6 +56,8 @@ class StockPicking(models.Model):
         index=True,
     )
     hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
+    # Set from the partner's default responsible, or by the mobile app.
+    user_id = fields.Many2one(readonly=True)
     operation_line_count = fields.Integer(
         string="Line Count", compute="_compute_operation_line_count", store=True
     )
@@ -202,32 +204,46 @@ class StockPicking(models.Model):
             )
 
     @api.model
-    def _register_custom_workload_views(self):
+    def _register_custom_transfer_views(self):
         """Extend legacy database-only transfer lists on install and upgrade."""
-        template = self.env.ref("altinkaya_stock.view_picking_tree_workload")
+        self._inherit_database_views(
+            "view_picking_tree_workload",
+            ["stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"],
+            "workload",
+        )
+        # All Transfers, opened from the Inventory Overview, shows teslimat_tree.
+        self._inherit_database_views(
+            "view_picking_tree_newest_first",
+            ["stock.picking.teslimat_tree"],
+            "newest_first",
+        )
+
+    @api.model
+    def _inherit_database_views(self, template, names, suffix):
+        """Give lists made in the UI the template's changes.
+
+        They have no XML id, so no XML record can inherit them.
+        """
+        arch = self.env.ref(f"altinkaya_stock.{template}").arch_db
         views = self.env["ir.ui.view"].search(
             [
                 ("model", "=", "stock.picking"),
                 ("type", "=", "tree"),
                 ("mode", "=", "primary"),
                 ("inherit_id", "=", False),
-                (
-                    "name",
-                    "in",
-                    ["stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"],
-                ),
+                ("name", "in", names),
             ]
         )
         for view in views:
             self.env["ir.ui.view"]._load_records(
                 [
                     {
-                        "xml_id": f"altinkaya_stock.view_picking_workload_{view.id}",
+                        "xml_id": f"altinkaya_stock.view_picking_{suffix}_{view.id}",
                         "values": {
-                            "name": f"{view.name}.workload",
+                            "name": f"{view.name}.{suffix}",
                             "model": "stock.picking",
                             "inherit_id": view.id,
-                            "arch_db": template.arch_db,
+                            "arch_db": arch,
                         },
                     }
                 ],
