@@ -59,3 +59,21 @@ class TestDHLRate(TransactionCase):
 
         self.assertEqual(result["price"], 0.0)
         self.assertIsNone(result["transit_days"])
+
+    def test_dummy_packages_apply_the_dimension_factor_once(self):
+        carrier = self.env["delivery.carrier"].new(
+            {
+                "delivery_type": "dhl",
+                "dummy_pallet_threshold": 150.0,
+                "dummy_package_weight": 30.0,
+                "factor_a": 2.0,
+                "factor_b": 0.1,
+            }
+        )
+        order = SimpleNamespace(picking_ids=[])
+
+        with patch.object(type(carrier), "_get_order_deci", return_value=10.0):
+            packages = carrier._prepare_dhl_dummy_packages(order)
+
+        # 10 x (2.0 - 0.1 * log10(10)) = 19; factored twice it would be 35.6.
+        self.assertEqual([pack["weight"] for pack in packages], [19.0])

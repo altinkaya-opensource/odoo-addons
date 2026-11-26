@@ -304,7 +304,7 @@ class DeliveryCarrier(models.Model):
         if order.picking_ids:
             raise UserError(_("Cannot get rates for an order with existing pickings."))
 
-        raw_packages = self._generate_dummy_packages(order.sale_deci)
+        raw_packages = self._generate_dummy_packages(self._get_order_deci(order))
 
         packages = []
         for pack in raw_packages:

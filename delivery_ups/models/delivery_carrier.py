@@ -593,7 +593,7 @@ class DeliveryCarrier(models.Model):
         cms = {"Code": "CM", "Description": "Centimeters"}
 
         packages = []
-        for pack in self._generate_dummy_packages(order.sale_deci):
+        for pack in self._generate_dummy_packages(self._get_order_deci(order)):
             dimensions = pack["dimensions"]
             packages.append(
                 {
