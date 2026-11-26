@@ -301,7 +301,8 @@ class DeliveryCarrier(models.Model):
         Estimate and prepare dummy packages for FedEx rate
         calculation.
         """
-        if order.picking_ids:
+        # A preview rates a shipped order as if it were still a quotation.
+        if order.picking_ids and not self.env.context.get("delivery_rate_preview"):
             raise UserError(_("Cannot get rates for an order with existing pickings."))
 
         raw_packages = self._generate_dummy_packages(self._get_order_deci(order))
@@ -890,6 +891,7 @@ class DeliveryCarrier(models.Model):
         )
 
         transit_days = None
+        api_error = False
         try:
             response = fedex_request.get_rates(payload)
             transit_days = self._fedex_transit_days(
@@ -912,8 +914,9 @@ class DeliveryCarrier(models.Model):
                     order.company_id,
                     fields.Date.today(),
                 )
-        except Exception as __:  # This means there is no rate or the request failed
+        except Exception as error:  # This means there is no rate or the request failed
             price = 0.0
+            api_error = str(error)
 
         return {
             "success": True,
@@ -921,6 +924,9 @@ class DeliveryCarrier(models.Model):
             "error_message": False,
             "warning_message": False,
             "transit_days": transit_days,
+            # Why the price is 0. "success" stays True for the callers
+            # that list every carrier.
+            "api_error": api_error,
         }
 
     def fedex_account_rate_shipment(self, account_move):

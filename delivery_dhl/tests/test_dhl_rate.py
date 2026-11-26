@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
 
 from odoo.addons.delivery_dhl.models.delivery_carrier import DeliveryCarrier
@@ -49,6 +50,7 @@ class TestDHLRate(TransactionCase):
 
         self.assertEqual(result["price"], 79.27)
         self.assertEqual(result["transit_days"], 1)
+        self.assertFalse(result["api_error"])
 
     @patch("odoo.addons.delivery_dhl.models.delivery_carrier.DHLRequest")
     def test_failed_rate_has_no_transit_days(self, dhl_request):
@@ -59,6 +61,9 @@ class TestDHLRate(TransactionCase):
 
         self.assertEqual(result["price"], 0.0)
         self.assertIsNone(result["transit_days"])
+        # The wizard and the storefront still list the carrier.
+        self.assertTrue(result["success"])
+        self.assertEqual(result["api_error"], "410105")
 
     def test_dummy_packages_apply_the_dimension_factor_once(self):
         carrier = self.env["delivery.carrier"].new(
@@ -77,3 +82,16 @@ class TestDHLRate(TransactionCase):
 
         # 10 x (2.0 - 0.1 * log10(10)) = 19; factored twice it would be 35.6.
         self.assertEqual([pack["weight"] for pack in packages], [19.0])
+
+    def test_only_a_preview_rates_a_shipped_order(self):
+        carrier = self.env["delivery.carrier"].new({"delivery_type": "dhl"})
+        order = SimpleNamespace(picking_ids=[object()])
+
+        with patch.object(type(carrier), "_get_order_deci", return_value=10.0):
+            with self.assertRaises(UserError):
+                carrier._prepare_dhl_dummy_packages(order)
+            packages = carrier.with_context(
+                delivery_rate_preview=True
+            )._prepare_dhl_dummy_packages(order)
+
+        self.assertEqual(len(packages), 1)

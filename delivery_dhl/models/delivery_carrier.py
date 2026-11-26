@@ -148,7 +148,8 @@ class DeliveryCarrier(models.Model):
         Estimate and prepare dummy packages for DHL rate
         calculation.
         """
-        if order.picking_ids:
+        # A preview rates a shipped order as if it were still a quotation.
+        if order.picking_ids and not self.env.context.get("delivery_rate_preview"):
             raise UserError(_("Cannot get rates for an order with existing pickings."))
 
         raw_packages = self._generate_dummy_packages(self._get_order_deci(order))
@@ -494,6 +495,7 @@ class DeliveryCarrier(models.Model):
         )
         payload = self._prepare_dhl_sale_rate_data(order)
         transit_days = None
+        api_error = False
         try:
             response = dhl_request.get_rate(payload)
             transit_days = self._dhl_transit_days(response)
@@ -521,8 +523,9 @@ class DeliveryCarrier(models.Model):
                     order.company_id,
                     fields.Date.today(),
                 )
-        except Exception as __:
+        except Exception as error:
             price = 0.0
+            api_error = str(error)
 
         return {
             "success": True,
@@ -530,6 +533,9 @@ class DeliveryCarrier(models.Model):
             "error_message": False,
             "warning_message": False,
             "transit_days": transit_days,
+            # Why the price is 0. "success" stays True for the callers
+            # that list every carrier.
+            "api_error": api_error,
         }
 
     # def dhl_account_rate_shipment(self, account_move):
