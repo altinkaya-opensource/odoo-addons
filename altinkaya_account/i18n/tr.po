@@ -1142,11 +1142,6 @@ msgid "Manual check for currency difference"
 msgstr "El ile Kur farkı kotrolü Yapıldı"
 
 #. module: altinkaya_account
-#: model_terms:ir.ui.view,arch_db:altinkaya_account.account_move_total_balance
-msgid "Match Picking Lines"
-msgstr "Sevk Satırlarını Eşleştir"
-
-#. module: altinkaya_account
 #. odoo-python
 #: code:addons/altinkaya_account/models/res_partner.py:0
 #, python-format
@@ -1214,13 +1209,6 @@ msgstr ""
 #, python-format
 msgid "No invoice created!"
 msgstr "Herhangi bir fatura oluşturulmadı!"
-
-#. module: altinkaya_account
-#. odoo-python
-#: code:addons/altinkaya_account/models/account_move.py:0
-#, python-format
-msgid "No picking linked to this invoice"
-msgstr "Bu faturaya bağlı sevk bulunamadı"
 
 #. module: altinkaya_account
 #. odoo-python

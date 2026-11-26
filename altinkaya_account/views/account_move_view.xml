@@ -129,17 +129,6 @@
             >
                 <field name="unit_discounted" />
             </xpath>
-
-            <xpath expr="//button[@name='button_cancel']" position="after">
-                <button
-                    name="action_match_einvoice_lines_picking"
-                    type="object"
-                    class="oe_highlight"
-                    string="Match Picking Lines"
-                    attrs="{'invisible':['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), '&amp;', '&amp;', ('picking_ids', '=', False), ('invoice_line_ids', '=', False), ('state', 'in', ['done', 'cancel'])]}"
-                    groups="account.group_account_invoice"
-                />
-            </xpath>
         </field>
     </record>
 
