@@ -300,6 +300,40 @@ class TestFedExRate(TransactionCase):
 
         self.assertEqual(result["price"], 26.51)
         self.assertEqual(result["transit_days"], 6)
+        self.assertFalse(result["api_error"])
+
+    @patch("odoo.addons.delivery_fedex.models.delivery_carrier.FedExRequest")
+    def test_failed_sale_rate_says_why(self, fedex_request):
+        fedex_request.return_value.get_rates.side_effect = Exception("no rate")
+        carrier = SimpleNamespace(
+            fedex_service_type="FEDEX_REGIONAL_ECONOMY",
+            fedex_client_id="id",
+            fedex_client_secret="secret",
+            prod_environment=False,
+            _prepare_fedex_sale_rate_data=lambda _order: {
+                "requestedShipment": {"requestedPackageLineItems": []}
+            },
+        )
+
+        result = DeliveryCarrier.fedex_rate_shipment(carrier, SimpleNamespace())
+
+        # The wizard and the storefront still list the carrier.
+        self.assertTrue(result["success"])
+        self.assertEqual(result["price"], 0.0)
+        self.assertEqual(result["api_error"], "no rate")
+
+    def test_only_a_preview_rates_a_shipped_order(self):
+        carrier = self.env["delivery.carrier"].new({"delivery_type": "fedex"})
+        order = SimpleNamespace(picking_ids=[object()])
+
+        with patch.object(type(carrier), "_get_order_deci", return_value=10.0):
+            with self.assertRaises(UserError):
+                carrier._prepare_fedex_dummy_packages(order)
+            packages = carrier.with_context(
+                delivery_rate_preview=True
+            )._prepare_fedex_dummy_packages(order)
+
+        self.assertEqual(len(packages), 1)
 
     @patch("odoo.addons.delivery_fedex.models.delivery_carrier.FedExRequest")
     def test_freight_rate_rejects_package_below_minimum_weight(self, fedex_request):
