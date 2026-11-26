@@ -8,3 +8,4 @@ from . import test_payment_transaction
 from . import test_partner_statement_balance
 from . import test_move_line_change_account
 from . import test_auto_reconcile_savepoint
+from . import test_auto_reconcile_currency

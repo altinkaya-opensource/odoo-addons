@@ -55,6 +55,22 @@ class AccountAutoReconcile(models.AbstractModel):
 
         return domain
 
+    def _get_payment_amount(self, payment_line, move):
+        """Open amount of a payment line in the currency of the invoice.
+
+        A line in another currency is converted from its company currency
+        residual at its own date: the rate the reconciliation applies to a
+        company currency payment of a foreign currency invoice.
+        """
+        if payment_line.currency_id == move.currency_id:
+            return abs(payment_line.amount_residual_currency)
+        return move.company_currency_id._convert(
+            abs(payment_line.amount_residual),
+            move.currency_id,
+            move.company_id,
+            payment_line.date,
+        )
+
     def _find_invoices_for_payment(
         self, payment_line, current_move, account, currency=None
     ):
@@ -64,8 +80,8 @@ class AccountAutoReconcile(models.AbstractModel):
             currency: When set, compare amounts in this foreign currency
                       instead of company currency.
         """
+        payment_amount = self._get_payment_amount(payment_line, current_move)
         if currency:
-            payment_amount = abs(payment_line.amount_residual_currency)
             current_invoice_amount = abs(
                 sum(
                     current_move.line_ids.filtered(
@@ -78,7 +94,6 @@ class AccountAutoReconcile(models.AbstractModel):
                 )
             )
         else:
-            payment_amount = abs(payment_line.amount_residual)
             current_invoice_amount = abs(current_move.amount_residual)
 
         remaining = payment_amount - current_invoice_amount
@@ -116,7 +131,7 @@ class AccountAutoReconcile(models.AbstractModel):
                 )
                 inv_amount = abs(sum(inv_pay_lines.mapped("amount_residual_currency")))
             else:
-                inv_amount = abs(inv.amount_residual)
+                inv_amount = abs(inv.amount_residual_signed)
             if inv_amount <= remaining:
                 selected |= inv
                 remaining -= inv_amount
@@ -252,7 +267,8 @@ class AccountAutoReconcile(models.AbstractModel):
     def _try_exact_match_reconcile(self, move, pay_term_lines):
         """Find payment with exact or near-exact matching amount.
 
-        Supports cross-currency matching (e.g., USD invoice paid with TRY).
+        Supports cross-currency matching (e.g., USD invoice paid with TRY):
+        both amounts are compared in the invoice currency.
         If difference is under RESIDUAL_TOLERANCE (1 unit), reconcile and create
         ADVR for the residual to achieve full reconciliation.
 
@@ -262,18 +278,8 @@ class AccountAutoReconcile(models.AbstractModel):
         payment_lines = self.env["account.move.line"].search(domain)
 
         for payment_line in payment_lines:
-            # Compare amounts based on currency match
-            # Same currency: compare foreign currency amounts
-            # Different currency: compare company currency amounts (TRY)
-            if payment_line.currency_id == move.currency_id:
-                payment_amount = abs(payment_line.amount_residual_currency)
-                invoice_amount = abs(
-                    sum(pay_term_lines.mapped("amount_residual_currency"))
-                )
-            else:
-                # Cross-currency: compare in company currency (TRY)
-                payment_amount = abs(payment_line.amount_residual)
-                invoice_amount = abs(move.amount_residual)
+            payment_amount = self._get_payment_amount(payment_line, move)
+            invoice_amount = abs(sum(pay_term_lines.mapped("amount_residual_currency")))
 
             diff = abs(payment_amount - invoice_amount)
 
@@ -335,10 +341,7 @@ class AccountAutoReconcile(models.AbstractModel):
         running_total = 0.0
 
         for payment_line in all_payment_lines:
-            if use_foreign and payment_line.currency_id == move.currency_id:
-                payment_amount = abs(payment_line.amount_residual_currency)
-            else:
-                payment_amount = abs(payment_line.amount_residual)
+            payment_amount = self._get_payment_amount(payment_line, move)
             selected_payments |= payment_line
             running_total += payment_amount
 
@@ -394,10 +397,7 @@ class AccountAutoReconcile(models.AbstractModel):
             invoice_amount = abs(move.amount_residual)
 
         for payment_line in payment_lines:
-            if use_foreign and payment_line.currency_id == move.currency_id:
-                payment_amount = abs(payment_line.amount_residual_currency)
-            else:
-                payment_amount = abs(payment_line.amount_residual)
+            payment_amount = self._get_payment_amount(payment_line, move)
 
             # Payment must be larger than invoice
             if payment_amount <= invoice_amount:
@@ -427,7 +427,7 @@ class AccountAutoReconcile(models.AbstractModel):
                         sum(other_lines.mapped("amount_residual_currency"))
                     )
                 else:
-                    total_invoice_amount += abs(other_move.amount_residual)
+                    total_invoice_amount += abs(other_move.amount_residual_signed)
 
             # Calculate match percentage
             potential_match = min(payment_amount, total_invoice_amount)
