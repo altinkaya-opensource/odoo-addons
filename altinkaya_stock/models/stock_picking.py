@@ -204,46 +204,28 @@ class StockPicking(models.Model):
             )
 
     @api.model
-    def _register_custom_transfer_views(self):
-        """Extend legacy database-only transfer lists on install and upgrade."""
-        self._inherit_database_views(
-            "view_picking_tree_workload",
-            ["stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"],
-            "workload",
-        )
-        # All Transfers, opened from the Inventory Overview, shows teslimat_tree.
-        self._inherit_database_views(
-            "view_picking_tree_newest_first",
-            ["stock.picking.teslimat_tree"],
-            "newest_first",
-        )
-
-    @api.model
-    def _inherit_database_views(self, template, names, suffix):
-        """Give lists made in the UI the template's changes.
-
-        They have no XML id, so no XML record can inherit them.
-        """
-        arch = self.env.ref(f"altinkaya_stock.{template}").arch_db
+    def _register_custom_workload_views(self):
+        """Extend the legacy database-only transfer list on install and upgrade."""
+        template = self.env.ref("altinkaya_stock.view_picking_tree_workload")
         views = self.env["ir.ui.view"].search(
             [
                 ("model", "=", "stock.picking"),
                 ("type", "=", "tree"),
                 ("mode", "=", "primary"),
                 ("inherit_id", "=", False),
-                ("name", "in", names),
+                ("name", "=", "stock_picking_tree_gidenkargolar"),
             ]
         )
         for view in views:
             self.env["ir.ui.view"]._load_records(
                 [
                     {
-                        "xml_id": f"altinkaya_stock.view_picking_{suffix}_{view.id}",
+                        "xml_id": f"altinkaya_stock.view_picking_workload_{view.id}",
                         "values": {
-                            "name": f"{view.name}.{suffix}",
+                            "name": f"{view.name}.workload",
                             "model": "stock.picking",
                             "inherit_id": view.id,
-                            "arch_db": arch,
+                            "arch_db": template.arch_db,
                         },
                     }
                 ],

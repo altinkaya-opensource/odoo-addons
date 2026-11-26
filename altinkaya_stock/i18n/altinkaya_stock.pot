@@ -1346,6 +1346,11 @@ msgid "Sevki Hazırlayan"
 msgstr ""
 
 #. module: altinkaya_stock
+#: model_terms:ir.ui.view,arch_db:altinkaya_stock.view_picking_tree_all_transfers
+msgid "Shipping Address"
+msgstr ""
+
+#. module: altinkaya_stock
 #: model:ir.model.fields,field_description:altinkaya_stock.field_wizard_create_packaging_pallet_line__shipping_weight
 msgid "Shipping Weight"
 msgstr ""

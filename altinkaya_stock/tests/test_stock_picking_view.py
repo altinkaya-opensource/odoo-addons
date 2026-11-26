@@ -139,18 +139,53 @@ class TestPickingListsAndDates(TransactionCase):
         # The Overview work queues keep starred first, then the oldest planned date.
         self.assertIsNone(self._arch("stock.vpicktree", "tree").get("default_order"))
 
-    def test_shipment_dates_follow_the_transfer_date(self):
-        arch = self._arch("stock.view_picking_form", "form")
-        anchor = arch.xpath(
-            "(//field[@name='origin'] | //field[@name='date_done'])[last()]"
-        )[0]
-        if arch.xpath("//field[@name='date_done']"):
-            self.assertEqual(anchor.get("name"), "date_done")
-        dates = [anchor.getnext(), anchor.getnext().getnext()]
-        self.assertEqual(
-            [field.get("name") for field in dates], ["date_shipped", "date_delivered"]
+    def test_all_transfers_list_newest_first(self):
+        view = self.env.ref("altinkaya_stock.view_picking_tree_all_transfers")
+        action = self.env.ref("stock.stock_picking_action_picking_type")
+        self.assertEqual(action.view_id, view)
+        arch = self._arch("altinkaya_stock.view_picking_tree_all_transfers", "tree")
+        self.assertEqual(arch.get("default_order"), "create_date desc")
+        partner = arch.xpath("//field[@name='partner_id']")[0]
+        self.assertEqual(partner.get("string"), "Shipping Address")
+        self.assertTrue(arch.xpath("//field[@name='workload_deci']"))
+
+    def test_dates_follow_the_source_document(self):
+        # The supervisor deletes this view made in the UI after deploy.
+        self.env["ir.ui.view"].search([("name", "=", "DB_picking_forminherit")]).write(
+            {"active": False}
         )
-        for field in dates:
-            self.assertIn("invisible", json.loads(field.get("modifiers")))
-        self.assertEqual(len(arch.xpath("//field[@name='date_shipped']")), 1)
-        self.assertEqual(len(arch.xpath("//field[@name='date_delivered']")), 1)
+        arch = self._arch("stock.view_picking_form", "form")
+
+        def fields(name):
+            return arch.xpath(f"//field[@name='{name}'][not(ancestor::field)]")
+
+        dates = []
+        node = fields("origin")[0].getnext()
+        while len(dates) < 6:
+            dates.append(node.get("name"))
+            node = node.getnext()
+        self.assertEqual(
+            dates,
+            [
+                "create_date",
+                "date_done",
+                "date_shipped",
+                "date_delivered",
+                "group_id",
+                "sales_uid",
+            ],
+        )
+        for name in dates:
+            self.assertEqual(len(fields(name)), 1, name)
+        carriers = [
+            node
+            for node in fields("carrier_id")
+            if not json.loads(node.get("modifiers") or "{}").get("invisible")
+        ]
+        self.assertEqual(len(carriers), 1)
+        for name in ("date_shipped", "date_delivered"):
+            self.assertIn("invisible", json.loads(fields(name)[0].get("modifiers")))
+        scheduled = json.loads(fields("scheduled_date")[0].get("modifiers"))
+        self.assertTrue(scheduled["invisible"])
+        for name in ("location_id", "location_dest_id"):
+            self.assertNotIn("invisible", json.loads(fields(name)[0].get("modifiers")))

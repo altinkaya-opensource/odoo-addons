@@ -30,7 +30,46 @@
         <field name="view_id" ref="view_picking_tree_newest_first" />
     </record>
 
-    <function model="stock.picking" name="_register_custom_transfer_views" />
+    <!-- All Transfers, opened from the Inventory Overview. Until Nov 2026 a list
+         made in the UI, stock.picking.teslimat_tree, showed these columns. -->
+    <record id="view_picking_tree_all_transfers" model="ir.ui.view">
+        <field name="name">stock.picking.tree.all.transfers</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="create_date desc"
+                decoration-info="state == 'draft'"
+                decoration-muted="state == 'cancel'"
+                decoration-danger="state not in ('cancel', 'done') and scheduled_date &lt; current_date"
+            >
+                <field name="name" />
+                <field name="location_id" groups="stock.group_stock_multi_locations" />
+                <field
+                    name="location_dest_id"
+                    groups="stock.group_stock_multi_locations"
+                />
+                <field name="partner_id" string="Shipping Address" />
+                <field name="date" />
+                <field name="date_done" />
+                <field name="scheduled_date" invisible="1" />
+                <field name="sales_uid" />
+                <field name="origin" />
+                <field name="carrier_id" />
+                <field name="x_durum" />
+                <field name="trimmed_sale_note" />
+                <field name="hazirlayan" />
+                <field name="state" invisible="1" />
+                <field name="operation_line_count" optional="show" sum="Total Lines" />
+                <field name="workload_deci" optional="show" sum="Total Desi" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock.stock_picking_action_picking_type" model="ir.actions.act_window">
+        <field name="view_id" ref="view_picking_tree_all_transfers" />
+    </record>
+
+    <function model="stock.picking" name="_register_custom_workload_views" />
 
     <record id="view_picking_form_inherit_procurement" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit_altinkaya</field>
