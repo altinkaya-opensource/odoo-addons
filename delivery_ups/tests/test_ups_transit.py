@@ -123,10 +123,12 @@ class TestUPSTransit(TransactionCase):
             company_id=company,
             currency_id=company.currency_id,
             amount_untaxed=2000.0,
-            sale_deci=2.0,
         )
 
-        shipment = carrier._prepare_ups_transit_data(order)["RateRequest"]["Shipment"]
+        with patch.object(type(carrier), "_get_order_deci", return_value=2.0):
+            shipment = carrier._prepare_ups_transit_data(order)["RateRequest"][
+                "Shipment"
+            ]
 
         self.assertEqual(shipment["ShipTo"]["Address"]["CountryCode"], "DE")
         self.assertEqual(shipment["Shipper"]["ShipperNumber"], "A1")

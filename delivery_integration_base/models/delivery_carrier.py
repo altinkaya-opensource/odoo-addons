@@ -266,6 +266,16 @@ class DeliveryCarrier(models.Model):
         factor = self.factor_a - (self.factor_b * min(math.log10(deci), 2.0))
         return max(abs(factor), 1.0)
 
+    def _get_order_deci(self, order):
+        """Order deci by this carrier's deci type, before the dimension factor.
+
+        ``sale_deci`` is not it: that one holds the factor of the order's
+        own carrier.
+        """
+        order = order.with_context(rate_carrier_id=self.id)
+        order.order_line.invalidate_model(["deci"])  # computed by the context
+        return sum(order.order_line.mapped("deci"))
+
     def _get_price_available(self, order):
         self.ensure_one()
         if isinstance(order, int):

@@ -215,6 +215,24 @@ class TestFedExSaleCustoms(TransactionCase):
 
 
 class TestFedExRate(TransactionCase):
+    def test_dummy_packages_apply_the_dimension_factor_once(self):
+        carrier = self.env["delivery.carrier"].new(
+            {
+                "delivery_type": "fedex",
+                "dummy_pallet_threshold": 150.0,
+                "dummy_package_weight": 30.0,
+                "factor_a": 2.0,
+                "factor_b": 0.1,
+            }
+        )
+        order = SimpleNamespace(picking_ids=[])
+
+        with patch.object(type(carrier), "_get_order_deci", return_value=10.0):
+            packages = carrier._prepare_fedex_dummy_packages(order)
+
+        # 10 x (2.0 - 0.1 * log10(10)) = 19; factored twice it would be 35.6.
+        self.assertEqual([pack["weight"]["value"] for pack in packages], [19.0])
+
     def test_sale_rate_data_sends_customs_with_transit_times(self):
         carrier = SimpleNamespace(
             _prepare_fedex_base_rate_data=lambda *_args: {"requestedShipment": {}},

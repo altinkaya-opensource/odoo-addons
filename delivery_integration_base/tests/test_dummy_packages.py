@@ -30,3 +30,38 @@ class TestDummyPackages(TransactionCase):
 
     def test_small_order_gets_one_package(self):
         self.assertEqual(self._package_weights(10.0, 50.0), [10.0])
+
+    def test_order_deci_leaves_out_the_dimension_factor(self):
+        delivery_product = self.env["product.product"].create(
+            {"name": "Deci delivery", "type": "service"}
+        )
+        carrier = self.env["delivery.carrier"].create(
+            {
+                "name": "Deci Carrier",
+                "delivery_type": "fixed",
+                "product_id": delivery_product.id,
+                "currency_id": self.env.company.currency_id.id,
+                "factor_a": 2.0,
+                "factor_b": 0.1,
+            }
+        )
+        product = self.env["product.product"].create(
+            {"name": "Deci box", "type": "consu"}
+        )
+        partner = self.env["res.partner"].create({"name": "Deci Buyer"})
+        order = self.env["sale.order"].create(
+            {
+                "partner_id": partner.id,
+                "order_line": [
+                    (0, 0, {"product_id": product.id, "product_uom_qty": 1.0})
+                ],
+            }
+        )
+        # Both at once: one compute sets the two and would reset the weight.
+        order.order_line.write({"weight": 10.0, "volume": 0.0})
+        self.assertAlmostEqual(carrier._get_order_deci(order), 10.0)
+
+        order.carrier_id = carrier
+        # sale_deci holds the factor already: 2.0 - 0.1 * log10(10) = 1.9.
+        self.assertAlmostEqual(order.sale_deci, 19.0)
+        self.assertAlmostEqual(carrier._get_order_deci(order), 10.0)
