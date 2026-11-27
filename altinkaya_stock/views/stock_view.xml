@@ -134,6 +134,48 @@
                     <field name="date"/>
                 </xpath>
                 -->
+
+                <!-- Until Nov 2026 a view made in the UI, DB_picking_forminherit,
+                     made these changes. -->
+                <field name="scheduled_date" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <!-- Nakliyeci is already at the top. Hidden rather than removed, so
+                     the module also upgrades while DB_picking_forminherit exists. -->
+                <xpath
+                    expr="//group[@name='carrier_data']//field[@name='carrier_id']"
+                    position="attributes"
+                >
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Show the source and destination locations on every transfer. -->
+                <field name="location_id" position="attributes">
+                    <attribute name="groups" />
+                    <attribute name="invisible" />
+                </field>
+                <field name="location_dest_id" position="attributes">
+                    <attribute name="groups" />
+                    <attribute name="invisible" />
+                </field>
+                <field name="group_id" position="replace" />
+                <field name="origin" position="after">
+                    <field name="create_date" />
+                    <field name="date_done" />
+                    <xpath expr="//field[@name='date_shipped']" position="move" />
+                    <xpath expr="//field[@name='date_delivered']" position="move" />
+                    <field name="group_id" />
+                    <field name="sales_uid" />
+                </field>
+                <field name="date_shipped" position="attributes">
+                    <attribute
+                        name="attrs"
+                    >{'invisible': ['|', ('state', '!=', 'done'), ('carrier_id', '=', False)]}</attribute>
+                </field>
+                <field name="date_delivered" position="attributes">
+                    <attribute
+                        name="attrs"
+                    >{'invisible': ['|', ('state', '!=', 'done'), ('carrier_id', '=', False)]}</attribute>
+                </field>
             </field>
         </record>
 

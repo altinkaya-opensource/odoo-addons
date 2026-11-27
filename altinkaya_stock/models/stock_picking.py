@@ -56,6 +56,8 @@ class StockPicking(models.Model):
         index=True,
     )
     hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
+    # Set from the partner's default responsible, or by the mobile app.
+    user_id = fields.Many2one(readonly=True)
     operation_line_count = fields.Integer(
         string="Line Count", compute="_compute_operation_line_count", store=True
     )
@@ -203,7 +205,7 @@ class StockPicking(models.Model):
 
     @api.model
     def _register_custom_workload_views(self):
-        """Extend legacy database-only transfer lists on install and upgrade."""
+        """Extend the legacy database-only transfer list on install and upgrade."""
         template = self.env.ref("altinkaya_stock.view_picking_tree_workload")
         views = self.env["ir.ui.view"].search(
             [
@@ -211,11 +213,7 @@ class StockPicking(models.Model):
                 ("type", "=", "tree"),
                 ("mode", "=", "primary"),
                 ("inherit_id", "=", False),
-                (
-                    "name",
-                    "in",
-                    ["stock.picking.teslimat_tree", "stock_picking_tree_gidenkargolar"],
-                ),
+                ("name", "=", "stock_picking_tree_gidenkargolar"),
             ]
         )
         for view in views:
