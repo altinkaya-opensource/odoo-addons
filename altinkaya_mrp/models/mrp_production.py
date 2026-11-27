@@ -134,9 +134,23 @@ class MrpProduction(models.Model):
         return True
 
     def get_product_route(self):
+        def _could_receive(move_id, dest_move):
+            """A backorder leaves a move linked to every split of the next
+            step; a split done before this move was done cannot hold its
+            goods."""
+            if dest_move.state == "cancel":
+                return False
+            if dest_move.state != "done":
+                return True
+            return move_id.state == "done" and dest_move.date >= move_id.date
+
         def _get_next_moves(move_id):
             if move_id:
-                next_moves = _get_next_moves(fields.first(move_id.move_dest_ids))
+                dest_moves = move_id.move_dest_ids
+                next_move = fields.first(
+                    dest_moves.filtered(lambda m: _could_receive(move_id, m))
+                ) or fields.first(dest_moves)
+                next_moves = _get_next_moves(next_move)
                 if next_moves:
                     return move_id | next_moves
                 else:
