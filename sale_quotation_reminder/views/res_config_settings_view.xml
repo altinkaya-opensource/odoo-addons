@@ -19,11 +19,6 @@
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
                             <label for="quotation_first_reminder_days" />
-                            <span
-                                class="fa fa-lg fa-building-o"
-                                title="Values set here are company-specific."
-                                groups="base.group_multi_company"
-                            />
                             <div class="text-muted">
                                 Send the first reminder this many days before the quotation expires.
                                 Set to 0 to disable.
@@ -39,11 +34,6 @@
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
                             <label for="quotation_second_reminder_days" />
-                            <span
-                                class="fa fa-lg fa-building-o"
-                                title="Values set here are company-specific."
-                                groups="base.group_multi_company"
-                            />
                             <div class="text-muted">
                                 Send the second reminder this many days before the quotation expires.
                                 Set to 0 to disable.

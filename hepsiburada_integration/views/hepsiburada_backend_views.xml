@@ -85,10 +85,6 @@
                             <field name="user_agent" />
                         </group>
                         <group string="Odoo Configuration">
-                            <field
-                                name="company_id"
-                                groups="base.group_multi_company"
-                            />
                             <field name="default_product_id" />
                             <field name="warehouse_ids" widget="many2many_tags" />
                             <field name="pricelist_id" />
@@ -248,7 +244,6 @@
                 <field name="name" />
                 <field name="merchant_id" />
                 <field name="environment" />
-                <field name="company_id" groups="base.group_multi_company" />
                 <field name="warehouse_ids" widget="many2many_tags" />
                 <field name="order_count" />
                 <field name="last_order_sync" />
@@ -279,11 +274,6 @@
                         name="group_environment"
                         string="Environment"
                         context="{'group_by': 'environment'}"
-                    />
-                    <filter
-                        name="group_company"
-                        string="Company"
-                        context="{'group_by': 'company_id'}"
                     />
                 </group>
             </search>

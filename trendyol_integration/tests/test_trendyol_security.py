@@ -13,8 +13,6 @@ class TestTrendyolSecurity(TrendyolTestCase):
                 {
                     "name": "Trendyol Company User",
                     "login": login,
-                    "company_id": self.env.company.id,
-                    "company_ids": [(6, 0, [self.env.company.id])],
                     "groups_id": [
                         (
                             6,

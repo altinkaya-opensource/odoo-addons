@@ -19,8 +19,6 @@ class TestHepsiburadaSecurity(HepsiburadaCommon):
                     "name": "HB User",
                     "login": login,
                     "groups_id": [(6, 0, user_group.ids)],
-                    "company_id": self.env.company.id,
-                    "company_ids": [(6, 0, self.env.company.ids)],
                 }
             )
         )
