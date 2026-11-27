@@ -55,8 +55,6 @@ class TestHepsiburadaQuestion(HepsiburadaCommon):
                     "name": "HB Salesperson",
                     "login": "hb-salesperson@example.test",
                     "groups_id": [(6, 0, user_group.ids)],
-                    "company_id": self.env.company.id,
-                    "company_ids": [(6, 0, self.env.company.ids)],
                 }
             )
         )

@@ -90,52 +90,51 @@ class SaleOrder(models.Model):
     @api.model
     def _cron_send_quotation_reminders(self):
         """Cron job to send reminders X days BEFORE validity_date expiration."""
-        companies = self.env["res.company"].search([])
+        company = self.env.company
         today = fields.Date.today()
 
-        for company in companies:
-            first_days = company.quotation_first_reminder_days
-            second_days = company.quotation_second_reminder_days
+        first_days = company.quotation_first_reminder_days
+        second_days = company.quotation_second_reminder_days
 
-            # First reminder: validity_date is X days from now
-            if first_days > 0:
-                target_date = today + timedelta(days=first_days)
-                quotations = self.search(
-                    [
-                        ("company_id", "=", company.id),
-                        ("state", "=", "sent"),
-                        ("validity_date", "=", target_date),
-                        ("first_reminder_mail_sent", "=", False),
-                    ]
-                )
-                for order in quotations:
-                    try:
-                        order.action_send_quotation_reminder("first")
-                    except Exception as e:
-                        _logger.error(
-                            "Failed to send first reminder for %s: %s",
-                            order.name,
-                            str(e),
-                        )
+        # First reminder: validity_date is X days from now
+        if first_days > 0:
+            target_date = today + timedelta(days=first_days)
+            quotations = self.search(
+                [
+                    ("company_id", "=", company.id),
+                    ("state", "=", "sent"),
+                    ("validity_date", "=", target_date),
+                    ("first_reminder_mail_sent", "=", False),
+                ]
+            )
+            for order in quotations:
+                try:
+                    order.action_send_quotation_reminder("first")
+                except Exception as e:
+                    _logger.error(
+                        "Failed to send first reminder for %s: %s",
+                        order.name,
+                        str(e),
+                    )
 
-            # Second reminder: validity_date is Y days from now
-            if second_days > 0:
-                target_date = today + timedelta(days=second_days)
-                quotations = self.search(
-                    [
-                        ("company_id", "=", company.id),
-                        ("state", "=", "sent"),
-                        ("validity_date", "=", target_date),
-                        ("first_reminder_mail_sent", "=", True),
-                        ("second_reminder_mail_sent", "=", False),
-                    ]
-                )
-                for order in quotations:
-                    try:
-                        order.action_send_quotation_reminder("second")
-                    except Exception as e:
-                        _logger.error(
-                            "Failed to send second reminder for %s: %s",
-                            order.name,
-                            str(e),
-                        )
+        # Second reminder: validity_date is Y days from now
+        if second_days > 0:
+            target_date = today + timedelta(days=second_days)
+            quotations = self.search(
+                [
+                    ("company_id", "=", company.id),
+                    ("state", "=", "sent"),
+                    ("validity_date", "=", target_date),
+                    ("first_reminder_mail_sent", "=", True),
+                    ("second_reminder_mail_sent", "=", False),
+                ]
+            )
+            for order in quotations:
+                try:
+                    order.action_send_quotation_reminder("second")
+                except Exception as e:
+                    _logger.error(
+                        "Failed to send second reminder for %s: %s",
+                        order.name,
+                        str(e),
+                    )
